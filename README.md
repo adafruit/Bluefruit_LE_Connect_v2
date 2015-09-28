@@ -10,3 +10,4 @@ This is unsupported example code that is not intended to be used as in release a
 
 - OS X 10.10 or higher
 - A recent Mac or Macbook with Bluetooth 4.0 support
+- XCode 7 or higher to build and test the application
