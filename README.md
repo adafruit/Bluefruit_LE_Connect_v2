@@ -1,4 +1,4 @@
-# Adafruit Bluefruit LE Connect for OSX (Nordic DFU)
+# Adafruit Bluefruit LE Connect for OSX (DFU)
 
 This native OS X application contains a port of Nordic's DFU library to update the firmware on Bluefruit LE modules over the air from any recent Macbook with Bluetooth Low Energy support.
 
