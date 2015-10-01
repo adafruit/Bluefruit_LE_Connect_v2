@@ -80,18 +80,19 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
     return boardsInfoDictionary;
 }
 
-+ (void)refreshSoftwareUpdatesDatabase
++ (void)refreshSoftwareUpdatesDatabaseWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
     @synchronized(self) {
         // Download data
-        
         NSURL *dataUrl = Preferences.updateServerUrl;
         [FirmwareUpdater downloadDataFromURL:dataUrl withCompletionHandler:^(NSData *data) {
             // Save to user defaults
-            //NSString* newStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            //DLog(@"%@", newStr);
             [[NSUserDefaults standardUserDefaults] setObject:data forKey:kReleasesXml];
             [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            if (completionHandler) {
+                completionHandler(data != nil);
+            }
         }];
     }
 }
@@ -114,17 +115,21 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
             if (error != nil) {
                 // If any error occurs then just display its description on the console.
                 DLog(@"%@", [error description]);
+                data = nil;
             }
             else{
                 NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
                 if (statusCode != 200) {
                     DLog(@"Download file HTTP status code = %ld", (long)statusCode);
+                    data = nil;
                 }
                 
                 // Call the completion handler with the returned data on the main thread.
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    completionHandler(data);
-                }];
+                if (completionHandler) {
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        completionHandler(data);
+                    }];
+                }
             }
         }];
         

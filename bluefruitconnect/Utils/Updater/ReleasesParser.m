@@ -10,6 +10,7 @@
 #import "LogHelper.h"
 #import "XMLDictionary.h"
 #import "Utility.h"
+#import "Bluefruit_Connect-Swift.h"
 
 #pragma mark - BoardInfo
 @implementation BoardInfo
@@ -88,7 +89,7 @@
             }
             
             // Read beta firmware releases
-            const BOOL showBetaReleases = [[NSUserDefaults standardUserDefaults] boolForKey:@"betareleases_preference"];
+            const BOOL showBetaReleases = Preferences.showBetaVersions;
             if (showBetaReleases)
             {
                 id firmwareNodes = [firmwareParentNode objectForKey:@"firmwarebeta"];

@@ -8,7 +8,6 @@
 
 import Cocoa
 
-
 protocol UpdateDialogViewControlerDelegate {
     func onUpdateDialogCancel()
     func onUpdateDialogSuccess()

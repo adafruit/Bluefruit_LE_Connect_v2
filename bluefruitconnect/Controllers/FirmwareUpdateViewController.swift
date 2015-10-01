@@ -14,7 +14,6 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
     @IBOutlet weak var firmwareCurrentVersionWaitView: NSProgressIndicator!
     @IBOutlet weak var firmwareTableView: NSTableView!
     @IBOutlet weak var firmwareWaitView: NSProgressIndicator!
-    @IBOutlet weak var separatorView: NSView!
     @IBOutlet weak var hexFileTextField: NSTextField!
     @IBOutlet weak var iniFileTextField: NSTextField!
     
@@ -28,8 +27,6 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
         super.viewDidLoad()
         
         // UI
-        separatorView.wantsLayer = true
-        separatorView.layer?.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.2).CGColor
         firmwareWaitView.startAnimation(nil)
         firmwareCurrentVersionWaitView.startAnimation(nil)
         firmwareCurrentVersionLabel.stringValue = ""
@@ -238,7 +235,6 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
     
     func onUpdateDialogSuccess() {
         BleManager.sharedInstance.restoreCentralManager()
-        
         
         let alert = NSAlert()
         alert.messageText = "Update completed successfully"

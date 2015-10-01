@@ -81,6 +81,12 @@ class BleManager :  NSObject, CBCentralManagerDelegate {
         DLog("centralManagerDidUpdateState \(central.state.rawValue)")
         NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidUpdateState.rawValue, object: central.state.rawValue)
         
+        if (central.state != .PoweredOn) {
+            if let blePeripheralConnected = blePeripheralConnected{
+                DLog("Bluetooth is not powered on. Disconnect connected peripheral")
+                disconnect(blePeripheralConnected)
+            }
+        }
     }
     
     func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral,  advertisementData: [String : AnyObject], RSSI: NSNumber) {

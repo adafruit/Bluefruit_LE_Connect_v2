@@ -18,7 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Preferences.registerDefaults()
         
         // Check if there is any update to the fimware database
-        FirmwareUpdater.refreshSoftwareUpdatesDatabase()
+        FirmwareUpdater.refreshSoftwareUpdatesDatabaseWithCompletionHandler(nil)
     }
     
     func applicationWillTerminate(aNotification: NSNotification) {

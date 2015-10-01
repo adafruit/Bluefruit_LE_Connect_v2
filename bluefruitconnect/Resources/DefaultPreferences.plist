@@ -4,5 +4,11 @@
 <dict>
 	<key>UpdateServerUrl</key>
 	<string>https://raw.githubusercontent.com/adafruit/Adafruit_BluefruitLE_Firmware/master/releases.xml</string>
+	<key>UpdateShowBetaVersions</key>
+	<false/>
+	<key>UartReceivedDataColor</key>
+	<string>#ff0000</string>
+	<key>UartSentDataColor</key>
+	<string>#0000bb</string>
 </dict>
 </plist>

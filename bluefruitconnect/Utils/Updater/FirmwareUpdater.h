@@ -33,7 +33,7 @@
 @property DeviceInfoData *deviceInfoData;
 
 // Releases database
-+ (void)refreshSoftwareUpdatesDatabase;
++ (void)refreshSoftwareUpdatesDatabaseWithCompletionHandler:(void (^)(BOOL))completionHandler;
 
 // Download helper
 + (void)downloadDataFromURL:(NSURL *)url withCompletionHandler:(void (^)(NSData *))completionHandler;

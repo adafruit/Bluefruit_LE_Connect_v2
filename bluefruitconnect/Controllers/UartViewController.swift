@@ -8,42 +8,88 @@
 
 import Cocoa
 
-class UartViewController: NSViewController, CBPeripheralDelegate {
+class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDataSource, NSTableViewDelegate {
 
+    enum DisplayMode {
+        case Text           // Display a TextView with all uart data as a String
+        case Table          // Display a table where each data chunk is a row
+    }
+    
+    struct DataChunk {      // A chunk of data received or sent
+        var timestamp : CFAbsoluteTime
+        enum TransferMode {
+            case TX
+            case RX
+        }
+        var mode : TransferMode
+        var data : NSData
+        
+    }
+
+    // Constants
     static let UartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"       // UART service UUID
     static let RxCharacteristicUUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
     static let TxCharacteristicUUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
     static let TxMaxCharacters = 20
-    
+
+    // UI Outlets
     @IBOutlet var baseTextView: NSTextView!
+    @IBOutlet weak var baseTextVisibilityView: NSScrollView!
+    @IBOutlet weak var baseTableView: NSTableView!
+    @IBOutlet weak var baseTableVisibilityView: NSScrollView!
+    
     @IBOutlet weak var inputTextField: NSTextField!
     @IBOutlet weak var echoButton: NSButton!
     @IBOutlet weak var eolButton: NSButton!
     @IBOutlet weak var hexButton: NSButton!
     
+    @IBOutlet weak var sentBytesLabel: NSTextField!
+    @IBOutlet weak var receivedBytesLabel: NSTextField!
+    
+    // Bluetooth
     private var blePeripheral : BlePeripheral?
     private var uartService : CBService?
     private var rxCharacteristic : CBCharacteristic?
     private var txCharacteristic : CBCharacteristic?
     
-    private var utf8Text = NSMutableAttributedString()
-    private var hexText = NSMutableAttributedString()
+    // Current State
+    private var isInHexMode = false
+    private var isEchoEnabled = true;
+    private var isAutomaticEolEnabled = true;
+    private var displayMode = DisplayMode.Text
+    private var dataBuffer = [DataChunk]()
+    private var receivedBytesCount = 0
+    private var sentBytesCount = 0
     
-    private let txColor = NSColor.blueColor()
-    private let rxColor = NSColor.redColor()
+    // UI
+    private let txColor = Preferences.uartSentDataColor
+    private let rxColor = Preferences.uartReceveivedDataColor
+    private let timestampDateFormatter = NSDateFormatter()
+    private var tableCachedDataBuffer : [DataChunk]?
     
+    // MARK:
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Init Data
+        timestampDateFormatter.setLocalizedDateFormatFromTemplate("HH:mm:ss:SSSS")
+        isInHexMode = hexButton.state == NSOnState
+        isEchoEnabled = echoButton.state == NSOnState
+        isAutomaticEolEnabled = eolButton.state == NSOnState
+        
+        // Wait till uart is ready
         inputTextField.enabled = false
         inputTextField.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.1)
-
+        
         // Peripheral should be connected
         blePeripheral = BleManager.sharedInstance.blePeripheralConnected
         blePeripheral?.peripheral.delegate = self
         
         // Discover UART
         blePeripheral?.peripheral.discoverServices([CBUUID(string: UartViewController.UartServiceUUID)])
+        
+        // UI
+        reloadDataUI()
     }
     
     override func viewWillAppear() {
@@ -53,34 +99,26 @@ class UartViewController: NSViewController, CBPeripheralDelegate {
         blePeripheral?.peripheral.delegate = self
     }
     
-    @IBAction func onClickSend(sender: AnyObject) {
-        let text = inputTextField.stringValue
-        sendText(text)
-        inputTextField.stringValue = ""
-    }
-    
-    func sendText(text: String) {
+  
+    // MARK:
+    func sendUserText(text: String) {
         
         var newText = text
         
         // Eol
-        if (eolButton.state == NSOnState)  {
+        if (isAutomaticEolEnabled)  {
             newText += "\n"
         }
         
+        // Create data and send to Uart
         if let data = newText.dataUsingEncoding(NSUTF8StringEncoding) {
-
-            // Echo
-            if (echoButton.state == NSOnState) {
-                addDataToBuffers(data, color:txColor)
-            }
-            
-            
-            sendData(data)
+            sentBytesCount += data.length
+            registerDataSent(data)
+            sendDataToUart(data)
         }
     }
     
-    func sendData(data:  NSData) {
+    func sendDataToUart(data:  NSData) {
         if let txCharacteristic = txCharacteristic {
             
             // Split data  in txmaxcharacters bytes
@@ -92,64 +130,245 @@ class UartViewController: NSViewController, CBPeripheralDelegate {
                 blePeripheral?.peripheral.writeValue(chunk, forCharacteristic: txCharacteristic, type: CBCharacteristicWriteType.WithoutResponse)
                 offset+=chunkSize
             }while(offset<data.length)
-            
         }
     }
 
-    func addDataToBuffers(data : NSData, color : NSColor) {
-        let hexValue = hexString(data)
-        let utf8Value = NSString(data:data, encoding: NSUTF8StringEncoding) as String?
-        
-        // Add values to text buffers
-        var utf8AttributedValue = NSAttributedString()
-        if let utf8Value = utf8Value {
-            utf8AttributedValue = NSAttributedString(string: utf8Value, attributes: [NSForegroundColorAttributeName: color])
-            utf8Text.appendAttributedString(utf8AttributedValue)
+    func registerDataSent(data : NSData) {
+        let dataChunk = DataChunk(timestamp: CFAbsoluteTimeGetCurrent(), mode: .TX, data: data)
+        dataBuffer.append(dataChunk)
+
+        dispatch_async(dispatch_get_main_queue(), {[unowned self] in
+            self.addChunkToUI(dataChunk)
+            })
         }
         
-        let hexAttributedValue = NSAttributedString(string: hexValue, attributes: [NSForegroundColorAttributeName: color])
-        hexText.appendAttributedString(hexAttributedValue)
-        
-        dispatch_async(dispatch_get_main_queue(), {[unowned self] in
-            let text = self.hexButton.state == NSOnState ?hexAttributedValue:utf8AttributedValue
+    func registerDataReceived(data : NSData) {
+        let dataChunk = DataChunk(timestamp: CFAbsoluteTimeGetCurrent(), mode: .RX, data: data)
+        receivedBytesCount += dataChunk.data.length
+        dataBuffer.append(dataChunk)
             
-            if let textStorage = self.baseTextView.textStorage {
-                textStorage.beginEditing()
-                textStorage.appendAttributedString(text)
-                textStorage .endEditing()
-                self.baseTextView.scrollRangeToVisible(NSMakeRange(textStorage.length, 0))
-            }
-            });
+        dispatch_async(dispatch_get_main_queue(), {[unowned self] in
+            self.addChunkToUI(dataChunk)
+        })
     }
     
     
+    // MARK: - UI updates
+    
+    func addChunkToUI(dataChunk : DataChunk) {
+        switch(displayMode) {
+        case .Text:
+            if let textStorage = self.baseTextView.textStorage {
+                addChunkToUIText(dataChunk)
+                baseTextView.scrollRangeToVisible(NSMakeRange(textStorage.length, 0))
+            }
+            
+        case .Table:
+            baseTableView.reloadData()
+            baseTableView.scrollToEndOfDocument(nil)
+            
+        }
+        
+        updateBytesUI()
+    }
+    
+    func addChunkToUIText(dataChunk : DataChunk) {
+        
+        if (isEchoEnabled || dataChunk.mode == .RX) {
+            let color = dataChunk.mode == .TX ? txColor : rxColor
+            
+            let attributedString = attributeTextFromData(dataChunk.data, useHexMode: isInHexMode, color: color)
+            
+            if let textStorage = self.baseTextView.textStorage, attributedString = attributedString {
+                textStorage.appendAttributedString(attributedString)
+            }
+        }
+    }
+    
+    func attributeTextFromData(data : NSData, useHexMode : Bool, color : NSColor) -> NSAttributedString? {
+        var attributedString : NSAttributedString?
+
+        if (useHexMode) {
+            let hexValue = hexString(data)
+            attributedString = NSAttributedString(string: hexValue, attributes: [NSForegroundColorAttributeName: color])
+        }
+        else {
+            let utf8Value = NSString(data:data, encoding: NSUTF8StringEncoding) as String?
+            if let utf8Value = utf8Value {
+                attributedString = NSAttributedString(string: utf8Value, attributes: [NSForegroundColorAttributeName: color])
+            }
+        }
+ 
+        return attributedString
+    }
+    
+    func reloadDataUI() {
+        baseTableVisibilityView.hidden = displayMode == .Text
+        baseTextVisibilityView.hidden = displayMode == .Table
+        
+        switch(displayMode) {
+        case .Text:
+            if let textStorage = self.baseTextView.textStorage {
+                
+                textStorage.beginEditing()
+                textStorage.replaceCharactersInRange(NSMakeRange(0, textStorage.length), withAttributedString: NSAttributedString())        // Clear text
+                for dataChunk in dataBuffer {
+                    addChunkToUIText(dataChunk)
+                }
+                textStorage .endEditing()
+                baseTextView.scrollRangeToVisible(NSMakeRange(textStorage.length, 0))
+
+            }
+            
+        case .Table:
+            baseTableView.reloadData()
+            baseTableView.scrollToEndOfDocument(nil)
+        }
+        
+        updateBytesUI()
+    }
+    
+    func updateBytesUI() {
+        sentBytesLabel.stringValue = "Sent: \(sentBytesCount) bytes"
+        receivedBytesLabel.stringValue = "Received: \(receivedBytesCount) bytes"
+    }
   
     
-    func updateTextView() {
-        let text = hexButton.state == NSOnState ?hexText:utf8Text
-        baseTextView.textStorage?.setAttributedString(text)
-    }
-    
-    
+    // MARK: - UI Actions
     @IBAction func onClickEcho(sender: NSButton) {
-        updateTextView()
+        isEchoEnabled = echoButton.state == NSOnState
+        reloadDataUI()
     }
     
     @IBAction func onClickEol(sender: NSButton) {
-        updateTextView()
+        isAutomaticEolEnabled = eolButton.state == NSOnState
     }
     
     @IBAction func onClickHex(sender: NSButton) {
-        updateTextView()
+        isInHexMode = hexButton.state == NSOnState
+        reloadDataUI()
+    }
+    
+    @IBAction func onClickTimestamp(sender: NSButton) {
+        displayMode = sender.state == NSOnState ? .Table : .Text
+        reloadDataUI()
     }
     
     @IBAction func onClickClear(sender: NSButton) {
-        utf8Text = NSMutableAttributedString()
-        hexText = NSMutableAttributedString()
-        updateTextView()
+        dataBuffer.removeAll()
+        receivedBytesCount = 0
+        sentBytesCount = 0
+        reloadDataUI()
     }
     
-     // MARK - CBPeripheralDelegate
+    @IBAction func onClickSend(sender: AnyObject) {
+        let text = inputTextField.stringValue
+        sendUserText(text)
+        inputTextField.stringValue = ""
+    }
+    
+    @IBAction func onClickExport(sender: AnyObject) {
+        
+        // Check if data is empty
+        guard dataBuffer.count > 0 else {
+            let alert = NSAlert()
+            alert.messageText = "No data to export"
+            alert.addButtonWithTitle("Ok")
+            alert.alertStyle = .WarningAlertStyle
+            alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
+            return
+        }
+        
+        // Show save dialog
+        let saveFileDialog = NSSavePanel()
+        saveFileDialog.canCreateDirectories = true
+        if (displayMode == .Text) {
+            saveFileDialog.nameFieldStringValue = isInHexMode ? "uart.hex.txt" : "uart.txt"
+        }
+        else {
+            saveFileDialog.nameFieldStringValue = isInHexMode ? "uart.hex.csv" : "uart.csv"
+        }
+        
+        if let window = self.view.window {
+            saveFileDialog.beginSheetModalForWindow(window) {[unowned self] (result) -> Void in
+                if result == NSFileHandlingPanelOKButton {
+                    if let url = saveFileDialog.URL {
+                        
+                        // Save
+                        var text : String?
+                        if (self.displayMode == .Text) {
+                            text = self.dataAsText(url)
+                        }
+                        else {
+                            text = self.dataAsCvs(url)
+                        }
+                        
+                        // Write data
+                        do {
+                            try text?.writeToURL(url, atomically: true, encoding: NSUTF8StringEncoding)
+                        }
+                        catch let error {
+                            DLog("Error exporting file \(url.absoluteString): \(error)")
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    // MARK: - Export to file
+
+    func dataAsText(url : NSURL) -> String? {
+        // Compile all data
+        let data = NSMutableData()
+        for dataChunk in self.dataBuffer {
+            data.appendData(dataChunk.data)
+        }
+        
+        var text : String?
+        if (self.isInHexMode) {
+            text = hexString(data)
+        }
+        else {
+            text = NSString(data:data, encoding: NSUTF8StringEncoding) as String?
+        }
+    
+        return text
+    }
+    
+    func dataAsCvs(url : NSURL)  -> String? {
+        var text = "Timestamp,Mode,Data\r\n"        // csv Header
+
+        // Compile all data
+        for dataChunk in self.dataBuffer {
+            let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
+            let dateString = timestampDateFormatter.stringFromDate(date).stringByReplacingOccurrencesOfString(",", withString: ".")         //  comma messes with csv, so replace it by point
+            let mode = dataChunk.mode == .RX ? "RX" : "TX"
+            var dataString : String?
+            if (self.isInHexMode) {
+                dataString = hexString(dataChunk.data)
+            }
+            else {
+                dataString = NSString(data:dataChunk.data, encoding: NSUTF8StringEncoding) as String?
+            }
+            if (dataString == nil) {
+                dataString = ""
+            }
+            else {
+                // Remove newline characters from data (it messes with the csv format and Excel wont recognize it)
+                dataString = (dataString! as NSString).stringByTrimmingCharactersInSet(NSCharacterSet.newlineCharacterSet())
+            }
+            
+            text += "\(dateString),\(mode),\"\(dataString!)\"\r\n"
+        }
+        
+        return text
+    }
+    
+    
+     // MARK: - CBPeripheralDelegate
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
         
         if (uartService == nil) {
@@ -210,10 +429,88 @@ class UartViewController: NSViewController, CBPeripheralDelegate {
         
         if characteristic == rxCharacteristic && characteristic.service == uartService {
             
-            if let characteristicValue = characteristic.value {
-                addDataToBuffers(characteristicValue, color:rxColor)
+            if let characteristicDataValue = characteristic.value {
+                registerDataReceived(characteristicDataValue)
             }
         }
+    }
+    
+    // MARK: - NSTableViewDataSource
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+        if (isEchoEnabled)  {
+            tableCachedDataBuffer = dataBuffer
+        }
+        else {
+            tableCachedDataBuffer = dataBuffer.filter({ (dataChunk : DataChunk) -> Bool in
+                dataChunk.mode == .RX
+            })
+        }
+
+        return tableCachedDataBuffer!.count
+    }
+    
+    
+    // MARK: NSTableViewDelegate
+    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        
+        var cell = NSTableCellView()
+        
+        let dataChunk = tableCachedDataBuffer![row]
+        
+        if let columnIdentifier = tableColumn?.identifier {
+            switch(columnIdentifier) {
+            case "TimestampColumn":
+                cell = tableView.makeViewWithIdentifier("TimestampCell", owner: self) as! NSTableCellView
+                
+                let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
+                let dateString = timestampDateFormatter.stringFromDate(date)//.stringByReplacingOccurrencesOfString(",", withString: ".")
+                cell.textField?.stringValue = dateString
+                
+            case "DirectionColumn":
+                cell = tableView.makeViewWithIdentifier("DirectionCell", owner: self) as! NSTableCellView
+
+                cell.textField?.stringValue = dataChunk.mode == .RX ? "RX" : "TX"
+                
+            case "DataColumn":
+                cell = tableView.makeViewWithIdentifier("DataCell", owner: self) as! NSTableCellView
+                
+                let color = dataChunk.mode == .TX ? txColor : rxColor
+                
+                if let attributedText = attributeTextFromData(dataChunk.data, useHexMode: isInHexMode, color: color) {
+                    cell.textField?.attributedStringValue = attributedText
+                }
+                else {
+                    cell.textField?.attributedStringValue = NSAttributedString()
+                }
+                
+                
+            default:
+                cell.textField?.stringValue = ""
+            }
+        }
+        
+        
+        return cell;
+    }
+    
+    func tableViewSelectionDidChange(notification: NSNotification) {
+        
+        /*
+        let selectedRow = firmwareTableView.selectedRow
+        
+        if (selectedRow >= 0) {
+            if (deviceInfoData!.hasDefaultBootloaderVersion()) {
+                onUpdateDialogError("The legacy bootloader on this device is not compatible with this application")
+            }
+            else {
+                let firmwareRelases = boardRelease!.firmwareReleases
+                let firmwareInfo = firmwareRelases[selectedRow] as! FirmwareInfo
+                
+                confirmDfuUpdateWithFirmware(firmwareInfo)
+                firmwareTableView.deselectAll(nil)
+            }
+        }
+*/
     }
 
 }
