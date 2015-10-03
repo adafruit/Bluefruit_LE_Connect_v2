@@ -14,9 +14,28 @@ struct BlePeripheral {
     var advertisementData : [String : AnyObject]
     var rssi : Int
     
+    class UartData {
+        var receivedBytes : Int64 = 0
+        var sentBytes : Int64 = 0
+    }
+    var uartData = UartData()
+
+    var name : String {
+        get {
+            if let name = peripheral.name {
+                return name
+            }
+            else {
+                return "<No Name>"
+            }
+        }
+    }
+    
     init(peripheral: CBPeripheral,  advertisementData: [String : AnyObject], RSSI: Int) {
         self.peripheral = peripheral
         self.advertisementData = advertisementData
         self.rssi = RSSI
     }
+    
+
 }

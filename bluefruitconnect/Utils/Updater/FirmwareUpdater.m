@@ -89,7 +89,8 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
             // Save to user defaults
             [[NSUserDefaults standardUserDefaults] setObject:data forKey:kReleasesXml];
             [[NSUserDefaults standardUserDefaults] synchronize];
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"didUpdatePreferences" object:nil];
+
             if (completionHandler) {
                 completionHandler(data != nil);
             }
@@ -245,7 +246,7 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
         _deviceInfoData.firmwareRevision = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }
     
-    DLog(@"didUpdateValueForCharacteristic %@", characteristic);
+    //DLog(@"didUpdateValueForCharacteristic %@", characteristic);
     [self onDeviceInfoUpdatedForPeripheral:peripheral];
 }
 
@@ -254,14 +255,11 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
     if (_deviceInfoData.manufacturer && _deviceInfoData.modelNumber && _deviceInfoData.softwareRevision && _deviceInfoData.firmwareRevision) {
         DLog(@"Device Info Data received");
 
-        
         if (_delegate == nil) {
             DLog(@"Error: onDeviceInfoUpdatedForPeripheral with no delegate");
         }
 
         NSString *versionToIgnore = [[NSUserDefaults standardUserDefaults] stringForKey:@"softwareUpdateIgnoredVersion"];
-
-        
         BOOL isFirmwareUpdateAvailable = NO;
     
         NSDictionary *allReleases = [self releases];
@@ -333,7 +331,6 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
         }else {
             DLog(@"The legacy bootloader on this device is not compatible with this application");
         }
-
         
         peripheral.delegate = previousPeripheralDelegate;
         [_delegate onFirmwareUpdatesAvailable:isFirmwareUpdateAvailable latestRelease:latestRelease deviceInfoData:_deviceInfoData allReleases:allReleases];

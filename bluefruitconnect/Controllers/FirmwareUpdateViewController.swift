@@ -37,6 +37,38 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
         }
     }
     
+    override func viewWillAppear() {
+        super.viewWillAppear()
+ 
+        registerNotifications(true)
+    }
+    
+    override func viewDidDisappear() {
+        super.viewDidDisappear()
+        
+        registerNotifications(false)
+    }
+
+    // MARK: - Preferences
+    func registerNotifications(register : Bool) {
+        
+        let notificationCenter =  NSNotificationCenter.defaultCenter()
+        if (register) {
+            notificationCenter.addObserver(self, selector: "preferencesUpdated:", name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)
+        }
+        else {
+            notificationCenter.removeObserver(self, name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)
+        }
+    }
+    
+    func preferencesUpdated(notification : NSNotification) {
+        // Reload updates
+        if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
+            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self)
+        }
+    }
+
+    // MARK: - 
     
     @IBAction func onClickChooseInitFile(sender: AnyObject) {
         chooseFile(false)
@@ -94,13 +126,18 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
     
     
     // MARK: - FirmwareUpdaterDelegate
-    func onFirmwareUpdatesAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo!, deviceInfoData: DeviceInfoData!, allReleases: [NSObject : AnyObject]?) {
+    func onFirmwareUpdatesAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo!, deviceInfoData: DeviceInfoData?, allReleases: [NSObject : AnyObject]?) {
         DLog("onFirmwareUpdatesAvailable")
         
         self.deviceInfoData = deviceInfoData
         
         if let allReleases = allReleases {
-            boardRelease = allReleases[deviceInfoData.modelNumber] as? BoardInfo
+            if deviceInfoData?.modelNumber != nil {
+                boardRelease = allReleases[deviceInfoData!.modelNumber] as? BoardInfo
+            }
+            else {
+                boardRelease = nil
+            }
         }
         else {
             DLog("Warning: no releases found for this board")
@@ -108,12 +145,19 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
         firmwareWaitView.stopAnimation(nil)
         firmwareTableView.reloadData()
         
-        firmwareCurrentVersionLabel.stringValue = deviceInfoData.softwareRevision
+        firmwareCurrentVersionLabel.stringValue = "<Unknown>"
+        if let deviceInfoData = deviceInfoData {
+            if (deviceInfoData.hasDefaultBootloaderVersion()) {
+                onUpdateDialogError("The legacy bootloader on this device is not compatible with this application")
+            }
+            if (deviceInfoData.softwareRevision != nil) {
+                firmwareCurrentVersionLabel.stringValue = deviceInfoData.softwareRevision
+            }
+        }
+        
+
         firmwareCurrentVersionWaitView.stopAnimation(nil)
         
-        if (deviceInfoData.hasDefaultBootloaderVersion()) {
-            onUpdateDialogError("The legacy bootloader on this device is not compatible with this application")
-        }
         
     }
     
@@ -147,7 +191,14 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
             case "VersionColumn":
                 cell = tableView.makeViewWithIdentifier("FirmwareVersionCell", owner: self) as! NSTableCellView
                 
-                cell.textField?.stringValue = firmwareInfo.version
+                var text = firmwareInfo.version
+                if (text == nil) {
+                    text = "<unknown>"
+                }
+                if (firmwareInfo.isBeta) {
+                    text! += " Beta"
+                }
+                cell.textField?.stringValue = text
                 
             case "TypeColumn":
                 cell = tableView.makeViewWithIdentifier("FirmwareTypeCell", owner: self) as! NSTableCellView
@@ -216,7 +267,7 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
             
             let updateDialogViewController = self.storyboard?.instantiateControllerWithIdentifier("UpdateDialogViewController") as! UpdateDialogViewController
-            updateDialogViewController.setUpdateParametrs(blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfoData: deviceInfoData!)
+            updateDialogViewController.setUpdateParameters(blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfoData: deviceInfoData!)
             updateDialogViewController.delegate = self
             self.presentViewControllerAsModalWindow(updateDialogViewController)
         }

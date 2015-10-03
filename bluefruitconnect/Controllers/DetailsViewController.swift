@@ -22,30 +22,41 @@ class DetailsViewController: NSViewController {
         modeTabView.hidden = true
         emptyView.hidden = false
         
+    }
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        
         // Subscribe to Ble Notifications
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "willConnectToPeripheral:", name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didConnectToPeripheral:", name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "willDisconnectFromPeripheral:", name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: "willConnectToPeripheral:", name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: "didConnectToPeripheral:", name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: "willDisconnectFromPeripheral:", name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
 
     }
     
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+    override func viewDidDisappear() {
+        super.viewDidDisappear()
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.removeObserver(self, name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
+        notificationCenter.removeObserver(self, name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
+        notificationCenter.removeObserver(self, name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
     }
-
     
     func willConnectToPeripheral(notification : NSNotification) {
         modeTabView.hidden = true
         emptyView.hidden = false
         emptyLabel.stringValue = "Connecting..."
     }
-
     
     func didConnectToPeripheral(notification : NSNotification) {
         modeTabView.hidden = false
         emptyView.hidden = true
-
-        modeTabView.selectFirstTabViewItem(nil)
+        
+        for tabViewItem in modeTabView.tabViewItems {
+            modeTabView.removeTabViewItem(tabViewItem)
+        }
         
         // Add Info tab
         let infoViewController = self.storyboard?.instantiateControllerWithIdentifier("InfoViewController") as! InfoViewController
@@ -54,6 +65,9 @@ class DetailsViewController: NSViewController {
         }
         let infoTabViewItem = NSTabViewItem(viewController: infoViewController)
         modeTabView.addTabViewItem(infoTabViewItem)
+        
+        modeTabView.selectFirstTabViewItem(nil)
+
     }
 
     func willDisconnectFromPeripheral(notification : NSNotification) {

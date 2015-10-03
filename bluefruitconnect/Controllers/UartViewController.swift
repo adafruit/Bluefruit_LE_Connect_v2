@@ -25,6 +25,11 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         var data : NSData
         
     }
+    
+    enum UartNotifications : String {
+        case DidTransferData = "didTransferData"
+    }
+
 
     // Constants
     static let UartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"       // UART service UUID
@@ -51,19 +56,17 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     private var uartService : CBService?
     private var rxCharacteristic : CBCharacteristic?
     private var txCharacteristic : CBCharacteristic?
-    
+
     // Current State
     private var isInHexMode = false
     private var isEchoEnabled = true;
     private var isAutomaticEolEnabled = true;
     private var displayMode = DisplayMode.Text
     private var dataBuffer = [DataChunk]()
-    private var receivedBytesCount = 0
-    private var sentBytesCount = 0
-    
+
     // UI
-    private let txColor = Preferences.uartSentDataColor
-    private let rxColor = Preferences.uartReceveivedDataColor
+    private var txColor = Preferences.uartSentDataColor
+    private var rxColor = Preferences.uartReceveivedDataColor
     private let timestampDateFormatter = NSDateFormatter()
     private var tableCachedDataBuffer : [DataChunk]?
     
@@ -97,10 +100,37 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         
         // Peripheral should be connected
         blePeripheral?.peripheral.delegate = self
+        
+        registerNotifications(true)
+    }
+    
+    override func viewDidDisappear() {
+        super.viewDidDisappear()
+        
+        registerNotifications(false)
     }
     
   
-    // MARK:
+    // MARK: - Preferences
+    func registerNotifications(register : Bool) {
+        
+        let notificationCenter =  NSNotificationCenter.defaultCenter()
+        if (register) {
+            notificationCenter.addObserver(self, selector: "preferencesUpdated:", name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)
+        }
+        else {
+            notificationCenter.removeObserver(self, name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)
+        }
+    }
+    
+    func preferencesUpdated(notification : NSNotification) {
+        txColor = Preferences.uartSentDataColor
+        rxColor = Preferences.uartReceveivedDataColor
+        reloadDataUI()
+    }
+
+    
+    // MARK: - Uart
     func sendUserText(text: String) {
         
         var newText = text
@@ -112,7 +142,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         
         // Create data and send to Uart
         if let data = newText.dataUsingEncoding(NSUTF8StringEncoding) {
-            sentBytesCount += data.length
+            blePeripheral?.uartData.sentBytes += data.length
             registerDataSent(data)
             sendDataToUart(data)
         }
@@ -131,6 +161,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
                 offset+=chunkSize
             }while(offset<data.length)
         }
+        
     }
 
     func registerDataSent(data : NSData) {
@@ -140,16 +171,20 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         dispatch_async(dispatch_get_main_queue(), {[unowned self] in
             self.addChunkToUI(dataChunk)
             })
-        }
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(UartNotifications.DidTransferData.rawValue, object: nil);
+    }
         
     func registerDataReceived(data : NSData) {
         let dataChunk = DataChunk(timestamp: CFAbsoluteTimeGetCurrent(), mode: .RX, data: data)
-        receivedBytesCount += dataChunk.data.length
+        blePeripheral?.uartData.receivedBytes += dataChunk.data.length
         dataBuffer.append(dataChunk)
             
         dispatch_async(dispatch_get_main_queue(), {[unowned self] in
             self.addChunkToUI(dataChunk)
         })
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(UartNotifications.DidTransferData.rawValue, object: nil);
     }
     
     
@@ -229,8 +264,10 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     }
     
     func updateBytesUI() {
-        sentBytesLabel.stringValue = "Sent: \(sentBytesCount) bytes"
-        receivedBytesLabel.stringValue = "Received: \(receivedBytesCount) bytes"
+        if let blePeripheral = blePeripheral {
+            sentBytesLabel.stringValue = "Sent: \(blePeripheral.uartData.sentBytes) bytes"
+            receivedBytesLabel.stringValue = "Received: \(blePeripheral.uartData.receivedBytes) bytes"
+        }
     }
   
     
@@ -256,8 +293,8 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     
     @IBAction func onClickClear(sender: NSButton) {
         dataBuffer.removeAll()
-        receivedBytesCount = 0
-        sentBytesCount = 0
+        blePeripheral?.uartData.receivedBytes = 0
+        blePeripheral?.uartData.sentBytes = 0
         reloadDataUI()
     }
     
@@ -363,7 +400,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
             
             text += "\(dateString),\(mode),\"\(dataString!)\"\r\n"
         }
-        
+
         return text
     }
     
@@ -495,22 +532,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     
     func tableViewSelectionDidChange(notification: NSNotification) {
         
-        /*
-        let selectedRow = firmwareTableView.selectedRow
-        
-        if (selectedRow >= 0) {
-            if (deviceInfoData!.hasDefaultBootloaderVersion()) {
-                onUpdateDialogError("The legacy bootloader on this device is not compatible with this application")
-            }
-            else {
-                let firmwareRelases = boardRelease!.firmwareReleases
-                let firmwareInfo = firmwareRelases[selectedRow] as! FirmwareInfo
-                
-                confirmDfuUpdateWithFirmware(firmwareInfo)
-                firmwareTableView.deselectAll(nil)
-            }
-        }
-*/
+
     }
 
 }

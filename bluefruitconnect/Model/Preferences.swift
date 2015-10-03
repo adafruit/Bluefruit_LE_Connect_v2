@@ -10,10 +10,27 @@ import Foundation
 import AppKit
 
 @objc class Preferences : NSObject {                // will be used from objective-c so make it inherit from NSObject
+    private static let appInSystemStatusBarKey = "AppInSystemStatusBar"
     private static let updateServerUrlKey = "UpdateServerUrl"
     private static let updateShowBetaVersionsKey = "UpdateShowBetaVersions"
     private static let uartReceivedDataColorKey = "UartReceivedDataColor"
     private static let uartSentDataColorKey = "UartSentDataColor"
+    
+    enum PreferencesNotifications : String {
+        case DidUpdatePreferences = "didUpdatePreferences"          // Note: used on some objective-c code, so when changed, update it
+    }
+
+    static var appInSystemStatusBar : Bool {
+        get {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            return defaults.boolForKey(Preferences.appInSystemStatusBarKey)
+        }
+        set {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setBool(newValue, forKey: Preferences.appInSystemStatusBarKey)
+            NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
+        }
+    }
     
     static var updateServerUrl : NSURL? {
         get {
@@ -29,6 +46,7 @@ import AppKit
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setObject(newValue?.absoluteString, forKey: Preferences.updateServerUrlKey)
+            NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
         }
     }
     
@@ -40,6 +58,7 @@ import AppKit
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setBool(newValue, forKey: Preferences.updateShowBetaVersionsKey)
+            NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
         }
     }
     
@@ -52,6 +71,7 @@ import AppKit
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setObject(newValue.hexadecimalValue(), forKey: Preferences.uartReceivedDataColorKey)
+            NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
         }
     }
     
@@ -64,6 +84,7 @@ import AppKit
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setObject(newValue.hexadecimalValue(), forKey: Preferences.uartSentDataColorKey)
+            NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
         }
     }
     

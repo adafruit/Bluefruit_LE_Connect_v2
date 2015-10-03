@@ -14,6 +14,7 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
     @IBOutlet weak var baseTableView: NSTableView!
     
     private var currentSelectedRow = -1
+    private var currentSelectedPeripheralIdentifier : String?
     private var lastUserSelection = CFAbsoluteTimeGetCurrent()
     
     override func viewDidLoad() {
@@ -23,48 +24,38 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
         self.view.wantsLayer = true
         self.view.layer?.backgroundColor = NSColor.whiteColor().CGColor
         
+        // Setup StatusManager
+        StatusManager.sharedInstance.peripheralListViewController = self
         
         // Subscribe to Ble Notifications
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didDiscoverPeripheral:", name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: "didDisconnectFromPeripheral:", name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didDisconnectFromPeripheral:", name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
     }
     
     func didDiscoverPeripheral(notification : NSNotification) {
         dispatch_async(dispatch_get_main_queue(), {[unowned self] in
-            // Save selected identifier
-            var selectedPeripheralIdentifier : String? = nil
-            let selectedRow = self.baseTableView.selectedRow
-            if (selectedRow >= 0) {
-                selectedPeripheralIdentifier = self.blePeripheralFoundAlphabeticKeys()[selectedRow]
-            }
-            
+
             // Reload data
             self.baseTableView.reloadData()
             
-            
             // Select identifier if still available
-            if (selectedPeripheralIdentifier != nil) {
-                var i = 0
-                for identifier in self.blePeripheralFoundAlphabeticKeys() {
-                    if (identifier == selectedPeripheralIdentifier) {
-                        self.baseTableView.selectRowIndexes(NSIndexSet(index: i), byExtendingSelection: false)
-                        break;
-                    }
-                    i++
+            if let selectedPeripheralIdentifier = self.currentSelectedPeripheralIdentifier {
+                if let index = BleManager.sharedInstance.blePeripheralFoundAlphabeticKeys().indexOf(selectedPeripheralIdentifier) {
+                    self.baseTableView.selectRowIndexes(NSIndexSet(index: index), byExtendingSelection: false)
                 }
             }
-            })
+        })
     }
     
     func didDisconnectFromPeripheral(notification : NSNotification) {
         if (BleManager.sharedInstance.blePeripheralConnected == nil && baseTableView.selectedRow >= 0) {
+            
             // Unexpected disconnect if the row is still selected but the connected peripheral is nil and the time since the user selected a new peripheral is bigger than 1 second
-            
-            
             if (CFAbsoluteTimeGetCurrent() - lastUserSelection > 1) {
                 baseTableView.deselectAll(nil)
                 
@@ -73,7 +64,6 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
                 alert.addButtonWithTitle("Ok")
                 alert.alertStyle = .WarningAlertStyle
                 alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
-
             }
         }
     }
@@ -113,27 +103,7 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
         
         return NSImage(named: "signalstrength\(index)")!
     }
-    
-    func blePeripheralFoundAlphabeticKeys() -> [String] {
-        // Sort blePeripheralsFound keys alphabetically and return them as an array
-        let dict = BleManager.sharedInstance.blePeripheralsFound
-        let sortedKeys = Array(dict.keys).sort({[unowned self] in self.blePeripheralName(dict[$0]) < self.blePeripheralName(dict[$1])})
-        return sortedKeys
-    }
-    
-    func blePeripheralName(blePeripheral : BlePeripheral?) -> String {
-        if let name = blePeripheral?.peripheral.name {
-            return name
-        }
-        else {
-            return "<Unknown>"
-        }
-    }
-    
-    func connectToPeripheral(blePeripheral : BlePeripheral) {
-        BleManager.sharedInstance.connect(blePeripheral)
-    }
-    
+
     // MARK: - NSTableViewDataSource
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return BleManager.sharedInstance.blePeripheralsFound.count
@@ -144,10 +114,11 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
         
         let cell = tableView.makeViewWithIdentifier("DeviceCell", owner: self) as! PeripheralTableCellView
         
-        let blePeripheralsFound = BleManager.sharedInstance.blePeripheralsFound
-        let selectedBlePeripheralIdentifier = blePeripheralFoundAlphabeticKeys()[row];
+        let bleManager = BleManager.sharedInstance
+        let blePeripheralsFound = bleManager.blePeripheralsFound
+        let selectedBlePeripheralIdentifier = bleManager.blePeripheralFoundAlphabeticKeys()[row];
         let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-        cell.titleTextField.stringValue = blePeripheralName(blePeripheral)
+        cell.titleTextField.stringValue = blePeripheral.name
         
         let isUartCapable = isUartAdvertised(blePeripheral.advertisementData)
         cell.subtitleTextField.stringValue = isUartCapable ?"Uart capable":"No Uart detected"
@@ -158,36 +129,61 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
     
     func tableViewSelectionDidChange(notification: NSNotification) {
         
-        let blePeripheralsFound = BleManager.sharedInstance.blePeripheralsFound
-        let selectedRow = baseTableView.selectedRow
-        if (selectedRow != currentSelectedRow) {
+        let bleManager = BleManager.sharedInstance
+        let newSelectedRow = baseTableView.selectedRow
+        if (newSelectedRow != currentSelectedRow) {
             
-            lastUserSelection = CFAbsoluteTimeGetCurrent()
-            // Disconnect from previous
-            if (currentSelectedRow >= 0) {
-                let selectedBlePeripheralIdentifier = blePeripheralFoundAlphabeticKeys()[currentSelectedRow];
-                let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-                
-                BleManager.sharedInstance.disconnect(blePeripheral)
-            }
-            
-            // Connect to new peripheral
-            if (selectedRow >= 0) {
-                
-                let selectedBlePeripheralIdentifier = blePeripheralFoundAlphabeticKeys()[selectedRow];
-                let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-                let selectedPeripheralIdentifier = blePeripheral.peripheral.identifier.UUIDString
-                if (BleManager.sharedInstance.blePeripheralConnected?.peripheral.identifier != selectedPeripheralIdentifier) {
-                   // DLog("connect to new peripheral: \(selectedPeripheralIdentifier)")
-                    
-                    BleManager.sharedInstance.connect(blePeripheral)
-                }
-                
-            }
+            connectToPeripheral(newSelectedRow >= 0 ? bleManager.blePeripheralFoundAlphabeticKeys()[newSelectedRow] : nil)
            
-            currentSelectedRow = selectedRow
+            currentSelectedRow = newSelectedRow
         }
     }
     
+    // MARK: -
+    func selectRowForPeripheralIdentifier(identifier : String?) {
+        var found = false
+        
+        if let identifier = identifier {
+            if let index = BleManager.sharedInstance.blePeripheralFoundAlphabeticKeys().indexOf(identifier) {
+                baseTableView.selectRowIndexes(NSIndexSet(index: index), byExtendingSelection: false)
+                found = true
+            }
+        }
+        
+        if (!found) {
+            baseTableView.deselectAll(nil)
+        }
+    }
    
+    func connectToPeripheral(identifier : String?) {
+        let bleManager = BleManager.sharedInstance
+        
+        if (identifier != bleManager.blePeripheralConnected?.peripheral.identifier.UUIDString) {
+            
+            let blePeripheralsFound = bleManager.blePeripheralsFound
+            lastUserSelection = CFAbsoluteTimeGetCurrent()
+            
+            // Disconnect from previous
+            if (currentSelectedRow >= 0) {
+                let selectedBlePeripheralIdentifier = bleManager.blePeripheralFoundAlphabeticKeys()[currentSelectedRow];
+                let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
+                
+                BleManager.sharedInstance.disconnect(blePeripheral)
+                currentSelectedPeripheralIdentifier = nil
+            }
+            
+            // Connect to new peripheral
+            if let selectedBlePeripheralIdentifier = identifier {
+                
+                let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
+                if (BleManager.sharedInstance.blePeripheralConnected?.peripheral.identifier != selectedBlePeripheralIdentifier) {
+                    // DLog("connect to new peripheral: \(selectedPeripheralIdentifier)")
+                    
+                    BleManager.sharedInstance.connect(blePeripheral)
+                    
+                    currentSelectedPeripheralIdentifier = selectedBlePeripheralIdentifier
+                }
+            }
+        }
+    }
 }

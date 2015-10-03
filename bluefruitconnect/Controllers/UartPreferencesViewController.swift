@@ -19,9 +19,16 @@ class UartPreferencesViewController: NSViewController {
         let uartReceveivedDataColor = Preferences.uartReceveivedDataColor 
         receivedDataColorWell.color = uartReceveivedDataColor
         
-        
         let uartSentDataColor = Preferences.uartSentDataColor
         sentDataColorWell.color = uartSentDataColor
-
     }
+    
+    @IBAction func onColorChanged(sender: NSColorWell) {
+        if (sender == receivedDataColorWell) {
+            Preferences.uartReceveivedDataColor = sender.color
+        }
+        else if (sender == sentDataColorWell) {
+            Preferences.uartSentDataColor = sender.color            
+        }
+    }    
 }

@@ -25,7 +25,6 @@ class MainSplitViewController: NSSplitViewController {
 
         // Start scanning
         BleManager.sharedInstance.startScan()
-        
     }
     
     override func splitView(splitView: NSSplitView,

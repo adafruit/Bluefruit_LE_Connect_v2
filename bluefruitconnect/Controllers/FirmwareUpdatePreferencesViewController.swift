@@ -10,12 +10,15 @@ import Cocoa
 
 class FirmwareUpdatePreferencesViewController: NSViewController {
     
+    @IBOutlet weak var showBetaVersionsButton: NSButton!
     @IBOutlet weak var updateServerUrlLabel: NSTextField!
     @IBOutlet weak var databaseStatusLabel: NSTextField!
     @IBOutlet weak var databaseStatusWaitView: NSProgressIndicator!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        showBetaVersionsButton.state = Preferences.showBetaVersions ?NSOnState:NSOffState
         
         databaseStatusLabel.stringValue = ""
         databaseStatusWaitView.hidden = true

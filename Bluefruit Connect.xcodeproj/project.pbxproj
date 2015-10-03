@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A92BA69C1BBDBC210093F701 /* StatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92BA69B1BBDBC210093F701 /* StatusManager.swift */; settings = {ASSET_TAGS = (); }; };
 		A932A5A91BB92A640096D78A /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932A5A81BB92A640096D78A /* MainWindowController.swift */; settings = {ASSET_TAGS = (); }; };
 		A94370A01BB5A1E5002521F7 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A943709F1BB5A1E5002521F7 /* DetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		A94370A31BB5AF70002521F7 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370A11BB5AF70002521F7 /* InfoViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -44,6 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A92BA69B1BBDBC210093F701 /* StatusManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusManager.swift; sourceTree = "<group>"; };
 		A932A5A81BB92A640096D78A /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		A943709F1BB5A1E5002521F7 /* DetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		A94370A11BB5AF70002521F7 /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
@@ -209,13 +211,13 @@
 			isa = PBXGroup;
 			children = (
 				A982966B1BB1F5E600DD478C /* AppDelegate.swift */,
+				A98296711BB1F5E600DD478C /* Main.storyboard */,
+				A98296741BB1F5E600DD478C /* Info.plist */,
 				A98E03A11BBA3EEE00F8924C /* Model */,
 				A982967A1BB1F6BF00DD478C /* Controllers */,
 				A98296871BB21B5800DD478C /* Utils */,
 				A94370C11BB64959002521F7 /* External Tools */,
 				A94370A51BB6384B002521F7 /* Resources */,
-				A98296711BB1F5E600DD478C /* Main.storyboard */,
-				A98296741BB1F5E600DD478C /* Info.plist */,
 				A97EB2041BB651850069D9C9 /* BluefruitConnect-Bridging-Header.h */,
 			);
 			path = bluefruitconnect;
@@ -257,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				A98E03A21BBA3EEE00F8924C /* Preferences.swift */,
+				A92BA69B1BBDBC210093F701 /* StatusManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				TargetAttributes = {
 					A98296671BB1F5E600DD478C = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = 2X94RM7457;
 					};
 				};
 			};
@@ -375,6 +379,7 @@
 				A982966C1BB1F5E600DD478C /* AppDelegate.swift in Sources */,
 				A94B85101BB65C48007B88C7 /* FirmwareUpdater.m in Sources */,
 				A98E03A71BBA40F000F8924C /* FirmwareUpdatePreferencesViewController.swift in Sources */,
+				A92BA69C1BBDBC210093F701 /* StatusManager.swift in Sources */,
 				A94370BA1BB6493A002521F7 /* BleManager.swift in Sources */,
 				A94B851E1BB704BC007B88C7 /* HexConversions.swift in Sources */,
 				A9BDC6FE1BBCC65A00766400 /* NSColor+hex.m in Sources */,
@@ -487,7 +492,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = es.openroad.bluefruitconnect;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/BluefruitConnect-Bridging-Header.h";
 			};
@@ -502,7 +507,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = es.openroad.bluefruitconnect;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/BluefruitConnect-Bridging-Header.h";
 			};

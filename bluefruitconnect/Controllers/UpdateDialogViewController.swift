@@ -41,7 +41,7 @@ class UpdateDialogViewController: NSViewController, DFUOperationsDelegate {
     private var dfuVersion : Int32 = -1
 
     
-    func setUpdateParametrs(peripheral : CBPeripheral, hexUrl : NSURL, iniUrl: NSURL?, deviceInfoData : DeviceInfoData) {
+    func setUpdateParameters(peripheral : CBPeripheral, hexUrl : NSURL, iniUrl: NSURL?, deviceInfoData : DeviceInfoData) {
         self.peripheral = peripheral
         self.hexUrl = hexUrl
         self.iniUrl = iniUrl
@@ -65,6 +65,9 @@ class UpdateDialogViewController: NSViewController, DFUOperationsDelegate {
         FirmwareUpdater.downloadDataFromURL(hexUrl) {[unowned self] (data) -> Void in
             self.downloadedFirmwareData(data)
         }
+        
+        // Setup StatusManager
+        StatusManager.sharedInstance.updateDialogViewController = self
     }
     
     func setProgressText(text : String) {
