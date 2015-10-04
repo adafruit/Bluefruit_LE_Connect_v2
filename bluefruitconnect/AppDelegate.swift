@@ -109,7 +109,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         statusMenu.removeAllItems()
 
         // Main Area
-        let descriptionItem = NSMenuItem(title: "Status: " + statusText, action: nil, keyEquivalent: "")
+        let descriptionItem = NSMenuItem(title: statusText, action: nil, keyEquivalent: "")
         descriptionItem.enabled = false
         statusMenu.addItem(descriptionItem)
 //        statusMenu.addItem(NSMenuItem(title: isScanning ?"Stop Scanning":"Start Scanning", action: "statusGeneralAction:", keyEquivalent: ""))
