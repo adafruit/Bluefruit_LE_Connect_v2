@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+/*
 // http://stackoverflow.com/questions/1305225/best-way-to-serialize-a-nsdata-into-an-hexadeximal-string
 func hexString(data:NSData)->String{
     
@@ -37,3 +37,18 @@ func hexString(text:String)->String{
         return ""
     }
 }
+*/
+
+
+func hexString(data : NSData) -> String {
+    var bytes = [UInt8](count: data.length, repeatedValue: 0)
+    data.getBytes(&bytes, length: data.length)
+    
+    let hexString = NSMutableString()
+    for byte in bytes {
+        hexString.appendFormat("0x%02x ", UInt(byte))
+    }
+    
+    return NSString(string: hexString) as String
+}
+
