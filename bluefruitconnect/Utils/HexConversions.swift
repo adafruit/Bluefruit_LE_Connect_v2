@@ -46,7 +46,7 @@ func hexString(data : NSData) -> String {
     
     let hexString = NSMutableString()
     for byte in bytes {
-        hexString.appendFormat("%02x ", UInt(byte))
+        hexString.appendFormat("%02X ", UInt(byte))
     }
     
     return NSString(string: hexString) as String
