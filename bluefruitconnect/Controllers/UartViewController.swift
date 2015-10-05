@@ -154,7 +154,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
             // Split data  in txmaxcharacters bytes
             var offset = 0
             repeat {
-                let chunkSize = min(data.length, UartViewController.TxMaxCharacters)
+                let chunkSize = min(data.length-offset, UartViewController.TxMaxCharacters)
                 let chunk = NSData(bytesNoCopy: UnsafeMutablePointer<UInt8>(data.bytes)+offset, length: chunkSize, freeWhenDone:false)
                 
                 blePeripheral?.peripheral.writeValue(chunk, forCharacteristic: txCharacteristic, type: CBCharacteristicWriteType.WithoutResponse)
