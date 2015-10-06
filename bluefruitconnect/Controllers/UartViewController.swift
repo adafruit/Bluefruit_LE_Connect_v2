@@ -30,7 +30,6 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         case DidTransferData = "didTransferData"
     }
 
-
     // Constants
     static let UartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"       // UART service UUID
     static let RxCharacteristicUUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
@@ -63,6 +62,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     private var isAutomaticEolEnabled = true;
     private var displayMode = DisplayMode.Text
     private var dataBuffer = [DataChunk]()
+    private var tableModeDataMaxWidth : CGFloat = 0
 
     // UI
     private var txColor = Preferences.uartSentDataColor
@@ -92,6 +92,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         blePeripheral?.peripheral.discoverServices([CBUUID(string: UartViewController.UartServiceUUID)])
         
         // UI
+        baseTableVisibilityView.scrollerStyle = NSScrollerStyle.Legacy      // To avoid autohide behaviour
         reloadDataUI()
     }
     
@@ -188,6 +189,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     }
     
     
+    
     // MARK: - UI updates
     
     func addChunkToUI(dataChunk : DataChunk) {
@@ -256,6 +258,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
             }
             
         case .Table:
+            baseTableView.sizeLastColumnToFit()
             baseTableView.reloadData()
             baseTableView.scrollToEndOfDocument(nil)
         }
@@ -295,6 +298,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         dataBuffer.removeAll()
         blePeripheral?.uartData.receivedBytes = 0
         blePeripheral?.uartData.sentBytes = 0
+        tableModeDataMaxWidth = 0
         reloadDataUI()
     }
     
@@ -490,39 +494,52 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     // MARK: NSTableViewDelegate
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         
-        var cell = NSTableCellView()
+        var cell : NSTableCellView?
         
         let dataChunk = tableCachedDataBuffer![row]
         
         if let columnIdentifier = tableColumn?.identifier {
             switch(columnIdentifier) {
             case "TimestampColumn":
-                cell = tableView.makeViewWithIdentifier("TimestampCell", owner: self) as! NSTableCellView
+                cell = tableView.makeViewWithIdentifier("TimestampCell", owner: self) as? NSTableCellView
                 
                 let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
                 let dateString = timestampDateFormatter.stringFromDate(date)//.stringByReplacingOccurrencesOfString(",", withString: ".")
-                cell.textField?.stringValue = dateString
+                cell!.textField!.stringValue = dateString
                 
             case "DirectionColumn":
-                cell = tableView.makeViewWithIdentifier("DirectionCell", owner: self) as! NSTableCellView
+                cell = tableView.makeViewWithIdentifier("DirectionCell", owner: self) as? NSTableCellView
 
-                cell.textField?.stringValue = dataChunk.mode == .RX ? "RX" : "TX"
+                cell!.textField!.stringValue = dataChunk.mode == .RX ? "RX" : "TX"
                 
             case "DataColumn":
-                cell = tableView.makeViewWithIdentifier("DataCell", owner: self) as! NSTableCellView
+                cell = tableView.makeViewWithIdentifier("DataCell", owner: self) as? NSTableCellView
                 
                 let color = dataChunk.mode == .TX ? txColor : rxColor
-                
+
                 if let attributedText = attributeTextFromData(dataChunk.data, useHexMode: isInHexMode, color: color) {
-                    cell.textField?.attributedStringValue = attributedText
+                    DLog("row \(row): \(attributedText.string)")
+
+                    // Display
+                    cell!.textField!.attributedStringValue = attributedText
+
+                    // Update column width (if needed)
+                    let width = attributedText.size().width
+                    tableModeDataMaxWidth = max(tableColumn!.width, width)
+                    if (tableColumn!.width < tableModeDataMaxWidth) {
+                        dispatch_async(dispatch_get_main_queue(), {     // Important: Execute async. This change should be done outside the delegate method to avoid weird reuse cell problems (reused cell shows old data and cant be changed).
+                            tableColumn!.width = self.tableModeDataMaxWidth
+                        });
+                    }
                 }
                 else {
-                    cell.textField?.attributedStringValue = NSAttributedString()
+                    DLog("row \(row): <empty>")
+                    cell!.textField!.attributedStringValue = NSAttributedString()
                 }
                 
                 
             default:
-                cell.textField?.stringValue = ""
+                cell = nil
             }
         }
         
@@ -533,6 +550,19 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     func tableViewSelectionDidChange(notification: NSNotification) {
         
 
+    }
+    
+    func tableViewColumnDidResize(notification: NSNotification) {
+        if let tableColumn = notification.userInfo?["NSTableColumn"] as? NSTableColumn {
+            if (tableColumn.identifier == "DataColumn") {
+                // If the window is resized, maintain the column width
+                if (tableColumn.width < tableModeDataMaxWidth) {
+                    tableColumn.width = tableModeDataMaxWidth
+                }
+                DLog("column: \(tableColumn), width: \(tableColumn.width)")
+            }
+        }
+        
     }
 
 }
