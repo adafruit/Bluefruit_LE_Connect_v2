@@ -522,15 +522,15 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
 
                     // Display
                     cell!.textField!.attributedStringValue = attributedText
-
+                    
                     // Update column width (if needed)
                     let width = attributedText.size().width
                     tableModeDataMaxWidth = max(tableColumn!.width, width)
-                    if (tableColumn!.width < tableModeDataMaxWidth) {
-                        dispatch_async(dispatch_get_main_queue(), {     // Important: Execute async. This change should be done outside the delegate method to avoid weird reuse cell problems (reused cell shows old data and cant be changed).
+                    dispatch_async(dispatch_get_main_queue(), {     // Important: Execute async. This change should be done outside the delegate method to avoid weird reuse cell problems (reused cell shows old data and cant be changed).
+                        if (tableColumn!.width < self.tableModeDataMaxWidth) {
                             tableColumn!.width = self.tableModeDataMaxWidth
-                        });
-                    }
+                        }
+                    });
                 }
                 else {
                     DLog("row \(row): <empty>")

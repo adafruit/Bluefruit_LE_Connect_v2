@@ -13,6 +13,7 @@ struct BlePeripheral {
     var peripheral : CBPeripheral!
     var advertisementData : [String : AnyObject]
     var rssi : Int
+    var lastSeenTime : CFAbsoluteTime
     
     class UartData {
         var receivedBytes : Int64 = 0
@@ -35,6 +36,7 @@ struct BlePeripheral {
         self.peripheral = peripheral
         self.advertisementData = advertisementData
         self.rssi = RSSI
+        self.lastSeenTime = CFAbsoluteTimeGetCurrent()
     }
     
 

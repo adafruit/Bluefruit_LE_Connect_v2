@@ -46,6 +46,10 @@ class StatusManager : NSObject {
         defaultCenter.addObserver(self, selector: "updateStatus:", name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
         defaultCenter.addObserver(self, selector: "updateStatus:", name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
         defaultCenter.addObserver(self, selector: "updateStatus:", name: BleManager.BleNotifications.DidStopScanning.rawValue, object: nil)
+        
+        defaultCenter.addObserver(self, selector: "updateStatus:", name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
+        defaultCenter.addObserver(self, selector: "updateStatus:", name: BleManager.BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil)
+        
     }
     
     deinit {
@@ -57,6 +61,8 @@ class StatusManager : NSObject {
         defaultCenter.removeObserver(self, name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
         defaultCenter.removeObserver(self, name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
         defaultCenter.removeObserver(self, name: BleManager.BleNotifications.DidStopScanning.rawValue, object: nil)
+        defaultCenter.removeObserver(self, name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
+        defaultCenter.removeObserver(self, name: BleManager.BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil)
     }
     
     func updateStatus(notification : NSNotification) {
