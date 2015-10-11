@@ -21,8 +21,8 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
         super.viewDidLoad()
         
         // Background
-        self.view.wantsLayer = true
-        self.view.layer?.backgroundColor = NSColor.whiteColor().CGColor
+        //self.view.wantsLayer = true
+        //self.view.layer?.backgroundColor = NSColor.whiteColor().CGColor
         
         // Setup StatusManager
         StatusManager.sharedInstance.peripheralListViewController = self
@@ -69,17 +69,7 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
             }
         }
     }
-    
-    func isUartAdvertised(advertisementData: [String : AnyObject]) -> Bool {
-        let kUartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"       // UART service UUID
-        
-        var isUartAdvertised = false
-        if let serviceUUIds = advertisementData[CBAdvertisementDataServiceUUIDsKey] as? [CBUUID] {
-            isUartAdvertised = serviceUUIds.contains(CBUUID(string: kUartServiceUUID))
-        }
-        return isUartAdvertised
-    }
-    
+      
     func signalImageForRssi(rssi:Int) -> NSImage {
         
         var index : Int
@@ -122,7 +112,7 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
         let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
         cell.titleTextField.stringValue = blePeripheral.name
         
-        let isUartCapable = isUartAdvertised(blePeripheral.advertisementData)
+        let isUartCapable = blePeripheral.isUartAdvertised()
         cell.subtitleTextField.stringValue = isUartCapable ?"Uart capable":"No Uart detected"
         cell.rssiImageView.image = signalImageForRssi(blePeripheral.rssi)
         

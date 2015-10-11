@@ -45,13 +45,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     // MARK: System status button
     func setupStatusButton() {
 
-        /*
-        // Setup status button
-        if let statusButton = statusItem.button {
-            statusButton.image = NSImage(named: "sytemstatusicon")
-            statusButton.alternateImage = NSImage(named: "sytemstatusicon_selected")
-        }
-*/
         statusItem.image = NSImage(named: "sytemstatusicon")
         statusItem.alternateImage = NSImage(named: "sytemstatusicon_selected")
         statusItem.highlightMode = true
@@ -91,10 +84,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         
         let bleManager = BleManager.sharedInstance
         if let featuredPeripheral = bleManager.blePeripheralConnected {
-            let receivedBytes = featuredPeripheral.uartData.receivedBytes
-            let sentBytes = featuredPeripheral.uartData.sentBytes
-            
-            title = "\(sentBytes)/\(receivedBytes)"
+            if featuredPeripheral.isUartAdvertised() {
+                let receivedBytes = featuredPeripheral.uartData.receivedBytes
+                let sentBytes = featuredPeripheral.uartData.sentBytes
+                
+                title = "\(sentBytes)/\(receivedBytes)"
+            }
         }
         
         statusItem.title = title

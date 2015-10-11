@@ -12,10 +12,13 @@ class StatusViewController: NSViewController {
 
     @IBOutlet weak var statusTextField: NSTextField!
     
+    var isAlertBeingPresented = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didUpdateStatus:", name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
+        
     }
     
     deinit {
@@ -27,15 +30,20 @@ class StatusViewController: NSViewController {
         let message = StatusManager.sharedInstance.statusDescription()
         setText(message)
         
-        if let errorMessage = StatusManager.sharedInstance.errorDescription() {
-            let alert = NSAlert()
-            alert.messageText = errorMessage
-            alert.addButtonWithTitle("Ok")
-            alert.alertStyle = .WarningAlertStyle
-            alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
+        if (!isAlertBeingPresented) {       // Dont show a alert while another alert is being presented
+            if let errorMessage = StatusManager.sharedInstance.errorDescription() {
+                isAlertBeingPresented = true
+                let alert = NSAlert()
+                alert.messageText = errorMessage
+                alert.addButtonWithTitle("Ok")
+                alert.alertStyle = .WarningAlertStyle
+                alert.beginSheetModalForWindow(self.view.window!, completionHandler: { [unowned self] (modalResponse) -> Void in
+                    self.isAlertBeingPresented = false
+                    })
+            }
         }
     }
-
+    
     func setText(text : String) {
         statusTextField.stringValue = text
     }

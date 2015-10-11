@@ -11,7 +11,6 @@ import Cocoa
 class MainSplitViewController: NSSplitViewController {
 
     let kMinSplitDividerPosition : CGFloat  = 200
-    //let kInitialSplitDividerPosition : CGFloat  = 260
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,9 +19,6 @@ class MainSplitViewController: NSSplitViewController {
         // http://stackoverflow.com/questions/16587058/nssplitview-auto-saving-divider-positions-doesnt-work-with-auto-layout-enable
         splitView.autosaveName = "Main Split View"
         
-        // UI
-        //splitView.setPosition(kInitialSplitDividerPosition, ofDividerAtIndex: 0)
-
         // Start scanning
         BleManager.sharedInstance.startScan()
     }

@@ -28,18 +28,20 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         case WillDisconnectFromPeripheral = "willDisconnectFromPeripheral"
         case DidDisconnectFromPeripheral = "didDisconnectFromPeripheral"
     }
-    
+
     // Main
     static let sharedInstance = BleManager()
     var centralManager : CBCentralManager?
     
     // Scanning
     var isScanning = false
+    var wasScanningBeforeBluetoothOff = false;
     var blePeripheralsFound = [String : BlePeripheral]()
     var blePeripheralConnecting : BlePeripheral?
     var blePeripheralConnected : BlePeripheral?             // last peripheral connected (TODO: take into account that multiple peripherals can can be connected at the same time
     var undiscoverTimer : NSTimer?
 
+    
     //
     override init() {
         super.init()
@@ -51,11 +53,12 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         // Restore central manager delegate if was changed
         centralManager?.delegate = self
     }
-    
+
     func startScan() {
         DLog("startScan");
         
         isScanning = true
+        wasScanningBeforeBluetoothOff = true
         NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidStartScanning.rawValue, object: nil)
         if (BleManager.kIsUndiscoverPeripheralsEnabled) {
              undiscoverTimer = NSTimer.scheduledTimerWithTimeInterval(BleManager.kUndiscoverCheckPeriod, target: self, selector:"checkUndiscoveredPeripherals", userInfo: nil, repeats: true)
@@ -72,6 +75,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         
         centralManager?.stopScan()
         isScanning = false
+        wasScanningBeforeBluetoothOff = false
         if (BleManager.kIsUndiscoverPeripheralsEnabled) {
             undiscoverTimer?.invalidate()
             undiscoverTimer = nil
@@ -102,7 +106,12 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         DLog("centralManagerDidUpdateState \(central.state.rawValue)")
         NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidUpdateBleState.rawValue, object: central.state.rawValue)
         
-        if (central.state != .PoweredOn) {
+        if (central.state == .PoweredOn) {
+            if (wasScanningBeforeBluetoothOff) {
+                startScan();        // Continue scanning now that bluetooth is back
+            }
+        }
+        else {
             if let blePeripheralConnected = blePeripheralConnected{
                 DLog("Bluetooth is not powered on. Disconnect connected peripheral")
                 blePeripheralConnecting = nil
