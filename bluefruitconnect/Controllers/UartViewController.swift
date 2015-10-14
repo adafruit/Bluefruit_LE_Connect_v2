@@ -83,11 +83,11 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         // Wait till uart is ready
         inputTextField.enabled = false
         inputTextField.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.1)
-        
+
         // Peripheral should be connected
         blePeripheral = BleManager.sharedInstance.blePeripheralConnected
-        blePeripheral?.peripheral.delegate = self
-        
+//        blePeripheral?.peripheral.delegate = self
+
         // Discover UART
         blePeripheral?.peripheral.discoverServices([CBUUID(string: UartViewController.UartServiceUUID)])
         
@@ -99,9 +99,11 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     override func viewWillAppear() {
         super.viewWillAppear()
         
+        /*
         // Peripheral should be connected
         blePeripheral?.peripheral.delegate = self
-        
+*/
+
         registerNotifications(true)
     }
     

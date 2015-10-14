@@ -287,22 +287,32 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
     func onUpdateDialogSuccess() {
         BleManager.sharedInstance.restoreCentralManager()
         
-        let alert = NSAlert()
-        alert.messageText = "Update completed successfully"
-        alert.addButtonWithTitle("Ok")
-        alert.alertStyle = .WarningAlertStyle
-        alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
+        if let window = self.view.window {
+            let alert = NSAlert()
+            alert.messageText = "Update completed successfully"
+            alert.addButtonWithTitle("Ok")
+            alert.alertStyle = .WarningAlertStyle
+            alert.beginSheetModalForWindow(window, completionHandler: nil)
+        }
+        else {
+            DLog("onUpdateDialogSuccess: window not defined")
+        }
     }
     
     func onUpdateDialogError(errorMessage : String) {
         BleManager.sharedInstance.restoreCentralManager()
         
-        let alert = NSAlert()
-        alert.messageText = errorMessage
-        alert.addButtonWithTitle("Ok")
-        alert.alertStyle = .WarningAlertStyle
-        alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
-        
+        if let window = self.view.window {
+            let alert = NSAlert()
+            alert.messageText = errorMessage
+            alert.addButtonWithTitle("Ok")
+            alert.alertStyle = .WarningAlertStyle
+            alert.beginSheetModalForWindow(window, completionHandler: nil)
+        }
+        else {
+            DLog("onUpdateDialogError: window not defined")
+        }
+  
     }
     
 }

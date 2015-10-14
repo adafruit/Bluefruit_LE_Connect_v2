@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A92BA69C1BBDBC210093F701 /* StatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92BA69B1BBDBC210093F701 /* StatusManager.swift */; settings = {ASSET_TAGS = (); }; };
 		A932A5A91BB92A640096D78A /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932A5A81BB92A640096D78A /* MainWindowController.swift */; settings = {ASSET_TAGS = (); }; };
+		A93AF9BF1BCEDCA000B7BC59 /* RssiUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9BE1BCEDCA000B7BC59 /* RssiUI.swift */; settings = {ASSET_TAGS = (); }; };
 		A94370A01BB5A1E5002521F7 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A943709F1BB5A1E5002521F7 /* DetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		A94370A31BB5AF70002521F7 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370A11BB5AF70002521F7 /* InfoViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		A94370A71BB6384B002521F7 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A94370A61BB6384B002521F7 /* GattUUIDs.plist */; settings = {ASSET_TAGS = (); }; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		A92BA69B1BBDBC210093F701 /* StatusManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusManager.swift; sourceTree = "<group>"; };
 		A932A5A81BB92A640096D78A /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
+		A93AF9BE1BCEDCA000B7BC59 /* RssiUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RssiUI.swift; sourceTree = "<group>"; };
 		A943709F1BB5A1E5002521F7 /* DetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		A94370A11BB5AF70002521F7 /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		A94370A61BB6384B002521F7 /* GattUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GattUUIDs.plist; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 				A94370AA1BB6493A002521F7 /* BLE */,
 				A94B85141BB65CA3007B88C7 /* LogHelper.h */,
 				A982968A1BB222D700DD478C /* LogHelper.swift */,
+				A93AF9BE1BCEDCA000B7BC59 /* RssiUI.swift */,
 				A94B851D1BB704BC007B88C7 /* HexConversions.swift */,
 			);
 			path = Utils;
@@ -372,6 +375,7 @@
 				A94370D11BB64959002521F7 /* DFUOperationsDetails.m in Sources */,
 				A94370BB1BB6493A002521F7 /* BlePeripheral.swift in Sources */,
 				A932A5A91BB92A640096D78A /* MainWindowController.swift in Sources */,
+				A93AF9BF1BCEDCA000B7BC59 /* RssiUI.swift in Sources */,
 				A982968B1BB222D700DD478C /* LogHelper.swift in Sources */,
 				A9D091681BBCD3CC00489D5D /* SeparatorView.swift in Sources */,
 				A982968F1BB22D2100DD478C /* PeripheralTableCellView.swift in Sources */,

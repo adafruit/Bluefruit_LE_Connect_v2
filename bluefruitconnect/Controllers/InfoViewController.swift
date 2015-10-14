@@ -9,6 +9,7 @@
 import Cocoa
 import CoreBluetooth
 
+
 class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate {
     let kExpandAllNodes  = true
     
@@ -30,7 +31,7 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
     
         // Peripheral should be connected
         blePeripheral = BleManager.sharedInstance.blePeripheralConnected
-        blePeripheral?.peripheral.delegate = self
+//        blePeripheral?.peripheral.delegate = self
         
         // Discover services
         discoverServices()
@@ -39,8 +40,10 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
     override func viewWillAppear() {
         super.viewWillAppear()
         
+        /*
         // Peripheral should be connected
         blePeripheral?.peripheral.delegate = self
+*/
     }
     
     func discoverServices() {
