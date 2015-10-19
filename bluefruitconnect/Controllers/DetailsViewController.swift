@@ -37,9 +37,11 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
         infoView.layer?.cornerRadius = 4
         */
         
+        /*
         infoView.wantsLayer = true
         infoView.layer?.borderWidth = 1
         infoView.layer?.borderColor = NSColor.lightGrayColor().CGColor
+        */
         
         showEmpty(true)
     }
@@ -140,7 +142,7 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
                 
                 // Clear old ones (not 0 that is Info)
                 if (modeTabView.tabViewItems.count > 1) {
-                    for i in 1...modeTabView.tabViewItems.count-1 {
+                    for i in 1...(modeTabView.tabViewItems.count-1) {
                         modeTabView.removeTabViewItem(modeTabView.tabViewItems[i])
                     }
                 }

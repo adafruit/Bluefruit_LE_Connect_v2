@@ -203,8 +203,8 @@ class UpdateDialogViewController: NSViewController, DFUOperationsDelegate {
         else {
             let delayInSeconds = 3.0;
             let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
-            dispatch_after(delayTime, dispatch_get_main_queue()) {
-                dfuOperations?.connectDevice(peripheral)
+            dispatch_after(delayTime, dispatch_get_main_queue()) { [unowned self] in
+                self.dfuOperations?.connectDevice(peripheral)
             }
         }
     }

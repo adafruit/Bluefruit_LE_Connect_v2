@@ -82,6 +82,13 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidStopScanning.rawValue, object: nil)
     }
    
+    func refreshPeripherals() {
+        stopScan()
+        blePeripheralsFound.removeAll()
+        NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil);
+        startScan()
+    }
+    
     
     func connect(blePeripheral : BlePeripheral) {
         blePeripheralConnecting = blePeripheral

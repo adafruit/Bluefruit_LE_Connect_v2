@@ -14,10 +14,15 @@ class PeripheralTableCellView: NSTableCellView {
     @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var subtitleTextField: NSTextField!
     
+    var onDisconnect : (() -> ())?
+
     override func drawRect(dirtyRect: NSRect) {
         super.drawRect(dirtyRect)
 
         // Drawing code here.
     }
     
+    @IBAction func onClickDisconnect(sender: AnyObject) {
+        onDisconnect?()
+    }
 }

@@ -56,7 +56,7 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
     
     func didDisconnectFromPeripheral(notification : NSNotification) {
         if (BleManager.sharedInstance.blePeripheralConnected == nil && baseTableView.selectedRow >= 0) {
-            
+
             // Unexpected disconnect if the row is still selected but the connected peripheral is nil and the time since the user selected a new peripheral is bigger than 1 second
             if (CFAbsoluteTimeGetCurrent() - lastUserSelection > 1) {
                 baseTableView.deselectAll(nil)
@@ -68,9 +68,8 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
                 alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
             }
         }
+
     }
-      
- 
 
     // MARK: - NSTableViewDataSource
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
@@ -91,6 +90,10 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
         let isUartCapable = blePeripheral.isUartAdvertised()
         cell.subtitleTextField.stringValue = isUartCapable ?"Uart capable":"No Uart detected"
         cell.rssiImageView.image = signalImageForRssi(blePeripheral.rssi)
+        
+        cell.onDisconnect = {
+            tableView.deselectAll(nil)
+        }
         
         return cell;
     }
@@ -126,7 +129,7 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
     func connectToPeripheral(identifier : String?) {
         let bleManager = BleManager.sharedInstance
         
-        if (identifier != bleManager.blePeripheralConnected?.peripheral.identifier.UUIDString) {
+        if (identifier != bleManager.blePeripheralConnected?.peripheral.identifier.UUIDString || identifier == nil) {
             
             let blePeripheralsFound = bleManager.blePeripheralsFound
             lastUserSelection = CFAbsoluteTimeGetCurrent()
@@ -152,6 +155,16 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
                     currentSelectedPeripheralIdentifier = selectedBlePeripheralIdentifier
                 }
             }
+            else {
+                currentSelectedPeripheralIdentifier = nil;
+            }
         }
     }
+    
+    // MARK - Actions
+    @IBAction func onClickRefresh(sender: AnyObject) {
+        BleManager.sharedInstance.refreshPeripherals()
+    }
+    
+    
 }

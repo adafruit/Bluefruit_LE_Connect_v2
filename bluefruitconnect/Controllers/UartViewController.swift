@@ -45,7 +45,6 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     @IBOutlet weak var inputTextField: NSTextField!
     @IBOutlet weak var echoButton: NSButton!
     @IBOutlet weak var eolButton: NSButton!
-    @IBOutlet weak var hexButton: NSButton!
     
     @IBOutlet weak var sentBytesLabel: NSTextField!
     @IBOutlet weak var receivedBytesLabel: NSTextField!
@@ -76,7 +75,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         
         // Init Data
         timestampDateFormatter.setLocalizedDateFormatFromTemplate("HH:mm:ss:SSSS")
-        isInHexMode = hexButton.state == NSOnState
+//        isInHexMode = hexButton.state == NSOnState
         isEchoEnabled = echoButton.state == NSOnState
         isAutomaticEolEnabled = eolButton.state == NSOnState
         
@@ -88,6 +87,10 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         blePeripheral = BleManager.sharedInstance.blePeripheralConnected
 //        blePeripheral?.peripheral.delegate = self
 
+        if (blePeripheral == nil) {
+            DLog("Error UART started without connected peripheral")
+        }
+        
         // Discover UART
         blePeripheral?.peripheral.discoverServices([CBUUID(string: UartViewController.UartServiceUUID)])
         
@@ -286,13 +289,23 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         isAutomaticEolEnabled = eolButton.state == NSOnState
     }
     
+    /*
     @IBAction func onClickHex(sender: NSButton) {
         isInHexMode = hexButton.state == NSOnState
         reloadDataUI()
     }
-    
     @IBAction func onClickTimestamp(sender: NSButton) {
         displayMode = sender.state == NSOnState ? .Table : .Text
+        reloadDataUI()
+    }
+    */
+    @IBAction func onChangeHexMode(sender: AnyObject) {
+        isInHexMode = sender.selectedSegment == 1
+        reloadDataUI()
+    }
+    
+    @IBAction func onChangeDisplayMode(sender: NSSegmentedControl) {
+        displayMode = sender.selectedSegment == 0 ? .Text : .Table
         reloadDataUI()
     }
     
