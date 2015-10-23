@@ -23,7 +23,6 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         }
         var mode : TransferMode
         var data : NSData
-        
     }
     
     enum UartNotifications : String {
@@ -56,10 +55,12 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     private var txCharacteristic : CBCharacteristic?
 
     // Current State
+    /*
     private var isInHexMode = false
     private var isEchoEnabled = true;
     private var isAutomaticEolEnabled = true;
     private var displayMode = DisplayMode.Text
+*/
     private var dataBuffer = [DataChunk]()
     private var tableModeDataMaxWidth : CGFloat = 0
 
@@ -75,9 +76,12 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         
         // Init Data
         timestampDateFormatter.setLocalizedDateFormatFromTemplate("HH:mm:ss:SSSS")
-//        isInHexMode = hexButton.state == NSOnState
-        isEchoEnabled = echoButton.state == NSOnState
-        isAutomaticEolEnabled = eolButton.state == NSOnState
+        
+        echoButton.state = Preferences.uartIsEchoEnabled ? NSOnState:NSOffState
+        eolButton.state = Preferences.uartIsAutomaticEolEnabled ? NSOnState:NSOffState
+        
+//        isEchoEnabled = echoButton.state == NSOnState
+//        isAutomaticEolEnabled = eolButton.state == NSOnState
         
         // Wait till uart is ready
         inputTextField.enabled = false
@@ -85,7 +89,6 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
 
         // Peripheral should be connected
         blePeripheral = BleManager.sharedInstance.blePeripheralConnected
-//        blePeripheral?.peripheral.delegate = self
 
         if (blePeripheral == nil) {
             DLog("Error UART started without connected peripheral")
@@ -101,11 +104,6 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     
     override func viewWillAppear() {
         super.viewWillAppear()
-        
-        /*
-        // Peripheral should be connected
-        blePeripheral?.peripheral.delegate = self
-*/
 
         registerNotifications(true)
     }
@@ -142,7 +140,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         var newText = text
         
         // Eol
-        if (isAutomaticEolEnabled)  {
+        if (Preferences.uartIsAutomaticEolEnabled)  {
             newText += "\n"
         }
         
@@ -198,6 +196,8 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     // MARK: - UI updates
     
     func addChunkToUI(dataChunk : DataChunk) {
+        let displayMode = Preferences.uartIsDisplayModeTimestamp ? DisplayMode.Table : DisplayMode.Text
+        
         switch(displayMode) {
         case .Text:
             if let textStorage = self.baseTextView.textStorage {
@@ -216,10 +216,10 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     
     func addChunkToUIText(dataChunk : DataChunk) {
         
-        if (isEchoEnabled || dataChunk.mode == .RX) {
+        if (Preferences.uartIsEchoEnabled || dataChunk.mode == .RX) {
             let color = dataChunk.mode == .TX ? txColor : rxColor
             
-            let attributedString = attributeTextFromData(dataChunk.data, useHexMode: isInHexMode, color: color)
+            let attributedString = attributeTextFromData(dataChunk.data, useHexMode: Preferences.uartIsInHexMode, color: color)
             
             if let textStorage = self.baseTextView.textStorage, attributedString = attributedString {
                 textStorage.appendAttributedString(attributedString)
@@ -245,6 +245,8 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     }
     
     func reloadDataUI() {
+        let displayMode = Preferences.uartIsDisplayModeTimestamp ? DisplayMode.Table : DisplayMode.Text
+
         baseTableVisibilityView.hidden = displayMode == .Text
         baseTextVisibilityView.hidden = displayMode == .Table
         
@@ -281,31 +283,21 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     
     // MARK: - UI Actions
     @IBAction func onClickEcho(sender: NSButton) {
-        isEchoEnabled = echoButton.state == NSOnState
+        Preferences.uartIsEchoEnabled = echoButton.state == NSOnState
         reloadDataUI()
     }
     
     @IBAction func onClickEol(sender: NSButton) {
-        isAutomaticEolEnabled = eolButton.state == NSOnState
+        Preferences.uartIsAutomaticEolEnabled = eolButton.state == NSOnState
     }
     
-    /*
-    @IBAction func onClickHex(sender: NSButton) {
-        isInHexMode = hexButton.state == NSOnState
-        reloadDataUI()
-    }
-    @IBAction func onClickTimestamp(sender: NSButton) {
-        displayMode = sender.state == NSOnState ? .Table : .Text
-        reloadDataUI()
-    }
-    */
     @IBAction func onChangeHexMode(sender: AnyObject) {
-        isInHexMode = sender.selectedSegment == 1
+        Preferences.uartIsInHexMode = sender.selectedSegment == 1
         reloadDataUI()
     }
     
     @IBAction func onChangeDisplayMode(sender: NSSegmentedControl) {
-        displayMode = sender.selectedSegment == 0 ? .Text : .Table
+        Preferences.uartIsDisplayModeTimestamp = sender.selectedSegment == 1
         reloadDataUI()
     }
     
@@ -336,6 +328,9 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         }
         
         // Show save dialog
+        let displayMode = Preferences.uartIsDisplayModeTimestamp ? DisplayMode.Table : DisplayMode.Text
+        let isInHexMode = Preferences.uartIsInHexMode
+        
         let saveFileDialog = NSSavePanel()
         saveFileDialog.canCreateDirectories = true
         if (displayMode == .Text) {
@@ -352,7 +347,8 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
                         
                         // Save
                         var text : String?
-                        if (self.displayMode == .Text) {
+                        let displayMode = Preferences.uartIsDisplayModeTimestamp ? DisplayMode.Table : DisplayMode.Text
+                        if (displayMode == .Text) {
                             text = self.dataAsText(url)
                         }
                         else {
@@ -384,7 +380,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         }
         
         var text : String?
-        if (self.isInHexMode) {
+        if (Preferences.uartIsInHexMode) {
             text = hexString(data)
         }
         else {
@@ -403,7 +399,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
             let dateString = timestampDateFormatter.stringFromDate(date).stringByReplacingOccurrencesOfString(",", withString: ".")         //  comma messes with csv, so replace it by point
             let mode = dataChunk.mode == .RX ? "RX" : "TX"
             var dataString : String?
-            if (self.isInHexMode) {
+            if (Preferences.uartIsInHexMode) {
                 dataString = hexString(dataChunk.data)
             }
             else {
@@ -493,7 +489,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     
     // MARK: - NSTableViewDataSource
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        if (isEchoEnabled)  {
+        if (Preferences.uartIsEchoEnabled)  {
             tableCachedDataBuffer = dataBuffer
         }
         else {
@@ -532,8 +528,8 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
                 
                 let color = dataChunk.mode == .TX ? txColor : rxColor
 
-                if let attributedText = attributeTextFromData(dataChunk.data, useHexMode: isInHexMode, color: color) {
-                    DLog("row \(row): \(attributedText.string)")
+                if let attributedText = attributeTextFromData(dataChunk.data, useHexMode: Preferences.uartIsInHexMode, color: color) {
+                    //DLog("row \(row): \(attributedText.string)")
 
                     // Display
                     cell!.textField!.attributedStringValue = attributedText
@@ -548,7 +544,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
                     });
                 }
                 else {
-                    DLog("row \(row): <empty>")
+                    //DLog("row \(row): <empty>")
                     cell!.textField!.attributedStringValue = NSAttributedString()
                 }
                 
@@ -579,5 +575,4 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         }
         
     }
-
 }

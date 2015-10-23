@@ -38,9 +38,8 @@
 		A98E03971BBA2A1C00F8924C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98E03961BBA2A1C00F8924C /* Images.xcassets */; settings = {ASSET_TAGS = (); }; };
 		A98E03A31BBA3EEE00F8924C /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98E03A21BBA3EEE00F8924C /* Preferences.swift */; settings = {ASSET_TAGS = (); }; };
 		A98E03A51BBA406700F8924C /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98E03A41BBA406700F8924C /* DefaultPreferences.plist */; settings = {ASSET_TAGS = (); }; };
-		A98E03A71BBA40F000F8924C /* FirmwareUpdatePreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98E03A61BBA40F000F8924C /* FirmwareUpdatePreferencesViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		A995DAAD1BD689F20039C6DF /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A995DAAC1BD689F20039C6DF /* PreferencesViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		A9A842411BD1276C003B925A /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A842401BD1276C003B925A /* SeparatorView.swift */; settings = {ASSET_TAGS = (); }; };
-		A9BDC6F61BBCBC9900766400 /* UartPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BDC6F51BBCBC9900766400 /* UartPreferencesViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		A9BDC6FE1BBCC65A00766400 /* NSColor+hex.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BDC6FD1BBCC65A00766400 /* NSColor+hex.m */; settings = {ASSET_TAGS = (); }; };
 		A9FE75731BB9CF1000F7A5BF /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FE75721BB9CF1000F7A5BF /* XMLDictionary.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
@@ -89,9 +88,8 @@
 		A98E03961BBA2A1C00F8924C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A98E03A21BBA3EEE00F8924C /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		A98E03A41BBA406700F8924C /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
-		A98E03A61BBA40F000F8924C /* FirmwareUpdatePreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirmwareUpdatePreferencesViewController.swift; sourceTree = "<group>"; };
+		A995DAAC1BD689F20039C6DF /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		A9A842401BD1276C003B925A /* SeparatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
-		A9BDC6F51BBCBC9900766400 /* UartPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartPreferencesViewController.swift; sourceTree = "<group>"; };
 		A9BDC6FC1BBCC65A00766400 /* NSColor+hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+hex.h"; sourceTree = "<group>"; };
 		A9BDC6FD1BBCC65A00766400 /* NSColor+hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+hex.m"; sourceTree = "<group>"; };
 		A9FE75711BB9CF1000F7A5BF /* XMLDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLDictionary.h; sourceTree = "<group>"; };
@@ -238,8 +236,7 @@
 				A94370A81BB63BA5002521F7 /* UartViewController.swift */,
 				A97EB2001BB64D750069D9C9 /* FirmwareUpdateViewController.swift */,
 				A94B85191BB6E24D007B88C7 /* UpdateDialogViewController.swift */,
-				A98E03A61BBA40F000F8924C /* FirmwareUpdatePreferencesViewController.swift */,
-				A9BDC6F51BBCBC9900766400 /* UartPreferencesViewController.swift */,
+				A995DAAC1BD689F20039C6DF /* PreferencesViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -378,6 +375,7 @@
 				A94370A01BB5A1E5002521F7 /* DetailsViewController.swift in Sources */,
 				A94370A31BB5AF70002521F7 /* InfoViewController.swift in Sources */,
 				A94B85131BB65C71007B88C7 /* ReleasesParser.m in Sources */,
+				A995DAAD1BD689F20039C6DF /* PreferencesViewController.swift in Sources */,
 				A94370D21BB64959002521F7 /* FileOperations.m in Sources */,
 				A94370D71BB649AE002521F7 /* Utility.m in Sources */,
 				A94370D11BB64959002521F7 /* DFUOperationsDetails.m in Sources */,
@@ -389,14 +387,12 @@
 				A9FE75731BB9CF1000F7A5BF /* XMLDictionary.m in Sources */,
 				A982966C1BB1F5E600DD478C /* AppDelegate.swift in Sources */,
 				A94B85101BB65C48007B88C7 /* FirmwareUpdater.m in Sources */,
-				A98E03A71BBA40F000F8924C /* FirmwareUpdatePreferencesViewController.swift in Sources */,
 				A92BA69C1BBDBC210093F701 /* StatusManager.swift in Sources */,
 				A94370BA1BB6493A002521F7 /* BleManager.swift in Sources */,
 				A9A842411BD1276C003B925A /* SeparatorView.swift in Sources */,
 				A94B851E1BB704BC007B88C7 /* HexConversions.swift in Sources */,
 				A9BDC6FE1BBCC65A00766400 /* NSColor+hex.m in Sources */,
 				A94370A91BB63BA5002521F7 /* UartViewController.swift in Sources */,
-				A9BDC6F61BBCBC9900766400 /* UartPreferencesViewController.swift in Sources */,
 				A98296861BB1FF0600DD478C /* PeripheralListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

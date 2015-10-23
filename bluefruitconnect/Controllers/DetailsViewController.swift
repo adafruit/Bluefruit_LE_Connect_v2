@@ -37,11 +37,9 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
         infoView.layer?.cornerRadius = 4
         */
         
-        /*
         infoView.wantsLayer = true
         infoView.layer?.borderWidth = 1
         infoView.layer?.borderColor = NSColor.lightGrayColor().CGColor
-        */
         
         showEmpty(true)
     }
@@ -54,7 +52,6 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
         notificationCenter.addObserver(self, selector: "willConnectToPeripheral:", name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
         notificationCenter.addObserver(self, selector: "didConnectToPeripheral:", name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
         notificationCenter.addObserver(self, selector: "willDisconnectFromPeripheral:", name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
-//        notificationCenter.addObserver(self, selector: "didDiscoverPeripheral:", name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
     }
     
     override func viewDidDisappear() {
@@ -64,7 +61,6 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
         notificationCenter.removeObserver(self, name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
         notificationCenter.removeObserver(self, name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
         notificationCenter.removeObserver(self, name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
-   //     notificationCenter.removeObserver(self, name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
     }
     
     deinit {
@@ -185,17 +181,6 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
             }
         }
     }
-    /*
-    func didDiscoverPeripheral(notification : NSNotification) {
-        let userInfo = notification.userInfo as! [String : String]
-        let identifier = userInfo["uuid"]
-        let connectedPeripheralIdentifier = BleManager.sharedInstance.blePeripheralConnected?.peripheral.identifier.UUIDString
-        //DLog("discover: \(identifier), connected: \(connectedPeripheralIdentifier)");
-        if (identifier == connectedPeripheralIdentifier) {
-            updateRssi()
-        }
-    }
-*/
     
     func updateRssi() {
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {

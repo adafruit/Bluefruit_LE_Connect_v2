@@ -12,5 +12,13 @@
 	<string>#ff0000</string>
 	<key>UartSentDataColor</key>
 	<string>#0000bb</string>
+	<key>UartIsDisplayModeTimestamp</key>
+	<false/>
+	<key>UartIsInHexMode</key>
+	<false/>
+	<key>UartIsEchoEnabled</key>
+	<true/>
+	<key>UartIsAutomaticEolEnabled</key>
+	<true/>
 </dict>
 </plist>

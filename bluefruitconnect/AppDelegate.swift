@@ -11,10 +11,21 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     let statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
+    
+    // UI
+    @IBOutlet weak var peripheralsMenu: NSMenu!
+    @IBOutlet weak var startScanningMenuItem: NSMenuItem!
+    @IBOutlet weak var stopScanningMenuItem: NSMenuItem!
+    
+    // Status Menu
     let statusMenu = NSMenu();
     var isMenuOpen = false
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+        
+        // Init
+        peripheralsMenu.delegate = self
+        peripheralsMenu.autoenablesItems = false
         
         // Register default preferences
         //Preferences.resetDefaults()       // Debug Reset
@@ -171,12 +182,35 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     // MARK: - NSMenuDelegate
     func menuWillOpen(menu: NSMenu) {
-        isMenuOpen = true
-        updateStatusContent(nil)
+        if (menu == statusMenu) {
+            isMenuOpen = true
+            updateStatusContent(nil)
+        }
+        else if (menu == peripheralsMenu) {
+            let isScanning = BleManager.sharedInstance.isScanning
+            startScanningMenuItem.enabled = !isScanning
+            stopScanningMenuItem.enabled = isScanning
+        }
     }
     
     func menuDidClose(menu: NSMenu) {
-        isMenuOpen = false
+        if (menu == statusMenu) {
+            isMenuOpen = false
+        }
+    }
+
+    // MARK: - Main Menu
+    
+    @IBAction func onStartScanning(sender: AnyObject) {
+        BleManager.sharedInstance.startScan()
+    }
+
+    @IBAction func onStopScanning(sender: AnyObject) {
+        BleManager.sharedInstance.stopScan()
+    }
+    
+    @IBAction func onRefreshPeripherals(sender: AnyObject) {
+        BleManager.sharedInstance.refreshPeripherals()
     }
     
     

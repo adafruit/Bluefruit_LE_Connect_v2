@@ -85,6 +85,15 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     func refreshPeripherals() {
         stopScan()
         blePeripheralsFound.removeAll()
+        
+        // Don't remove connnected or connecting peripherals
+        if let connected = blePeripheralConnected {
+            blePeripheralsFound[connected.peripheral.identifier.UUIDString] = connected;
+        }
+        if let connecting = blePeripheralConnecting {
+            blePeripheralsFound[connecting.peripheral.identifier.UUIDString] = connecting;
+        }
+
         NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil);
         startScan()
     }

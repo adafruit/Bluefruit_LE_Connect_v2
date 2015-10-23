@@ -31,7 +31,6 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
     
         // Peripheral should be connected
         blePeripheral = BleManager.sharedInstance.blePeripheralConnected
-//        blePeripheral?.peripheral.delegate = self
         
         // Discover services
         discoverServices()
@@ -39,11 +38,6 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
     
     override func viewWillAppear() {
         super.viewWillAppear()
-        
-        /*
-        // Peripheral should be connected
-        blePeripheral?.peripheral.delegate = self
-*/
     }
     
     func discoverServices() {
@@ -188,41 +182,6 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
         return cell
     }
     
-    /*
-    
-    func tableViewSelectionDidChange(notification: NSNotification) {
-        
-        let blePeripheralsFound = BleManager.sharedInstance.blePeripheralsFound
-        let selectedRow = baseTableView.selectedRow
-        if (selectedRow != currentSelectedRow) {
-            
-            // Disconnect from previous
-            if (currentSelectedRow >= 0) {
-                let selectedBlePeripheralIdentifier = blePeripheralFoundAlphabeticKeys()[currentSelectedRow];
-                let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-                
-                BleManager.sharedInstance.disconnect(blePeripheral)
-            }
-            
-            // Connect to new peripheral
-            if (selectedRow >= 0) {
-                
-                let selectedBlePeripheralIdentifier = blePeripheralFoundAlphabeticKeys()[selectedRow];
-                let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-                let selectedPeripheralIdentifier = blePeripheral.peripheral.identifier.UUIDString
-                if (BleManager.sharedInstance.blePeripheralConnected?.peripheral.identifier != selectedPeripheralIdentifier) {
-                    // DLog("connect to new peripheral: \(selectedPeripheralIdentifier)")
-                    
-                    BleManager.sharedInstance.connect(blePeripheral)
-                }
-                
-            }
-            
-            currentSelectedRow = selectedRow
-            
-        }
-    }
-*/
     
     // MARK - CBPeripheralDelegate
     

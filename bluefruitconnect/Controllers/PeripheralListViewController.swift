@@ -138,7 +138,7 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
             if (currentSelectedRow >= 0) {
                 let selectedBlePeripheralIdentifier = bleManager.blePeripheralFoundAlphabeticKeys()[currentSelectedRow];
                 let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-                
+
                 BleManager.sharedInstance.disconnect(blePeripheral)
                 currentSelectedPeripheralIdentifier = nil
             }
