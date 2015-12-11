@@ -4,7 +4,7 @@ This native OS X application contains a port of Nordic's DFU library to update t
 
 In addition to OTA DFU updates, it contains basic UART and Device Information functionality as an example of how you can interact with your Bluefruit LE module using Swift 2.0.
 
-This is unsupported example code that is not intended to be used as in release applications, and is the results of some internal testing with native OS X development with Swift and Bluetooth Low Energy.  Use at your own risk.
+This is unsupported code that is not intended to be used in release applications, and is the result of internal testing with native OS X development with Swift and Bluetooth Low Energy.  Use at your own risk.
 
 # Requirements
 
