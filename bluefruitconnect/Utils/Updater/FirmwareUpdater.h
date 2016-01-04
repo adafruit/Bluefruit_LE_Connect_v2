@@ -39,6 +39,6 @@
 + (void)downloadDataFromURL:(NSURL *)url withCompletionHandler:(void (^)(NSData *))completionHandler;
 
 // Check updates
-- (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(id<FirmwareUpdaterDelegate>) delegate;
-- (void)connectAndCheckUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(id<FirmwareUpdaterDelegate>) delegate;
+- (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate;
+- (void)connectAndCheckUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate;
 @end

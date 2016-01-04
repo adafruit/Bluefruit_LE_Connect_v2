@@ -62,8 +62,8 @@ class UpdateDialogViewController: NSViewController, DFUOperationsDelegate {
         
         // Download files
         setProgressText("Downloading hex file")
-        FirmwareUpdater.downloadDataFromURL(hexUrl) {[unowned self] (data) -> Void in
-            self.downloadedFirmwareData(data)
+        FirmwareUpdater.downloadDataFromURL(hexUrl) {[weak self] (data) -> Void in
+            self?.downloadedFirmwareData(data)
         }
         
         // Setup StatusManager
@@ -93,8 +93,8 @@ class UpdateDialogViewController: NSViewController, DFUOperationsDelegate {
             }
             else {
                 setProgressText("Downloading init file")
-                FirmwareUpdater.downloadDataFromURL(iniUrl, withCompletionHandler: { (iniData) -> Void in
-                    self.downloadedFirmwareHexAndInitData(data, iniData: iniData)
+                FirmwareUpdater.downloadDataFromURL(iniUrl, withCompletionHandler: {[weak self]  (iniData) -> Void in
+                    self?.downloadedFirmwareHexAndInitData(data, iniData: iniData)
                 })
             }
         }

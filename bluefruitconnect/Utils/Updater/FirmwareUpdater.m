@@ -47,6 +47,7 @@ static NSString* const kDefaultBootloaderVersion = @"0.0";
 @interface FirmwareUpdater ()
 {
     __weak id<CBPeripheralDelegate> previousPeripheralDelegate;
+//    __weak CBPeripheral* currentPeripheral;
 }
 
 @property (weak) id<FirmwareUpdaterDelegate> delegate;
@@ -98,7 +99,6 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
     }
 }
 
-
 + (void)downloadDataFromURL:(NSURL *)url withCompletionHandler:(void (^)(NSData *))completionHandler 
 {
     if ([url.scheme isEqualToString:@"file"])        // Check if url is local and just open the file
@@ -139,9 +139,10 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
 }
 
 #pragma mark  Peripheral Management
-- (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(id<FirmwareUpdaterDelegate>) delegate
+- (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate
 {
     _delegate = delegate;
+//    currentPeripheral = peripheral;
     previousPeripheralDelegate = peripheral.delegate;
     peripheral.delegate = self;
 
@@ -150,7 +151,7 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
 }
 
 
-- (void)connectAndCheckUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(id<FirmwareUpdaterDelegate>) delegate
+- (void)connectAndCheckUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate
 {
     _delegate = delegate;
     [self connectToPeripheral:peripheral];
@@ -159,21 +160,11 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
 - (void)connectToPeripheral:(CBPeripheral *)peripheral {
     
     peripheral.delegate = self;
-//    CBUUID *dfuServiceUUID = [CBUUID UUIDWithString:kNordicDeviceFirmwareUpdateService];
-//    CBUUID *disServiceUUID = [CBUUID UUIDWithString:kDeviceInformationService];
-    
-//    BleManager *bleManager = [BleManager sharedInstance];
-//    [bleManager connectToPeripheral:peripheral servicesToDiscover:@[dfuServiceUUID, disServiceUUID]];
-    
-//    BLEMainViewController *blemvc = [BLEMainViewController sharedInstance];
-//    [blemvc connectPeripheralForDFU:peripheral];
-    
 }
 
 - (void)hasConnectedPeripheralDFUService
 {
 }
-
 
 #pragma mark  CBPeripheralDelegate
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error {
@@ -186,7 +177,6 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
 
     for (CBService *service in peripheral.services) {
         //DLog(@"Discovered service %@", service);
-        //NSString *serviceUUID = service.UUID.UUIDString;
         if ([service.UUID isEqual:dfuServiceUUID]) {
             dfuService = service;
         }
@@ -208,10 +198,14 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
     }
     else
     {
-        DLog(@"Peripheral has no dfu or dis service available");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.delegate onDfuServiceNotFound];
-        });
+        peripheral.delegate = previousPeripheralDelegate;
+        
+        if (error && self.delegate) {
+            DLog(@"Peripheral has no dfu or dis service available");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.delegate onDfuServiceNotFound];
+            });
+        }
     }
 }
 
@@ -231,8 +225,6 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
     CBUUID *firmwareRevisionCharacteristicUUID = [CBUUID UUIDWithString:kFirmwareRevisionCharacteristic];
     
     NSData *data = characteristic.value;
-    //NSString *characteristicUUID = characteristic.UUID.UUIDString;
-    
     if ([characteristic.UUID isEqual:manufacturerCharacteristicUUID]) {
         _deviceInfoData.manufacturer = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }

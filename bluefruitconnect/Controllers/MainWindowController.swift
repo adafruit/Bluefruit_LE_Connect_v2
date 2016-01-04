@@ -17,20 +17,11 @@ class MainWindowController: NSWindowController {
      override func windowDidLoad() {
         super.windowDidLoad()
 
-        /*
-        self.window?.titleVisibility = .Hidden
-        self.window?.titlebarAppearsTransparent = true;
-        self.window?.styleMask |= NSFullSizeContentViewWindowMask;
-        */
-        
         // Fix for Autosave window position
         // http://stackoverflow.com/questions/25150223/nswindowcontroller-autosave-using-storyboard
         self.windowFrameAutosaveName = "Main App Window"
-
         
         updateScanItems()
-        
-        
     }
     
     override func validateToolbarItem(theItem: NSToolbarItem) -> Bool {
@@ -53,7 +44,6 @@ class MainWindowController: NSWindowController {
         
         updateScanItems()
     }
-    
 
     func updateScanItems() {
         let bleManager = BleManager.sharedInstance

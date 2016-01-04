@@ -13,6 +13,8 @@ class PeripheralTableCellView: NSTableCellView {
     @IBOutlet weak var rssiImageView: NSImageView!
     @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var subtitleTextField: NSTextField!
+    @IBOutlet weak var disconnectButton: NSButton!
+    @IBOutlet weak var disconnectButtonWidthConstraint: NSLayoutConstraint!
     
     var onDisconnect : (() -> ())?
 
@@ -24,5 +26,10 @@ class PeripheralTableCellView: NSTableCellView {
     
     @IBAction func onClickDisconnect(sender: AnyObject) {
         onDisconnect?()
+    }
+    
+
+    func showDisconnectButton(show: Bool) {
+        disconnectButtonWidthConstraint.constant = show ? 24: 0
     }
 }

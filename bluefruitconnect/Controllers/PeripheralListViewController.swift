@@ -20,10 +20,6 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Background
-        //self.view.wantsLayer = true
-        //self.view.layer?.backgroundColor = NSColor.whiteColor().CGColor
-        
         // Setup StatusManager
         StatusManager.sharedInstance.peripheralListViewController = self
         
@@ -48,19 +44,20 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
             // Select identifier if still available
             if let selectedPeripheralIdentifier = self.currentSelectedPeripheralIdentifier {
                 if let index = BleManager.sharedInstance.blePeripheralFoundAlphabeticKeys().indexOf(selectedPeripheralIdentifier) {
+//                    DLog("discover row: \(index)");
                     self.baseTableView.selectRowIndexes(NSIndexSet(index: index), byExtendingSelection: false)
                 }
             }
         })
     }
-    
+
     func didDisconnectFromPeripheral(notification : NSNotification) {
         if (BleManager.sharedInstance.blePeripheralConnected == nil && baseTableView.selectedRow >= 0) {
 
             // Unexpected disconnect if the row is still selected but the connected peripheral is nil and the time since the user selected a new peripheral is bigger than 1 second
             if (CFAbsoluteTimeGetCurrent() - lastUserSelection > 1) {
                 baseTableView.deselectAll(nil)
-                
+
                 let alert = NSAlert()
                 alert.messageText = "Peripheral disconnected"
                 alert.addButtonWithTitle("Ok")
@@ -68,19 +65,18 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
                 alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
             }
         }
-
     }
 
     // MARK: - NSTableViewDataSource
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         return BleManager.sharedInstance.blePeripheralsFound.count
     }
-    
+
     // MARK: NSTableViewDelegate
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         
         let cell = tableView.makeViewWithIdentifier("DeviceCell", owner: self) as! PeripheralTableCellView
-        
+
         let bleManager = BleManager.sharedInstance
         let blePeripheralsFound = bleManager.blePeripheralsFound
         let selectedBlePeripheralIdentifier = bleManager.blePeripheralFoundAlphabeticKeys()[row];
@@ -95,19 +91,24 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
             tableView.deselectAll(nil)
         }
         
+        cell.showDisconnectButton(row == currentSelectedRow)
+        
         return cell;
     }
     
-    func tableViewSelectionDidChange(notification: NSNotification) {
+    func tableViewSelectionIsChanging(notification: NSNotification) {   // Note: used tableViewSelectionIsChanging instead of tableViewSelectionDidChange because if a didDiscoverPeripheral notification arrives when the user is changing the row but before the user releases the mouse button, then it would be cancelled (and the user would notice that something weird happened)
         
         let bleManager = BleManager.sharedInstance
         let newSelectedRow = baseTableView.selectedRow
+        //        DLog("tableViewSelectionDidChange: \(newSelectedRow)")
         if (newSelectedRow != currentSelectedRow) {
-            
+            DLog("Peripheral selected row: \(newSelectedRow)")
             connectToPeripheral(newSelectedRow >= 0 ? bleManager.blePeripheralFoundAlphabeticKeys()[newSelectedRow] : nil)
-           
             currentSelectedRow = newSelectedRow
         }
+    }
+    
+    func tableViewSelectionDidChange(notification: NSNotification) {
     }
     
     // MARK: -
@@ -133,7 +134,7 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
             
             let blePeripheralsFound = bleManager.blePeripheralsFound
             lastUserSelection = CFAbsoluteTimeGetCurrent()
-            
+
             // Disconnect from previous
             if (currentSelectedRow >= 0) {
                 let selectedBlePeripheralIdentifier = bleManager.blePeripheralFoundAlphabeticKeys()[currentSelectedRow];

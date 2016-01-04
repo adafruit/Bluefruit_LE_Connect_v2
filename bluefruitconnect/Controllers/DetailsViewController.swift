@@ -9,7 +9,7 @@
 import Cocoa
 import CoreBluetooth
 
-class DetailsViewController: NSViewController, CBPeripheralDelegate {
+class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDelegate {
     
     @IBOutlet weak var emptyView: NSTabView!
     @IBOutlet weak var emptyLabel: NSTextField!
@@ -21,21 +21,17 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
     @IBOutlet weak var infoRssiImageView: NSImageView!
     @IBOutlet weak var infoRssiLabel: NSTextField!
     @IBOutlet weak var infoUartImageView: NSImageView!
-    @IBOutlet weak var infoDisImageView: NSImageView!
+    @IBOutlet weak var infoUartLabel: NSTextField!
+    @IBOutlet weak var infoDsiImageView: NSImageView!
+    @IBOutlet weak var infoDsiLabel: NSTextField!
     @IBOutlet weak var infoDfuImageView: NSImageView!
+    @IBOutlet weak var infoDfuLabel: NSTextField!
     
-    let kRssiUpdateInterval = 0.5       // in seconds
-    var rssiTimer : NSTimer?
+    private let kRssiUpdateInterval = 0.5       // in seconds
+    private var rssiTimer : NSTimer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        /*
-        infoView.wantsLayer = true
-        infoView.layer?.backgroundColor = NSColor.blueColor().CGColor
-        infoView.layer?.backgroundColor = NSColor.whiteColor().CGColor
-        infoView.layer?.cornerRadius = 4
-        */
         
         infoView.wantsLayer = true
         infoView.layer?.borderWidth = 1
@@ -97,8 +93,8 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
 
         // Add Info tab
         let infoViewController = self.storyboard?.instantiateControllerWithIdentifier("InfoViewController") as! InfoViewController
-        infoViewController.onServicesDiscovered = { [unowned self] in
-            self.servicesDiscovered()
+        infoViewController.onServicesDiscovered = { [weak self] in
+            self?.servicesDiscovered()
         }
         let infoTabViewItem = NSTabViewItem(viewController: infoViewController)
         modeTabView.addTabViewItem(infoTabViewItem)
@@ -113,7 +109,7 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
         for tabViewItem in modeTabView.tabViewItems {
             modeTabView.removeTabViewItem(tabViewItem)
         }
-        
+
         let blePeripheral = BleManager.sharedInstance.blePeripheralConnected
         blePeripheral?.peripheral.delegate = nil
     }
@@ -139,10 +135,12 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
                 // Clear old ones (not 0 that is Info)
                 if (modeTabView.tabViewItems.count > 1) {
                     for i in 1...(modeTabView.tabViewItems.count-1) {
-                        modeTabView.removeTabViewItem(modeTabView.tabViewItems[i])
+                        if modeTabView.tabViewItems.count < i {     // Extra check because sometimes it will access an index out of bounds (if clicking quickly on the peripheral list)
+                            modeTabView.removeTabViewItem(modeTabView.tabViewItems[i])
+                        }
                     }
                 }
-                
+
                 // Check Uart
                 let kUartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"                       // UART service UUID
                 let hasUart = services.contains({ (service : CBService) -> Bool in
@@ -150,13 +148,14 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
                 })
                 
                 infoUartImageView.image = NSImage(named: hasUart ?"NSStatusAvailable":"NSStatusNone")
+                //infoUartLabel.toolTip = "UART Service \(hasUart ? "" : "not ")available"
                 if (hasUart) {
                     // Add Uart tab
                     let uartViewController = self.storyboard?.instantiateControllerWithIdentifier("UartViewController") as! UartViewController
                     let uartTabViewItem = NSTabViewItem(viewController: uartViewController)
                     modeTabView.addTabViewItem(uartTabViewItem)
                 }
-                
+
                 // Check DFU
                 let kNordicDeviceFirmwareUpdateService = "00001530-1212-EFDE-1523-785FEABCD123"    // DFU service UUID
                 let hasDFU = services.contains({ (service : CBService) -> Bool in
@@ -177,7 +176,7 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
                     service.UUID.isEqual(CBUUID(string: kDisServiceUUID))
                 })
                 
-                infoDisImageView.image = NSImage(named: hasDIS ?"NSStatusAvailable":"NSStatusNone")
+                infoDsiImageView.image = NSImage(named: hasDIS ?"NSStatusAvailable":"NSStatusNone")
             }
         }
     }
@@ -191,7 +190,7 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
         }
     }
     
-    // MARK - CBPeripheralDelegate
+    // MARK: - CBPeripheralDelegate
     // Send peripheral delegate methods to tab active (each tab will handle these methods)
     func peripheralDidUpdateName(peripheral: CBPeripheral) {
         if let viewController = modeTabView.selectedTabViewItem?.viewController {
@@ -242,6 +241,14 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate {
         if let viewController = modeTabView.selectedTabViewItem?.viewController {
             (viewController as? CBPeripheralDelegate)?.peripheralDidUpdateRSSI?(peripheral, error: error)
             
+        }
+    }
+    
+    // MARK: NSTabViewDelegate
+    func tabView(tabView: NSTabView, didSelectTabViewItem tabViewItem: NSTabViewItem?) {
+        if let firmwareUpdateViewController = tabViewItem?.viewController as? FirmwareUpdateViewController {
+            // Selected FirmwareUpdateViewController
+            firmwareUpdateViewController.startUpdatesCheck()
         }
     }
 

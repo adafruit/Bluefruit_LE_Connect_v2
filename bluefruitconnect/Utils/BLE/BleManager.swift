@@ -12,9 +12,9 @@ import CoreBluetooth
 class BleManager : NSObject, CBCentralManagerDelegate {
     
     // Configuration
-    static let kIsUndiscoverPeripheralsEnabled = true                   // If true, the BleManager will check periodically if devices are no longer in range
+    static let kIsUndiscoverPeripheralsEnabled = false                   // If true, the BleManager will check periodically if devices are no longer in range (warning: this could cause problems if for some peripherals that dont update its status for a long time)
     static let kUndiscoverCheckPeriod = 1.0                             // in seconds
-    static let kUndiscoverPeripheralConsideredOutOfRangeTime = 30.0      // in seconds
+    static let kUndiscoverPeripheralConsideredOutOfRangeTime = 50.0      // in seconds
     
     // Notifications
     enum BleNotifications : String {
@@ -151,10 +151,8 @@ class BleManager : NSObject, CBCentralManagerDelegate {
 
 //            let elapsedFormatted = String(format:"%.2f", elapsedTime)
 //            DLog("peripheral \(blePeripheral.name): elapsed \( elapsedFormatted )")
-
         }
-        
-        
+
        // DLog("--")
     }
     
@@ -182,8 +180,8 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     }
     
     func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
-        DLog("didConnectPeripheral \(peripheral.name)")
-        
+        DLog("didConnectPeripheral: \(peripheral.name != nil ? peripheral.name! : "")")
+       
         blePeripheralConnecting = nil
         let identifier = peripheral.identifier.UUIDString;
         blePeripheralConnected = blePeripheralsFound[identifier]
@@ -191,7 +189,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     }
     
     func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
-        DLog("didDisconnectPeripheral \(peripheral.name)")
+        DLog("didDisconnectPeripheral: \(peripheral.name != nil ? peripheral.name! : "")")
 
         peripheral.delegate = nil
         if peripheral.identifier == blePeripheralConnected?.peripheral.identifier {
@@ -202,7 +200,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     }
 
     func centralManager(central: CBCentralManager, didFailToConnectPeripheral peripheral: CBPeripheral, error: NSError?) {
-        DLog("didFailToConnectPeripheral \(peripheral.name)")
+        DLog("didFailToConnectPeripheral: \(peripheral.name != nil ? peripheral.name! : "")")
      
         blePeripheralConnecting = nil
         NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil,  userInfo: ["uuid" : peripheral.identifier.UUIDString])

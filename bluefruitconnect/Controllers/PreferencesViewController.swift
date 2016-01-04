@@ -72,6 +72,4 @@ class PreferencesViewController: NSViewController {
             Preferences.uartSentDataColor = sender.color
         }
     }
-
-    
 }

@@ -22,6 +22,7 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
     private var boardRelease : BoardInfo?;
     private var deviceInfoData : DeviceInfoData?;
     
+    private var isCheckingUpdates = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,16 +31,13 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
         firmwareWaitView.startAnimation(nil)
         firmwareCurrentVersionWaitView.startAnimation(nil)
         firmwareCurrentVersionLabel.stringValue = ""
-        
-        //
-        if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
-            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self)
-        }
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
  
+       
+        //
         registerNotifications(true)
     }
     
@@ -48,7 +46,17 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
         
         registerNotifications(false)
     }
-
+    
+    func startUpdatesCheck() {
+        // Refresh updates available
+        if !isCheckingUpdates {
+            if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
+                isCheckingUpdates = true
+                firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self)
+            }
+        }
+    }
+    
     // MARK: - Preferences
     func registerNotifications(register : Bool) {
         
@@ -157,14 +165,11 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
         
 
         firmwareCurrentVersionWaitView.stopAnimation(nil)
-        
-        
     }
     
     func onDfuServiceNotFound() {
         onUpdateDialogError("No DFU Service found on device")
     }
-    
     
     // MARK: - NSTableViewDataSource
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
@@ -176,7 +181,6 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
             return 0
         }
     }
-    
     
     // MARK: NSTableViewDelegate
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -209,7 +213,6 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
                 cell.textField?.stringValue = ""
             }
         }
-        
         
         return cell;
     }
@@ -276,7 +279,6 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
         }
     }
     
-    
     // MARK: - UpdateDialogViewControlerDelegate
     
     func onUpdateDialogCancel() {
@@ -310,9 +312,8 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
             alert.beginSheetModalForWindow(window, completionHandler: nil)
         }
         else {
-            DLog("onUpdateDialogError: window not defined")
+            DLog("onUpdateDialogError: window not defined when showing dialog with message: \(errorMessage)")
         }
   
     }
-    
 }

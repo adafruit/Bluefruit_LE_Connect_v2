@@ -41,6 +41,9 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     @IBOutlet weak var baseTableView: NSTableView!
     @IBOutlet weak var baseTableVisibilityView: NSScrollView!
     
+    @IBOutlet weak var hexModeSegmentedControl: NSSegmentedControl!
+    @IBOutlet weak var displayModeSegmentedControl: NSSegmentedControl!
+    
     @IBOutlet weak var inputTextField: NSTextField!
     @IBOutlet weak var echoButton: NSButton!
     @IBOutlet weak var eolButton: NSButton!
@@ -55,12 +58,6 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     private var txCharacteristic : CBCharacteristic?
 
     // Current State
-    /*
-    private var isInHexMode = false
-    private var isEchoEnabled = true;
-    private var isAutomaticEolEnabled = true;
-    private var displayMode = DisplayMode.Text
-*/
     private var dataBuffer = [DataChunk]()
     private var tableModeDataMaxWidth : CGFloat = 0
 
@@ -77,11 +74,12 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         // Init Data
         timestampDateFormatter.setLocalizedDateFormatFromTemplate("HH:mm:ss:SSSS")
         
+        // Init UI
+        hexModeSegmentedControl.selectedSegment = Preferences.uartIsInHexMode ? 1:0
+        displayModeSegmentedControl.selectedSegment = Preferences.uartIsDisplayModeTimestamp ? 1:0
+        
         echoButton.state = Preferences.uartIsEchoEnabled ? NSOnState:NSOffState
         eolButton.state = Preferences.uartIsAutomaticEolEnabled ? NSOnState:NSOffState
-        
-//        isEchoEnabled = echoButton.state == NSOnState
-//        isAutomaticEolEnabled = eolButton.state == NSOnState
         
         // Wait till uart is ready
         inputTextField.enabled = false
@@ -191,10 +189,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         NSNotificationCenter.defaultCenter().postNotificationName(UartNotifications.DidTransferData.rawValue, object: nil);
     }
     
-    
-    
     // MARK: - UI updates
-    
     func addChunkToUI(dataChunk : DataChunk) {
         let displayMode = Preferences.uartIsDisplayModeTimestamp ? DisplayMode.Table : DisplayMode.Text
         
@@ -362,16 +357,13 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
                         catch let error {
                             DLog("Error exporting file \(url.absoluteString): \(error)")
                         }
-
                     }
                 }
             }
         }
     }
     
-    
     // MARK: - Export to file
-
     func dataAsText(url : NSURL) -> String? {
         // Compile all data
         let data = NSMutableData()
@@ -419,8 +411,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         return text
     }
     
-    
-     // MARK: - CBPeripheralDelegate
+    // MARK: - CBPeripheralDelegate
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
         
         if (uartService == nil) {
@@ -554,13 +545,10 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
             }
         }
         
-        
         return cell;
     }
     
     func tableViewSelectionDidChange(notification: NSNotification) {
-        
-
     }
     
     func tableViewColumnDidResize(notification: NSNotification) {
@@ -570,9 +558,8 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
                 if (tableColumn.width < tableModeDataMaxWidth) {
                     tableColumn.width = tableModeDataMaxWidth
                 }
-                DLog("column: \(tableColumn), width: \(tableColumn.width)")
+                //DLog("column: \(tableColumn), width: \(tableColumn.width)")
             }
         }
-        
     }
 }
