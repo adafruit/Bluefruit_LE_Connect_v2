@@ -7,26 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A92BA69C1BBDBC210093F701 /* StatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92BA69B1BBDBC210093F701 /* StatusManager.swift */; settings = {ASSET_TAGS = (); }; };
-		A932A5A91BB92A640096D78A /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932A5A81BB92A640096D78A /* MainWindowController.swift */; settings = {ASSET_TAGS = (); }; };
-		A93AF9BF1BCEDCA000B7BC59 /* RssiUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9BE1BCEDCA000B7BC59 /* RssiUI.swift */; settings = {ASSET_TAGS = (); }; };
-		A94370A01BB5A1E5002521F7 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A943709F1BB5A1E5002521F7 /* DetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		A94370A31BB5AF70002521F7 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370A11BB5AF70002521F7 /* InfoViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		A94370A71BB6384B002521F7 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A94370A61BB6384B002521F7 /* GattUUIDs.plist */; settings = {ASSET_TAGS = (); }; };
-		A94370A91BB63BA5002521F7 /* UartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370A81BB63BA5002521F7 /* UartViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		A94370BA1BB6493A002521F7 /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AB1BB6493A002521F7 /* BleManager.swift */; settings = {ASSET_TAGS = (); }; };
-		A94370BB1BB6493A002521F7 /* BlePeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AC1BB6493A002521F7 /* BlePeripheral.swift */; settings = {ASSET_TAGS = (); }; };
-		A94370CF1BB64959002521F7 /* BLEOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370C51BB64959002521F7 /* BLEOperations.m */; settings = {ASSET_TAGS = (); }; };
-		A94370D01BB64959002521F7 /* DFUOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370C71BB64959002521F7 /* DFUOperations.m */; settings = {ASSET_TAGS = (); }; };
-		A94370D11BB64959002521F7 /* DFUOperationsDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370C91BB64959002521F7 /* DFUOperationsDetails.m */; settings = {ASSET_TAGS = (); }; };
-		A94370D21BB64959002521F7 /* FileOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370CB1BB64959002521F7 /* FileOperations.m */; settings = {ASSET_TAGS = (); }; };
-		A94370D31BB64959002521F7 /* IntelHex2BinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370CE1BB64959002521F7 /* IntelHex2BinConverter.m */; settings = {ASSET_TAGS = (); }; };
-		A94370D71BB649AE002521F7 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370D61BB649AE002521F7 /* Utility.m */; settings = {ASSET_TAGS = (); }; };
-		A94B85101BB65C48007B88C7 /* FirmwareUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = A94B850F1BB65C48007B88C7 /* FirmwareUpdater.m */; settings = {ASSET_TAGS = (); }; };
-		A94B85131BB65C71007B88C7 /* ReleasesParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A94B85121BB65C71007B88C7 /* ReleasesParser.m */; settings = {ASSET_TAGS = (); }; };
-		A94B851B1BB6E24D007B88C7 /* UpdateDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94B85191BB6E24D007B88C7 /* UpdateDialogViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		A94B851E1BB704BC007B88C7 /* HexConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94B851D1BB704BC007B88C7 /* HexConversions.swift */; settings = {ASSET_TAGS = (); }; };
-		A97EB2021BB64D750069D9C9 /* FirmwareUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97EB2001BB64D750069D9C9 /* FirmwareUpdateViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		A92BA69C1BBDBC210093F701 /* StatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92BA69B1BBDBC210093F701 /* StatusManager.swift */; };
+		A932A5A91BB92A640096D78A /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A932A5A81BB92A640096D78A /* MainWindowController.swift */; };
+		A93AF9BF1BCEDCA000B7BC59 /* RssiUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93AF9BE1BCEDCA000B7BC59 /* RssiUI.swift */; };
+		A94370A01BB5A1E5002521F7 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A943709F1BB5A1E5002521F7 /* DetailsViewController.swift */; };
+		A94370A31BB5AF70002521F7 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370A11BB5AF70002521F7 /* InfoViewController.swift */; };
+		A94370A71BB6384B002521F7 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A94370A61BB6384B002521F7 /* GattUUIDs.plist */; };
+		A94370A91BB63BA5002521F7 /* UartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370A81BB63BA5002521F7 /* UartViewController.swift */; };
+		A94370BA1BB6493A002521F7 /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AB1BB6493A002521F7 /* BleManager.swift */; };
+		A94370BB1BB6493A002521F7 /* BlePeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AC1BB6493A002521F7 /* BlePeripheral.swift */; };
+		A94370CF1BB64959002521F7 /* BLEOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370C51BB64959002521F7 /* BLEOperations.m */; };
+		A94370D01BB64959002521F7 /* DFUOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370C71BB64959002521F7 /* DFUOperations.m */; };
+		A94370D11BB64959002521F7 /* DFUOperationsDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370C91BB64959002521F7 /* DFUOperationsDetails.m */; };
+		A94370D21BB64959002521F7 /* FileOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370CB1BB64959002521F7 /* FileOperations.m */; };
+		A94370D31BB64959002521F7 /* IntelHex2BinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370CE1BB64959002521F7 /* IntelHex2BinConverter.m */; };
+		A94370D71BB649AE002521F7 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370D61BB649AE002521F7 /* Utility.m */; };
+		A94B85101BB65C48007B88C7 /* FirmwareUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = A94B850F1BB65C48007B88C7 /* FirmwareUpdater.m */; };
+		A94B85131BB65C71007B88C7 /* ReleasesParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A94B85121BB65C71007B88C7 /* ReleasesParser.m */; };
+		A94B851B1BB6E24D007B88C7 /* UpdateDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94B85191BB6E24D007B88C7 /* UpdateDialogViewController.swift */; };
+		A94B851E1BB704BC007B88C7 /* HexConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94B851D1BB704BC007B88C7 /* HexConversions.swift */; };
+		A97EB2021BB64D750069D9C9 /* FirmwareUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97EB2001BB64D750069D9C9 /* FirmwareUpdateViewController.swift */; };
 		A982966C1BB1F5E600DD478C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982966B1BB1F5E600DD478C /* AppDelegate.swift */; };
 		A98296731BB1F5E600DD478C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A98296711BB1F5E600DD478C /* Main.storyboard */; };
 		A982967E1BB1F6FD00DD478C /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982967D1BB1F6FD00DD478C /* MainSplitViewController.swift */; };
@@ -34,14 +34,14 @@
 		A982968B1BB222D700DD478C /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982968A1BB222D700DD478C /* LogHelper.swift */; };
 		A982968F1BB22D2100DD478C /* PeripheralTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982968E1BB22D2100DD478C /* PeripheralTableCellView.swift */; };
 		A98296911BB2380F00DD478C /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98296901BB2380F00DD478C /* StatusViewController.swift */; };
-		A98E03951BBA2A0300F8924C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A98E03941BBA2A0300F8924C /* Credits.rtf */; settings = {ASSET_TAGS = (); }; };
-		A98E03971BBA2A1C00F8924C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98E03961BBA2A1C00F8924C /* Images.xcassets */; settings = {ASSET_TAGS = (); }; };
-		A98E03A31BBA3EEE00F8924C /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98E03A21BBA3EEE00F8924C /* Preferences.swift */; settings = {ASSET_TAGS = (); }; };
-		A98E03A51BBA406700F8924C /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98E03A41BBA406700F8924C /* DefaultPreferences.plist */; settings = {ASSET_TAGS = (); }; };
-		A995DAAD1BD689F20039C6DF /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A995DAAC1BD689F20039C6DF /* PreferencesViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		A9A842411BD1276C003B925A /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A842401BD1276C003B925A /* SeparatorView.swift */; settings = {ASSET_TAGS = (); }; };
-		A9BDC6FE1BBCC65A00766400 /* NSColor+hex.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BDC6FD1BBCC65A00766400 /* NSColor+hex.m */; settings = {ASSET_TAGS = (); }; };
-		A9FE75731BB9CF1000F7A5BF /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FE75721BB9CF1000F7A5BF /* XMLDictionary.m */; settings = {ASSET_TAGS = (); }; };
+		A98E03951BBA2A0300F8924C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A98E03941BBA2A0300F8924C /* Credits.rtf */; };
+		A98E03971BBA2A1C00F8924C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98E03961BBA2A1C00F8924C /* Images.xcassets */; };
+		A98E03A31BBA3EEE00F8924C /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98E03A21BBA3EEE00F8924C /* Preferences.swift */; };
+		A98E03A51BBA406700F8924C /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98E03A41BBA406700F8924C /* DefaultPreferences.plist */; };
+		A995DAAD1BD689F20039C6DF /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A995DAAC1BD689F20039C6DF /* PreferencesViewController.swift */; };
+		A9A842411BD1276C003B925A /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A842401BD1276C003B925A /* SeparatorView.swift */; };
+		A9BDC6FE1BBCC65A00766400 /* NSColor+hex.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BDC6FD1BBCC65A00766400 /* NSColor+hex.m */; };
+		A9FE75731BB9CF1000F7A5BF /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FE75721BB9CF1000F7A5BF /* XMLDictionary.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -322,7 +322,6 @@
 				TargetAttributes = {
 					A98296671BB1F5E600DD478C = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 2X94RM7457;
 					};
 				};
 			};
@@ -500,7 +499,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
+				PRODUCT_BUNDLE_IDENTIFIER = "adafruit.Bluefruit-Buddy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/BluefruitConnect-Bridging-Header.h";
 			};
@@ -515,7 +514,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
+				PRODUCT_BUNDLE_IDENTIFIER = "adafruit.Bluefruit-Buddy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/BluefruitConnect-Bridging-Header.h";
 			};
