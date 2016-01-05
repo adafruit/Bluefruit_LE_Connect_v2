@@ -97,18 +97,23 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
     }
     
     func tableViewSelectionIsChanging(notification: NSNotification) {   // Note: used tableViewSelectionIsChanging instead of tableViewSelectionDidChange because if a didDiscoverPeripheral notification arrives when the user is changing the row but before the user releases the mouse button, then it would be cancelled (and the user would notice that something weird happened)
-        
-        let bleManager = BleManager.sharedInstance
+
+        peripheralSelectedChanged()
+    }
+    
+    func tableViewSelectionDidChange(notification: NSNotification) {
+        peripheralSelectedChanged()
+    }
+    
+    func peripheralSelectedChanged() {
         let newSelectedRow = baseTableView.selectedRow
         //        DLog("tableViewSelectionDidChange: \(newSelectedRow)")
         if (newSelectedRow != currentSelectedRow) {
             DLog("Peripheral selected row: \(newSelectedRow)")
+            let bleManager = BleManager.sharedInstance
             connectToPeripheral(newSelectedRow >= 0 ? bleManager.blePeripheralFoundAlphabeticKeys()[newSelectedRow] : nil)
             currentSelectedRow = newSelectedRow
         }
-    }
-    
-    func tableViewSelectionDidChange(notification: NSNotification) {
     }
     
     // MARK: -
