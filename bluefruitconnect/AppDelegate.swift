@@ -36,7 +36,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         
         // Add system status button
         setupStatusButton()
-        
     }
     
     func applicationWillTerminate(aNotification: NSNotification) {
@@ -212,8 +211,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @IBAction func onRefreshPeripherals(sender: AnyObject) {
         BleManager.sharedInstance.refreshPeripherals()
     }
-    
-    
+
     /* launch app from menuitem
     [[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
     [_window makeKeyAndOrderFront:self];

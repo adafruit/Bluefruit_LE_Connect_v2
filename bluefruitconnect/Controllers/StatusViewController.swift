@@ -18,7 +18,6 @@ class StatusViewController: NSViewController {
         super.viewDidLoad()
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didUpdateStatus:", name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
-        
     }
     
     deinit {

@@ -35,9 +35,7 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
     
     override func viewWillAppear() {
         super.viewWillAppear()
- 
-       
-        //
+        
         registerNotifications(true)
     }
     
@@ -313,7 +311,6 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
         }
         else {
             DLog("onUpdateDialogError: window not defined when showing dialog with message: \(errorMessage)")
-        }
-  
+        }  
     }
 }

@@ -11,7 +11,7 @@ import CoreBluetooth
 
 
 class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate {
-    let kExpandAllNodes  = true
+    private static let kExpandAllNodes  = true
     
     @IBOutlet weak var baseTableView: NSOutlineView!
     
@@ -183,23 +183,21 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
     }
     
     
-    // MARK - CBPeripheralDelegate
+    // MARK: - CBPeripheralDelegate
     
     func peripheralDidUpdateName(peripheral: CBPeripheral) {
-        DLog("centralManager peripheralDidUpdateName  \(peripheral.name)")
+        DLog("centralManager peripheralDidUpdateName: \(peripheral.name != nil ? peripheral.name! : "")")
         discoverServices()
     }
     func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
-        DLog("centralManager didModifyServices  \(peripheral.name)")
+        DLog("centralManager didModifyServices: \(peripheral.name != nil ? peripheral.name! : "")")
         discoverServices()
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
-       // DLog("centralManager didDiscoverServices  \(peripheral.name)")
+        DLog("centralManager didDiscoverServices: \(peripheral.name != nil ? peripheral.name! : "")")
         
         services = blePeripheral?.peripheral.services
-        baseTableView.reloadData()
-        onServicesDiscovered?()
         
         // Discover characteristics
         if let services = services {
@@ -207,11 +205,17 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
                 blePeripheral?.peripheral.discoverCharacteristics(nil, forService: service)
             }
         }
+        
+        // Update UI
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            
+            self.baseTableView.reloadData()
+            self.onServicesDiscovered?()
+            })
     }
 
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
-       // DLog("centralManager didDiscoverCharacteristicsForService  \(service.UUID.UUIDString)")
-        baseTableView.reloadData()
+        DLog("centralManager didDiscoverCharacteristicsForService: \(service.UUID.UUIDString)")
         
         var discoveringDescriptors = false
         if let characteristics = service.characteristics {
@@ -227,27 +231,45 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
             }
         }
         
-        if (!discoveringDescriptors && kExpandAllNodes) {
-            // Expand all nodes if not waiting for descriptors
-            baseTableView.expandItem(nil, expandChildren: true)
-        }
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.baseTableView.reloadData()
+            if (!discoveringDescriptors && InfoViewController.kExpandAllNodes) {
+                // Expand all nodes if not waiting for descriptors
+                self.baseTableView.expandItem(nil, expandChildren: true)
+            }
+            })
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        baseTableView.reloadData()
         
-        if (kExpandAllNodes) {
-            // Expand all nodes
-            baseTableView.expandItem(nil, expandChildren: true)
-        }
+        DLog("centralManager didDiscoverDescriptorsForCharacteristic: \(characteristic.UUID.UUIDString)")
+
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            
+            self.baseTableView.reloadData()
+            
+            if (InfoViewController.kExpandAllNodes) {
+                // Expand all nodes
+                self.baseTableView.expandItem(nil, expandChildren: true)
+            }
+            })
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        baseTableView.reloadData()
+        DLog("centralManager didUpdateValueForCharacteristic: \(characteristic.UUID.UUIDString)")
+
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            
+            self.baseTableView.reloadData()
+            })
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
-        baseTableView.reloadData()
+        DLog("centralManager didUpdateValueForDescriptor: \(descriptor.UUID.UUIDString)")
+
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.baseTableView.reloadData()
+            })
     }
     
     

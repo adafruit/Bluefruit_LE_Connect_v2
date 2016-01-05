@@ -52,19 +52,22 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
     }
 
     func didDisconnectFromPeripheral(notification : NSNotification) {
-        if (BleManager.sharedInstance.blePeripheralConnected == nil && baseTableView.selectedRow >= 0) {
-
-            // Unexpected disconnect if the row is still selected but the connected peripheral is nil and the time since the user selected a new peripheral is bigger than 1 second
-            if (CFAbsoluteTimeGetCurrent() - lastUserSelection > 1) {
-                baseTableView.deselectAll(nil)
-
-                let alert = NSAlert()
-                alert.messageText = "Peripheral disconnected"
-                alert.addButtonWithTitle("Ok")
-                alert.alertStyle = .WarningAlertStyle
-                alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
+        dispatch_async(dispatch_get_main_queue(), {[unowned self] in
+            
+            if (BleManager.sharedInstance.blePeripheralConnected == nil && self.baseTableView.selectedRow >= 0) {
+                
+                // Unexpected disconnect if the row is still selected but the connected peripheral is nil and the time since the user selected a new peripheral is bigger than 1 second
+                if (CFAbsoluteTimeGetCurrent() - self.lastUserSelection > 1) {
+                    self.baseTableView.deselectAll(nil)
+                    
+                    let alert = NSAlert()
+                    alert.messageText = "Peripheral disconnected"
+                    alert.addButtonWithTitle("Ok")
+                    alert.alertStyle = .WarningAlertStyle
+                    alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
+                }
             }
-        }
+            })
     }
 
     // MARK: - NSTableViewDataSource
@@ -137,6 +140,7 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
         
         if (identifier != bleManager.blePeripheralConnected?.peripheral.identifier.UUIDString || identifier == nil) {
             
+            //
             let blePeripheralsFound = bleManager.blePeripheralsFound
             lastUserSelection = CFAbsoluteTimeGetCurrent()
 

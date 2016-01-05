@@ -25,8 +25,7 @@ class StatusManager : NSObject {
         case Unsupported
         case Unathorized
         case PoweredOff
-        case Ready
-        
+        case Ready        
     }
     
     var status = Status.Unknown

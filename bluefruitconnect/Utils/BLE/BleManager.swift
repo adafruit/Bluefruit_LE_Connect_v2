@@ -12,6 +12,10 @@ import CoreBluetooth
 class BleManager : NSObject, CBCentralManagerDelegate {
     
     // Configuration
+    static let kStopScanningWhenConnectingToPeripheral = false
+    static let kUseBakgroundQueue = true
+    static let kAlwaysAllowDuplicateKeys = true
+    
     static let kIsUndiscoverPeripheralsEnabled = false                   // If true, the BleManager will check periodically if devices are no longer in range (warning: this could cause problems if for some peripherals that dont update its status for a long time)
     static let kUndiscoverCheckPeriod = 1.0                             // in seconds
     static let kUndiscoverPeripheralConsideredOutOfRangeTime = 50.0      // in seconds
@@ -45,7 +49,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     override init() {
         super.init()
         
-        centralManager = CBCentralManager(delegate: self, queue: nil)
+        centralManager = CBCentralManager(delegate: self, queue: BleManager.kUseBakgroundQueue ? dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0) : nil)
     }
     
     func restoreCentralManager() {
@@ -63,7 +67,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
              undiscoverTimer = NSTimer.scheduledTimerWithTimeInterval(BleManager.kUndiscoverCheckPeriod, target: self, selector:"checkUndiscoveredPeripherals", userInfo: nil, repeats: true)
         }
         
-        let allowDuplicateKeys = BleManager.kIsUndiscoverPeripheralsEnabled
+        let allowDuplicateKeys = BleManager.kAlwaysAllowDuplicateKeys || BleManager.kIsUndiscoverPeripheralsEnabled
         let scanOptions = allowDuplicateKeys ? [CBCentralManagerScanOptionAllowDuplicatesKey : true] as [String: AnyObject]? : nil
         centralManager?.scanForPeripheralsWithServices(nil, options: scanOptions)
         
@@ -100,6 +104,13 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     
     
     func connect(blePeripheral : BlePeripheral) {
+        
+        // Stop scanning when connecting to a peripheral (to improve discovery time)
+        if (BleManager.kStopScanningWhenConnectingToPeripheral) {
+            stopScan()
+        }
+
+        // Connect
         blePeripheralConnecting = blePeripheral
         NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.WillConnectToPeripheral.rawValue, object: nil, userInfo: ["uuid" : blePeripheral.peripheral.identifier.UUIDString])
 
@@ -119,7 +130,6 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     // MARK: - CBCentralManagerDelegate
     func centralManagerDidUpdateState(central: CBCentralManager) {
         DLog("centralManagerDidUpdateState \(central.state.rawValue)")
-        NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidUpdateBleState.rawValue, object: nil, userInfo: ["state" : central.state.rawValue])
         
         if (central.state == .PoweredOn) {
             if (wasScanningBeforeBluetoothOff) {
@@ -135,6 +145,8 @@ class BleManager : NSObject, CBCentralManagerDelegate {
             
             isScanning = false
         }
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidUpdateBleState.rawValue, object: nil, userInfo: ["state" : central.state.rawValue])
     }
     
     func checkUndiscoveredPeripherals() {

@@ -185,7 +185,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         dispatch_async(dispatch_get_main_queue(), {[unowned self] in
             self.addChunkToUI(dataChunk)
         })
-        
+
         NSNotificationCenter.defaultCenter().postNotificationName(UartNotifications.DidTransferData.rawValue, object: nil);
     }
     
