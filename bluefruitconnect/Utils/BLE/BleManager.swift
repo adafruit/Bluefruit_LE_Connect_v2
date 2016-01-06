@@ -172,7 +172,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         
         let identifierString = peripheral.identifier.UUIDString
         //DLog("didDiscoverPeripheral \(peripheral.name)")
-        if var existingPeripheral = blePeripheralsFound[identifierString] {
+        if let existingPeripheral = blePeripheralsFound[identifierString] {
             // Existing peripheral. Update advertisement data because each time is discovered the advertisement data could miss some of the keys (sometimes a sevice is there, and other times has dissapeared)
 
             existingPeripheral.rssi = RSSI.integerValue

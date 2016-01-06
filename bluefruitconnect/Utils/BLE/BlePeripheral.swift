@@ -9,7 +9,7 @@
 import Foundation
 import CoreBluetooth
 
-struct BlePeripheral {
+class BlePeripheral {
     var peripheral : CBPeripheral!
     var advertisementData : [String : AnyObject]
     var rssi : Int

@@ -27,7 +27,7 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
     @IBOutlet weak var infoDfuImageView: NSImageView!
     @IBOutlet weak var infoDfuLabel: NSTextField!
     
-    private static let kRssiUpdateInterval = 0.5       // in seconds
+    private static let kRssiUpdateInterval = 2.0       // in seconds
     private var rssiTimer : NSTimer?
     
     override func viewDidLoad() {
@@ -88,10 +88,10 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
             
             // UI: Info
             self.infoNameLabel.stringValue = blePeripheral.name
-            self.updateRssi()
+            self.updateRssiUI()
             
             self.cancelRssiTimer()
-            self.rssiTimer = NSTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: "updateRssi", userInfo: nil, repeats: true)
+            self.rssiTimer = NSTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: "requestUpdateRssi", userInfo: nil, repeats: true)
             
             // UI: Add Info tab
             let infoViewController = self.storyboard?.instantiateControllerWithIdentifier("InfoViewController") as! InfoViewController
@@ -103,6 +103,14 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
             
             self.modeTabView.selectFirstTabViewItem(nil)
         })
+    }
+    
+    func requestUpdateRssi() {
+        
+        if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
+            //DLog("request rssi for \(blePeripheral.name)")
+            blePeripheral.peripheral.readRSSI()
+        }
     }
 
     func willDisconnectFromPeripheral(notification : NSNotification) {
@@ -187,7 +195,7 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
         }
     }
     
-    func updateRssi() {
+    func updateRssiUI() {
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
             let rssi = blePeripheral.rssi
             //DLog("rssi: \(rssi)")
@@ -248,14 +256,24 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
     }
     
     func peripheralDidUpdateRSSI(peripheral: CBPeripheral, error: NSError?) {
-        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            self.updateRssi()
-        })
-        
-        if let viewController = modeTabView.selectedTabViewItem?.viewController {
-            (viewController as? CBPeripheralDelegate)?.peripheralDidUpdateRSSI?(peripheral, error: error)
+
+        // Update peripheral rssi
+        let identifierString = peripheral.identifier.UUIDString
+        if let existingPeripheral = BleManager.sharedInstance.blePeripheralsFound[identifierString], rssi =  peripheral.RSSI?.integerValue {
+            existingPeripheral.rssi = rssi
+//            DLog("received rssi for \(existingPeripheral.name): \(rssi)")
             
+            // Update UI
+            dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+                self.updateRssiUI()
+                })
+            
+            if let viewController = modeTabView.selectedTabViewItem?.viewController {
+                (viewController as? CBPeripheralDelegate)?.peripheralDidUpdateRSSI?(peripheral, error: error)
+                
+            }
         }
+
     }
     
     // MARK: NSTabViewDelegate
