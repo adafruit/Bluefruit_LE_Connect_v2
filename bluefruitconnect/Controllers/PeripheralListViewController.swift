@@ -137,7 +137,7 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
    
     func connectToPeripheral(identifier : String?) {
         let bleManager = BleManager.sharedInstance
-        
+
         if (identifier != bleManager.blePeripheralConnected?.peripheral.identifier.UUIDString || identifier == nil) {
             
             //
@@ -146,10 +146,14 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
 
             // Disconnect from previous
             if (currentSelectedRow >= 0) {
-                let selectedBlePeripheralIdentifier = bleManager.blePeripheralFoundAlphabeticKeys()[currentSelectedRow];
-                let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-
-                BleManager.sharedInstance.disconnect(blePeripheral)
+                
+                let blePeripherals = bleManager.blePeripheralFoundAlphabeticKeys()
+                if currentSelectedRow < blePeripherals.count {      // To avoid problems with peripherals disconnecting
+                    let selectedBlePeripheralIdentifier = blePeripherals[currentSelectedRow];
+                    let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
+                    
+                    BleManager.sharedInstance.disconnect(blePeripheral)
+                }
                 currentSelectedPeripheralIdentifier = nil
             }
             

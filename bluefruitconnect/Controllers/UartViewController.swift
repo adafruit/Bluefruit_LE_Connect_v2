@@ -464,7 +464,6 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
                     self.inputTextField.backgroundColor = NSColor.whiteColor()
                 });
             }
-            
         }
     }
 

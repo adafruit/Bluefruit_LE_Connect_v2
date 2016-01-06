@@ -34,5 +34,4 @@ class MainSplitViewController: NSSplitViewController {
                 return proposedPosition
             }
     }
-    
 }

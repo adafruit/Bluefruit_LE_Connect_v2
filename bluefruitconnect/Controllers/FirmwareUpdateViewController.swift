@@ -148,21 +148,26 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
         else {
             DLog("Warning: no releases found for this board")
         }
-        firmwareWaitView.stopAnimation(nil)
-        firmwareTableView.reloadData()
         
-        firmwareCurrentVersionLabel.stringValue = "<Unknown>"
-        if let deviceInfoData = deviceInfoData {
-            if (deviceInfoData.hasDefaultBootloaderVersion()) {
-                onUpdateDialogError("The legacy bootloader on this device is not compatible with this application")
-            }
-            if (deviceInfoData.softwareRevision != nil) {
-                firmwareCurrentVersionLabel.stringValue = deviceInfoData.softwareRevision
-            }
-        }
+        // Update UI
         
-
-        firmwareCurrentVersionWaitView.stopAnimation(nil)
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.firmwareWaitView.stopAnimation(nil)
+            self.firmwareTableView.reloadData()
+            
+            self.firmwareCurrentVersionLabel.stringValue = "<Unknown>"
+            if let deviceInfoData = deviceInfoData {
+                if (deviceInfoData.hasDefaultBootloaderVersion()) {
+                    self.onUpdateDialogError("The legacy bootloader on this device is not compatible with this application")
+                }
+                if (deviceInfoData.softwareRevision != nil) {
+                    self.firmwareCurrentVersionLabel.stringValue = deviceInfoData.softwareRevision
+                }
+            }
+            
+            
+            self.firmwareCurrentVersionWaitView.stopAnimation(nil)
+            })
     }
     
     func onDfuServiceNotFound() {

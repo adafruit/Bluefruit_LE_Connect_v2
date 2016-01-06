@@ -13,7 +13,6 @@ class MainWindowController: NSWindowController {
     @IBOutlet weak var startScanItem: NSToolbarItem!
     @IBOutlet weak var stopScanItem: NSToolbarItem!
     
-    
      override func windowDidLoad() {
         super.windowDidLoad()
 
@@ -27,7 +26,6 @@ class MainWindowController: NSWindowController {
     override func validateToolbarItem(theItem: NSToolbarItem) -> Bool {
         return theItem.enabled
     }
-    
     
     @IBAction func onClickScan(sender: NSToolbarItem) {
         let tag = sender.tag
@@ -51,6 +49,5 @@ class MainWindowController: NSWindowController {
         
         startScanItem.enabled = !isScanning
         stopScanItem.enabled = isScanning
-    }
-    
+    }    
 }
