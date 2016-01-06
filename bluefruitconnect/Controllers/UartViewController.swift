@@ -62,6 +62,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     private var tableModeDataMaxWidth : CGFloat = 0
 
     // UI
+    private var dataFont = NSFont(name: "CourierNewPSMT", size: 13)!
     private var txColor = Preferences.uartSentDataColor
     private var rxColor = Preferences.uartReceveivedDataColor
     private let timestampDateFormatter = NSDateFormatter()
@@ -104,6 +105,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         super.viewWillAppear()
 
         registerNotifications(true)
+        
     }
     
     override func viewDidDisappear() {
@@ -225,14 +227,16 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     func attributeTextFromData(data : NSData, useHexMode : Bool, color : NSColor) -> NSAttributedString? {
         var attributedString : NSAttributedString?
 
+        let textAttributes : [String:AnyObject] = [NSFontAttributeName : dataFont, NSForegroundColorAttributeName: color]
+        
         if (useHexMode) {
             let hexValue = hexString(data)
-            attributedString = NSAttributedString(string: hexValue, attributes: [NSForegroundColorAttributeName: color])
+            attributedString = NSAttributedString(string: hexValue, attributes: textAttributes)
         }
         else {
             let utf8Value = NSString(data:data, encoding: NSUTF8StringEncoding) as String?
             if let utf8Value = utf8Value {
-                attributedString = NSAttributedString(string: utf8Value, attributes: [NSForegroundColorAttributeName: color])
+                attributedString = NSAttributedString(string: utf8Value, attributes: textAttributes)
             }
         }
  

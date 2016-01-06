@@ -1328,17 +1328,17 @@
                             <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2zB-rf-t1N">
                                 <rect key="frame" x="10" y="90" width="914" height="185"/>
                                 <clipView key="contentView" id="se9-vM-WJd">
-                                    <rect key="frame" x="1" y="1" width="912" height="183"/>
+                                    <rect key="frame" x="1" y="1" width="897" height="183"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textView editable="NO" importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="gHG-0w-TO8">
-                                            <rect key="frame" x="0.0" y="0.0" width="912" height="183"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="897" height="183"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="912" height="183"/>
+                                            <size key="minSize" width="897" height="183"/>
                                             <size key="maxSize" width="1044" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="minSize" width="912" height="183"/>
+                                            <size key="minSize" width="897" height="183"/>
                                             <size key="maxSize" width="1044" height="10000000"/>
                                         </textView>
                                     </subviews>
@@ -1349,7 +1349,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="1xL-UV-Sti">
-                                    <rect key="frame" x="897" y="1" width="16" height="183"/>
+                                    <rect key="frame" x="898" y="1" width="15" height="183"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
