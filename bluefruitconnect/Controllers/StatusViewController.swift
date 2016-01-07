@@ -27,20 +27,23 @@ class StatusViewController: NSViewController {
     func didUpdateStatus(notification : NSNotification) {
         
         let message = StatusManager.sharedInstance.statusDescription()
-        setText(message)
         
-        if (!isAlertBeingPresented) {       // Dont show a alert while another alert is being presented
-            if let errorMessage = StatusManager.sharedInstance.errorDescription() {
-                isAlertBeingPresented = true
-                let alert = NSAlert()
-                alert.messageText = errorMessage
-                alert.addButtonWithTitle("Ok")
-                alert.alertStyle = .WarningAlertStyle
-                alert.beginSheetModalForWindow(self.view.window!, completionHandler: { [unowned self] (modalResponse) -> Void in
-                    self.isAlertBeingPresented = false
-                    })
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.setText(message)
+            
+            if (!self.isAlertBeingPresented) {       // Dont show a alert while another alert is being presented
+                if let errorMessage = StatusManager.sharedInstance.errorDescription() {
+                    self.isAlertBeingPresented = true
+                    let alert = NSAlert()
+                    alert.messageText = errorMessage
+                    alert.addButtonWithTitle("Ok")
+                    alert.alertStyle = .WarningAlertStyle
+                    alert.beginSheetModalForWindow(self.view.window!, completionHandler: { [unowned self] (modalResponse) -> Void in
+                        self.isAlertBeingPresented = false
+                        })
+                }
             }
-        }
+            })
     }
     
     func setText(text : String) {

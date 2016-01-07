@@ -1016,11 +1016,11 @@
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ft6-BK-pha">
                                 <rect key="frame" x="10" y="10" width="486" height="280"/>
                                 <clipView key="contentView" id="O1c-aY-CNR">
-                                    <rect key="frame" x="1" y="0.0" width="484" height="264"/>
+                                    <rect key="frame" x="1" y="0.0" width="484" height="279"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="ezI-Wm-v5t" viewBased="YES" indentationPerLevel="16" outlineTableColumn="V0h-5C-jYc" id="EXN-pz-48J">
-                                            <rect key="frame" x="0.0" y="0.0" width="790" height="241"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="790" height="256"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1188,7 +1188,7 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="hqs-79-h3I">
-                                    <rect key="frame" x="1" y="264" width="484" height="15"/>
+                                    <rect key="frame" x="1" y="263" width="484" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="0V1-hj-sf4">
@@ -1610,19 +1610,45 @@
                         <outlet property="hexModeSegmentedControl" destination="qj6-rZ-ofo" id="y1K-SC-ovN"/>
                         <outlet property="inputTextField" destination="Ejj-TA-o4l" id="uki-ok-opA"/>
                         <outlet property="receivedBytesLabel" destination="GCh-17-bp6" id="nIg-6j-aa0"/>
+                        <outlet property="saveDialogCustomView" destination="e3X-hw-fJj" id="ASZ-uC-7qF"/>
+                        <outlet property="saveDialogPopupButton" destination="KVn-y6-I0O" id="mo9-zw-cLs"/>
                         <outlet property="sentBytesLabel" destination="Qwa-a3-I8x" id="lVN-VR-yEV"/>
                     </connections>
                 </viewController>
                 <customObject id="AWi-0w-Ekz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <segmentedCell controlSize="small" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="L37-GJ-p1s">
-                    <font key="font" metaFont="smallSystem"/>
-                    <segments>
-                        <segment width="36"/>
-                        <segment width="36" tag="1"/>
-                    </segments>
-                </segmentedCell>
+                <customView id="e3X-hw-fJj">
+                    <rect key="frame" x="0.0" y="0.0" width="311" height="96"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vtV-bf-UaN">
+                            <rect key="frame" x="99" y="40" width="76" height="17"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="File Format:" id="Wyg-bp-gHQ">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KVn-y6-I0O">
+                            <rect key="frame" x="181" y="35" width="37" height="26"/>
+                            <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="JN6-aR-VhL">
+                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="zQ0-zk-hxu"/>
+                            </popUpButtonCell>
+                            <connections>
+                                <action selector="onExportFormatChanged:" target="BSx-6V-BNK" id="NK1-AB-hZJ"/>
+                            </connections>
+                        </popUpButton>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="KVn-y6-I0O" firstAttribute="leading" secondItem="vtV-bf-UaN" secondAttribute="trailing" constant="10" id="4Fa-cM-pRF"/>
+                        <constraint firstItem="vtV-bf-UaN" firstAttribute="centerY" secondItem="KVn-y6-I0O" secondAttribute="centerY" id="g6I-C0-ciU"/>
+                        <constraint firstItem="KVn-y6-I0O" firstAttribute="centerX" secondItem="e3X-hw-fJj" secondAttribute="centerX" constant="43" id="rVe-OE-svK"/>
+                        <constraint firstItem="vtV-bf-UaN" firstAttribute="centerY" secondItem="e3X-hw-fJj" secondAttribute="centerY" id="tas-tN-rOU"/>
+                    </constraints>
+                </customView>
             </objects>
-            <point key="canvasLocation" x="2028" y="743"/>
+            <point key="canvasLocation" x="2032" y="743"/>
         </scene>
         <!--Updates-->
         <scene sceneID="Xz6-lS-Aq3">

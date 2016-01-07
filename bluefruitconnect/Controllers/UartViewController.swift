@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDataSource, NSTableViewDelegate {
+class UartViewController: NSViewController {
 
     enum DisplayMode {
         case Text           // Display a TextView with all uart data as a String
@@ -29,6 +29,13 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         case DidTransferData = "didTransferData"
     }
 
+    enum ExportFormat : String {
+        case txt = "txt"
+        case csv = "csv"
+        case json = "json"
+        case xml = "xml"
+    }
+    
     // Constants
     static let UartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"       // UART service UUID
     static let RxCharacteristicUUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
@@ -51,6 +58,11 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     @IBOutlet weak var sentBytesLabel: NSTextField!
     @IBOutlet weak var receivedBytesLabel: NSTextField!
     
+    @IBOutlet var saveDialogCustomView: NSView!
+    @IBOutlet weak var saveDialogPopupButton: NSPopUpButton!
+    
+    
+    
     // Bluetooth
     private var blePeripheral : BlePeripheral?
     private var uartService : CBService?
@@ -68,6 +80,10 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
     private let timestampDateFormatter = NSDateFormatter()
     private var tableCachedDataBuffer : [DataChunk]?
     
+    // Export 
+    private var exportFileDialog : NSSavePanel?
+    private let exportFormats = [ExportFormat.txt, ExportFormat.csv, ExportFormat.json, ExportFormat.xml]
+
     // MARK:
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -191,7 +207,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         NSNotificationCenter.defaultCenter().postNotificationName(UartNotifications.DidTransferData.rawValue, object: nil);
     }
     
-    // MARK: - UI updates
+    // MARK: - UI Updates
     func addChunkToUI(dataChunk : DataChunk) {
         let displayMode = Preferences.uartIsDisplayModeTimestamp ? DisplayMode.Table : DisplayMode.Text
         
@@ -314,6 +330,20 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         inputTextField.stringValue = ""
     }
     
+    
+    // MARK: - Export
+    @IBAction func onExportFormatChanged(sender: AnyObject) {
+        updateSaveFileName()
+    }
+    
+    private func updateSaveFileName() {
+        if let exportFileDialog = exportFileDialog {
+            let isInHexMode = Preferences.uartIsInHexMode
+            let exportFormatSelected = exportFormats[saveDialogPopupButton.indexOfSelectedItem]
+            exportFileDialog.nameFieldStringValue = "uart\(isInHexMode ? ".hex" : "").\(exportFormatSelected.rawValue)"
+        }
+    }
+    
     @IBAction func onClickExport(sender: AnyObject) {
         
         // Check if data is empty
@@ -327,31 +357,39 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         }
         
         // Show save dialog
-        let displayMode = Preferences.uartIsDisplayModeTimestamp ? DisplayMode.Table : DisplayMode.Text
-        let isInHexMode = Preferences.uartIsInHexMode
+        exportFileDialog = NSSavePanel()
+        exportFileDialog!.delegate = self
+        exportFileDialog!.message = "Export Data to File"
+        exportFileDialog!.prompt = "Export"
+        exportFileDialog!.canCreateDirectories = true
+        exportFileDialog!.accessoryView = saveDialogCustomView        
         
-        let saveFileDialog = NSSavePanel()
-        saveFileDialog.canCreateDirectories = true
-        if (displayMode == .Text) {
-            saveFileDialog.nameFieldStringValue = isInHexMode ? "uart.hex.txt" : "uart.txt"
+        for exportFormat in exportFormats {
+            saveDialogPopupButton.addItemWithTitle(exportFormat.rawValue)
         }
-        else {
-            saveFileDialog.nameFieldStringValue = isInHexMode ? "uart.hex.csv" : "uart.csv"
-        }
+        
+        updateSaveFileName()
         
         if let window = self.view.window {
-            saveFileDialog.beginSheetModalForWindow(window) {[unowned self] (result) -> Void in
+            exportFileDialog!.beginSheetModalForWindow(window) {[unowned self] (result) -> Void in
                 if result == NSFileHandlingPanelOKButton {
-                    if let url = saveFileDialog.URL {
+                    if let url = self.exportFileDialog!.URL {
                         
                         // Save
                         var text : String?
-                        let displayMode = Preferences.uartIsDisplayModeTimestamp ? DisplayMode.Table : DisplayMode.Text
-                        if (displayMode == .Text) {
+                        let exportFormatSelected = self.exportFormats[self.saveDialogPopupButton.indexOfSelectedItem]
+
+                        switch(exportFormatSelected) {
+                        case .txt:
                             text = self.dataAsText(url)
-                        }
-                        else {
-                            text = self.dataAsCvs(url)
+                        case .csv:
+                            text = self.dataAsCsv(url)
+                        case .json:
+                            text = self.dataAsJson(url)
+                            break
+                        case .xml:
+                            text = self.dataAsXml(url)
+                            break
                         }
                         
                         // Write data
@@ -367,7 +405,7 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         }
     }
     
-    // MARK: - Export to file
+    // MARK: Export formats
     func dataAsText(url : NSURL) -> String? {
         // Compile all data
         let data = NSMutableData()
@@ -386,10 +424,9 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         return text
     }
     
-    func dataAsCvs(url : NSURL)  -> String? {
+    func dataAsCsv(url : NSURL)  -> String? {
         var text = "Timestamp,Mode,Data\r\n"        // csv Header
 
-        // Compile all data
         for dataChunk in self.dataBuffer {
             let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
             let dateString = timestampDateFormatter.stringFromDate(date).stringByReplacingOccurrencesOfString(",", withString: ".")         //  comma messes with csv, so replace it by point
@@ -415,7 +452,186 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
         return text
     }
     
-    // MARK: - CBPeripheralDelegate
+    func dataAsJson(url : NSURL)  -> String? {
+        
+        var jsonItemsDictionary : [AnyObject] = []
+        
+        for dataChunk in self.dataBuffer {
+            let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
+            let unixDate = date.timeIntervalSince1970
+            let mode = dataChunk.mode == .RX ? "RX" : "TX"
+            var dataString : String?
+            if (Preferences.uartIsInHexMode) {
+                dataString = hexString(dataChunk.data)
+            }
+            else {
+                dataString = NSString(data:dataChunk.data, encoding: NSUTF8StringEncoding) as String?
+            }
+            
+            if let dataString = dataString {
+                let jsonItemDictionary : [String : AnyObject] = [
+                    "timestamp" : unixDate,
+                    "mode" : mode,
+                    "data" : dataString
+                ]
+                jsonItemsDictionary.append(jsonItemDictionary)
+            }
+        }
+        
+        let jsonRootDictionary : [String : AnyObject] = [
+            "items": jsonItemsDictionary
+        ]
+        
+        // Create Json NSData
+        var data : NSData?
+        do {
+            data = try NSJSONSerialization.dataWithJSONObject(jsonRootDictionary, options: .PrettyPrinted)
+        } catch  {
+            DLog("Error serializing json data")
+        }
+        
+        // Create Json String
+        var result : String?
+        if let data = data {
+            result = NSString(data: data, encoding: NSUTF8StringEncoding) as? String
+        }
+        
+        return result
+    }
+ 
+    func dataAsXml(url : NSURL)  -> String? {
+        
+        let xmlRootElement = NSXMLElement(name: "uart")
+        
+        for dataChunk in self.dataBuffer {
+            let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
+            let unixDate = date.timeIntervalSince1970
+            let mode = dataChunk.mode == .RX ? "RX" : "TX"
+            var dataString : String?
+            if (Preferences.uartIsInHexMode) {
+                dataString = hexString(dataChunk.data)
+            }
+            else {
+                dataString = NSString(data:dataChunk.data, encoding: NSUTF8StringEncoding) as String?
+            }
+            
+            if let dataString = dataString {
+                
+                let xmlItemElement = NSXMLElement(name: "item")
+                xmlItemElement.addChild(NSXMLElement(name: "timestamp", stringValue:"\(unixDate)"))
+                xmlItemElement.addChild(NSXMLElement(name: "mode", stringValue:mode))
+                let dataNode = NSXMLElement(kind: .TextKind, options: NSXMLNodeIsCDATA)
+                dataNode.name = "data"
+                dataNode.stringValue = dataString
+                xmlItemElement.addChild(dataNode)
+                
+                xmlRootElement.addChild(xmlItemElement)
+            }
+        }
+        
+        let xml = NSXMLDocument(rootElement: xmlRootElement)
+        let result = xml.XMLStringWithOptions(NSXMLNodePrettyPrint)
+        
+        return result
+    }
+    
+}
+
+// MARK: - NSOpenSavePanelDelegate
+extension UartViewController: NSOpenSavePanelDelegate {
+    
+}
+
+// MARK: - NSTableViewDataSource
+extension UartViewController: NSTableViewDataSource {
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+        if (Preferences.uartIsEchoEnabled)  {
+            tableCachedDataBuffer = dataBuffer
+        }
+        else {
+            tableCachedDataBuffer = dataBuffer.filter({ (dataChunk : DataChunk) -> Bool in
+                dataChunk.mode == .RX
+            })
+        }
+        
+        return tableCachedDataBuffer!.count
+    }
+}
+
+// MARK: NSTableViewDelegate
+extension UartViewController: NSTableViewDelegate {
+    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        
+        var cell : NSTableCellView?
+        
+        let dataChunk = tableCachedDataBuffer![row]
+        
+        if let columnIdentifier = tableColumn?.identifier {
+            switch(columnIdentifier) {
+            case "TimestampColumn":
+                cell = tableView.makeViewWithIdentifier("TimestampCell", owner: self) as? NSTableCellView
+                
+                let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
+                let dateString = timestampDateFormatter.stringFromDate(date)//.stringByReplacingOccurrencesOfString(",", withString: ".")
+                cell!.textField!.stringValue = dateString
+                
+            case "DirectionColumn":
+                cell = tableView.makeViewWithIdentifier("DirectionCell", owner: self) as? NSTableCellView
+                
+                cell!.textField!.stringValue = dataChunk.mode == .RX ? "RX" : "TX"
+                
+            case "DataColumn":
+                cell = tableView.makeViewWithIdentifier("DataCell", owner: self) as? NSTableCellView
+                
+                let color = dataChunk.mode == .TX ? txColor : rxColor
+                
+                if let attributedText = attributeTextFromData(dataChunk.data, useHexMode: Preferences.uartIsInHexMode, color: color) {
+                    //DLog("row \(row): \(attributedText.string)")
+                    
+                    // Display
+                    cell!.textField!.attributedStringValue = attributedText
+                    
+                    // Update column width (if needed)
+                    let width = attributedText.size().width
+                    tableModeDataMaxWidth = max(tableColumn!.width, width)
+                    dispatch_async(dispatch_get_main_queue(), {     // Important: Execute async. This change should be done outside the delegate method to avoid weird reuse cell problems (reused cell shows old data and cant be changed).
+                        if (tableColumn!.width < self.tableModeDataMaxWidth) {
+                            tableColumn!.width = self.tableModeDataMaxWidth
+                        }
+                    });
+                }
+                else {
+                    //DLog("row \(row): <empty>")
+                    cell!.textField!.attributedStringValue = NSAttributedString()
+                }
+                
+                
+            default:
+                cell = nil
+            }
+        }
+        
+        return cell;
+    }
+    
+    func tableViewSelectionDidChange(notification: NSNotification) {
+    }
+    
+    func tableViewColumnDidResize(notification: NSNotification) {
+        if let tableColumn = notification.userInfo?["NSTableColumn"] as? NSTableColumn {
+            if (tableColumn.identifier == "DataColumn") {
+                // If the window is resized, maintain the column width
+                if (tableColumn.width < tableModeDataMaxWidth) {
+                    tableColumn.width = tableModeDataMaxWidth
+                }
+                //DLog("column: \(tableColumn), width: \(tableColumn.width)")
+            }
+        }
+    }
+}
+
+// MARK: - CBPeripheralDelegate
+extension UartViewController: CBPeripheralDelegate {
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
         
         if (uartService == nil) {
@@ -470,98 +686,13 @@ class UartViewController: NSViewController, CBPeripheralDelegate, NSTableViewDat
             }
         }
     }
-
+    
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         
         if characteristic == rxCharacteristic && characteristic.service == uartService {
             
             if let characteristicDataValue = characteristic.value {
                 registerDataReceived(characteristicDataValue)
-            }
-        }
-    }
-    
-    // MARK: - NSTableViewDataSource
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        if (Preferences.uartIsEchoEnabled)  {
-            tableCachedDataBuffer = dataBuffer
-        }
-        else {
-            tableCachedDataBuffer = dataBuffer.filter({ (dataChunk : DataChunk) -> Bool in
-                dataChunk.mode == .RX
-            })
-        }
-
-        return tableCachedDataBuffer!.count
-    }
-    
-    
-    // MARK: NSTableViewDelegate
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        
-        var cell : NSTableCellView?
-        
-        let dataChunk = tableCachedDataBuffer![row]
-        
-        if let columnIdentifier = tableColumn?.identifier {
-            switch(columnIdentifier) {
-            case "TimestampColumn":
-                cell = tableView.makeViewWithIdentifier("TimestampCell", owner: self) as? NSTableCellView
-                
-                let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
-                let dateString = timestampDateFormatter.stringFromDate(date)//.stringByReplacingOccurrencesOfString(",", withString: ".")
-                cell!.textField!.stringValue = dateString
-                
-            case "DirectionColumn":
-                cell = tableView.makeViewWithIdentifier("DirectionCell", owner: self) as? NSTableCellView
-
-                cell!.textField!.stringValue = dataChunk.mode == .RX ? "RX" : "TX"
-                
-            case "DataColumn":
-                cell = tableView.makeViewWithIdentifier("DataCell", owner: self) as? NSTableCellView
-                
-                let color = dataChunk.mode == .TX ? txColor : rxColor
-
-                if let attributedText = attributeTextFromData(dataChunk.data, useHexMode: Preferences.uartIsInHexMode, color: color) {
-                    //DLog("row \(row): \(attributedText.string)")
-
-                    // Display
-                    cell!.textField!.attributedStringValue = attributedText
-                    
-                    // Update column width (if needed)
-                    let width = attributedText.size().width
-                    tableModeDataMaxWidth = max(tableColumn!.width, width)
-                    dispatch_async(dispatch_get_main_queue(), {     // Important: Execute async. This change should be done outside the delegate method to avoid weird reuse cell problems (reused cell shows old data and cant be changed).
-                        if (tableColumn!.width < self.tableModeDataMaxWidth) {
-                            tableColumn!.width = self.tableModeDataMaxWidth
-                        }
-                    });
-                }
-                else {
-                    //DLog("row \(row): <empty>")
-                    cell!.textField!.attributedStringValue = NSAttributedString()
-                }
-                
-                
-            default:
-                cell = nil
-            }
-        }
-        
-        return cell;
-    }
-    
-    func tableViewSelectionDidChange(notification: NSNotification) {
-    }
-    
-    func tableViewColumnDidResize(notification: NSNotification) {
-        if let tableColumn = notification.userInfo?["NSTableColumn"] as? NSTableColumn {
-            if (tableColumn.identifier == "DataColumn") {
-                // If the window is resized, maintain the column width
-                if (tableColumn.width < tableModeDataMaxWidth) {
-                    tableColumn.width = tableModeDataMaxWidth
-                }
-                //DLog("column: \(tableColumn), width: \(tableColumn.width)")
             }
         }
     }
