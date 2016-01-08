@@ -370,8 +370,8 @@
                                     <action selector="onEndEditingMqttSubscribeTopic:" target="HmX-o8-Y5x" id="oH5-q6-dPo"/>
                                 </connections>
                             </textField>
-                            <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bDO-WH-Mvz">
-                                <rect key="frame" x="176" y="55" width="186" height="26"/>
+                            <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bDO-WH-Mvz">
+                                <rect key="frame" x="176" y="55" width="278" height="26"/>
                                 <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" id="YP5-Wv-YIA">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
@@ -1589,8 +1589,8 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="pAb-TA-CkK" userLabel="Header View">
                                 <rect key="frame" x="0.0" y="281" width="924" height="25"/>
                                 <subviews>
-                                    <button toolTip="Clears text" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hx5-GC-c5a">
-                                        <rect key="frame" x="858" y="0.0" width="66" height="25"/>
+                                    <button toolTip="Clears text" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hx5-GC-c5a">
+                                        <rect key="frame" x="862" y="0.0" width="62" height="25"/>
                                         <buttonCell key="cell" type="square" title="Clear" bezelStyle="shadowlessSquare" imagePosition="left" alignment="center" state="on" borderStyle="border" inset="2" id="Ns0-N0-VOH">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -1599,8 +1599,8 @@
                                             <action selector="onClickClear:" target="BSx-6V-BNK" id="3w6-kl-3od"/>
                                         </connections>
                                     </button>
-                                    <button toolTip="Export data to file" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W3M-Pk-mcS">
-                                        <rect key="frame" x="784" y="0.0" width="66" height="25"/>
+                                    <button toolTip="Export data to file" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="W3M-Pk-mcS">
+                                        <rect key="frame" x="792" y="0.0" width="62" height="25"/>
                                         <buttonCell key="cell" type="square" title="Export..." bezelStyle="shadowlessSquare" imagePosition="left" alignment="center" state="on" borderStyle="border" inset="2" id="Fzm-kH-PXW">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>

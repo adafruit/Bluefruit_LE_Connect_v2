@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, UpdateDialogViewControlerDelegate, NSTableViewDataSource, NSTableViewDelegate {
+class FirmwareUpdateViewController: NSViewController {
     
     @IBOutlet weak var firmwareCurrentVersionLabel: NSTextField!
     @IBOutlet weak var firmwareCurrentVersionWaitView: NSProgressIndicator!
@@ -129,9 +129,54 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
         
         startDfuUpdateWithHexInitFiles(hexUrl, iniUrl: iniUrl)
     }
+       
+    // MARK: - DFU update
+    func confirmDfuUpdateWithFirmware(firmwareInfo : FirmwareInfo) {
+        let compareBootloader = deviceInfoData!.bootloaderVersion().caseInsensitiveCompare(firmwareInfo.minBootloaderVersion)
+        if (compareBootloader == .OrderedDescending || compareBootloader == .OrderedSame) {        // Requeriments met
+            let alert = NSAlert()
+            alert.messageText = "Install firmware version \(firmwareInfo.version)?"
+            alert.informativeText = "The firmware will be downloaded and updated. Please wait until the process finishes before disconnecting the peripheral"
+            alert.addButtonWithTitle("Ok")
+            alert.addButtonWithTitle("Cancel")
+            alert.alertStyle = .WarningAlertStyle
+            alert.beginSheetModalForWindow(self.view.window!, completionHandler: { [unowned self](modalResponse) -> Void in
+                if (modalResponse == NSAlertFirstButtonReturn) {
+                    self.startDfuUpdateWithFirmware(firmwareInfo)
+                }
+            })
+        }
+        else {      // Requeriments not met
+            let alert = NSAlert()
+            alert.messageText = "This firmware update is not compatible with your bootloader. You need to update your bootloader to version %@ before installing this firmware release \(firmwareInfo.version)"
+            alert.addButtonWithTitle("Ok")
+            alert.alertStyle = .WarningAlertStyle
+            alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
+        }
+    }
     
+    func startDfuUpdateWithFirmware(firmwareInfo : FirmwareInfo) {
+        let hexUrl = NSURL(string: firmwareInfo.hexFileUrl)!
+        let iniUrl =  NSURL(string: firmwareInfo.iniFileUrl)
+        startDfuUpdateWithHexInitFiles(hexUrl, iniUrl: iniUrl)
+    }
     
-    // MARK: - FirmwareUpdaterDelegate
+    func startDfuUpdateWithHexInitFiles(hexUrl : NSURL, iniUrl: NSURL?) {
+        if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
+            
+            let updateDialogViewController = self.storyboard?.instantiateControllerWithIdentifier("UpdateDialogViewController") as! UpdateDialogViewController
+            updateDialogViewController.setUpdateParameters(blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfoData: deviceInfoData!)
+            updateDialogViewController.delegate = self
+            self.presentViewControllerAsModalWindow(updateDialogViewController)
+        }
+        else {
+            onUpdateDialogError("No peripheral conected. Abort update");
+        }
+    }
+}
+
+// MARK: - FirmwareUpdaterDelegate
+extension FirmwareUpdateViewController : FirmwareUpdaterDelegate {
     func onFirmwareUpdatesAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo!, deviceInfoData: DeviceInfoData?, allReleases: [NSObject : AnyObject]?) {
         DLog("onFirmwareUpdatesAvailable")
         
@@ -174,7 +219,11 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
         onUpdateDialogError("No DFU Service found on device")
     }
     
-    // MARK: - NSTableViewDataSource
+}
+
+
+// MARK: - NSTableViewDataSource
+extension FirmwareUpdateViewController : NSTableViewDataSource {
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
         if (boardRelease != nil && boardRelease!.firmwareReleases != nil) {
             let firmwareReleases = boardRelease!.firmwareReleases!
@@ -184,8 +233,10 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
             return 0
         }
     }
-    
-    // MARK: NSTableViewDelegate
+}
+
+// MARK: NSTableViewDelegate
+extension FirmwareUpdateViewController : NSTableViewDelegate {
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         
         let firmwareRelases = boardRelease!.firmwareReleases as NSArray as! [FirmwareInfo]
@@ -237,52 +288,11 @@ class FirmwareUpdateViewController: NSViewController, FirmwareUpdaterDelegate, U
             }
         }
     }
-    
-    // MARK: - DFU update
-    func confirmDfuUpdateWithFirmware(firmwareInfo : FirmwareInfo) {
-        let compareBootloader = deviceInfoData!.bootloaderVersion().caseInsensitiveCompare(firmwareInfo.minBootloaderVersion)
-        if (compareBootloader == .OrderedDescending || compareBootloader == .OrderedSame) {        // Requeriments met
-            let alert = NSAlert()
-            alert.messageText = "Install firmware version \(firmwareInfo.version)?"
-            alert.informativeText = "The firmware will be downloaded and updated. Please wait until the process finishes before disconnecting the peripheral"
-            alert.addButtonWithTitle("Ok")
-            alert.addButtonWithTitle("Cancel")
-            alert.alertStyle = .WarningAlertStyle
-            alert.beginSheetModalForWindow(self.view.window!, completionHandler: { [unowned self](modalResponse) -> Void in
-                if (modalResponse == NSAlertFirstButtonReturn) {
-                    self.startDfuUpdateWithFirmware(firmwareInfo)
-                }
-            })
-        }
-        else {      // Requeriments not met
-            let alert = NSAlert()
-            alert.messageText = "This firmware update is not compatible with your bootloader. You need to update your bootloader to version %@ before installing this firmware release \(firmwareInfo.version)"
-            alert.addButtonWithTitle("Ok")
-            alert.alertStyle = .WarningAlertStyle
-            alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
-        }
-    }
-    
-    func startDfuUpdateWithFirmware(firmwareInfo : FirmwareInfo) {
-        let hexUrl = NSURL(string: firmwareInfo.hexFileUrl)!
-        let iniUrl =  NSURL(string: firmwareInfo.iniFileUrl)
-        startDfuUpdateWithHexInitFiles(hexUrl, iniUrl: iniUrl)
-    }
-    
-    func startDfuUpdateWithHexInitFiles(hexUrl : NSURL, iniUrl: NSURL?) {
-        if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
-            
-            let updateDialogViewController = self.storyboard?.instantiateControllerWithIdentifier("UpdateDialogViewController") as! UpdateDialogViewController
-            updateDialogViewController.setUpdateParameters(blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfoData: deviceInfoData!)
-            updateDialogViewController.delegate = self
-            self.presentViewControllerAsModalWindow(updateDialogViewController)
-        }
-        else {
-            onUpdateDialogError("No peripheral conected. Abort update");
-        }
-    }
-    
-    // MARK: - UpdateDialogViewControlerDelegate
+
+}
+
+// MARK: - UpdateDialogViewControlerDelegate
+extension FirmwareUpdateViewController : UpdateDialogViewControlerDelegate {
     
     func onUpdateDialogCancel() {
         

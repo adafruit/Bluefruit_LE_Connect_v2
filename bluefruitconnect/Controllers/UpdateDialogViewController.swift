@@ -14,7 +14,7 @@ protocol UpdateDialogViewControlerDelegate {
     func onUpdateDialogError(errorMessage : String)
 }
 
-class UpdateDialogViewController: NSViewController, DFUOperationsDelegate {
+class UpdateDialogViewController: NSViewController {
 
     @IBOutlet private weak var progressLabel: NSTextField!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
@@ -161,15 +161,17 @@ class UpdateDialogViewController: NSViewController, DFUOperationsDelegate {
     @IBAction func onClickCancel(sender: AnyObject) {
         // Cancel current operation
         dfuOperations!.cancelDFU()
-       
+        
         
         // Dismiss
         if let delegate = self.delegate {
             delegate.onUpdateDialogCancel()
         }
     }
-    
-    // MARK: - DFUOperationsDelegate
+}
+
+// MARK: - DFUOperationsDelegate
+extension UpdateDialogViewController : DFUOperationsDelegate {
     func onDeviceConnected(peripheral: CBPeripheral!) {
         DLog("DFUOperationsDelegate - onDeviceConnected");
         isConnected = true

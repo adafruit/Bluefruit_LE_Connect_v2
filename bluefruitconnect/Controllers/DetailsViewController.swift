@@ -10,7 +10,7 @@ import Cocoa
 import CoreBluetooth
 
 
-class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDelegate {
+class DetailsViewController: NSViewController {
     
     @IBOutlet weak var emptyView: NSTabView!
     @IBOutlet weak var emptyLabel: NSTextField!
@@ -206,8 +206,11 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
             infoRssiImageView.image = signalImageForRssi(rssi)
         }
     }
+}
+
+// MARK: - CBPeripheralDelegate
+extension DetailsViewController : CBPeripheralDelegate {
     
-    // MARK: - CBPeripheralDelegate
     // Send peripheral delegate methods to tab active (each tab will handle these methods)
     func peripheralDidUpdateName(peripheral: CBPeripheral) {
         if let viewController = modeTabView.selectedTabViewItem?.viewController {
@@ -277,12 +280,20 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
             }
         }
     }
+}
+
+// MARK: - NSTabViewDelegate
+extension DetailsViewController: NSTabViewDelegate {
     
-    // MARK: NSTabViewDelegate
     func tabView(tabView: NSTabView, didSelectTabViewItem tabViewItem: NSTabViewItem?) {
+        
+        // Send specific messages to each view controller when selected
         if let firmwareUpdateViewController = tabViewItem?.viewController as? FirmwareUpdateViewController {
-            // Selected FirmwareUpdateViewController
+            // Start udpates check
             firmwareUpdateViewController.startUpdatesCheck()
+        }
+        else if let infoViewController = tabViewItem?.viewController as? InfoViewController {
+            infoViewController.updateUI()
         }
     }
 }

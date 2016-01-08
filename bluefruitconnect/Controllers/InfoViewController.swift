@@ -10,7 +10,7 @@ import Cocoa
 import CoreBluetooth
 
 
-class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate {
+class InfoViewController: NSViewController {
     private static let kExpandAllNodes  = true
     
     @IBOutlet weak var baseTableView: NSOutlineView!
@@ -43,8 +43,16 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
     func discoverServices() {
         BleManager.sharedInstance.discover(blePeripheral!, serviceUUIDs: nil)
     }
-  
-    // MARK: - NSOutlineViewDataSource
+
+    func updateUI() {
+        self.baseTableView.reloadData()
+    }
+}
+
+
+
+// MARK: - NSOutlineViewDataSource
+extension InfoViewController : NSOutlineViewDataSource {
     func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
         if (item == nil) {
             // Services
@@ -93,10 +101,11 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
             return "<Unknown>"
         }
     }
-    
-    
-    // MARK: NSOutlineViewDelegate
-    
+}
+
+// MARK: NSOutlineViewDelegate
+
+extension InfoViewController: NSOutlineViewDelegate {
     func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
         
         var cell = NSTableCellView()
@@ -181,9 +190,11 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
         
         return cell
     }
-    
-    
-    // MARK: - CBPeripheralDelegate
+}
+
+
+// MARK: - CBPeripheralDelegate
+extension InfoViewController : CBPeripheralDelegate {
     
     func peripheralDidUpdateName(peripheral: CBPeripheral) {
         DLog("centralManager peripheralDidUpdateName: \(peripheral.name != nil ? peripheral.name! : "")")
@@ -259,7 +270,6 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
         DLog("centralManager didUpdateValueForCharacteristic: \(characteristic.UUID.UUIDString)")
 
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            
             self.baseTableView.reloadData()
             })
     }
@@ -271,6 +281,4 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
             self.baseTableView.reloadData()
             })
     }
-    
-    
 }

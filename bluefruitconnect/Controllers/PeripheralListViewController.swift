@@ -9,7 +9,7 @@
 import Cocoa
 import CoreBluetooth
 
-class PeripheralListViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
+class PeripheralListViewController: NSViewController {
     
     @IBOutlet weak var baseTableView: NSTableView!
     
@@ -70,54 +70,6 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
             })
     }
 
-    // MARK: - NSTableViewDataSource
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        return BleManager.sharedInstance.blePeripheralsFound.count
-    }
-
-    // MARK: NSTableViewDelegate
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        
-        let cell = tableView.makeViewWithIdentifier("DeviceCell", owner: self) as! PeripheralTableCellView
-
-        let bleManager = BleManager.sharedInstance
-        let blePeripheralsFound = bleManager.blePeripheralsFound
-        let selectedBlePeripheralIdentifier = bleManager.blePeripheralFoundAlphabeticKeys()[row];
-        let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-        cell.titleTextField.stringValue = blePeripheral.name
-        
-        let isUartCapable = blePeripheral.isUartAdvertised()
-        cell.subtitleTextField.stringValue = isUartCapable ?"Uart capable":"No Uart detected"
-        cell.rssiImageView.image = signalImageForRssi(blePeripheral.rssi)
-        
-        cell.onDisconnect = {
-            tableView.deselectAll(nil)
-        }
-        
-        cell.showDisconnectButton(row == currentSelectedRow)
-        
-        return cell;
-    }
-    
-    func tableViewSelectionIsChanging(notification: NSNotification) {   // Note: used tableViewSelectionIsChanging instead of tableViewSelectionDidChange because if a didDiscoverPeripheral notification arrives when the user is changing the row but before the user releases the mouse button, then it would be cancelled (and the user would notice that something weird happened)
-
-        peripheralSelectedChanged()
-    }
-    
-    func tableViewSelectionDidChange(notification: NSNotification) {
-        peripheralSelectedChanged()
-    }
-    
-    func peripheralSelectedChanged() {
-        let newSelectedRow = baseTableView.selectedRow
-        //        DLog("tableViewSelectionDidChange: \(newSelectedRow)")
-        if (newSelectedRow != currentSelectedRow) {
-            DLog("Peripheral selected row: \(newSelectedRow)")
-            let bleManager = BleManager.sharedInstance
-            connectToPeripheral(newSelectedRow >= 0 ? bleManager.blePeripheralFoundAlphabeticKeys()[newSelectedRow] : nil)
-            currentSelectedRow = newSelectedRow
-        }
-    }
     
     // MARK: -
     func selectRowForPeripheralIdentifier(identifier : String?) {
@@ -179,6 +131,57 @@ class PeripheralListViewController: NSViewController, NSTableViewDataSource, NST
     @IBAction func onClickRefresh(sender: AnyObject) {
         BleManager.sharedInstance.refreshPeripherals()
     }
+}
+
+// MARK: - NSTableViewDataSource
+extension PeripheralListViewController : NSTableViewDataSource {
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+        return BleManager.sharedInstance.blePeripheralsFound.count
+    }
+}
+
+// MARK: NSTableViewDelegate
+extension PeripheralListViewController : NSTableViewDelegate {
+    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        
+        let cell = tableView.makeViewWithIdentifier("DeviceCell", owner: self) as! PeripheralTableCellView
+        
+        let bleManager = BleManager.sharedInstance
+        let blePeripheralsFound = bleManager.blePeripheralsFound
+        let selectedBlePeripheralIdentifier = bleManager.blePeripheralFoundAlphabeticKeys()[row];
+        let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
+        cell.titleTextField.stringValue = blePeripheral.name
+        
+        let isUartCapable = blePeripheral.isUartAdvertised()
+        cell.subtitleTextField.stringValue = isUartCapable ?"Uart capable":"No Uart detected"
+        cell.rssiImageView.image = signalImageForRssi(blePeripheral.rssi)
+        
+        cell.onDisconnect = {
+            tableView.deselectAll(nil)
+        }
+        
+        cell.showDisconnectButton(row == currentSelectedRow)
+        
+        return cell;
+    }
     
+    func tableViewSelectionIsChanging(notification: NSNotification) {   // Note: used tableViewSelectionIsChanging instead of tableViewSelectionDidChange because if a didDiscoverPeripheral notification arrives when the user is changing the row but before the user releases the mouse button, then it would be cancelled (and the user would notice that something weird happened)
+        
+        peripheralSelectedChanged()
+    }
     
+    func tableViewSelectionDidChange(notification: NSNotification) {
+        peripheralSelectedChanged()
+    }
+    
+    func peripheralSelectedChanged() {
+        let newSelectedRow = baseTableView.selectedRow
+        //        DLog("tableViewSelectionDidChange: \(newSelectedRow)")
+        if (newSelectedRow != currentSelectedRow) {
+            DLog("Peripheral selected row: \(newSelectedRow)")
+            let bleManager = BleManager.sharedInstance
+            connectToPeripheral(newSelectedRow >= 0 ? bleManager.blePeripheralFoundAlphabeticKeys()[newSelectedRow] : nil)
+            currentSelectedRow = newSelectedRow
+        }
+    }
 }
