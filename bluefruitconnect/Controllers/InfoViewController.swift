@@ -231,11 +231,11 @@ class InfoViewController: NSViewController, CBPeripheralDelegate, NSOutlineViewD
             }
         }
         
-        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            self.baseTableView.reloadData()
+        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
+            self?.baseTableView.reloadData()
             if (!discoveringDescriptors && InfoViewController.kExpandAllNodes) {
                 // Expand all nodes if not waiting for descriptors
-                self.baseTableView.expandItem(nil, expandChildren: true)
+                self?.baseTableView.expandItem(nil, expandChildren: true)
             }
             })
     }

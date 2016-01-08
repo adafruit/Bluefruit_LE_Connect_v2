@@ -1,0 +1,10 @@
+PODS:
+  - CocoaMQTT (1.0.0)
+
+DEPENDENCIES:
+  - CocoaMQTT (~> 1.0.0)
+
+SPEC CHECKSUMS:
+  CocoaMQTT: 49d2bbcba5553ff983e35292bdab0a357fe9b177
+
+COCOAPODS: 0.39.0

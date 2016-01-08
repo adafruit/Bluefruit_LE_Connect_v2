@@ -9,7 +9,7 @@
 import Cocoa
 
 class UartViewController: NSViewController {
-
+    
     enum DisplayMode {
         case Text           // Display a TextView with all uart data as a String
         case Table          // Display a table where each data chunk is a row
@@ -28,7 +28,7 @@ class UartViewController: NSViewController {
     enum UartNotifications : String {
         case DidTransferData = "didTransferData"
     }
-
+    
     enum ExportFormat : String {
         case txt = "txt"
         case csv = "csv"
@@ -41,7 +41,7 @@ class UartViewController: NSViewController {
     static let RxCharacteristicUUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
     static let TxCharacteristicUUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
     static let TxMaxCharacters = 20
-
+    
     // UI Outlets
     @IBOutlet var baseTextView: NSTextView!
     @IBOutlet weak var baseTextVisibilityView: NSScrollView!
@@ -50,6 +50,7 @@ class UartViewController: NSViewController {
     
     @IBOutlet weak var hexModeSegmentedControl: NSSegmentedControl!
     @IBOutlet weak var displayModeSegmentedControl: NSSegmentedControl!
+    @IBOutlet weak var mqttStatusButton: NSButton!
     
     @IBOutlet weak var inputTextField: NSTextField!
     @IBOutlet weak var echoButton: NSButton!
@@ -61,18 +62,16 @@ class UartViewController: NSViewController {
     @IBOutlet var saveDialogCustomView: NSView!
     @IBOutlet weak var saveDialogPopupButton: NSPopUpButton!
     
-    
-    
     // Bluetooth
     private var blePeripheral : BlePeripheral?
     private var uartService : CBService?
     private var rxCharacteristic : CBCharacteristic?
     private var txCharacteristic : CBCharacteristic?
-
+    
     // Current State
     private var dataBuffer = [DataChunk]()
     private var tableModeDataMaxWidth : CGFloat = 0
-
+    
     // UI
     private var dataFont = NSFont(name: "CourierNewPSMT", size: 13)!
     private var txColor = Preferences.uartSentDataColor
@@ -80,10 +79,10 @@ class UartViewController: NSViewController {
     private let timestampDateFormatter = NSDateFormatter()
     private var tableCachedDataBuffer : [DataChunk]?
     
-    // Export 
+    // Export
     private var exportFileDialog : NSSavePanel?
     private let exportFormats = [ExportFormat.txt, ExportFormat.csv, ExportFormat.json, ExportFormat.xml]
-
+    
     // MARK:
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,10 +100,10 @@ class UartViewController: NSViewController {
         // Wait till uart is ready
         inputTextField.enabled = false
         inputTextField.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.1)
-
+        
         // Peripheral should be connected
         blePeripheral = BleManager.sharedInstance.blePeripheralConnected
-
+        
         if (blePeripheral == nil) {
             DLog("Error UART started without connected peripheral")
         }
@@ -115,13 +114,20 @@ class UartViewController: NSViewController {
         // UI
         baseTableVisibilityView.scrollerStyle = NSScrollerStyle.Legacy      // To avoid autohide behaviour
         reloadDataUI()
+        
+        // Mqtt init
+        let mqttManager = MqttManager.sharedInstance
+        if (MqttSettings.sharedInstance.isConnected) {
+            mqttManager.delegate = self
+            mqttManager.connectFromSavedSettings()
+        }
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
-
-        registerNotifications(true)
         
+        registerNotifications(true)
+        updateMqttStatusUI()
     }
     
     override func viewDidDisappear() {
@@ -130,7 +136,11 @@ class UartViewController: NSViewController {
         registerNotifications(false)
     }
     
-  
+    deinit {
+        let mqttManager = MqttManager.sharedInstance
+        mqttManager.disconnect()
+    }
+    
     // MARK: - Preferences
     func registerNotifications(register : Bool) {
         
@@ -148,23 +158,28 @@ class UartViewController: NSViewController {
         rxColor = Preferences.uartReceveivedDataColor
         reloadDataUI()
     }
-
+    
     
     // MARK: - Uart
-    func sendUserText(text: String) {
+    func sendMessageToUart(text: String, wasReceivedFromMqtt: Bool) {
         
-        var newText = text
-        
-        // Eol
-        if (Preferences.uartIsAutomaticEolEnabled)  {
-            newText += "\n"
+        // Mqtt publish to TX
+        let mqttSettings = MqttSettings.sharedInstance
+        if(mqttSettings.isPublishEnabled) {
+            if let topic = mqttSettings.getPublishTopic(MqttSettings.PublishFeed.TX.rawValue) {
+                let qos = mqttSettings.getPublishQos(MqttSettings.PublishFeed.TX.rawValue)
+                MqttManager.sharedInstance.publish(text, topic: topic, qos: qos)
+            }
         }
-        
+
         // Create data and send to Uart
-        if let data = newText.dataUsingEncoding(NSUTF8StringEncoding) {
+        if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
             blePeripheral?.uartData.sentBytes += data.length
-            registerDataSent(data)
-            sendDataToUart(data)
+            registerDataSent(data, wasReceivedFromMqtt: wasReceivedFromMqtt)
+            
+            if (!wasReceivedFromMqtt || mqttSettings.subscribeBehaviour == .Transmit) {
+                sendDataToUart(data)
+            }
         }
     }
     
@@ -183,27 +198,40 @@ class UartViewController: NSViewController {
         }
         
     }
-
-    func registerDataSent(data : NSData) {
+    
+    func registerDataSent(data : NSData, wasReceivedFromMqtt: Bool) {
         let dataChunk = DataChunk(timestamp: CFAbsoluteTimeGetCurrent(), mode: .TX, data: data)
         dataBuffer.append(dataChunk)
 
         dispatch_async(dispatch_get_main_queue(), {[unowned self] in
             self.addChunkToUI(dataChunk)
             })
-        
         NSNotificationCenter.defaultCenter().postNotificationName(UartNotifications.DidTransferData.rawValue, object: nil);
     }
-        
+    
     func registerDataReceived(data : NSData) {
+        
+        // Mqtt publish to RX
+        let mqttSettings = MqttSettings.sharedInstance
+        if mqttSettings.isPublishEnabled {
+            if let message = NSString(data: data, encoding: NSUTF8StringEncoding) {
+                if let topic = mqttSettings.getPublishTopic(MqttSettings.PublishFeed.RX.rawValue) {
+                    let qos = mqttSettings.getPublishQos(MqttSettings.PublishFeed.RX.rawValue)
+                    MqttManager.sharedInstance.publish(message as String, topic: topic, qos: qos)
+                }
+            }
+        }
+        
+        // Process received data
         let dataChunk = DataChunk(timestamp: CFAbsoluteTimeGetCurrent(), mode: .RX, data: data)
         blePeripheral?.uartData.receivedBytes += dataChunk.data.length
         dataBuffer.append(dataChunk)
-            
+        
+        // Add to UI
         dispatch_async(dispatch_get_main_queue(), {[unowned self] in
             self.addChunkToUI(dataChunk)
-        })
-
+            })
+        
         NSNotificationCenter.defaultCenter().postNotificationName(UartNotifications.DidTransferData.rawValue, object: nil);
     }
     
@@ -242,7 +270,7 @@ class UartViewController: NSViewController {
     
     func attributeTextFromData(data : NSData, useHexMode : Bool, color : NSColor) -> NSAttributedString? {
         var attributedString : NSAttributedString?
-
+        
         let textAttributes : [String:AnyObject] = [NSFontAttributeName : dataFont, NSForegroundColorAttributeName: color]
         
         if (useHexMode) {
@@ -255,13 +283,13 @@ class UartViewController: NSViewController {
                 attributedString = NSAttributedString(string: utf8Value, attributes: textAttributes)
             }
         }
- 
+        
         return attributedString
     }
     
     func reloadDataUI() {
         let displayMode = Preferences.uartIsDisplayModeTimestamp ? DisplayMode.Table : DisplayMode.Text
-
+        
         baseTableVisibilityView.hidden = displayMode == .Text
         baseTextVisibilityView.hidden = displayMode == .Table
         
@@ -276,7 +304,7 @@ class UartViewController: NSViewController {
                 }
                 textStorage .endEditing()
                 baseTextView.scrollRangeToVisible(NSMakeRange(textStorage.length, 0))
-
+                
             }
             
         case .Table:
@@ -294,7 +322,7 @@ class UartViewController: NSViewController {
             receivedBytesLabel.stringValue = "Received: \(blePeripheral.uartData.receivedBytes) bytes"
         }
     }
-  
+    
     
     // MARK: - UI Actions
     @IBAction func onClickEcho(sender: NSButton) {
@@ -326,26 +354,76 @@ class UartViewController: NSViewController {
     
     @IBAction func onClickSend(sender: AnyObject) {
         let text = inputTextField.stringValue
-        sendUserText(text)
+        
+        var newText = text
+        // Eol
+        if (Preferences.uartIsAutomaticEolEnabled)  {
+            newText += "\n"
+        }
+
+        sendMessageToUart(newText, wasReceivedFromMqtt: false)
         inputTextField.stringValue = ""
+    }
+    
+    @IBAction func onClickExport(sender: AnyObject) {
+        exportData()
+    }
+    
+    @IBAction func onClickMqtt(sender: AnyObject) {
+        
+        let mqttManager = MqttManager.sharedInstance
+        let status = mqttManager.status
+        if status != .Connected && status != .Connecting {
+            if let serverAddress = MqttSettings.sharedInstance.serverAddress where !serverAddress.isEmpty {
+                // Server address is defined. Start connection
+                mqttManager.delegate = self
+                mqttManager.connectFromSavedSettings()
+            }
+            else {
+                // Server address not defined
+                let alert = NSAlert()
+                alert.messageText = "Mqtt server not defined"
+                alert.addButtonWithTitle("Ok")
+                alert.addButtonWithTitle("Edit Mqtt Settings")
+                alert.alertStyle = .WarningAlertStyle
+                alert.beginSheetModalForWindow(self.view.window!) { [unowned self] (returnCode) -> Void in
+                    if returnCode == NSAlertSecondButtonReturn {
+                        let preferencesViewController = self.storyboard?.instantiateControllerWithIdentifier("PreferencesViewController") as! PreferencesViewController
+                        self.presentViewControllerAsModalWindow(preferencesViewController)
+                    }
+                }
+            }
+        }
+        else {
+            mqttManager.disconnect()
+        }
+        
+        updateMqttStatusUI()
+    }
+    
+    // MARK: - MQTT
+    
+    func updateMqttStatusUI() {
+        let status = MqttManager.sharedInstance.status
+        
+        var buttonTitle = "MQTT"
+        switch (status) {
+        case .Connecting:
+            buttonTitle = "MQTT: connecting..."
+            
+        case .Connected:
+            buttonTitle = "MQTT: connected"
+            
+        default:
+            buttonTitle = "MQTT: disconnected"
+        }
+        
+        mqttStatusButton.title = buttonTitle
     }
     
     
     // MARK: - Export
-    @IBAction func onExportFormatChanged(sender: AnyObject) {
-        updateSaveFileName()
-    }
-    
-    private func updateSaveFileName() {
-        if let exportFileDialog = exportFileDialog {
-            let isInHexMode = Preferences.uartIsInHexMode
-            let exportFormatSelected = exportFormats[saveDialogPopupButton.indexOfSelectedItem]
-            exportFileDialog.nameFieldStringValue = "uart\(isInHexMode ? ".hex" : "").\(exportFormatSelected.rawValue)"
-        }
-    }
-    
-    @IBAction func onClickExport(sender: AnyObject) {
-        
+    private func exportData() {
         // Check if data is empty
         guard dataBuffer.count > 0 else {
             let alert = NSAlert()
@@ -362,7 +440,7 @@ class UartViewController: NSViewController {
         exportFileDialog!.message = "Export Data to File"
         exportFileDialog!.prompt = "Export"
         exportFileDialog!.canCreateDirectories = true
-        exportFileDialog!.accessoryView = saveDialogCustomView        
+        exportFileDialog!.accessoryView = saveDialogCustomView
         
         for exportFormat in exportFormats {
             saveDialogPopupButton.addItemWithTitle(exportFormat.rawValue)
@@ -378,7 +456,7 @@ class UartViewController: NSViewController {
                         // Save
                         var text : String?
                         let exportFormatSelected = self.exportFormats[self.saveDialogPopupButton.indexOfSelectedItem]
-
+                        
                         switch(exportFormatSelected) {
                         case .txt:
                             text = self.dataAsText(url)
@@ -405,6 +483,18 @@ class UartViewController: NSViewController {
         }
     }
     
+    @IBAction func onExportFormatChanged(sender: AnyObject) {
+        updateSaveFileName()
+    }
+    
+    private func updateSaveFileName() {
+        if let exportFileDialog = exportFileDialog {
+            let isInHexMode = Preferences.uartIsInHexMode
+            let exportFormatSelected = exportFormats[saveDialogPopupButton.indexOfSelectedItem]
+            exportFileDialog.nameFieldStringValue = "uart\(isInHexMode ? ".hex" : "").\(exportFormatSelected.rawValue)"
+        }
+    }
+    
     // MARK: Export formats
     func dataAsText(url : NSURL) -> String? {
         // Compile all data
@@ -420,13 +510,13 @@ class UartViewController: NSViewController {
         else {
             text = NSString(data:data, encoding: NSUTF8StringEncoding) as String?
         }
-    
+        
         return text
     }
     
     func dataAsCsv(url : NSURL)  -> String? {
         var text = "Timestamp,Mode,Data\r\n"        // csv Header
-
+        
         for dataChunk in self.dataBuffer {
             let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
             let dateString = timestampDateFormatter.stringFromDate(date).stringByReplacingOccurrencesOfString(",", withString: ".")         //  comma messes with csv, so replace it by point
@@ -448,7 +538,7 @@ class UartViewController: NSViewController {
             
             text += "\(dateString),\(mode),\"\(dataString!)\"\r\n"
         }
-
+        
         return text
     }
     
@@ -498,7 +588,7 @@ class UartViewController: NSViewController {
         
         return result
     }
- 
+    
     func dataAsXml(url : NSURL)  -> String? {
         
         let xmlRootElement = NSXMLElement(name: "uart")
@@ -695,5 +785,50 @@ extension UartViewController: CBPeripheralDelegate {
                 registerDataReceived(characteristicDataValue)
             }
         }
+    }
+}
+
+// MARK: - MqttManagerDelegate
+extension UartViewController : MqttManagerDelegate {
+    func onMqttConnected() {
+        dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+            self.updateMqttStatusUI()
+            })
+    }
+    
+    func onMqttDisconnected() {
+        dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+            self.updateMqttStatusUI()
+            })
+        
+    }
+    
+    func onMqttMessageReceived(message : String, topic: String) {
+        dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+            self.sendMessageToUart(message, wasReceivedFromMqtt: true)
+            })
+    }
+    
+    func onMqttError(message : String) {
+        let mqttManager = MqttManager.sharedInstance
+        let status = mqttManager.status
+        let isConnectionError = status == .Connecting
+
+        dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+            let alert = NSAlert()
+            alert.messageText = isConnectionError ? "Connection Error": message
+            alert.addButtonWithTitle("Ok")
+            if (isConnectionError) {
+                alert.addButtonWithTitle("Edit Mqtt Settings")
+                alert.informativeText = message
+            }
+            alert.alertStyle = .WarningAlertStyle
+            alert.beginSheetModalForWindow(self.view.window!) { [unowned self] (returnCode) -> Void in
+                if isConnectionError && returnCode == NSAlertSecondButtonReturn {
+                    let preferencesViewController = self.storyboard?.instantiateControllerWithIdentifier("PreferencesViewController") as! PreferencesViewController
+                     self.presentViewControllerAsModalWindow(preferencesViewController)
+                }
+            }
+            })
     }
 }

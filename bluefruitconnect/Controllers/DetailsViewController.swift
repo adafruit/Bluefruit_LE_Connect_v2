@@ -9,6 +9,7 @@
 import Cocoa
 import CoreBluetooth
 
+
 class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDelegate {
     
     @IBOutlet weak var emptyView: NSTabView!
@@ -28,7 +29,7 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
     @IBOutlet weak var infoDfuLabel: NSTextField!
     
     private static let kRssiUpdateInterval = 2.0       // in seconds
-    private var rssiTimer : NSTimer?
+    private var rssiTimer : MSWeakTimer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,7 +92,9 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
             self.updateRssiUI()
             
             self.cancelRssiTimer()
-            self.rssiTimer = NSTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: "requestUpdateRssi", userInfo: nil, repeats: true)
+            let privateQueue = dispatch_queue_create("private_queue", DISPATCH_QUEUE_CONCURRENT);
+            self.rssiTimer = MSWeakTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: "requestUpdateRssi", userInfo: nil, repeats: true, dispatchQueue: privateQueue)
+            //self.rssiTimer = MSWeakTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: "requestUpdateRssi", userInfo: nil, repeats: true)
             
             // UI: Add Info tab
             let infoViewController = self.storyboard?.instantiateControllerWithIdentifier("InfoViewController") as! InfoViewController
@@ -106,21 +109,22 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
     }
     
     func requestUpdateRssi() {
-        
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
             //DLog("request rssi for \(blePeripheral.name)")
             blePeripheral.peripheral.readRSSI()
         }
     }
-
+    
     func willDisconnectFromPeripheral(notification : NSNotification) {
-        showEmpty(true)
-        cancelRssiTimer()
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.showEmpty(true)
+            self.cancelRssiTimer()
+            
+            for tabViewItem in self.modeTabView.tabViewItems {
+                self.modeTabView.removeTabViewItem(tabViewItem)
+            }
+            })
         
-        for tabViewItem in modeTabView.tabViewItems {
-            modeTabView.removeTabViewItem(tabViewItem)
-        }
-
         let blePeripheral = BleManager.sharedInstance.blePeripheralConnected
         blePeripheral?.peripheral.delegate = nil
     }
@@ -189,7 +193,6 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
                     })
                     
                     self.infoDsiImageView.image = NSImage(named: hasDIS ?"NSStatusAvailable":"NSStatusNone")
-                    
                     })
             }
         }
@@ -273,7 +276,6 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
                 
             }
         }
-
     }
     
     // MARK: NSTabViewDelegate
@@ -283,5 +285,4 @@ class DetailsViewController: NSViewController, CBPeripheralDelegate, NSTabViewDe
             firmwareUpdateViewController.startUpdatesCheck()
         }
     }
-
 }
