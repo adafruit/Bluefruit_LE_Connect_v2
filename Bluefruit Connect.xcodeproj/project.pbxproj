@@ -34,6 +34,8 @@
 		A982968B1BB222D700DD478C /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982968A1BB222D700DD478C /* LogHelper.swift */; };
 		A982968F1BB22D2100DD478C /* PeripheralTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982968E1BB22D2100DD478C /* PeripheralTableCellView.swift */; };
 		A98296911BB2380F00DD478C /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98296901BB2380F00DD478C /* StatusViewController.swift */; };
+		A98AE3AD1C42AB5000FA8E80 /* UartDataExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */; };
+		A98AE3AF1C42ABF300FA8E80 /* UartDataChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98AE3AE1C42ABF300FA8E80 /* UartDataChunk.swift */; };
 		A98E03951BBA2A0300F8924C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A98E03941BBA2A0300F8924C /* Credits.rtf */; };
 		A98E03971BBA2A1C00F8924C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98E03961BBA2A1C00F8924C /* Images.xcassets */; };
 		A98E03A31BBA3EEE00F8924C /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98E03A21BBA3EEE00F8924C /* Preferences.swift */; };
@@ -88,6 +90,8 @@
 		A982968A1BB222D700DD478C /* LogHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
 		A982968E1BB22D2100DD478C /* PeripheralTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralTableCellView.swift; sourceTree = "<group>"; };
 		A98296901BB2380F00DD478C /* StatusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
+		A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartDataExport.swift; sourceTree = "<group>"; };
+		A98AE3AE1C42ABF300FA8E80 /* UartDataChunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartDataChunk.swift; sourceTree = "<group>"; };
 		A98E03941BBA2A0300F8924C /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A98E03961BBA2A1C00F8924C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A98E03A21BBA3EEE00F8924C /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -270,6 +274,7 @@
 				A94B85141BB65CA3007B88C7 /* LogHelper.h */,
 				A982968A1BB222D700DD478C /* LogHelper.swift */,
 				A94B851D1BB704BC007B88C7 /* HexConversions.swift */,
+				A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -279,6 +284,7 @@
 			children = (
 				A98E03A21BBA3EEE00F8924C /* Preferences.swift */,
 				A92BA69B1BBDBC210093F701 /* StatusManager.swift */,
+				A98AE3AE1C42ABF300FA8E80 /* UartDataChunk.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -471,6 +477,7 @@
 				A94370D11BB64959002521F7 /* DFUOperationsDetails.m in Sources */,
 				A94370BB1BB6493A002521F7 /* BlePeripheral.swift in Sources */,
 				A9A2FF851C3EEBCE0039D188 /* RssiUI.swift in Sources */,
+				A98AE3AD1C42AB5000FA8E80 /* UartDataExport.swift in Sources */,
 				A932A5A91BB92A640096D78A /* MainWindowController.swift in Sources */,
 				A982968B1BB222D700DD478C /* LogHelper.swift in Sources */,
 				A982968F1BB22D2100DD478C /* PeripheralTableCellView.swift in Sources */,
@@ -478,6 +485,7 @@
 				A982966C1BB1F5E600DD478C /* AppDelegate.swift in Sources */,
 				A94B85101BB65C48007B88C7 /* FirmwareUpdater.m in Sources */,
 				A92BA69C1BBDBC210093F701 /* StatusManager.swift in Sources */,
+				A98AE3AF1C42ABF300FA8E80 /* UartDataChunk.swift in Sources */,
 				A94370BA1BB6493A002521F7 /* BleManager.swift in Sources */,
 				A9A842411BD1276C003B925A /* SeparatorView.swift in Sources */,
 				A94B851E1BB704BC007B88C7 /* HexConversions.swift in Sources */,

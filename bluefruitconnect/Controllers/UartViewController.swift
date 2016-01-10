@@ -15,16 +15,6 @@ class UartViewController: NSViewController {
         case Table          // Display a table where each data chunk is a row
     }
     
-    struct DataChunk {      // A chunk of data received or sent
-        var timestamp : CFAbsoluteTime
-        enum TransferMode {
-            case TX
-            case RX
-        }
-        var mode : TransferMode
-        var data : NSData
-    }
-    
     enum UartNotifications : String {
         case DidTransferData = "didTransferData"
     }
@@ -69,7 +59,7 @@ class UartViewController: NSViewController {
     private var txCharacteristic : CBCharacteristic?
     
     // Current State
-    private var dataBuffer = [DataChunk]()
+    private var dataBuffer = [UartDataChunk]()
     private var tableModeDataMaxWidth : CGFloat = 0
     
     // UI
@@ -77,7 +67,7 @@ class UartViewController: NSViewController {
     private var txColor = Preferences.uartSentDataColor
     private var rxColor = Preferences.uartReceveivedDataColor
     private let timestampDateFormatter = NSDateFormatter()
-    private var tableCachedDataBuffer : [DataChunk]?
+    private var tableCachedDataBuffer : [UartDataChunk]?
     
     // Export
     private var exportFileDialog : NSSavePanel?
@@ -211,7 +201,7 @@ class UartViewController: NSViewController {
     }
     
     func registerDataSent(data : NSData, wasReceivedFromMqtt: Bool) {
-        let dataChunk = DataChunk(timestamp: CFAbsoluteTimeGetCurrent(), mode: .TX, data: data)
+        let dataChunk = UartDataChunk(timestamp: CFAbsoluteTimeGetCurrent(), mode: .TX, data: data)
         dataBuffer.append(dataChunk)
 
         dispatch_async(dispatch_get_main_queue(), {[unowned self] in
@@ -234,7 +224,7 @@ class UartViewController: NSViewController {
         }
         
         // Process received data
-        let dataChunk = DataChunk(timestamp: CFAbsoluteTimeGetCurrent(), mode: .RX, data: data)
+        let dataChunk = UartDataChunk(timestamp: CFAbsoluteTimeGetCurrent(), mode: .RX, data: data)
         blePeripheral?.uartData.receivedBytes += dataChunk.data.length
         dataBuffer.append(dataChunk)
         
@@ -247,7 +237,7 @@ class UartViewController: NSViewController {
     }
     
     // MARK: - UI Updates
-    func addChunkToUI(dataChunk : DataChunk) {
+    func addChunkToUI(dataChunk : UartDataChunk) {
         let displayMode = Preferences.uartIsDisplayModeTimestamp ? DisplayMode.Table : DisplayMode.Text
         
         switch(displayMode) {
@@ -266,7 +256,7 @@ class UartViewController: NSViewController {
         updateBytesUI()
     }
     
-    func addChunkToUIText(dataChunk : DataChunk) {
+    func addChunkToUIText(dataChunk : UartDataChunk) {
         
         if (Preferences.uartIsEchoEnabled || dataChunk.mode == .RX) {
             let color = dataChunk.mode == .TX ? txColor : rxColor
@@ -467,17 +457,17 @@ class UartViewController: NSViewController {
                         // Save
                         var text : String?
                         let exportFormatSelected = self.exportFormats[self.saveDialogPopupButton.indexOfSelectedItem]
-                        
+
                         switch(exportFormatSelected) {
                         case .txt:
-                            text = self.dataAsText(url)
+                            text = UartDataExport.dataAsText(self.dataBuffer)
                         case .csv:
-                            text = self.dataAsCsv(url)
+                            text = UartDataExport.dataAsCsv(self.dataBuffer)
                         case .json:
-                            text = self.dataAsJson(url)
+                            text = UartDataExport.dataAsJson(self.dataBuffer)
                             break
                         case .xml:
-                            text = self.dataAsXml(url)
+                            text = UartDataExport.dataAsXml(self.dataBuffer)
                             break
                         }
                         
@@ -506,135 +496,7 @@ class UartViewController: NSViewController {
         }
     }
     
-    // MARK: Export formats
-    func dataAsText(url : NSURL) -> String? {
-        // Compile all data
-        let data = NSMutableData()
-        for dataChunk in self.dataBuffer {
-            data.appendData(dataChunk.data)
-        }
-        
-        var text : String?
-        if (Preferences.uartIsInHexMode) {
-            text = hexString(data)
-        }
-        else {
-            text = NSString(data:data, encoding: NSUTF8StringEncoding) as String?
-        }
-        
-        return text
-    }
-    
-    func dataAsCsv(url : NSURL)  -> String? {
-        var text = "Timestamp,Mode,Data\r\n"        // csv Header
-        
-        for dataChunk in self.dataBuffer {
-            let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
-            let dateString = timestampDateFormatter.stringFromDate(date).stringByReplacingOccurrencesOfString(",", withString: ".")         //  comma messes with csv, so replace it by point
-            let mode = dataChunk.mode == .RX ? "RX" : "TX"
-            var dataString : String?
-            if (Preferences.uartIsInHexMode) {
-                dataString = hexString(dataChunk.data)
-            }
-            else {
-                dataString = NSString(data:dataChunk.data, encoding: NSUTF8StringEncoding) as String?
-            }
-            if (dataString == nil) {
-                dataString = ""
-            }
-            else {
-                // Remove newline characters from data (it messes with the csv format and Excel wont recognize it)
-                dataString = (dataString! as NSString).stringByTrimmingCharactersInSet(NSCharacterSet.newlineCharacterSet())
-            }
-            
-            text += "\(dateString),\(mode),\"\(dataString!)\"\r\n"
-        }
-        
-        return text
-    }
-    
-    func dataAsJson(url : NSURL)  -> String? {
-        
-        var jsonItemsDictionary : [AnyObject] = []
-        
-        for dataChunk in self.dataBuffer {
-            let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
-            let unixDate = date.timeIntervalSince1970
-            let mode = dataChunk.mode == .RX ? "RX" : "TX"
-            var dataString : String?
-            if (Preferences.uartIsInHexMode) {
-                dataString = hexString(dataChunk.data)
-            }
-            else {
-                dataString = NSString(data:dataChunk.data, encoding: NSUTF8StringEncoding) as String?
-            }
-            
-            if let dataString = dataString {
-                let jsonItemDictionary : [String : AnyObject] = [
-                    "timestamp" : unixDate,
-                    "mode" : mode,
-                    "data" : dataString
-                ]
-                jsonItemsDictionary.append(jsonItemDictionary)
-            }
-        }
-        
-        let jsonRootDictionary : [String : AnyObject] = [
-            "items": jsonItemsDictionary
-        ]
-        
-        // Create Json NSData
-        var data : NSData?
-        do {
-            data = try NSJSONSerialization.dataWithJSONObject(jsonRootDictionary, options: .PrettyPrinted)
-        } catch  {
-            DLog("Error serializing json data")
-        }
-        
-        // Create Json String
-        var result : String?
-        if let data = data {
-            result = NSString(data: data, encoding: NSUTF8StringEncoding) as? String
-        }
-        
-        return result
-    }
-    
-    func dataAsXml(url : NSURL)  -> String? {
-        
-        let xmlRootElement = NSXMLElement(name: "uart")
-        
-        for dataChunk in self.dataBuffer {
-            let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
-            let unixDate = date.timeIntervalSince1970
-            let mode = dataChunk.mode == .RX ? "RX" : "TX"
-            var dataString : String?
-            if (Preferences.uartIsInHexMode) {
-                dataString = hexString(dataChunk.data)
-            }
-            else {
-                dataString = NSString(data:dataChunk.data, encoding: NSUTF8StringEncoding) as String?
-            }
-            
-            if let dataString = dataString {
-                
-                let xmlItemElement = NSXMLElement(name: "item")
-                xmlItemElement.addChild(NSXMLElement(name: "timestamp", stringValue:"\(unixDate)"))
-                xmlItemElement.addChild(NSXMLElement(name: "mode", stringValue:mode))
-                let dataNode = NSXMLElement(kind: .TextKind, options: NSXMLNodeIsCDATA)
-                dataNode.name = "data"
-                dataNode.stringValue = dataString
-                xmlItemElement.addChild(dataNode)
-                
-                xmlRootElement.addChild(xmlItemElement)
-            }
-        }
-        
-        let xml = NSXMLDocument(rootElement: xmlRootElement)
-        let result = xml.XMLStringWithOptions(NSXMLNodePrettyPrint)
-        
-        return result
-    }
+   
     
 }
 
@@ -650,7 +512,7 @@ extension UartViewController: NSTableViewDataSource {
             tableCachedDataBuffer = dataBuffer
         }
         else {
-            tableCachedDataBuffer = dataBuffer.filter({ (dataChunk : DataChunk) -> Bool in
+            tableCachedDataBuffer = dataBuffer.filter({ (dataChunk : UartDataChunk) -> Bool in
                 dataChunk.mode == .RX
             })
         }
