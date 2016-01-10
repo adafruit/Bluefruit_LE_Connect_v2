@@ -1375,7 +1375,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="506" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ft6-BK-pha">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="Ft6-BK-pha">
                                 <rect key="frame" x="10" y="10" width="486" height="280"/>
                                 <clipView key="contentView" id="O1c-aY-CNR">
                                     <rect key="frame" x="1" y="0.0" width="484" height="279"/>
@@ -1747,7 +1747,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T4D-4N-kJQ">
+                            <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="T4D-4N-kJQ">
                                 <rect key="frame" x="10" y="90" width="914" height="183"/>
                                 <clipView key="contentView" id="NGd-KT-6Qx">
                                     <rect key="frame" x="1" y="0.0" width="912" height="182"/>
