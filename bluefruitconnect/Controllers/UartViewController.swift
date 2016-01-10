@@ -87,7 +87,6 @@ class UartViewController: NSViewController {
         echoButton.state = Preferences.uartIsEchoEnabled ? NSOnState:NSOffState
         eolButton.state = Preferences.uartIsAutomaticEolEnabled ? NSOnState:NSOffState
         
-        
         // UI
         baseTableVisibilityView.scrollerStyle = NSScrollerStyle.Legacy      // To avoid autohide behaviour
         reloadDataUI()
@@ -238,19 +237,34 @@ class UartViewController: NSViewController {
     
     // MARK: - UI Updates
     func addChunkToUI(dataChunk : UartDataChunk) {
+        // Check that the view has been initialized before updating UI
+        guard baseTableView != nil else {
+            return;
+        }
+        
         let displayMode = Preferences.uartIsDisplayModeTimestamp ? DisplayMode.Table : DisplayMode.Text
         
         switch(displayMode) {
         case .Text:
             if let textStorage = self.baseTextView.textStorage {
+                let isScrollAtTheBottom = baseTextView.enclosingScrollView?.verticalScroller?.floatValue == 1
+                
                 addChunkToUIText(dataChunk)
-                baseTextView.scrollRangeToVisible(NSMakeRange(textStorage.length, 0))
+                
+                if isScrollAtTheBottom {
+                    // if scroll was at the bottom then autoscroll to the new bottom
+                    baseTextView.scrollRangeToVisible(NSMakeRange(textStorage.length, 0))
+                }
             }
             
         case .Table:
-            baseTableView.reloadData()
-            baseTableView.scrollToEndOfDocument(nil)
+            let isScrollAtTheBottom = baseTableView.enclosingScrollView?.verticalScroller?.floatValue == 1
             
+            baseTableView.reloadData()
+            if isScrollAtTheBottom {
+                // if scroll was at the bottom then autoscroll to the new bottom
+                baseTableView.scrollToEndOfDocument(nil)
+            }
         }
         
         updateBytesUI()

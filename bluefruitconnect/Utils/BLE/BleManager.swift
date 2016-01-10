@@ -42,7 +42,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     var wasScanningBeforeBluetoothOff = false;
     var blePeripheralsFound = [String : BlePeripheral]()
     var blePeripheralConnecting : BlePeripheral?
-    var blePeripheralConnected : BlePeripheral?             // last peripheral connected (TODO: take into account that multiple peripherals can can be connected at the same time
+    var blePeripheralConnected : BlePeripheral?             // last peripheral connected (note: only one peripheral can can be connected at the same time
     var undiscoverTimer : NSTimer?
 
     //

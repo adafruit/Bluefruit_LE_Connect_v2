@@ -76,7 +76,7 @@ class DetailsViewController: NSViewController {
             return;
         }
 
-        let blePeripheral = BleManager.sharedInstance.blePeripheralConnected!;
+        let blePeripheral = BleManager.sharedInstance.blePeripheralConnected!
         blePeripheral.peripheral.delegate = self
 
         // UI
@@ -250,21 +250,11 @@ extension DetailsViewController : CBPeripheralDelegate {
         for tabViewItem in modeTabView.tabViewItems {
             (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheralDidUpdateName?(peripheral)
         }
-        /*
-        if let viewController = modeTabView.selectedTabViewItem?.viewController {
-            (viewController as? CBPeripheralDelegate)?.peripheralDidUpdateName?(peripheral)
-        }
-*/
     }
     func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
         for tabViewItem in modeTabView.tabViewItems {
             (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didModifyServices: invalidatedServices)
         }
-/*
-        if let viewController = modeTabView.selectedTabViewItem?.viewController {
-            (viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didModifyServices: invalidatedServices)
-        }
-*/
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
@@ -272,11 +262,6 @@ extension DetailsViewController : CBPeripheralDelegate {
 
                 (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverServices: error)
         }
-        /*
-        if let viewController = modeTabView.selectedTabViewItem?.viewController {
-            (viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverServices: error)
-        }
-*/
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
@@ -284,20 +269,12 @@ extension DetailsViewController : CBPeripheralDelegate {
         for tabViewItem in modeTabView.tabViewItems {
             (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverCharacteristicsForService: service, error: error)
         }
-        /*
-        if let viewController = modeTabView.selectedTabViewItem?.viewController {
-            (viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverCharacteristicsForService: service, error: error)
-        }*/
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         for tabViewItem in modeTabView.tabViewItems {
             (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverDescriptorsForCharacteristic: characteristic, error: error)
         }
-        /*
-        if let viewController = modeTabView.selectedTabViewItem?.viewController {
-            (viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverDescriptorsForCharacteristic: characteristic, error: error)
-        }*/
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
@@ -307,17 +284,10 @@ extension DetailsViewController : CBPeripheralDelegate {
                 DLog("received: \(utf8Value)")
             }
         }
-
         
         for tabViewItem in modeTabView.tabViewItems {
             (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)
         }
-        /*
-        if let viewController = modeTabView.selectedTabViewItem?.viewController {
-            (viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)
-        }
-*/
-
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
@@ -342,10 +312,6 @@ extension DetailsViewController : CBPeripheralDelegate {
             for tabViewItem in modeTabView.tabViewItems {
                 (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheralDidUpdateRSSI?(peripheral, error: error)
             }
-            /*
-            if let viewController = modeTabView.selectedTabViewItem?.viewController {
-                (viewController as? CBPeripheralDelegate)?.peripheralDidUpdateRSSI?(peripheral, error: error)
-            }*/
         }
     }
 }

@@ -42,6 +42,9 @@ class InfoViewController: NSViewController {
     func reset() {
         // Peripheral should be connected
         blePeripheral = BleManager.sharedInstance.blePeripheralConnected
+        if (blePeripheral == nil) {
+            DLog("Error: Info: blePeripheral is nil")
+        }
 
         // Discover services
         services = nil
