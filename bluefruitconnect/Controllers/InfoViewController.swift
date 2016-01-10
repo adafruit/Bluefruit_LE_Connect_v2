@@ -29,11 +29,6 @@ class InfoViewController: NSViewController {
         let path = NSBundle.mainBundle().pathForResource("GattUUIDs", ofType: "plist")!
         gattUUIds = NSDictionary(contentsOfFile: path) as? [String : String]
     
-        // Peripheral should be connected
-        blePeripheral = BleManager.sharedInstance.blePeripheralConnected
-        
-        // Discover services
-        discoverServices()
     }
     
     override func viewWillAppear() {
@@ -44,12 +39,19 @@ class InfoViewController: NSViewController {
         BleManager.sharedInstance.discover(blePeripheral!, serviceUUIDs: nil)
     }
 
-    func updateUI() {
+    func reset() {
+        // Peripheral should be connected
+        blePeripheral = BleManager.sharedInstance.blePeripheralConnected
+
+        // Discover services
+        services = nil
+        discoverServices()
+    }
+    
+    func tabWillAppear() {
         self.baseTableView.reloadData()
     }
 }
-
-
 
 // MARK: - NSOutlineViewDataSource
 extension InfoViewController : NSOutlineViewDataSource {
@@ -206,23 +208,26 @@ extension InfoViewController : CBPeripheralDelegate {
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
-        DLog("centralManager didDiscoverServices: \(peripheral.name != nil ? peripheral.name! : "")")
         
-        services = blePeripheral?.peripheral.services
-        
-        // Discover characteristics
-        if let services = services {
-            for service in services {
-                blePeripheral?.peripheral.discoverCharacteristics(nil, forService: service)
-            }
-        }
-        
-        // Update UI
-        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+        if services == nil {
+            DLog("centralManager didDiscoverServices: \(peripheral.name != nil ? peripheral.name! : "")")
             
-            self.baseTableView.reloadData()
-            self.onServicesDiscovered?()
-            })
+            services = blePeripheral?.peripheral.services
+            
+            // Discover characteristics
+            if let services = services {
+                for service in services {
+                    blePeripheral?.peripheral.discoverCharacteristics(nil, forService: service)
+                }
+            }
+            
+            // Update UI
+            dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+                
+                self.baseTableView.reloadData()
+                self.onServicesDiscovered?()
+                })
+        }
     }
 
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {

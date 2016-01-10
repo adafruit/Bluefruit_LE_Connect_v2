@@ -97,19 +97,6 @@ class UartViewController: NSViewController {
         echoButton.state = Preferences.uartIsEchoEnabled ? NSOnState:NSOffState
         eolButton.state = Preferences.uartIsAutomaticEolEnabled ? NSOnState:NSOffState
         
-        // Wait till uart is ready
-        inputTextField.enabled = false
-        inputTextField.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.1)
-        
-        // Peripheral should be connected
-        blePeripheral = BleManager.sharedInstance.blePeripheralConnected
-        
-        if (blePeripheral == nil) {
-            DLog("Error UART started without connected peripheral")
-        }
-        
-        // Discover UART
-        blePeripheral?.peripheral.discoverServices([CBUUID(string: UartViewController.UartServiceUUID)])
         
         // UI
         baseTableVisibilityView.scrollerStyle = NSScrollerStyle.Legacy      // To avoid autohide behaviour
@@ -121,6 +108,21 @@ class UartViewController: NSViewController {
             mqttManager.delegate = self
             mqttManager.connectFromSavedSettings()
         }
+    }
+    
+    func reset() {
+        // Peripheral should be connected
+        blePeripheral = BleManager.sharedInstance.blePeripheralConnected
+        
+        if (blePeripheral == nil) {
+            DLog("Error UART started without connected peripheral")
+        }
+        
+        // Discover UART
+        uartService = nil
+        rxCharacteristic = nil
+        txCharacteristic = nil
+        blePeripheral?.peripheral.discoverServices([CBUUID(string: UartViewController.UartServiceUUID)])
     }
     
     override func viewWillAppear() {
@@ -139,6 +141,15 @@ class UartViewController: NSViewController {
     deinit {
         let mqttManager = MqttManager.sharedInstance
         mqttManager.disconnect()
+    }
+    
+    func tabWillAppear() {
+        reloadDataUI()
+        
+        // Check if characteristics are ready
+        let isUartReady = rxCharacteristic != nil && txCharacteristic != nil
+        inputTextField.enabled = isUartReady
+        inputTextField.backgroundColor = isUartReady ? NSColor.whiteColor() : NSColor.blackColor().colorWithAlphaComponent(0.1)
     }
     
     // MARK: - Preferences
@@ -744,6 +755,7 @@ extension UartViewController: CBPeripheralDelegate {
     
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
         
+        DLog("uart didDiscoverCharacteristicsForService")
         if let uartService = uartService {
             if (rxCharacteristic == nil || txCharacteristic == nil) {
                 if let characteristics = uartService.characteristics {
@@ -769,10 +781,12 @@ extension UartViewController: CBPeripheralDelegate {
                 peripheral.setNotifyValue(true, forCharacteristic: rxCharacteristic!)
                 
                 // Enable input
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.inputTextField.enabled = true
-                    self.inputTextField.backgroundColor = NSColor.whiteColor()
-                });
+                dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+                    if self.inputTextField != nil {     // could be nil if the viewdidload has not been executed yet
+                        self.inputTextField.enabled = true
+                        self.inputTextField.backgroundColor = NSColor.whiteColor()
+                    }
+                    });
             }
         }
     }
@@ -786,6 +800,8 @@ extension UartViewController: CBPeripheralDelegate {
             }
         }
     }
+    
+  
 }
 
 // MARK: - MqttManagerDelegate

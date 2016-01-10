@@ -47,7 +47,6 @@ class MqttManager
     
     //
     private init() {
-        
     }
 
     func connectFromSavedSettings() {
@@ -109,6 +108,8 @@ class MqttManager
     }
     
     func disconnect() {
+        MqttSettings.sharedInstance.isConnected = false
+        
         if let client = mqttClient {
             status = .Disconnecting
             client.disconnect()
@@ -116,7 +117,6 @@ class MqttManager
         else {
             status = .Disconnected
         }
-        
     }
 }
 
@@ -175,7 +175,6 @@ extension MqttManager: CocoaMQTTDelegate {
        
         status = err == nil ? .Disconnected : .Error
         delegate?.onMqttDisconnected()
-        
     }
 
     func mqtt(mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16) {

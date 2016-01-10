@@ -94,15 +94,18 @@ class DetailsViewController: NSViewController {
             self.cancelRssiTimer()
             let privateQueue = dispatch_queue_create("private_queue", DISPATCH_QUEUE_CONCURRENT);
             self.rssiTimer = MSWeakTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: "requestUpdateRssi", userInfo: nil, repeats: true, dispatchQueue: privateQueue)
-            //self.rssiTimer = MSWeakTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: "requestUpdateRssi", userInfo: nil, repeats: true)
             
             // UI: Add Info tab
             let infoViewController = self.storyboard?.instantiateControllerWithIdentifier("InfoViewController") as! InfoViewController
+            
             infoViewController.onServicesDiscovered = { [weak self] in
+                // optimization: wait till info discover services to continue, instead of discovering services by myself
                 self?.servicesDiscovered()
             }
+
             let infoTabViewItem = NSTabViewItem(viewController: infoViewController)
             self.modeTabView.addTabViewItem(infoTabViewItem)
+            infoViewController.reset()
             
             self.modeTabView.selectFirstTabViewItem(nil)
         })
@@ -148,14 +151,6 @@ class DetailsViewController: NSViewController {
             if let services = blePeripheral.peripheral.services {
                 
                 dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-                    // Clear old tabs (not 0 that is Info)
-                    if (self.modeTabView.tabViewItems.count > 1) {
-                        for i in 1...(self.modeTabView.tabViewItems.count-1) {
-                            if self.modeTabView.tabViewItems.count < i {     // Extra check because sometimes it will access an index out of bounds (if clicking quickly on the peripheral list)
-                                self.modeTabView.removeTabViewItem(self.modeTabView.tabViewItems[i])
-                            }
-                        }
-                    }
                     
                     // Check Uart
                     let kUartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"                       // UART service UUID
@@ -165,12 +160,26 @@ class DetailsViewController: NSViewController {
                     
                     self.infoUartImageView.image = NSImage(named: hasUart ?"NSStatusAvailable":"NSStatusNone")
                     //infoUartLabel.toolTip = "UART Service \(hasUart ? "" : "not ")available"
+                    
+                    var uartTabIndex = self.indexForTabWithClass("UartViewController")
                     if (hasUart) {
-                        // Add Uart tab
-                        let uartViewController = self.storyboard?.instantiateControllerWithIdentifier("UartViewController") as! UartViewController
-                        let uartTabViewItem = NSTabViewItem(viewController: uartViewController)
-                        self.modeTabView.addTabViewItem(uartTabViewItem)
+                        if (uartTabIndex < 0) {
+                            // Add Uart tab
+                            let uartViewController = self.storyboard?.instantiateControllerWithIdentifier("UartViewController") as! UartViewController
+                            let uartTabViewItem = NSTabViewItem(viewController: uartViewController)
+                            uartTabIndex = 1
+                            self.modeTabView.insertTabViewItem(uartTabViewItem, atIndex: uartTabIndex)
+                        }
+                        
+                        let uartViewController = self.modeTabView.tabViewItems[uartTabIndex].viewController as! UartViewController
+                        uartViewController.reset()
                     }
+                        /*
+                    else if (uartTabIndex >= 0) {
+                        // Remove existing uart tab
+                        self.modeTabView.removeTabViewItem(self.modeTabView.tabViewItems[uartTabIndex])
+                    }
+*/
                     
                     // Check DFU
                     let kNordicDeviceFirmwareUpdateService = "00001530-1212-EFDE-1523-785FEABCD123"    // DFU service UUID
@@ -179,12 +188,23 @@ class DetailsViewController: NSViewController {
                     })
                     
                     self.infoDfuImageView.image = NSImage(named: hasDFU ?"NSStatusAvailable":"NSStatusNone")
+                    
+                    let dfuTabIndex = self.indexForTabWithClass("FirmwareUpdateViewController")
                     if (hasDFU) {
-                        // Add Firmware Update tab
-                        let updateViewController = self.storyboard?.instantiateControllerWithIdentifier("FirmwareUpdateViewController") as! FirmwareUpdateViewController
-                        let updateTabViewItem = NSTabViewItem(viewController: updateViewController)
-                        self.modeTabView.addTabViewItem(updateTabViewItem)
+                        if (dfuTabIndex < 0) {
+                            // Add Firmware Update tab
+                            let updateViewController = self.storyboard?.instantiateControllerWithIdentifier("FirmwareUpdateViewController") as! FirmwareUpdateViewController
+                            let updateTabViewItem = NSTabViewItem(viewController: updateViewController)
+                            self.modeTabView.insertTabViewItem(updateTabViewItem, atIndex: hasUart ? 2: 1)
+
+                        }
                     }
+                        /*
+                    else if (dfuTabIndex >= 0) {
+                        // Remove existing dfu tab
+                        self.modeTabView.removeTabViewItem(self.modeTabView.tabViewItems[dfuTabIndex])
+                    }
+*/
                     
                     // Check DIS
                     let kDisServiceUUID = "180A"    // DIS service UUID
@@ -196,6 +216,20 @@ class DetailsViewController: NSViewController {
                     })
             }
         }
+    }
+
+    
+    private func indexForTabWithClass(tabClassName : String) -> Int {
+        var index = -1
+        for i in 0..<modeTabView.tabViewItems.count {
+            let className = String(modeTabView.tabViewItems[i].viewController!.dynamicType)
+            if className == tabClassName {
+                index = i
+                break
+            }
+        }
+        
+        return index
     }
     
     func updateRssiUI() {
@@ -213,32 +247,57 @@ extension DetailsViewController : CBPeripheralDelegate {
     
     // Send peripheral delegate methods to tab active (each tab will handle these methods)
     func peripheralDidUpdateName(peripheral: CBPeripheral) {
-        if let viewController = modeTabView.selectedTabViewItem?.viewController {
-            (viewController as? CBPeripheralDelegate)?.peripheralDidUpdateName?(peripheral);
+        for tabViewItem in modeTabView.tabViewItems {
+            (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheralDidUpdateName?(peripheral)
         }
+        /*
+        if let viewController = modeTabView.selectedTabViewItem?.viewController {
+            (viewController as? CBPeripheralDelegate)?.peripheralDidUpdateName?(peripheral)
+        }
+*/
     }
     func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        for tabViewItem in modeTabView.tabViewItems {
+            (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didModifyServices: invalidatedServices)
+        }
+/*
         if let viewController = modeTabView.selectedTabViewItem?.viewController {
             (viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didModifyServices: invalidatedServices)
         }
+*/
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
+        for tabViewItem in modeTabView.tabViewItems {
+
+                (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverServices: error)
+        }
+        /*
         if let viewController = modeTabView.selectedTabViewItem?.viewController {
             (viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverServices: error)
         }
+*/
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
+        
+        for tabViewItem in modeTabView.tabViewItems {
+            (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverCharacteristicsForService: service, error: error)
+        }
+        /*
         if let viewController = modeTabView.selectedTabViewItem?.viewController {
             (viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverCharacteristicsForService: service, error: error)
-        }
+        }*/
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
+        for tabViewItem in modeTabView.tabViewItems {
+            (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverDescriptorsForCharacteristic: characteristic, error: error)
+        }
+        /*
         if let viewController = modeTabView.selectedTabViewItem?.viewController {
             (viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverDescriptorsForCharacteristic: characteristic, error: error)
-        }
+        }*/
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
@@ -249,9 +308,15 @@ extension DetailsViewController : CBPeripheralDelegate {
             }
         }
 
+        
+        for tabViewItem in modeTabView.tabViewItems {
+            (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)
+        }
+        /*
         if let viewController = modeTabView.selectedTabViewItem?.viewController {
             (viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)
         }
+*/
 
     }
     
@@ -274,10 +339,13 @@ extension DetailsViewController : CBPeripheralDelegate {
                 self.updateRssiUI()
                 })
             
+            for tabViewItem in modeTabView.tabViewItems {
+                (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheralDidUpdateRSSI?(peripheral, error: error)
+            }
+            /*
             if let viewController = modeTabView.selectedTabViewItem?.viewController {
                 (viewController as? CBPeripheralDelegate)?.peripheralDidUpdateRSSI?(peripheral, error: error)
-                
-            }
+            }*/
         }
     }
 }
@@ -293,7 +361,10 @@ extension DetailsViewController: NSTabViewDelegate {
             firmwareUpdateViewController.startUpdatesCheck()
         }
         else if let infoViewController = tabViewItem?.viewController as? InfoViewController {
-            infoViewController.updateUI()
+            infoViewController.tabWillAppear()
+        }
+        else if let uartViewController = tabViewItem?.viewController as? UartViewController {
+              uartViewController.tabWillAppear()
         }
     }
 }

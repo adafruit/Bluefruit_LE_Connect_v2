@@ -291,8 +291,11 @@ extension UpdateDialogViewController : DFUOperationsDelegate {
     func onSuccessfulFileTranferred() {
         DLog("DFUOperationsDelegate - onSuccessfulFileTranferred")
         
-        dispatch_async(dispatch_get_main_queue(), {
-            self.dismissViewController(self)
+        dispatch_async(dispatch_get_main_queue(), {  [unowned self] in
+            if self.presentingViewController != nil {
+                self.dismissViewController(self)
+            }
+            
             if let delegate = self.delegate {
                 delegate.onUpdateDialogSuccess()
             }
@@ -303,8 +306,11 @@ extension UpdateDialogViewController : DFUOperationsDelegate {
         
         DLog("DFUOperationsDelegate - onError: \(errorMessage)" )
         
-        dispatch_async(dispatch_get_main_queue(), {
-            self.dismissViewController(self)
+        dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+            if self.presentingViewController != nil {
+                self.dismissViewController(self)
+            }
+            
             if let delegate = self.delegate {
                 delegate.onUpdateDialogError(errorMessage)
             }
