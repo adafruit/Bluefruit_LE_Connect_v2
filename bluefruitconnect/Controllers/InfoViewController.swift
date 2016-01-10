@@ -13,14 +13,27 @@ import CoreBluetooth
 class InfoViewController: NSViewController {
     private static let kExpandAllNodes  = true
     
+    // UI
     @IBOutlet weak var baseTableView: NSOutlineView!
+    @IBOutlet weak var refreshOnLoadButton: NSButton!
+    @IBOutlet weak var refreshButton: NSButton!
+    @IBOutlet weak var discoveringStatusLabel: NSTextField!
     
+    // Delegates
     var onServicesDiscovered : (() -> ())?
     
+    // Data
     private var blePeripheral : BlePeripheral?
     private var services : [CBService]?
     private var gattUUIds : [String : String]?
     
+    private var shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
+
+    private var isDiscoveringServices = false
+    private var elementsToDiscover = 0
+    private var elementsDiscovered = 0
+    private var valuesToRead = 0
+    private var valuesRead = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,14 +41,24 @@ class InfoViewController: NSViewController {
         // Read known UUIDs
         let path = NSBundle.mainBundle().pathForResource("GattUUIDs", ofType: "plist")!
         gattUUIds = NSDictionary(contentsOfFile: path) as? [String : String]
-    
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
+        
+        refreshOnLoadButton.state = Preferences.infoIsRefreshOnLoadEnabled ? NSOnState : NSOffState
     }
     
     func discoverServices() {
+        isDiscoveringServices = true
+        elementsToDiscover = 0
+        elementsDiscovered = 0
+        valuesToRead = 0
+        valuesRead = 0
+        updateDiscoveringStatusLabel()
+        
+        services = nil
+        self.baseTableView.reloadData()
         BleManager.sharedInstance.discover(blePeripheral!, serviceUUIDs: nil)
     }
 
@@ -46,6 +69,9 @@ class InfoViewController: NSViewController {
             DLog("Error: Info: blePeripheral is nil")
         }
 
+        shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
+        updateDiscoveringStatusLabel()
+        
         // Discover services
         services = nil
         discoverServices()
@@ -53,6 +79,40 @@ class InfoViewController: NSViewController {
     
     func tabWillAppear() {
         self.baseTableView.reloadData()
+    }
+    
+    func updateDiscoveringStatusLabel() {
+        var text = ""
+        if isDiscoveringServices {
+            text = "Discovering Services..."
+            refreshButton.enabled = false
+        }
+        else if elementsDiscovered < elementsToDiscover || valuesRead < valuesToRead {
+            if shouldDiscoverCharacteristics {
+                text = "Discovering (\(elementsDiscovered)/\(elementsToDiscover)) and reading values (\(valuesRead)/\(valuesToRead))..."
+            }
+            else {
+                text = "Discovering (\(elementsDiscovered)/\(elementsToDiscover))..."
+            }
+            refreshButton.enabled = false
+        }
+        else {
+            refreshButton.enabled = true
+        }
+        
+        discoveringStatusLabel.stringValue = text
+    }
+    
+    // MARK: - Actions
+
+    @IBAction func onClickRefreshOnLoad(sender: NSButton) {
+        Preferences.infoIsRefreshOnLoadEnabled = sender.state == NSOnState
+
+    }
+    
+    @IBAction func onClickRefresh(sender: AnyObject) {
+        shouldDiscoverCharacteristics = true
+        discoverServices()
     }
 }
 
@@ -192,7 +252,6 @@ extension InfoViewController: NSOutlineViewDelegate {
             }
         }
         
-        
         return cell
     }
 }
@@ -211,22 +270,29 @@ extension InfoViewController : CBPeripheralDelegate {
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
+        isDiscoveringServices = false
         
         if services == nil {
             DLog("centralManager didDiscoverServices: \(peripheral.name != nil ? peripheral.name! : "")")
             
             services = blePeripheral?.peripheral.services
+            elementsToDiscover = 0
+            elementsDiscovered = 0
             
             // Discover characteristics
-            if let services = services {
-                for service in services {
-                    blePeripheral?.peripheral.discoverCharacteristics(nil, forService: service)
+            if shouldDiscoverCharacteristics {
+                if let services = services {
+                    for service in services {
+                        elementsToDiscover++
+                        blePeripheral?.peripheral.discoverCharacteristics(nil, forService: service)
+                    }
                 }
             }
             
             // Update UI
             dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
                 
+                self.updateDiscoveringStatusLabel()
                 self.baseTableView.reloadData()
                 self.onServicesDiscovered?()
                 })
@@ -236,6 +302,8 @@ extension InfoViewController : CBPeripheralDelegate {
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
         DLog("centralManager didDiscoverCharacteristicsForService: \(service.UUID.UUIDString)")
         
+        elementsDiscovered++
+        
         var discoveringDescriptors = false
         if let characteristics = service.characteristics {
             if (characteristics.count > 0)  {
@@ -243,18 +311,21 @@ extension InfoViewController : CBPeripheralDelegate {
             }
             for characteristic in characteristics {
                 if (characteristic.properties.rawValue & CBCharacteristicProperties.Read.rawValue != 0) {
+                    valuesToRead++
                     peripheral.readValueForCharacteristic(characteristic)
                 }
                 
+                elementsToDiscover++
                 blePeripheral?.peripheral.discoverDescriptorsForCharacteristic(characteristic)
             }
         }
         
-        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
-            self?.baseTableView.reloadData()
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.updateDiscoveringStatusLabel()
+            self.baseTableView.reloadData()
             if (!discoveringDescriptors && InfoViewController.kExpandAllNodes) {
                 // Expand all nodes if not waiting for descriptors
-                self?.baseTableView.expandItem(nil, expandChildren: true)
+                self.baseTableView.expandItem(nil, expandChildren: true)
             }
             })
     }
@@ -262,9 +333,10 @@ extension InfoViewController : CBPeripheralDelegate {
     func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         
         DLog("centralManager didDiscoverDescriptorsForCharacteristic: \(characteristic.UUID.UUIDString)")
-
+        elementsDiscovered++
+        
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            
+            self.updateDiscoveringStatusLabel()
             self.baseTableView.reloadData()
             
             if (InfoViewController.kExpandAllNodes) {
@@ -277,7 +349,10 @@ extension InfoViewController : CBPeripheralDelegate {
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         DLog("centralManager didUpdateValueForCharacteristic: \(characteristic.UUID.UUIDString)")
 
+        valuesRead++
+        
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.updateDiscoveringStatusLabel()
             self.baseTableView.reloadData()
             })
     }
@@ -286,6 +361,7 @@ extension InfoViewController : CBPeripheralDelegate {
         DLog("centralManager didUpdateValueForDescriptor: \(descriptor.UUID.UUIDString)")
 
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.updateDiscoveringStatusLabel()
             self.baseTableView.reloadData()
             })
     }

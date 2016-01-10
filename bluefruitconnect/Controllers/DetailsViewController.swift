@@ -284,7 +284,7 @@ extension DetailsViewController : CBPeripheralDelegate {
                 DLog("received: \(utf8Value)")
             }
         }
-        
+
         for tabViewItem in modeTabView.tabViewItems {
             (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)
         }

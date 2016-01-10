@@ -16,6 +16,8 @@ import AppKit
     private static let updateServerUrlKey = "UpdateServerUrl"
     private static let updateShowBetaVersionsKey = "UpdateShowBetaVersions"
 
+    private static let infoRefreshOnLoadKey = "InfoRefreshOnLoad"
+    
     private static let uartReceivedDataColorKey = "UartReceivedDataColor"
     private static let uartSentDataColorKey = "UartSentDataColor"
     private static let uartIsDisplayModeTimestampKey = "UartIsDisplayModeTimestamp"
@@ -65,6 +67,17 @@ import AppKit
             setBoolPreference(Preferences.updateShowBetaVersionsKey, newValue: newValue)
         }
     }
+    
+    // MARK: - Info
+    static var infoIsRefreshOnLoadEnabled : Bool {
+        get {
+        return getBoolPreference(Preferences.infoRefreshOnLoadKey)
+        }
+        set {
+            setBoolPreference(Preferences.infoRefreshOnLoadKey, newValue: newValue)
+        }
+    }
+
     
     // MARK: - Uart
     static var uartReceveivedDataColor : NSColor {

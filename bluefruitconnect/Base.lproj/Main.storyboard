@@ -1372,17 +1372,17 @@
             <objects>
                 <viewController title="Info" storyboardIdentifier="InfoViewController" id="ffc-GM-h6c" customClass="InfoViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="dzg-pK-vbr">
-                        <rect key="frame" x="0.0" y="0.0" width="506" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="506" height="346"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="Ft6-BK-pha">
-                                <rect key="frame" x="10" y="10" width="486" height="280"/>
+                                <rect key="frame" x="10" y="44" width="486" height="292"/>
                                 <clipView key="contentView" id="O1c-aY-CNR">
-                                    <rect key="frame" x="1" y="0.0" width="484" height="279"/>
+                                    <rect key="frame" x="1" y="0.0" width="484" height="291"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="ezI-Wm-v5t" viewBased="YES" indentationPerLevel="16" outlineTableColumn="V0h-5C-jYc" id="EXN-pz-48J">
-                                            <rect key="frame" x="0.0" y="0.0" width="790" height="256"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="790" height="268"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1550,7 +1550,7 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="hqs-79-h3I">
-                                    <rect key="frame" x="1" y="264" width="484" height="15"/>
+                                    <rect key="frame" x="1" y="275" width="484" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="0V1-hj-sf4">
@@ -1562,21 +1562,61 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
+                            <button toolTip="Shows sent messages" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="J5L-0v-n5D">
+                                <rect key="frame" x="8" y="18" width="258" height="18"/>
+                                <buttonCell key="cell" type="check" title="Discover characteristics on connection" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="62I-VW-nB1">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onClickRefreshOnLoad:" target="ffc-GM-h6c" id="l5d-Ve-24L"/>
+                                </connections>
+                            </button>
+                            <button toolTip="Shows sent messages" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3aY-2n-xmq">
+                                <rect key="frame" x="466" y="17" width="30" height="19"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="P0N-tD-8hF"/>
+                                </constraints>
+                                <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="NSRefreshTemplate" imagePosition="only" alignment="center" state="on" borderStyle="border" inset="2" id="yj2-QD-x9L">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="cellTitle"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onClickRefresh:" target="ffc-GM-h6c" id="0RW-pn-ttQ"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0Zy-0V-OQ4">
+                                <rect key="frame" x="384" y="20" width="76" height="14"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Discovering..." id="GfH-qH-iFy">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="3aY-2n-xmq" firstAttribute="leading" secondItem="0Zy-0V-OQ4" secondAttribute="trailing" constant="8" id="2Yf-dX-brw"/>
+                            <constraint firstItem="J5L-0v-n5D" firstAttribute="leading" secondItem="dzg-pK-vbr" secondAttribute="leading" constant="10" id="3hi-0c-sCE"/>
+                            <constraint firstAttribute="bottom" secondItem="J5L-0v-n5D" secondAttribute="bottom" constant="20" id="DrG-xT-FZJ"/>
                             <constraint firstAttribute="trailing" secondItem="Ft6-BK-pha" secondAttribute="trailing" constant="10" id="JXu-y7-Jgk"/>
                             <constraint firstItem="Ft6-BK-pha" firstAttribute="leading" secondItem="dzg-pK-vbr" secondAttribute="leading" constant="10" id="LeN-JT-Gph"/>
+                            <constraint firstItem="0Zy-0V-OQ4" firstAttribute="baseline" secondItem="3aY-2n-xmq" secondAttribute="baseline" id="NRp-qt-tqT"/>
                             <constraint firstItem="Ft6-BK-pha" firstAttribute="top" secondItem="dzg-pK-vbr" secondAttribute="top" constant="10" id="bCq-gc-bgU"/>
-                            <constraint firstAttribute="bottom" secondItem="Ft6-BK-pha" secondAttribute="bottom" constant="10" id="ssZ-6q-6mR"/>
+                            <constraint firstItem="J5L-0v-n5D" firstAttribute="top" secondItem="Ft6-BK-pha" secondAttribute="bottom" constant="10" id="dnc-aJ-9ZQ"/>
+                            <constraint firstItem="3aY-2n-xmq" firstAttribute="centerY" secondItem="J5L-0v-n5D" secondAttribute="centerY" id="mts-kr-vJd"/>
+                            <constraint firstAttribute="trailing" secondItem="3aY-2n-xmq" secondAttribute="trailing" constant="10" id="v33-hg-6i8"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="baseTableView" destination="EXN-pz-48J" id="C9K-al-dNt"/>
+                        <outlet property="discoveringStatusLabel" destination="0Zy-0V-OQ4" id="iWY-zN-6iz"/>
+                        <outlet property="refreshButton" destination="3aY-2n-xmq" id="dkp-0f-p58"/>
+                        <outlet property="refreshOnLoadButton" destination="J5L-0v-n5D" id="TUk-qi-QBe"/>
                     </connections>
                 </viewController>
                 <customObject id="Hk6-ah-icb" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1287" y="954"/>
+            <point key="canvasLocation" x="1287" y="977"/>
         </scene>
         <!--Uart-->
         <scene sceneID="iIn-dF-wdr">
