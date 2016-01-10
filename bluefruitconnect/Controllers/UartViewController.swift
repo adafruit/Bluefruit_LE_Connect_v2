@@ -258,7 +258,11 @@ class UartViewController: NSViewController {
             }
             
         case .Table:
-            let isScrollAtTheBottom = baseTableView.enclosingScrollView?.verticalScroller?.floatValue == 1
+            /*
+            let visibleRowsRange = baseTableView.rowsInRect(baseTableView.visibleRect)
+            let isScrollAtTheBottom = tableCachedDataBuffer == nil || || tableCachedDataBuffer!.isEmpty || NSLocationInRange(tableCachedDataBuffer!.count-1, visibleRowsRange)
+            */
+            let isScrollAtTheBottom = tableCachedDataBuffer == nil || tableCachedDataBuffer!.isEmpty  || baseTableView.enclosingScrollView?.verticalScroller?.floatValue == 1
             
             baseTableView.reloadData()
             if isScrollAtTheBottom {
