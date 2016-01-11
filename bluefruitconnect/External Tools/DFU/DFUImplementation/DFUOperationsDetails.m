@@ -135,7 +135,7 @@
     [self.bluetoothPeripheral setNotifyValue:YES forCharacteristic:self.dfuControlPointCharacteristic];
 
     // Hack: wait before writeValue (antonio@openroad.es) to avoid errors on OSX
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         uint8_t value[] = {START_DFU_REQUEST, APPLICATION};
         [self.bluetoothPeripheral writeValue:[NSData dataWithBytes:&value length:sizeof(value)] forCharacteristic:self.dfuControlPointCharacteristic type:CBCharacteristicWriteWithResponse];
     });

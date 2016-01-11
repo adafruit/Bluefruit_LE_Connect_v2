@@ -234,11 +234,8 @@ class UartViewController: NSViewController {
             }
             
         case .Table:
-            /*
-            let visibleRowsRange = baseTableView.rowsInRect(baseTableView.visibleRect)
-            let isScrollAtTheBottom = tableCachedDataBuffer == nil || || tableCachedDataBuffer!.isEmpty || NSLocationInRange(tableCachedDataBuffer!.count-1, visibleRowsRange)
-            */
-            let isScrollAtTheBottom = tableCachedDataBuffer == nil || tableCachedDataBuffer!.isEmpty  || baseTableView.enclosingScrollView?.verticalScroller?.floatValue == 1
+            let isScrollAtTheBottom = tableCachedDataBuffer == nil || tableCachedDataBuffer!.isEmpty || NSLocationInRange(tableCachedDataBuffer!.count-1, baseTableView.rowsInRect(baseTableView.visibleRect))
+            //let isScrollAtTheBottom = tableCachedDataBuffer == nil || tableCachedDataBuffer!.isEmpty  || baseTableView.enclosingScrollView?.verticalScroller?.floatValue == 1
             
             baseTableView.reloadData()
             if isScrollAtTheBottom {
@@ -262,7 +259,7 @@ class UartViewController: NSViewController {
             }
         }
     }
-    
+
     func attributeTextFromData(data : NSData, useHexMode : Bool, color : NSColor) -> NSAttributedString? {
         var attributedString : NSAttributedString?
         
@@ -309,7 +306,8 @@ class UartViewController: NSViewController {
             }
             
         case .Table:
-            let isScrollAtTheBottom = tableCachedDataBuffer == nil || tableCachedDataBuffer!.isEmpty  || baseTableView.enclosingScrollView?.verticalScroller?.floatValue == 1
+            //let isScrollAtTheBottom = tableCachedDataBuffer == nil || tableCachedDataBuffer!.isEmpty  || baseTableView.enclosingScrollView?.verticalScroller?.floatValue == 1
+            let isScrollAtTheBottom = tableCachedDataBuffer == nil || tableCachedDataBuffer!.isEmpty || NSLocationInRange(tableCachedDataBuffer!.count-1, baseTableView.rowsInRect(baseTableView.visibleRect))
 
             baseTableView.sizeLastColumnToFit()
             baseTableView.reloadData()
