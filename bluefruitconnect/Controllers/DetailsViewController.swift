@@ -297,11 +297,13 @@ extension DetailsViewController : CBPeripheralDelegate {
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         
+        /*
         if let characteristicDataValue = characteristic.value {
             if let utf8Value = NSString(data:characteristicDataValue, encoding: NSUTF8StringEncoding) as String? {
                 DLog("received: \(utf8Value)")
             }
         }
+*/
 
         for tabViewItem in modeTabView.tabViewItems {
             (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)

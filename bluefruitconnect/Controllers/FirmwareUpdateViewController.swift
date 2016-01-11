@@ -303,7 +303,6 @@ extension FirmwareUpdateViewController : NSTableViewDelegate {
             }
         }
     }
-
 }
 
 // MARK: - UpdateDialogViewControlerDelegate

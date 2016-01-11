@@ -67,9 +67,11 @@ static  NSString* const kSoftwareRevisionCharacteristic = @"00002A28-0000-1000-8
 static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8000-00805F9B34FB";
 
 static CBUUID *disServiceUUID;
+static CBUUID *dfuServiceUUID;
 
 + (void)initialize {
     disServiceUUID = [CBUUID UUIDWithString:kDeviceInformationService];
+    dfuServiceUUID = [CBUUID UUIDWithString:kNordicDeviceFirmwareUpdateService];
 }
 
 - (NSDictionary *)releases
@@ -174,7 +176,7 @@ static CBUUID *disServiceUUID;
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error {
 
     // Retrieve services
-    CBUUID *dfuServiceUUID = [CBUUID UUIDWithString:kNordicDeviceFirmwareUpdateService];
+    //CBUUID *dfuServiceUUID = [CBUUID UUIDWithString:kNordicDeviceFirmwareUpdateService];
     //CBUUI*D *disServiceUUID = [CBUUID UUIDWithString:kDeviceInformationService];
     CBService *dfuService = nil;
     CBService *disService = nil;
@@ -220,7 +222,7 @@ static CBUUID *disServiceUUID;
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error {
     // Read the characteristics discovered
     
-    if ([service.UUID isEqual:disServiceUUID]) {
+    if ([service.UUID isEqual:disServiceUUID] || [service.UUID isEqual:dfuServiceUUID]) {
         if (error) {
             DLog("FirmwareUpdater error discovering characteristics: %@", error)
         }
