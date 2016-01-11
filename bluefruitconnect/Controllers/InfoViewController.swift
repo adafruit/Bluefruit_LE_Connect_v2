@@ -62,25 +62,6 @@ class InfoViewController: NSViewController {
         BleManager.sharedInstance.discover(blePeripheral!, serviceUUIDs: nil)
     }
 
-    func reset() {
-        // Peripheral should be connected
-        blePeripheral = BleManager.sharedInstance.blePeripheralConnected
-        if (blePeripheral == nil) {
-            DLog("Error: Info: blePeripheral is nil")
-        }
-
-        shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
-        updateDiscoveringStatusLabel()
-        
-        // Discover services
-        services = nil
-        discoverServices()
-    }
-    
-    func tabWillAppear() {
-        self.baseTableView.reloadData()
-    }
-    
     func updateDiscoveringStatusLabel() {
         var text = ""
         if isDiscoveringServices {
@@ -114,6 +95,32 @@ class InfoViewController: NSViewController {
         shouldDiscoverCharacteristics = true
         discoverServices()
     }
+}
+
+// MARK: - DetailTab
+extension InfoViewController : DetailTab {
+    
+    func tabWillAppear() {
+        self.updateDiscoveringStatusLabel() 
+        self.baseTableView.reloadData()
+    }
+    
+    
+    func tabReset() {
+        // Peripheral should be connected
+        blePeripheral = BleManager.sharedInstance.blePeripheralConnected
+        if (blePeripheral == nil) {
+            DLog("Error: Info: blePeripheral is nil")
+        }
+        
+        shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
+        updateDiscoveringStatusLabel()
+        
+        // Discover services
+        services = nil
+        discoverServices()
+    }
+    
 }
 
 // MARK: - NSOutlineViewDataSource
@@ -273,7 +280,7 @@ extension InfoViewController : CBPeripheralDelegate {
         isDiscoveringServices = false
         
         if services == nil {
-            DLog("centralManager didDiscoverServices: \(peripheral.name != nil ? peripheral.name! : "")")
+            //DLog("centralManager didDiscoverServices: \(peripheral.name != nil ? peripheral.name! : "")")
             
             services = blePeripheral?.peripheral.services
             elementsToDiscover = 0
@@ -300,7 +307,7 @@ extension InfoViewController : CBPeripheralDelegate {
     }
 
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
-        DLog("centralManager didDiscoverCharacteristicsForService: \(service.UUID.UUIDString)")
+        //DLog("centralManager didDiscoverCharacteristicsForService: \(service.UUID.UUIDString)")
         
         elementsDiscovered++
         
@@ -332,7 +339,7 @@ extension InfoViewController : CBPeripheralDelegate {
     
     func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         
-        DLog("centralManager didDiscoverDescriptorsForCharacteristic: \(characteristic.UUID.UUIDString)")
+        //DLog("centralManager didDiscoverDescriptorsForCharacteristic: \(characteristic.UUID.UUIDString)")
         elementsDiscovered++
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
@@ -347,7 +354,7 @@ extension InfoViewController : CBPeripheralDelegate {
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        DLog("centralManager didUpdateValueForCharacteristic: \(characteristic.UUID.UUIDString)")
+        //DLog("centralManager didUpdateValueForCharacteristic: \(characteristic.UUID.UUIDString)")
 
         valuesRead++
         
@@ -358,7 +365,7 @@ extension InfoViewController : CBPeripheralDelegate {
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
-        DLog("centralManager didUpdateValueForDescriptor: \(descriptor.UUID.UUIDString)")
+        //DLog("centralManager didUpdateValueForDescriptor: \(descriptor.UUID.UUIDString)")
 
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.updateDiscoveringStatusLabel()

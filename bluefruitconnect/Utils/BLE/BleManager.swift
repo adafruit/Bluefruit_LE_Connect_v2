@@ -58,7 +58,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     }
 
     func startScan() {
-        DLog("startScan");
+        //DLog("startScan");
         
         isScanning = true
         wasScanningBeforeBluetoothOff = true
@@ -74,7 +74,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     }
     
     func stopScan() {
-        DLog("stopScan");
+        //DLog("stopScan");
         
         centralManager?.stopScan()
         isScanning = false
@@ -160,7 +160,6 @@ class BleManager : NSObject, CBCentralManagerDelegate {
                     NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil, userInfo: ["uuid" : identifier]);
                 }
             }
-
 //            let elapsedFormatted = String(format:"%.2f", elapsedTime)
 //            DLog("peripheral \(blePeripheral.name): elapsed \( elapsedFormatted )")
         }
@@ -192,7 +191,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     }
     
     func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
-        DLog("didConnectPeripheral: \(peripheral.name != nil ? peripheral.name! : "")")
+        //DLog("didConnectPeripheral: \(peripheral.name != nil ? peripheral.name! : "")")
        
         blePeripheralConnecting = nil
         let identifier = peripheral.identifier.UUIDString;

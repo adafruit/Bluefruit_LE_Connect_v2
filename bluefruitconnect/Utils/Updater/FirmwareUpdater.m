@@ -47,7 +47,6 @@ static NSString* const kDefaultBootloaderVersion = @"0.0";
 @interface FirmwareUpdater ()
 {
     __weak id<CBPeripheralDelegate> previousPeripheralDelegate;
-//    __weak CBPeripheral* currentPeripheral;
 }
 
 @property (weak) id<FirmwareUpdaterDelegate> delegate;
@@ -66,6 +65,12 @@ static  NSString* const kModelNumberCharacteristic = @"00002A24-0000-1000-8000-0
 static  NSString* const kManufacturerNameCharacteristic = @"00002A29-0000-1000-8000-00805F9B34FB";
 static  NSString* const kSoftwareRevisionCharacteristic = @"00002A28-0000-1000-8000-00805F9B34FB";
 static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8000-00805F9B34FB";
+
+static CBUUID *disServiceUUID;
+
++ (void)initialize {
+    disServiceUUID = [CBUUID UUIDWithString:kDeviceInformationService];
+}
 
 - (NSDictionary *)releases
 {
@@ -150,7 +155,6 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
     [self peripheral:peripheral didDiscoverServices:nil];
 }
 
-
 - (void)connectAndCheckUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate
 {
     _delegate = delegate;
@@ -171,7 +175,7 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
 
     // Retrieve services
     CBUUID *dfuServiceUUID = [CBUUID UUIDWithString:kNordicDeviceFirmwareUpdateService];
-    CBUUID *disServiceUUID = [CBUUID UUIDWithString:kDeviceInformationService];
+    //CBUUI*D *disServiceUUID = [CBUUID UUIDWithString:kDeviceInformationService];
     CBService *dfuService = nil;
     CBService *disService = nil;
 
@@ -188,13 +192,17 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
     // If we have the services that we need, retrieve characteristics
     if (dfuService && disService) {
         _deviceInfoData = [DeviceInfoData new];
+        
+        /*
         CBUUID *manufacturerCharacteristicUUID = [CBUUID UUIDWithString:kManufacturerNameCharacteristic];
         CBUUID *modelNumberCharacteristicUUID = [CBUUID UUIDWithString:kModelNumberCharacteristic];
         CBUUID *softwareRevisionCharacteristicUUID = [CBUUID UUIDWithString:kSoftwareRevisionCharacteristic];
         CBUUID *firmwareRevisionCharacteristicUUID = [CBUUID UUIDWithString:kFirmwareRevisionCharacteristic];
 
         [peripheral discoverCharacteristics:@[manufacturerCharacteristicUUID, modelNumberCharacteristicUUID, softwareRevisionCharacteristicUUID, firmwareRevisionCharacteristicUUID] forService:disService];
-        //[peripheral discoverCharacteristics:nil forService:disService];
+         */
+        // Note: OSX seems to have problems discovering a specific set of characteristics, so nil is passed to discover all of them
+        [peripheral discoverCharacteristics:nil forService:disService];
     }
     else
     {
@@ -211,12 +219,18 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error {
     // Read the characteristics discovered
-    for (CBCharacteristic *characteristic in service.characteristics) {
-      //  DLog(@"Discovered characteristic %@", characteristic);
-        [peripheral readValueForCharacteristic:characteristic];
+    
+    if ([service.UUID isEqual:disServiceUUID]) {
+        if (error) {
+            DLog("FirmwareUpdater error discovering characteristics: %@", error)
+        }
+        
+        for (CBCharacteristic *characteristic in service.characteristics) {
+             // DLog(@"Discovered characteristic %@", characteristic);
+            [peripheral readValueForCharacteristic:characteristic];
+        }
     }
 }
-
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
     CBUUID *manufacturerCharacteristicUUID = [CBUUID UUIDWithString:kManufacturerNameCharacteristic];
@@ -328,6 +342,5 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
         [_delegate onFirmwareUpdatesAvailable:isFirmwareUpdateAvailable latestRelease:latestRelease deviceInfoData:_deviceInfoData allReleases:allReleases];
     }
 }
-
 
 @end

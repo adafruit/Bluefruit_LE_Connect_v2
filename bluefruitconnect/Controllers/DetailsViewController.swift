@@ -9,9 +9,18 @@
 import Cocoa
 import CoreBluetooth
 
+// Protocol that should implement viewControllers used as tabs
+protocol DetailTab {
+    func tabWillAppear()
+    func tabReset()
+}
 
 class DetailsViewController: NSViewController {
+
+    // Configuration
+    static private let kNeopixelsEnabled = false
     
+    // UI
     @IBOutlet weak var emptyView: NSTabView!
     @IBOutlet weak var emptyLabel: NSTextField!
     
@@ -28,9 +37,11 @@ class DetailsViewController: NSViewController {
     @IBOutlet weak var infoDfuImageView: NSImageView!
     @IBOutlet weak var infoDfuLabel: NSTextField!
     
+    // Rssi
     private static let kRssiUpdateInterval = 2.0       // in seconds
     private var rssiTimer : MSWeakTimer?
     
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -105,7 +116,7 @@ class DetailsViewController: NSViewController {
 
             let infoTabViewItem = NSTabViewItem(viewController: infoViewController)
             self.modeTabView.addTabViewItem(infoTabViewItem)
-            infoViewController.reset()
+            infoViewController.tabReset()
             
             self.modeTabView.selectFirstTabViewItem(nil)
         })
@@ -152,7 +163,9 @@ class DetailsViewController: NSViewController {
                 
                 dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
                     
-                    // Check Uart
+                    var currentTabIndex = 1     // 0 is Info
+                    
+                    // Uart Tab
                     let kUartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"                       // UART service UUID
                     let hasUart = services.contains({ (service : CBService) -> Bool in
                         service.UUID.isEqual(CBUUID(string: kUartServiceUUID))
@@ -161,27 +174,21 @@ class DetailsViewController: NSViewController {
                     self.infoUartImageView.image = NSImage(named: hasUart ?"NSStatusAvailable":"NSStatusNone")
                     //infoUartLabel.toolTip = "UART Service \(hasUart ? "" : "not ")available"
                     
-                    var uartTabIndex = self.indexForTabWithClass("UartViewController")
                     if (hasUart) {
-                        if (uartTabIndex < 0) {
+                        var uartTabIndex = self.indexForTabWithClass("UartViewController")
+                        if uartTabIndex < 0 {
                             // Add Uart tab
                             let uartViewController = self.storyboard?.instantiateControllerWithIdentifier("UartViewController") as! UartViewController
                             let uartTabViewItem = NSTabViewItem(viewController: uartViewController)
-                            uartTabIndex = 1
+                            uartTabIndex = currentTabIndex++
                             self.modeTabView.insertTabViewItem(uartTabViewItem, atIndex: uartTabIndex)
                         }
                         
                         let uartViewController = self.modeTabView.tabViewItems[uartTabIndex].viewController as! UartViewController
-                        uartViewController.reset()
+                        uartViewController.tabReset()
                     }
-                        /*
-                    else if (uartTabIndex >= 0) {
-                        // Remove existing uart tab
-                        self.modeTabView.removeTabViewItem(self.modeTabView.tabViewItems[uartTabIndex])
-                    }
-*/
                     
-                    // Check DFU
+                    // DFU Tab
                     let kNordicDeviceFirmwareUpdateService = "00001530-1212-EFDE-1523-785FEABCD123"    // DFU service UUID
                     let hasDFU = services.contains({ (service : CBService) -> Bool in
                         service.UUID.isEqual(CBUUID(string: kNordicDeviceFirmwareUpdateService))
@@ -189,35 +196,46 @@ class DetailsViewController: NSViewController {
                     
                     self.infoDfuImageView.image = NSImage(named: hasDFU ?"NSStatusAvailable":"NSStatusNone")
                     
-                    let dfuTabIndex = self.indexForTabWithClass("FirmwareUpdateViewController")
                     if (hasDFU) {
-                        if (dfuTabIndex < 0) {
+                        var dfuTabIndex = self.indexForTabWithClass("FirmwareUpdateViewController")
+                        if dfuTabIndex < 0 {
                             // Add Firmware Update tab
                             let updateViewController = self.storyboard?.instantiateControllerWithIdentifier("FirmwareUpdateViewController") as! FirmwareUpdateViewController
                             let updateTabViewItem = NSTabViewItem(viewController: updateViewController)
-                            self.modeTabView.insertTabViewItem(updateTabViewItem, atIndex: hasUart ? 2: 1)
-
+                            dfuTabIndex = currentTabIndex++
+                            self.modeTabView.insertTabViewItem(updateTabViewItem, atIndex: dfuTabIndex)
                         }
+                        
+                        let updateViewController = self.modeTabView.tabViewItems[dfuTabIndex].viewController as! FirmwareUpdateViewController
+                        updateViewController.tabReset()
+
                     }
-                        /*
-                    else if (dfuTabIndex >= 0) {
-                        // Remove existing dfu tab
-                        self.modeTabView.removeTabViewItem(self.modeTabView.tabViewItems[dfuTabIndex])
-                    }
-*/
                     
-                    // Check DIS
+                    // DIS Indicator
                     let kDisServiceUUID = "180A"    // DIS service UUID
                     let hasDIS = services.contains({ (service : CBService) -> Bool in
                         service.UUID.isEqual(CBUUID(string: kDisServiceUUID))
                     })
-                    
                     self.infoDsiImageView.image = NSImage(named: hasDIS ?"NSStatusAvailable":"NSStatusNone")
+                    
+                    // Neopixel Tab
+                    if (DetailsViewController.kNeopixelsEnabled && hasUart) {
+                        var neopixelTabIndex = self.indexForTabWithClass("NeopixelViewController")
+                        if neopixelTabIndex < 0 {
+                            // Add Neopixel tab
+                            let neopixelViewController = self.storyboard?.instantiateControllerWithIdentifier("NeopixelViewController") as! NeopixelViewController
+                            let neopixelTabViewItem = NSTabViewItem(viewController: neopixelViewController)
+                            neopixelTabIndex = currentTabIndex++
+                            self.modeTabView.insertTabViewItem(neopixelTabViewItem, atIndex: neopixelTabIndex)
+                        }
+                        
+                        let neopixelViewController = self.modeTabView.tabViewItems[neopixelTabIndex].viewController as! NeopixelViewController
+                        neopixelViewController.tabReset()
+                    }
                     })
             }
         }
     }
-
     
     private func indexForTabWithClass(tabClassName : String) -> Int {
         var index = -1
@@ -321,16 +339,8 @@ extension DetailsViewController: NSTabViewDelegate {
     
     func tabView(tabView: NSTabView, didSelectTabViewItem tabViewItem: NSTabViewItem?) {
         
-        // Send specific messages to each view controller when selected
-        if let firmwareUpdateViewController = tabViewItem?.viewController as? FirmwareUpdateViewController {
-            // Start udpates check
-            firmwareUpdateViewController.startUpdatesCheck()
-        }
-        else if let infoViewController = tabViewItem?.viewController as? InfoViewController {
-            infoViewController.tabWillAppear()
-        }
-        else if let uartViewController = tabViewItem?.viewController as? UartViewController {
-              uartViewController.tabWillAppear()
-        }
+        let detailTabViewController = tabViewItem?.viewController as! DetailTab     // Note: all tab viewcontrollers should conform to protocol DetailTab
+        detailTabViewController.tabWillAppear()
+        
     }
 }

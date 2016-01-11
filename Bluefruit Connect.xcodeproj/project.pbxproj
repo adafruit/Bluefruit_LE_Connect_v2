@@ -46,6 +46,7 @@
 		A9A2FF851C3EEBCE0039D188 /* RssiUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A2FF841C3EEBCE0039D188 /* RssiUI.swift */; };
 		A9A842411BD1276C003B925A /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A842401BD1276C003B925A /* SeparatorView.swift */; };
 		A9BDC6FE1BBCC65A00766400 /* NSColor+hex.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BDC6FD1BBCC65A00766400 /* NSColor+hex.m */; };
+		A9E23C791C42E9C50039C044 /* NeopixelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E23C781C42E9C50039C044 /* NeopixelViewController.swift */; };
 		A9FE75731BB9CF1000F7A5BF /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FE75721BB9CF1000F7A5BF /* XMLDictionary.m */; };
 /* End PBXBuildFile section */
 
@@ -103,6 +104,7 @@
 		A9A842401BD1276C003B925A /* SeparatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
 		A9BDC6FC1BBCC65A00766400 /* NSColor+hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+hex.h"; sourceTree = "<group>"; };
 		A9BDC6FD1BBCC65A00766400 /* NSColor+hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+hex.m"; sourceTree = "<group>"; };
+		A9E23C781C42E9C50039C044 /* NeopixelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelViewController.swift; sourceTree = "<group>"; };
 		A9FE75711BB9CF1000F7A5BF /* XMLDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLDictionary.h; sourceTree = "<group>"; };
 		A9FE75721BB9CF1000F7A5BF /* XMLDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLDictionary.m; sourceTree = "<group>"; };
 		C5A11F7B19B242E6BDABE5EA /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				A97EB2001BB64D750069D9C9 /* FirmwareUpdateViewController.swift */,
 				A94B85191BB6E24D007B88C7 /* UpdateDialogViewController.swift */,
 				A995DAAC1BD689F20039C6DF /* PreferencesViewController.swift */,
+				A9E23C781C42E9C50039C044 /* NeopixelViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -488,6 +491,7 @@
 				A98AE3AF1C42ABF300FA8E80 /* UartDataChunk.swift in Sources */,
 				A94370BA1BB6493A002521F7 /* BleManager.swift in Sources */,
 				A9A842411BD1276C003B925A /* SeparatorView.swift in Sources */,
+				A9E23C791C42E9C50039C044 /* NeopixelViewController.swift in Sources */,
 				A94B851E1BB704BC007B88C7 /* HexConversions.swift in Sources */,
 				A9BDC6FE1BBCC65A00766400 /* NSColor+hex.m in Sources */,
 				A94370A91BB63BA5002521F7 /* UartViewController.swift in Sources */,

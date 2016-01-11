@@ -19,8 +19,8 @@ class FirmwareUpdateViewController: NSViewController {
     
     private let firmwareUpdater = FirmwareUpdater()
     
-    private var boardRelease : BoardInfo?;
-    private var deviceInfoData : DeviceInfoData?;
+    private var boardRelease : BoardInfo?
+    private var deviceInfoData : DeviceInfoData?
     
     private var isCheckingUpdates = false
     
@@ -109,6 +109,10 @@ class FirmwareUpdateViewController: NSViewController {
     }
     
     @IBAction func onClickCustomFirmwareUpdate(sender: AnyObject) {
+        guard deviceInfoData != nil else {
+            DLog("deviceInfoData is nil");
+            return
+        }
         
         guard !deviceInfoData!.hasDefaultBootloaderVersion() else {
             onUpdateDialogError("The legacy bootloader on this device is not compatible with this application")
@@ -175,6 +179,19 @@ class FirmwareUpdateViewController: NSViewController {
     }
 }
 
+// MARK: - DetailTab
+extension FirmwareUpdateViewController : DetailTab {
+    func tabWillAppear() {
+        startUpdatesCheck()
+    }
+    
+    func tabReset() {
+        isCheckingUpdates = false
+        boardRelease = nil
+        deviceInfoData = nil
+    }
+}
+
 // MARK: - FirmwareUpdaterDelegate
 extension FirmwareUpdateViewController : FirmwareUpdaterDelegate {
     func onFirmwareUpdatesAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo!, deviceInfoData: DeviceInfoData?, allReleases: [NSObject : AnyObject]?) {
@@ -218,9 +235,7 @@ extension FirmwareUpdateViewController : FirmwareUpdaterDelegate {
     func onDfuServiceNotFound() {
         onUpdateDialogError("No DFU Service found on device")
     }
-    
 }
-
 
 // MARK: - NSTableViewDataSource
 extension FirmwareUpdateViewController : NSTableViewDataSource {

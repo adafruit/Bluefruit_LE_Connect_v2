@@ -178,7 +178,7 @@ extension PeripheralListViewController : NSTableViewDelegate {
         let newSelectedRow = baseTableView.selectedRow
         //        DLog("tableViewSelectionDidChange: \(newSelectedRow)")
         if (newSelectedRow != currentSelectedRow) {
-            DLog("Peripheral selected row: \(newSelectedRow)")
+            //DLog("Peripheral selected row: \(newSelectedRow)")
             let bleManager = BleManager.sharedInstance
             connectToPeripheral(newSelectedRow >= 0 ? bleManager.blePeripheralFoundAlphabeticKeys()[newSelectedRow] : nil)
             currentSelectedRow = newSelectedRow

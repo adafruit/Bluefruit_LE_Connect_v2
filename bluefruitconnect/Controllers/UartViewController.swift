@@ -52,7 +52,7 @@ class UartViewController: NSViewController {
     @IBOutlet var saveDialogCustomView: NSView!
     @IBOutlet weak var saveDialogPopupButton: NSPopUpButton!
     
-    // Bluetooth
+    // Bluetooth Uart
     private var blePeripheral : BlePeripheral?
     private var uartService : CBService?
     private var rxCharacteristic : CBCharacteristic?
@@ -72,7 +72,7 @@ class UartViewController: NSViewController {
     // Export
     private var exportFileDialog : NSSavePanel?
     private let exportFormats = [ExportFormat.txt, ExportFormat.csv, ExportFormat.json, ExportFormat.xml]
-    
+
     // MARK:
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,22 +98,7 @@ class UartViewController: NSViewController {
             mqttManager.connectFromSavedSettings()
         }
     }
-    
-    func reset() {
-        // Peripheral should be connected
-        blePeripheral = BleManager.sharedInstance.blePeripheralConnected
-        
-        if (blePeripheral == nil) {
-            DLog("Error UART started without connected peripheral")
-        }
-        
-        // Discover UART
-        uartService = nil
-        rxCharacteristic = nil
-        txCharacteristic = nil
-        blePeripheral?.peripheral.discoverServices([CBUUID(string: UartViewController.UartServiceUUID)])
-    }
-    
+
     override func viewWillAppear() {
         super.viewWillAppear()
         
@@ -132,14 +117,6 @@ class UartViewController: NSViewController {
         mqttManager.disconnect()
     }
     
-    func tabWillAppear() {
-        reloadDataUI()
-        
-        // Check if characteristics are ready
-        let isUartReady = rxCharacteristic != nil && txCharacteristic != nil
-        inputTextField.enabled = isUartReady
-        inputTextField.backgroundColor = isUartReady ? NSColor.whiteColor() : NSColor.blackColor().colorWithAlphaComponent(0.1)
-    }
     
     // MARK: - Preferences
     func registerNotifications(register : Bool) {
@@ -183,7 +160,7 @@ class UartViewController: NSViewController {
         }
     }
     
-    func sendDataToUart(data:  NSData) {
+    private func sendDataToUart(data:  NSData) {
         if let txCharacteristic = txCharacteristic {
             
             // Split data  in txmaxcharacters bytes
@@ -196,7 +173,6 @@ class UartViewController: NSViewController {
                 offset+=chunkSize
             }while(offset<data.length)
         }
-        
     }
     
     func registerDataSent(data : NSData, wasReceivedFromMqtt: Bool) {
@@ -241,9 +217,9 @@ class UartViewController: NSViewController {
         guard baseTableView != nil else {
             return;
         }
-        
+
         let displayMode = Preferences.uartIsDisplayModeTimestamp ? DisplayMode.Table : DisplayMode.Text
-        
+
         switch(displayMode) {
         case .Text:
             if let textStorage = self.baseTextView.textStorage {
@@ -299,7 +275,9 @@ class UartViewController: NSViewController {
         else {
             let utf8Value = NSString(data:data, encoding: NSUTF8StringEncoding) as String?
             if let utf8Value = utf8Value {
-                attributedString = NSAttributedString(string: utf8Value, attributes: textAttributes)
+                let text = utf8Value.stringByReplacingOccurrencesOfString("\r\n", withString: " ")       // Replace newlines with spaces to show the whole line
+//                text = utf8Value.stringByReplacingOccurrencesOfString("\r", withString: "")       // Replace newlines with spaces to show the whole line
+                attributedString = NSAttributedString(string: text, attributes: textAttributes)
             }
         }
         
@@ -316,20 +294,28 @@ class UartViewController: NSViewController {
         case .Text:
             if let textStorage = self.baseTextView.textStorage {
                 
+                let isScrollAtTheBottom = baseTextView.enclosingScrollView?.verticalScroller?.floatValue == 1
+
                 textStorage.beginEditing()
                 textStorage.replaceCharactersInRange(NSMakeRange(0, textStorage.length), withAttributedString: NSAttributedString())        // Clear text
                 for dataChunk in dataBuffer {
                     addChunkToUIText(dataChunk)
                 }
                 textStorage .endEditing()
-                baseTextView.scrollRangeToVisible(NSMakeRange(textStorage.length, 0))
+                if isScrollAtTheBottom {
+                    baseTextView.scrollRangeToVisible(NSMakeRange(textStorage.length, 0))
+                }
                 
             }
             
         case .Table:
+            let isScrollAtTheBottom = tableCachedDataBuffer == nil || tableCachedDataBuffer!.isEmpty  || baseTableView.enclosingScrollView?.verticalScroller?.floatValue == 1
+
             baseTableView.sizeLastColumnToFit()
             baseTableView.reloadData()
-            baseTableView.scrollToEndOfDocument(nil)
+            if isScrollAtTheBottom {
+                baseTableView.scrollToEndOfDocument(nil)
+            }
         }
         
         updateBytesUI()
@@ -341,7 +327,6 @@ class UartViewController: NSViewController {
             receivedBytesLabel.stringValue = "Received: \(blePeripheral.uartData.receivedBytes) bytes"
         }
     }
-    
     
     // MARK: - UI Actions
     @IBAction func onClickEcho(sender: NSButton) {
@@ -421,7 +406,6 @@ class UartViewController: NSViewController {
     }
     
     // MARK: - MQTT
-    
     func updateMqttStatusUI() {
         let status = MqttManager.sharedInstance.status
         
@@ -439,7 +423,6 @@ class UartViewController: NSViewController {
         
         mqttStatusButton.title = buttonTitle
     }
-    
     
     // MARK: - Export
     private func exportData() {
@@ -513,8 +496,34 @@ class UartViewController: NSViewController {
             exportFileDialog.nameFieldStringValue = "uart\(isInHexMode ? ".hex" : "").\(exportFormatSelected.rawValue)"
         }
     }
+}
+
+// MARK: - DetailTab
+extension UartViewController : DetailTab {
+    func tabWillAppear() {
+        reloadDataUI()
+        
+        // Check if characteristics are ready
+        let isUartReady = rxCharacteristic != nil && txCharacteristic != nil
+        inputTextField.enabled = isUartReady
+        inputTextField.backgroundColor = isUartReady ? NSColor.whiteColor() : NSColor.blackColor().colorWithAlphaComponent(0.1)
+    }
     
-   
+    
+    func tabReset() {
+        // Peripheral should be connected
+        blePeripheral = BleManager.sharedInstance.blePeripheralConnected
+        
+        if (blePeripheral == nil) {
+            DLog("Error UART started without connected peripheral")
+        }
+        
+        // Discover UART
+        uartService = nil
+        rxCharacteristic = nil
+        txCharacteristic = nil
+        blePeripheral?.peripheral.discoverServices([CBUUID(string: UartViewController.UartServiceUUID)])
+    }
     
 }
 
@@ -635,8 +644,8 @@ extension UartViewController: CBPeripheralDelegate {
     
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
         
-        DLog("uart didDiscoverCharacteristicsForService")
-        if let uartService = uartService {
+        //DLog("uart didDiscoverCharacteristicsForService")
+        if let uartService = uartService where rxCharacteristic == nil || txCharacteristic == nil {
             if (rxCharacteristic == nil || txCharacteristic == nil) {
                 if let characteristics = uartService.characteristics {
                     var found = false
@@ -672,7 +681,6 @@ extension UartViewController: CBPeripheralDelegate {
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        
         if characteristic == rxCharacteristic && characteristic.service == uartService {
             
             if let characteristicDataValue = characteristic.value {
@@ -680,8 +688,6 @@ extension UartViewController: CBPeripheralDelegate {
             }
         }
     }
-    
-  
 }
 
 // MARK: - MqttManagerDelegate

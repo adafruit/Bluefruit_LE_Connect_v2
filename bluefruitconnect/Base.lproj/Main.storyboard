@@ -1549,7 +1549,7 @@
                                     </subviews>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="hqs-79-h3I">
+                                <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="0.0098039215686274508" horizontal="YES" id="hqs-79-h3I">
                                     <rect key="frame" x="1" y="275" width="484" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -1558,7 +1558,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <tableHeaderView key="headerView" id="ezI-Wm-v5t">
-                                    <rect key="frame" x="0.0" y="0.0" width="789.5" height="23"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="790" height="23"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableHeaderView>
                             </scrollView>
@@ -1616,7 +1616,7 @@
                 </viewController>
                 <customObject id="Hk6-ah-icb" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1287" y="977"/>
+            <point key="canvasLocation" x="1280" y="981"/>
         </scene>
         <!--Uart-->
         <scene sceneID="iIn-dF-wdr">
@@ -1924,7 +1924,7 @@
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="RWH-fv-Sym">
-                                    <rect key="frame" x="1" y="168" width="985" height="16"/>
+                                    <rect key="frame" x="1" y="166" width="912" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="Yet-W5-713">
@@ -2046,7 +2046,7 @@
                     </constraints>
                 </customView>
             </objects>
-            <point key="canvasLocation" x="2032" y="743"/>
+            <point key="canvasLocation" x="1494" y="1381"/>
         </scene>
         <!--Updates-->
         <scene sceneID="Xz6-lS-Aq3">
@@ -2373,7 +2373,57 @@
                 </viewController>
                 <customObject id="DQI-Ys-D4K" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2805" y="789"/>
+            <point key="canvasLocation" x="1252" y="1847"/>
+        </scene>
+        <!--Neopixel-->
+        <scene sceneID="OMS-ck-amD">
+            <objects>
+                <viewController title="Neopixel" storyboardIdentifier="NeopixelViewController" id="uFO-tO-Dvh" customClass="NeopixelViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="4cF-j2-C0a">
+                        <rect key="frame" x="0.0" y="0.0" width="536" height="352"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bav-Ws-1VQ">
+                                <rect key="frame" x="233" y="13" width="71" height="32"/>
+                                <buttonCell key="cell" type="push" title="Send" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bMX-88-wHn">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onClickSend:" target="uFO-tO-Dvh" id="1Ow-S6-BLB"/>
+                                </connections>
+                            </button>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AFu-pg-EjS">
+                                <rect key="frame" x="10" y="316" width="16" height="16"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSStatusPartiallyAvailable" id="hs0-HH-mMI"/>
+                            </imageView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zmt-Og-3z3">
+                                <rect key="frame" x="28" y="316" width="119" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Neopixel not found" id="Lqy-Ly-84a">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="Bav-Ws-1VQ" secondAttribute="bottom" constant="20" id="F9T-0d-CXQ"/>
+                            <constraint firstItem="Bav-Ws-1VQ" firstAttribute="centerX" secondItem="4cF-j2-C0a" secondAttribute="centerX" id="LsG-Tb-OoJ"/>
+                            <constraint firstItem="zmt-Og-3z3" firstAttribute="centerY" secondItem="AFu-pg-EjS" secondAttribute="centerY" id="hPb-Qa-kZT"/>
+                            <constraint firstItem="zmt-Og-3z3" firstAttribute="leading" secondItem="AFu-pg-EjS" secondAttribute="trailing" constant="4" id="juw-yr-Rkj"/>
+                            <constraint firstItem="AFu-pg-EjS" firstAttribute="top" secondItem="4cF-j2-C0a" secondAttribute="top" constant="20" id="sV0-Da-TXY"/>
+                            <constraint firstItem="AFu-pg-EjS" firstAttribute="leading" secondItem="4cF-j2-C0a" secondAttribute="leading" constant="10" id="wtA-4f-1c6"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="sendButton" destination="Bav-Ws-1VQ" id="wwR-Sj-G2t"/>
+                        <outlet property="statusImageView" destination="AFu-pg-EjS" id="ucO-E9-BbA"/>
+                        <outlet property="statusLabel" destination="zmt-Og-3z3" id="yJM-Pl-2iD"/>
+                    </connections>
+                </viewController>
+                <customObject id="UIo-ai-COT" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1288" y="2356"/>
         </scene>
         <!--Firmware Update-->
         <scene sceneID="f78-2A-rNl">
@@ -2437,7 +2487,7 @@ Gw
                 </viewController>
                 <customObject id="tvN-wl-E7m" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2805" y="1133"/>
+            <point key="canvasLocation" x="1755" y="1813"/>
         </scene>
     </scenes>
     <resources>

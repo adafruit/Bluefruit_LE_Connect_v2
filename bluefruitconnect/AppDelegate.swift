@@ -37,7 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         // Add system status button
         setupStatusButton()
     }
-    
+
     func applicationWillTerminate(aNotification: NSNotification) {
         // Insert code here to tear down your application
         
@@ -76,7 +76,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         notificationCenter.removeObserver(self, name: UartViewController.UartNotifications.DidTransferData.rawValue, object: nil)
         notificationCenter.removeObserver(self, name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
     }
-
     
     func statusGeneralAction(sender: AnyObject?) {
         
@@ -103,7 +102,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
         
         statusItem.title = title
-
     }
  
     func updateStatusContent(notification : NSNotification?) {
