@@ -47,6 +47,11 @@ static NSString* const kDefaultBootloaderVersion = @"0.0";
 @interface FirmwareUpdater ()
 {
     __weak id<CBPeripheralDelegate> previousPeripheralDelegate;
+    
+    BOOL isManufacturerCharacteristicAvailable;
+    BOOL isModelNumberCharacteristicAvailable;
+    BOOL isSoftwareRevisionCharacteristicAvailable;
+    BOOL isFirmwareRevisionCharacteristicAvailable;
 }
 
 @property (weak) id<FirmwareUpdaterDelegate> delegate;
@@ -68,10 +73,19 @@ static  NSString* const kFirmwareRevisionCharacteristic = @"00002A26-0000-1000-8
 
 static CBUUID *disServiceUUID;
 static CBUUID *dfuServiceUUID;
+static CBUUID *manufacturerCharacteristicUUID;
+static CBUUID *modelNumberCharacteristicUUID;
+static CBUUID *softwareRevisionCharacteristicUUID;
+static CBUUID *firmwareRevisionCharacteristicUUID;
 
 + (void)initialize {
     disServiceUUID = [CBUUID UUIDWithString:kDeviceInformationService];
     dfuServiceUUID = [CBUUID UUIDWithString:kNordicDeviceFirmwareUpdateService];
+    
+    manufacturerCharacteristicUUID = [CBUUID UUIDWithString:kManufacturerNameCharacteristic];
+    modelNumberCharacteristicUUID = [CBUUID UUIDWithString:kModelNumberCharacteristic];
+    softwareRevisionCharacteristicUUID = [CBUUID UUIDWithString:kSoftwareRevisionCharacteristic];
+    firmwareRevisionCharacteristicUUID = [CBUUID UUIDWithString:kFirmwareRevisionCharacteristic];
 }
 
 - (NSDictionary *)releases
@@ -84,7 +98,7 @@ static CBUUID *dfuServiceUUID;
         // Parse data
         boardsInfoDictionary = [ReleasesParser parse:data];
     }
-
+    
     return boardsInfoDictionary;
 }
 
@@ -98,7 +112,7 @@ static CBUUID *dfuServiceUUID;
             [[NSUserDefaults standardUserDefaults] setObject:data forKey:kReleasesXml];
             [[NSUserDefaults standardUserDefaults] synchronize];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"didUpdatePreferences" object:nil];
-
+            
             if (completionHandler) {
                 completionHandler(data != nil);
             }
@@ -106,7 +120,7 @@ static CBUUID *dfuServiceUUID;
     }
 }
 
-+ (void)downloadDataFromURL:(NSURL *)url withCompletionHandler:(void (^)(NSData *))completionHandler 
++ (void)downloadDataFromURL:(NSURL *)url withCompletionHandler:(void (^)(NSData *))completionHandler
 {
     if ([url.scheme isEqualToString:@"file"])        // Check if url is local and just open the file
     {
@@ -149,10 +163,10 @@ static CBUUID *dfuServiceUUID;
 - (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate
 {
     _delegate = delegate;
-//    currentPeripheral = peripheral;
+    //    currentPeripheral = peripheral;
     previousPeripheralDelegate = peripheral.delegate;
     peripheral.delegate = self;
-
+    
     // The peripheral is already connected, so got to didDiscoverServices
     [self peripheral:peripheral didDiscoverServices:nil];
 }
@@ -175,12 +189,16 @@ static CBUUID *dfuServiceUUID;
 #pragma mark  CBPeripheralDelegate
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error {
 
+    // Clear data
+    isManufacturerCharacteristicAvailable = true;
+    isModelNumberCharacteristicAvailable = true;
+    isSoftwareRevisionCharacteristicAvailable = true;
+    isFirmwareRevisionCharacteristicAvailable = true;
+    
     // Retrieve services
-    //CBUUID *dfuServiceUUID = [CBUUID UUIDWithString:kNordicDeviceFirmwareUpdateService];
-    //CBUUI*D *disServiceUUID = [CBUUID UUIDWithString:kDeviceInformationService];
     CBService *dfuService = nil;
     CBService *disService = nil;
-
+    
     for (CBService *service in peripheral.services) {
         //DLog(@"Discovered service %@", service);
         if ([service.UUID isEqual:dfuServiceUUID]) {
@@ -190,18 +208,13 @@ static CBUUID *dfuServiceUUID;
             disService = service;
         }
     }
-
+    
     // If we have the services that we need, retrieve characteristics
     if (dfuService && disService) {
         _deviceInfoData = [DeviceInfoData new];
         
         /*
-        CBUUID *manufacturerCharacteristicUUID = [CBUUID UUIDWithString:kManufacturerNameCharacteristic];
-        CBUUID *modelNumberCharacteristicUUID = [CBUUID UUIDWithString:kModelNumberCharacteristic];
-        CBUUID *softwareRevisionCharacteristicUUID = [CBUUID UUIDWithString:kSoftwareRevisionCharacteristic];
-        CBUUID *firmwareRevisionCharacteristicUUID = [CBUUID UUIDWithString:kFirmwareRevisionCharacteristic];
-
-        [peripheral discoverCharacteristics:@[manufacturerCharacteristicUUID, modelNumberCharacteristicUUID, softwareRevisionCharacteristicUUID, firmwareRevisionCharacteristicUUID] forService:disService];
+         [peripheral discoverCharacteristics:@[manufacturerCharacteristicUUID, modelNumberCharacteristicUUID, softwareRevisionCharacteristicUUID, firmwareRevisionCharacteristicUUID] forService:disService];
          */
         // Note: OSX seems to have problems discovering a specific set of characteristics, so nil is passed to discover all of them
         [peripheral discoverCharacteristics:nil forService:disService];
@@ -227,18 +240,28 @@ static CBUUID *dfuServiceUUID;
             DLog("FirmwareUpdater error discovering characteristics: %@", error)
         }
         
+        // Check if all characteristics are available
+        isModelNumberCharacteristicAvailable = [self service:service containsCharacteristicUUID:modelNumberCharacteristicUUID];
+        isSoftwareRevisionCharacteristicAvailable = [self service:service containsCharacteristicUUID:softwareRevisionCharacteristicUUID];
+        isManufacturerCharacteristicAvailable = [self service:service containsCharacteristicUUID:manufacturerCharacteristicUUID];
+        isFirmwareRevisionCharacteristicAvailable = [self service:service containsCharacteristicUUID:firmwareRevisionCharacteristicUUID];
+        
+        // Update values
         for (CBCharacteristic *characteristic in service.characteristics) {
-             // DLog(@"Discovered characteristic %@", characteristic);
+            // DLog(@"Discovered characteristic %@", characteristic);
             [peripheral readValueForCharacteristic:characteristic];
         }
     }
 }
 
+- (BOOL)service:(CBService *)service containsCharacteristicUUID:(CBUUID *)uuid {
+    return [service.characteristics indexesOfObjectsPassingTest:^BOOL(CBCharacteristic * _Nonnull characteristic, NSUInteger idx, BOOL * _Nonnull stop) {
+        return [characteristic.UUID isEqual:uuid];
+    }].count > 0;
+    
+}
+
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
-    CBUUID *manufacturerCharacteristicUUID = [CBUUID UUIDWithString:kManufacturerNameCharacteristic];
-    CBUUID *modelNumberCharacteristicUUID = [CBUUID UUIDWithString:kModelNumberCharacteristic];
-    CBUUID *softwareRevisionCharacteristicUUID = [CBUUID UUIDWithString:kSoftwareRevisionCharacteristic];
-    CBUUID *firmwareRevisionCharacteristicUUID = [CBUUID UUIDWithString:kFirmwareRevisionCharacteristic];
     
     NSData *data = characteristic.value;
     if ([characteristic.UUID isEqual:manufacturerCharacteristicUUID]) {
@@ -259,85 +282,96 @@ static CBUUID *dfuServiceUUID;
 }
 
 - (void)onDeviceInfoUpdatedForPeripheral:(CBPeripheral *)peripheral
-{ 
-    if (_deviceInfoData.manufacturer && _deviceInfoData.modelNumber && _deviceInfoData.softwareRevision && _deviceInfoData.firmwareRevision) {
+{
+    if ((_deviceInfoData.manufacturer || !isManufacturerCharacteristicAvailable) && (_deviceInfoData.modelNumber || !isModelNumberCharacteristicAvailable) && (_deviceInfoData.softwareRevision || !isSoftwareRevisionCharacteristicAvailable) && (_deviceInfoData.firmwareRevision || !isFirmwareRevisionCharacteristicAvailable)) {
         DLog(@"Device Info Data received");
-
+        
         if (_delegate == nil) {
             DLog(@"Error: onDeviceInfoUpdatedForPeripheral with no delegate");
         }
-
+        
         NSString *versionToIgnore = [[NSUserDefaults standardUserDefaults] stringForKey:@"softwareUpdateIgnoredVersion"];
         BOOL isFirmwareUpdateAvailable = NO;
-    
+        
         NSDictionary *allReleases = [self releases];
         FirmwareInfo *latestRelease = nil;
         
-        if (![_deviceInfoData hasDefaultBootloaderVersion]) {       // Special check because Nordic dfu library for iOS dont work with the default booloader version
-            BOOL isManufacturerCorrect = [kManufacturer caseInsensitiveCompare:_deviceInfoData.manufacturer] == NSOrderedSame;
-            if (isManufacturerCorrect) {
-                BoardInfo *boardInfo = [allReleases objectForKey:_deviceInfoData.modelNumber];
-                if (boardInfo) {
-                    NSArray *modelReleases = boardInfo.firmwareReleases;
-                    if (modelReleases && modelReleases.count > 0) {
-                        // Get the latest release (discard all beta releases)
-                        int selectedRelease = 0;
-                        do {
-                            latestRelease = [modelReleases objectAtIndex:selectedRelease];
-                            selectedRelease++;
-                        } while(latestRelease.isBeta && selectedRelease<modelReleases.count);
-                        
-                        if (!latestRelease.isBeta)
-                        {
-                            // Check if the bootloader is compatible with this version
-                            if (_deviceInfoData.bootloaderVersion && [_deviceInfoData.bootloaderVersion compare:latestRelease.minBootloaderVersion options:NSNumericSearch] != NSOrderedAscending) {
-                                // Check if the user chose to ignore this version
-                                if ([latestRelease.version compare:versionToIgnore options:NSNumericSearch] != NSOrderedSame) {
-                                    
-                                    const BOOL isNewerVersion = [latestRelease.version compare:_deviceInfoData.softwareRevision options:NSNumericSearch] == NSOrderedDescending;
-                                    const BOOL showUpdateOnlyForNewerVersions = YES;            // only for debug purposes (should be YES for release)
-                                    
-                                    isFirmwareUpdateAvailable = isNewerVersion || !showUpdateOnlyForNewerVersions;
-                                    
+        if (_deviceInfoData.firmwareRevision != nil) {
+            if (![_deviceInfoData hasDefaultBootloaderVersion]) {       // Special check because Nordic dfu library for iOS dont work with the default booloader version
+                BOOL isManufacturerCorrect = _deviceInfoData.manufacturer!=nil && [kManufacturer caseInsensitiveCompare:_deviceInfoData.manufacturer] == NSOrderedSame;
+                if (isManufacturerCorrect) {
+                    if (_deviceInfoData.modelNumber != nil) {
+                        BoardInfo *boardInfo = [allReleases objectForKey:_deviceInfoData.modelNumber];
+                        if (boardInfo) {
+                            NSArray *modelReleases = boardInfo.firmwareReleases;
+                            if (modelReleases && modelReleases.count > 0) {
+                                // Get the latest release (discard all beta releases)
+                                int selectedRelease = 0;
+                                do {
+                                    latestRelease = [modelReleases objectAtIndex:selectedRelease];
+                                    selectedRelease++;
+                                } while(latestRelease.isBeta && selectedRelease<modelReleases.count);
+                                
+                                if (!latestRelease.isBeta)
+                                {
+                                    // Check if the bootloader is compatible with this version
+                                    if (_deviceInfoData.bootloaderVersion && [_deviceInfoData.bootloaderVersion compare:latestRelease.minBootloaderVersion options:NSNumericSearch] != NSOrderedAscending) {
+                                        // Check if the user chose to ignore this version
+                                        if ([latestRelease.version compare:versionToIgnore options:NSNumericSearch] != NSOrderedSame) {
+                                            
+                                            const BOOL isNewerVersion = _deviceInfoData.softwareRevision!= nil && [latestRelease.version compare:_deviceInfoData.softwareRevision options:NSNumericSearch] == NSOrderedDescending;
+                                            const BOOL showUpdateOnlyForNewerVersions = YES;            // only for debug purposes (should be YES for release)
+                                            
+                                            isFirmwareUpdateAvailable = isNewerVersion || !showUpdateOnlyForNewerVersions;
+                                            
 #ifdef DEBUG
-                                    if (isNewerVersion) {
-                                        DLog(@"Updates: New version found. Ask the user to install: %@", latestRelease.version);
-                                    }
-                                    else {
-                                        DLog(@"Updates: Device has already latest version: %@", _deviceInfoData.softwareRevision);
-                                        
-                                        if (isFirmwareUpdateAvailable) {
-                                            DLog(@"Updates: user asked to show old versions too");
+                                            if (isNewerVersion) {
+                                                DLog(@"Updates: New version found. Ask the user to install: %@", latestRelease.version);
+                                            }
+                                            else {
+                                                DLog(@"Updates: Device has already latest version: %@", _deviceInfoData.softwareRevision);
+                                                
+                                                if (isFirmwareUpdateAvailable) {
+                                                    DLog(@"Updates: user asked to show old versions too");
+                                                }
+                                            }
+#endif
+                                        }
+                                        else {
+                                            DLog(@"Updates: User ignored version: %@. Skipping...", versionToIgnore);
                                         }
                                     }
-#endif
+                                    else {
+                                        DLog(@"Updates: No non-beta firmware releases found for model: %@", versionToIgnore);
+                                        
+                                    }
                                 }
                                 else {
-                                    DLog(@"Updates: User ignored version: %@. Skipping...", versionToIgnore);
+                                    DLog(@"Updates: Bootloader version %@ below minimum needed: %@", _deviceInfoData.bootloaderVersion, latestRelease.minBootloaderVersion);
                                 }
                             }
                             else {
-                                DLog(@"Updates: No non-beta firmware releases found for model: %@", versionToIgnore);
-                                
+                                DLog(@"Updates: No firmware releases found for model: %@", _deviceInfoData.modelNumber);
                             }
                         }
                         else {
-                            DLog(@"Updates: Bootloader version %@ below minimum needed: %@", _deviceInfoData.bootloaderVersion, latestRelease.minBootloaderVersion);
+                            DLog(@"Updates: No releases found for model:  %@", _deviceInfoData.modelNumber);
                         }
                     }
-                    else {
-                        DLog(@"Updates: No firmware releases found for model: %@", _deviceInfoData.modelNumber);
+                    else{
+                        DLog(@"Updates: modelNumber not defined");
                     }
                 }
                 else {
-                    DLog(@"Updates: No releases found for model:  %@", _deviceInfoData.modelNumber);
+                    DLog(@"Updates: No updates for unknown manufacturer %@", _deviceInfoData.manufacturer);
                 }
             }
             else {
-                DLog(@"Updates: No updates for unknown manufacturer %@", _deviceInfoData.manufacturer);
+                DLog(@"The legacy bootloader on this device is not compatible with this application");
             }
-        }else {
-            DLog(@"The legacy bootloader on this device is not compatible with this application");
+        }
+        else {
+            DLog(@"Updates: firmwareRevision not defined ");
         }
         
         peripheral.delegate = previousPeripheralDelegate;
