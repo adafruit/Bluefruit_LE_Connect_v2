@@ -1,13 +1,29 @@
-# Adafruit Bluefruit LE Connect for OSX (DFU)
+# Bluefruit LE Connect v2
 
-This native OS X application contains a port of Nordic's DFU library to update the firmware on Bluefruit LE modules over the air from any recent Mac or Macbook with Bluetooth Low Energy support.
+iOS and OS X app for use with Bluefruit Bluetooth LE modules and dev boards from Adafruit.
 
-In addition to OTA DFU updates, it contains basic UART and Device Information functionality as an example of how you can interact with your Bluefruit LE module using Swift 2.0.
+This is version 2.0 of the app.  The source code for version 1.0 (iOS only) is available at [Bluefruit_LE_Connect](https://github.com/adafruit/Bluefruit_LE_Connect).
 
-This is unsupported code that is not intended to be used in release applications, and is the result of internal testing with native OS X development with Swift and Bluetooth Low Energy.  Use at your own risk.
+**Important:** Open this project in Xcode by using the .xcworkspace file and not the .xcodeproj file
 
-# Requirements
+Work in progress!
 
-- OS X 10.10 or higher
-- A recent Mac or Macbook with Bluetooth 4.0 support
-- XCode 7 or higher to build and test the application
+## Supported Hardware
+
+Adafruit invests time and resources providing this open source code, please support Adafruit and open-source hardware by purchasing products from Adafruit!
+
+This application works with the following Bluefruit LE devices from Adafruit:
+
+- [Bluefruit LE Friend](https://www.adafruit.com/product/2267)
+- [Bluefruit LE UART Friend](https://www.adafruit.com/product/2479)
+- [Bluefruit LE SPI Friend](https://www.adafruit.com/product/2633)
+- [Bluefruit LE Shield](https://www.adafruit.com/products/2746)
+- [Bluefruit LE Micro](https://www.adafruit.com/product/2661)
+- [Feather 32u4 Bluefruit LE](https://www.adafruit.com/product/2829)
+- [Feather M0 Bluefruit LE](https://www.adafruit.com/products/2995)
+
+## License
+
+Unless otherwise specified, all files produced by Adafruit are covered by an [MIT license](https://github.com/adafruit/Bluefruit_LE_Connect_Android/blob/master/license.txt).
+
+Files produced by Nordic Semiconductors are covered by their own license terms, as detailed in the file headers and appropriate folders. Please carefully review the license requirements before using this source code in your own application.
