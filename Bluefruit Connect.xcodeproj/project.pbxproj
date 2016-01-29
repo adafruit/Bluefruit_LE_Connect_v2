@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2765F2DE29FF3F5A40D37AF8 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79302EF114868B4293A06B28 /* Pods_iOS.framework */; };
+		35F15D3D4C4415BEC370CFF1 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 831BE235D441789FAD53B217 /* Pods_iOS.framework */; };
 		67C430DCA4D3FEBACE5F15F6 /* Pods_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B84ECF983BB30BDDF6A2FB4 /* Pods_OSX.framework */; };
-		90E10B46DD6952C71E201F04 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02FB0C4B70813539DCDE5E4C /* Pods.framework */; };
 		A92883CB1C5AF8DF00CC1566 /* PeripheralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92883CA1C5AF8DF00CC1566 /* PeripheralTableViewCell.swift */; };
 		A92883CC1C5AFBD000CC1566 /* RssiUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A2FF841C3EEBCE0039D188 /* RssiUI.swift */; };
 		A94370A71BB6384B002521F7 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A94370A61BB6384B002521F7 /* GattUUIDs.plist */; };
@@ -79,10 +78,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		02FB0C4B70813539DCDE5E4C /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E170D93FADB87A8B0F6CC2E /* Pods-OSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-OSX/Pods-OSX.release.xcconfig"; sourceTree = "<group>"; };
 		66672FBC2FCB5263B85D6D8E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		79302EF114868B4293A06B28 /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		831BE235D441789FAD53B217 /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9548835CA087C4D34EDACE99 /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		9B84ECF983BB30BDDF6A2FB4 /* Pods_OSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A48B97DA4AFA7EB22050A2F8 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -159,7 +157,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2765F2DE29FF3F5A40D37AF8 /* Pods_iOS.framework in Frameworks */,
+				35F15D3D4C4415BEC370CFF1 /* Pods_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,7 +165,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90E10B46DD6952C71E201F04 /* Pods.framework in Frameworks */,
 				67C430DCA4D3FEBACE5F15F6 /* Pods_OSX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -178,9 +175,8 @@
 		67C2A377EABD44879350317E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				02FB0C4B70813539DCDE5E4C /* Pods.framework */,
 				9B84ECF983BB30BDDF6A2FB4 /* Pods_OSX.framework */,
-				79302EF114868B4293A06B28 /* Pods_iOS.framework */,
+				831BE235D441789FAD53B217 /* Pods_iOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -518,6 +514,7 @@
 					};
 					A98296671BB1F5E600DD478C = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = 2X94RM7457;
 					};
 				};
 			};
