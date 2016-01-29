@@ -1,0 +1,952 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2765F2DE29FF3F5A40D37AF8 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79302EF114868B4293A06B28 /* Pods_iOS.framework */; };
+		67C430DCA4D3FEBACE5F15F6 /* Pods_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B84ECF983BB30BDDF6A2FB4 /* Pods_OSX.framework */; };
+		90E10B46DD6952C71E201F04 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02FB0C4B70813539DCDE5E4C /* Pods.framework */; };
+		A92883CB1C5AF8DF00CC1566 /* PeripheralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92883CA1C5AF8DF00CC1566 /* PeripheralTableViewCell.swift */; };
+		A92883CC1C5AFBD000CC1566 /* RssiUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A2FF841C3EEBCE0039D188 /* RssiUI.swift */; };
+		A94370A71BB6384B002521F7 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A94370A61BB6384B002521F7 /* GattUUIDs.plist */; };
+		A94370BA1BB6493A002521F7 /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AB1BB6493A002521F7 /* BleManager.swift */; };
+		A94370BB1BB6493A002521F7 /* BlePeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AC1BB6493A002521F7 /* BlePeripheral.swift */; };
+		A94370CF1BB64959002521F7 /* BLEOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370C51BB64959002521F7 /* BLEOperations.m */; };
+		A94370D01BB64959002521F7 /* DFUOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370C71BB64959002521F7 /* DFUOperations.m */; };
+		A94370D11BB64959002521F7 /* DFUOperationsDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370C91BB64959002521F7 /* DFUOperationsDetails.m */; };
+		A94370D21BB64959002521F7 /* FileOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370CB1BB64959002521F7 /* FileOperations.m */; };
+		A94370D31BB64959002521F7 /* IntelHex2BinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370CE1BB64959002521F7 /* IntelHex2BinConverter.m */; };
+		A94370D71BB649AE002521F7 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370D61BB649AE002521F7 /* Utility.m */; };
+		A949AA611C5AC85A002F960B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A949AA601C5AC85A002F960B /* Images.xcassets */; };
+		A949AA641C5AC8C3002F960B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A949AA621C5AC8C3002F960B /* Main.storyboard */; };
+		A949AA671C5AC912002F960B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA651C5AC912002F960B /* AppDelegate.swift */; };
+		A949AA761C5AC977002F960B /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA6A1C5AC977002F960B /* DetailsViewController.swift */; };
+		A949AA771C5AC977002F960B /* FirmwareUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA6B1C5AC977002F960B /* FirmwareUpdateViewController.swift */; };
+		A949AA781C5AC977002F960B /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA6C1C5AC977002F960B /* InfoViewController.swift */; };
+		A949AA791C5AC977002F960B /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA6D1C5AC977002F960B /* MainSplitViewController.swift */; };
+		A949AA7A1C5AC977002F960B /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA6E1C5AC977002F960B /* MainWindowController.swift */; };
+		A949AA7B1C5AC977002F960B /* NeopixelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA6F1C5AC977002F960B /* NeopixelViewController.swift */; };
+		A949AA7C1C5AC977002F960B /* PeripheralListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA701C5AC977002F960B /* PeripheralListViewController.swift */; };
+		A949AA7D1C5AC977002F960B /* PeripheralTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA711C5AC977002F960B /* PeripheralTableCellView.swift */; };
+		A949AA7E1C5AC977002F960B /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA721C5AC977002F960B /* PreferencesViewController.swift */; };
+		A949AA7F1C5AC977002F960B /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA731C5AC977002F960B /* StatusViewController.swift */; };
+		A949AA801C5AC977002F960B /* UartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA741C5AC977002F960B /* UartViewController.swift */; };
+		A949AA811C5AC977002F960B /* UpdateDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA751C5AC977002F960B /* UpdateDialogViewController.swift */; };
+		A949AAA51C5ACFAB002F960B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA9B1C5ACFAB002F960B /* AppDelegate.swift */; };
+		A949AAA61C5ACFAB002F960B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A949AA9C1C5ACFAB002F960B /* Assets.xcassets */; };
+		A94B85101BB65C48007B88C7 /* FirmwareUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = A94B850F1BB65C48007B88C7 /* FirmwareUpdater.m */; };
+		A94B85131BB65C71007B88C7 /* ReleasesParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A94B85121BB65C71007B88C7 /* ReleasesParser.m */; };
+		A94B851E1BB704BC007B88C7 /* HexConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94B851D1BB704BC007B88C7 /* HexConversions.swift */; };
+		A94F5A311C5AD3A4009CC9B8 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94F5A2F1C5AD3A4009CC9B8 /* DetailViewController.swift */; };
+		A94F5A321C5AD3A4009CC9B8 /* PeripheralTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94F5A301C5AD3A4009CC9B8 /* PeripheralTableViewController.swift */; };
+		A94F5A371C5AD41A009CC9B8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A94F5A331C5AD41A009CC9B8 /* LaunchScreen.storyboard */; };
+		A94F5A381C5AD41A009CC9B8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A94F5A351C5AD41A009CC9B8 /* Main.storyboard */; };
+		A94F5A391C5AE211009CC9B8 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98E03A21BBA3EEE00F8924C /* Preferences.swift */; };
+		A94F5A3B1C5AE211009CC9B8 /* UartDataChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98AE3AE1C42ABF300FA8E80 /* UartDataChunk.swift */; };
+		A94F5A3C1C5AE24D009CC9B8 /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982968A1BB222D700DD478C /* LogHelper.swift */; };
+		A94F5A3D1C5AE252009CC9B8 /* HexConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94B851D1BB704BC007B88C7 /* HexConversions.swift */; };
+		A94F5A3E1C5AE25B009CC9B8 /* UartDataExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */; };
+		A94F5A3F1C5AE279009CC9B8 /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FE75721BB9CF1000F7A5BF /* XMLDictionary.m */; };
+		A94F5A401C5AE282009CC9B8 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370D61BB649AE002521F7 /* Utility.m */; };
+		A94F5A411C5AE287009CC9B8 /* BLEOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370C51BB64959002521F7 /* BLEOperations.m */; };
+		A94F5A421C5AE28A009CC9B8 /* DFUOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370C71BB64959002521F7 /* DFUOperations.m */; };
+		A94F5A431C5AE28C009CC9B8 /* DFUOperationsDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370C91BB64959002521F7 /* DFUOperationsDetails.m */; };
+		A94F5A441C5AE28F009CC9B8 /* FileOperations.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370CB1BB64959002521F7 /* FileOperations.m */; };
+		A94F5A451C5AE294009CC9B8 /* IntelHex2BinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = A94370CE1BB64959002521F7 /* IntelHex2BinConverter.m */; };
+		A94F5A461C5AE2A1009CC9B8 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A94370A61BB6384B002521F7 /* GattUUIDs.plist */; };
+		A94F5A471C5AE2A4009CC9B8 /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98E03A41BBA406700F8924C /* DefaultPreferences.plist */; };
+		A94F5A481C5AE3D5009CC9B8 /* FirmwareUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = A94B850F1BB65C48007B88C7 /* FirmwareUpdater.m */; };
+		A94F5A491C5AE3D8009CC9B8 /* ReleasesParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A94B85121BB65C71007B88C7 /* ReleasesParser.m */; };
+		A94F5A511C5AF098009CC9B8 /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AB1BB6493A002521F7 /* BleManager.swift */; };
+		A94F5A521C5AF09B009CC9B8 /* BlePeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AC1BB6493A002521F7 /* BlePeripheral.swift */; };
+		A94F5A591C5AF1CA009CC9B8 /* StatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94F5A581C5AF1CA009CC9B8 /* StatusManager.swift */; };
+		A982968B1BB222D700DD478C /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982968A1BB222D700DD478C /* LogHelper.swift */; };
+		A98AE3AD1C42AB5000FA8E80 /* UartDataExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */; };
+		A98AE3AF1C42ABF300FA8E80 /* UartDataChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98AE3AE1C42ABF300FA8E80 /* UartDataChunk.swift */; };
+		A98E03951BBA2A0300F8924C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A98E03941BBA2A0300F8924C /* Credits.rtf */; };
+		A98E03A31BBA3EEE00F8924C /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98E03A21BBA3EEE00F8924C /* Preferences.swift */; };
+		A98E03A51BBA406700F8924C /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98E03A41BBA406700F8924C /* DefaultPreferences.plist */; };
+		A9A2FF811C3EEA6B0039D188 /* MqttSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A2FF801C3EEA6B0039D188 /* MqttSettings.swift */; };
+		A9A2FF831C3EEA9D0039D188 /* MqttManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A2FF821C3EEA9D0039D188 /* MqttManager.swift */; };
+		A9A2FF851C3EEBCE0039D188 /* RssiUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A2FF841C3EEBCE0039D188 /* RssiUI.swift */; };
+		A9A842411BD1276C003B925A /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A842401BD1276C003B925A /* SeparatorView.swift */; };
+		A9BDC6FE1BBCC65A00766400 /* NSColor+hex.m in Sources */ = {isa = PBXBuildFile; fileRef = A9BDC6FD1BBCC65A00766400 /* NSColor+hex.m */; };
+		A9FE75731BB9CF1000F7A5BF /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FE75721BB9CF1000F7A5BF /* XMLDictionary.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		02FB0C4B70813539DCDE5E4C /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E170D93FADB87A8B0F6CC2E /* Pods-OSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-OSX/Pods-OSX.release.xcconfig"; sourceTree = "<group>"; };
+		66672FBC2FCB5263B85D6D8E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		79302EF114868B4293A06B28 /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9548835CA087C4D34EDACE99 /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		9B84ECF983BB30BDDF6A2FB4 /* Pods_OSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A48B97DA4AFA7EB22050A2F8 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A92883CA1C5AF8DF00CC1566 /* PeripheralTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralTableViewCell.swift; sourceTree = "<group>"; };
+		A94370A61BB6384B002521F7 /* GattUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GattUUIDs.plist; sourceTree = "<group>"; };
+		A94370AB1BB6493A002521F7 /* BleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleManager.swift; sourceTree = "<group>"; };
+		A94370AC1BB6493A002521F7 /* BlePeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlePeripheral.swift; sourceTree = "<group>"; };
+		A94370C41BB64959002521F7 /* BLEOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEOperations.h; sourceTree = "<group>"; };
+		A94370C51BB64959002521F7 /* BLEOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEOperations.m; sourceTree = "<group>"; };
+		A94370C61BB64959002521F7 /* DFUOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFUOperations.h; sourceTree = "<group>"; };
+		A94370C71BB64959002521F7 /* DFUOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFUOperations.m; sourceTree = "<group>"; };
+		A94370C81BB64959002521F7 /* DFUOperationsDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFUOperationsDetails.h; sourceTree = "<group>"; };
+		A94370C91BB64959002521F7 /* DFUOperationsDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFUOperationsDetails.m; sourceTree = "<group>"; };
+		A94370CA1BB64959002521F7 /* FileOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileOperations.h; sourceTree = "<group>"; };
+		A94370CB1BB64959002521F7 /* FileOperations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileOperations.m; sourceTree = "<group>"; };
+		A94370CD1BB64959002521F7 /* IntelHex2BinConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntelHex2BinConverter.h; sourceTree = "<group>"; };
+		A94370CE1BB64959002521F7 /* IntelHex2BinConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntelHex2BinConverter.m; sourceTree = "<group>"; };
+		A94370D51BB649AE002521F7 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
+		A94370D61BB649AE002521F7 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
+		A949AA601C5AC85A002F960B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		A949AA631C5AC8C3002F960B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A949AA651C5AC912002F960B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A949AA661C5AC912002F960B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A949AA6A1C5AC977002F960B /* DetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		A949AA6B1C5AC977002F960B /* FirmwareUpdateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirmwareUpdateViewController.swift; sourceTree = "<group>"; };
+		A949AA6C1C5AC977002F960B /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		A949AA6D1C5AC977002F960B /* MainSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
+		A949AA6E1C5AC977002F960B /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
+		A949AA6F1C5AC977002F960B /* NeopixelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelViewController.swift; sourceTree = "<group>"; };
+		A949AA701C5AC977002F960B /* PeripheralListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralListViewController.swift; sourceTree = "<group>"; };
+		A949AA711C5AC977002F960B /* PeripheralTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralTableCellView.swift; sourceTree = "<group>"; };
+		A949AA721C5AC977002F960B /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
+		A949AA731C5AC977002F960B /* StatusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
+		A949AA741C5AC977002F960B /* UartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartViewController.swift; sourceTree = "<group>"; };
+		A949AA751C5AC977002F960B /* UpdateDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateDialogViewController.swift; sourceTree = "<group>"; };
+		A949AA821C5ACAA7002F960B /* BluefruitConnect-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluefruitConnect-Bridging-Header.h"; sourceTree = "<group>"; };
+		A949AA871C5ACF19002F960B /* Bluefruit Connect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bluefruit Connect.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A949AA9B1C5ACFAB002F960B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A949AA9C1C5ACFAB002F960B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A949AAA31C5ACFAB002F960B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A94B850E1BB65C48007B88C7 /* FirmwareUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirmwareUpdater.h; sourceTree = "<group>"; };
+		A94B850F1BB65C48007B88C7 /* FirmwareUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirmwareUpdater.m; sourceTree = "<group>"; };
+		A94B85111BB65C70007B88C7 /* ReleasesParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReleasesParser.h; sourceTree = "<group>"; };
+		A94B85121BB65C71007B88C7 /* ReleasesParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReleasesParser.m; sourceTree = "<group>"; };
+		A94B85141BB65CA3007B88C7 /* LogHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogHelper.h; sourceTree = "<group>"; };
+		A94B851D1BB704BC007B88C7 /* HexConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexConversions.swift; sourceTree = "<group>"; };
+		A94F5A2F1C5AD3A4009CC9B8 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		A94F5A301C5AD3A4009CC9B8 /* PeripheralTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralTableViewController.swift; sourceTree = "<group>"; };
+		A94F5A341C5AD41A009CC9B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A94F5A361C5AD41A009CC9B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A94F5A4D1C5AE501009CC9B8 /* BluefruitConnect-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluefruitConnect-Bridging-Header.h"; sourceTree = "<group>"; };
+		A94F5A581C5AF1CA009CC9B8 /* StatusManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusManager.swift; sourceTree = "<group>"; };
+		A98296681BB1F5E600DD478C /* Bluefruit Connect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bluefruit Connect.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A982968A1BB222D700DD478C /* LogHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
+		A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartDataExport.swift; sourceTree = "<group>"; };
+		A98AE3AE1C42ABF300FA8E80 /* UartDataChunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartDataChunk.swift; sourceTree = "<group>"; };
+		A98E03941BBA2A0300F8924C /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		A98E03A21BBA3EEE00F8924C /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		A98E03A41BBA406700F8924C /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
+		A9A2FF801C3EEA6B0039D188 /* MqttSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettings.swift; sourceTree = "<group>"; };
+		A9A2FF821C3EEA9D0039D188 /* MqttManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttManager.swift; sourceTree = "<group>"; };
+		A9A2FF841C3EEBCE0039D188 /* RssiUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RssiUI.swift; sourceTree = "<group>"; };
+		A9A842401BD1276C003B925A /* SeparatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
+		A9BDC6FC1BBCC65A00766400 /* NSColor+hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+hex.h"; sourceTree = "<group>"; };
+		A9BDC6FD1BBCC65A00766400 /* NSColor+hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+hex.m"; sourceTree = "<group>"; };
+		A9FE75711BB9CF1000F7A5BF /* XMLDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLDictionary.h; sourceTree = "<group>"; };
+		A9FE75721BB9CF1000F7A5BF /* XMLDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLDictionary.m; sourceTree = "<group>"; };
+		AC6C304636B13FE331A02F61 /* Pods-OSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OSX/Pods-OSX.debug.xcconfig"; sourceTree = "<group>"; };
+		C5A11F7B19B242E6BDABE5EA /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A949AA841C5ACF19002F960B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2765F2DE29FF3F5A40D37AF8 /* Pods_iOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A98296651BB1F5E600DD478C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90E10B46DD6952C71E201F04 /* Pods.framework in Frameworks */,
+				67C430DCA4D3FEBACE5F15F6 /* Pods_OSX.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		67C2A377EABD44879350317E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				02FB0C4B70813539DCDE5E4C /* Pods.framework */,
+				9B84ECF983BB30BDDF6A2FB4 /* Pods_OSX.framework */,
+				79302EF114868B4293A06B28 /* Pods_iOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A94370A51BB6384B002521F7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A94370A61BB6384B002521F7 /* GattUUIDs.plist */,
+				A98E03941BBA2A0300F8924C /* Credits.rtf */,
+				A98E03A41BBA406700F8924C /* DefaultPreferences.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A94370AA1BB6493A002521F7 /* BLE */ = {
+			isa = PBXGroup;
+			children = (
+				A94370AB1BB6493A002521F7 /* BleManager.swift */,
+				A94370AC1BB6493A002521F7 /* BlePeripheral.swift */,
+			);
+			path = BLE;
+			sourceTree = "<group>";
+		};
+		A94370C11BB64959002521F7 /* External Tools */ = {
+			isa = PBXGroup;
+			children = (
+				A9BDC6F91BBCC38700766400 /* Colors */,
+				A9FE75701BB9CF1000F7A5BF /* XML */,
+				A94370C21BB64959002521F7 /* DFU */,
+			);
+			path = "External Tools";
+			sourceTree = "<group>";
+		};
+		A94370C21BB64959002521F7 /* DFU */ = {
+			isa = PBXGroup;
+			children = (
+				A94370D41BB649AE002521F7 /* Constants */,
+				A94370C31BB64959002521F7 /* DFUImplementation */,
+				A94370CC1BB64959002521F7 /* HexToBinConverter */,
+			);
+			path = DFU;
+			sourceTree = "<group>";
+		};
+		A94370C31BB64959002521F7 /* DFUImplementation */ = {
+			isa = PBXGroup;
+			children = (
+				A94370C41BB64959002521F7 /* BLEOperations.h */,
+				A94370C51BB64959002521F7 /* BLEOperations.m */,
+				A94370C61BB64959002521F7 /* DFUOperations.h */,
+				A94370C71BB64959002521F7 /* DFUOperations.m */,
+				A94370C81BB64959002521F7 /* DFUOperationsDetails.h */,
+				A94370C91BB64959002521F7 /* DFUOperationsDetails.m */,
+				A94370CA1BB64959002521F7 /* FileOperations.h */,
+				A94370CB1BB64959002521F7 /* FileOperations.m */,
+			);
+			path = DFUImplementation;
+			sourceTree = "<group>";
+		};
+		A94370CC1BB64959002521F7 /* HexToBinConverter */ = {
+			isa = PBXGroup;
+			children = (
+				A94370CD1BB64959002521F7 /* IntelHex2BinConverter.h */,
+				A94370CE1BB64959002521F7 /* IntelHex2BinConverter.m */,
+			);
+			path = HexToBinConverter;
+			sourceTree = "<group>";
+		};
+		A94370D41BB649AE002521F7 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				A94370D51BB649AE002521F7 /* Utility.h */,
+				A94370D61BB649AE002521F7 /* Utility.m */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		A949AA5A1C5AC81B002F960B /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				A949AA5B1C5AC81B002F960B /* iOS */,
+				A949AA5C1C5AC81B002F960B /* OSX */,
+				A949AA5E1C5AC81B002F960B /* tvOS */,
+			);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		A949AA5B1C5AC81B002F960B /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				A949AA9B1C5ACFAB002F960B /* AppDelegate.swift */,
+				A949AA9C1C5ACFAB002F960B /* Assets.xcassets */,
+				A94F5A331C5AD41A009CC9B8 /* LaunchScreen.storyboard */,
+				A94F5A351C5AD41A009CC9B8 /* Main.storyboard */,
+				A94F5A4D1C5AE501009CC9B8 /* BluefruitConnect-Bridging-Header.h */,
+				A949AAA31C5ACFAB002F960B /* Info.plist */,
+				A94F5A2E1C5AD3A4009CC9B8 /* Controllers */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		A949AA5C1C5AC81B002F960B /* OSX */ = {
+			isa = PBXGroup;
+			children = (
+				A949AA651C5AC912002F960B /* AppDelegate.swift */,
+				A949AA661C5AC912002F960B /* Info.plist */,
+				A949AA621C5AC8C3002F960B /* Main.storyboard */,
+				A949AA821C5ACAA7002F960B /* BluefruitConnect-Bridging-Header.h */,
+				A949AA601C5AC85A002F960B /* Images.xcassets */,
+				A94F5A571C5AF1CA009CC9B8 /* Utils */,
+				A949AA691C5AC977002F960B /* Controllers */,
+			);
+			path = OSX;
+			sourceTree = "<group>";
+		};
+		A949AA5E1C5AC81B002F960B /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = tvOS;
+			sourceTree = "<group>";
+		};
+		A949AA691C5AC977002F960B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A949AA6A1C5AC977002F960B /* DetailsViewController.swift */,
+				A949AA6B1C5AC977002F960B /* FirmwareUpdateViewController.swift */,
+				A949AA6C1C5AC977002F960B /* InfoViewController.swift */,
+				A949AA6D1C5AC977002F960B /* MainSplitViewController.swift */,
+				A949AA6E1C5AC977002F960B /* MainWindowController.swift */,
+				A949AA6F1C5AC977002F960B /* NeopixelViewController.swift */,
+				A949AA701C5AC977002F960B /* PeripheralListViewController.swift */,
+				A949AA711C5AC977002F960B /* PeripheralTableCellView.swift */,
+				A949AA721C5AC977002F960B /* PreferencesViewController.swift */,
+				A949AA731C5AC977002F960B /* StatusViewController.swift */,
+				A949AA741C5AC977002F960B /* UartViewController.swift */,
+				A949AA751C5AC977002F960B /* UpdateDialogViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		A94B850D1BB65C48007B88C7 /* Updater */ = {
+			isa = PBXGroup;
+			children = (
+				A94B850E1BB65C48007B88C7 /* FirmwareUpdater.h */,
+				A94B850F1BB65C48007B88C7 /* FirmwareUpdater.m */,
+				A94B85111BB65C70007B88C7 /* ReleasesParser.h */,
+				A94B85121BB65C71007B88C7 /* ReleasesParser.m */,
+			);
+			path = Updater;
+			sourceTree = "<group>";
+		};
+		A94F5A2E1C5AD3A4009CC9B8 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A94F5A2F1C5AD3A4009CC9B8 /* DetailViewController.swift */,
+				A94F5A301C5AD3A4009CC9B8 /* PeripheralTableViewController.swift */,
+				A92883CA1C5AF8DF00CC1566 /* PeripheralTableViewCell.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		A94F5A571C5AF1CA009CC9B8 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A94F5A581C5AF1CA009CC9B8 /* StatusManager.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A982965F1BB1F5E600DD478C = {
+			isa = PBXGroup;
+			children = (
+				A982966A1BB1F5E600DD478C /* bluefruitconnect */,
+				A98296691BB1F5E600DD478C /* Products */,
+				DB5DFBD4B95AFFB735FADD7B /* Pods */,
+				67C2A377EABD44879350317E /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A98296691BB1F5E600DD478C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A98296681BB1F5E600DD478C /* Bluefruit Connect.app */,
+				A949AA871C5ACF19002F960B /* Bluefruit Connect.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A982966A1BB1F5E600DD478C /* bluefruitconnect */ = {
+			isa = PBXGroup;
+			children = (
+				A949AA5A1C5AC81B002F960B /* Platform */,
+				A98E03A11BBA3EEE00F8924C /* Model */,
+				A98296871BB21B5800DD478C /* Utils */,
+				A94370C11BB64959002521F7 /* External Tools */,
+				A94370A51BB6384B002521F7 /* Resources */,
+			);
+			path = bluefruitconnect;
+			sourceTree = "<group>";
+		};
+		A98296871BB21B5800DD478C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A9A8423F1BD1276C003B925A /* UI */,
+				A94B850D1BB65C48007B88C7 /* Updater */,
+				A94370AA1BB6493A002521F7 /* BLE */,
+				A9A2FF7F1C3EEA6B0039D188 /* Mqtt */,
+				A94B85141BB65CA3007B88C7 /* LogHelper.h */,
+				A982968A1BB222D700DD478C /* LogHelper.swift */,
+				A94B851D1BB704BC007B88C7 /* HexConversions.swift */,
+				A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A98E03A11BBA3EEE00F8924C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A98E03A21BBA3EEE00F8924C /* Preferences.swift */,
+				A98AE3AE1C42ABF300FA8E80 /* UartDataChunk.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A9A2FF7F1C3EEA6B0039D188 /* Mqtt */ = {
+			isa = PBXGroup;
+			children = (
+				A9A2FF821C3EEA9D0039D188 /* MqttManager.swift */,
+				A9A2FF801C3EEA6B0039D188 /* MqttSettings.swift */,
+			);
+			path = Mqtt;
+			sourceTree = "<group>";
+		};
+		A9A8423F1BD1276C003B925A /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				A9A842401BD1276C003B925A /* SeparatorView.swift */,
+				A9A2FF841C3EEBCE0039D188 /* RssiUI.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		A9BDC6F91BBCC38700766400 /* Colors */ = {
+			isa = PBXGroup;
+			children = (
+				A9BDC6FC1BBCC65A00766400 /* NSColor+hex.h */,
+				A9BDC6FD1BBCC65A00766400 /* NSColor+hex.m */,
+			);
+			path = Colors;
+			sourceTree = "<group>";
+		};
+		A9FE75701BB9CF1000F7A5BF /* XML */ = {
+			isa = PBXGroup;
+			children = (
+				A9FE75711BB9CF1000F7A5BF /* XMLDictionary.h */,
+				A9FE75721BB9CF1000F7A5BF /* XMLDictionary.m */,
+			);
+			path = XML;
+			sourceTree = "<group>";
+		};
+		DB5DFBD4B95AFFB735FADD7B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				66672FBC2FCB5263B85D6D8E /* Pods.debug.xcconfig */,
+				C5A11F7B19B242E6BDABE5EA /* Pods.release.xcconfig */,
+				A48B97DA4AFA7EB22050A2F8 /* Pods-iOS.debug.xcconfig */,
+				9548835CA087C4D34EDACE99 /* Pods-iOS.release.xcconfig */,
+				AC6C304636B13FE331A02F61 /* Pods-OSX.debug.xcconfig */,
+				3E170D93FADB87A8B0F6CC2E /* Pods-OSX.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A949AA861C5ACF19002F960B /* iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A949AA981C5ACF19002F960B /* Build configuration list for PBXNativeTarget "iOS" */;
+			buildPhases = (
+				F5C89E01A9F5687A4CFEFD15 /* Check Pods Manifest.lock */,
+				A949AA831C5ACF19002F960B /* Sources */,
+				A949AA841C5ACF19002F960B /* Frameworks */,
+				A949AA851C5ACF19002F960B /* Resources */,
+				9CA3AB2CAC646CC7A6213761 /* Embed Pods Frameworks */,
+				0FDC62F8290FDB54C99BFFCA /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iOS;
+			productName = bluefruitconnect;
+			productReference = A949AA871C5ACF19002F960B /* Bluefruit Connect.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A98296671BB1F5E600DD478C /* OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A98296771BB1F5E600DD478C /* Build configuration list for PBXNativeTarget "OSX" */;
+			buildPhases = (
+				F09A0C83824210CE82A41DBC /* Check Pods Manifest.lock */,
+				A98296641BB1F5E600DD478C /* Sources */,
+				A98296651BB1F5E600DD478C /* Frameworks */,
+				A98296661BB1F5E600DD478C /* Resources */,
+				BD5D4B202D77F7878B15C4F4 /* Embed Pods Frameworks */,
+				083E58B38283EC890DB4EF13 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OSX;
+			productName = bluefruitconnect;
+			productReference = A98296681BB1F5E600DD478C /* Bluefruit Connect.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A98296601BB1F5E600DD478C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = Adafruit;
+				TargetAttributes = {
+					A949AA861C5ACF19002F960B = {
+						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = 2X94RM7457;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
+					A98296671BB1F5E600DD478C = {
+						CreatedOnToolsVersion = 7.0;
+					};
+				};
+			};
+			buildConfigurationList = A98296631BB1F5E600DD478C /* Build configuration list for PBXProject "Bluefruit Connect" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A982965F1BB1F5E600DD478C;
+			productRefGroup = A98296691BB1F5E600DD478C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A98296671BB1F5E600DD478C /* OSX */,
+				A949AA861C5ACF19002F960B /* iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A949AA851C5ACF19002F960B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A94F5A381C5AD41A009CC9B8 /* Main.storyboard in Resources */,
+				A94F5A471C5AE2A4009CC9B8 /* DefaultPreferences.plist in Resources */,
+				A949AAA61C5ACFAB002F960B /* Assets.xcassets in Resources */,
+				A94F5A371C5AD41A009CC9B8 /* LaunchScreen.storyboard in Resources */,
+				A94F5A461C5AE2A1009CC9B8 /* GattUUIDs.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A98296661BB1F5E600DD478C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A94370A71BB6384B002521F7 /* GattUUIDs.plist in Resources */,
+				A949AA641C5AC8C3002F960B /* Main.storyboard in Resources */,
+				A949AA611C5AC85A002F960B /* Images.xcassets in Resources */,
+				A98E03A51BBA406700F8924C /* DefaultPreferences.plist in Resources */,
+				A98E03951BBA2A0300F8924C /* Credits.rtf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		083E58B38283EC890DB4EF13 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OSX/Pods-OSX-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0FDC62F8290FDB54C99BFFCA /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9CA3AB2CAC646CC7A6213761 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BD5D4B202D77F7878B15C4F4 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OSX/Pods-OSX-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F09A0C83824210CE82A41DBC /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F5C89E01A9F5687A4CFEFD15 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A949AA831C5ACF19002F960B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A94F5A491C5AE3D8009CC9B8 /* ReleasesParser.m in Sources */,
+				A94F5A431C5AE28C009CC9B8 /* DFUOperationsDetails.m in Sources */,
+				A94F5A441C5AE28F009CC9B8 /* FileOperations.m in Sources */,
+				A92883CB1C5AF8DF00CC1566 /* PeripheralTableViewCell.swift in Sources */,
+				A949AAA51C5ACFAB002F960B /* AppDelegate.swift in Sources */,
+				A94F5A411C5AE287009CC9B8 /* BLEOperations.m in Sources */,
+				A94F5A311C5AD3A4009CC9B8 /* DetailViewController.swift in Sources */,
+				A94F5A421C5AE28A009CC9B8 /* DFUOperations.m in Sources */,
+				A94F5A451C5AE294009CC9B8 /* IntelHex2BinConverter.m in Sources */,
+				A94F5A3C1C5AE24D009CC9B8 /* LogHelper.swift in Sources */,
+				A94F5A3B1C5AE211009CC9B8 /* UartDataChunk.swift in Sources */,
+				A94F5A3F1C5AE279009CC9B8 /* XMLDictionary.m in Sources */,
+				A94F5A3D1C5AE252009CC9B8 /* HexConversions.swift in Sources */,
+				A94F5A401C5AE282009CC9B8 /* Utility.m in Sources */,
+				A94F5A391C5AE211009CC9B8 /* Preferences.swift in Sources */,
+				A94F5A511C5AF098009CC9B8 /* BleManager.swift in Sources */,
+				A94F5A481C5AE3D5009CC9B8 /* FirmwareUpdater.m in Sources */,
+				A94F5A521C5AF09B009CC9B8 /* BlePeripheral.swift in Sources */,
+				A92883CC1C5AFBD000CC1566 /* RssiUI.swift in Sources */,
+				A94F5A3E1C5AE25B009CC9B8 /* UartDataExport.swift in Sources */,
+				A94F5A321C5AD3A4009CC9B8 /* PeripheralTableViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A98296641BB1F5E600DD478C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A949AA7C1C5AC977002F960B /* PeripheralListViewController.swift in Sources */,
+				A94370D01BB64959002521F7 /* DFUOperations.m in Sources */,
+				A94370CF1BB64959002521F7 /* BLEOperations.m in Sources */,
+				A94370D31BB64959002521F7 /* IntelHex2BinConverter.m in Sources */,
+				A98E03A31BBA3EEE00F8924C /* Preferences.swift in Sources */,
+				A9A2FF811C3EEA6B0039D188 /* MqttSettings.swift in Sources */,
+				A94B85131BB65C71007B88C7 /* ReleasesParser.m in Sources */,
+				A9A2FF831C3EEA9D0039D188 /* MqttManager.swift in Sources */,
+				A94370D21BB64959002521F7 /* FileOperations.m in Sources */,
+				A94370D71BB649AE002521F7 /* Utility.m in Sources */,
+				A94370D11BB64959002521F7 /* DFUOperationsDetails.m in Sources */,
+				A949AA7E1C5AC977002F960B /* PreferencesViewController.swift in Sources */,
+				A94370BB1BB6493A002521F7 /* BlePeripheral.swift in Sources */,
+				A949AA761C5AC977002F960B /* DetailsViewController.swift in Sources */,
+				A949AA811C5AC977002F960B /* UpdateDialogViewController.swift in Sources */,
+				A949AA671C5AC912002F960B /* AppDelegate.swift in Sources */,
+				A9A2FF851C3EEBCE0039D188 /* RssiUI.swift in Sources */,
+				A98AE3AD1C42AB5000FA8E80 /* UartDataExport.swift in Sources */,
+				A982968B1BB222D700DD478C /* LogHelper.swift in Sources */,
+				A9FE75731BB9CF1000F7A5BF /* XMLDictionary.m in Sources */,
+				A94B85101BB65C48007B88C7 /* FirmwareUpdater.m in Sources */,
+				A949AA801C5AC977002F960B /* UartViewController.swift in Sources */,
+				A949AA7D1C5AC977002F960B /* PeripheralTableCellView.swift in Sources */,
+				A949AA7B1C5AC977002F960B /* NeopixelViewController.swift in Sources */,
+				A98AE3AF1C42ABF300FA8E80 /* UartDataChunk.swift in Sources */,
+				A949AA771C5AC977002F960B /* FirmwareUpdateViewController.swift in Sources */,
+				A94370BA1BB6493A002521F7 /* BleManager.swift in Sources */,
+				A94F5A591C5AF1CA009CC9B8 /* StatusManager.swift in Sources */,
+				A949AA7A1C5AC977002F960B /* MainWindowController.swift in Sources */,
+				A949AA781C5AC977002F960B /* InfoViewController.swift in Sources */,
+				A9A842411BD1276C003B925A /* SeparatorView.swift in Sources */,
+				A94B851E1BB704BC007B88C7 /* HexConversions.swift in Sources */,
+				A9BDC6FE1BBCC65A00766400 /* NSColor+hex.m in Sources */,
+				A949AA7F1C5AC977002F960B /* StatusViewController.swift in Sources */,
+				A949AA791C5AC977002F960B /* MainSplitViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A949AA621C5AC8C3002F960B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A949AA631C5AC8C3002F960B /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A94F5A331C5AD41A009CC9B8 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A94F5A341C5AD41A009CC9B8 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A94F5A351C5AD41A009CC9B8 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A94F5A361C5AD41A009CC9B8 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A949AA991C5ACF19002F960B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A48B97DA4AFA7EB22050A2F8 /* Pods-iOS.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
+				INFOPLIST_FILE = bluefruitconnect/Platform/iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
+				PRODUCT_NAME = "Bluefruit Connect";
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/iOS/BluefruitConnect-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A949AA9A1C5ACF19002F960B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9548835CA087C4D34EDACE99 /* Pods-iOS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
+				INFOPLIST_FILE = bluefruitconnect/Platform/iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
+				PRODUCT_NAME = "Bluefruit Connect";
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/iOS/BluefruitConnect-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A98296751BB1F5E600DD478C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A98296761BB1F5E600DD478C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		A98296781BB1F5E600DD478C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC6C304636B13FE331A02F61 /* Pods-OSX.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/bluefruitconnect/Platform/OSX/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "\"-D\" \"DEBUG\" $(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "adafruit.Bluefruit-Buddy";
+				PRODUCT_NAME = "Bluefruit Connect";
+				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/OSX/BluefruitConnect-Bridging-Header.h";
+			};
+			name = Debug;
+		};
+		A98296791BB1F5E600DD478C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3E170D93FADB87A8B0F6CC2E /* Pods-OSX.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/bluefruitconnect/Platform/OSX/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "adafruit.Bluefruit-Buddy";
+				PRODUCT_NAME = "Bluefruit Connect";
+				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/OSX/BluefruitConnect-Bridging-Header.h";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A949AA981C5ACF19002F960B /* Build configuration list for PBXNativeTarget "iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A949AA991C5ACF19002F960B /* Debug */,
+				A949AA9A1C5ACF19002F960B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A98296631BB1F5E600DD478C /* Build configuration list for PBXProject "Bluefruit Connect" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A98296751BB1F5E600DD478C /* Debug */,
+				A98296761BB1F5E600DD478C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A98296771BB1F5E600DD478C /* Build configuration list for PBXNativeTarget "OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A98296781BB1F5E600DD478C /* Debug */,
+				A98296791BB1F5E600DD478C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A98296601BB1F5E600DD478C /* Project object */;
+}
