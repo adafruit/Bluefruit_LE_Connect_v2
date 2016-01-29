@@ -9,7 +9,6 @@
 import Cocoa
 
 class SeparatorView: NSView {
-
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)

@@ -7,7 +7,12 @@
 //
 
 import Foundation
-import AppKit
+
+#if os(OSX)
+    import AppKit
+#else       // iOS, tvOS
+    import UIKit
+#endif
 
 @objc class Preferences : NSObject {                // will be used from objective-c so make it inherit from NSObject
     
@@ -80,11 +85,12 @@ import AppKit
 
     
     // MARK: - Uart
+    #if os(OSX)
     static var uartReceveivedDataColor : NSColor {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let hexColorString = defaults.stringForKey(Preferences.uartReceivedDataColorKey)
-            return NSColor(fromHexadecimalValue: hexColorString)
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let hexColorString = defaults.stringForKey(Preferences.uartReceivedDataColorKey)
+        return NSColor(fromHexadecimalValue: hexColorString)
         }
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
@@ -95,9 +101,9 @@ import AppKit
     
     static var uartSentDataColor : NSColor {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let hexColorString = defaults.stringForKey(Preferences.uartSentDataColorKey) 
-            return NSColor(fromHexadecimalValue: hexColorString)
+        let defaults = NSUserDefaults.standardUserDefaults()
+        let hexColorString = defaults.stringForKey(Preferences.uartSentDataColorKey)
+        return NSColor(fromHexadecimalValue: hexColorString)
         }
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
@@ -105,7 +111,7 @@ import AppKit
             NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
         }
     }
-    
+    #endif
     
     static var uartIsDisplayModeTimestamp : Bool {
         get {

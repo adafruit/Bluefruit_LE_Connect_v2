@@ -144,7 +144,7 @@ extension PeripheralListViewController : NSTableViewDataSource {
 extension PeripheralListViewController : NSTableViewDelegate {
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
         
-        let cell = tableView.makeViewWithIdentifier("DeviceCell", owner: self) as! PeripheralTableCellView
+        let cell = tableView.makeViewWithIdentifier("PeripheralCell", owner: self) as! PeripheralTableCellView
         
         let bleManager = BleManager.sharedInstance
         let blePeripheralsFound = bleManager.blePeripheralsFound

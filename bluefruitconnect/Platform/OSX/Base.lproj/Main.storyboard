@@ -1063,7 +1063,7 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView identifier="DeviceCell" horizontalCompressionResistancePriority="752" id="y2s-Zr-cca" customClass="PeripheralTableCellView" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                                        <tableCellView identifier="PeripheralCell" horizontalCompressionResistancePriority="752" id="y2s-Zr-cca" customClass="PeripheralTableCellView" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                             <rect key="frame" x="1" y="1" width="445" height="64"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>

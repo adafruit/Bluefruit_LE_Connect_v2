@@ -8,8 +8,14 @@
 
 import Foundation
 
+#if os(OSX)
+    public typealias Image = NSImage
+#else
+    public typealias Image = UIImage
+    
+#endif
 
-func signalImageForRssi(rssi:Int) -> NSImage {
+func signalImageForRssi(rssi:Int) -> Image {
     
     var index : Int
     
@@ -32,5 +38,5 @@ func signalImageForRssi(rssi:Int) -> NSImage {
         index = 4
     }
     
-    return NSImage(named: "signalstrength\(index)")!
+    return Image(named: "signalstrength\(index)")!
 }

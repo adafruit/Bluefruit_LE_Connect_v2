@@ -107,7 +107,8 @@ class UartDataExport {
         
         return result
     }
-    
+
+    #if os(OSX)
     static func dataAsXml(dataBuffer : [UartDataChunk])  -> String? {
         
         let xmlRootElement = NSXMLElement(name: "uart")
@@ -143,4 +144,5 @@ class UartDataExport {
         
         return result
     }
+    #endif
 }
