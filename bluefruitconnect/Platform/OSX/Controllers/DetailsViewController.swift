@@ -12,6 +12,7 @@ import CoreBluetooth
 // Protocol that should implement viewControllers used as tabs
 protocol DetailTab {
     func tabWillAppear()
+    func tabWillDissapear()
     func tabReset()
 }
 
@@ -76,8 +77,10 @@ class DetailsViewController: NSViewController {
     }
     
     func willConnectToPeripheral(notification : NSNotification) {
-        showEmpty(true)
-        emptyLabel.stringValue = "Connecting..."
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.showEmpty(true)
+            self.emptyLabel.stringValue = LocalizationManager.sharedInstance.localizedString("peripheraldetails_connecting")
+            })
     }
     
     func didConnectToPeripheral(notification : NSNotification) {
@@ -153,7 +156,7 @@ class DetailsViewController: NSViewController {
         modeTabView.hidden = isEmpty
         emptyView.hidden = !isEmpty
         if (isEmpty) {
-            emptyLabel.stringValue = "Select a peripheral"
+            emptyLabel.stringValue = LocalizationManager.sharedInstance.localizedString("peripheraldetails_select")
         }
     }
 
@@ -218,6 +221,7 @@ class DetailsViewController: NSViewController {
                     })
                     self.infoDsiImageView.image = NSImage(named: hasDIS ?"NSStatusAvailable":"NSStatusNone")
                     
+                    /*
                     // Neopixel Tab
                     if (DetailsViewController.kNeopixelsEnabled && hasUart) {
                         var neopixelTabIndex = self.indexForTabWithClass("NeopixelViewController")
@@ -232,6 +236,7 @@ class DetailsViewController: NSViewController {
                         let neopixelViewController = self.modeTabView.tabViewItems[neopixelTabIndex].viewController as! NeopixelViewController
                         neopixelViewController.tabReset()
                     }
+*/
                     })
             }
         }
@@ -254,7 +259,7 @@ class DetailsViewController: NSViewController {
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
             let rssi = blePeripheral.rssi
             //DLog("rssi: \(rssi)")
-            infoRssiLabel.stringValue = "\(rssi) dBm"
+            infoRssiLabel.stringValue = String(format:LocalizationManager.sharedInstance.localizedString("peripheraldetails_rssi_format"), arguments:[rssi]) // "\(rssi) dBm"
             infoRssiImageView.image = signalImageForRssi(rssi)
         }
     }
@@ -269,6 +274,7 @@ extension DetailsViewController : CBPeripheralDelegate {
             (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheralDidUpdateName?(peripheral)
         }
     }
+    
     func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
         for tabViewItem in modeTabView.tabViewItems {
             (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didModifyServices: invalidatedServices)
@@ -338,6 +344,15 @@ extension DetailsViewController : CBPeripheralDelegate {
 
 // MARK: - NSTabViewDelegate
 extension DetailsViewController: NSTabViewDelegate {
+    
+    func tabView(tabView: NSTabView, willSelectTabViewItem tabViewItem: NSTabViewItem?) {
+        
+        if modeTabView.selectedTabViewItem != tabViewItem {
+            if let detailTabViewController = modeTabView.selectedTabViewItem?.viewController as? DetailTab {     // Note: all tab viewcontrollers should conform to protocol
+                detailTabViewController.tabWillDissapear()
+            }
+        }
+    }
     
     func tabView(tabView: NSTabView, didSelectTabViewItem tabViewItem: NSTabViewItem?) {
         

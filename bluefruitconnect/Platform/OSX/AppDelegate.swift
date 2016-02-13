@@ -67,13 +67,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         updateStatusContent(nil)
 
         let notificationCenter =  NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "updateStatus:", name: UartViewController.UartNotifications.DidTransferData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: "updateStatus:", name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: "updateStatus:", name: UartManager.UartNotifications.DidSendData.rawValue, object: nil)
         notificationCenter.addObserver(self, selector: "updateStatus:", name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
     }
     
     func releaseStatusButton() {
         let notificationCenter =  NSNotificationCenter.defaultCenter()
-        notificationCenter.removeObserver(self, name: UartViewController.UartNotifications.DidTransferData.rawValue, object: nil)
+        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidSendData.rawValue, object: nil)
         notificationCenter.removeObserver(self, name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
     }
     
@@ -127,7 +129,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             let menuItem = addPeripheralToSystemMenu(featuredPeripheral)
             menuItem.offStateImage = NSImage(named: "NSMenuOnStateTemplate")
         }
-        
+
         // Discovered Peripherals
         for identifier in bleManager.blePeripheralFoundAlphabeticKeys() {
             if (identifier != featuredPeripheral?.peripheral.identifier.UUIDString) {

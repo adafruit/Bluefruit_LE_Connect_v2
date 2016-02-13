@@ -12,10 +12,8 @@ import CoreBluetooth
 class PeripheralListViewController: NSViewController {
     
     @IBOutlet weak var baseTableView: NSTableView!
-    
-    private var currentSelectedRow = -1
-    private var currentSelectedPeripheralIdentifier : String?
-    private var lastUserSelection = CFAbsoluteTimeGetCurrent()
+
+    private let peripheralList = PeripheralList()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,11 +40,8 @@ class PeripheralListViewController: NSViewController {
             self.baseTableView.reloadData()
             
             // Select identifier if still available
-            if let selectedPeripheralIdentifier = self.currentSelectedPeripheralIdentifier {
-                if let index = BleManager.sharedInstance.blePeripheralFoundAlphabeticKeys().indexOf(selectedPeripheralIdentifier) {
-//                    DLog("discover row: \(index)");
-                    self.baseTableView.selectRowIndexes(NSIndexSet(index: index), byExtendingSelection: false)
-                }
+            if let selectedPeripheralRow = self.peripheralList.selectedPeripheralRow {
+                self.baseTableView.selectRowIndexes(NSIndexSet(index: selectedPeripheralRow), byExtendingSelection: false)
             }
         })
     }
@@ -56,74 +51,33 @@ class PeripheralListViewController: NSViewController {
             
             if (BleManager.sharedInstance.blePeripheralConnected == nil && self.baseTableView.selectedRow >= 0) {
                 
-                // Unexpected disconnect if the row is still selected but the connected peripheral is nil and the time since the user selected a new peripheral is bigger than 1 second
-                if (CFAbsoluteTimeGetCurrent() - self.lastUserSelection > 1) {
+                // Unexpected disconnect if the row is still selected but the connected peripheral is nil and the time since the user selected a new peripheral is bigger than kMinTimeSinceUserSelection seconds
+                let kMinTimeSinceUserSelection = 1.0    // in secs
+                if self.peripheralList.elapsedTimeSinceSelection > kMinTimeSinceUserSelection {
                     self.baseTableView.deselectAll(nil)
                     
+                    let localizationManager = LocalizationManager.sharedInstance
                     let alert = NSAlert()
-                    alert.messageText = "Peripheral disconnected"
-                    alert.addButtonWithTitle("Ok")
+                    alert.messageText = localizationManager.localizedString("peripherallist_peripheraldisconnected")
+                    alert.addButtonWithTitle(localizationManager.localizedString("dialog_ok"))
                     alert.alertStyle = .WarningAlertStyle
                     alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
                 }
             }
             })
     }
-
     
     // MARK: -
     func selectRowForPeripheralIdentifier(identifier : String?) {
         var found = false
         
-        if let identifier = identifier {
-            if let index = BleManager.sharedInstance.blePeripheralFoundAlphabeticKeys().indexOf(identifier) {
-                baseTableView.selectRowIndexes(NSIndexSet(index: index), byExtendingSelection: false)
-                found = true
-            }
+        if let index = peripheralList.indexOfPeripheralIdentifier(identifier) {
+            baseTableView.selectRowIndexes(NSIndexSet(index: index), byExtendingSelection: false)
+            found = true
         }
         
         if (!found) {
             baseTableView.deselectAll(nil)
-        }
-    }
-   
-    func connectToPeripheral(identifier : String?) {
-        let bleManager = BleManager.sharedInstance
-
-        if (identifier != bleManager.blePeripheralConnected?.peripheral.identifier.UUIDString || identifier == nil) {
-            
-            //
-            let blePeripheralsFound = bleManager.blePeripheralsFound
-            lastUserSelection = CFAbsoluteTimeGetCurrent()
-
-            // Disconnect from previous
-            if (currentSelectedRow >= 0) {
-                
-                let blePeripherals = bleManager.blePeripheralFoundAlphabeticKeys()
-                if currentSelectedRow < blePeripherals.count {      // To avoid problems with peripherals disconnecting
-                    let selectedBlePeripheralIdentifier = blePeripherals[currentSelectedRow];
-                    let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-                    
-                    BleManager.sharedInstance.disconnect(blePeripheral)
-                }
-                currentSelectedPeripheralIdentifier = nil
-            }
-            
-            // Connect to new peripheral
-            if let selectedBlePeripheralIdentifier = identifier {
-                
-                let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-                if (BleManager.sharedInstance.blePeripheralConnected?.peripheral.identifier != selectedBlePeripheralIdentifier) {
-                    // DLog("connect to new peripheral: \(selectedPeripheralIdentifier)")
-                    
-                    BleManager.sharedInstance.connect(blePeripheral)
-                    
-                    currentSelectedPeripheralIdentifier = selectedBlePeripheralIdentifier
-                }
-            }
-            else {
-                currentSelectedPeripheralIdentifier = nil;
-            }
         }
     }
     
@@ -148,19 +102,19 @@ extension PeripheralListViewController : NSTableViewDelegate {
         
         let bleManager = BleManager.sharedInstance
         let blePeripheralsFound = bleManager.blePeripheralsFound
-        let selectedBlePeripheralIdentifier = bleManager.blePeripheralFoundAlphabeticKeys()[row];
+        let selectedBlePeripheralIdentifier = peripheralList.blePeripherals[row];
         let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
         cell.titleTextField.stringValue = blePeripheral.name
         
         let isUartCapable = blePeripheral.isUartAdvertised()
-        cell.subtitleTextField.stringValue = isUartCapable ?"Uart capable":"No Uart detected"
+        cell.subtitleTextField.stringValue = LocalizationManager.sharedInstance.localizedString(isUartCapable ? "peripherallist_uartavailable" : "peripherallist_uartunavailable")
         cell.rssiImageView.image = signalImageForRssi(blePeripheral.rssi)
         
         cell.onDisconnect = {
             tableView.deselectAll(nil)
         }
         
-        cell.showDisconnectButton(row == currentSelectedRow)
+        cell.showDisconnectButton(row == peripheralList.selectedPeripheralRow)
         
         return cell;
     }
@@ -169,19 +123,12 @@ extension PeripheralListViewController : NSTableViewDelegate {
         
         peripheralSelectedChanged()
     }
-    
+
     func tableViewSelectionDidChange(notification: NSNotification) {
         peripheralSelectedChanged()
     }
-    
+
     func peripheralSelectedChanged() {
-        let newSelectedRow = baseTableView.selectedRow
-        //        DLog("tableViewSelectionDidChange: \(newSelectedRow)")
-        if (newSelectedRow != currentSelectedRow) {
-            //DLog("Peripheral selected row: \(newSelectedRow)")
-            let bleManager = BleManager.sharedInstance
-            connectToPeripheral(newSelectedRow >= 0 ? bleManager.blePeripheralFoundAlphabeticKeys()[newSelectedRow] : nil)
-            currentSelectedRow = newSelectedRow
-        }
+        peripheralList.selectRow(baseTableView.selectedRow)
     }
 }

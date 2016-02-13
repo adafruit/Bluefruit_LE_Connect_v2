@@ -27,7 +27,7 @@ class BlePeripheral {
                 return name
             }
             else {
-                return "<No Name>"
+                return LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
             }
         }
     }

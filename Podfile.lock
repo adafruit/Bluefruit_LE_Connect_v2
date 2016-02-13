@@ -1,10 +1,16 @@
 PODS:
   - CocoaMQTT (1.0.0)
+  - UIColor+Hex (1.0.1):
+    - UIColor+Hex/NSColor (= 1.0.1)
+    - UIColor+Hex/UIColor (= 1.0.1)
+  - UIColor+Hex/UIColor (1.0.1)
 
 DEPENDENCIES:
   - CocoaMQTT (~> 1.0.0)
+  - UIColor+Hex
 
 SPEC CHECKSUMS:
   CocoaMQTT: 49d2bbcba5553ff983e35292bdab0a357fe9b177
+  UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
 COCOAPODS: 0.39.0

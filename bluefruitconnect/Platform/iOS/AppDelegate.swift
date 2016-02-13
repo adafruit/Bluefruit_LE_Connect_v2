@@ -1,4 +1,4 @@
-//
+ //
 //  AppDelegate.swift
 //  bluefruitconnect
 //
@@ -24,9 +24,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         
         // Setup SpliView
         let splitViewController = self.window!.rootViewController as! UISplitViewController
+        splitViewController.delegate = self
+
+        // Show displaymode button if the app is started in iPad portrait mode
+/*
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
-        splitViewController.delegate = self
+*/
+        /*
+        let tabBarController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UITabBarController
+        tabBarController.selectedViewController?.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
+        */
         return true
     }
 
@@ -53,16 +61,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     }
 
     // MARK: - Split view
-
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController, ontoPrimaryViewController primaryViewController:UIViewController) -> Bool {
-        guard let secondaryAsNavController = secondaryViewController as? UINavigationController else { return false }
-        guard let topAsDetailController = secondaryAsNavController.topViewController as? DetailViewController else { return false }
-        if topAsDetailController.detailItem == nil {
-            // Return true to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
+
+        if BleManager.sharedInstance.blePeripheralConnected == nil {
             return true
         }
+
         return false
     }
-
 }
+
 

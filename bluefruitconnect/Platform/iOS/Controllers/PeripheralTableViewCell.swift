@@ -28,7 +28,7 @@ class PeripheralTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    
     @IBAction func onClickDisconnect(sender: AnyObject) {
         onDisconnect?()
     }
@@ -36,5 +36,4 @@ class PeripheralTableViewCell: UITableViewCell {
     func showDisconnectButton(show: Bool) {
         disconnectButtonWidthConstraint.constant = show ? 24: 0
     }
-
 }

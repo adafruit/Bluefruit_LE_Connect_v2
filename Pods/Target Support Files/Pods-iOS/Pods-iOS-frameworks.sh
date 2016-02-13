@@ -85,7 +85,9 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-iOS/CocoaMQTT.framework"
+  install_framework "Pods-iOS/UIColor_Hex.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-iOS/CocoaMQTT.framework"
+  install_framework "Pods-iOS/UIColor_Hex.framework"
 fi

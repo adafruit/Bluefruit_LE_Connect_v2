@@ -3,7 +3,7 @@
 
 @interface NSColor (hex)
 
-- (NSString *)hexadecimalValue;
-+ (NSColor *)colorFromHexadecimalValue:(NSString *)hex;
+- (NSString *)hexString;
++ (NSColor *)colorWithCSS:(NSString *)hex;
 
 @end

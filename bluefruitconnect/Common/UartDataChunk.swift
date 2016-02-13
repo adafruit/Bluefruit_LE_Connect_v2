@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct UartDataChunk {      // A chunk of data received or sent
+class UartDataChunk {      // A chunk of data received or sent
     var timestamp : CFAbsoluteTime
     enum TransferMode {
         case TX
@@ -16,4 +16,10 @@ struct UartDataChunk {      // A chunk of data received or sent
     }
     var mode : TransferMode
     var data : NSData
+    
+    init(timestamp: CFAbsoluteTime, mode: TransferMode, data: NSData) {
+        self.timestamp = timestamp
+        self.mode = mode
+        self.data = data
+    }
 }

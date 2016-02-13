@@ -10,6 +10,7 @@ import Cocoa
 
 class FirmwareUpdateViewController: NSViewController {
     
+    // UI
     @IBOutlet weak var firmwareCurrentVersionLabel: NSTextField!
     @IBOutlet weak var firmwareCurrentVersionWaitView: NSProgressIndicator!
     @IBOutlet weak var firmwareTableView: NSTableView!
@@ -17,7 +18,10 @@ class FirmwareUpdateViewController: NSViewController {
     @IBOutlet weak var hexFileTextField: NSTextField!
     @IBOutlet weak var iniFileTextField: NSTextField!
     
+    // Data
     private let firmwareUpdater = FirmwareUpdater()
+    private let dfuUpdateProcess = DfuUpdateProcess()
+    private var updateDialogViewController : UpdateDialogViewController!
     
     private var boardRelease : BoardInfo?
     private var deviceInfoData : DeviceInfoData?
@@ -115,12 +119,12 @@ class FirmwareUpdateViewController: NSViewController {
         }
         
         guard !deviceInfoData!.hasDefaultBootloaderVersion() else {
-            onUpdateDialogError("The legacy bootloader on this device is not compatible with this application")
+            onUpdateProcessError("The legacy bootloader on this device is not compatible with this application", infoMessage: nil)
             return
         }
 
         guard !hexFileTextField.stringValue.isEmpty else {
-            onUpdateDialogError("At least an Hex file should be selected")
+            onUpdateProcessError("At least an Hex file should be selected", infoMessage: nil)
             return
         }
         
@@ -167,14 +171,17 @@ class FirmwareUpdateViewController: NSViewController {
     
     func startDfuUpdateWithHexInitFiles(hexUrl : NSURL, iniUrl: NSURL?) {
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
-            
-            let updateDialogViewController = self.storyboard?.instantiateControllerWithIdentifier("UpdateDialogViewController") as! UpdateDialogViewController
-            updateDialogViewController.setUpdateParameters(blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfoData: deviceInfoData!)
-            updateDialogViewController.delegate = self
+     
+            // Setup update process
+            dfuUpdateProcess.setUpdateParameters(blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfoData: deviceInfoData!)
+            dfuUpdateProcess.delegate = self
+
+            // Show dialog
+            updateDialogViewController = self.storyboard?.instantiateControllerWithIdentifier("UpdateDialogViewController") as! UpdateDialogViewController
             self.presentViewControllerAsModalWindow(updateDialogViewController)
         }
         else {
-            onUpdateDialogError("No peripheral conected. Abort update");
+            onUpdateProcessError("No peripheral conected. Abort update", infoMessage: nil);
         }
     }
 }
@@ -183,6 +190,9 @@ class FirmwareUpdateViewController: NSViewController {
 extension FirmwareUpdateViewController : DetailTab {
     func tabWillAppear() {
         startUpdatesCheck()
+    }
+    
+    func tabWillDissapear() {
     }
     
     func tabReset() {
@@ -220,7 +230,7 @@ extension FirmwareUpdateViewController : FirmwareUpdaterDelegate {
             self.firmwareCurrentVersionLabel.stringValue = "<Unknown>"
             if let deviceInfoData = deviceInfoData {
                 if (deviceInfoData.hasDefaultBootloaderVersion()) {
-                    self.onUpdateDialogError("The legacy bootloader on this device is not compatible with this application")
+                    self.onUpdateProcessError("The legacy bootloader on this device is not compatible with this application", infoMessage: nil)
                 }
                 if (deviceInfoData.softwareRevision != nil) {
                     self.firmwareCurrentVersionLabel.stringValue = deviceInfoData.softwareRevision
@@ -233,7 +243,7 @@ extension FirmwareUpdateViewController : FirmwareUpdaterDelegate {
     }
     
     func onDfuServiceNotFound() {
-        onUpdateDialogError("No DFU Service found on device")
+        onUpdateProcessError("No DFU Service found on device", infoMessage: nil)
     }
 }
 
@@ -292,7 +302,7 @@ extension FirmwareUpdateViewController : NSTableViewDelegate {
         
         if (selectedRow >= 0) {
             if (deviceInfoData!.hasDefaultBootloaderVersion()) {
-                onUpdateDialogError("The legacy bootloader on this device is not compatible with this application")
+                onUpdateProcessError("The legacy bootloader on this device is not compatible with this application", infoMessage: nil)
             }
             else {
                 let firmwareRelases = boardRelease!.firmwareReleases
@@ -306,15 +316,28 @@ extension FirmwareUpdateViewController : NSTableViewDelegate {
 }
 
 // MARK: - UpdateDialogViewControlerDelegate
-extension FirmwareUpdateViewController : UpdateDialogViewControlerDelegate {
+extension FirmwareUpdateViewController : UpdateDialogControllerDelegate {
     
     func onUpdateDialogCancel() {
         
+        dfuUpdateProcess.cancel()
         BleManager.sharedInstance.restoreCentralManager()
+
+        if self.presentingViewController != nil {
+            self.dismissViewController(self)
+        }
+        updateDialogViewController = nil
     }
-    
-    func onUpdateDialogSuccess() {
+}
+
+extension FirmwareUpdateViewController : DfuUpdateProcessDelegate {
+    func onUpdateProcessSuccess() {
         BleManager.sharedInstance.restoreCentralManager()
+        
+        if self.presentingViewController != nil {
+            self.dismissViewController(self)
+        }
+        updateDialogViewController = nil
         
         if let window = self.view.window {
             let alert = NSAlert()
@@ -328,18 +351,39 @@ extension FirmwareUpdateViewController : UpdateDialogViewControlerDelegate {
         }
     }
     
-    func onUpdateDialogError(errorMessage : String) {
+    func onUpdateProcessError(errorMessage : String, infoMessage: String?) {
         BleManager.sharedInstance.restoreCentralManager()
+        
+        if self.presentingViewController != nil {
+            self.dismissViewController(self)
+        }
+        updateDialogViewController = nil
         
         if let window = self.view.window {
             let alert = NSAlert()
             alert.messageText = errorMessage
+            if let infoMessage = infoMessage {
+                alert.informativeText = infoMessage
+            }
             alert.addButtonWithTitle("Ok")
             alert.alertStyle = .WarningAlertStyle
             alert.beginSheetModalForWindow(window, completionHandler: nil)
         }
         else {
             DLog("onUpdateDialogError: window not defined when showing dialog with message: \(errorMessage)")
-        }  
+        }
     }
+    
+    func onUpdateProgressText(message: String) {
+        dispatch_async(dispatch_get_main_queue(),{
+            updateDialogViewController?.setProgressText(message)
+        })
+    }
+    
+    func onUpdateProgressValue(progress : Double) {
+        dispatch_async(dispatch_get_main_queue(),{
+            updateDialogViewController?.setProgress(progress)
+        })
+    }
+    
 }

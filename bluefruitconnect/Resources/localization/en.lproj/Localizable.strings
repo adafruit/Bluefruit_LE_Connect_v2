@@ -1,0 +1,131 @@
+// AUTO-GENERATED
+// General
+
+
+
+
+// Peripheral List
+"peripherallist_title" = "Peripherals";
+"peripherallist_uartavailable" = "Uart capable";
+"peripherallist_uartunavailable" = "No Uart detected";
+"peripherallist_peripheraldisconnected" = "Peripheral disconnected";
+"peripherallist_unnamed" = "{No Name}";
+// Peripheral Details
+"peripheraldetails_select" = "Select a Peripheral";
+"peripheraldetails_connecting" = "Connecting...";
+"peripheraldetails_rssi_format" = "%ld dBm";
+
+// Info
+"info_tab_title" = "Info";
+"info_navigation_title_format" = "Info - %@";
+
+
+
+
+"info_type_service" = "Service";
+"info_type_characteristic" = "Characteristic";
+"info_type_descriptor" = "Descriptor";
+
+
+
+
+// Uart
+"uart_tab_title" = "Uart";
+"uart_navigation_title_format" = "Uart - %@";
+
+"uart_sentbytes_format" = "Sent: %ld bytes";
+"uart_recievedbytes_format" = "Received: %ld bytes";
+"uart_timestamp_direction_rx" = "RX";
+"uart_timestamp_direction_tx" = "TX";
+
+"uart_mqtt_undefinedserver" = "Mqtt server not defined";
+"uart_mqtt_editsettings" = "Edit Mqtt Settings";
+
+"uart_mqtt_status_default" = "MQTT";
+"uart_mqtt_status_connecting" = "MQTT: connecting...";
+"uart_mqtt_status_connected" = "MQTT: connected";
+"uart_mqtt_status_disconnected" = "MQTT: disconnected";
+"uart_mqtt_connectionerror_title" = "Connection Error";
+"uart_mqtt_editsettings_action" = "Edit Mqtt Settings";
+
+"uart_export_nodata" = "No data to export";
+"uart_export_save_message" = "Export Data to File";
+"uart_export_save_prompt" = "Export";
+
+"uart_settings_displayMode_title" = "Display Mode";
+"uart_settings_displayMode_timestamp" = "Timestamp";
+"uart_settings_displayMode_text" = "Text";
+"uart_settings_dataMode_title" = "Data Mode";
+"uart_settings_dataMode_hex" = "Hex";
+"uart_settings_dataMode_ascii" = "Ascii";
+"uart_settings_eol_title" = "Send Eol";
+"uart_settings_echo_title" = "Show Echo";
+
+
+"uart_mqtt_settings_title" = "MQTT Settings";
+"uart_mqtt_settings_group_server" = "Server";
+"uart_mqtt_settings_group_publish" = "Publish";
+"uart_mqtt_settings_group_subscribe" = "Subscribe";
+"uart_mqtt_settings_group_advanced" = "Advanced";
+"uart_settings_clear_title" = "Clear";
+"uart_settings_export_title" = "Export...";
+
+// Dfu
+"dfu_tab_title" = "Dfu";
+"dfu_navigation_title_format" = "Dfu - %@";
+
+"dfu_currentversion_title" = "Installed Firmware";
+"dfu_firmwarereleases_title" = "Firmware Releases";
+"dfu_bootloaderreleases_title" = "Bootloader Releases";
+
+"dfu_firmware_format" = "Firmware: %@";
+"dfu_betaversion_format" = "Beta Version %@";
+"dfu_version_format" = "Version %@";
+
+"dfu_install_action_title_format" = "Install firmware version %@?";
+"dfu_install_action_message" = "The firmware will be downloaded and updated. Please wait until the process finishes before disconnecting the peripheral";
+"dfu_unabletoupdate_bootloader_format" = "This firmware update is not compatible with your bootloader. You need to update your bootloader to version %@ before installing this firmware release \(firmwareInfo.version)";
+
+"dfu_dfunotavailable" = "No DFU Service found on device";
+"dfu_legacybootloader" = "The legacy bootloader on this device is not compatible with this application";
+
+"dfu_udaptedcompleted_message" = "Update completed successfully";
+
+"dfu_download_hex_message" = "Downloading hex file";
+"dfu_download_init_message" = "Downloading init file";
+
+// PinIO
+"pinio_tab_title" = "Pin I/O";
+"pinio_navigation_title_format" = "Pin I/O - %@";
+
+
+"pinio_capabilityquery_querying_title" = "Querying pin capabilities...";
+
+"pinio_capabilityquery_expired_title" = "No response to capability query";
+"pinio_capabilityquery_expired_message" = "assuming default pin format
+(Arduino Uno)";
+
+"pinio_pins_header" = "Available Pins";
+
+// Controller
+"controller_tab_title" = "Controller";
+"controller_navigation_title_format" = "Controller - %@";
+
+"controller_sensor_title" = "Stream Sensor Data";
+"controller_module_title" = "Module";
+
+"controller_sensor_quaternion" = "Quaternion";
+"controller_sensor_accelerometer" = "Accelerometer";
+"controller_sensor_gyro" = "Gyro";
+"controller_sensor_magnetometer" = "Magnetometer";
+"controller_sensor_location" = "Location";
+
+"controller_module_pad" = "Control Pad";
+"controller_module_colorpicker" = "Color Picker";
+
+
+
+// Common
+"dialog_ok" = "Ok";
+"dialog_cancel" = "Cancel";
+"dialog_error" = "Error";

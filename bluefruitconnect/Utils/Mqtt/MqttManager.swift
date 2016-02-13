@@ -124,6 +124,7 @@ extension MqttManager: CocoaMQTTDelegate {
     
     func mqtt(mqtt: CocoaMQTT, didConnect host: String, port: Int) {
         DLog("didConnect: \(host):\(port)")
+        self.status = ConnectionStatus.Connected
     }
     
     func mqtt(mqtt: CocoaMQTT, didConnectAck ack: CocoaMQTTConnAck) {

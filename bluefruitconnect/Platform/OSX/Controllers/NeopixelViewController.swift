@@ -21,13 +21,8 @@ class NeopixelViewController: NSViewController {
     @IBOutlet weak var sendButton: NSButton!
     
     // Bluetooth Uart
-    private var blePeripheral : BlePeripheral?
-    private var uartService : CBService?
-    private var rxCharacteristic : CBCharacteristic?
-    private var txCharacteristic : CBCharacteristic?
-   
+    private let uartData = UartManager.sharedInstance
     private var uartResponseDelegate : ((NSData)->Void)?
-    
     
     // Neopixel
     private var isNeopixelSketchAvailable : Bool?
@@ -35,13 +30,14 @@ class NeopixelViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
+
+        // Init Data
+        uartData.delegate = self
     }
     
     private func checkNeopixelSketch() {
         
         // Send version command and check if returns a valid response
-        
         DLog("Ask Version...")
         let text = "V"
         if let data = text.dataUsingEncoding(NSUTF8StringEncoding) {
@@ -82,22 +78,7 @@ class NeopixelViewController: NSViewController {
         }
         
         uartResponseDelegate = completionHandler
-        sendDataToUart(data)
-    }
-    
-    private func sendDataToUart(data:  NSData) {
-        if let txCharacteristic = txCharacteristic {
-            
-            // Split data  in txmaxcharacters bytes
-            var offset = 0
-            repeat {
-                let chunkSize = min(data.length-offset, UartViewController.TxMaxCharacters)
-                let chunk = NSData(bytesNoCopy: UnsafeMutablePointer<UInt8>(data.bytes)+offset, length: chunkSize, freeWhenDone:false)
-                
-                blePeripheral?.peripheral.writeValue(chunk, forCharacteristic: txCharacteristic, type: CBCharacteristicWriteType.WithoutResponse)
-                offset+=chunkSize
-            }while(offset<data.length)
-        }
+        uartData.sendDataToUart(data)
     }
     
     @IBAction func onClickSend(sender: AnyObject) {

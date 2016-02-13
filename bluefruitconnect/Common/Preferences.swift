@@ -12,6 +12,7 @@ import Foundation
     import AppKit
 #else       // iOS, tvOS
     import UIKit
+    import UIColor_Hex
 #endif
 
 @objc class Preferences : NSObject {                // will be used from objective-c so make it inherit from NSObject
@@ -29,7 +30,6 @@ import Foundation
     private static let uartIsInHexModeKey = "UartIsInHexMode"
     private static let uartIsEchoEnabledKey = "UartIsEchoEnabled"
     private static let uartIsAutomaticEolEnabledKey = "UartIsAutomaticEolEnabled"
-    
     
     enum PreferencesNotifications : String {
         case DidUpdatePreferences = "didUpdatePreferences"          // Note: used on some objective-c code, so when changed, update it
@@ -85,33 +85,33 @@ import Foundation
 
     
     // MARK: - Uart
-    #if os(OSX)
-    static var uartReceveivedDataColor : NSColor {
+//    #if os(OSX)
+    static var uartReceveivedDataColor : Color {
         get {
         let defaults = NSUserDefaults.standardUserDefaults()
         let hexColorString = defaults.stringForKey(Preferences.uartReceivedDataColorKey)
-        return NSColor(fromHexadecimalValue: hexColorString)
+        return Color(CSS: hexColorString)
         }
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setObject(newValue.hexadecimalValue(), forKey: Preferences.uartReceivedDataColorKey)
+            defaults.setObject(newValue.hexString(), forKey: Preferences.uartReceivedDataColorKey)
             NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
         }
     }
     
-    static var uartSentDataColor : NSColor {
+    static var uartSentDataColor : Color {
         get {
         let defaults = NSUserDefaults.standardUserDefaults()
         let hexColorString = defaults.stringForKey(Preferences.uartSentDataColorKey)
-        return NSColor(fromHexadecimalValue: hexColorString)
+        return Color(CSS: hexColorString)
         }
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setObject(newValue.hexadecimalValue(), forKey: Preferences.uartSentDataColorKey)
+            defaults.setObject(newValue.hexString(), forKey: Preferences.uartSentDataColorKey)
             NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
         }
     }
-    #endif
+//    #endif
     
     static var uartIsDisplayModeTimestamp : Bool {
         get {
@@ -148,7 +148,6 @@ import Foundation
             setBoolPreference(Preferences.uartIsAutomaticEolEnabledKey, newValue: newValue)
         }
     }
-
     
     // MARK: - Common
     static func getBoolPreference(key: String) -> Bool {

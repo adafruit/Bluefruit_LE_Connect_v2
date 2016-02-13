@@ -1,9 +1,10 @@
 // Based on https://developer.apple.com/library/mac/qa/qa1576/_index.html
+// Uses the same function names that UIColor+Hex Pod. Update all with a pod that supports UIColor/NSColor when available
 #import "NSColor+hex.h"
 
 @implementation NSColor (hex)
 
-- (NSString *)hexadecimalValue {
+- (NSString *)hexString {
     
     CGFloat redFloatValue, greenFloatValue, blueFloatValue;
     int redIntValue, greenIntValue, blueIntValue;
@@ -33,7 +34,7 @@
     return nil;
 }
 
-+ (NSColor *)colorFromHexadecimalValue:(NSString *)hex {
++ (NSColor *)colorWithCSS:(NSString *)hex {
     
     if ([hex hasPrefix:@"#"]) {
         hex = [hex substringWithRange:NSMakeRange(1, [hex length] - 1)];

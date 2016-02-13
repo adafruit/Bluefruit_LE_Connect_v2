@@ -9,7 +9,6 @@
 import Cocoa
 import CoreBluetooth
 
-
 class InfoViewController: NSViewController {
     private static let kExpandAllNodes  = true
     
@@ -88,7 +87,6 @@ class InfoViewController: NSViewController {
 
     @IBAction func onClickRefreshOnLoad(sender: NSButton) {
         Preferences.infoIsRefreshOnLoadEnabled = sender.state == NSOnState
-
     }
     
     @IBAction func onClickRefresh(sender: AnyObject) {
@@ -101,10 +99,12 @@ class InfoViewController: NSViewController {
 extension InfoViewController : DetailTab {
     
     func tabWillAppear() {
-        self.updateDiscoveringStatusLabel() 
-        self.baseTableView.reloadData()
+        updateDiscoveringStatusLabel()
+        baseTableView.reloadData()
     }
     
+    func tabWillDissapear() {
+    }
     
     func tabReset() {
         // Peripheral should be connected
