@@ -7,8 +7,13 @@
 //
 
 import Foundation
-import CoreMotion
 import CoreLocation
+
+// TODO: add support for OSX
+#if os(OSX)
+#else
+    import CoreMotion
+#endif
 
 class ControllerModuleManager : NSObject {
     
@@ -26,7 +31,10 @@ class ControllerModuleManager : NSObject {
     // Data
     private var isSensorEnabled = [Bool](count:ControllerModuleManager.numSensors, repeatedValue: false)
 
+    #if os(OSX)
+    #else
     private let coreMotionManager = CMMotionManager()
+    #endif
     private let locationManager = CLLocationManager()
     private var lastKnownLocation :CLLocation?
     

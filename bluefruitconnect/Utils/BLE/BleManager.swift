@@ -114,6 +114,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         
         // Connect
         blePeripheralConnecting = blePeripheral
+       // DLog("connecting to: \(blePeripheral.name)")
         NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.WillConnectToPeripheral.rawValue, object: nil, userInfo: ["uuid" : blePeripheral.peripheral.identifier.UUIDString])
         
         centralManager?.connectPeripheral(blePeripheral.peripheral, options: nil)
@@ -121,6 +122,8 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     
     func disconnect(blePeripheral : BlePeripheral) {
         
+       // DLog("disconnecting from: \(blePeripheral.name)")
+        blePeripheralConnecting = nil
         NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil, userInfo: ["uuid" : blePeripheral.peripheral.identifier.UUIDString])
         centralManager?.cancelPeripheralConnection(blePeripheral.peripheral)
     }
@@ -139,7 +142,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
             }
         }
         else {
-            if let blePeripheralConnected = blePeripheralConnected{
+            if let blePeripheralConnected = blePeripheralConnected {
                 DLog("Bluetooth is not powered on. Disconnect connected peripheral")
                 blePeripheralConnecting = nil
                 disconnect(blePeripheralConnected)
@@ -215,6 +218,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         if peripheral.identifier == blePeripheralConnected?.peripheral.identifier {
             self.blePeripheralConnected = nil
         }
+        self.blePeripheralConnecting = nil
         
         NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil,  userInfo: ["uuid" : peripheral.identifier.UUIDString])
     }

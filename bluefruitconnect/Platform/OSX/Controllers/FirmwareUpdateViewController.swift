@@ -375,14 +375,14 @@ extension FirmwareUpdateViewController : DfuUpdateProcessDelegate {
     }
     
     func onUpdateProgressText(message: String) {
-        dispatch_async(dispatch_get_main_queue(),{
-            updateDialogViewController?.setProgressText(message)
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.updateDialogViewController?.setProgressText(message)
         })
     }
     
     func onUpdateProgressValue(progress : Double) {
-        dispatch_async(dispatch_get_main_queue(),{
-            updateDialogViewController?.setProgress(progress)
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.updateDialogViewController?.setProgress(progress)
         })
     }
     

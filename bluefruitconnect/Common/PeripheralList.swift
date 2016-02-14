@@ -81,7 +81,7 @@ class PeripheralList {
     
     func selectRow(row : Int ) {
         if (row != selectedPeripheralRow) {
-            //DLog("Peripheral selected row: \(newSelectedRow)")
+            DLog("Peripheral selected row: \(row)")
             connectToPeripheral(row >= 0 ? blePeripherals[row] : nil)
         }
     }

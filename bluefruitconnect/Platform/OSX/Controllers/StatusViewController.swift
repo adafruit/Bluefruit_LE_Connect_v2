@@ -30,6 +30,7 @@ class StatusViewController: NSViewController {
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.setText(message)
+            //DLog("new status: \(message)")
             
             if (!self.isAlertBeingPresented) {       // Dont show a alert while another alert is being presented
                 if let errorMessage = StatusManager.sharedInstance.errorDescription() {

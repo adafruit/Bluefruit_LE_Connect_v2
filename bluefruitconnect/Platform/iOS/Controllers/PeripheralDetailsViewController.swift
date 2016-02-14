@@ -45,11 +45,9 @@ class PeripheralDetailsViewController: UITabBarController {
         
         let isFullScreen =  UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
         guard !isFullScreen || selectedBlePeripheral != nil else {
-            DLog("detail: peripheral disconnected by viewWillAppear")
+            DLog("detail: peripheral disconnected by viewWillAppear. Abort")
             // Back to peripheral list
-            self.navigationController?.popToRootViewControllerAnimated(false)
-//            self.splitViewController?.dismissViewControllerAnimated(true, completion: nil)
-            
+    //        self.navigationController?.popToRootViewControllerAnimated(false)
             return;
         }
         

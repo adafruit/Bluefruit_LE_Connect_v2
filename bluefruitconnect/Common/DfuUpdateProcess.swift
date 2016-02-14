@@ -106,6 +106,7 @@ class DfuUpdateProcess : NSObject {
     }
     
     func startDfuOperation() {
+        DLog("startDfuOperation");
         isDfuStarted = false
         isDFUCancelled = false
         delegate?.onUpdateProgressText("DFU Init")
@@ -118,7 +119,6 @@ class DfuUpdateProcess : NSObject {
             dfuOperations!.connectDevice(peripheral)
         }
     }
-    
     
     func cancel() {
         // Cancel current operation
@@ -188,6 +188,7 @@ extension DfuUpdateProcess : DFUOperationsDelegate {
             let defaultBootloaderVersion  = deviceInfoData!.defaultBootloaderVersion()
             let useHexOnly = (bootloaderVersion == defaultBootloaderVersion)
             
+            DLog("Updating")
             delegate?.onUpdateProgressText("Updating")
             if (useHexOnly)
             {

@@ -322,7 +322,9 @@ extension UartViewController : DetailTab {
     }
     
     func tabWillDissapear() {
-          uartData.dataBufferEnabled = false
+        if !Config.uartShowAllUartCommunication {
+            uartData.dataBufferEnabled = false
+        }
     }
     
     func tabReset() {
@@ -330,7 +332,6 @@ extension UartViewController : DetailTab {
         uartData.dataBufferEnabled = true
         uartData.blePeripheral = BleManager.sharedInstance.blePeripheralConnected       // Note: this will start the service discovery
     }
-    
 }
 
 // MARK: - NSOpenSavePanelDelegate

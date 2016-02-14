@@ -164,14 +164,17 @@ class PeripheralTableViewController: UITableViewController {
                 
                 let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
                 if isFullScreen {
-                    DLog("list: compact mode pop to root")
-                    if let navController = self.splitViewController?.viewControllers[0] as? UINavigationController {
-                        navController.popViewControllerAnimated(true)
-                    }
+                    
+                    DLog("list: compact mode show alert")
                     
                     let localizationManager = LocalizationManager.sharedInstance
                     let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("peripherallist_peripheraldisconnected"), preferredStyle: .Alert)
-                    let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler: nil)
+                    let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler: { (_) -> Void in
+                        if let navController = self.splitViewController?.viewControllers[0] as? UINavigationController {
+                            navController.popViewControllerAnimated(true)
+                        }
+                    })
+                    
                     alertController.addAction(okAction)
                     self.presentViewController(alertController, animated: true, completion: nil)
                     //   }
@@ -191,11 +194,11 @@ class PeripheralTableViewController: UITableViewController {
     }
     
     // MARK: - Table View
-
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return BleManager.sharedInstance.blePeripheralsFound.count
     }
@@ -210,25 +213,26 @@ class PeripheralTableViewController: UITableViewController {
         let row = indexPath.row
         let bleManager = BleManager.sharedInstance
         let blePeripheralsFound = bleManager.blePeripheralsFound
-        let selectedBlePeripheralIdentifier = peripheralList.blePeripherals[row];
-        let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-        
-        let peripheralCell =  cell as! PeripheralTableViewCell
-        peripheralCell.titleLabel.text = blePeripheral.name
-        
-        let isUartCapable = blePeripheral.isUartAdvertised()
-        peripheralCell.subtitleLabel.text = isUartCapable ?"Uart capable":"No Uart detected"
-        peripheralCell.rssiImageView.image = signalImageForRssi(blePeripheral.rssi)
-        
-        // Show either a disconnect button or a disclouse indicator depending on the UISplitViewController displayMode
-       let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
-        peripheralCell.accessoryType = isFullScreen ? .DisclosureIndicator : .None
-        
-        peripheralCell.showDisconnectButton(!isFullScreen && row == peripheralList.selectedPeripheralRow)
-        peripheralCell.onDisconnect = {
-            if let indexPathForSelectedRow = tableView.indexPathForSelectedRow {
-                tableView.deselectRowAtIndexPath(indexPathForSelectedRow, animated: true)
-                self.peripheralList.selectRow(-1)
+        let selectedBlePeripheralIdentifier = peripheralList.blePeripherals[row]
+        if let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier] {
+            
+            let peripheralCell =  cell as! PeripheralTableViewCell
+            peripheralCell.titleLabel.text = blePeripheral.name
+            
+            let isUartCapable = blePeripheral.isUartAdvertised()
+            peripheralCell.subtitleLabel.text = isUartCapable ?"Uart capable":"No Uart detected"
+            peripheralCell.rssiImageView.image = signalImageForRssi(blePeripheral.rssi)
+            
+            // Show either a disconnect button or a disclouse indicator depending on the UISplitViewController displayMode
+            let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
+            peripheralCell.accessoryType = isFullScreen ? .DisclosureIndicator : .None
+            
+            peripheralCell.showDisconnectButton(!isFullScreen && row == peripheralList.selectedPeripheralRow)
+            peripheralCell.onDisconnect = {
+                if let indexPathForSelectedRow = tableView.indexPathForSelectedRow {
+                    tableView.deselectRowAtIndexPath(indexPathForSelectedRow, animated: true)
+                    self.peripheralList.selectRow(-1)
+                }
             }
         }
     }

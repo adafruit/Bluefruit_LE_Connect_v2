@@ -84,7 +84,7 @@ class UartModuleViewController: ModuleViewController {
         // Init options layout
         if traitCollection.userInterfaceIdiom == .Pad {            // iPad
             // moreOptionsNavigationItem.enabled = false
-                        
+            
             self.view.removeConstraint(statsLabeliPhoneLeadingConstraint)
             
             // Resize input UISwitch controls
@@ -114,9 +114,7 @@ class UartModuleViewController: ModuleViewController {
             mqttManager.connectFromSavedSettings()
         }
     }
-    
-   
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -135,13 +133,21 @@ class UartModuleViewController: ModuleViewController {
         
         // Remove "more options" navigation bar button on iPad
         if traitCollection.userInterfaceIdiom == .Pad {
-             tabBarController!.navigationItem.rightBarButtonItems! = []
+            // Remove more item
+            tabBarController!.navigationItem.rightBarButtonItems! = []
+
+            // Add mqtt bar item
+            mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
+            tabBarController!.navigationItem.rightBarButtonItems!.append(mqttBarButtonItem)
+        }
+        else {
+            // Add mqtt bar item
+            mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
+            tabBarController!.navigationItem.rightBarButtonItems!.append(mqttBarButtonItem)
         }
         
         // Add mqtt bar item
         if tabBarController!.navigationItem.rightBarButtonItems!.count == 0 {
-            mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
-            tabBarController!.navigationItem.rightBarButtonItems!.append(mqttBarButtonItem)
         }
         
         // UI
@@ -167,7 +173,9 @@ class UartModuleViewController: ModuleViewController {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
-        uartData.dataBufferEnabled = false
+        if !Config.uartShowAllUartCommunication {
+            uartData.dataBufferEnabled = false
+        }
         registerNotifications(false)
     }
 
