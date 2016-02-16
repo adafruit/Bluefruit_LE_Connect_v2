@@ -2,16 +2,39 @@
 // General
 
 
+"about_text" = "• A detailed guide to using this app can be found here:
+https://learn.adafruit.com/bluefruit-le-connect-for-ios
 
+• Configure your Bluefruit LE hardware using instructions found here: 
+http://www.adafruit.com/bluefruitle
+
+• Drag the table down and release to clear the list of found peripherals and begin scanning
+
+• Tap a row in the table to view a peripheral's advertisement data.
+
+• Each peripheral's Received Signal Strength (RSSI) is displayed to the left of its name.
+
+• Tap a row's connect button to connect the corresponding device in one of the available modes:
+
+Info - displays peripheral services & characteristics
+
+UART - basic terminal, send & receive data 
+
+Pin I/O - uses Bluefruit's UART to control Arduino running BLEFirmata sketch:
+https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakout/software-bluefruit-firmata
+";
 
 // Peripheral List
-"peripherallist_title" = "Peripherals";
+"peripherallist_title" = "Bluefruit";
+"peripherallist_backbutton" = "Disconnect";
+"peripherallist_splitmasterbutton" = "Peripheral List";
+"peripherallist_subtitle" = "Peripherals found";
 "peripherallist_uartavailable" = "Uart capable";
 "peripherallist_uartunavailable" = "No Uart detected";
 "peripherallist_peripheraldisconnected" = "Peripheral disconnected";
 "peripherallist_unnamed" = "{No Name}";
 // Peripheral Details
-"peripheraldetails_select" = "Select a Peripheral";
+"peripheraldetails_select" = "Connect to a peripheral from the list on the left";
 "peripheraldetails_connecting" = "Connecting...";
 "peripheraldetails_rssi_format" = "%ld dBm";
 
@@ -26,7 +49,12 @@
 "info_type_characteristic" = "Characteristic";
 "info_type_descriptor" = "Descriptor";
 
+"info_help_title" = "Info";
+"info_help_text" = "• Each section of the table represents one of the peripheral's services followed by its relevant characteristics.
 
+• If a service or characteristic uses a predefined UUID, a standardized name is displayed.  Otherwise the UUID value is shown.
+
+• If a characteristic contains a readable value, that value is displayed at the bottom of the characteristic's table row";
 
 
 // Uart
@@ -63,6 +91,7 @@
 
 
 "uart_mqtt_settings_title" = "MQTT Settings";
+"uart_mqtt_settings_group_status" = "Status";
 "uart_mqtt_settings_group_server" = "Server";
 "uart_mqtt_settings_group_publish" = "Publish";
 "uart_mqtt_settings_group_subscribe" = "Subscribe";
@@ -70,9 +99,25 @@
 "uart_settings_clear_title" = "Clear";
 "uart_settings_export_title" = "Export...";
 
+"uart_help_title" = "Uart";
+"uart_help_text" = "Instructions:
+
+• Tap the Message field at the bottom of the screen.
+
+• Enter the ASCII string you want to send.
+
+• Send a message by pressing the keyboard's Send button.
+
+• Use the Timestamp/Text and ASCII/Hex control above the main console view to control the display format of messages.
+
+• Use the Export button to copy or send the contents of the console.
+
+• Use the Clear button to clear the console's contents.";
+
+
 // Dfu
-"dfu_tab_title" = "Dfu";
-"dfu_navigation_title_format" = "Dfu - %@";
+"dfu_tab_title" = "Updates";
+"dfu_navigation_title_format" = "Updates - %@";
 
 "dfu_currentversion_title" = "Installed Firmware";
 "dfu_firmwarereleases_title" = "Firmware Releases";
@@ -94,10 +139,16 @@
 "dfu_download_hex_message" = "Downloading hex file";
 "dfu_download_init_message" = "Downloading init file";
 
+"dfu_help_title" = "Firmware Updates";
+"dfu_help_text" = "Instructions:
+
+• Select one of the updates availables for the peripheral
+
+• Use specific \"hex\" and \"init\" files to udpate your device. Please take into account that this could brick the peripheral if the firmware is not compatible";
+
 // PinIO
 "pinio_tab_title" = "Pin I/O";
 "pinio_navigation_title_format" = "Pin I/O - %@";
-
 
 "pinio_capabilityquery_querying_title" = "Querying pin capabilities...";
 
@@ -106,6 +157,26 @@
 (Arduino Uno)";
 
 "pinio_pins_header" = "Available Pins";
+
+"pinio_help_title" = "Pin I/O";
+"pinio_help_text" = "Instructions:
+
+• The Pin I/O mode uses works with an Arduino board running the BLEFirmata sketch.  Detailed instructions can be found here:
+https://learn.adafruit.com/bluefruit-le-connect-for-ios/pin-i-slash-o
+
+• Tap a row in the table corresponding to the Arduino pin you want to control.
+
+• Select a pin mode: 
+   Input - monitor pin's state
+   Output - enable setting of pin state
+   Analog - monitor Analog pin input
+   PWM - set a pin's pulse width  output
+
+• Set an Output pin's state using the Low/High control.
+
+• Set a PWM pin's output value using the slider control.
+
+• Once finished setting a pin's mode or state, you can close it by tapping the empty space near it's top - or by selecting another row.";
 
 // Controller
 "controller_tab_title" = "Controller";
@@ -123,6 +194,43 @@
 "controller_module_pad" = "Control Pad";
 "controller_module_colorpicker" = "Color Picker";
 
+"controller_help_title" = "Controller";
+"controller_help_text" = "The Controller module streams sensor data from your iOS device to Bluefruit LE over UART at a frequency of 10Hz.  Activation of a switch will begin sending relevant data.  Each packet sent begins with single byte char “!” (0x21) followed by a single byte char initial, and sensor data encoded as float values of 4 byte length
+
+• Quaternion sends iOS Device Motion data to describe device attitude.  This data is derived from Accelerometer, Gyro, and Magnetometer readings.
+Format: [ ‘!’ ] [ ‘Q’ ] [ float x ] [ float y ] [ float z ] [ float w ]
+
+• Accelerometer sends raw accelerometer data
+Format: [ ‘!’ ] [ ‘A’ ] [ float x ] [ float y ] [ float z ]
+
+• Gyro sends raw gyroscope data as:
+Format: [ ‘!’ ] [ ‘G’ ] [ float x ] [ float y ] [ float z ]
+
+• Magnetometer sends raw magnetometer data which is uncalibrated and does not account for interference from source device.
+Format: [ ‘!’ ] [ ‘M’ ] [ float x ] [ float y ] [ float z ]
+
+• Location sends GPS data and requires user permission before initial use.
+Format: [ ‘!’ ] [ ‘L’ ] [ float latitude ] [ float longitude ] [ float altitude ]";
+
+// Control Pad
+
+"controlpad_help_title" = "Control Pad";
+"controlpad_help_text" = "The Control Pad function provides a familiar momentary button interface for common control scenarios.  Data is sent on the press and release of each button.  Each packet consists of 4 bytes, each representing a char value.  The first two chars identify the packet as a button message, the third specifies a button, and the fourth signifies either a press or release.  Example:
+
+Button 4 pressed:  [ ‘!’ ] [ ‘B’ ] [ ‘4’ ] [ ‘1’ ]
+Button 4 released: [ ‘!’ ] [ ‘B’ ] [ ‘4’ ] [ ‘0’ ]
+
+Note: Any activated sensor data streams will continue while using the Control Pad.";
+
+// Color Picker
+
+"colorpicker_help_title" = "Color Picker";
+"colorpicker_help_text" = "The Color Picker sends a color's RGB values to Bluefruit LE.  This can be used to control the state of RGB LEDs such as Neopixels.
+
+• Touch the color wheel to choose desired color
+
+• Press Send to send the chosen color's red, green, and blue values to Bluefruit via UART in the following format:
+[ ‘!’ ] [ ‘C’ ] [ byte r ] [ byte g ] [ byte b ]";
 
 
 // Common

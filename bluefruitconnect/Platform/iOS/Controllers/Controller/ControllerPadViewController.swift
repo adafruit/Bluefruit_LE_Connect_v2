@@ -38,6 +38,14 @@ class ControllerPadViewController: UIViewController {
     func setupButton(button: UIButton) {
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.whiteColor().CGColor
+        button.layer.masksToBounds = true
+        
+        button.setTitleColor(UIColor.lightGrayColor(), forState: .Highlighted)
+        
+        let hightlightedImage = UIImage(color: UIColor.darkGrayColor())
+        button.setBackgroundImage(hightlightedImage, forState: .Highlighted)
         
         button.addTarget(self, action: "onTouchDown:", forControlEvents: .TouchDown)
         button.addTarget(self, action: "onTouchUp:", forControlEvents: .TouchUpInside)
@@ -50,7 +58,17 @@ class ControllerPadViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+ 
     
+    private func sendTouchEvent(tag: Int, isPressed: Bool) {
+        let message = "!B\(tag)\(isPressed ? "1" : "0"))"
+        if let data = message.dataUsingEncoding(NSUTF8StringEncoding) {
+            UartManager.sharedInstance.sendDataWithCrc(data)
+        }
+    }
+    
+    
+    // MARK: - Actions
     func onTouchDown(sender: UIButton) {
         sendTouchEvent(sender.tag, isPressed: true)
     }
@@ -59,10 +77,14 @@ class ControllerPadViewController: UIViewController {
         sendTouchEvent(sender.tag, isPressed: false)
     }
     
-    private func sendTouchEvent(tag: Int, isPressed: Bool) {
-        let message = "!B\(tag)\(isPressed ? "1" : "0"))"
-        if let data = message.dataUsingEncoding(NSUTF8StringEncoding) {
-            UartManager.sharedInstance.sendDataWithCrc(data)
-        }
+    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+        let localizationManager = LocalizationManager.sharedInstance
+        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpViewController") as! HelpViewController
+        helpViewController.setHelp(localizationManager.localizedString("controlpad_help_text"), title: localizationManager.localizedString("controlpad_help_title"))
+        let helpNavigationController = UINavigationController(rootViewController: helpViewController)
+        helpNavigationController.modalPresentationStyle = .Popover
+        helpNavigationController.popoverPresentationController?.barButtonItem = sender
+        
+        presentViewController(helpNavigationController, animated: true, completion: nil)
     }
 }

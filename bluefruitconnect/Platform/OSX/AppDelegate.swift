@@ -131,9 +131,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
 
         // Discovered Peripherals
+        let blePeripheralsFound = bleManager.blePeripherals()
         for identifier in bleManager.blePeripheralFoundAlphabeticKeys() {
             if (identifier != featuredPeripheral?.peripheral.identifier.UUIDString) {
-                let blePeripheral = bleManager.blePeripheralsFound[identifier]!
+                let blePeripheral = blePeripheralsFound[identifier]!
                 addPeripheralToSystemMenu(blePeripheral)
             }
         }

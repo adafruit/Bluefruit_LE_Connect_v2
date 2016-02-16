@@ -13,6 +13,7 @@ class ModuleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = StyleConfig.backgroundColor
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -30,7 +31,6 @@ class ModuleViewController: UIViewController {
             parentNavigationItem.title = navigationItem.title
             parentNavigationItem.rightBarButtonItems = navigationItem.rightBarButtonItems
         }
-
     }
     
     override func didReceiveMemoryWarning() {

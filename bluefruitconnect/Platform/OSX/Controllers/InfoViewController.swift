@@ -24,7 +24,6 @@ class InfoViewController: NSViewController {
     // Data
     private var blePeripheral : BlePeripheral?
     private var services : [CBService]?
-    private var gattUUIds : [String : String]?
     
     private var shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
 
@@ -36,10 +35,6 @@ class InfoViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Read known UUIDs
-        let path = NSBundle.mainBundle().pathForResource("GattUUIDs", ofType: "plist")!
-        gattUUIds = NSDictionary(contentsOfFile: path) as? [String : String]
     }
     
     override func viewWillAppear() {
@@ -198,7 +193,7 @@ extension InfoViewController: NSOutlineViewDelegate {
                     identifier = descriptor.UUID.UUIDString
                 }
                 
-                if let name = gattUUIds?[identifier] {
+                if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
                     identifier = name
                 }
                 cell.textField?.stringValue = identifier

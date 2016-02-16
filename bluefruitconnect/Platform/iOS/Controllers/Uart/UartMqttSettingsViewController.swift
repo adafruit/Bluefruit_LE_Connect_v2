@@ -39,6 +39,8 @@ class UartMqttSettingsViewController: UIViewController {
         super.viewDidLoad()
         
         self.title = LocalizationManager.sharedInstance.localizedString("uart_mqtt_settings_title")
+     
+       // view.backgroundColor = StyleConfig.backgroundColor
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -48,17 +50,7 @@ class UartMqttSettingsViewController: UIViewController {
         MqttManager.sharedInstance.delegate = self
         baseTableView.reloadData()
     }
-    
-    /*
-    override func viewWillDisappear(animated: Bool) {
-    super.viewWillDisappear(animated)
-    
-    if (IS_IPAD) {
-    self.view.endEditing(true)
-    }
-    }
-    */
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -67,14 +59,14 @@ class UartMqttSettingsViewController: UIViewController {
     func headerTitleForSection(section: Int) -> String? {
         var key : String?
         switch SettingsSections(rawValue: section)! {
-        case .Status: key = nil
+        case .Status: key = "uart_mqtt_settings_group_status" //  nil
         case .Server: key = "uart_mqtt_settings_group_server"
         case .Publish: key = "uart_mqtt_settings_group_publish"
         case .Subscribe: key = "uart_mqtt_settings_group_subscribe"
         case .Advanced: key = "uart_mqtt_settings_group_advanced"
         }
         
-        return (key==nil ? nil : LocalizationManager.sharedInstance.localizedString(key!))
+        return (key==nil ? nil : LocalizationManager.sharedInstance.localizedString(key!).uppercaseString)
     }
     
     func subscriptionTopicChanged(newTopic: String?, qos: MqttManager.MqttQos) {
@@ -126,6 +118,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
             pickerCell.pickerView.dataSource = self
             pickerCell.pickerView.delegate = self
             
+            pickerCell.backgroundColor = UIColor(hex: 0xe2e1e0)
             cell = pickerCell
         }
         else if section == .Status {
@@ -163,6 +156,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 self.baseTableView?.reloadData()
             }
             
+            statusCell.backgroundColor = UIColor.clearColor()
             cell = statusCell
         }
         else {
@@ -193,7 +187,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 editValueCell = tableView.dequeueReusableCellWithIdentifier("ValueAndSelectorCell", forIndexPath: indexPath) as! MqttSettingsValueAndSelector
                 editValueCell.reset()
                 
-                let labels = ["UART RX:", "UART TX:"]
+                let labels = ["Uart RX:", "Uart TX:"]
                 editValueCell.nameLabel.text = labels[row]
                 
                 editValueCell.valueTextField!.text = mqttSettings.getPublishTopic(row)
@@ -247,6 +241,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 valueTextField.tag = tagFromIndexPath(indexPath, scale:10)
             }
             
+            editValueCell.backgroundColor = UIColor(hex: 0xe2e1e0)
             cell = editValueCell
         }
         return cell

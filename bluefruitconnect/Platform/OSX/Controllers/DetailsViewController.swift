@@ -326,7 +326,7 @@ extension DetailsViewController : CBPeripheralDelegate {
 
         // Update peripheral rssi
         let identifierString = peripheral.identifier.UUIDString
-        if let existingPeripheral = BleManager.sharedInstance.blePeripheralsFound[identifierString], rssi =  peripheral.RSSI?.integerValue {
+        if let existingPeripheral = BleManager.sharedInstance.blePeripherals()[identifierString], rssi =  peripheral.RSSI?.integerValue {
             existingPeripheral.rssi = rssi
 //            DLog("received rssi for \(existingPeripheral.name): \(rssi)")
             

@@ -70,6 +70,18 @@ class DfuModuleViewController: ModuleViewController {
             firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self)
         }
     }
+    
+    // MARK: - Actions
+    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+        let localizationManager = LocalizationManager.sharedInstance
+        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpViewController") as! HelpViewController
+        helpViewController.setHelp(localizationManager.localizedString("dfu_help_text"), title: localizationManager.localizedString("dfu_help_title"))
+        let helpNavigationController = UINavigationController(rootViewController: helpViewController)
+        helpNavigationController.modalPresentationStyle = .Popover
+        helpNavigationController.popoverPresentationController?.barButtonItem = sender
+        
+        presentViewController(helpNavigationController, animated: true, completion: nil)
+    }
 
     // MARK: - Preferences
     func registerNotifications(register : Bool) {

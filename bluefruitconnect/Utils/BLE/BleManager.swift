@@ -40,7 +40,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     // Scanning
     var isScanning = false
     var wasScanningBeforeBluetoothOff = false;
-    var blePeripheralsFound = [String : BlePeripheral]()
+    private var blePeripheralsFound = [String : BlePeripheral]()
     var blePeripheralConnecting : BlePeripheral?
     var blePeripheralConnected : BlePeripheral?             // last peripheral connected (note: only one peripheral can can be connected at the same time
     var undiscoverTimer : NSTimer?
@@ -231,6 +231,26 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     }
     
     // MARK: - Utils
+    func blePeripherals() -> [String : BlePeripheral] {         // To avoid race conditions when modifying the array
+        var result: [String : BlePeripheral]?
+        synchronize(blePeripheralsFound) { [unowned self] in
+            result = self.blePeripheralsFound
+        }
+        
+        return result!
+    }
+    
+    func blePeripheralsCount() -> Int {                          // To avoid race conditions when modifying the array
+        var result = 0
+        
+        synchronize(blePeripheralsFound) { [unowned self] in
+            result = self.blePeripheralsFound.count
+        }
+        
+        return result
+    }
+    
+    
     func blePeripheralFoundAlphabeticKeys() -> [String] {
         // Sort blePeripheralsFound keys alphabetically and return them as an array
         

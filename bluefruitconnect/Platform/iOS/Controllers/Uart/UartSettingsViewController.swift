@@ -20,7 +20,7 @@ class UartSettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        //view.backgroundColor = StyleConfig.backgroundColor
     }
 
     override func didReceiveMemoryWarning() {
@@ -104,6 +104,8 @@ extension UartSettingsViewController : UITableViewDataSource {
         }
         
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath:indexPath)
+
+        cell.backgroundColor = UIColor(hex: 0xe2e1e0)
         return cell
     }
     

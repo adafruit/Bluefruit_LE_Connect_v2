@@ -64,6 +64,17 @@ class ControllerModuleViewController: ModuleViewController {
         contentItems = items
     }
 
+    // MARK: - Actions
+    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+        let localizationManager = LocalizationManager.sharedInstance
+        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpViewController") as! HelpViewController
+        helpViewController.setHelp(localizationManager.localizedString("controller_help_text"), title: localizationManager.localizedString("controller_help_title"))
+        let helpNavigationController = UINavigationController(rootViewController: helpViewController)
+        helpNavigationController.modalPresentationStyle = .Popover
+        helpNavigationController.popoverPresentationController?.barButtonItem = sender
+        
+        presentViewController(helpNavigationController, animated: true, completion: nil)
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -130,7 +141,10 @@ extension ControllerModuleViewController : UITableViewDataSource {
                         let hasComponent = i<sensorData.count
                         subview.hidden = !hasComponent
                         if let label = subview as? UILabel where hasComponent {
-                            label.text = "\(componentNameKeys[i]): \(sensorData[i])"
+                            let attributedText = NSMutableAttributedString(string: "\(componentNameKeys[i]): \(sensorData[i])")
+                            let titleLength = componentNameKeys[i].lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
+                            attributedText.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(12, weight: UIFontWeightMedium), range: NSMakeRange(0, titleLength))
+                            label.attributedText = attributedText
                         }
                    
                         i++

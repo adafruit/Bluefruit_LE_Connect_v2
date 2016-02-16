@@ -128,27 +128,30 @@ class UartModuleViewController: ModuleViewController {
         super.viewWillAppear(animated)
         
         registerNotifications(true)
-
+        
         uartData.dataBufferEnabled = true
         
-        // Remove "more options" navigation bar button on iPad
-        if traitCollection.userInterfaceIdiom == .Pad {
-            // Remove more item
-            tabBarController!.navigationItem.rightBarButtonItems! = []
-
-            // Add mqtt bar item
-            mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
-            tabBarController!.navigationItem.rightBarButtonItems!.append(mqttBarButtonItem)
-        }
-        else {
-            // Add mqtt bar item
-            mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
-            tabBarController!.navigationItem.rightBarButtonItems!.append(mqttBarButtonItem)
+        
+        // Update the navgation bar items
+        if var rightButtonItems = tabBarController?.navigationItem.rightBarButtonItems where rightButtonItems.count == 2 {
+            
+            if traitCollection.userInterfaceIdiom == .Pad {
+                // Remove more item
+                rightButtonItems.removeAtIndex(1)
+                
+                // Add mqtt bar item
+                mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
+                rightButtonItems.append(mqttBarButtonItem)
+            }
+            else {
+                // Add mqtt bar item
+                mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
+                rightButtonItems.append(mqttBarButtonItem)
+            }
+            
+            tabBarController!.navigationItem.rightBarButtonItems = rightButtonItems
         }
         
-        // Add mqtt bar item
-        if tabBarController!.navigationItem.rightBarButtonItems!.count == 0 {
-        }
         
         // UI
         reloadDataUI()
@@ -238,8 +241,6 @@ class UartModuleViewController: ModuleViewController {
                 addChunkToUIText(dataChunk)
             }
             baseTextView.attributedText = textCachedBuffer
-
-            baseTextView.attributedText = textCachedBuffer
             /*
             baseTextView.attributedText.
             
@@ -294,7 +295,7 @@ class UartModuleViewController: ModuleViewController {
         viewController.modalPresentationStyle = .Popover
         if let popovoverController = viewController.popoverPresentationController
         {
-            popovoverController.sourceView = mqttBarButtonItemImageView
+            popovoverController.barButtonItem = mqttBarButtonItem
             popovoverController.delegate = self
         }
         presentViewController(viewController, animated: true, completion: nil)
@@ -399,11 +400,22 @@ class UartModuleViewController: ModuleViewController {
          Preferences.uartIsInHexMode = sender.selectedSegmentIndex == 1
     }
     
+    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+        let localizationManager = LocalizationManager.sharedInstance
+        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpViewController") as! HelpViewController
+        helpViewController.setHelp(localizationManager.localizedString("uart_help_text"), title: localizationManager.localizedString("uart_help_title"))
+        let helpNavigationController = UINavigationController(rootViewController: helpViewController)
+        helpNavigationController.modalPresentationStyle = .Popover
+        helpNavigationController.popoverPresentationController?.barButtonItem = sender
+        
+        presentViewController(helpNavigationController, animated: true, completion: nil)
+    }
+    
 }
 
 // MARK: - UITableViewDataSource
 extension UartModuleViewController : UITableViewDataSource {
-    private static var dataFont = Font.systemFontOfSize(Font.systemFontSize())
+    private static var dataFont = UIFont(name: "CourierNewPSMT", size: 14)! //Font.systemFontOfSize(Font.systemFontSize())
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (Preferences.uartIsEchoEnabled)  {
@@ -434,7 +446,7 @@ extension UartModuleViewController : UITableViewDataSource {
 
         timestampCell.timeStampLabel.text = String(format: "%@ %@", arguments: [dateString, modeString])
         
-        if let attributedText = UartModuleManager.attributeTextFromData(dataChunk.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: UartModuleViewController.dataFont) {
+        if let attributedText = UartModuleManager.attributeTextFromData(dataChunk.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: UartModuleViewController.dataFont) where attributedText.length > 0 {
             timestampCell.dataLabel.attributedText = attributedText
         }
         else {
@@ -458,8 +470,8 @@ extension UartModuleViewController: UartModuleDelegate {
     
     func addChunkToUI(dataChunk : UartDataChunk) {
         // Check that the view has been initialized before updating UI
-        guard baseTableView != nil else {
-            return;
+        guard isViewLoaded() && view.window != nil &&  baseTableView != nil else {
+            return
         }
         
         let displayMode = Preferences.uartIsDisplayModeTimestamp ? UartModuleManager.DisplayMode.Table : UartModuleManager.DisplayMode.Text
@@ -471,32 +483,29 @@ extension UartModuleViewController: UartModuleDelegate {
             
             let isScrollAtBottom = true     // Todo: calculate better if the user moved the scroll
             if isScrollAtBottom {
+                
+                let kUpdateScrollDelay = 0.05
+                let dataBufferSize = uartData.dataBuffer.count
+                let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(kUpdateScrollDelay * Double(NSEC_PER_SEC)))
+                dispatch_after(dispatchTime, dispatch_get_main_queue(), { [unowned self] in
+                    if self.uartData.dataBuffer.count == dataBufferSize {
+                        
+                        let textLength = self.baseTextView.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
+                        if textLength > 0 {
+                            let range = NSMakeRange(textLength - 1, 1);
+                            self.baseTextView.scrollRangeToVisible(range);
+                   
+                    }
+                    }
+                })
+
                 /*
                 view.layoutIfNeeded()
                 baseTextView.scrollRectToVisible(CGRectMake(0, baseTextView.contentSize.height - baseTextView.bounds.size.height, baseTextView.bounds.size.width, baseTextView.bounds.size.height), animated: true)
 */
-                
-                /*
-                let textLength = baseTextView.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
-                if textLength > 0 {
-                    let range = NSMakeRange(textLength - 1, 1);
-                    baseTextView.scrollRangeToVisible(range);
-                 
-                }
-*/
+
             }
-            /*
-            if let textStorage = self.baseTextView.textStorage {
-                let isScrollAtTheBottom = baseTextView.enclosingScrollView?.verticalScroller?.floatValue == 1
-                
-                addChunkToUIText(dataChunk)
-                
-                if isScrollAtTheBottom {
-                    // if scroll was at the bottom then autoscroll to the new bottom
-                    baseTextView.scrollRangeToVisible(NSMakeRange(textStorage.length, 0))
-                }
-            }
-*/
+
 
         case .Table:
             
@@ -504,20 +513,29 @@ extension UartModuleViewController: UartModuleDelegate {
             
             let isScrollAtBottom = true     // Todo: calculate better if the user moved the scroll
             if isScrollAtBottom {
-                view.layoutIfNeeded()
-                baseTableView.scrollRectToVisible(CGRectMake(0, baseTableView.contentSize.height - baseTableView.bounds.size.height, baseTableView.bounds.size.width, baseTableView.bounds.size.height), animated: true)
-            }
-            
-            /*
-            let isScrollAtTheBottom = tableCachedDataBuffer == nil || tableCachedDataBuffer!.isEmpty || NSLocationInRange(tableCachedDataBuffer!.count-1, baseTableView.rowsInRect(baseTableView.visibleRect))
-            //let isScrollAtTheBottom = tableCachedDataBuffer == nil || tableCachedDataBuffer!.isEmpty  || baseTableView.enclosingScrollView?.verticalScroller?.floatValue == 1
-            
-            baseTableView.reloadData()
-            if isScrollAtTheBottom {
-                // if scroll was at the bottom then autoscroll to the new bottom
-                baseTableView.scrollToEndOfDocument(nil)
-            }
+                
+                
+                // Update scrolling after a small delay if databuffer has not changed
+                let kUpdateScrollDelay = 0.05
+                let dataBufferSize = uartData.dataBuffer.count
+                let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(kUpdateScrollDelay * Double(NSEC_PER_SEC)))
+                dispatch_after(dispatchTime, dispatch_get_main_queue(), { [unowned self] in
+                    if self.uartData.dataBuffer.count == dataBufferSize {
+                        
+                        
+                    let lastRow = max(0, self.baseTableView.numberOfRowsInSection(0)-1)
+                    let lastIndex = NSIndexPath(forRow: lastRow, inSection: 0)
+                    self.baseTableView.scrollToRowAtIndexPath(lastIndex, atScrollPosition: UITableViewScrollPosition.Bottom, animated: false)       // animated true causes problems
+
+                        /*
+                         self.view.layoutIfNeeded()
+                         self.baseTableView.scrollRectToVisible(CGRectMake(0, self.baseTableView.contentSize.height - self.baseTableView.bounds.size.height, self.baseTableView.bounds.size.width, self.baseTableView.bounds.size.height), animated: true)
 */
+                    }
+                })
+
+                }
+
         }
 
         updateBytesUI()

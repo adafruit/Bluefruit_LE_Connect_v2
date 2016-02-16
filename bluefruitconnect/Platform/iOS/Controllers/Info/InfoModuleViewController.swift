@@ -13,6 +13,7 @@ class InfoModuleViewController: ModuleViewController {
     // UI
     @IBOutlet weak var baseTableView: UITableView!
     @IBOutlet weak var waitView: UIActivityIndicatorView!
+ //   @IBOutlet weak var enclosingView: UIView!
     
     // Delegates
     var onServicesDiscovered : (() -> ())?
@@ -20,7 +21,6 @@ class InfoModuleViewController: ModuleViewController {
     // Data
     private var blePeripheral : BlePeripheral?
     private var services : [CBService]?
-    private var gattUUIds : [String : String]?
     private var characteristicDisplayMode = [String : DisplayMode]()
     
     private var shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
@@ -41,20 +41,14 @@ class InfoModuleViewController: ModuleViewController {
             return
         }
 
-        // Read known UUIDs
-        let path = NSBundle.mainBundle().pathForResource("GattUUIDs", ofType: "plist")!
-        gattUUIds = NSDictionary(contentsOfFile: path) as? [String : String]
-        
         // Setup table
         baseTableView.estimatedRowHeight = 60
         baseTableView.rowHeight = UITableViewAutomaticDimension
-        
-        // Title
-        let localizationManager = LocalizationManager.sharedInstance
-        let title = String(format: localizationManager.localizedString("info_navigation_title_format"), arguments: [blePeripheral!.name])
-        tabBarController?.navigationItem.title = title
-        
-        
+        /*
+        enclosingView.layer.borderWidth = 1
+        enclosingView.layer.borderColor = UIColor.lightGrayColor().CGColor
+        enclosingView.layer.masksToBounds = true
+        */
         // Discover services
         shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
         services = nil
@@ -64,10 +58,15 @@ class InfoModuleViewController: ModuleViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        // Title
+        let localizationManager = LocalizationManager.sharedInstance
+        let title = String(format: localizationManager.localizedString("info_navigation_title_format"), arguments: [blePeripheral!.name])
+        tabBarController?.navigationItem.title = title
+        
+        // Refresh data
         baseTableView.reloadData()
     }
 
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -90,6 +89,19 @@ class InfoModuleViewController: ModuleViewController {
         baseTableView.hidden = show
         waitView.hidden = !show
     }
+    
+    // MARK: - Actions
+    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+        let localizationManager = LocalizationManager.sharedInstance
+        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpViewController") as! HelpViewController
+        helpViewController.setHelp(localizationManager.localizedString("info_help_text"), title: localizationManager.localizedString("info_help_title"))
+        let helpNavigationController = UINavigationController(rootViewController: helpViewController)
+        helpNavigationController.modalPresentationStyle = .Popover
+        helpNavigationController.popoverPresentationController?.barButtonItem = sender
+        
+        presentViewController(helpNavigationController, animated: true, completion: nil)
+    }
+    
 }
 
 extension InfoModuleViewController : UITableViewDataSource {
@@ -114,12 +126,12 @@ extension InfoModuleViewController : UITableViewDataSource {
         let numCharacteristics = service.characteristics == nil ? 0 : service.characteristics!.count
         return numCharacteristics
     }
-    
+    /*
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let service = services![section]
         var identifier = service.UUID.UUIDString
-        if let name = gattUUIds?[identifier] {
+        if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
             identifier = name
         }
         
@@ -128,6 +140,16 @@ extension InfoModuleViewController : UITableViewDataSource {
         cell.titleLabel.text = identifier
         cell.subtitleLabel.text = LocalizationManager.sharedInstance.localizedString("info_type_service")
         return cell.contentView
+    }
+*/
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let service = services![section]
+        var identifier = service.UUID.UUIDString
+        if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
+            identifier = name
+        }
+
+        return identifier
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -138,14 +160,17 @@ extension InfoModuleViewController : UITableViewDataSource {
         
         let reuseIdentifier = "CharacteristicCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath:indexPath)
+        /*
         return cell
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+*/
         let service = services![indexPath.section]
         
         var identifier = ""
-        var value = " "     // white space to avoid tableview dynamic height to expand/collapse cells
+        var value = " "
+        var hasValue = false
         if let characteristic = service.characteristics?[indexPath.row] {
             
             identifier = characteristic.UUID.UUIDString
@@ -158,11 +183,12 @@ extension InfoModuleViewController : UITableViewDataSource {
                 characteristicDisplayMode[identifier] = .Auto
             }
             
-            if let name = gattUUIds?[identifier] {
+            if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
                 identifier = name
             }
             
             if let characteristicValue = characteristic.value {
+                hasValue = true
                 
                 switch currentDisplayMode {
                 case .Auto:
@@ -182,10 +208,14 @@ extension InfoModuleViewController : UITableViewDataSource {
                     value = hexString(characteristicValue)
                 }
             }
+            
         }
         let characteristicCell = cell as! InfoCharacteristicTableViewCell
         characteristicCell.titleLabel.text = identifier
-        characteristicCell.subtitleLabel.text = value
+        characteristicCell.subtitleLabel.text = hasValue ? value : LocalizationManager.sharedInstance.localizedString("info_type_characteristic")
+        characteristicCell.subtitleLabel.textColor = hasValue ? UIColor.blackColor() : UIColor.lightGrayColor()
+        
+        return cell
     }
     
     private func isStringPrintable(text: String) -> Bool {
@@ -222,12 +252,12 @@ extension InfoModuleViewController: UITableViewDelegate {
                             }
                         }
                     }
-                    
                     characteristicDisplayMode[identifier] = isPrintable ? .Hex: .Text
                 }
             }
             
-            tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+            tableView.reloadData()
+            //tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
         }
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -316,9 +346,7 @@ extension InfoModuleViewController : CBPeripheralDelegate {
             if (self.elementsDiscovered == self.elementsToDiscover) {
                 self.baseTableView.reloadData()
             }
-            
             })
-
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {

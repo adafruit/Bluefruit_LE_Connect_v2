@@ -90,7 +90,7 @@ class PeripheralListViewController: NSViewController {
 // MARK: - NSTableViewDataSource
 extension PeripheralListViewController : NSTableViewDataSource {
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        return BleManager.sharedInstance.blePeripheralsFound.count
+        return BleManager.sharedInstance.blePeripheralsCount()
     }
 }
 
@@ -101,7 +101,7 @@ extension PeripheralListViewController : NSTableViewDelegate {
         let cell = tableView.makeViewWithIdentifier("PeripheralCell", owner: self) as! PeripheralTableCellView
         
         let bleManager = BleManager.sharedInstance
-        let blePeripheralsFound = bleManager.blePeripheralsFound
+        let blePeripheralsFound = bleManager.blePeripherals()
         let selectedBlePeripheralIdentifier = peripheralList.blePeripherals[row];
         let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
         cell.titleTextField.stringValue = blePeripheral.name

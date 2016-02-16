@@ -12,7 +12,8 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
-
+    private var splitDividerCover = UIView()
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         // Register default preferences
@@ -26,15 +27,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let splitViewController = self.window!.rootViewController as! UISplitViewController
         splitViewController.delegate = self
 
-        // Show displaymode button if the app is started in iPad portrait mode
-/*
-        let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
-        navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
-*/
-        /*
-        let tabBarController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UITabBarController
-        tabBarController.selectedViewController?.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
-        */
+        // Style
+        let navigationBarAppearance = UINavigationBar.appearance()
+        navigationBarAppearance.barTintColor = UIColor.blackColor()
+//        navigationBarAppearance.alpha = 0.1
+        navigationBarAppearance.translucent = true
+        navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        
+        let tabBarAppearance = UITabBar.appearance()
+        tabBarAppearance.barTintColor = UIColor.blackColor()
+        
+        // Hack to hide the white split divider
+        splitViewController.view.backgroundColor = UIColor.darkGrayColor()
+        splitDividerCover.backgroundColor = UIColor.darkGrayColor()
+        splitViewController.view.addSubview(splitDividerCover)
+        self.splitViewController(splitViewController, willChangeToDisplayMode: splitViewController.displayMode)
+ 
         return true
     }
 
@@ -68,6 +76,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         }
 
         return false
+    }
+    
+    func splitViewController(svc: UISplitViewController, willChangeToDisplayMode displayMode: UISplitViewControllerDisplayMode) {
+        // Hack to hide splitdivider cover
+        let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
+        let isCoverHidden = isFullScreen || displayMode != .AllVisible
+        splitDividerCover.hidden = isCoverHidden
+        DLog("cover hidden: \(isCoverHidden)")
+        if !isCoverHidden {
+            let masterViewWidth = svc.primaryColumnWidth
+            //let masterViewNavigationBarHeight = (svc.viewControllers[0] as! UINavigationController).navigationBar.bounds.size.height
+            //splitDividerCover.frame = CGRectMake(masterViewWidth, 0, 1, masterViewNavigationBarHeight)
+            splitDividerCover.frame = CGRectMake(masterViewWidth, 0, 1, svc.view.bounds.size.height)
+            DLog("cover frame: \(splitDividerCover.frame)")
+
+        }
     }
 }
 

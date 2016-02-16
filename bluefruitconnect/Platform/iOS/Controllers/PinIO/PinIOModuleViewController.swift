@@ -139,6 +139,22 @@ class PinIOModuleViewController: ModuleViewController {
         UartManager.sharedInstance.sendData(data)
     }
 
+    // MARK: - Actions
+    @IBAction func onClickQuery(sender: AnyObject) {
+        setup()
+    }
+    
+    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+        let localizationManager = LocalizationManager.sharedInstance
+        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpViewController") as! HelpViewController
+        helpViewController.setHelp(localizationManager.localizedString("pinio_help_text"), title: localizationManager.localizedString("pinio_help_title"))
+        let helpNavigationController = UINavigationController(rootViewController: helpViewController)
+        helpNavigationController.modalPresentationStyle = .Popover
+        helpNavigationController.popoverPresentationController?.barButtonItem = sender
+        
+        presentViewController(helpNavigationController, animated: true, completion: nil)
+    }
+    
     // MARK: - Query Capabilities
     private func startQueryCapabilitiesProcess() {
         guard uartStatus == .SendData else {

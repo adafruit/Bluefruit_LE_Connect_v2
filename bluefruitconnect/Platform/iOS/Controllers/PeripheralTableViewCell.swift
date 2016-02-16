@@ -10,17 +10,24 @@ import UIKit
 
 class PeripheralTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var baseStackView: UIStackView!
     @IBOutlet weak var rssiImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var connectButton: UIButton!
     @IBOutlet weak var disconnectButton: UIButton!
     @IBOutlet weak var disconnectButtonWidthConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var detailBaseStackView: UIStackView!
+    @IBOutlet weak var servicesStackView: UIStackView!
+    @IBOutlet weak var txPowerLevelValueLabel: UILabel!
+    @IBOutlet weak var manufacturerValueLabel: UILabel!
+    
+    var onConnect : (() -> ())?
     var onDisconnect : (() -> ())?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -31,6 +38,10 @@ class PeripheralTableViewCell: UITableViewCell {
     
     @IBAction func onClickDisconnect(sender: AnyObject) {
         onDisconnect?()
+    }
+    
+    @IBAction func onClickConnect(sender: AnyObject) {
+        onConnect?()
     }
     
     func showDisconnectButton(show: Bool) {

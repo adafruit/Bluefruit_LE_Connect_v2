@@ -10,7 +10,7 @@ import Foundation
 
 extension UIImage
 {
-    func tintWithColor(color:UIColor)->UIImage {
+    func tintWithColor(color:UIColor) -> UIImage {
         
         UIGraphicsBeginImageContextWithOptions(self.size, false, 0.0)
         let context = UIGraphicsGetCurrentContext()

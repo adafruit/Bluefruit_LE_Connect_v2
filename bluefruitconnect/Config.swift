@@ -17,6 +17,10 @@ struct Config {
     static let DEBUG = false
     #endif
     
+    // Peripheral list
+//    static let peripheralListShowOnlyWithUart = Config.DEBUG && false
+//    static let peripheralListSelectToConnect = Config.DEBUG && false
+    
     // Uart
     static let uartShowAllUartCommunication = Config.DEBUG && true
     static let uartLogSend = Config.DEBUG && true

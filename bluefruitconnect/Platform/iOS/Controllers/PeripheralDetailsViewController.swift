@@ -155,18 +155,22 @@ class PeripheralDetailsViewController: UITabBarController {
  //       }
     }
     
-    func showEmpty(isEmpty : Bool) {
+    func showEmpty(showEmpty : Bool) {
         
-        self.tabBar.hidden = isEmpty
-        if isEmpty {
+        self.tabBar.hidden = showEmpty
+        if showEmpty {
             // Show empty view (if needed)
             if self.viewControllers?.count != 1 || self.viewControllers?.first != emptyNavigationController {
                 self.viewControllers = [emptyNavigationController]
             }
+            
+            emptyViewController.startAnimating()
         }
         else {
             // Remove empty view
             //self.viewControllers?.removeAll()
+            
+            emptyViewController.stopAnimating()
         }
     }
     
@@ -334,7 +338,7 @@ extension PeripheralDetailsViewController : CBPeripheralDelegate {
     
         // Update peripheral rssi
         let identifierString = peripheral.identifier.UUIDString
-        if let existingPeripheral = BleManager.sharedInstance.blePeripheralsFound[identifierString] {
+        if let existingPeripheral = BleManager.sharedInstance.blePeripherals()[identifierString] {
             existingPeripheral.rssi = RSSI.integerValue
             //            DLog("received rssi for \(existingPeripheral.name): \(rssi)")
             

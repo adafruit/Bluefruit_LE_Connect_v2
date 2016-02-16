@@ -11,7 +11,7 @@ import Foundation
 class PeripheralList {
     private var lastUserSelectionTime = CFAbsoluteTimeGetCurrent()
     private var selectedPeripheralIdentifier : String?
-
+    
     var blePeripherals : [String] {
         return BleManager.sharedInstance.blePeripheralFoundAlphabeticKeys()
     }
@@ -19,7 +19,7 @@ class PeripheralList {
     var selectedPeripheralRow: Int? {
         return indexOfPeripheralIdentifier(selectedPeripheralIdentifier)
     }
-
+    
     var elapsedTimeSinceSelection : CFAbsoluteTime {
         return CFAbsoluteTimeGetCurrent() - self.lastUserSelectionTime
     }
@@ -37,6 +37,8 @@ class PeripheralList {
         // Check that is really disconnected
         if BleManager.sharedInstance.blePeripheralConnected == nil {
             selectedPeripheralIdentifier = nil
+            DLog("Peripheral selected row: -1")
+            
         }
     }
     
@@ -46,7 +48,7 @@ class PeripheralList {
         if (identifier != bleManager.blePeripheralConnected?.peripheral.identifier.UUIDString || identifier == nil) {
             
             //
-            let blePeripheralsFound = bleManager.blePeripheralsFound
+            let blePeripheralsFound = bleManager.blePeripherals()
             lastUserSelectionTime = CFAbsoluteTimeGetCurrent()
             
             // Disconnect from previous
@@ -58,6 +60,7 @@ class PeripheralList {
                     
                     BleManager.sharedInstance.disconnect(blePeripheral)
                 }
+                DLog("Peripheral selected row: -1")
                 selectedPeripheralIdentifier = nil
             }
             
@@ -74,6 +77,7 @@ class PeripheralList {
                 }
             }
             else {
+                DLog("Peripheral selected row: -1")
                 selectedPeripheralIdentifier = nil;
             }
         }
