@@ -214,6 +214,10 @@ class PinIOModuleManager: NSObject {
         }
     }
     
+    func cancelQueryCapabilities() {
+        endPinQuery(true)
+    }
+    
     func endPinQuery(abortQuery: Bool) {
         
         cancelQueryCapabilitiesTimer()

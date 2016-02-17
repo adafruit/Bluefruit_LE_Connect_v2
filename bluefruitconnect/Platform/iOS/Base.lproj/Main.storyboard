@@ -478,16 +478,16 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1eH-Yz-WQN">
-                                                                    <rect key="frame" x="64" y="15" width="70" height="14"/>
+                                                                    <rect key="frame" x="64" y="15" width="69" height="14"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="70" id="VLr-Yy-YVf"/>
+                                                                        <constraint firstAttribute="width" constant="69" id="VLr-Yy-YVf"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="mIo-YR-pQj">
-                                                                    <rect key="frame" x="142" y="14" width="554" height="16"/>
+                                                                    <rect key="frame" x="137" y="14" width="559" height="16"/>
                                                                     <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="14"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -496,7 +496,7 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="trailingMargin" secondItem="mIo-YR-pQj" secondAttribute="trailing" id="ADd-XG-gLa"/>
                                                                 <constraint firstItem="mIo-YR-pQj" firstAttribute="centerY" secondItem="1eH-Yz-WQN" secondAttribute="centerY" id="E0i-gY-ruf"/>
-                                                                <constraint firstItem="mIo-YR-pQj" firstAttribute="leading" secondItem="1eH-Yz-WQN" secondAttribute="trailing" constant="8" id="L3F-Ut-0ht"/>
+                                                                <constraint firstItem="mIo-YR-pQj" firstAttribute="leading" secondItem="1eH-Yz-WQN" secondAttribute="trailing" constant="4" id="L3F-Ut-0ht"/>
                                                                 <constraint firstItem="1eH-Yz-WQN" firstAttribute="leading" secondItem="x9i-cp-NPv" secondAttribute="leadingMargin" id="Zxh-q8-YJP"/>
                                                                 <constraint firstItem="1eH-Yz-WQN" firstAttribute="centerY" secondItem="x9i-cp-NPv" secondAttribute="centerY" id="uhx-D5-KTf"/>
                                                             </constraints>
