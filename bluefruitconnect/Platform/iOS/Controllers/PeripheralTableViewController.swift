@@ -55,7 +55,8 @@ class PeripheralTableViewController: UITableViewController {
             peripheralList.connectToPeripheral(nil)
         }
         
-        baseTableView.reloadData()
+        //baseTableView.reloadData()
+        reloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -68,6 +69,12 @@ class PeripheralTableViewController: UITableViewController {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
     }
 
+    private func reloadData() {
+        synchronize(self) { [unowned self] in
+            self.baseTableView.reloadData()
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -192,7 +199,8 @@ class PeripheralTableViewController: UITableViewController {
                     //   }
                 }
                 else {
-                    self.baseTableView.reloadData()         // To remove the "disconnect" button
+                    self.reloadData()
+                    //self.baseTableView.reloadData()         // To remove the "disconnect" button
                 }
                 
             }
@@ -262,13 +270,15 @@ class PeripheralTableViewController: UITableViewController {
                     if let indexPathForSelectedRow = tableView.indexPathForSelectedRow {
                         tableView.deselectRowAtIndexPath(indexPathForSelectedRow, animated: true)
                         self.peripheralList.selectRow(-1)
-                        self.baseTableView.reloadData()
+                        //self.baseTableView.reloadData()
+                        self.reloadData()
                     }
                 }
                 peripheralCell.onConnect = { [unowned self] in
                     
                     self.peripheralList.selectRow(indexPath.row)
-                    self.baseTableView.reloadData()
+                    //self.baseTableView.reloadData()
+                    self.reloadData()
                 }
                 
                 // Detail Subview
@@ -357,23 +367,25 @@ class PeripheralTableViewController: UITableViewController {
         let previousTableRowOpen = tableRowOpen
         tableRowOpen = row == tableRowOpen ? nil: row
         
-        // Animate if the nubmer the items have not changed
-        if  BleManager.sharedInstance.blePeripheralsCount() == self.cachedNumOfTableItems  {
-            
-            // Reload data
-            var reloadPaths = [indexPath]
-            if let previousTableRowOpen = previousTableRowOpen {
-                reloadPaths.append(NSIndexPath(forRow: previousTableRowOpen, inSection: indexPath.section))
+        synchronize(self) { [unowned self] in
+            // Animate if the nubmer the items have not changed
+            if BleManager.sharedInstance.blePeripheralsCount() == self.cachedNumOfTableItems  {
+                
+                // Reload data
+                var reloadPaths = [indexPath]
+                if let previousTableRowOpen = previousTableRowOpen {
+                    reloadPaths.append(NSIndexPath(forRow: previousTableRowOpen, inSection: indexPath.section))
+                }
+                self.baseTableView.reloadRowsAtIndexPaths(reloadPaths, withRowAnimation: .None)
+                
+                // Animate changes
+                self.baseTableView.beginUpdates()
+                tableView.deselectRowAtIndexPath(indexPath, animated: false)
+                self.baseTableView.endUpdates()
             }
-            baseTableView.reloadRowsAtIndexPaths(reloadPaths, withRowAnimation: .None)
-            
-            // Animate changes
-            baseTableView.beginUpdates()
-            tableView.deselectRowAtIndexPath(indexPath, animated: false)
-            baseTableView.endUpdates()
-        }
-        else {
-            baseTableView.reloadData()
+            else {
+                self.baseTableView.reloadData()
+            }
         }
     }
     

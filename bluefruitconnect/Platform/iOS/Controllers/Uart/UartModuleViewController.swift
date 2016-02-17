@@ -66,8 +66,7 @@ class UartModuleViewController: ModuleViewController {
         timestampDateFormatter.setLocalizedDateFormatFromTemplate("HH:mm:ss")
         
         // Setup tableView
-        baseTableView.estimatedRowHeight = 44
-        baseTableView.rowHeight = UITableViewAutomaticDimension
+        // Note: Don't use automatic height because its to slow wiht large amount of rows
         baseTableView.layer.borderWidth = 1
         baseTableView.layer.borderColor = UIColor.lightGrayColor().CGColor
 
@@ -137,7 +136,7 @@ class UartModuleViewController: ModuleViewController {
             
             if traitCollection.userInterfaceIdiom == .Pad {
                 // Remove more item
-                rightButtonItems.removeAtIndex(1)
+                rightButtonItems.removeAtIndex(0)
                 
                 // Add mqtt bar item
                 mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
@@ -151,7 +150,6 @@ class UartModuleViewController: ModuleViewController {
             
             tabBarController!.navigationItem.rightBarButtonItems = rightButtonItems
         }
-        
         
         // UI
         reloadDataUI()
@@ -175,6 +173,8 @@ class UartModuleViewController: ModuleViewController {
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+        
+        baseTableView.enh_cancelPendingReload()
         
         if !Config.uartShowAllUartCommunication {
             uartData.dataBufferEnabled = false
@@ -241,39 +241,10 @@ class UartModuleViewController: ModuleViewController {
                 addChunkToUIText(dataChunk)
             }
             baseTextView.attributedText = textCachedBuffer
-            /*
-            baseTextView.attributedText.
-            
-            if let textStorage = self.baseTextView.textStorage {
-                
-                let isScrollAtTheBottom = baseTextView.enclosingScrollView?.verticalScroller?.floatValue == 1
-                
-                textStorage.beginEditing()
-                textStorage.replaceCharactersInRange(NSMakeRange(0, textStorage.length), withAttributedString: NSAttributedString())        // Clear text
-                for dataChunk in uartData.dataBuffer {
-                    addChunkToUIText(dataChunk)
-                }
-                textStorage .endEditing()
-                if isScrollAtTheBottom {
-                    baseTextView.scrollRangeToVisible(NSMakeRange(textStorage.length, 0))
-                }
-                
-            }
-            */
+            reloadData()
             
         case .Table:
-        
-            baseTableView.reloadData()
-        /*
-            //let isScrollAtTheBottom = tableCachedDataBuffer == nil || tableCachedDataBuffer!.isEmpty  || baseTableView.enclosingScrollView?.verticalScroller?.floatValue == 1
-            let isScrollAtTheBottom = tableCachedDataBuffer == nil || tableCachedDataBuffer!.isEmpty || NSLocationInRange(tableCachedDataBuffer!.count-1, baseTableView.rowsInRect(baseTableView.visibleRect))
-            
-            baseTableView.sizeLastColumnToFit()
-            baseTableView.reloadData()
-            if isScrollAtTheBottom {
-                baseTableView.scrollToEndOfDocument(nil)
-            }
-*/
+            reloadData()
         }
         
         updateBytesUI()
@@ -346,7 +317,7 @@ class UartModuleViewController: ModuleViewController {
                     text = UartDataExport.dataAsJson(dataBuffer)
                     break
                 case .xml:
-                    //text = UartDataExport.dataAsXml(dataBuffer)
+                    text = UartDataExport.dataAsXml(dataBuffer)
                     break
                 }
                 self.exportString(text)
@@ -479,66 +450,37 @@ extension UartModuleViewController: UartModuleDelegate {
         switch(displayMode) {
         case .Text:
             addChunkToUIText(dataChunk)
-            baseTextView.attributedText = textCachedBuffer
-            
-            let isScrollAtBottom = true     // Todo: calculate better if the user moved the scroll
-            if isScrollAtBottom {
-                
-                let kUpdateScrollDelay = 0.05
-                let dataBufferSize = uartData.dataBuffer.count
-                let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(kUpdateScrollDelay * Double(NSEC_PER_SEC)))
-                dispatch_after(dispatchTime, dispatch_get_main_queue(), { [unowned self] in
-                    if self.uartData.dataBuffer.count == dataBufferSize {
-                        
-                        let textLength = self.baseTextView.text.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
-                        if textLength > 0 {
-                            let range = NSMakeRange(textLength - 1, 1);
-                            self.baseTextView.scrollRangeToVisible(range);
-                   
-                    }
-                    }
-                })
-
-                /*
-                view.layoutIfNeeded()
-                baseTextView.scrollRectToVisible(CGRectMake(0, baseTextView.contentSize.height - baseTextView.bounds.size.height, baseTextView.bounds.size.width, baseTextView.bounds.size.height), animated: true)
-*/
-
-            }
-
+            self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
 
         case .Table:
-            
-            baseTableView.reloadData()
-            
-            let isScrollAtBottom = true     // Todo: calculate better if the user moved the scroll
-            if isScrollAtBottom {
-                
-                
-                // Update scrolling after a small delay if databuffer has not changed
-                let kUpdateScrollDelay = 0.05
-                let dataBufferSize = uartData.dataBuffer.count
-                let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(kUpdateScrollDelay * Double(NSEC_PER_SEC)))
-                dispatch_after(dispatchTime, dispatch_get_main_queue(), { [unowned self] in
-                    if self.uartData.dataBuffer.count == dataBufferSize {
-                        
-                        
-                    let lastRow = max(0, self.baseTableView.numberOfRowsInSection(0)-1)
-                    let lastIndex = NSIndexPath(forRow: lastRow, inSection: 0)
-                    self.baseTableView.scrollToRowAtIndexPath(lastIndex, atScrollPosition: UITableViewScrollPosition.Bottom, animated: false)       // animated true causes problems
-
-                        /*
-                         self.view.layoutIfNeeded()
-                         self.baseTableView.scrollRectToVisible(CGRectMake(0, self.baseTableView.contentSize.height - self.baseTableView.bounds.size.height, self.baseTableView.bounds.size.width, self.baseTableView.bounds.size.height), animated: true)
-*/
-                    }
-                })
-
-                }
+            self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
 
         }
 
         updateBytesUI()
+    }
+    
+    func reloadData() {
+        let displayMode = Preferences.uartIsDisplayModeTimestamp ? UartModuleManager.DisplayMode.Table : UartModuleManager.DisplayMode.Text
+        switch(displayMode) {
+        case .Text:
+            baseTextView.attributedText = textCachedBuffer
+            
+            let textLength = textCachedBuffer.length
+            if textLength > 0 {
+                let range = NSMakeRange(textLength - 1, 1);
+                baseTextView.scrollRangeToVisible(range);
+            }
+            
+        case .Table:
+            baseTableView.reloadData()
+            if let tableCachedDataBuffer = tableCachedDataBuffer {
+                if tableCachedDataBuffer.count > 0 {
+                    let lastIndex = NSIndexPath(forRow: tableCachedDataBuffer.count-1, inSection: 0)
+                    baseTableView.scrollToRowAtIndexPath(lastIndex, atScrollPosition: UITableViewScrollPosition.Bottom, animated: false)
+                }
+            }
+        }
     }
     
     private func addChunkToUIText(dataChunk : UartDataChunk) {

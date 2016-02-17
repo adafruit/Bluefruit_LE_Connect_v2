@@ -102,9 +102,9 @@ https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakou
 "uart_help_title" = "Uart";
 "uart_help_text" = "Instructions:
 
-• Tap the Message field at the bottom of the screen.
+• Tap the input field at the bottom of the screen.
 
-• Enter the ASCII string you want to send.
+• Enter the text string you want to send.
 
 • Send a message by pressing the keyboard's Send button.
 

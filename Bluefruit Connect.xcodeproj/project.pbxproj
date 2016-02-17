@@ -89,6 +89,14 @@
 		A94F5A511C5AF098009CC9B8 /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AB1BB6493A002521F7 /* BleManager.swift */; };
 		A94F5A521C5AF09B009CC9B8 /* BlePeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AC1BB6493A002521F7 /* BlePeripheral.swift */; };
 		A94F5A591C5AF1CA009CC9B8 /* StatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94F5A581C5AF1CA009CC9B8 /* StatusManager.swift */; };
+		A96A7A001C74F02F000C37E3 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A96A79FC1C74F02F000C37E3 /* LICENSE */; };
+		A96A7A011C74F02F000C37E3 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A96A79FC1C74F02F000C37E3 /* LICENSE */; };
+		A96A7A021C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m in Sources */ = {isa = PBXBuildFile; fileRef = A96A79FE1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m */; };
+		A96A7A031C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m in Sources */ = {isa = PBXBuildFile; fileRef = A96A79FE1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m */; };
+		A96A7A041C74F02F000C37E3 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = A96A79FF1C74F02F000C37E3 /* README.md */; };
+		A96A7A051C74F02F000C37E3 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = A96A79FF1C74F02F000C37E3 /* README.md */; };
+		A96A7A071C74F329000C37E3 /* Synchronice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96A7A061C74F329000C37E3 /* Synchronice.swift */; };
+		A96A7A081C74F329000C37E3 /* Synchronice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96A7A061C74F329000C37E3 /* Synchronice.swift */; };
 		A982968B1BB222D700DD478C /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982968A1BB222D700DD478C /* LogHelper.swift */; };
 		A987F3121C66AFA00007C58D /* KeyboardPositionNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A987F3111C66AFA00007C58D /* KeyboardPositionNotifier.swift */; };
 		A98AE3AD1C42AB5000FA8E80 /* UartDataExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */; };
@@ -215,6 +223,11 @@
 		A94F5A361C5AD41A009CC9B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A94F5A4D1C5AE501009CC9B8 /* BluefruitConnect-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluefruitConnect-Bridging-Header.h"; sourceTree = "<group>"; };
 		A94F5A581C5AF1CA009CC9B8 /* StatusManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusManager.swift; sourceTree = "<group>"; };
+		A96A79FC1C74F02F000C37E3 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		A96A79FD1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ENHThrottledReloading.h"; sourceTree = "<group>"; };
+		A96A79FE1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ENHThrottledReloading.m"; sourceTree = "<group>"; };
+		A96A79FF1C74F02F000C37E3 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A96A7A061C74F329000C37E3 /* Synchronice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronice.swift; sourceTree = "<group>"; };
 		A98296681BB1F5E600DD478C /* Bluefruit Connect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bluefruit Connect.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A982968A1BB222D700DD478C /* LogHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
 		A987F3111C66AFA00007C58D /* KeyboardPositionNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardPositionNotifier.swift; sourceTree = "<group>"; };
@@ -373,6 +386,7 @@
 			children = (
 				A9EC0F871C6E87120019790F /* GradientView */,
 				A99CE0611C6E69090051C818 /* ios-color-wheel */,
+				A96A79FB1C74F02F000C37E3 /* NSObject+ENHThrottledReloading */,
 				A91F9ED11C667CA6007656B7 /* Colors */,
 				A9FE75701BB9CF1000F7A5BF /* XML */,
 				A94370C21BB64959002521F7 /* DFU */,
@@ -529,6 +543,17 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		A96A79FB1C74F02F000C37E3 /* NSObject+ENHThrottledReloading */ = {
+			isa = PBXGroup;
+			children = (
+				A96A79FC1C74F02F000C37E3 /* LICENSE */,
+				A96A79FD1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.h */,
+				A96A79FE1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m */,
+				A96A79FF1C74F02F000C37E3 /* README.md */,
+			);
+			path = "NSObject+ENHThrottledReloading";
+			sourceTree = "<group>";
+		};
 		A982965F1BB1F5E600DD478C = {
 			isa = PBXGroup;
 			children = (
@@ -575,6 +600,7 @@
 				A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */,
 				A91F9E8C1C650C31007656B7 /* LocalizationManager.swift */,
 				A9BEA6411C6690E6005F54D6 /* CocoaCompatibility.swift */,
+				A96A7A061C74F329000C37E3 /* Synchronice.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -789,6 +815,7 @@
 				A94F5A381C5AD41A009CC9B8 /* Main.storyboard in Resources */,
 				A91F9E931C65179E007656B7 /* Localizable.strings in Resources */,
 				A94F5A471C5AE2A4009CC9B8 /* DefaultPreferences.plist in Resources */,
+				A96A7A011C74F02F000C37E3 /* LICENSE in Resources */,
 				A949AAA61C5ACFAB002F960B /* Assets.xcassets in Resources */,
 				A94F5A371C5AD41A009CC9B8 /* LaunchScreen.storyboard in Resources */,
 				A94F5A461C5AE2A1009CC9B8 /* GattUUIDs.plist in Resources */,
@@ -802,6 +829,7 @@
 				A94370A71BB6384B002521F7 /* GattUUIDs.plist in Resources */,
 				A91F9E921C65179E007656B7 /* Localizable.strings in Resources */,
 				A949AA641C5AC8C3002F960B /* Main.storyboard in Resources */,
+				A96A7A001C74F02F000C37E3 /* LICENSE in Resources */,
 				A949AA611C5AC85A002F960B /* Images.xcassets in Resources */,
 				A98E03A51BBA406700F8924C /* DefaultPreferences.plist in Resources */,
 				A98E03951BBA2A0300F8924C /* Credits.rtf in Resources */,
@@ -952,6 +980,7 @@
 				A9EC0FAD1C6EDBE10019790F /* PinIOTableViewCell.swift in Sources */,
 				A94F5A401C5AE282009CC9B8 /* Utility.m in Sources */,
 				A9B41F891C69675400E4A666 /* DfuModuleViewController.swift in Sources */,
+				A96A7A031C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m in Sources */,
 				A99CE0601C6E4F000051C818 /* ControllerComponentsTableViewCell.swift in Sources */,
 				A91F9E8E1C650C31007656B7 /* LocalizationManager.swift in Sources */,
 				A92E06761C6D136100BECBBA /* MqttSettingsStatusCell.swift in Sources */,
@@ -961,6 +990,7 @@
 				A92E067E1C6D20D000BECBBA /* MqttSettingPickerCell.swift in Sources */,
 				A9EC0FB21C6F5CF60019790F /* DfuFilesPickerTableViewCell.swift in Sources */,
 				A92088B01C726DDD002FF8E8 /* HelpViewController.swift in Sources */,
+				A96A7A051C74F02F000C37E3 /* README.md in Sources */,
 				A92E06861C6D5EF900BECBBA /* ControllerModuleViewController.swift in Sources */,
 				A94F5A481C5AE3D5009CC9B8 /* FirmwareUpdater.m in Sources */,
 				A9D7205E1C73C32F001321D3 /* PinIOModuleManager.swift in Sources */,
@@ -975,6 +1005,7 @@
 				A92E06781C6D15A300BECBBA /* MqttSettingsHeaderCell.swift in Sources */,
 				A9EE1ADE1C6FB54900195028 /* Config.swift in Sources */,
 				A9EC0F9D1C6E99BF0019790F /* UartManager.swift in Sources */,
+				A96A7A081C74F329000C37E3 /* Synchronice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -990,6 +1021,8 @@
 				A92088AD1C72692B002FF8E8 /* BleUUIDNames.swift in Sources */,
 				A94B85131BB65C71007B88C7 /* ReleasesParser.m in Sources */,
 				A9A2FF831C3EEA9D0039D188 /* MqttManager.swift in Sources */,
+				A96A7A041C74F02F000C37E3 /* README.md in Sources */,
+				A96A7A021C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m in Sources */,
 				A91F9EAD1C663939007656B7 /* SeparatorView.swift in Sources */,
 				A94370D21BB64959002521F7 /* FileOperations.m in Sources */,
 				A94370D71BB649AE002521F7 /* Utility.m in Sources */,
@@ -1023,6 +1056,7 @@
 				A9D720601C73D5E9001321D3 /* PinIOViewController.swift in Sources */,
 				A9EC0F9A1C6E99BF0019790F /* UartDataChunk.swift in Sources */,
 				A9EC0F9E1C6E99BF0019790F /* UartModuleManager.swift in Sources */,
+				A96A7A071C74F329000C37E3 /* Synchronice.swift in Sources */,
 				A9EC0F9C1C6E99BF0019790F /* UartManager.swift in Sources */,
 				A949AA7F1C5AC977002F960B /* StatusViewController.swift in Sources */,
 				A949AA791C5AC977002F960B /* MainSplitViewController.swift in Sources */,

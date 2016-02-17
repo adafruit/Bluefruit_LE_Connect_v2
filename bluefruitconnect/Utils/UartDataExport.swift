@@ -107,9 +107,9 @@ class UartDataExport {
         return result
     }
 
-    #if os(OSX)
     static func dataAsXml(dataBuffer : [UartDataChunk])  -> String? {
         
+        #if os(OSX)
         let xmlRootElement = NSXMLElement(name: "uart")
         
         for dataChunk in dataBuffer {
@@ -142,6 +142,12 @@ class UartDataExport {
         let result = xml.XMLStringWithOptions(NSXMLNodePrettyPrint)
         
         return result
+
+        #else
+            // TODO: implement for iOS
+            
+            return nil
+            
+        #endif
     }
-    #endif
 }

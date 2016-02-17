@@ -13,5 +13,6 @@
 #import "DFUOperations.h"
 #import "CocoaMQTT/MSWeakTimer.h"
 #import "ISColorWheel.h"
+#import "NSObject+ENHThrottledReloading.h"
 
 #endif /* BluefruitConnect_Bridging_Header_h */
