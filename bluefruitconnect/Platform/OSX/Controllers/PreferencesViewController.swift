@@ -90,7 +90,6 @@ class PreferencesViewController: NSViewController {
             mqttSubscribeTopicTextField.stringValue = subscribeTopic
         }
         mqttSubscribeActionPopupButton.selectItemAtIndex(mqttSettings.subscribeBehaviour.rawValue)
-        
     }
     
     override func viewWillAppear() {
@@ -98,7 +97,6 @@ class PreferencesViewController: NSViewController {
         
         // Set first responder
         view.window?.makeFirstResponder(mqttServerTextField)
-
     }
     
     // MARK: - Firmware Updates
@@ -122,7 +120,6 @@ class PreferencesViewController: NSViewController {
         Preferences.showBetaVersions = sender.state == NSOnState
     }
 
-    
     // MARK: - Uart
     @IBAction func onColorChanged(sender: NSColorWell) {
         if (sender == receivedDataColorWell) {
@@ -207,7 +204,4 @@ class PreferencesViewController: NSViewController {
             MqttSettings.sharedInstance.subscribeBehaviour = behaviour
         }
     }
-
-
-
 }

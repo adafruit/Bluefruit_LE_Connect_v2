@@ -258,7 +258,6 @@ extension InfoViewController: NSOutlineViewDelegate {
     }
 }
 
-
 // MARK: - CBPeripheralDelegate
 extension InfoViewController : CBPeripheralDelegate {
     

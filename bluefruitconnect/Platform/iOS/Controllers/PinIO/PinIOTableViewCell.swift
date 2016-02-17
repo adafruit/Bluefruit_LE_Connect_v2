@@ -10,8 +10,8 @@ import UIKit
 
 protocol PinIoTableViewCellDelegate {
     func onPinToggleCell(pinIndex: Int)
-    func onPinModeChanged(mode: PinIOModuleViewController.PinData.Mode, pinIndex: Int)
-    func onPinDigitalValueChanged(value: PinIOModuleViewController.PinData.DigitalValue, pinIndex: Int)
+    func onPinModeChanged(mode: PinIOModuleManager.PinData.Mode, pinIndex: Int)
+    func onPinDigitalValueChanged(value: PinIOModuleManager.PinData.DigitalValue, pinIndex: Int)
     func onPinAnalogValueChanged(value: Float, pinIndex: Int)
 }
 
@@ -27,7 +27,7 @@ class PinIOTableViewCell: UITableViewCell {
     
     // Data
     var delegate: PinIoTableViewCellDelegate?
-    private var modesInSegmentedControl : [PinIOModuleViewController.PinData.Mode] = []
+    private var modesInSegmentedControl : [PinIOModuleManager.PinData.Mode] = []
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -41,21 +41,22 @@ class PinIOTableViewCell: UITableViewCell {
     }
     
     // MARK: - Setup
-    func setPin(pin : PinIOModuleViewController.PinData) {
+    func setPin(pin : PinIOModuleManager.PinData) {
         setupModeSegmentedControl(pin)
         digitalSegmentedControl.selectedSegmentIndex = 0
         valueSlider.value = Float(pin.analogValue)
         
         let analogName = pin.isAnalog ?", Analog \(pin.analogPinId)":""
-        nameLabel.text = "Pin \(pin.digitalPinId)\(analogName)"
-        modeLabel.text = stringForPinMode(pin.mode)
+        let fullName = "Pin \(pin.digitalPinId)\(analogName)"
+        nameLabel.text = fullName
+        modeLabel.text = PinIOModuleManager.stringForPinMode(pin.mode)
         
         var valueText: String?
         switch pin.mode {
         case .Input:
-            valueText = stringForPinDigitalValue(pin.digitalValue)
+            valueText = PinIOModuleManager.stringForPinDigitalValue(pin.digitalValue)
         case .Output:
-            valueText = stringForPinDigitalValue(pin.digitalValue)
+            valueText = PinIOModuleManager.stringForPinDigitalValue(pin.digitalValue)
         case .Analog:
             valueText = String(pin.analogValue)
         case .PWM:
@@ -70,7 +71,7 @@ class PinIOTableViewCell: UITableViewCell {
         digitalSegmentedControl.hidden = pin.mode != .Output
     }
     
-    private func setupModeSegmentedControl(pin : PinIOModuleViewController.PinData) {
+    private func setupModeSegmentedControl(pin : PinIOModuleManager.PinData) {
         modesInSegmentedControl.removeAll()
         if pin.isDigital == true {
             modesInSegmentedControl.append(.Input)
@@ -85,46 +86,14 @@ class PinIOTableViewCell: UITableViewCell {
 
         modeSegmentedControl.removeAllSegments()
         for mode in modesInSegmentedControl {
-            let modeName = stringForPinMode(mode)
+            let modeName = PinIOModuleManager.stringForPinMode(mode)
             modeSegmentedControl.insertSegmentWithTitle(modeName, atIndex: modeSegmentedControl.numberOfSegments, animated: false)
             if pin.mode == mode {
                 modeSegmentedControl.selectedSegmentIndex = modeSegmentedControl.numberOfSegments-1    // Select the mode we just added
             }
         }
     }
-    
-    func stringForPinMode(mode: PinIOModuleViewController.PinData.Mode)-> String {
-        var modeString: String
-        
-        switch mode {
-        case .Input:
-            modeString = "Input"
-        case .Output:
-            modeString = "Output"
-        case .Analog:
-            modeString = "Analog"
-        case .PWM:
-            modeString = "PWM"
-        case .Servo:
-            modeString = "Servo"
-        default:
-            modeString = "NOT FOUND"
-        }
-        
-        return modeString
-    }
-    
-    func stringForPinDigitalValue(digitalValue: PinIOModuleViewController.PinData.DigitalValue)-> String {
-        var valueString: String
-        
-        switch digitalValue {
-        case .Low:
-            valueString = "Low"
-        case .High:
-            valueString = "High"
-        }
-        return valueString
-    }
+
     
     // MARK: - Actions
     @IBAction func onClickSelectButton(sender: UIButton) {
@@ -136,7 +105,7 @@ class PinIOTableViewCell: UITableViewCell {
     }
     
     @IBAction func onDigitalChanged(sender: UISegmentedControl) {
-        if let selectedDigital = PinIOModuleViewController.PinData.DigitalValue(rawValue: sender.selectedSegmentIndex) {
+        if let selectedDigital = PinIOModuleManager.PinData.DigitalValue(rawValue: sender.selectedSegmentIndex) {
             delegate?.onPinDigitalValueChanged(selectedDigital, pinIndex: tag)
         }
         else {

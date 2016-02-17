@@ -11,7 +11,6 @@ import Foundation
 
 class UartManager: NSObject {
     enum UartNotifications : String {
-        //case DidTransferData = "didTransferData"
         case DidSendData = "didSendData"
         case DidReceiveData = "didReceiveData"
         case DidBecomeReady = "didBecomeReady"
@@ -25,7 +24,7 @@ class UartManager: NSObject {
     
     // Manager
     static let sharedInstance = UartManager()
-    
+
     // Bluetooth Uart
     private var uartService : CBService?
     private var rxCharacteristic : CBCharacteristic?
@@ -72,11 +71,11 @@ class UartManager: NSObject {
     func sendDataWithCrc(data : NSData) {
         
         let len = data.length
-        var bdata = [UInt8](count: len, repeatedValue: 0)
+        var dataBytes = [UInt8](count: len, repeatedValue: 0)
         var crc: UInt8 = 0
-        data.getBytes(&bdata, length: len)
+        data.getBytes(&dataBytes, length: len)
         
-        for i in bdata {    //add all bytes
+        for i in dataBytes {    //add all bytes
             crc = crc &+ i
         }
         crc = ~crc  //invert

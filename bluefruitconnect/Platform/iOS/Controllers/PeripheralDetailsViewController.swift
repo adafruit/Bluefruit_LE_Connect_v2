@@ -194,7 +194,7 @@ class PeripheralDetailsViewController: UITabBarController {
                         uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
                         
                         self.viewControllers?.append(uartViewController)
-                        
+
                         // PinIO
                         let pinioViewController = self.storyboard!.instantiateViewControllerWithIdentifier("PinIOModuleViewController") as! PinIOModuleViewController
                         
@@ -202,7 +202,6 @@ class PeripheralDetailsViewController: UITabBarController {
                         pinioViewController.tabBarItem.image = UIImage(named: "tab_pinio_icon")
                         
                         self.viewControllers?.append(pinioViewController)
-
                         
                         // Controller Tab
                         let controllerViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ControllerModuleViewController") as! ControllerModuleViewController

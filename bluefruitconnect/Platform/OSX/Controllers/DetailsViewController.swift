@@ -167,8 +167,7 @@ class DetailsViewController: NSViewController {
                 dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
                     
                     var currentTabIndex = 1     // 0 is Info
-                    
-                    // Uart Tab
+
                     let kUartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"                       // UART service UUID
                     let hasUart = services.contains({ (service : CBService) -> Bool in
                         service.UUID.isEqual(CBUUID(string: kUartServiceUUID))
@@ -178,6 +177,7 @@ class DetailsViewController: NSViewController {
                     //infoUartLabel.toolTip = "UART Service \(hasUart ? "" : "not ")available"
                     
                     if (hasUart) {
+                        // Uart Tab
                         var uartTabIndex = self.indexForTabWithClass("UartViewController")
                         if uartTabIndex < 0 {
                             // Add Uart tab
@@ -189,6 +189,21 @@ class DetailsViewController: NSViewController {
                         
                         let uartViewController = self.modeTabView.tabViewItems[uartTabIndex].viewController as! UartViewController
                         uartViewController.tabReset()
+                        
+                        // PinIO
+                        if Config.DEBUG &&  false {
+                        var pinIOTabIndex = self.indexForTabWithClass("PinIOViewController")
+                        if pinIOTabIndex < 0 {
+                            // Add PinIO tab
+                            let pinIOViewController = self.storyboard?.instantiateControllerWithIdentifier("PinIOViewController") as! PinIOViewController
+                            let pinIOTabViewItem = NSTabViewItem(viewController: pinIOViewController)
+                            pinIOTabIndex = currentTabIndex++
+                            self.modeTabView.insertTabViewItem(pinIOTabViewItem, atIndex: pinIOTabIndex)
+                        }
+
+                        let pinIOViewController = self.modeTabView.tabViewItems[pinIOTabIndex].viewController as! PinIOViewController
+                        pinIOViewController.tabReset()
+                        }
                     }
                     
                     // DFU Tab

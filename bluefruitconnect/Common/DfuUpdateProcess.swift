@@ -37,7 +37,6 @@ class DfuUpdateProcess : NSObject {
     private var isTransferring  = false
     private var dfuVersion : Int32 = -1
     
-    
     func setUpdateParameters(peripheral : CBPeripheral, hexUrl : NSURL, iniUrl: NSURL?, deviceInfoData : DeviceInfoData) {
         self.peripheral = peripheral
         self.hexUrl = hexUrl
@@ -260,7 +259,5 @@ extension DfuUpdateProcess : DFUOperationsDelegate {
         dispatch_async(dispatch_get_main_queue(), { [weak self] in
             self?.delegate?.onUpdateProcessError(errorMessage, infoMessage: nil)
             })
-        
     }
-    
 }

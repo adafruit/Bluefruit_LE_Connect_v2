@@ -104,6 +104,9 @@
 		A9B41F891C69675400E4A666 /* DfuModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B41F871C69675400E4A666 /* DfuModuleViewController.swift */; };
 		A9BEA6421C6690E6005F54D6 /* CocoaCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BEA6411C6690E6005F54D6 /* CocoaCompatibility.swift */; };
 		A9BEA6431C6690E6005F54D6 /* CocoaCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BEA6411C6690E6005F54D6 /* CocoaCompatibility.swift */; };
+		A9D7205D1C73C32F001321D3 /* PinIOModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D7205C1C73C32F001321D3 /* PinIOModuleManager.swift */; };
+		A9D7205E1C73C32F001321D3 /* PinIOModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D7205C1C73C32F001321D3 /* PinIOModuleManager.swift */; };
+		A9D720601C73D5E9001321D3 /* PinIOViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D7205F1C73D5E9001321D3 /* PinIOViewController.swift */; };
 		A9E016BE1C70C79800CEB54C /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E016BD1C70C79800CEB54C /* AboutViewController.swift */; };
 		A9E016C21C70D72900CEB54C /* StyledSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E016C11C70D72900CEB54C /* StyledSubview.swift */; };
 		A9EC0F891C6E87120019790F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EC0F881C6E87120019790F /* GradientView.swift */; };
@@ -228,6 +231,8 @@
 		A9A2FF821C3EEA9D0039D188 /* MqttManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttManager.swift; sourceTree = "<group>"; };
 		A9B41F871C69675400E4A666 /* DfuModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuModuleViewController.swift; sourceTree = "<group>"; };
 		A9BEA6411C6690E6005F54D6 /* CocoaCompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CocoaCompatibility.swift; sourceTree = "<group>"; };
+		A9D7205C1C73C32F001321D3 /* PinIOModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinIOModuleManager.swift; sourceTree = "<group>"; };
+		A9D7205F1C73D5E9001321D3 /* PinIOViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinIOViewController.swift; sourceTree = "<group>"; };
 		A9E016BD1C70C79800CEB54C /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		A9E016C11C70D72900CEB54C /* StyledSubview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledSubview.swift; sourceTree = "<group>"; };
 		A9EC0F881C6E87120019790F /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
@@ -468,18 +473,19 @@
 		A949AA691C5AC977002F960B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A949AA6A1C5AC977002F960B /* DetailsViewController.swift */,
-				A949AA6B1C5AC977002F960B /* FirmwareUpdateViewController.swift */,
-				A949AA6C1C5AC977002F960B /* InfoViewController.swift */,
-				A949AA6D1C5AC977002F960B /* MainSplitViewController.swift */,
 				A949AA6E1C5AC977002F960B /* MainWindowController.swift */,
+				A949AA6D1C5AC977002F960B /* MainSplitViewController.swift */,
+				A949AA731C5AC977002F960B /* StatusViewController.swift */,
+				A949AA721C5AC977002F960B /* PreferencesViewController.swift */,
 				A949AA701C5AC977002F960B /* PeripheralListViewController.swift */,
 				A949AA711C5AC977002F960B /* PeripheralTableCellView.swift */,
-				A949AA721C5AC977002F960B /* PreferencesViewController.swift */,
-				A949AA731C5AC977002F960B /* StatusViewController.swift */,
+				A949AA6A1C5AC977002F960B /* DetailsViewController.swift */,
+				A949AA6C1C5AC977002F960B /* InfoViewController.swift */,
 				A949AA741C5AC977002F960B /* UartViewController.swift */,
-				A949AA751C5AC977002F960B /* UpdateDialogViewController.swift */,
+				A9D7205F1C73D5E9001321D3 /* PinIOViewController.swift */,
 				A949AA6F1C5AC977002F960B /* NeopixelViewController.swift */,
+				A949AA6B1C5AC977002F960B /* FirmwareUpdateViewController.swift */,
+				A949AA751C5AC977002F960B /* UpdateDialogViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -615,9 +621,9 @@
 		A9E016C01C70D6FA00CEB54C /* Style */ = {
 			isa = PBXGroup;
 			children = (
+				A92088B31C7357D5002FF8E8 /* StyleConfig.swift */,
 				A9E016C11C70D72900CEB54C /* StyledSubview.swift */,
 				A92088B11C727CD5002FF8E8 /* StyledButton.swift */,
-				A92088B31C7357D5002FF8E8 /* StyleConfig.swift */,
 			);
 			path = Style;
 			sourceTree = "<group>";
@@ -640,6 +646,7 @@
 				A9EC0F911C6E99BF0019790F /* UartModuleManager.swift */,
 				A9EC0F8C1C6E99BF0019790F /* DfuUpdateProcess.swift */,
 				A9EC0F8B1C6E99BF0019790F /* ControllerModuleManager.swift */,
+				A9D7205C1C73C32F001321D3 /* PinIOModuleManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -956,6 +963,7 @@
 				A92088B01C726DDD002FF8E8 /* HelpViewController.swift in Sources */,
 				A92E06861C6D5EF900BECBBA /* ControllerModuleViewController.swift in Sources */,
 				A94F5A481C5AE3D5009CC9B8 /* FirmwareUpdater.m in Sources */,
+				A9D7205E1C73C32F001321D3 /* PinIOModuleManager.swift in Sources */,
 				A9EC0F9B1C6E99BF0019790F /* UartDataChunk.swift in Sources */,
 				A9EC0FAC1C6EDBE10019790F /* PinIOModuleViewController.swift in Sources */,
 				A94F5A521C5AF09B009CC9B8 /* BlePeripheral.swift in Sources */,
@@ -997,6 +1005,7 @@
 				A949AA671C5AC912002F960B /* AppDelegate.swift in Sources */,
 				A91F9EB01C663999007656B7 /* RssiUI.swift in Sources */,
 				A98AE3AD1C42AB5000FA8E80 /* UartDataExport.swift in Sources */,
+				A9D7205D1C73C32F001321D3 /* PinIOModuleManager.swift in Sources */,
 				A982968B1BB222D700DD478C /* LogHelper.swift in Sources */,
 				A9FE75731BB9CF1000F7A5BF /* XMLDictionary.m in Sources */,
 				A94B85101BB65C48007B88C7 /* FirmwareUpdater.m in Sources */,
@@ -1011,6 +1020,7 @@
 				A9EC0F961C6E99BF0019790F /* PeripheralList.swift in Sources */,
 				A949AA781C5AC977002F960B /* InfoViewController.swift in Sources */,
 				A94B851E1BB704BC007B88C7 /* HexConversions.swift in Sources */,
+				A9D720601C73D5E9001321D3 /* PinIOViewController.swift in Sources */,
 				A9EC0F9A1C6E99BF0019790F /* UartDataChunk.swift in Sources */,
 				A9EC0F9E1C6E99BF0019790F /* UartModuleManager.swift in Sources */,
 				A9EC0F9C1C6E99BF0019790F /* UartManager.swift in Sources */,

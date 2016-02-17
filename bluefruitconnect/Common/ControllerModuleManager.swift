@@ -50,8 +50,6 @@ class ControllerModuleManager : NSObject {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.delegate = self
-        
-        
     }
     
     deinit {
