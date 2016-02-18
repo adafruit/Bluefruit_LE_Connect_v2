@@ -189,29 +189,35 @@ class PeripheralDetailsViewController: UITabBarController {
                     
                     if (hasUart) {
                         // Uart Tab
-                        let uartViewController = self.storyboard!.instantiateViewControllerWithIdentifier("UartModuleViewController") as! UartModuleViewController
-                        uartViewController.tabBarItem.title = localizationManager.localizedString("uart_tab_title")      // Tab title
-                        uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
+                        if Config.isUartModuleEnabled {
+                            let uartViewController = self.storyboard!.instantiateViewControllerWithIdentifier("UartModuleViewController") as! UartModuleViewController
+                            uartViewController.tabBarItem.title = localizationManager.localizedString("uart_tab_title")      // Tab title
+                            uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
+                            
+                            self.viewControllers?.append(uartViewController)
+                        }
                         
-                        self.viewControllers?.append(uartViewController)
-
                         // PinIO
-                        let pinioViewController = self.storyboard!.instantiateViewControllerWithIdentifier("PinIOModuleViewController") as! PinIOModuleViewController
-                        
-                        pinioViewController.tabBarItem.title = localizationManager.localizedString("pinio_tab_title")      // Tab title
-                        pinioViewController.tabBarItem.image = UIImage(named: "tab_pinio_icon")
-                        
-                        self.viewControllers?.append(pinioViewController)
+                        if Config.isPinIOModuleEnabled {
+                            let pinioViewController = self.storyboard!.instantiateViewControllerWithIdentifier("PinIOModuleViewController") as! PinIOModuleViewController
+                            
+                            pinioViewController.tabBarItem.title = localizationManager.localizedString("pinio_tab_title")      // Tab title
+                            pinioViewController.tabBarItem.image = UIImage(named: "tab_pinio_icon")
+                            
+                            self.viewControllers?.append(pinioViewController)
+                        }
                         
                         // Controller Tab
-                        let controllerViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ControllerModuleViewController") as! ControllerModuleViewController
-                        
-                        controllerViewController.tabBarItem.title = localizationManager.localizedString("controller_tab_title")      // Tab title
-                        controllerViewController.tabBarItem.image = UIImage(named: "tab_controller_icon")
-                        
-                        self.viewControllers?.append(controllerViewController)
+                        if Config.isControllerModuleEnabled {
+                            let controllerViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ControllerModuleViewController") as! ControllerModuleViewController
+                            
+                            controllerViewController.tabBarItem.title = localizationManager.localizedString("controller_tab_title")      // Tab title
+                            controllerViewController.tabBarItem.image = UIImage(named: "tab_controller_icon")
+                            
+                            self.viewControllers?.append(controllerViewController)
+                        }
                     }
-
+                    
                     // DFU Tab
                     let kNordicDeviceFirmwareUpdateService = "00001530-1212-EFDE-1523-785FEABCD123"    // DFU service UUID
                     let hasDFU = services.contains({ (service : CBService) -> Bool in
@@ -219,12 +225,12 @@ class PeripheralDetailsViewController: UITabBarController {
                     })
                     
                     if (hasDFU) {
-                        
-                        let dfuViewController = self.storyboard!.instantiateViewControllerWithIdentifier("DfuModuleViewController") as! DfuModuleViewController
-                        dfuViewController.tabBarItem.title = localizationManager.localizedString("dfu_tab_title")      // Tab title
-                        dfuViewController.tabBarItem.image = UIImage(named: "tab_dfu_icon")
-                        self.viewControllers?.append(dfuViewController)
-
+                        if Config.isDfuModuleEnabled {
+                            let dfuViewController = self.storyboard!.instantiateViewControllerWithIdentifier("DfuModuleViewController") as! DfuModuleViewController
+                            dfuViewController.tabBarItem.title = localizationManager.localizedString("dfu_tab_title")      // Tab title
+                            dfuViewController.tabBarItem.image = UIImage(named: "tab_dfu_icon")
+                            self.viewControllers?.append(dfuViewController)
+                        }
                     }
                     })
             }

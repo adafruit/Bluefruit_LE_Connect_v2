@@ -43,7 +43,12 @@ class PinIOTableViewCell: UITableViewCell {
     // MARK: - Setup
     func setPin(pin : PinIOModuleManager.PinData) {
         setupModeSegmentedControl(pin)
-        digitalSegmentedControl.selectedSegmentIndex = 0
+        digitalSegmentedControl.selectedSegmentIndex = pin.digitalValue.rawValue
+/*
+        if pin.digitalPinId == 5 {
+            DLog("digital \(pin.digitalPinId) set: \(pin.digitalValue.rawValue)")
+        }
+*/
         valueSlider.value = Float(pin.analogValue)
         
         let analogName = pin.isAnalog ?", Analog \(pin.analogPinId)":""

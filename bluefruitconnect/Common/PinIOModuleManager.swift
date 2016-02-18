@@ -78,7 +78,7 @@ class PinIOModuleManager: NSObject {
     private var queryCapabilitiesTimer : NSTimer?
     
     var pins = [PinData]()
-    private var portMasks = [UInt8](count: 3, repeatedValue: 0)
+   // private var portMasks = [UInt8](count: 3, repeatedValue: 0)
 
     var delegate: PinIOModuleManagerDelegate?
     
@@ -102,7 +102,6 @@ class PinIOModuleManager: NSObject {
     func isQueryingCapabilities() -> Bool {
         return uartStatus != .SendData
     }
-    
     
     func start() {
         let notificationCenter =  NSNotificationCenter.defaultCenter()
@@ -215,6 +214,7 @@ class PinIOModuleManager: NSObject {
     }
     
     func cancelQueryCapabilities() {
+        DLog("timeout: cancelQueryCapabilities")
         endPinQuery(true)
     }
     
@@ -223,15 +223,16 @@ class PinIOModuleManager: NSObject {
         cancelQueryCapabilitiesTimer()
         uartStatus = .SendData
         
-        var isDefaultConfigurationAssumed: Bool
+        var capabilitiesParsed = false
+        var mappingDataParsed = false
         if !abortQuery && queryCapabilitiesDataBuffer.count > 0 && queryAnalogMappingDataBuffer.count > 0 {
-            parseCapabilities(queryCapabilitiesDataBuffer)
-            parseAnalogMappingData(queryAnalogMappingDataBuffer)
-            isDefaultConfigurationAssumed = false
+            capabilitiesParsed = parseCapabilities(queryCapabilitiesDataBuffer)
+            mappingDataParsed = parseAnalogMappingData(queryAnalogMappingDataBuffer)
         }
-        else {
+            
+        let isDefaultConfigurationAssumed =  abortQuery || !capabilitiesParsed || !mappingDataParsed
+        if isDefaultConfigurationAssumed {
             initializeDefaultPins()
-            isDefaultConfigurationAssumed = true
         }
         enableReadReports()
         
@@ -243,11 +244,17 @@ class PinIOModuleManager: NSObject {
         delegate?.onPinIODidEndPinQuery(isDefaultConfigurationAssumed)
     }
     
-    private func parseCapabilities(cababilitiesData : [UInt8]) {
+    private func parseCapabilities(cababilitiesData : [UInt8]) -> Bool {
+        let endIndex = cababilitiesData.indexOf(SYSEX_END)
+        guard cababilitiesData.count > 2 && cababilitiesData[0] == SYSEX_START && cababilitiesData[1] == 0x6C && endIndex != nil else {
+            DLog("invalid capabilities received")
+            return false
+        }
+        
         // Separate pin data
         var pinsBytes = [[UInt8]]()
         var currentPin = [UInt8]()
-        for i in 2..<cababilitiesData.count-1 {         // Skip 2 header bytes and end byte
+        for i in 2..<endIndex! {         // Skip 2 header bytes and end byte
             let dataByte = cababilitiesData[i]
             if dataByte != 0x7f {
                 currentPin.append(dataByte)
@@ -294,25 +301,39 @@ class PinIOModuleManager: NSObject {
                 }
                 
                 let pinData = PinData(digitalPinId: pinNumber, isDigital: isInput && isOutput, isAnalog: isAnalog, isPWM: isPWM)
+                DLog("pin id: \(pinNumber) digital: \(pinData.isDigital) analog: \(pinData.isAnalog) ")
                 self.pins.append(pinData)
             }
             
             pinNumber++
         }
+        
+        return true
     }
     
-    private func parseAnalogMappingData(analogData : [UInt8]) {
+    private func parseAnalogMappingData(analogData : [UInt8]) -> Bool {
+        let endIndex = analogData.indexOf(SYSEX_END)
+        guard analogData.count > 2 && analogData[0] == SYSEX_START && analogData[1] == 0x6A && endIndex != nil else {
+            DLog("invalid analog mapping received")
+            return false
+        }
         
         var pinNumber = 0
-        for i in 2..<analogData.count-1 {         // Skip 2 header bytes and end byte
+        for i in 2..<endIndex! {         // Skip 2 header bytes and end byte
             let dataByte = analogData[i]
             if dataByte != 0x7f {
                 if let indexOfPinNumber = indexOfPinWithDigitalId(pinNumber) {
                     pins[indexOfPinNumber].analogPinId = Int(dataByte)
+                    DLog("pin id: \(pinNumber) analog id: \(Int(dataByte))")
+                }
+                else {
+                    DLog("warning: trying to set analog id: \(Int(dataByte)) for pin id: \(pinNumber)");
                 }
             }
             pinNumber++
         }
+        
+        return true
     }
     
     private func indexOfPinWithDigitalId(digitalPinId: Int) -> Int? {
@@ -375,8 +396,10 @@ class PinIOModuleManager: NSObject {
         
         // Store
         pin.mode = mode
+        pin.digitalValue = .Low     // Reset dialog value when chaning mode
+        pin.analogValue = 0         // Reset analog value when chaging mode
         
-        DLog("pin \(pin.digitalPinId): mode: \(pin.mode.rawValue)")
+        //DLog("pin \(pin.digitalPinId): mode: \(pin.mode.rawValue)")
         
         // Write pin mode
         let bytes:[UInt8] = [0xf4, UInt8(pin.digitalPinId), mode.rawValue]
@@ -402,11 +425,13 @@ class PinIOModuleManager: NSObject {
     func setDigitalValue(pin: PinData, value: PinData.DigitalValue) {
         // Store
         pin.digitalValue = value
+        DLog("setDigitalValue: \(value) for pin id: \(pin.digitalPinId)")
         
         // Write value
         let port = UInt8(pin.digitalPinId / 8)
-        let data0 = 0x90+port
+        let data0 = 0x90 + port
         
+        /*
         let pinIndex = UInt8(pin.digitalPinId) - (port*8)
         var newMask = UInt8(value.rawValue * Int(powf(2, Float(pinIndex))))
         portMasks[Int(port)] &= ~(1 << pinIndex)    //prep the saved mask by zeroing this pin's corresponding bit
@@ -414,8 +439,22 @@ class PinIOModuleManager: NSObject {
         portMasks[Int(port)] = newMask
         var data1 = newMask<<1; data1 >>= 1         //remove MSB
         let data2 = newMask >> 7                    //use data1's MSB as data2's LSB
+*/
         
+        let offset = 8 * Int(port)
+        var state: Int = 0
+        for var i = 0; i <= 7; i++ {
+            if let pinIndex = indexOfPinWithDigitalId(offset + i) {
+                let pinValue = pins[pinIndex].digitalValue.rawValue & 0x1
+                let pinMask = pinValue << i
+                state |= pinMask
+            }
+        }
+
+        let data1 = UInt8(state & 0x7f)         //only 7 bottom bits
+        let data2 = UInt8(state >> 7)           //top bit in second byte
         
+
         let bytes:[UInt8] = [data0, data1, data2]
         let data = NSData(bytes: bytes, length: bytes.count)
         UartManager.sharedInstance.sendData(data)
@@ -456,35 +495,41 @@ class PinIOModuleManager: NSObject {
         return true
     }
 
+    private var receivedPinStateDataBuffer = [UInt8]()
+
     private func receivedPinState(data: NSData) {
         
-        /* pin state response
-        * -------------------------------
-        * 0  START_SYSEX (0xF0) (MIDI System Exclusive)
-        * 1  pin state response (0x6E)
-        * 2  pin (0 to 127)
-        * 3  pin mode (the currently configured mode)
-        * 4  pin state, bits 0-6
-        * 5  (optional) pin state, bits 7-13
-        * 6  (optional) pin state, bits 14-20
-        ...  additional optional bytes, as many as needed
-        * N  END_SYSEX (0xF7)
-        */
-
-        // Read received packet
-        var dataBytes = [UInt8](count: data.length, repeatedValue: 0)
-        data.getBytes(&dataBytes, length: data.length)
+        // Append received bytes to buffer
+        var receivedDataBytes = [UInt8](count: data.length, repeatedValue: 0)
+        data.getBytes(&receivedDataBytes, length: data.length)
+        for byte in receivedDataBytes {
+            receivedPinStateDataBuffer.append(byte)
+        }
         
-        if dataBytes.count >= 5 && dataBytes[0] == SYSEX_START && dataBytes[1] == 0x6e {
-            let pinDigitalId = Int(dataBytes[2])
-            let pinMode = PinData.Mode(rawValue: dataBytes[3])
-            let pinState = Int(dataBytes[4])
+        // Check if we received a pin state response
+        if receivedPinStateDataBuffer.count >= 5 && receivedPinStateDataBuffer[0] == SYSEX_START && receivedPinStateDataBuffer[1] == 0x6e && receivedPinStateDataBuffer.indexOf(SYSEX_END) != nil {
+            /* pin state response
+            * -------------------------------
+            * 0  START_SYSEX (0xF0) (MIDI System Exclusive)
+            * 1  pin state response (0x6E)
+            * 2  pin (0 to 127)
+            * 3  pin mode (the currently configured mode)
+            * 4  pin state, bits 0-6
+            * 5  (optional) pin state, bits 7-13
+            * 6  (optional) pin state, bits 14-20
+            ...  additional optional bytes, as many as needed
+            * N  END_SYSEX (0xF7)
+            */
+            
+            let pinDigitalId = Int(receivedPinStateDataBuffer[2])
+            let pinMode = PinData.Mode(rawValue: receivedPinStateDataBuffer[3])
+            let pinState = Int(receivedPinStateDataBuffer[4])
             
             if let index = indexOfPinWithDigitalId(pinDigitalId), pinMode = pinMode {
                 let pin = pins[index]
                 setControlMode(pin, mode: pinMode)
-                if (pinMode == .Analog || pinMode == .PWM || pinMode == .Servo) && dataBytes.count >= 6 {
-                    let analogValue = pinState + Int(dataBytes[5])<<7
+                if (pinMode == .Analog || pinMode == .PWM || pinMode == .Servo) && receivedPinStateDataBuffer.count >= 6 {
+                    let analogValue = pinState + Int(receivedPinStateDataBuffer[5])<<7
                     setAnalogValue(pin, value: analogValue)
                 }
                 else {
@@ -492,41 +537,71 @@ class PinIOModuleManager: NSObject {
                         setDigitalValue(pin, value: digitalValue)
                     }
                     else {
-                        DLog("Error parsing received pinstate: unkown digital value")
+                        DLog("Warning: received pinstate with unknown digital value. Valid (0,1). Received: \(pinState)")
                     }
                 }
             }
             else {
-                DLog("Received PinState for unknown digital pin: \(pinDigitalId)")
+                DLog("Warning: received pinstate for unknown digital pin id: \(pinDigitalId)")
+            }
+            
+            // Remove from the buffer the bytes parsed
+            if let endIndex = receivedPinStateDataBuffer.indexOf(SYSEX_END) {
+                receivedPinStateDataBuffer.removeFirst(endIndex)
             }
         }
         else {
             // Each pin state message is 3 bytes long
-            for var i=0; i<dataBytes.count; i+=3 {
-                if i+2 < dataBytes.count        // Check that current message length is at least 3 bytes
-                {
-                    if ((dataBytes[i] >= 0x90) && (dataBytes[i] <= 0x9F)) {       //Digital Reporting (per port)
-                        let port = Int(dataBytes[i]) - 0x90
-                        var pinStates = Int(dataBytes[i+1])
-                        pinStates |= Int(dataBytes[i+2]) << 7    //PORT 0: use LSB of third byte for pin7, PORT 1: pins 14 & 15
-                        updateForPinStates(pinStates, port: port)
+            var isDigitalReportingMessage = (receivedPinStateDataBuffer[0] >= 0x90) && (receivedPinStateDataBuffer[0] <= 0x9F)
+            var isAnalogReportingMessage = (receivedPinStateDataBuffer[0] >= 0xE0) && (receivedPinStateDataBuffer[0] <= 0xEF)
+            
+            while receivedPinStateDataBuffer.count >= 3 && (isDigitalReportingMessage || isAnalogReportingMessage)        // Check that current message length is at least 3 bytes
+            {
+                if isDigitalReportingMessage {             // Digital Reporting (per port)
+                    /* two byte digital data format, second nibble of byte 0 gives the port number (e.g. 0x92 is the third port, port 2)
+                    * 0  digital data, 0x90-0x9F, (MIDI NoteOn, but different data format)
+                    * 1  digital pins 0-6 bitmask
+                    * 2  digital pin 7 bitmask 
+                    */
+                    
+                    let port = Int(receivedPinStateDataBuffer[0]) - 0x90
+                    var pinStates = Int(receivedPinStateDataBuffer[1])
+                    pinStates |= Int(receivedPinStateDataBuffer[2]) << 7           // PORT 0: use LSB of third byte for pin7, PORT 1: pins 14 & 15
+                    updateForPinStates(pinStates, port: port)
+                }
+                else if isAnalogReportingMessage {       // Analog Reporting (per pin)
+                    
+                    /* analog 14-bit data format
+                    * 0  analog pin, 0xE0-0xEF, (MIDI Pitch Wheel)
+                    * 1  analog least significant 7 bits
+                    * 2  analog most significant 7 bits
+                    */
+                    
+                    let analogPinId = Int(receivedPinStateDataBuffer[0]) - 0xE0
+                    let value = Int(receivedPinStateDataBuffer[1]) + (Int(receivedPinStateDataBuffer[2])<<7)
+                    
+                    if let index = indexOfPinWithAnalogId(analogPinId) {
+                        let pin = pins[index]
+                        pin.analogValue = value
                     }
-                    else if ((dataBytes[i] >= 0xE0) && (dataBytes[i] <= 0xEF)) {       //Analog Reporting (per pin)
-                        let analogPinId = Int(dataBytes[i]) - 0xE0
-                        let value = Int(dataBytes[i+1]) + (Int(dataBytes[i+2])<<7)
-                        
-                        if let index = indexOfPinWithAnalogId(analogPinId) {
-                            let pin = pins[index]
-                            pin.analogValue = value
-                        }
-                        else {
-                            DLog("Error parsing received pinstate: unkown analog pin")
-                        }
+                    else {
+                        DLog("Warning: received pinstate for unknown analog pin id: \(index)")
                     }
+                }
+                
+                // Remove from the buffer the bytes parsed
+                receivedPinStateDataBuffer.removeFirst(3)
+
+                // Setup vars for next message
+                if receivedPinStateDataBuffer.count >= 3 {
+                    isDigitalReportingMessage = (receivedPinStateDataBuffer[0] >= 0x90) && (receivedPinStateDataBuffer[0] <= 0x9F)
+                    isAnalogReportingMessage = (receivedPinStateDataBuffer[0] >= 0xE0) && (receivedPinStateDataBuffer[0] <= 0xEF)
                 }
                 else {
-                    DLog("warning: pin state message length less than 3 bytes")
+                    isDigitalReportingMessage = false
+                    isAnalogReportingMessage = false
                 }
+                
             }
             
             // Refresh UI
@@ -540,19 +615,18 @@ class PinIOModuleManager: NSObject {
         
         // Iterate through all pins
         for var i = 0; i <= 7; i++ {
-            var state = pinStates
             let mask = 1 << i
-            state = state & mask
-            state = state >> i
+            let state = (pinStates & mask) >> i
             
-            let digitalId = i + offset
+            let digitalId = offset + i
             
             if let index = indexOfPinWithDigitalId(digitalId), digitalValue = PinData.DigitalValue(rawValue: state) {
                 let pin = pins[index]
                 pin.digitalValue = digitalValue
+                DLog("update pinid: \(digitalId) digitalValue: \(digitalValue)")
             }
             else {
-                DLog("Error parsing received pinstate for unkown digital pin: \(digitalId) DigitalValue: \(state)")
+                //DLog("Warning: received pinstate for unknown digital pin id: \(digitalId) digitalValue: \(state)")
             }
         }
     }
@@ -560,7 +634,7 @@ class PinIOModuleManager: NSObject {
     // MARK: - Utils
     static func stringForPinMode(mode: PinIOModuleManager.PinData.Mode)-> String {
         var modeString: String
-        
+
         switch mode {
         case .Input:
             modeString = "Input"

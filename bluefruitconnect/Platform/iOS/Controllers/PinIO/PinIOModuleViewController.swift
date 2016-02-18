@@ -176,13 +176,14 @@ extension PinIOModuleViewController : PinIoTableViewCellDelegate {
     func onPinModeChanged(mode: PinIOModuleManager.PinData.Mode, pinIndex: Int) {
         let pin = pinIO.pins[pinIndex]
         pinIO.setControlMode(pin, mode: mode)
-        DLog("pin \(pin.digitalPinId): mode: \(pin.mode.rawValue)")
         
         baseTableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: pinIndex, inSection: 0)], withRowAnimation: .None)
     }
     func onPinDigitalValueChanged(value: PinIOModuleManager.PinData.DigitalValue, pinIndex: Int) {
         let pin = pinIO.pins[pinIndex]
         pinIO.setDigitalValue(pin, value: value)
+        
+        baseTableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: pinIndex, inSection: 0)], withRowAnimation: .None)
     }
     func onPinAnalogValueChanged(value: Float, pinIndex: Int) {
         let pin = pinIO.pins[pinIndex]

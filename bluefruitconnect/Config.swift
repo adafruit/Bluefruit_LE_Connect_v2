@@ -26,4 +26,26 @@ struct Config {
     static let uartLogSend = Config.DEBUG && true
     static let uartLogReceive = Config.DEBUG && true
     
+    
+    // Enabled Modules
+    #if os(OSX)
+    
+    static let isUartModuleEnabled = true
+    static let isPinIOModuleEnabled = true
+    static let isControllerModuleEnabled = false        // Note: not implemented yet
+    static let isDfuModuleEnabled = true
+    static let isNeoPixelModuleEnabled = false
+    
+    #else       // iOS, tvOS
+    
+    static let isUartModuleEnabled = true
+    static let isPinIOModuleEnabled = true
+    static let isControllerModuleEnabled = true
+    static let isDfuModuleEnabled = true
+    static let isNeoPixelModuleEnabled = false          // Note: not implemented yet
+    
+    #endif
+    
+
+    
 }

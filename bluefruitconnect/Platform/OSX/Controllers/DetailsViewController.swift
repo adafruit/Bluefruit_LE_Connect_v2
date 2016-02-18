@@ -38,6 +38,9 @@ class DetailsViewController: NSViewController {
     @IBOutlet weak var infoDfuImageView: NSImageView!
     @IBOutlet weak var infoDfuLabel: NSTextField!
     
+    // Modules
+    private var pinIOViewController: PinIOViewController?
+    
     // Rssi
     private static let kRssiUpdateInterval = 2.0       // in seconds
     private var rssiTimer : MSWeakTimer?
@@ -116,6 +119,12 @@ class DetailsViewController: NSViewController {
                 // optimization: wait till info discover services to continue, instead of discovering services by myself
                 self?.servicesDiscovered()
             }
+            
+            infoViewController.onInfoScanFinished = { [weak self] in
+                // tell the pinio that can start querying without problems
+                self?.pinIOViewController?.infoFinishedScanning = true
+            }
+            
 
             let infoTabViewItem = NSTabViewItem(viewController: infoViewController)
             self.modeTabView.addTabViewItem(infoTabViewItem)
@@ -159,7 +168,8 @@ class DetailsViewController: NSViewController {
             emptyLabel.stringValue = LocalizationManager.sharedInstance.localizedString("peripheraldetails_select")
         }
     }
-
+    
+    
     func servicesDiscovered() {
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
             if let services = blePeripheral.peripheral.services {
@@ -167,7 +177,7 @@ class DetailsViewController: NSViewController {
                 dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
                     
                     var currentTabIndex = 1     // 0 is Info
-
+                    
                     let kUartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"                       // UART service UUID
                     let hasUart = services.contains({ (service : CBService) -> Bool in
                         service.UUID.isEqual(CBUUID(string: kUartServiceUUID))
@@ -178,31 +188,33 @@ class DetailsViewController: NSViewController {
                     
                     if (hasUart) {
                         // Uart Tab
-                        var uartTabIndex = self.indexForTabWithClass("UartViewController")
-                        if uartTabIndex < 0 {
-                            // Add Uart tab
-                            let uartViewController = self.storyboard?.instantiateControllerWithIdentifier("UartViewController") as! UartViewController
-                            let uartTabViewItem = NSTabViewItem(viewController: uartViewController)
-                            uartTabIndex = currentTabIndex++
-                            self.modeTabView.insertTabViewItem(uartTabViewItem, atIndex: uartTabIndex)
+                        if Config.isUartModuleEnabled {
+                            var uartTabIndex = self.indexForTabWithClass("UartViewController")
+                            if uartTabIndex < 0 {
+                                // Add Uart tab
+                                let uartViewController = self.storyboard?.instantiateControllerWithIdentifier("UartViewController") as! UartViewController
+                                let uartTabViewItem = NSTabViewItem(viewController: uartViewController)
+                                uartTabIndex = currentTabIndex++
+                                self.modeTabView.insertTabViewItem(uartTabViewItem, atIndex: uartTabIndex)
+                            }
+                            
+                            let uartViewController = self.modeTabView.tabViewItems[uartTabIndex].viewController as! UartViewController
+                            uartViewController.tabReset()
                         }
-                        
-                        let uartViewController = self.modeTabView.tabViewItems[uartTabIndex].viewController as! UartViewController
-                        uartViewController.tabReset()
                         
                         // PinIO
-                        if Config.DEBUG &&  false {
-                        var pinIOTabIndex = self.indexForTabWithClass("PinIOViewController")
-                        if pinIOTabIndex < 0 {
-                            // Add PinIO tab
-                            let pinIOViewController = self.storyboard?.instantiateControllerWithIdentifier("PinIOViewController") as! PinIOViewController
-                            let pinIOTabViewItem = NSTabViewItem(viewController: pinIOViewController)
-                            pinIOTabIndex = currentTabIndex++
-                            self.modeTabView.insertTabViewItem(pinIOTabViewItem, atIndex: pinIOTabIndex)
-                        }
+                        if Config.isPinIOModuleEnabled {
+                            var pinIOTabIndex = self.indexForTabWithClass("PinIOViewController")
+                            if pinIOTabIndex < 0 {
+                                // Add PinIO tab
+                                self.pinIOViewController = self.storyboard?.instantiateControllerWithIdentifier("PinIOViewController") as? PinIOViewController
+                                let pinIOTabViewItem = NSTabViewItem(viewController: self.pinIOViewController!)
+                                pinIOTabIndex = currentTabIndex++
+                                self.modeTabView.insertTabViewItem(pinIOTabViewItem, atIndex: pinIOTabIndex)
+                            }
 
-                        let pinIOViewController = self.modeTabView.tabViewItems[pinIOTabIndex].viewController as! PinIOViewController
-                        pinIOViewController.tabReset()
+                            let pinIOViewController = self.modeTabView.tabViewItems[pinIOTabIndex].viewController as! PinIOViewController
+                            pinIOViewController.tabReset()
                         }
                     }
                     
@@ -215,18 +227,20 @@ class DetailsViewController: NSViewController {
                     self.infoDfuImageView.image = NSImage(named: hasDFU ?"NSStatusAvailable":"NSStatusNone")
                     
                     if (hasDFU) {
-                        var dfuTabIndex = self.indexForTabWithClass("FirmwareUpdateViewController")
-                        if dfuTabIndex < 0 {
-                            // Add Firmware Update tab
-                            let updateViewController = self.storyboard?.instantiateControllerWithIdentifier("FirmwareUpdateViewController") as! FirmwareUpdateViewController
-                            let updateTabViewItem = NSTabViewItem(viewController: updateViewController)
-                            dfuTabIndex = currentTabIndex++
-                            self.modeTabView.insertTabViewItem(updateTabViewItem, atIndex: dfuTabIndex)
+                        if Config.isDfuModuleEnabled {
+                            var dfuTabIndex = self.indexForTabWithClass("FirmwareUpdateViewController")
+                            if dfuTabIndex < 0 {
+                                // Add Firmware Update tab
+                                let updateViewController = self.storyboard?.instantiateControllerWithIdentifier("FirmwareUpdateViewController") as! FirmwareUpdateViewController
+                                let updateTabViewItem = NSTabViewItem(viewController: updateViewController)
+                                dfuTabIndex = currentTabIndex++
+                                self.modeTabView.insertTabViewItem(updateTabViewItem, atIndex: dfuTabIndex)
+                            }
+                            
+                            let updateViewController = self.modeTabView.tabViewItems[dfuTabIndex].viewController as! FirmwareUpdateViewController
+                            updateViewController.tabReset()
                         }
                         
-                        let updateViewController = self.modeTabView.tabViewItems[dfuTabIndex].viewController as! FirmwareUpdateViewController
-                        updateViewController.tabReset()
-
                     }
                     
                     // DIS Indicator
@@ -236,9 +250,10 @@ class DetailsViewController: NSViewController {
                     })
                     self.infoDsiImageView.image = NSImage(named: hasDIS ?"NSStatusAvailable":"NSStatusNone")
                     
-                    /*
+                    
                     // Neopixel Tab
-                    if (DetailsViewController.kNeopixelsEnabled && hasUart) {
+                    if (hasUart && Config.isNeoPixelModuleEnabled) {
+                        /*
                         var neopixelTabIndex = self.indexForTabWithClass("NeopixelViewController")
                         if neopixelTabIndex < 0 {
                             // Add Neopixel tab
@@ -250,8 +265,9 @@ class DetailsViewController: NSViewController {
                         
                         let neopixelViewController = self.modeTabView.tabViewItems[neopixelTabIndex].viewController as! NeopixelViewController
                         neopixelViewController.tabReset()
-                    }
 */
+                    }
+
                     })
             }
         }
@@ -370,9 +386,23 @@ extension DetailsViewController: NSTabViewDelegate {
     }
     
     func tabView(tabView: NSTabView, didSelectTabViewItem tabViewItem: NSTabViewItem?) {
+        guard BleManager.sharedInstance.blePeripheralConnected != nil else {
+            DLog("didSelectTabViewItem while disconnecting")
+            return
+        }
         
         let detailTabViewController = tabViewItem?.viewController as! DetailTab     // Note: all tab viewcontrollers should conform to protocol DetailTab
         detailTabViewController.tabWillAppear()
-        
     }
+    
+    /*
+    func tabView(tabView: NSTabView, shouldSelectTabViewItem tabViewItem: NSTabViewItem?) -> Bool {
+        if tabViewItem?.viewController is PinIOViewController {
+            return false
+        }
+        else {
+            return true
+        }
+    }
+*/
 }

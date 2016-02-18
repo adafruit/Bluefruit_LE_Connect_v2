@@ -202,6 +202,7 @@ extension UartManager: CBPeripheralDelegate {
             if (rxCharacteristic != nil && txCharacteristic != nil) {
                 // Set rx enabled
                 peripheral.setNotifyValue(true, forCharacteristic: rxCharacteristic!)
+                DLog("Uart set notify")
                 
                 NSNotificationCenter.defaultCenter().postNotificationName(UartNotifications.DidBecomeReady.rawValue, object: nil, userInfo:nil);
             }

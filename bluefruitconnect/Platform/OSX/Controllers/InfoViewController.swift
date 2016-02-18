@@ -20,6 +20,7 @@ class InfoViewController: NSViewController {
     
     // Delegates
     var onServicesDiscovered : (() -> ())?
+    var onInfoScanFinished : (() -> ())?
     
     // Data
     private var blePeripheral : BlePeripheral?
@@ -49,14 +50,19 @@ class InfoViewController: NSViewController {
         elementsDiscovered = 0
         valuesToRead = 0
         valuesRead = 0
-        updateDiscoveringStatusLabel()
+        updateDiscoveringStatus()
         
         services = nil
         self.baseTableView.reloadData()
         BleManager.sharedInstance.discover(blePeripheral!, serviceUUIDs: nil)
     }
 
-    func updateDiscoveringStatusLabel() {
+    func updateDiscoveringStatus() {
+        
+        if !isDiscoveringAndUpdatingInitialValues() {
+            onInfoScanFinished?()
+        }
+        
         var text = ""
         if isDiscoveringServices {
             text = "Discovering Services..."
@@ -78,6 +84,12 @@ class InfoViewController: NSViewController {
         discoveringStatusLabel.stringValue = text
     }
     
+    
+    private func isDiscoveringAndUpdatingInitialValues() -> Bool {
+        return isDiscoveringServices || elementsDiscovered < elementsToDiscover || valuesRead < valuesToRead
+    }
+
+    
     // MARK: - Actions
 
     @IBAction func onClickRefreshOnLoad(sender: NSButton) {
@@ -94,7 +106,7 @@ class InfoViewController: NSViewController {
 extension InfoViewController : DetailTab {
     
     func tabWillAppear() {
-        updateDiscoveringStatusLabel()
+        updateDiscoveringStatus()
         baseTableView.reloadData()
     }
     
@@ -109,7 +121,7 @@ extension InfoViewController : DetailTab {
         }
         
         shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
-        updateDiscoveringStatusLabel()
+        updateDiscoveringStatus()
         
         // Discover services
         services = nil
@@ -293,7 +305,7 @@ extension InfoViewController : CBPeripheralDelegate {
             // Update UI
             dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
                 
-                self.updateDiscoveringStatusLabel()
+                self.updateDiscoveringStatus()
                 self.baseTableView.reloadData()
                 self.onServicesDiscovered?()
                 })
@@ -322,7 +334,7 @@ extension InfoViewController : CBPeripheralDelegate {
         }
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            self.updateDiscoveringStatusLabel()
+            self.updateDiscoveringStatus()
             self.baseTableView.reloadData()
             if (!discoveringDescriptors && InfoViewController.kExpandAllNodes) {
                 // Expand all nodes if not waiting for descriptors
@@ -337,7 +349,7 @@ extension InfoViewController : CBPeripheralDelegate {
         elementsDiscovered++
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            self.updateDiscoveringStatusLabel()
+            self.updateDiscoveringStatus()
             self.baseTableView.reloadData()
             
             if (InfoViewController.kExpandAllNodes) {
@@ -353,7 +365,7 @@ extension InfoViewController : CBPeripheralDelegate {
         valuesRead++
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            self.updateDiscoveringStatusLabel()
+            self.updateDiscoveringStatus()
             self.baseTableView.reloadData()
             })
     }
@@ -362,7 +374,7 @@ extension InfoViewController : CBPeripheralDelegate {
         //DLog("centralManager didUpdateValueForDescriptor: \(descriptor.UUID.UUIDString)")
 
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            self.updateDiscoveringStatusLabel()
+            self.updateDiscoveringStatus()
             self.baseTableView.reloadData()
             })
     }

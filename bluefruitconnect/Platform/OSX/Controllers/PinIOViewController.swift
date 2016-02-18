@@ -11,19 +11,36 @@ import Cocoa
 class PinIOViewController: NSViewController {
 
     // UI
-    @IBOutlet weak var baseTableView: NSOutlineView!
+    @IBOutlet weak var baseTableView: NSTableView!
     @IBOutlet weak var statusLabel: NSTextField!
     private var queryCapabilitiesAlert: NSAlert?
 
     // Data
     private let pinIO = PinIOModuleManager()
+    private var tableRowOpen: Int?
     private var isQueryingFinished = false
+    private var isTabVisible = false
+    
+    private var waitingDiscoveryAlert: NSAlert?
+    var infoFinishedScanning = false {
+        didSet {
+            if infoFinishedScanning != oldValue {
+                DLog("infoFinishedScanning: \(infoFinishedScanning)")
+                if infoFinishedScanning && waitingDiscoveryAlert != nil {
+                    view.window?.endSheet(waitingDiscoveryAlert!.window)
+                    waitingDiscoveryAlert = nil
+                    startPinIo()
+                }
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Init
         pinIO.delegate = self
+        baseTableView.rowHeight = 52
     }
     
     func uartIsReady(notification: NSNotification) {
@@ -44,6 +61,10 @@ class PinIOViewController: NSViewController {
     }
     
     private func startQueryCapabilitiesProcess() {
+        guard isTabVisible else {
+            return
+        }
+        
         guard !pinIO.isQueryingCapabilities() else {
             DLog("error: queryCapabilities called while querying capabilities")
             return
@@ -57,31 +78,39 @@ class PinIOViewController: NSViewController {
         statusLabel.stringValue = "Querying capabilities..."
         
         // Show dialog
-        let localizationManager = LocalizationManager.sharedInstance
-        let alert = NSAlert()
-        alert.messageText = localizationManager.localizedString("pinio_capabilityquery_querying_title")
-        alert.addButtonWithTitle(localizationManager.localizedString("dialog_cancel"))
-        alert.alertStyle = .WarningAlertStyle
-        alert.beginSheetModalForWindow(self.view.window!) { [unowned self] (returnCode) -> Void in
-            if returnCode == NSAlertFirstButtonReturn {
-                self.pinIO.endPinQuery(true)
+        if let window = self.view.window {
+            let localizationManager = LocalizationManager.sharedInstance
+            let alert = NSAlert()
+            alert.messageText = localizationManager.localizedString("pinio_capabilityquery_querying_title")
+            alert.addButtonWithTitle(localizationManager.localizedString("dialog_cancel"))
+            alert.alertStyle = .WarningAlertStyle
+            alert.beginSheetModalForWindow(window) { [unowned self] (returnCode) -> Void in
+                if returnCode == NSAlertFirstButtonReturn {
+                    self.pinIO.endPinQuery(true)
+                }
             }
+            queryCapabilitiesAlert = alert
         }
-        queryCapabilitiesAlert = alert
         self.pinIO.queryCapabilities()
     }
-
+    
     func defaultCapabilitiesAssumedDialog() {
+        guard isTabVisible else {
+            return
+        }
         
         DLog("QueryCapabilities not found")
-        let localizationManager = LocalizationManager.sharedInstance
-        let alert = NSAlert()
-        alert.messageText = localizationManager.localizedString("pinio_capabilityquery_expired_title")
-        alert.informativeText = localizationManager.localizedString("pinio_capabilityquery_expired_message")
-        alert.addButtonWithTitle(localizationManager.localizedString("dialog_ok"))
-        alert.alertStyle = .WarningAlertStyle
-        alert.beginSheetModalForWindow(self.view.window!) { (returnCode) -> Void in
-            if returnCode == NSAlertFirstButtonReturn {
+        
+        if let window = self.view.window {
+            let localizationManager = LocalizationManager.sharedInstance
+            let alert = NSAlert()
+            alert.messageText = localizationManager.localizedString("pinio_capabilityquery_expired_title")
+            alert.informativeText = localizationManager.localizedString("pinio_capabilityquery_expired_message")
+            alert.addButtonWithTitle(localizationManager.localizedString("dialog_ok"))
+            alert.alertStyle = .WarningAlertStyle
+            alert.beginSheetModalForWindow(window) { (returnCode) -> Void in
+                if returnCode == NSAlertFirstButtonReturn {
+                }
             }
         }
     }
@@ -94,13 +123,56 @@ class PinIOViewController: NSViewController {
 // MARK: - DetailTab
 extension PinIOViewController : DetailTab {
     func tabWillAppear() {
-        pinIO.start()
+        
+        // Hack: wait a moment because a disconnect could call tabWillAppear just before disconnecting
+        let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
+        dispatch_after(dispatchTime, dispatch_get_main_queue(), { [weak self] in
+            self?.startPinIo()
+        })
+   
+    }
+    
+    func tabWillDissapear() {
+        isTabVisible = false
+        pinIO.stop()
+    }
+    
+    func tabReset() {
+        
+    }
 
+    private func startPinIo() {
+        
+        guard BleManager.sharedInstance.blePeripheralConnected != nil else {
+            DLog("trying to make pionio tab visible while disconnecting")
+            isTabVisible = false
+            return
+        }
+        
+        isTabVisible = true
+        pinIO.start()
+        
         if !isQueryingFinished {
             // Start Uart Manager
             UartManager.sharedInstance.blePeripheral = BleManager.sharedInstance.blePeripheralConnected       // Note: this will start the service discovery
             
-            if (UartManager.sharedInstance.isReady()) {
+            if !infoFinishedScanning {
+                DLog("pinio: waiting for info scanning...")
+                if let window = view.window {
+                    let localizationManager = LocalizationManager.sharedInstance
+                    waitingDiscoveryAlert = NSAlert()
+                    waitingDiscoveryAlert!.messageText = "Waiting for discovery to finish..."
+                    waitingDiscoveryAlert!.addButtonWithTitle(localizationManager.localizedString("dialog_cancel"))
+                    waitingDiscoveryAlert!.alertStyle = .WarningAlertStyle
+                    waitingDiscoveryAlert!.beginSheetModalForWindow(window) { [unowned self] (returnCode) -> Void in
+                        if returnCode == NSAlertFirstButtonReturn {
+                            self.waitingDiscoveryAlert = nil
+                            self.pinIO.endPinQuery(true)
+                        }
+                    }
+                }
+            }
+            else if (UartManager.sharedInstance.isReady()) {
                 setupFirmata()
             }
             else {
@@ -111,92 +183,103 @@ extension PinIOViewController : DetailTab {
             }
         }
     }
-    
-    func tabWillDissapear() {
-        pinIO.stop()
-    }
-    
-    func tabReset() {
-    }
 }
 
 
 // MARK: - NSOutlineViewDataSource
-extension PinIOViewController : NSOutlineViewDataSource {
-    func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
-        return item == nil ? pinIO.pins.count : 0
-    }
-
-    func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
-        return true      // only root objects are expandable
-    }
+extension PinIOViewController : NSTableViewDataSource {
     
-    func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
-        if item == nil {
-            return pinIO.pins[index]
-        }
-        else {
-            return item!     // TODO: fix this
-        }
+    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+        return pinIO.pins.count
     }
-    /*
-    func outlineView(outlineView: NSOutlineView, dataCellForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSCell? {
-        if tableColumn == nil {
-        
-        if let currentItem = item as? PinIOModuleManager.PinData {
-            
-        }
-        else {
-            let currentItem = (item as! [PinIOModuleManager.PinData]).first
-        }
-        }
-    }
-*/
-    
     
 }
 
 // MARK: NSOutlineViewDelegate
 
-extension PinIOViewController: NSOutlineViewDelegate {
-    func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
+extension PinIOViewController: NSTableViewDelegate {
+    
+    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let pin = pinIO.pins[row]
         
-        let pin = item as! PinIOModuleManager.PinData
+        let cell = tableView.makeViewWithIdentifier("PinCell", owner: self) as! PinTableCellView
         
-        var cell = NSTableCellView()
+        cell.setPin(pin, pinIndex:row)
+        cell.delegate = self
         
-        if let columnIdentifier = tableColumn?.identifier {
-            switch(columnIdentifier) {
-       
-            case "DescriptionColumn":
-                cell = outlineView.makeViewWithIdentifier("DescriptionCell", owner: self) as! NSTableCellView
-
-                let analogName = pin.isAnalog ?", Analog \(pin.analogPinId)":""
-                let fullName = "Pin \(pin.digitalPinId)\(analogName)"
-
-                cell.textField?.stringValue = fullName
-            
-            case "ModeColumn":
-                cell = outlineView.makeViewWithIdentifier("ModeCell", owner: self) as! NSTableCellView
-
-                cell.textField?.stringValue = PinIOModuleManager.stringForPinMode(pin.mode)
-                
-            default:
-                cell.textField?.stringValue = ""
-            }
-        }
-
-        return cell
+        return cell;
     }
+
+    func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        if let tableRowOpen = tableRowOpen where row == tableRowOpen {
+            let pinOpen = pinIO.pins[tableRowOpen]
+            return pinOpen.mode == .Input || pinOpen.mode == .Analog ? 106 : 130
+        }
+        else {
+            return 52
+        }
+    }
+    
+    /*
+    func tableViewSelectionDidChange(notification: NSNotification) {
+        onPinToggleCell(baseTableView.selectedRow)
+    }*/
 }
 
+// MARK:  PinTableCellViewDelegate
+extension PinIOViewController : PinTableCellViewDelegate {
+    func onPinToggleCell(pinIndex: Int) {
+        // Change open row
+        let previousTableRowOpen = tableRowOpen
+        tableRowOpen = pinIndex == tableRowOpen ? nil: pinIndex
+        
+        // Animate changes
+        NSAnimationContext.beginGrouping()
+        NSAnimationContext.currentContext().duration = 0.25
+        baseTableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(index: pinIndex))
+        if let previousTableRowOpen = previousTableRowOpen where previousTableRowOpen >= 0 {
+            baseTableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(index: previousTableRowOpen))
+        }
+        let rowRect = baseTableView.rectOfColumn(pinIndex)
+        baseTableView.scrollRectToVisible(rowRect)
+        NSAnimationContext.endGrouping()
+
+    }
+    func onPinModeChanged(mode: PinIOModuleManager.PinData.Mode, pinIndex: Int) {
+        let pin = pinIO.pins[pinIndex]
+        pinIO.setControlMode(pin, mode: mode)
+
+        //DLog("pin \(pin.digitalPinId): mode: \(pin.mode.rawValue)")
+        
+        // Animate changes
+        NSAnimationContext.beginGrouping()
+        NSAnimationContext.currentContext().duration = 0.25
+        baseTableView.reloadDataForRowIndexes(NSIndexSet(index: pinIndex), columnIndexes: NSIndexSet(index: 0))
+        baseTableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(index: pinIndex))
+        let rowRect = baseTableView.rectOfColumn(pinIndex)
+        baseTableView.scrollRectToVisible(rowRect)
+        NSAnimationContext.endGrouping()
+        
+    }
+    func onPinDigitalValueChanged(value: PinIOModuleManager.PinData.DigitalValue, pinIndex: Int) {
+        let pin = pinIO.pins[pinIndex]
+        pinIO.setDigitalValue(pin, value: value)
+
+        baseTableView.reloadDataForRowIndexes(NSIndexSet(index: pinIndex), columnIndexes: NSIndexSet(index: 0))
+    }
+    func onPinAnalogValueChanged(value: Double, pinIndex: Int) {
+        let pin = pinIO.pins[pinIndex]
+        if pinIO.setPMWValue(pin, value: Int(value)) {
+            baseTableView.reloadDataForRowIndexes(NSIndexSet(index: pinIndex), columnIndexes: NSIndexSet(index: 0))
+        }
+    }
+}
 
 // MARK: - PinIOModuleManagerDelegate
 
 extension PinIOViewController: PinIOModuleManagerDelegate {
     func onPinIODidEndPinQuery(isDefaultConfigurationAssumed: Bool) {
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            
             self.isQueryingFinished = true
             self.baseTableView.reloadData()
             
@@ -205,7 +288,7 @@ extension PinIOViewController: PinIOModuleManagerDelegate {
                 window.endSheet(queryCapabilitiesAlert.window)
                 self.queryCapabilitiesAlert = nil
             }
-            
+
             if isDefaultConfigurationAssumed {
                 self.statusLabel.stringValue = "Default Arduino capabilities"
                 self.defaultCapabilitiesAssumedDialog()
@@ -213,10 +296,9 @@ extension PinIOViewController: PinIOModuleManagerDelegate {
             else {
                 self.statusLabel.stringValue = "\(self.pinIO.digitalPinCount) digital pins. \(self.pinIO.analogPinCount) analog pins"
             }
-            
             })
     }
-    
+
     func onPinIODidReceivePinState() {
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.baseTableView.reloadData()
