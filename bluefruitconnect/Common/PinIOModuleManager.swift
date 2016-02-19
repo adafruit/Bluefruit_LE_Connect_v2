@@ -14,26 +14,22 @@ protocol PinIOModuleManagerDelegate {
 }
 
 class PinIOModuleManager: NSObject {
+    // Config
+    private let CAPABILITY_QUERY_TIMEOUT = 5.0      // in seconds
     
     // Constants
     private let SYSEX_START: UInt8 = 0xF0
     private let SYSEX_END: UInt8 = 0xF7
-    private let CAPABILITY_QUERY_TIMEOUT = 5.0
     
-    private let DEFAULT_CELL_COUNT = 20
+    private let DEFAULT_PINS_COUNT = 20
+    private let FIRST_DIGITAL_PIN = 3
     private let LAST_DIGITAL_PIN = 8
     private let FIRST_ANALOG_PIN = 14
-    
-    
-    private let DIGITAL_PIN_SECTION = 0
-    private let ANALOG_PIN_SECTION = 1
-    private let FIRST_DIGITAL_PIN = 3
     private let LAST_ANALOG_PIN = 19
-    private let PORT_COUNT = 3
     
     // Types
     enum UartStatus {
-        case SendData           // Default mode
+        case InputOutput           // Default mode (sending and receiving pin data)
         case QueryCapabilities
         case QueryAnalogMapping
     }
@@ -56,7 +52,7 @@ class PinIOModuleManager: NSObject {
         
         var digitalPinId: Int = -1
         var analogPinId: Int = -1
-        
+
         var isDigital: Bool
         var isAnalog: Bool
         var isPWM: Bool
@@ -74,14 +70,13 @@ class PinIOModuleManager: NSObject {
     }
 
     // Data
-    private var uartStatus = UartStatus.SendData
+    private var uartStatus = UartStatus.InputOutput
     private var queryCapabilitiesTimer : NSTimer?
-    
+
     var pins = [PinData]()
-   // private var portMasks = [UInt8](count: 3, repeatedValue: 0)
 
     var delegate: PinIOModuleManagerDelegate?
-    
+
     var digitalPinCount: Int {
         return pins.filter{$0.isDigital}.count
     }
@@ -89,32 +84,30 @@ class PinIOModuleManager: NSObject {
     var analogPinCount: Int {
         return pins.filter{$0.isAnalog}.count
     }
- 
+
     override init() {
         super.init()
-
     }
-    
+
     deinit {
         cancelQueryCapabilitiesTimer()
     }
 
     func isQueryingCapabilities() -> Bool {
-        return uartStatus != .SendData
+        return uartStatus != .InputOutput
     }
-    
+
     func start() {
         let notificationCenter =  NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "didReceiveData:", name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
     }
-    
+
     func stop() {
         let notificationCenter =  NSNotificationCenter.defaultCenter()
         notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
 
         // Cancel pending queries
         cancelQueryCapabilitiesTimer()
-        
     }
 
     // MARK: Notifications
@@ -131,12 +124,12 @@ class PinIOModuleManager: NSObject {
             }
         }
     }
-    
+
     // MARK: - Query Capabilities
     func reset() {
-        uartStatus == .SendData
+        uartStatus == .InputOutput
         pins = []
-        
+
         // Reset Firmata
         let bytes:[UInt8] = [0xff]
         let data = NSData(bytes: bytes, length: bytes.count)
@@ -146,22 +139,21 @@ class PinIOModuleManager: NSObject {
     private var queryCapabilitiesDataBuffer = [UInt8]()
     func queryCapabilities() {
         DLog("queryCapabilities")
-        
+
         // Set status
         pins = []
         self.uartStatus = .QueryCapabilities
         self.queryCapabilitiesDataBuffer.removeAll()
-        
+
         // Query Capabilities
-        let bytes:[UInt8] = [self.SYSEX_START, 0x6B, self.SYSEX_END]
+        let bytes:[UInt8] = [SYSEX_START, 0x6B, SYSEX_END]
         let data = NSData(bytes: bytes, length: bytes.count)
-        
         UartManager.sharedInstance.sendData(data)
+        
         self.queryCapabilitiesTimer = NSTimer.scheduledTimerWithTimeInterval(self.CAPABILITY_QUERY_TIMEOUT, target: self, selector: "cancelQueryCapabilities", userInfo: nil, repeats: false)
     }
-    
+
     private func receivedQueryCapabilities(data: NSData) {
-        cancelQueryCapabilitiesTimer()
 
         // Read received packet
         var dataBytes = [UInt8](count: data.length, repeatedValue: 0)
@@ -199,6 +191,8 @@ class PinIOModuleManager: NSObject {
     }
     
     private func receivedAnalogMapping(data: NSData) {
+        cancelQueryCapabilitiesTimer()
+        
         // Read received packet
         var dataBytes = [UInt8](count: data.length, repeatedValue: 0)
         data.getBytes(&dataBytes, length: data.length)
@@ -218,10 +212,12 @@ class PinIOModuleManager: NSObject {
         endPinQuery(true)
     }
     
+    
+    // MARK: - Process Capabilities
     func endPinQuery(abortQuery: Bool) {
         
         cancelQueryCapabilitiesTimer()
-        uartStatus = .SendData
+        uartStatus = .InputOutput
         
         var capabilitiesParsed = false
         var mappingDataParsed = false
@@ -352,7 +348,7 @@ class PinIOModuleManager: NSObject {
     private func initializeDefaultPins() {
         pins.removeAll()
         
-        for i in 0..<DEFAULT_CELL_COUNT {
+        for i in 0..<DEFAULT_PINS_COUNT {
             var pin: PinData!
             if ((i == 3) || (i == 5) || (i == 6)) {     // PWM pins
                 pin = PinData(digitalPinId: i,isDigital: true, isAnalog: false, isPWM: false)

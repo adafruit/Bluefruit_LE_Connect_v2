@@ -191,6 +191,7 @@ extension UartManager: CBPeripheralDelegate {
                         else if characteristic.UUID.UUIDString .caseInsensitiveCompare(UartManager.TxCharacteristicUUID) == .OrderedSame {
                             txCharacteristic = characteristic
                             txWriteType = characteristic.properties.contains(.WriteWithoutResponse) ? .WithoutResponse:.WithResponse
+                            DLog("Uart: detected txWriteType: \(txWriteType)")
                         }
                         found = rxCharacteristic != nil && txCharacteristic != nil
                         i++

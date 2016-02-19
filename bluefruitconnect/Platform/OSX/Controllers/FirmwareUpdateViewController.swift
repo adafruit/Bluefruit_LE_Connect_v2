@@ -21,7 +21,7 @@ class FirmwareUpdateViewController: NSViewController {
     // Data
     private let firmwareUpdater = FirmwareUpdater()
     private let dfuUpdateProcess = DfuUpdateProcess()
-    private var updateDialogViewController : UpdateDialogViewController!
+    private var updateDialogViewController : UpdateDialogViewController?
     
     private var boardRelease : BoardInfo?
     private var deviceInfoData : DeviceInfoData?
@@ -177,8 +177,9 @@ class FirmwareUpdateViewController: NSViewController {
             dfuUpdateProcess.delegate = self
 
             // Show dialog
-            updateDialogViewController = self.storyboard?.instantiateControllerWithIdentifier("UpdateDialogViewController") as! UpdateDialogViewController
-            self.presentViewControllerAsModalWindow(updateDialogViewController)
+            updateDialogViewController = (self.storyboard?.instantiateControllerWithIdentifier("UpdateDialogViewController") as! UpdateDialogViewController)
+            updateDialogViewController!.delegate = self
+            self.presentViewControllerAsModalWindow(updateDialogViewController!)
         }
         else {
             onUpdateProcessError("No peripheral conected. Abort update", infoMessage: nil);
@@ -323,9 +324,12 @@ extension FirmwareUpdateViewController : UpdateDialogControllerDelegate {
         dfuUpdateProcess.cancel()
         BleManager.sharedInstance.restoreCentralManager()
 
-        if self.presentingViewController != nil {
-            self.dismissViewController(self)
+        if let updateDialogViewController = updateDialogViewController {
+            dismissViewController(updateDialogViewController);
+            self.updateDialogViewController = nil
         }
+        
+
         updateDialogViewController = nil
     }
 }
@@ -334,10 +338,10 @@ extension FirmwareUpdateViewController : DfuUpdateProcessDelegate {
     func onUpdateProcessSuccess() {
         BleManager.sharedInstance.restoreCentralManager()
         
-        if self.presentingViewController != nil {
-            self.dismissViewController(self)
+        if let updateDialogViewController = updateDialogViewController {
+            dismissViewController(updateDialogViewController);
+            self.updateDialogViewController = nil
         }
-        updateDialogViewController = nil
         
         if let window = self.view.window {
             let alert = NSAlert()
@@ -354,10 +358,10 @@ extension FirmwareUpdateViewController : DfuUpdateProcessDelegate {
     func onUpdateProcessError(errorMessage : String, infoMessage: String?) {
         BleManager.sharedInstance.restoreCentralManager()
         
-        if self.presentingViewController != nil {
-            self.dismissViewController(self)
+        if let updateDialogViewController = updateDialogViewController {
+            dismissViewController(updateDialogViewController);
+            self.updateDialogViewController = nil
         }
-        updateDialogViewController = nil
         
         if let window = self.view.window {
             let alert = NSAlert()
