@@ -66,6 +66,7 @@ class PinIOModuleViewController: ModuleViewController {
     private func setupFirmata() {
         // Reset Firmata and query capabilities
         pinIO.reset()
+        tableRowOpen = nil
         baseTableView.reloadData()
         startQueryCapabilitiesProcess()
     }

@@ -56,6 +56,7 @@ class PinIOViewController: NSViewController {
     private func setupFirmata() {
         // Reset Firmata and query capabilities
         pinIO.reset()
+        tableRowOpen = nil
         baseTableView.reloadData()
         startQueryCapabilitiesProcess()
     }
@@ -123,7 +124,8 @@ class PinIOViewController: NSViewController {
 // MARK: - DetailTab
 extension PinIOViewController : DetailTab {
     func tabWillAppear() {
-        
+        pinIO.start()
+
         // Hack: wait a moment because a disconnect could call tabWillAppear just before disconnecting
         let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
         dispatch_after(dispatchTime, dispatch_get_main_queue(), { [weak self] in
@@ -150,7 +152,6 @@ extension PinIOViewController : DetailTab {
         }
         
         isTabVisible = true
-        pinIO.start()
         
         if !isQueryingFinished {
             // Start Uart Manager
@@ -240,7 +241,7 @@ extension PinIOViewController : PinTableCellViewDelegate {
         if let previousTableRowOpen = previousTableRowOpen where previousTableRowOpen >= 0 {
             baseTableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(index: previousTableRowOpen))
         }
-        let rowRect = baseTableView.rectOfColumn(pinIndex)
+        let rowRect = baseTableView.rectOfRow(pinIndex)
         baseTableView.scrollRectToVisible(rowRect)
         NSAnimationContext.endGrouping()
 
@@ -256,7 +257,7 @@ extension PinIOViewController : PinTableCellViewDelegate {
         NSAnimationContext.currentContext().duration = 0.25
         baseTableView.reloadDataForRowIndexes(NSIndexSet(index: pinIndex), columnIndexes: NSIndexSet(index: 0))
         baseTableView.noteHeightOfRowsWithIndexesChanged(NSIndexSet(index: pinIndex))
-        let rowRect = baseTableView.rectOfColumn(pinIndex)
+        let rowRect = baseTableView.rectOfRow(pinIndex)
         baseTableView.scrollRectToVisible(rowRect)
         NSAnimationContext.endGrouping()
         

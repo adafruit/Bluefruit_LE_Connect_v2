@@ -2411,11 +2411,11 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView identifier="PinCell" horizontalCompressionResistancePriority="752" misplaced="YES" id="FLq-fE-qfq" customClass="PinTableCellView" customModule="Bluefruit_Connect" customModuleProvider="target">
-                                                            <rect key="frame" x="1" y="1" width="445" height="135"/>
+                                                            <rect key="frame" x="1" y="1" width="445" height="130"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1ni-ES-S6t">
-                                                                    <rect key="frame" x="8" y="108" width="339" height="19"/>
+                                                                    <rect key="frame" x="8" y="103" width="339" height="19"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="czv-NL-rKc">
                                                                         <font key="font" metaFont="system" size="15"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2423,7 +2423,7 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6bb-G4-hFZ">
-                                                                    <rect key="frame" x="8" y="91" width="97" height="17"/>
+                                                                    <rect key="frame" x="8" y="86" width="97" height="17"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="303-m7-C5g">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2431,7 +2431,7 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QJU-ZZ-O4G">
-                                                                    <rect key="frame" x="351" y="108" width="86" height="19"/>
+                                                                    <rect key="frame" x="351" y="103" width="86" height="19"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="nMe-ju-Ux0">
                                                                         <font key="font" metaFont="system" size="15"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -2439,7 +2439,7 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZZb-Lh-rVb">
-                                                                    <rect key="frame" x="0.0" y="2" width="445" height="0.0"/>
+                                                                    <rect key="frame" x="0.0" y="-3" width="445" height="0.0"/>
                                                                     <buttonCell key="cell" type="bevel" title="Button" bezelStyle="rounded" alignment="center" transparent="YES" inset="2" id="cdf-Cm-iEM">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="system"/>
@@ -2449,7 +2449,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <segmentedControl verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UA3-jZ-Mab">
-                                                                    <rect key="frame" x="162" y="58" width="121" height="24"/>
+                                                                    <rect key="frame" x="162" y="53" width="121" height="24"/>
                                                                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="PCq-tV-xT6">
                                                                         <font key="font" metaFont="system"/>
                                                                         <segments>
@@ -2462,7 +2462,7 @@
                                                                     </connections>
                                                                 </segmentedControl>
                                                                 <segmentedControl verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kpe-Ki-6hg">
-                                                                    <rect key="frame" x="119" y="17" width="207" height="24"/>
+                                                                    <rect key="frame" x="119" y="12" width="207" height="24"/>
                                                                     <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="4Ok-JJ-OWs">
                                                                         <font key="font" metaFont="system"/>
                                                                         <segments>
@@ -2475,8 +2475,8 @@
                                                                     </connections>
                                                                 </segmentedControl>
                                                                 <slider verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D0T-Sc-gZj">
-                                                                    <rect key="frame" x="162" y="19" width="121" height="20"/>
-                                                                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="dTF-b6-BXS"/>
+                                                                    <rect key="frame" x="162" y="14" width="121" height="20"/>
+                                                                    <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="255" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="dTF-b6-BXS"/>
                                                                     <connections>
                                                                         <action selector="onValueSliderChanged:" target="FLq-fE-qfq" id="yzY-LT-7Fw"/>
                                                                     </connections>

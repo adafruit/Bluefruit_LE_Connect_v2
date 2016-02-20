@@ -6,6 +6,8 @@
 //  Copyright © 2016 Adafruit. All rights reserved.
 //
 
+// http://www.firmata.org/wiki/V2.3ProtocolDetails#Capability_Query
+
 import Foundation
 
 protocol PinIOModuleManagerDelegate {
@@ -98,11 +100,13 @@ class PinIOModuleManager: NSObject {
     }
 
     func start() {
+        DLog("pinio start");
         let notificationCenter =  NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "didReceiveData:", name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
     }
 
     func stop() {
+        DLog("pinio stop");
         let notificationCenter =  NSNotificationCenter.defaultCenter()
         notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
 
@@ -113,6 +117,7 @@ class PinIOModuleManager: NSObject {
     // MARK: Notifications
     func didReceiveData(notification: NSNotification) {
         if let dataChunk = notification.userInfo?["dataChunk"] as? UartDataChunk {
+                   //   DLog("pin io received: \(hexString(dataChunk.data))")
             switch uartStatus {
             case .QueryCapabilities:
                 receivedQueryCapabilities(dataChunk.data)
@@ -192,7 +197,7 @@ class PinIOModuleManager: NSObject {
     
     private func receivedAnalogMapping(data: NSData) {
         cancelQueryCapabilitiesTimer()
-        
+
         // Read received packet
         var dataBytes = [UInt8](count: data.length, repeatedValue: 0)
         data.getBytes(&dataBytes, length: data.length)
@@ -215,7 +220,6 @@ class PinIOModuleManager: NSObject {
     
     // MARK: - Process Capabilities
     func endPinQuery(abortQuery: Bool) {
-        
         cancelQueryCapabilitiesTimer()
         uartStatus = .InputOutput
         
@@ -297,7 +301,7 @@ class PinIOModuleManager: NSObject {
                 }
                 
                 let pinData = PinData(digitalPinId: pinNumber, isDigital: isInput && isOutput, isAnalog: isAnalog, isPWM: isPWM)
-                DLog("pin id: \(pinNumber) digital: \(pinData.isDigital) analog: \(pinData.isAnalog) ")
+                DLog("pin id: \(pinNumber) digital: \(pinData.isDigital) analog: \(pinData.isAnalog)")
                 self.pins.append(pinData)
             }
             
@@ -350,7 +354,7 @@ class PinIOModuleManager: NSObject {
         
         for i in 0..<DEFAULT_PINS_COUNT {
             var pin: PinData!
-            if ((i == 3) || (i == 5) || (i == 6)) {     // PWM pins
+            if (i == 3 || i == 5 || i == 6) {     // PWM pins
                 pin = PinData(digitalPinId: i,isDigital: true, isAnalog: false, isPWM: false)
             }
             else if (i >= FIRST_DIGITAL_PIN && i <= LAST_DIGITAL_PIN) {    // Digital pin
@@ -373,8 +377,8 @@ class PinIOModuleManager: NSObject {
         //Enable Read Reports by port
         let ports:[UInt8] = [0,1,2]
         for port in ports {
-            let data0:UInt8 = 0xD0 + port        //start port 0 digital reporting (0xD0 + port#)
-            let data1:UInt8 = 1                  //enable
+            let data0:UInt8 = 0xD0 + port        // start port 0 digital reporting (0xD0 + port#)
+            let data1:UInt8 = 1                  // enable
             let bytes:[UInt8] = [data0, data1]
             let data = NSData(bytes: bytes, length: 2)
             UartManager.sharedInstance.sendData(data)
@@ -427,16 +431,6 @@ class PinIOModuleManager: NSObject {
         let port = UInt8(pin.digitalPinId / 8)
         let data0 = 0x90 + port
         
-        /*
-        let pinIndex = UInt8(pin.digitalPinId) - (port*8)
-        var newMask = UInt8(value.rawValue * Int(powf(2, Float(pinIndex))))
-        portMasks[Int(port)] &= ~(1 << pinIndex)    //prep the saved mask by zeroing this pin's corresponding bit
-        newMask |= portMasks[Int(port)]             //merge with saved port state
-        portMasks[Int(port)] = newMask
-        var data1 = newMask<<1; data1 >>= 1         //remove MSB
-        let data2 = newMask >> 7                    //use data1's MSB as data2's LSB
-*/
-        
         let offset = 8 * Int(port)
         var state: Int = 0
         for var i = 0; i <= 7; i++ {
@@ -447,22 +441,13 @@ class PinIOModuleManager: NSObject {
             }
         }
 
-        let data1 = UInt8(state & 0x7f)         //only 7 bottom bits
-        let data2 = UInt8(state >> 7)           //top bit in second byte
+        let data1 = UInt8(state & 0x7f)         // only 7 bottom bits
+        let data2 = UInt8(state >> 7)           // top bit in second byte
         
 
         let bytes:[UInt8] = [data0, data1, data2]
         let data = NSData(bytes: bytes, length: bytes.count)
         UartManager.sharedInstance.sendData(data)
-    }
-    
-    private func setAnalogValue(pin: PinData, value: Int) {
-        guard pin.mode == .Analog else {
-            DLog("Error setting analog value to pin: \(pin.digitalPinId)")
-            return
-        }
-        
-        pin.analogValue = value
     }
     
     private var lastSentAnalogValueTime : NSTimeInterval = 0
@@ -503,7 +488,8 @@ class PinIOModuleManager: NSObject {
         }
         
         // Check if we received a pin state response
-        if receivedPinStateDataBuffer.count >= 5 && receivedPinStateDataBuffer[0] == SYSEX_START && receivedPinStateDataBuffer[1] == 0x6e && receivedPinStateDataBuffer.indexOf(SYSEX_END) != nil {
+        let endIndex = receivedPinStateDataBuffer.indexOf(SYSEX_END)
+        if receivedPinStateDataBuffer.count >= 5 && receivedPinStateDataBuffer[0] == SYSEX_START && receivedPinStateDataBuffer[1] == 0x6e && endIndex != nil {
             /* pin state response
             * -------------------------------
             * 0  START_SYSEX (0xF0) (MIDI System Exclusive)
@@ -523,14 +509,19 @@ class PinIOModuleManager: NSObject {
             
             if let index = indexOfPinWithDigitalId(pinDigitalId), pinMode = pinMode {
                 let pin = pins[index]
-                setControlMode(pin, mode: pinMode)
-                if (pinMode == .Analog || pinMode == .PWM || pinMode == .Servo) && receivedPinStateDataBuffer.count >= 6 {
-                    let analogValue = pinState + Int(receivedPinStateDataBuffer[5])<<7
-                    setAnalogValue(pin, value: analogValue)
+                pin.mode = pinMode
+                if (pinMode == .Analog || pinMode == .PWM || pinMode == .Servo) {
+                    if receivedPinStateDataBuffer.count >= 6 {
+                        let analogValue = pinState + (Int(receivedPinStateDataBuffer[5])<<7)
+                        pin.analogValue = analogValue
+                    }
+                    else {
+                        DLog("Warning: received pinstate for analog pin without analogValue");
+                    }
                 }
                 else {
                     if let digitalValue = PinData.DigitalValue(rawValue: pinState) {
-                        setDigitalValue(pin, value: digitalValue)
+                         pin.digitalValue = digitalValue
                     }
                     else {
                         DLog("Warning: received pinstate with unknown digital value. Valid (0,1). Received: \(pinState)")
@@ -542,7 +533,7 @@ class PinIOModuleManager: NSObject {
             }
             
             // Remove from the buffer the bytes parsed
-            if let endIndex = receivedPinStateDataBuffer.indexOf(SYSEX_END) {
+            if let endIndex = endIndex {
                 receivedPinStateDataBuffer.removeFirst(endIndex)
             }
         }
@@ -563,7 +554,7 @@ class PinIOModuleManager: NSObject {
                     let port = Int(receivedPinStateDataBuffer[0]) - 0x90
                     var pinStates = Int(receivedPinStateDataBuffer[1])
                     pinStates |= Int(receivedPinStateDataBuffer[2]) << 7           // PORT 0: use LSB of third byte for pin7, PORT 1: pins 14 & 15
-                    updateForPinStates(pinStates, port: port)
+                    updatePinsForReceivedStates(pinStates, port: port)
                 }
                 else if isAnalogReportingMessage {       // Analog Reporting (per pin)
                     
@@ -597,16 +588,16 @@ class PinIOModuleManager: NSObject {
                     isDigitalReportingMessage = false
                     isAnalogReportingMessage = false
                 }
-                
             }
             
-            // Refresh UI
-            delegate?.onPinIODidReceivePinState()
         }
+        
+        // Refresh UI
+        delegate?.onPinIODidReceivePinState()
     }
     
     
-    private func updateForPinStates(pinStates:Int, port:Int) {
+    private func updatePinsForReceivedStates(pinStates:Int, port:Int) {
         let offset = 8 * port
         
         // Iterate through all pins
@@ -620,9 +611,6 @@ class PinIOModuleManager: NSObject {
                 let pin = pins[index]
                 pin.digitalValue = digitalValue
                 DLog("update pinid: \(digitalId) digitalValue: \(digitalValue)")
-            }
-            else {
-                //DLog("Warning: received pinstate for unknown digital pin id: \(digitalId) digitalValue: \(state)")
             }
         }
     }
@@ -643,7 +631,7 @@ class PinIOModuleManager: NSObject {
         case .Servo:
             modeString = "Servo"
         default:
-            modeString = "NOT FOUND"
+            modeString = "Unkwnown"
         }
         
         return modeString
