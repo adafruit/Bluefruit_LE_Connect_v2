@@ -130,29 +130,32 @@ class PeripheralDetailsViewController: UITabBarController {
         let blePeripheral = BleManager.sharedInstance.blePeripheralConnected
         blePeripheral?.peripheral.delegate = nil
     }
-
+    
     func didDisconnectFromPeripheral(notification : NSNotification) {
         let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
-//        if isFullScreen {
-            dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-                DLog("detail: disconnection")
-                
-                if !isFullScreen {
-                    DLog("detail: show empty")
-                    self.showEmpty(true)
-                    self.emptyViewController.setConnecting(false)
-                }
-                
-                let localizationManager = LocalizationManager.sharedInstance
-                let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("peripherallist_peripheraldisconnected"), preferredStyle: .Alert)
-                let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler: { (_) -> Void in
+        
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            DLog("detail: disconnection")
+            
+            if !isFullScreen {
+                DLog("detail: show empty")
+                self.showEmpty(true)
+                self.emptyViewController.setConnecting(false)
+            }
+            
+            let localizationManager = LocalizationManager.sharedInstance
+            let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("peripherallist_peripheraldisconnected"), preferredStyle: .Alert)
+            let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler: { (_) -> Void in
+                if isFullScreen {
                     // Back to peripheral list
-                    self.navigationController?.popToRootViewControllerAnimated(true)
-                })
-                alertController.addAction(okAction)
-                self.presentViewController(alertController, animated: true, completion: nil)
-                })
- //       }
+                    if let parentNavigationController = (self.navigationController?.parentViewController as? UINavigationController) {
+                        parentNavigationController.popToRootViewControllerAnimated(true)
+                    }
+                }
+            })
+            alertController.addAction(okAction)
+            self.presentViewController(alertController, animated: true, completion: nil)
+            })
     }
     
     func showEmpty(showEmpty : Bool) {

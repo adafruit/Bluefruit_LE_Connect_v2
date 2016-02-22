@@ -113,6 +113,7 @@
 		A9D720601C73D5E9001321D3 /* PinIOViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D7205F1C73D5E9001321D3 /* PinIOViewController.swift */; };
 		A9E016BE1C70C79800CEB54C /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E016BD1C70C79800CEB54C /* AboutViewController.swift */; };
 		A9E016C21C70D72900CEB54C /* StyledSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E016C11C70D72900CEB54C /* StyledSubview.swift */; };
+		A9E8AE561C7AECA500DFEFB0 /* ScanningAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8AE551C7AECA500DFEFB0 /* ScanningAnimationViewController.swift */; };
 		A9EC0F891C6E87120019790F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EC0F881C6E87120019790F /* GradientView.swift */; };
 		A9EC0F931C6E99BF0019790F /* ControllerModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EC0F8B1C6E99BF0019790F /* ControllerModuleManager.swift */; };
 		A9EC0F941C6E99BF0019790F /* DfuUpdateProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EC0F8C1C6E99BF0019790F /* DfuUpdateProcess.swift */; };
@@ -243,6 +244,7 @@
 		A9D7205F1C73D5E9001321D3 /* PinIOViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinIOViewController.swift; sourceTree = "<group>"; };
 		A9E016BD1C70C79800CEB54C /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		A9E016C11C70D72900CEB54C /* StyledSubview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledSubview.swift; sourceTree = "<group>"; };
+		A9E8AE551C7AECA500DFEFB0 /* ScanningAnimationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningAnimationViewController.swift; sourceTree = "<group>"; };
 		A9EC0F881C6E87120019790F /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		A9EC0F8B1C6E99BF0019790F /* ControllerModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerModuleManager.swift; sourceTree = "<group>"; };
 		A9EC0F8C1C6E99BF0019790F /* DfuUpdateProcess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuUpdateProcess.swift; sourceTree = "<group>"; };
@@ -522,6 +524,7 @@
 				A92088AF1C726DDD002FF8E8 /* HelpViewController.swift */,
 				A94F5A2F1C5AD3A4009CC9B8 /* ModuleViewController.swift */,
 				A91F9E9C1C657856007656B7 /* EmptyDetailsViewController.swift */,
+				A9E8AE551C7AECA500DFEFB0 /* ScanningAnimationViewController.swift */,
 				A9EC0FA01C6EC1240019790F /* Info */,
 				A91F838F1C68EDE80023C168 /* Uart */,
 				A9B41F861C69675400E4A666 /* Dfu */,
@@ -944,6 +947,7 @@
 				A94F5A431C5AE28C009CC9B8 /* DFUOperationsDetails.m in Sources */,
 				A94F5A441C5AE28F009CC9B8 /* FileOperations.m in Sources */,
 				A9EC0FB01C6F519D0019790F /* DfuFilesPickerDialogViewController.swift in Sources */,
+				A9E8AE561C7AECA500DFEFB0 /* ScanningAnimationViewController.swift in Sources */,
 				A91F83A21C68F4B40023C168 /* UartSettingTableViewCell.swift in Sources */,
 				A92883CB1C5AF8DF00CC1566 /* PeripheralTableViewCell.swift in Sources */,
 				A92088B41C7357D5002FF8E8 /* StyleConfig.swift in Sources */,
