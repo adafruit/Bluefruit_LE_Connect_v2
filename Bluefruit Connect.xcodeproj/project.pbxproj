@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		35F15D3D4C4415BEC370CFF1 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 831BE235D441789FAD53B217 /* Pods_iOS.framework */; };
 		67C430DCA4D3FEBACE5F15F6 /* Pods_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B84ECF983BB30BDDF6A2FB4 /* Pods_OSX.framework */; };
+		A90D29CA1C7E108E003EB6D4 /* NeopixelModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D29C91C7E108E003EB6D4 /* NeopixelModuleViewController.swift */; };
 		A91F839D1C68F06C0023C168 /* UartModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91F83911C68EDE80023C168 /* UartModuleViewController.swift */; };
 		A91F839E1C68F0760023C168 /* UartMqttSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91F83921C68EDE80023C168 /* UartMqttSettingsViewController.swift */; };
 		A91F839F1C68F0790023C168 /* UartSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91F83931C68EDE80023C168 /* UartSettingsViewController.swift */; };
@@ -89,6 +90,8 @@
 		A94F5A511C5AF098009CC9B8 /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AB1BB6493A002521F7 /* BleManager.swift */; };
 		A94F5A521C5AF09B009CC9B8 /* BlePeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AC1BB6493A002521F7 /* BlePeripheral.swift */; };
 		A94F5A591C5AF1CA009CC9B8 /* StatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94F5A581C5AF1CA009CC9B8 /* StatusManager.swift */; };
+		A965674F1C7E25B0009DB0F4 /* NeopixelModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A965674E1C7E25B0009DB0F4 /* NeopixelModuleManager.swift */; };
+		A96567501C7E25B0009DB0F4 /* NeopixelModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A965674E1C7E25B0009DB0F4 /* NeopixelModuleManager.swift */; };
 		A96A7A031C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m in Sources */ = {isa = PBXBuildFile; fileRef = A96A79FE1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m */; };
 		A96A7A071C74F329000C37E3 /* Synchronice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96A7A061C74F329000C37E3 /* Synchronice.swift */; };
 		A96A7A081C74F329000C37E3 /* Synchronice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96A7A061C74F329000C37E3 /* Synchronice.swift */; };
@@ -97,6 +100,14 @@
 		A98AE3AD1C42AB5000FA8E80 /* UartDataExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */; };
 		A98E03951BBA2A0300F8924C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A98E03941BBA2A0300F8924C /* Credits.rtf */; };
 		A98E03A51BBA406700F8924C /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98E03A41BBA406700F8924C /* DefaultPreferences.plist */; };
+		A9941C131C80F31000AD4016 /* NeopixelBoardSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9941C121C80F31000AD4016 /* NeopixelBoardSelectorViewController.swift */; };
+		A9941C151C80F41300AD4016 /* NeopixelBoards.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9941C141C80F41300AD4016 /* NeopixelBoards.plist */; };
+		A9941C161C80F41300AD4016 /* NeopixelBoards.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9941C141C80F41300AD4016 /* NeopixelBoards.plist */; };
+		A9941C181C812A9D00AD4016 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9941C171C812A9D00AD4016 /* NeopixelDefaultPalette.plist */; };
+		A9941C191C812A9D00AD4016 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9941C171C812A9D00AD4016 /* NeopixelDefaultPalette.plist */; };
+		A9941C1B1C812D6600AD4016 /* Color+DarkerLighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9941C1A1C812D6600AD4016 /* Color+DarkerLighter.swift */; };
+		A9941C1C1C812D6600AD4016 /* Color+DarkerLighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9941C1A1C812D6600AD4016 /* Color+DarkerLighter.swift */; };
+		A9941C1E1C813EF700AD4016 /* NeopixelColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9941C1D1C813EF700AD4016 /* NeopixelColorPickerViewController.swift */; };
 		A99CE0571C6D62AC0051C818 /* ControllerPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99CE0561C6D62AC0051C818 /* ControllerPadViewController.swift */; };
 		A99CE05E1C6E1EE10051C818 /* UIImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99CE05D1C6E1EE10051C818 /* UIImage+Tint.swift */; };
 		A99CE0601C6E4F000051C818 /* ControllerComponentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99CE05F1C6E4F000051C818 /* ControllerComponentsTableViewCell.swift */; };
@@ -114,6 +125,7 @@
 		A9E016BE1C70C79800CEB54C /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E016BD1C70C79800CEB54C /* AboutViewController.swift */; };
 		A9E016C21C70D72900CEB54C /* StyledSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E016C11C70D72900CEB54C /* StyledSubview.swift */; };
 		A9E8AE561C7AECA500DFEFB0 /* ScanningAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E8AE551C7AECA500DFEFB0 /* ScanningAnimationViewController.swift */; };
+		A9E8AE571C7B0A3A00DFEFB0 /* NeopixelViewControllerOSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = A949AA6F1C5AC977002F960B /* NeopixelViewControllerOSX.swift */; };
 		A9EC0F891C6E87120019790F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EC0F881C6E87120019790F /* GradientView.swift */; };
 		A9EC0F931C6E99BF0019790F /* ControllerModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EC0F8B1C6E99BF0019790F /* ControllerModuleManager.swift */; };
 		A9EC0F941C6E99BF0019790F /* DfuUpdateProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EC0F8C1C6E99BF0019790F /* DfuUpdateProcess.swift */; };
@@ -146,6 +158,7 @@
 		9548835CA087C4D34EDACE99 /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		9B84ECF983BB30BDDF6A2FB4 /* Pods_OSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A48B97DA4AFA7EB22050A2F8 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A90D29C91C7E108E003EB6D4 /* NeopixelModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelModuleViewController.swift; sourceTree = "<group>"; };
 		A91F83911C68EDE80023C168 /* UartModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartModuleViewController.swift; sourceTree = "<group>"; };
 		A91F83921C68EDE80023C168 /* UartMqttSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartMqttSettingsViewController.swift; sourceTree = "<group>"; };
 		A91F83931C68EDE80023C168 /* UartSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSettingsViewController.swift; sourceTree = "<group>"; };
@@ -196,7 +209,7 @@
 		A949AA6C1C5AC977002F960B /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		A949AA6D1C5AC977002F960B /* MainSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		A949AA6E1C5AC977002F960B /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
-		A949AA6F1C5AC977002F960B /* NeopixelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelViewController.swift; sourceTree = "<group>"; };
+		A949AA6F1C5AC977002F960B /* NeopixelViewControllerOSX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelViewControllerOSX.swift; sourceTree = "<group>"; };
 		A949AA701C5AC977002F960B /* PeripheralListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralListViewController.swift; sourceTree = "<group>"; };
 		A949AA711C5AC977002F960B /* PeripheralTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralTableCellView.swift; sourceTree = "<group>"; };
 		A949AA721C5AC977002F960B /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
@@ -220,6 +233,7 @@
 		A94F5A361C5AD41A009CC9B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A94F5A4D1C5AE501009CC9B8 /* BluefruitConnect-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BluefruitConnect-Bridging-Header.h"; sourceTree = "<group>"; };
 		A94F5A581C5AF1CA009CC9B8 /* StatusManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusManager.swift; sourceTree = "<group>"; };
+		A965674E1C7E25B0009DB0F4 /* NeopixelModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelModuleManager.swift; sourceTree = "<group>"; };
 		A96A79FD1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ENHThrottledReloading.h"; sourceTree = "<group>"; };
 		A96A79FE1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ENHThrottledReloading.m"; sourceTree = "<group>"; };
 		A96A7A061C74F329000C37E3 /* Synchronice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronice.swift; sourceTree = "<group>"; };
@@ -229,6 +243,11 @@
 		A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartDataExport.swift; sourceTree = "<group>"; };
 		A98E03941BBA2A0300F8924C /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A98E03A41BBA406700F8924C /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
+		A9941C121C80F31000AD4016 /* NeopixelBoardSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelBoardSelectorViewController.swift; sourceTree = "<group>"; };
+		A9941C141C80F41300AD4016 /* NeopixelBoards.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelBoards.plist; sourceTree = "<group>"; };
+		A9941C171C812A9D00AD4016 /* NeopixelDefaultPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelDefaultPalette.plist; sourceTree = "<group>"; };
+		A9941C1A1C812D6600AD4016 /* Color+DarkerLighter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Color+DarkerLighter.swift"; sourceTree = "<group>"; };
+		A9941C1D1C813EF700AD4016 /* NeopixelColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelColorPickerViewController.swift; sourceTree = "<group>"; };
 		A99CE0561C6D62AC0051C818 /* ControllerPadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerPadViewController.swift; sourceTree = "<group>"; };
 		A99CE05D1C6E1EE10051C818 /* UIImage+Tint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tint.swift"; sourceTree = "<group>"; };
 		A99CE05F1C6E4F000051C818 /* ControllerComponentsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerComponentsTableViewCell.swift; sourceTree = "<group>"; };
@@ -296,6 +315,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A90D29C81C7E0F6D003EB6D4 /* NeoPixel */ = {
+			isa = PBXGroup;
+			children = (
+				A90D29C91C7E108E003EB6D4 /* NeopixelModuleViewController.swift */,
+				A9941C121C80F31000AD4016 /* NeopixelBoardSelectorViewController.swift */,
+				A9941C1D1C813EF700AD4016 /* NeopixelColorPickerViewController.swift */,
+			);
+			path = NeoPixel;
+			sourceTree = "<group>";
+		};
 		A91F838F1C68EDE80023C168 /* Uart */ = {
 			isa = PBXGroup;
 			children = (
@@ -341,6 +370,7 @@
 			children = (
 				A91F9ED21C667CA6007656B7 /* NSColor+hex.h */,
 				A91F9ED31C667CA6007656B7 /* NSColor+hex.m */,
+				A9941C1A1C812D6600AD4016 /* Color+DarkerLighter.swift */,
 			);
 			path = Colors;
 			sourceTree = "<group>";
@@ -364,6 +394,8 @@
 				A98E03941BBA2A0300F8924C /* Credits.rtf */,
 				A98E03A41BBA406700F8924C /* DefaultPreferences.plist */,
 				A91F9E8F1C65179E007656B7 /* localization */,
+				A9941C141C80F41300AD4016 /* NeopixelBoards.plist */,
+				A9941C171C812A9D00AD4016 /* NeopixelDefaultPalette.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -496,7 +528,7 @@
 				A949AA741C5AC977002F960B /* UartViewController.swift */,
 				A9D7205F1C73D5E9001321D3 /* PinIOViewController.swift */,
 				A9AEF90E1C7560C100E381C0 /* PinTableCellView.swift */,
-				A949AA6F1C5AC977002F960B /* NeopixelViewController.swift */,
+				A949AA6F1C5AC977002F960B /* NeopixelViewControllerOSX.swift */,
 				A949AA6B1C5AC977002F960B /* FirmwareUpdateViewController.swift */,
 				A949AA751C5AC977002F960B /* UpdateDialogViewController.swift */,
 			);
@@ -530,6 +562,7 @@
 				A9B41F861C69675400E4A666 /* Dfu */,
 				A92E06831C6D5EF900BECBBA /* Controller */,
 				A9EC0FA91C6EDBE10019790F /* PinIO */,
+				A90D29C81C7E0F6D003EB6D4 /* NeoPixel */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -678,6 +711,7 @@
 				A9EC0F8C1C6E99BF0019790F /* DfuUpdateProcess.swift */,
 				A9EC0F8B1C6E99BF0019790F /* ControllerModuleManager.swift */,
 				A9D7205C1C73C32F001321D3 /* PinIOModuleManager.swift */,
+				A965674E1C7E25B0009DB0F4 /* NeopixelModuleManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -819,9 +853,11 @@
 			files = (
 				A94F5A381C5AD41A009CC9B8 /* Main.storyboard in Resources */,
 				A91F9E931C65179E007656B7 /* Localizable.strings in Resources */,
+				A9941C161C80F41300AD4016 /* NeopixelBoards.plist in Resources */,
 				A94F5A471C5AE2A4009CC9B8 /* DefaultPreferences.plist in Resources */,
 				A949AAA61C5ACFAB002F960B /* Assets.xcassets in Resources */,
 				A94F5A371C5AD41A009CC9B8 /* LaunchScreen.storyboard in Resources */,
+				A9941C191C812A9D00AD4016 /* NeopixelDefaultPalette.plist in Resources */,
 				A94F5A461C5AE2A1009CC9B8 /* GattUUIDs.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -832,9 +868,11 @@
 			files = (
 				A94370A71BB6384B002521F7 /* GattUUIDs.plist in Resources */,
 				A91F9E921C65179E007656B7 /* Localizable.strings in Resources */,
+				A9941C151C80F41300AD4016 /* NeopixelBoards.plist in Resources */,
 				A949AA641C5AC8C3002F960B /* Main.storyboard in Resources */,
 				A949AA611C5AC85A002F960B /* Images.xcassets in Resources */,
 				A98E03A51BBA406700F8924C /* DefaultPreferences.plist in Resources */,
+				A9941C181C812A9D00AD4016 /* NeopixelDefaultPalette.plist in Resources */,
 				A98E03951BBA2A0300F8924C /* Credits.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -942,12 +980,14 @@
 				A91F839F1C68F0790023C168 /* UartSettingsViewController.swift in Sources */,
 				A9E016C21C70D72900CEB54C /* StyledSubview.swift in Sources */,
 				A94F5A491C5AE3D8009CC9B8 /* ReleasesParser.m in Sources */,
+				A90D29CA1C7E108E003EB6D4 /* NeopixelModuleViewController.swift in Sources */,
 				A9EC0F951C6E99BF0019790F /* DfuUpdateProcess.swift in Sources */,
 				A91F9EBC1C666E6D007656B7 /* MqttSettings.swift in Sources */,
 				A94F5A431C5AE28C009CC9B8 /* DFUOperationsDetails.m in Sources */,
 				A94F5A441C5AE28F009CC9B8 /* FileOperations.m in Sources */,
 				A9EC0FB01C6F519D0019790F /* DfuFilesPickerDialogViewController.swift in Sources */,
 				A9E8AE561C7AECA500DFEFB0 /* ScanningAnimationViewController.swift in Sources */,
+				A9941C131C80F31000AD4016 /* NeopixelBoardSelectorViewController.swift in Sources */,
 				A91F83A21C68F4B40023C168 /* UartSettingTableViewCell.swift in Sources */,
 				A92883CB1C5AF8DF00CC1566 /* PeripheralTableViewCell.swift in Sources */,
 				A92088B41C7357D5002FF8E8 /* StyleConfig.swift in Sources */,
@@ -971,8 +1011,10 @@
 				A92E06871C6D5EF900BECBBA /* ControllerSensorTableViewCell.swift in Sources */,
 				A92088B61C73910D002FF8E8 /* UIImage+Color.swift in Sources */,
 				A94F5A3F1C5AE279009CC9B8 /* XMLDictionary.m in Sources */,
+				A9941C1C1C812D6600AD4016 /* Color+DarkerLighter.swift in Sources */,
 				A99CE05E1C6E1EE10051C818 /* UIImage+Tint.swift in Sources */,
 				A92088B21C727CD5002FF8E8 /* StyledButton.swift in Sources */,
+				A96567501C7E25B0009DB0F4 /* NeopixelModuleManager.swift in Sources */,
 				A9EC0F9F1C6E99BF0019790F /* UartModuleManager.swift in Sources */,
 				A94201F51C6A65B500C87989 /* DfuDialogViewController.swift in Sources */,
 				A92E067A1C6D18DF00BECBBA /* MqttSettingsValueAndSelector.swift in Sources */,
@@ -999,6 +1041,7 @@
 				A9D7205E1C73C32F001321D3 /* PinIOModuleManager.swift in Sources */,
 				A9EC0F9B1C6E99BF0019790F /* UartDataChunk.swift in Sources */,
 				A9EC0FAC1C6EDBE10019790F /* PinIOModuleViewController.swift in Sources */,
+				A9941C1E1C813EF700AD4016 /* NeopixelColorPickerViewController.swift in Sources */,
 				A94F5A521C5AF09B009CC9B8 /* BlePeripheral.swift in Sources */,
 				A99CE0641C6E69090051C818 /* ISColorWheel.m in Sources */,
 				A9EC0F971C6E99BF0019790F /* PeripheralList.swift in Sources */,
@@ -1027,6 +1070,7 @@
 				A91F9EAD1C663939007656B7 /* SeparatorView.swift in Sources */,
 				A94370D21BB64959002521F7 /* FileOperations.m in Sources */,
 				A94370D71BB649AE002521F7 /* Utility.m in Sources */,
+				A965674F1C7E25B0009DB0F4 /* NeopixelModuleManager.swift in Sources */,
 				A94370D11BB64959002521F7 /* DFUOperationsDetails.m in Sources */,
 				A91F9ED41C667CA6007656B7 /* NSColor+hex.m in Sources */,
 				A91F9E8D1C650C31007656B7 /* LocalizationManager.swift in Sources */,
@@ -1043,6 +1087,7 @@
 				A982968B1BB222D700DD478C /* LogHelper.swift in Sources */,
 				A9FE75731BB9CF1000F7A5BF /* XMLDictionary.m in Sources */,
 				A94B85101BB65C48007B88C7 /* FirmwareUpdater.m in Sources */,
+				A9E8AE571C7B0A3A00DFEFB0 /* NeopixelViewControllerOSX.swift in Sources */,
 				A9BEA6421C6690E6005F54D6 /* CocoaCompatibility.swift in Sources */,
 				A949AA801C5AC977002F960B /* UartViewController.swift in Sources */,
 				A9EC0F941C6E99BF0019790F /* DfuUpdateProcess.swift in Sources */,
@@ -1050,6 +1095,7 @@
 				A949AA771C5AC977002F960B /* FirmwareUpdateViewController.swift in Sources */,
 				A94370BA1BB6493A002521F7 /* BleManager.swift in Sources */,
 				A94F5A591C5AF1CA009CC9B8 /* StatusManager.swift in Sources */,
+				A9941C1B1C812D6600AD4016 /* Color+DarkerLighter.swift in Sources */,
 				A949AA7A1C5AC977002F960B /* MainWindowController.swift in Sources */,
 				A9EC0F961C6E99BF0019790F /* PeripheralList.swift in Sources */,
 				A949AA781C5AC977002F960B /* InfoViewController.swift in Sources */,

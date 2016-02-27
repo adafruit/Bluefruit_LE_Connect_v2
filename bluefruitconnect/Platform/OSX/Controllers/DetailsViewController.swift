@@ -253,19 +253,19 @@ class DetailsViewController: NSViewController {
                     
                     // Neopixel Tab
                     if (hasUart && Config.isNeoPixelModuleEnabled) {
-                        /*
-                        var neopixelTabIndex = self.indexForTabWithClass("NeopixelViewController")
+                        
+                        var neopixelTabIndex = self.indexForTabWithClass("NeopixelViewControllerOSX")
                         if neopixelTabIndex < 0 {
                             // Add Neopixel tab
-                            let neopixelViewController = self.storyboard?.instantiateControllerWithIdentifier("NeopixelViewController") as! NeopixelViewController
+                            let neopixelViewController = self.storyboard?.instantiateControllerWithIdentifier("NeopixelViewControllerOSX") as! NeopixelViewControllerOSX
                             let neopixelTabViewItem = NSTabViewItem(viewController: neopixelViewController)
                             neopixelTabIndex = currentTabIndex++
                             self.modeTabView.insertTabViewItem(neopixelTabViewItem, atIndex: neopixelTabIndex)
                         }
                         
-                        let neopixelViewController = self.modeTabView.tabViewItems[neopixelTabIndex].viewController as! NeopixelViewController
+                        let neopixelViewController = self.modeTabView.tabViewItems[neopixelTabIndex].viewController as! NeopixelViewControllerOSX
                         neopixelViewController.tabReset()
-*/
+
                     }
 
                     })

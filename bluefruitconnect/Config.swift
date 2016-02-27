@@ -34,7 +34,7 @@ struct Config {
     static let isPinIOModuleEnabled = true
     static let isControllerModuleEnabled = false        // Note: not implemented yet
     static let isDfuModuleEnabled = true
-    static let isNeoPixelModuleEnabled = false
+    static let isNeoPixelModuleEnabled = Config.DEBUG && false
     
     #else       // iOS, tvOS
     
@@ -42,10 +42,7 @@ struct Config {
     static let isPinIOModuleEnabled = true
     static let isControllerModuleEnabled = true
     static let isDfuModuleEnabled = true
-    static let isNeoPixelModuleEnabled = false          // Note: not implemented yet
-    
+    static let isNeoPixelModuleEnabled = Config.DEBUG && true
     #endif
-    
-
     
 }

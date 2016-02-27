@@ -45,7 +45,7 @@ class PinIOViewController: NSViewController {
     
     func uartIsReady(notification: NSNotification) {
         DLog("Uart is ready")
-        let notificationCenter =  NSNotificationCenter.defaultCenter()
+        let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
@@ -131,7 +131,6 @@ extension PinIOViewController : DetailTab {
         dispatch_after(dispatchTime, dispatch_get_main_queue(), { [weak self] in
             self?.startPinIo()
         })
-   
     }
     
     func tabWillDissapear() {

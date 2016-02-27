@@ -35,7 +35,7 @@ class PinIOModuleManager: NSObject {
         case QueryCapabilities
         case QueryAnalogMapping
     }
-    
+
     class PinData {
         enum Mode: UInt8 {
             case Unknown = 255

@@ -122,8 +122,17 @@ class PeripheralDetailsViewController: UITabBarController {
     func willDisconnectFromPeripheral(notification : NSNotification) {
         DLog("detail: peripheral willDisconnect")
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            self.showEmpty(true)
-            self.emptyViewController.setConnecting(false)
+            let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
+            if isFullScreen {       // executed when bluetooth is stopped
+                // Back to peripheral list
+                if let parentNavigationController = (self.navigationController?.parentViewController as? UINavigationController) {
+                    parentNavigationController.popToRootViewControllerAnimated(true)
+                }
+            }
+            else {
+                self.showEmpty(true)
+                self.emptyViewController.setConnecting(false)
+            }
             //self.cancelRssiTimer()
             })
         
@@ -218,6 +227,16 @@ class PeripheralDetailsViewController: UITabBarController {
                             controllerViewController.tabBarItem.image = UIImage(named: "tab_controller_icon")
                             
                             self.viewControllers?.append(controllerViewController)
+                        }
+                        
+                        // Neopixel Tab
+                        if Config.isNeoPixelModuleEnabled {
+                            let neopixelsViewController = self.storyboard!.instantiateViewControllerWithIdentifier("NeopixelModuleViewController") as! NeopixelModuleViewController
+                            
+                            neopixelsViewController.tabBarItem.title = localizationManager.localizedString("neopixels_tab_title")      // Tab title
+                            neopixelsViewController.tabBarItem.image = UIImage(named: "tab_neopixel_icon")
+                            
+                            self.viewControllers?.append(neopixelsViewController)
                         }
                     }
                     

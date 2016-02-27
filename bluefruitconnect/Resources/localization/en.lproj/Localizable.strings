@@ -33,6 +33,7 @@ https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakou
 "peripherallist_uartunavailable" = "No Uart detected";
 "peripherallist_peripheraldisconnected" = "Peripheral disconnected";
 "peripherallist_unnamed" = "{No Name}";
+
 // Peripheral Details
 "peripheraldetails_select" = "Connect to a peripheral from the list on the left";
 "peripheraldetails_connecting" = "Connecting...";
@@ -153,7 +154,7 @@ https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakou
 "pinio_capabilityquery_querying_title" = "Querying pin capabilities...";
 
 "pinio_capabilityquery_expired_title" = "No response to capability query";
-"pinio_capabilityquery_expired_message" = "assuming default pin format
+"pinio_capabilityquery_expired_message" = "Assuming default pin format
 (Arduino Uno)";
 
 "pinio_pins_header" = "Available Pins";
@@ -232,6 +233,10 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 • Press Send to send the chosen color's red, green, and blue values to Bluefruit via UART in the following format:
 [ ‘!’ ] [ ‘C’ ] [ byte r ] [ byte g ] [ byte b ]";
 
+
+// NeoPixels
+"neopixels_tab_title" = "Neopixels";
+"neopixels_navigation_title_format" = "Neopixels - %@";
 
 // Common
 "dialog_ok" = "Ok";

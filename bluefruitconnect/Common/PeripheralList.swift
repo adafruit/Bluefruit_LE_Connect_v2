@@ -37,7 +37,7 @@ class PeripheralList {
         // Check that is really disconnected
         if BleManager.sharedInstance.blePeripheralConnected == nil {
             selectedPeripheralIdentifier = nil
-            DLog("Peripheral selected row: -1")
+           // DLog("Peripheral selected row: -1")
             
         }
     }
@@ -60,7 +60,7 @@ class PeripheralList {
                     
                     BleManager.sharedInstance.disconnect(blePeripheral)
                 }
-                DLog("Peripheral selected row: -1")
+                //DLog("Peripheral selected row: -1")
                 selectedPeripheralIdentifier = nil
             }
             
@@ -77,7 +77,7 @@ class PeripheralList {
                 }
             }
             else {
-                DLog("Peripheral selected row: -1")
+                //DLog("Peripheral selected row: -1")
                 selectedPeripheralIdentifier = nil;
             }
         }
@@ -85,7 +85,7 @@ class PeripheralList {
     
     func selectRow(row : Int ) {
         if (row != selectedPeripheralRow) {
-            DLog("Peripheral selected row: \(row)")
+            //DLog("Peripheral selected row: \(row)")
             connectToPeripheral(row >= 0 ? blePeripherals[row] : nil)
         }
     }

@@ -21,7 +21,7 @@ class PinIOModuleViewController: ModuleViewController {
 
         // Init
         pinIO.delegate = self
-        
+    
         // Start Uart Manager
         UartManager.sharedInstance.blePeripheral = BleManager.sharedInstance.blePeripheralConnected       // Note: this will start the service discovery
 
@@ -54,7 +54,7 @@ class PinIOModuleViewController: ModuleViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
        
-        pinIO.start()
+        pinIO.start() 
     }
     
     override func viewWillDisappear(animated: Bool) {

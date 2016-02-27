@@ -1,18 +1,18 @@
 //
-//  ControllerColorWheelViewController.swift
+//  NeopixelColorPickerViewController.swift
 //  Bluefruit Connect
 //
-//  Created by Antonio García on 12/02/16.
+//  Created by Antonio García on 27/02/16.
 //  Copyright © 2016 Adafruit. All rights reserved.
 //
 
 import UIKit
 
-class ControllerColorWheelViewController: UIViewController {
+protocol NeopixelColorPickerViewControllerDelegate {
+    func onColorPickerChooseColor(color: UIColor)
+}
 
-    //  Constants 
-    static let prefix = "!C"
-
+class NeopixelColorPickerViewController: UIViewController {
     // UI
     @IBOutlet weak var wheelContainerView: UIView!
     @IBOutlet weak var brightnessSlider: UISlider!
@@ -20,10 +20,13 @@ class ControllerColorWheelViewController: UIViewController {
     @IBOutlet weak var valueLabel: UILabel!
     @IBOutlet weak var hexValueLabel: UILabel!
     @IBOutlet weak var sliderGradientView: GradientView!
-    
+
     // Data
     private var selectedColorComponents: [UInt8]?
     private var wheelView: ISColorWheel = ISColorWheel()
+
+    private var selectedColor = UIColor.whiteColor()
+    var delegate: NeopixelColorPickerViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +35,7 @@ class ControllerColorWheelViewController: UIViewController {
         colorView.layer.cornerRadius = 8
         colorView.layer.borderWidth = 2
         colorView.layer.borderColor = UIColor.blackColor().CGColor
-
+        
         sliderGradientView.layer.borderWidth = 2
         sliderGradientView.layer.borderColor = UIColor.blackColor().CGColor
         sliderGradientView.layer.cornerRadius = sliderGradientView.bounds.size.height/2
@@ -53,7 +56,7 @@ class ControllerColorWheelViewController: UIViewController {
         // Refresh
         colorWheelDidChangeColor(wheelView)
     }
-  
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -64,40 +67,23 @@ class ControllerColorWheelViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Actions
     @IBAction func onBrightnessValueChanged(sender: AnyObject) {
         colorWheelDidChangeColor(wheelView)
     }
+    
+    @IBAction func onClickSend(sender: AnyObject) {
+        delegate?.onColorPickerChooseColor(selectedColor)
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 
-   @IBAction func onClickSend(sender: AnyObject) {
-    
-        if let selectedColorComponents = selectedColorComponents {
-            let data = NSMutableData()
-            let prefixData = ControllerColorWheelViewController.prefix.dataUsingEncoding(NSUTF8StringEncoding)!
-            data.appendData(prefixData)
-            for var component in selectedColorComponents {
-                data.appendBytes(&component, length: sizeof(UInt8))
-            }
-            
-            UartManager.sharedInstance.sendDataWithCrc(data)
-        }
-    }
-    
-    @IBAction func onClickHelp(sender: UIBarButtonItem) {
-        let localizationManager = LocalizationManager.sharedInstance
-        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpViewController") as! HelpViewController
-        helpViewController.setHelp(localizationManager.localizedString("colorpicker_help_text"), title: localizationManager.localizedString("colorpicker_help_title"))
-        let helpNavigationController = UINavigationController(rootViewController: helpViewController)
-        helpNavigationController.modalPresentationStyle = .Popover
-        helpNavigationController.popoverPresentationController?.barButtonItem = sender
-        
-        presentViewController(helpNavigationController, animated: true, completion: nil)
-    }
 }
 
+
+
 // MARK: - ISColorWheelDelegate
-extension ControllerColorWheelViewController : ISColorWheelDelegate {
+extension NeopixelColorPickerViewController : ISColorWheelDelegate {
     func colorWheelDidChangeColor(colorWheel:ISColorWheel) {
         
         let colorWheelColor = colorWheel.currentColor
@@ -111,14 +97,13 @@ extension ControllerColorWheelViewController : ISColorWheelDelegate {
         
         let color = UIColor(red: red, green: green, blue: blue, alpha: 1.0)
         
-        
         colorView.backgroundColor = color
         valueLabel.text = "R: \(Int(255.0 * Float(red)))  G: \(Int(255.0 * Float(green)))  B: \(Int(255.0 * Float(blue)))"
         let hexString = colorHexString(color)
         hexValueLabel.text = "Hex: \(hexString)"
         sliderGradientView.endColor = color
-    
-        selectedColorComponents = [UInt8(255.0 * Float(red)), UInt8(255.0 * Float(green)), UInt8(255.0 * Float(blue))]
+        
+        selectedColor = color
     }
     
     func colorHexString(color: UIColor) -> String {

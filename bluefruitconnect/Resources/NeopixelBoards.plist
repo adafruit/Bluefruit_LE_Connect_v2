@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>8x4</string>
+		<key>width</key>
+		<integer>8</integer>
+		<key>height</key>
+		<integer>4</integer>
+		<key>components</key>
+		<integer>3</integer>
+		<key>stride</key>
+		<integer>8</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>8x8</string>
+		<key>width</key>
+		<integer>8</integer>
+		<key>height</key>
+		<integer>8</integer>
+		<key>components</key>
+		<integer>3</integer>
+		<key>stride</key>
+		<integer>8</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>1x8</string>
+		<key>width</key>
+		<integer>8</integer>
+		<key>height</key>
+		<integer>1</integer>
+		<key>components</key>
+		<integer>3</integer>
+		<key>stride</key>
+		<integer>8</integer>
+	</dict>
+</array>
+</plist>
