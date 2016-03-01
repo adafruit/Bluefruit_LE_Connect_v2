@@ -8,19 +8,22 @@
 
 import UIKit
 
-class PeripheralDetailsViewController: UITabBarController {
+class PeripheralDetailsViewController: ScrollingTabBarViewController {
     
     var selectedBlePeripheral : BlePeripheral?
     private var isObservingBle = false
 
     private var emptyViewController : EmptyDetailsViewController!
-    private var emptyNavigationController : UINavigationController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let splitViewController = self.splitViewController {
+            navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
+            navigationItem.leftItemsSupplementBackButton = true
+        }
+
         emptyViewController = storyboard!.instantiateViewControllerWithIdentifier("EmptyDetailsViewController") as! EmptyDetailsViewController
-        emptyNavigationController = UINavigationController(rootViewController: emptyViewController)
         
         if selectedBlePeripheral != nil {
             didConnectToPeripheral()
@@ -46,8 +49,6 @@ class PeripheralDetailsViewController: UITabBarController {
         let isFullScreen =  UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
         guard !isFullScreen || selectedBlePeripheral != nil else {
             DLog("detail: peripheral disconnected by viewWillAppear. Abort")
-            // Back to peripheral list
-    //        self.navigationController?.popToRootViewControllerAnimated(false)
             return;
         }
         
@@ -114,9 +115,9 @@ class PeripheralDetailsViewController: UITabBarController {
         let localizationManager = LocalizationManager.sharedInstance
         infoViewController.tabBarItem.title = localizationManager.localizedString("info_tab_title")      // Tab title
         infoViewController.tabBarItem.image = UIImage(named: "tab_info_icon")
-        
-        self.setViewControllers([infoViewController], animated: false)        
-        self.selectedIndex = 0
+
+        setViewControllers([infoViewController], animated: false)
+        selectedIndex = 0
     }
     
     func willDisconnectFromPeripheral(notification : NSNotification) {
@@ -169,19 +170,16 @@ class PeripheralDetailsViewController: UITabBarController {
     
     func showEmpty(showEmpty : Bool) {
         
-        self.tabBar.hidden = showEmpty
+        hideTabBar(showEmpty)
         if showEmpty {
             // Show empty view (if needed)
-            if self.viewControllers?.count != 1 || self.viewControllers?.first != emptyNavigationController {
-                self.viewControllers = [emptyNavigationController]
+            if viewControllers?.count != 1 || viewControllers?.first != emptyViewController {
+                viewControllers = [emptyViewController]
             }
             
             emptyViewController.startAnimating()
         }
         else {
-            // Remove empty view
-            //self.viewControllers?.removeAll()
-            
             emptyViewController.stopAnimating()
         }
     }
@@ -198,7 +196,8 @@ class PeripheralDetailsViewController: UITabBarController {
                     let hasUart = services.contains({ (service : CBService) -> Bool in
                         service.UUID.isEqual(CBUUID(string: kUartServiceUUID))
                     })
-                    
+
+                    var viewControllersToAppend: [UIViewController] = []
                     if (hasUart) {
                         // Uart Tab
                         if Config.isUartModuleEnabled {
@@ -216,7 +215,7 @@ class PeripheralDetailsViewController: UITabBarController {
                             pinioViewController.tabBarItem.title = localizationManager.localizedString("pinio_tab_title")      // Tab title
                             pinioViewController.tabBarItem.image = UIImage(named: "tab_pinio_icon")
                             
-                            self.viewControllers?.append(pinioViewController)
+                            viewControllersToAppend.append(pinioViewController)
                         }
                         
                         // Controller Tab
@@ -226,7 +225,7 @@ class PeripheralDetailsViewController: UITabBarController {
                             controllerViewController.tabBarItem.title = localizationManager.localizedString("controller_tab_title")      // Tab title
                             controllerViewController.tabBarItem.image = UIImage(named: "tab_controller_icon")
                             
-                            self.viewControllers?.append(controllerViewController)
+                            viewControllersToAppend.append(controllerViewController)
                         }
                         
                         // Neopixel Tab
@@ -236,7 +235,7 @@ class PeripheralDetailsViewController: UITabBarController {
                             neopixelsViewController.tabBarItem.title = localizationManager.localizedString("neopixels_tab_title")      // Tab title
                             neopixelsViewController.tabBarItem.image = UIImage(named: "tab_neopixel_icon")
                             
-                            self.viewControllers?.append(neopixelsViewController)
+                            viewControllersToAppend.append(neopixelsViewController)
                         }
                     }
                     
@@ -251,9 +250,15 @@ class PeripheralDetailsViewController: UITabBarController {
                             let dfuViewController = self.storyboard!.instantiateViewControllerWithIdentifier("DfuModuleViewController") as! DfuModuleViewController
                             dfuViewController.tabBarItem.title = localizationManager.localizedString("dfu_tab_title")      // Tab title
                             dfuViewController.tabBarItem.image = UIImage(named: "tab_dfu_icon")
-                            self.viewControllers?.append(dfuViewController)
+                            viewControllersToAppend.append(dfuViewController)
                         }
                     }
+                    
+                    // Append viewcontrollers (do it here all together to avoid deleting/creating addchilviewcontrollers)+
+                    if viewControllersToAppend.count > 0 {
+                        self.viewControllers?.appendContentsOf(viewControllersToAppend)
+                    }
+                    
                     })
             }
         }

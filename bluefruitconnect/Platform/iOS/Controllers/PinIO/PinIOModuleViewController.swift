@@ -19,6 +19,9 @@ class PinIOModuleViewController: ModuleViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Setup table
+        baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
+  
         // Init
         pinIO.delegate = self
     
@@ -54,12 +57,18 @@ class PinIOModuleViewController: ModuleViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
        
-        pinIO.start() 
+        DLog("PinIO viewWillAppear")
+        pinIO.start()
+        
+        if pinIO.pins.count == 0 && !pinIO.isQueryingCapabilities() {
+            startQueryCapabilitiesProcess()
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
+    
+        DLog("PinIO viewWillDisappear")
         pinIO.stop()
     }
     
@@ -68,7 +77,9 @@ class PinIOModuleViewController: ModuleViewController {
         pinIO.reset()
         tableRowOpen = nil
         baseTableView.reloadData()
-        startQueryCapabilitiesProcess()
+        if isViewLoaded() && view.window != nil {     // if is visible
+            startQueryCapabilitiesProcess()
+        }
     }
     
     private func startQueryCapabilitiesProcess() {
@@ -76,7 +87,7 @@ class PinIOModuleViewController: ModuleViewController {
             DLog("error: queryCapabilities called while querying capabilities")
             return
         }
-        
+
         // Show dialog
         let localizationManager = LocalizationManager.sharedInstance
         let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("pinio_capabilityquery_querying_title"), preferredStyle: .Alert)
@@ -84,7 +95,7 @@ class PinIOModuleViewController: ModuleViewController {
         alertController.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_cancel"), style: .Cancel, handler: { [unowned self] (_) -> Void in
             self.pinIO.endPinQuery(true)
             }))
-        
+
         self.presentViewController(alertController, animated: true) {[unowned self] () -> Void in
             // Query Capabilities
             self.pinIO.queryCapabilities()

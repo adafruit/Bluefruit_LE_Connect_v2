@@ -33,7 +33,8 @@ class InfoModuleViewController: ModuleViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        
         // Peripheral should be connected
         blePeripheral = BleManager.sharedInstance.blePeripheralConnected
         guard blePeripheral != nil else {
@@ -42,13 +43,10 @@ class InfoModuleViewController: ModuleViewController {
         }
 
         // Setup table
+        baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
         baseTableView.estimatedRowHeight = 60
         baseTableView.rowHeight = UITableViewAutomaticDimension
-        /*
-        enclosingView.layer.borderWidth = 1
-        enclosingView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        enclosingView.layer.masksToBounds = true
-        */
+
         // Discover services
         shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
         services = nil
@@ -61,7 +59,8 @@ class InfoModuleViewController: ModuleViewController {
         // Title
         let localizationManager = LocalizationManager.sharedInstance
         let title = String(format: localizationManager.localizedString("info_navigation_title_format"), arguments: [blePeripheral!.name])
-        tabBarController?.navigationItem.title = title
+        //tabBarController?.navigationItem.title = title
+        navigationController?.navigationItem.title = title
         
         // Refresh data
         baseTableView.reloadData()
@@ -81,7 +80,6 @@ class InfoModuleViewController: ModuleViewController {
         
         services = nil
         showWait(true)
-//        self.baseTableView.reloadData()
         BleManager.sharedInstance.discover(blePeripheral!, serviceUUIDs: nil)
     }
     
@@ -126,22 +124,7 @@ extension InfoModuleViewController : UITableViewDataSource {
         let numCharacteristics = service.characteristics == nil ? 0 : service.characteristics!.count
         return numCharacteristics
     }
-    /*
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let service = services![section]
-        var identifier = service.UUID.UUIDString
-        if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
-            identifier = name
-        }
-        
-        let reuseIdentifier = "ServiceCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: NSIndexPath(forRow: -1, inSection: section)) as! InfoCharacteristicTableViewCell
-        cell.titleLabel.text = identifier
-        cell.subtitleLabel.text = LocalizationManager.sharedInstance.localizedString("info_type_service")
-        return cell.contentView
-    }
-*/
+
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let service = services![section]
         var identifier = service.UUID.UUIDString
@@ -160,12 +143,7 @@ extension InfoModuleViewController : UITableViewDataSource {
         
         let reuseIdentifier = "CharacteristicCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath:indexPath)
-        /*
-        return cell
-    }
-    
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-*/
+
         let service = services![indexPath.section]
         
         var identifier = ""

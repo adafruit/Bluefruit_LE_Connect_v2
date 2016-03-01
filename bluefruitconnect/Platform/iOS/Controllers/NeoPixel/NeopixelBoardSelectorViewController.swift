@@ -31,6 +31,12 @@ class NeopixelBoardSelectorViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        preferredContentSize = CGSizeMake(preferredContentSize.width, baseTableView.contentSize.height)
+    }
 }
 
 // MARK: - UITableViewDataSource

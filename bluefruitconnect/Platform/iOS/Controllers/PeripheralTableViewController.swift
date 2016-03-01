@@ -146,7 +146,6 @@ class PeripheralTableViewController: UITableViewController {
                     DLog("cancel push detail because peripheral was disconnected")
                 }
             }
-            
         }
     }
     override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
@@ -162,7 +161,7 @@ class PeripheralTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetailSegue" {
             //DLog("destination: \(segue.destinationViewController)")
-            let peripheralDetailsViewController = (segue.destinationViewController as! UINavigationController).topViewController as! PeripheralDetailsViewController
+            let peripheralDetailsViewController = (segue.destinationViewController as! UINavigationController).topViewController as! PeripheralDetailsViewController            
             peripheralDetailsViewController.selectedBlePeripheral = BleManager.sharedInstance.blePeripheralConnected
         }
     }
@@ -199,7 +198,6 @@ class PeripheralTableViewController: UITableViewController {
                 else {
                     self.reloadData()
                 }
-                
             }
             })
     }

@@ -33,11 +33,16 @@ class DfuModuleViewController: ModuleViewController {
             DLog("Error: peripheral must not be null");
             return
         }
+        
+        // Setup table
+        firmwareTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
+  
         // Title
         let localizationManager = LocalizationManager.sharedInstance
         let title = String(format: localizationManager.localizedString("dfu_navigation_title_format"), arguments: [blePeripheral!.name])
-        tabBarController?.navigationItem.title = title
-        
+       // tabBarController?.navigationItem.title = title
+        navigationController?.navigationItem.title = title
+
         // Init Data
         isCheckingUpdates = false
         boardRelease = nil

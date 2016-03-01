@@ -24,6 +24,9 @@ class DfuFilesPickerDialogViewController: UIViewController {
     @IBOutlet weak var iniFileUrlLabel: UILabel!
     @IBOutlet weak var backgroundView: UIView!
     
+    @IBOutlet weak var hexPickerView: UIView!
+    @IBOutlet weak var iniPickerView: UIView!
+    
     // Data
     var delegate: DfuFilesPickerDialogViewControllerDelegate?
     
@@ -44,6 +47,7 @@ class DfuFilesPickerDialogViewController: UIViewController {
         
         rightButtonView.layer.borderColor = UIColor.lightGrayColor().CGColor
         rightButtonView.layer.borderWidth = 1
+        
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -72,6 +76,7 @@ class DfuFilesPickerDialogViewController: UIViewController {
         
         let importMenu = UIDocumentMenuViewController(documentTypes: ["public.data", "public.content"], inMode: .Import)
         importMenu.delegate = self
+        importMenu.popoverPresentationController?.sourceView = sender
         presentViewController(importMenu, animated: true, completion: nil)
     }
     
@@ -80,7 +85,7 @@ class DfuFilesPickerDialogViewController: UIViewController {
             self.delegate?.onFilesPickerStartUpdate(self.hexFileUrl, iniUrl: self.iniFileUrl)
         }
     }
-    
+
     @IBAction func onClickCancel(sender: AnyObject) {
         dismissViewControllerAnimated(true) { [unowned self] () -> Void in
             self.delegate?.onFilesPickerCancel()

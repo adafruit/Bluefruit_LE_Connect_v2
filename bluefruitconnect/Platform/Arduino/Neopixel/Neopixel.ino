@@ -41,7 +41,7 @@ uint8_t height = 0;
 uint8_t components = 3;     // only 3 and 4 are valid values
 uint8_t stride;
 
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(PIXELS, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel();
 
 void setup()
 {
@@ -175,15 +175,29 @@ void commandSetup() {
   height = ble.read();
   components = ble.read();
   stride = ble.read();
+  uint8_t pinNumber = ble.read();
+  neoPixelType pixelType;
+  pixelType = ble.read();
+  pixelType += ble.read()<<8;
+  
   ardprintf("\tsize: %dx%d", width, height);
   ardprintf("\tcomponents: %d", components);
   ardprintf("\tstride: %d", stride);
+  ardprintf("\tpin %d", pinNumber );
+  ardprintf("\tpixelType %d", pixelType );
+
 
   if (pixelBuffer != NULL) {
       delete[] pixelBuffer;
   }
 
-  pixelBuffer = new uint8_t[width*height*components];
+  uint32_t size = width*height;
+  pixelBuffer = new uint8_t[size*components];
+  pixels.updateLength(size);
+  pixels.updateType(pixelType);
+  pixels.setPin(pinNumber);
+
+  ardprintf("\tstandard pixelType %d", NEO_GRB + NEO_KHZ800 );
 
   // Done
   sendResponse("OK");

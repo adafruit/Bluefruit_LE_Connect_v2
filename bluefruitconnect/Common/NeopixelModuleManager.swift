@@ -170,7 +170,10 @@ class NeopixelModuleManager: NSObject {
     
     func setupNeopixel(device: Board) {
         DLog("Command: Setup")
-        let command : [UInt8] = [0x53, device.width, device.height, device.components, device.stride ]            // Command: 'S'
+        let pinNumber: UInt8 = 6       // TODO: ask user
+        let pixelType: UInt16 = 82      // NEO_GRB + NEO_KHZ800
+        
+        let command : [UInt8] = [0x53, device.width, device.height, device.components, device.stride, pinNumber, UInt8(pixelType), UInt8((UInt(pixelType) >> 8) & 0xff) ]            // Command: 'S'
         let data = NSData(bytes: command, length: command.count)
         sendDataToUart(data) { [unowned self] responseData in
             var success = false

@@ -26,6 +26,10 @@ class ControllerModuleViewController: ModuleViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Setup table
+        baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
+  
+        //
         updateContentItemsFromSensorsEnabled()
     }
     
@@ -219,7 +223,8 @@ extension ControllerModuleViewController : UITableViewDelegate {
             let controllerIdentifiers = ["ControllerPadViewController", "ControllerColorWheelViewController"]
             
             let viewController = storyboard!.instantiateViewControllerWithIdentifier(controllerIdentifiers[indexPath.row])
-            tabBarController!.navigationController!.showViewController(viewController, sender: self)
+            //tabBarController!.navigationController!.showViewController(viewController, sender: self)
+            navigationController?.showViewController(viewController, sender: self)
             
         default:
             break

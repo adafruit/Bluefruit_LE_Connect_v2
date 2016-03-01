@@ -34,9 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         navigationBarAppearance.translucent = true
         navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         
+        /*
         let tabBarAppearance = UITabBar.appearance()
         tabBarAppearance.barTintColor = UIColor.blackColor()
-        
+ */
+ 
         // Hack to hide the white split divider
         splitViewController.view.backgroundColor = UIColor.darkGrayColor()
         splitDividerCover.backgroundColor = UIColor.darkGrayColor()

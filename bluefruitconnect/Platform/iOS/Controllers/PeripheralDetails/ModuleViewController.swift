@@ -20,13 +20,8 @@ class ModuleViewController: UIViewController {
         super.viewWillAppear(animated)
         
         // Setup navigation item
-        if let parentNavigationItem = tabBarController?.navigationItem {
-            // Setup splitview navigation button
-            if let splitViewController = self.splitViewController {
-                parentNavigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
-                parentNavigationItem.leftItemsSupplementBackButton = true
-            }
-            
+        if let parentNavigationItem = parentViewController?.navigationItem {
+
             // Setup navigation item title and buttons
             parentNavigationItem.title = navigationItem.title
             parentNavigationItem.rightBarButtonItems = navigationItem.rightBarButtonItems

@@ -59,8 +59,9 @@ class UartModuleViewController: ModuleViewController {
         // Title
         let localizationManager = LocalizationManager.sharedInstance
         let title = String(format: localizationManager.localizedString("uart_navigation_title_format"), arguments: [uartData.blePeripheral!.name])
-        tabBarController?.navigationItem.title = title
-        
+        //tabBarController?.navigationItem.title = title
+        navigationController?.navigationItem.title = title
+
         // Init Data
         keyboardPositionNotifier.delegate = self
         timestampDateFormatter.setLocalizedDateFormatFromTemplate("HH:mm:ss")
@@ -130,9 +131,9 @@ class UartModuleViewController: ModuleViewController {
         
         uartData.dataBufferEnabled = true
         
-        
         // Update the navgation bar items
-        if var rightButtonItems = tabBarController?.navigationItem.rightBarButtonItems where rightButtonItems.count == 2 {
+        if var rightButtonItems = navigationController?.navigationItem.rightBarButtonItems where rightButtonItems.count == 2 {
+        //if var rightButtonItems = tabBarController?.navigationItem.rightBarButtonItems where rightButtonItems.count == 2 {
             
             if traitCollection.userInterfaceIdiom == .Pad {
                 // Remove more item
@@ -148,7 +149,8 @@ class UartModuleViewController: ModuleViewController {
                 rightButtonItems.append(mqttBarButtonItem)
             }
             
-            tabBarController!.navigationItem.rightBarButtonItems = rightButtonItems
+           // tabBarController!.navigationItem.rightBarButtonItems = rightButtonItems
+             navigationController!.navigationItem.rightBarButtonItems = rightButtonItems
         }
         
         // UI
@@ -337,7 +339,10 @@ class UartModuleViewController: ModuleViewController {
         if let text = text {
             let activityViewController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = clearButton
-            tabBarController?.navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
+            
+    //        tabBarController?.navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
+            navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
+
         }
         else {
             DLog("exportString with empty text")
@@ -568,9 +573,12 @@ extension UartModuleViewController: KeyboardPositionNotifierDelegate {
     
     func onKeyboardPositionChanged(keyboardFrame : CGRect, keyboardShown : Bool) {
         var spacerHeight = keyboardFrame.height
+        /*
         if let tabBarHeight = self.tabBarController?.tabBar.bounds.size.height {
             spacerHeight -= tabBarHeight
         }
+*/
+        spacerHeight -= StyleConfig.tabbarHeight;     // tabbarheight
         keyboardSpacerHeightConstraint.constant = max(spacerHeight, 0)
 
     }

@@ -280,6 +280,18 @@ class NeopixelModuleViewController: ModuleViewController {
     @IBAction func onChangeBrightness(sender: UISlider) {
         neopixel.setBrighness(sender.value)
     }
+    
+    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+        let localizationManager = LocalizationManager.sharedInstance
+        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpViewController") as! HelpViewController
+        helpViewController.setHelp(localizationManager.localizedString("neopixel_help_text"), title: localizationManager.localizedString("neopixel_help_title"))
+        let helpNavigationController = UINavigationController(rootViewController: helpViewController)
+        helpNavigationController.modalPresentationStyle = .Popover
+        helpNavigationController.popoverPresentationController?.barButtonItem = sender
+        
+        presentViewController(helpNavigationController, animated: true, completion: nil)
+    }
+
 }
 
 // MARK: - UICollectionViewDataSource
