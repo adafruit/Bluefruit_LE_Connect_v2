@@ -98,7 +98,7 @@ extension NeopixelColorPickerViewController : ISColorWheelDelegate {
         let color = UIColor(red: red, green: green, blue: blue, alpha: 1.0)
         
         colorView.backgroundColor = color
-        valueLabel.text = "R: \(Int(255.0 * Float(red)))  G: \(Int(255.0 * Float(green)))  B: \(Int(255.0 * Float(blue)))"
+        valueLabel.text = "RGB: \(Int(255.0 * Float(red)))-\(Int(255.0 * Float(green)))-\(Int(255.0 * Float(blue)))"
         let hexString = colorHexString(color)
         hexValueLabel.text = "Hex: \(hexString)"
         sliderGradientView.endColor = color

@@ -31,7 +31,7 @@ class UartModuleViewController: ModuleViewController {
     
     @IBOutlet weak var showEolSwitch: UISwitch!
     @IBOutlet weak var addEolSwitch: UISwitch!
-    @IBOutlet weak var clearButton: UIButton!
+    @IBOutlet weak var exportButton: UIButton!
     @IBOutlet weak var displayModeSegmentedControl: UISegmentedControl!
     @IBOutlet weak var dataModeSegmentedControl: UISegmentedControl!
     
@@ -331,16 +331,15 @@ class UartModuleViewController: ModuleViewController {
         let cancelAction = UIAlertAction(title: localizationManager.localizedString("dialog_cancel"), style: .Cancel, handler:nil)
         alertController.addAction(cancelAction)
         
-        alertController.popoverPresentationController?.sourceView = clearButton
+        alertController.popoverPresentationController?.sourceView = exportButton
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     private func exportString(text: String?) {
         if let text = text {
             let activityViewController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = clearButton
+            activityViewController.popoverPresentationController?.sourceView = exportButton
             
-    //        tabBarController?.navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
             navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
 
         }

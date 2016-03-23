@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		35F15D3D4C4415BEC370CFF1 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 831BE235D441789FAD53B217 /* Pods_iOS.framework */; };
 		67C430DCA4D3FEBACE5F15F6 /* Pods_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B84ECF983BB30BDDF6A2FB4 /* Pods_OSX.framework */; };
+		A903A5DA1CA3622C004077DE /* HelpExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A903A5D91CA3622C004077DE /* HelpExportViewController.swift */; };
+		A903A5DD1CA364F7004077DE /* Neopixel.zip in Resources */ = {isa = PBXBuildFile; fileRef = A903A5DC1CA364F7004077DE /* Neopixel.zip */; };
 		A90D29CA1C7E108E003EB6D4 /* NeopixelModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D29C91C7E108E003EB6D4 /* NeopixelModuleViewController.swift */; };
 		A91F839D1C68F06C0023C168 /* UartModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91F83911C68EDE80023C168 /* UartModuleViewController.swift */; };
 		A91F839E1C68F0760023C168 /* UartMqttSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91F83921C68EDE80023C168 /* UartMqttSettingsViewController.swift */; };
@@ -160,6 +162,8 @@
 		9548835CA087C4D34EDACE99 /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		9B84ECF983BB30BDDF6A2FB4 /* Pods_OSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A48B97DA4AFA7EB22050A2F8 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A903A5D91CA3622C004077DE /* HelpExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpExportViewController.swift; sourceTree = "<group>"; };
+		A903A5DC1CA364F7004077DE /* Neopixel.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Neopixel.zip; sourceTree = "<group>"; };
 		A90D29C91C7E108E003EB6D4 /* NeopixelModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelModuleViewController.swift; sourceTree = "<group>"; };
 		A91F83911C68EDE80023C168 /* UartModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartModuleViewController.swift; sourceTree = "<group>"; };
 		A91F83921C68EDE80023C168 /* UartMqttSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartMqttSettingsViewController.swift; sourceTree = "<group>"; };
@@ -319,12 +323,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A903A5DB1CA364F7004077DE /* sketchs */ = {
+			isa = PBXGroup;
+			children = (
+				A903A5DC1CA364F7004077DE /* Neopixel.zip */,
+			);
+			path = sketchs;
+			sourceTree = "<group>";
+		};
 		A90D29C81C7E0F6D003EB6D4 /* NeoPixel */ = {
 			isa = PBXGroup;
 			children = (
 				A90D29C91C7E108E003EB6D4 /* NeopixelModuleViewController.swift */,
 				A9941C121C80F31000AD4016 /* NeopixelBoardSelectorViewController.swift */,
 				A9941C1D1C813EF700AD4016 /* NeopixelColorPickerViewController.swift */,
+				A903A5D91CA3622C004077DE /* HelpExportViewController.swift */,
 			);
 			path = NeoPixel;
 			sourceTree = "<group>";
@@ -398,6 +411,7 @@
 				A98E03941BBA2A0300F8924C /* Credits.rtf */,
 				A98E03A41BBA406700F8924C /* DefaultPreferences.plist */,
 				A91F9E8F1C65179E007656B7 /* localization */,
+				A903A5DB1CA364F7004077DE /* sketchs */,
 				A9941C141C80F41300AD4016 /* NeopixelBoards.plist */,
 				A9941C171C812A9D00AD4016 /* NeopixelDefaultPalette.plist */,
 			);
@@ -865,6 +879,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A903A5DD1CA364F7004077DE /* Neopixel.zip in Resources */,
 				A94F5A381C5AD41A009CC9B8 /* Main.storyboard in Resources */,
 				A91F9E931C65179E007656B7 /* Localizable.strings in Resources */,
 				A9941C161C80F41300AD4016 /* NeopixelBoards.plist in Resources */,
@@ -1036,6 +1051,7 @@
 				A94535831C8540DB00DF49D7 /* PeripheralDetailsViewController.swift in Sources */,
 				A94F5A3D1C5AE252009CC9B8 /* HexConversions.swift in Sources */,
 				A9EC0FA31C6EC1240019790F /* InfoCharacteristicTableViewCell.swift in Sources */,
+				A903A5DA1CA3622C004077DE /* HelpExportViewController.swift in Sources */,
 				A91F9EB11C663999007656B7 /* RssiUI.swift in Sources */,
 				A9EC0FA41C6EC1240019790F /* InfoModuleViewController.swift in Sources */,
 				A9EC0FAD1C6EDBE10019790F /* PinIOTableViewCell.swift in Sources */,

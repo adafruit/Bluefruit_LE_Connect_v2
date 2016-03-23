@@ -197,6 +197,78 @@
             </objects>
             <point key="canvasLocation" x="1085" y="-2186"/>
         </scene>
+        <!--Help-->
+        <scene sceneID="agx-G3-1a3">
+            <objects>
+                <viewController storyboardIdentifier="HelpExportViewController" automaticallyAdjustsScrollViewInsets="NO" id="kxA-ae-YSs" customClass="HelpExportViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jRB-nb-UE4"/>
+                        <viewControllerLayoutGuide type="bottom" id="que-ls-Im6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9EU-CU-nkP">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FNU-Np-WXU">
+                                <rect key="frame" x="20" y="137" width="560" height="403"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.080000000000000002" colorSpace="calibratedRGB"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Help Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFC-JD-yg7">
+                                <rect key="frame" x="20" y="84" width="560" height="33"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MMK-uZ-2oN">
+                                <rect key="frame" x="246" y="550" width="109" height="30"/>
+                                <state key="normal" title="Export Sketch..."/>
+                                <connections>
+                                    <action selector="onCickExport:" destination="kxA-ae-YSs" eventType="touchUpInside" id="sh3-tl-geK"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.14901960780000001" green="0.14901960780000001" blue="0.14901960780000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="FNU-Np-WXU" firstAttribute="top" secondItem="eFC-JD-yg7" secondAttribute="bottom" constant="20" id="AV7-ia-PzE"/>
+                            <constraint firstItem="eFC-JD-yg7" firstAttribute="leading" secondItem="9EU-CU-nkP" secondAttribute="leadingMargin" id="HxK-ZY-KJB"/>
+                            <constraint firstItem="MMK-uZ-2oN" firstAttribute="top" secondItem="FNU-Np-WXU" secondAttribute="bottom" constant="10" id="R5q-Ic-yMT"/>
+                            <constraint firstItem="eFC-JD-yg7" firstAttribute="top" secondItem="jRB-nb-UE4" secondAttribute="bottom" constant="20" id="S0k-ST-hgB"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="FNU-Np-WXU" secondAttribute="trailing" id="bAI-Rn-thB"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="eFC-JD-yg7" secondAttribute="trailing" id="cRd-iH-sB8"/>
+                            <constraint firstItem="que-ls-Im6" firstAttribute="top" secondItem="MMK-uZ-2oN" secondAttribute="bottom" constant="20" id="efC-tr-irH"/>
+                            <constraint firstItem="FNU-Np-WXU" firstAttribute="top" secondItem="jRB-nb-UE4" secondAttribute="bottom" constant="20" id="hjj-oI-sps"/>
+                            <constraint firstItem="MMK-uZ-2oN" firstAttribute="centerX" secondItem="9EU-CU-nkP" secondAttribute="centerX" id="no3-Wj-M8q"/>
+                            <constraint firstItem="FNU-Np-WXU" firstAttribute="leading" secondItem="9EU-CU-nkP" secondAttribute="leadingMargin" id="sQ0-5A-Dlm"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="hjj-oI-sps"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="Help" id="C6k-sE-Ov0">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="2sD-Vv-KZC">
+                            <connections>
+                                <action selector="onClickDone:" destination="kxA-ae-YSs" id="WvR-LP-hQC"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="exportButton" destination="MMK-uZ-2oN" id="pQK-1U-Tqv"/>
+                        <outlet property="messageLabel" destination="FNU-Np-WXU" id="ZXk-a7-9HI"/>
+                        <outlet property="titleLabel" destination="eFC-JD-yg7" id="EdE-yo-gUM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BXm-86-kvi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1782" y="-2186"/>
+        </scene>
         <!--Info-->
         <scene sceneID="rq8-iD-Syg">
             <objects>
@@ -649,10 +721,10 @@
                         <outlet property="addEolSwitch" destination="XYx-8R-3K5" id="Fod-lF-Tlc"/>
                         <outlet property="baseTableView" destination="fxQ-7Y-fmI" id="2Su-RO-dc3"/>
                         <outlet property="baseTextView" destination="hc7-Pd-8gv" id="sEh-7j-7KT"/>
-                        <outlet property="clearButton" destination="Hcy-52-jZX" id="aXM-F3-KLY"/>
                         <outlet property="controlsView" destination="Qn4-jq-Ibb" id="gT6-QE-eEq"/>
                         <outlet property="dataModeSegmentedControl" destination="ska-Q4-Rud" id="DGK-zE-mef"/>
                         <outlet property="displayModeSegmentedControl" destination="rLh-Ko-VDk" id="bRM-tl-Nhg"/>
+                        <outlet property="exportButton" destination="Hcy-52-jZX" id="ib5-k1-4Hv"/>
                         <outlet property="inputControlsStackView" destination="R0n-y4-b6u" id="sEJ-lq-cEY"/>
                         <outlet property="inputTextField" destination="1mG-jJ-5xo" id="jos-cb-VFT"/>
                         <outlet property="keyboardSpacerHeightConstraint" destination="kid-fg-ff0" id="IgE-Ft-ZLb"/>
@@ -2000,7 +2072,6 @@
                                                 <rect key="frame" x="512" y="1" width="48" height="48"/>
                                                 <state key="normal" image="ic_select_all_48pt"/>
                                                 <connections>
-                                                    <action selector="onClickClear:" destination="nMN-bC-Caa" eventType="touchUpInside" id="TrF-rD-zaE"/>
                                                     <action selector="onClickClear:" destination="ZDJ-Fy-DgL" eventType="touchUpInside" id="Ub0-3M-dYg"/>
                                                 </connections>
                                             </button>
@@ -2489,13 +2560,13 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" misplaced="YES" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1uS-HB-kHU">
                                                 <rect key="frame" x="121" y="0.0" width="179" height="101"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" verticalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" text="RGB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MLt-CZ-6jE">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" verticalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" text="RGB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="MLt-CZ-6jE">
                                                         <rect key="frame" x="73" y="0.0" width="34" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.14901960780000001" green="0.14901960780000001" blue="0.14901960780000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" text="Hex" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nE8-f2-dTq">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" text="Hex" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="nE8-f2-dTq">
                                                         <rect key="frame" x="75" y="29" width="30" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.14901960780000001" green="0.14901960780000001" blue="0.14901960780000001" alpha="1" colorSpace="calibratedRGB"/>

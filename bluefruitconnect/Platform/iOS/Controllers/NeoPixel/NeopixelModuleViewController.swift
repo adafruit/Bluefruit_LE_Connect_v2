@@ -283,11 +283,18 @@ class NeopixelModuleViewController: ModuleViewController {
     
     @IBAction func onClickHelp(sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
-        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpViewController") as! HelpViewController
+        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpExportViewController") as! HelpExportViewController
         helpViewController.setHelp(localizationManager.localizedString("neopixel_help_text"), title: localizationManager.localizedString("neopixel_help_title"))
+        helpViewController.fileTitle = "Neopixel Sketch"
+        
+        if let sketchPath = NSBundle.mainBundle().pathForResource("Neopixel", ofType: "zip") {
+            helpViewController.fileURL = NSURL(fileURLWithPath: sketchPath)
+        }
+        
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
         helpNavigationController.modalPresentationStyle = .Popover
         helpNavigationController.popoverPresentationController?.barButtonItem = sender
+        
         
         presentViewController(helpNavigationController, animated: true, completion: nil)
     }
@@ -385,7 +392,12 @@ extension NeopixelModuleViewController : UIPopoverPresentationControllerDelegate
     
     func adaptivePresentationStyleForPresentationController(PC: UIPresentationController) -> UIModalPresentationStyle {
         // This *forces* a popover to be displayed on the iPhone
-        return .None
+        if traitCollection.verticalSizeClass != .Compact {
+            return .None
+        }
+        else {
+            return .FullScreen
+        }
     }
     
     func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
