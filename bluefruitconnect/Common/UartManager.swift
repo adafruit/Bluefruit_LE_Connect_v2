@@ -49,7 +49,7 @@ class UartManager: NSObject {
         super.init()
 
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "didDisconnectFromPeripheral:", name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(UartManager.didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
     }
 
     deinit {
@@ -168,7 +168,7 @@ extension UartManager: CBPeripheralDelegate {
                         
                         peripheral.discoverCharacteristics([CBUUID(string: UartManager.RxCharacteristicUUID), CBUUID(string: UartManager.TxCharacteristicUUID)], forService: service)
                     }
-                    i++
+                    i += 1
                 }
             }
         }
@@ -193,7 +193,7 @@ extension UartManager: CBPeripheralDelegate {
                             DLog("Uart: detected txWriteType: \(txWriteType.rawValue)")
                         }
                         found = rxCharacteristic != nil && txCharacteristic != nil
-                        i++
+                        i += 1
                     }
                 }
             }

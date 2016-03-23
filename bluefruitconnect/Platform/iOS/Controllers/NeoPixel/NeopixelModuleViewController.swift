@@ -220,7 +220,7 @@ class NeopixelModuleViewController: ModuleViewController {
                     button.layer.borderColor = ledBorderColor
                     button.layer.borderWidth = 1
                     button.tag = k
-                    button.addTarget(self, action: "ledPressed:", forControlEvents: [.TouchDown])
+                    button.addTarget(self, action: #selector(NeopixelModuleViewController.ledPressed(_:)), forControlEvents: [.TouchDown])
                     contentView.addSubview(button)
                     
                     let colorView = UIView(frame: CGRectMake(ledCircleMargin, ledCircleMargin, kLedWidth-ledCircleMargin*2, kLedHeight-ledCircleMargin*2))
@@ -233,7 +233,7 @@ class NeopixelModuleViewController: ModuleViewController {
                     ledViews.append(colorView)
                     button.addSubview(colorView)
                     
-                    k++
+                    k += 1
                 }
             }
             

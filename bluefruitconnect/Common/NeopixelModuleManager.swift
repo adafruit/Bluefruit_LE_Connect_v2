@@ -66,9 +66,9 @@ class NeopixelModuleManager: NSObject {
         // Notifications
         let notificationCenter =  NSNotificationCenter.defaultCenter()
         if !uartData.isReady() {
-            notificationCenter.addObserver(self, selector: "uartIsReady:", name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(NeopixelModuleManager.uartIsReady(_:)), name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
         }
-        notificationCenter.addObserver(self, selector: "didReceiveData:", name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(NeopixelModuleManager.didReceiveData(_:)), name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
     }
     
     func stop() {
@@ -115,7 +115,7 @@ class NeopixelModuleManager: NSObject {
             return
         }
         
-        uartResponseTimer = NSTimer.scheduledTimerWithTimeInterval(NeopixelModuleManager.kUartTimeout, target: self, selector: "uartResponseTimeout", userInfo: nil, repeats: false)
+        uartResponseTimer = NSTimer.scheduledTimerWithTimeInterval(NeopixelModuleManager.kUartTimeout, target: self, selector: #selector(NeopixelModuleManager.uartResponseTimeout), userInfo: nil, repeats: false)
         uartResponseDelegate = completionHandler
         uartData.sendData(data)
     }

@@ -65,7 +65,7 @@ class UartModuleManager: NSObject {
         super.init()
         
         let notificationCenter =  NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "didReceiveData:", name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(UartModuleManager.didReceiveData(_:)), name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
     }
     
     deinit {

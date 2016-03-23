@@ -47,10 +47,10 @@ class ControllerPadViewController: UIViewController {
         let hightlightedImage = UIImage(color: UIColor.darkGrayColor())
         button.setBackgroundImage(hightlightedImage, forState: .Highlighted)
         
-        button.addTarget(self, action: "onTouchDown:", forControlEvents: .TouchDown)
-        button.addTarget(self, action: "onTouchUp:", forControlEvents: .TouchUpInside)
-        button.addTarget(self, action: "onTouchUp:", forControlEvents: .TouchDragExit)
-        button.addTarget(self, action: "onTouchUp:", forControlEvents: .TouchCancel)
+        button.addTarget(self, action: #selector(ControllerPadViewController.onTouchDown(_:)), forControlEvents: .TouchDown)
+        button.addTarget(self, action: #selector(ControllerPadViewController.onTouchUp(_:)), forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(ControllerPadViewController.onTouchUp(_:)), forControlEvents: .TouchDragExit)
+        button.addTarget(self, action: #selector(ControllerPadViewController.onTouchUp(_:)), forControlEvents: .TouchCancel)
     }
 
     override func didReceiveMemoryWarning() {

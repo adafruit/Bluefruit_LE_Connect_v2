@@ -62,7 +62,7 @@ class ControllerModuleViewController: ModuleViewController {
             if isSensorEnabled {
                 items.append(i+kDetailItemOffset)
             }
-            i++
+            i += 1
         }
         
         contentItems = items
@@ -151,7 +151,7 @@ extension ControllerModuleViewController : UITableViewDataSource {
                             label.attributedText = attributedText
                         }
                    
-                        i++
+                        i += 1
                     }
                 }
                 else {

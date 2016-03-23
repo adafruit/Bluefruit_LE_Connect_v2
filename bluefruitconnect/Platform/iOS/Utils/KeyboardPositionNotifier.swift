@@ -28,8 +28,8 @@ class KeyboardPositionNotifier: NSObject {
     func registerKeyboardNotifications(enable : Bool) {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         if (enable) {
-            notificationCenter.addObserver(self, selector: "keyboardWillBeShown:", name: UIKeyboardWillShowNotification, object: nil)
-            notificationCenter.addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(KeyboardPositionNotifier.keyboardWillBeShown(_:)), name: UIKeyboardWillShowNotification, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(KeyboardPositionNotifier.keyboardWillBeHidden(_:)), name: UIKeyboardWillHideNotification, object: nil)
         } else {
             notificationCenter.removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
             notificationCenter.removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)

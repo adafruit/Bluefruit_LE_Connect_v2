@@ -102,7 +102,7 @@ class PinIOModuleManager: NSObject {
     func start() {
         DLog("pinio start");
         let notificationCenter =  NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "didReceiveData:", name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(PinIOModuleManager.didReceiveData(_:)), name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
     }
 
     func stop() {
@@ -155,7 +155,7 @@ class PinIOModuleManager: NSObject {
         let data = NSData(bytes: bytes, length: bytes.count)
         UartManager.sharedInstance.sendData(data)
         
-        self.queryCapabilitiesTimer = NSTimer.scheduledTimerWithTimeInterval(self.CAPABILITY_QUERY_TIMEOUT, target: self, selector: "cancelQueryCapabilities", userInfo: nil, repeats: false)
+        self.queryCapabilitiesTimer = NSTimer.scheduledTimerWithTimeInterval(self.CAPABILITY_QUERY_TIMEOUT, target: self, selector: #selector(PinIOModuleManager.cancelQueryCapabilities), userInfo: nil, repeats: false)
     }
 
     private func receivedQueryCapabilities(data: NSData) {
@@ -278,26 +278,26 @@ class PinIOModuleManager: NSObject {
                     switch byte {
                     case 0x00:
                         isInput = true
-                        i++     // skip resolution byte
+                        i += 1     // skip resolution byte
                     case 0x01:
                         isOutput = true
-                        i++     // skip resolution byte
+                        i += 1     // skip resolution byte
                     case 0x02:
                         isAnalog = true
-                        i++     // skip resolution byte
+                        i += 1     // skip resolution byte
                     case 0x03:
                         isPWM = true
-                        i++     // skip resolution byte
+                        i += 1     // skip resolution byte
                     case 0x04:
                         // Servo
-                        i++ //skip resolution byte
+                        i += 1 //skip resolution byte
                     case 0x06:
                         // I2C
-                        i++     // skip resolution byte
+                        i += 1     // skip resolution byte
                     default:
                         break
                     }
-                    i++
+                    i += 1
                 }
                 
                 let pinData = PinData(digitalPinId: pinNumber, isDigital: isInput && isOutput, isAnalog: isAnalog, isPWM: isPWM)
@@ -305,7 +305,7 @@ class PinIOModuleManager: NSObject {
                 self.pins.append(pinData)
             }
             
-            pinNumber++
+            pinNumber += 1
         }
         
         return true
@@ -330,7 +330,7 @@ class PinIOModuleManager: NSObject {
                     DLog("warning: trying to set analog id: \(Int(dataByte)) for pin id: \(pinNumber)");
                 }
             }
-            pinNumber++
+            pinNumber += 1
         }
         
         return true
@@ -433,7 +433,7 @@ class PinIOModuleManager: NSObject {
         
         let offset = 8 * Int(port)
         var state: Int = 0
-        for var i = 0; i <= 7; i++ {
+        for i in 0...7 {
             if let pinIndex = indexOfPinWithDigitalId(offset + i) {
                 let pinValue = pins[pinIndex].digitalValue.rawValue & 0x1
                 let pinMask = pinValue << i
@@ -601,7 +601,7 @@ class PinIOModuleManager: NSObject {
         let offset = 8 * port
         
         // Iterate through all pins
-        for var i = 0; i <= 7; i++ {
+        for i in 0...7 {
             let mask = 1 << i
             let state = (pinStates & mask) >> i
             

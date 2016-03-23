@@ -101,7 +101,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         
         if let openCellIndexPath = openCellIndexPath {
             if openCellIndexPath.section == section {
-                numberOfRows++
+                numberOfRows += 1
             }
         }
         return numberOfRows
@@ -195,7 +195,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 let typeButton = editValueCell.typeButton!
                 typeButton.tag = tagFromIndexPath(indexPath, scale:100)
                 typeButton.setTitle(titleForQos(mqttSettings.getPublishQos(row)), forState: .Normal)
-                typeButton.addTarget(self, action: "onClickTypeButton:", forControlEvents: .TouchUpInside)
+                typeButton.addTarget(self, action: #selector(UartMqttSettingsViewController.onClickTypeButton(_:)), forControlEvents: .TouchUpInside)
                 
             case .Subscribe:
                 editValueCell = tableView.dequeueReusableCellWithIdentifier(row==0 ? "ValueAndSelectorCell":"SelectorCell", forIndexPath: indexPath) as! MqttSettingsValueAndSelector
@@ -206,7 +206,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 
                 let typeButton = editValueCell.typeButton!
                 typeButton.tag = tagFromIndexPath(indexPath, scale:100)
-                typeButton.addTarget(self, action: "onClickTypeButton:", forControlEvents: .TouchUpInside)
+                typeButton.addTarget(self, action: #selector(UartMqttSettingsViewController.onClickTypeButton(_:)), forControlEvents: .TouchUpInside)
                 if (row == 0) {
                     editValueCell.valueTextField!.text = mqttSettings.subscribeTopic
                     typeButton.setTitle(titleForQos(mqttSettings.subscribeQos), forState: .Normal)

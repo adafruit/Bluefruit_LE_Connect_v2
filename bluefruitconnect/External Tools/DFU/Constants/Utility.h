@@ -22,6 +22,14 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    SOFTDEVICE = 0x01,
+    BOOTLOADER = 0x02,
+    SOFTDEVICE_AND_BOOTLOADER = 0x03,
+    APPLICATION = 0x04
+    
+}DfuFirmwareTypes;
+
 @interface Utility : NSObject
 
 extern NSString * const dfuServiceUUIDString;
@@ -83,13 +91,6 @@ typedef enum {
     
 }DfuOperationStatus;
 
-typedef enum {    
-    SOFTDEVICE = 0x01,
-    BOOTLOADER = 0x02,
-    SOFTDEVICE_AND_BOOTLOADER = 0x03,
-    APPLICATION = 0x04    
-    
-}DfuFirmwareTypes;
 
 + (NSArray *) getFirmwareTypes;
 + (NSString *) stringFileExtension:(enumFileExtension)fileExtension;

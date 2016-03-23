@@ -192,7 +192,7 @@ extension DfuUpdateProcess : DFUOperationsDelegate {
             if (useHexOnly)
             {
                 let fileURL = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(DfuUpdateProcess.kApplicationHexFilename))
-                dfuOperations!.performDFUOnFile(fileURL, firmwareType:APPLICATION)
+                dfuOperations!.performDFUOnFile(fileURL, firmwareType: APPLICATION)
             }
             else {
                 let hexFileURL = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(DfuUpdateProcess.kApplicationHexFilename))

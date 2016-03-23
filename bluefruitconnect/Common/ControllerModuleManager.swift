@@ -62,7 +62,7 @@ class ControllerModuleManager : NSObject {
     
     func startUpdatingData(pollInterval: NSTimeInterval, handler:(()->())?) {
         timerHandler = handler
-        pollTimer = NSTimer.scheduledTimerWithTimeInterval(pollInterval, target: self, selector: "updateSensors", userInfo: nil, repeats: true)
+        pollTimer = NSTimer.scheduledTimerWithTimeInterval(pollInterval, target: self, selector: #selector(ControllerModuleManager.updateSensors), userInfo: nil, repeats: true)
     }
     
     func stopUpdatingData() {

@@ -93,7 +93,7 @@ class DfuModuleViewController: ModuleViewController {
         
         let notificationCenter =  NSNotificationCenter.defaultCenter()
         if (register) {
-            notificationCenter.addObserver(self, selector: "preferencesUpdated:", name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(DfuModuleViewController.preferencesUpdated(_:)), name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)
         }
         else {
             notificationCenter.removeObserver(self, name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)

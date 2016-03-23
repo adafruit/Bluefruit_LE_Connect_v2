@@ -22,7 +22,7 @@ class PeripheralTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // Setup table refresh
-        self.refreshControl?.addTarget(self, action: "onTableRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(PeripheralTableViewController.onTableRefresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         
         // Setup table view
         
@@ -44,11 +44,11 @@ class PeripheralTableViewController: UITableViewController {
         //self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
         
         // Subscribe to Ble Notifications
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didDiscoverPeripheral:", name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didDiscoverPeripheral:", name: BleManager.BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didDisconnectFromPeripheral:", name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didConnectToPeripheral:", name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "willConnectToPeripheral:", name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralTableViewController.didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralTableViewController.didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralTableViewController.didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralTableViewController.didConnectToPeripheral(_:)), name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralTableViewController.willConnectToPeripheral(_:)), name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
         
         let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
         if isFullScreen {

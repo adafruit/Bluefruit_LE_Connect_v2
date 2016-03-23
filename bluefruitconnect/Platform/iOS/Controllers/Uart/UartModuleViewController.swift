@@ -106,7 +106,7 @@ class UartModuleViewController: ModuleViewController {
         // Mqtt init
         mqttBarButtonItemImageView = UIImageView(image: UIImage(named: "mqtt_disconnected")!.tintWithColor(self.view.tintColor))      // use a uiimageview as custom barbuttonitem to allow frame animations
         mqttBarButtonItemImageView!.tintColor = self.view.tintColor
-        mqttBarButtonItemImageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "onClickMqtt"))
+        mqttBarButtonItemImageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(UartModuleViewController.onClickMqtt)))
         
         let mqttManager = MqttManager.sharedInstance
         if (MqttSettings.sharedInstance.isConnected) {
@@ -215,7 +215,7 @@ class UartModuleViewController: ModuleViewController {
         
         let notificationCenter =  NSNotificationCenter.defaultCenter()
         if (register) {
-            notificationCenter.addObserver(self, selector: "preferencesUpdated:", name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(UartModuleViewController.preferencesUpdated(_:)), name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)
         }
         else {
             notificationCenter.removeObserver(self, name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)

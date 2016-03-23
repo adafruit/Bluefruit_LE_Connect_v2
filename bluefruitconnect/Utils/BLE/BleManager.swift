@@ -64,7 +64,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         wasScanningBeforeBluetoothOff = true
         NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidStartScanning.rawValue, object: nil)
         if (BleManager.kIsUndiscoverPeripheralsEnabled) {
-            undiscoverTimer = NSTimer.scheduledTimerWithTimeInterval(BleManager.kUndiscoverCheckPeriod, target: self, selector:"checkUndiscoveredPeripherals", userInfo: nil, repeats: true)
+            undiscoverTimer = NSTimer.scheduledTimerWithTimeInterval(BleManager.kUndiscoverCheckPeriod, target: self, selector:#selector(BleManager.checkUndiscoveredPeripherals), userInfo: nil, repeats: true)
         }
         
         let allowDuplicateKeys = BleManager.kAlwaysAllowDuplicateKeys || BleManager.kIsUndiscoverPeripheralsEnabled

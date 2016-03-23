@@ -35,7 +35,7 @@ class PinIOModuleViewController: ModuleViewController {
             DLog("Wait for uart to be ready to start PinIO setup")
 
             let notificationCenter =  NSNotificationCenter.defaultCenter()
-            notificationCenter.addObserver(self, selector: "uartIsReady:", name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(PinIOModuleViewController.uartIsReady(_:)), name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
         }
     }
 
