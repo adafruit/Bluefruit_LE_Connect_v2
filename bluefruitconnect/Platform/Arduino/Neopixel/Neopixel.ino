@@ -83,6 +83,11 @@ void setup()
 
   ble.verbose(false);  // debug info is a little annoying after this point!
 
+  while ( !ble.isConnected() )
+  {
+    delay(10);
+  }
+  
   // Wait for the connection to complete
   delay(1000);
 
