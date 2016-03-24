@@ -31,13 +31,16 @@ class NeopixelModuleViewController: ModuleViewController {
     @IBOutlet weak var colorPickerButton: UIButton!
     @IBOutlet weak var boardControlsView: UIView!
     
+    @IBOutlet weak var rotationView: UIView!
+    
     // Data
     private let neopixel = NeopixelModuleManager()
     private var board: NeopixelModuleManager.Board?
     private var ledViews: [UIView] = []
     
     private var currentColor: UIColor = UIColor.redColor()
-    
+    private var contentRotationAngle: CGFloat = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -299,6 +302,10 @@ class NeopixelModuleViewController: ModuleViewController {
         presentViewController(helpNavigationController, animated: true, completion: nil)
     }
 
+    @IBAction func onClickRotate(sender: AnyObject) {
+        contentRotationAngle += CGFloat(M_PI_2)
+        rotationView.transform = CGAffineTransformMakeRotation(contentRotationAngle)
+    }
 }
 
 // MARK: - UICollectionViewDataSource
