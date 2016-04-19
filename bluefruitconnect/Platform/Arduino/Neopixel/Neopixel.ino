@@ -28,11 +28,8 @@
 // ...hardware SPI, using SCK/MOSI/MISO hardware SPI pins and then user selected CS/IRQ/RST
 Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
 
-
 // Neopixel
 #define PIN            6   /* Pin used to drive the NeoPixels */
-#define PIXELS         32  /* Total number of pixels on the shield */
-
 
 #define MAXCOMPONENTS  4
 uint8_t *pixelBuffer = NULL;
@@ -175,7 +172,6 @@ void commandSetup() {
   height = ble.read();
   components = ble.read();
   stride = ble.read();
-  uint8_t pinNumber = ble.read();
   neoPixelType pixelType;
   pixelType = ble.read();
   pixelType += ble.read()<<8;
@@ -183,7 +179,6 @@ void commandSetup() {
   ardprintf("\tsize: %dx%d", width, height);
   ardprintf("\tcomponents: %d", components);
   ardprintf("\tstride: %d", stride);
-  ardprintf("\tpin %d", pinNumber );
   ardprintf("\tpixelType %d", pixelType );
 
 
@@ -195,9 +190,7 @@ void commandSetup() {
   pixelBuffer = new uint8_t[size*components];
   pixels.updateLength(size);
   pixels.updateType(pixelType);
-  pixels.setPin(pinNumber);
-
-  ardprintf("\tstandard pixelType %d", NEO_GRB + NEO_KHZ800 );
+  pixels.setPin(PIN);
 
   // Done
   sendResponse("OK");
@@ -277,6 +270,8 @@ void commandSetPixel() {
   if (components == 3) {
     uint32_t pixelIndex = y*stride+x;
     pixels.setPixelColor(pixelIndex, pixels.Color(pixelBuffer[pixelComponentOffset], pixelBuffer[pixelComponentOffset+1], pixelBuffer[pixelComponentOffset+2]));
+
+    ardprintf("\tcolor (%d, %d, %d)", pixelBuffer[pixelComponentOffset], pixelBuffer[pixelComponentOffset+1], pixelBuffer[pixelComponentOffset+2] );
   }
   else {
     Serial.println(F("TODO: implement me"));

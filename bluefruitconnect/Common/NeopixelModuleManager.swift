@@ -17,7 +17,8 @@ protocol NeopixelModuleManagerDelegate {
 
 class NeopixelModuleManager: NSObject {
     // Constants
-    private static let kUartTimeout = 2.0       // seconds
+    private static let kUartTimeout = 2.0               // seconds
+    static let kDefaultType: UInt16 = 82       // default value: NEO_GRB + NEO_KHZ800
     
     //
     struct Board {
@@ -25,6 +26,7 @@ class NeopixelModuleManager: NSObject {
         var width: UInt8 = 0, height: UInt8 = 0
         var components: UInt8 = 3
         var stride: UInt8 = 0
+        var type: UInt16 = kDefaultType
         
         static func loadStandardBoard(standardIndex: Int) -> Board {
             let path = NSBundle.mainBundle().pathForResource("NeopixelBoards", ofType: "plist")!
@@ -36,8 +38,9 @@ class NeopixelModuleManager: NSObject {
             let height = UInt8((boardData["height"] as! NSNumber).integerValue)
             let components = UInt8((boardData["components"] as! NSNumber).integerValue)
             let stride = UInt8((boardData["stride"] as! NSNumber).integerValue)
+            let type =  UInt16((boardData["type"] as! NSNumber).integerValue)
             
-            let board = NeopixelModuleManager.Board(name: name, width: width, height: height, components: components, stride: stride)
+            let board = NeopixelModuleManager.Board(name: name, width: width, height: height, components: components, stride: stride, type: type)
             return board
         }
     }
@@ -170,10 +173,10 @@ class NeopixelModuleManager: NSObject {
     
     func setupNeopixel(device: Board) {
         DLog("Command: Setup")
-        let pinNumber: UInt8 = 6       // TODO: ask user
-        let pixelType: UInt16 = 82      // NEO_GRB + NEO_KHZ800
+//        let pinNumber: UInt8 = 6       // TODO: ask user
+        let pixelType: UInt16 = device.type
         
-        let command : [UInt8] = [0x53, device.width, device.height, device.components, device.stride, pinNumber, UInt8(pixelType), UInt8((UInt(pixelType) >> 8) & 0xff) ]            // Command: 'S'
+        let command : [UInt8] = [0x53, device.width, device.height, device.components, device.stride, /*pinNumber,*/ UInt8(pixelType), UInt8((UInt(pixelType) >> 8) & 0xff) ]            // Command: 'S'
         let data = NSData(bytes: command, length: command.count)
         sendDataToUart(data) { [unowned self] responseData in
             var success = false

@@ -13,6 +13,8 @@
 		<integer>3</integer>
 		<key>stride</key>
 		<integer>8</integer>
+		<key>type</key>
+		<integer>82</integer>
 	</dict>
 	<dict>
 		<key>name</key>
@@ -25,6 +27,8 @@
 		<integer>3</integer>
 		<key>stride</key>
 		<integer>8</integer>
+		<key>type</key>
+		<integer>82</integer>
 	</dict>
 	<dict>
 		<key>name</key>
@@ -37,6 +41,22 @@
 		<integer>3</integer>
 		<key>stride</key>
 		<integer>8</integer>
+		<key>type</key>
+		<integer>82</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>1x8 4bits</string>
+		<key>width</key>
+		<integer>8</integer>
+		<key>height</key>
+		<integer>1</integer>
+		<key>components</key>
+		<integer>3</integer>
+		<key>stride</key>
+		<integer>8</integer>
+		<key>type</key>
+		<integer>210</integer>
 	</dict>
 </array>
 </plist>

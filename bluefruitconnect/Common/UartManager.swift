@@ -21,7 +21,7 @@ class UartManager: NSObject {
     private static let RxCharacteristicUUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
     private static let TxCharacteristicUUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
     private static let TxMaxCharacters = 20
-    
+
     // Manager
     static let sharedInstance = UartManager()
 

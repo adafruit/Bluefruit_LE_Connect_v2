@@ -224,7 +224,10 @@ extension ControllerModuleViewController : UITableViewDelegate {
             
             let viewController = storyboard!.instantiateViewControllerWithIdentifier(controllerIdentifiers[indexPath.row])
             //tabBarController!.navigationController!.showViewController(viewController, sender: self)
-            navigationController?.showViewController(viewController, sender: self)
+//            navigationController?.showViewController(viewController, sender: self)
+  
+            viewController.modalPresentationStyle = .OverCurrentContext
+            navigationController?.presentViewController(viewController, animated: true, completion: nil)
             
         default:
             break

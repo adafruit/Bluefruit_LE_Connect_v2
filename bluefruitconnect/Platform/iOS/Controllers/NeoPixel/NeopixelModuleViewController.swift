@@ -52,7 +52,6 @@ class NeopixelModuleViewController: ModuleViewController {
         let path = NSBundle.mainBundle().pathForResource("NeopixelDefaultPalette", ofType: "plist")!
         defaultPalette = NSArray(contentsOfFile: path) as! [String]
         
-        
         // UI
         statusView.layer.borderColor = UIColor.whiteColor().CGColor
         statusView.layer.borderWidth = 1
@@ -63,9 +62,7 @@ class NeopixelModuleViewController: ModuleViewController {
         colorPickerButton.layer.cornerRadius = 4
         colorPickerButton.layer.masksToBounds = true
         
-        
         createBoardUI()
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -136,7 +133,7 @@ class NeopixelModuleViewController: ModuleViewController {
             let stripLengthTextField = alertController.textFields![0] as UITextField
             
             if let text = stripLengthTextField.text, let stripLength = Int(text) {
-                let board = NeopixelModuleManager.Board(name: "1x\(stripLength)", width: UInt8(stripLength), height:UInt8(1), components: UInt8(3), stride: UInt8(stripLength))
+                let board = NeopixelModuleManager.Board(name: "1x\(stripLength)", width: UInt8(stripLength), height:UInt8(1), components: UInt8(3), stride: UInt8(stripLength), type: NeopixelModuleManager.kDefaultType)
                 self.changeBoard(board)
             }
         }
