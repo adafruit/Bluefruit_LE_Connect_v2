@@ -100,6 +100,27 @@ class NeopixelModuleViewController: ModuleViewController {
                 }
             }
         }
+        else if segue.identifier == "boardTypeSegue" {
+            if let controller = segue.destinationViewController.popoverPresentationController {
+                controller.delegate = self
+                
+                let typeSelectorViewController = segue.destinationViewController as! NeopixelTypeSelectorViewController
+                
+                if let type = board?.type {
+                    typeSelectorViewController.currentType = type
+                }
+                else {
+                    typeSelectorViewController.currentType = NeopixelModuleManager.kDefaultType
+                }
+                
+                typeSelectorViewController.onClickSetType = { [unowned self] type in
+                    if var board = self.board {
+                        board.type = type
+                        self.changeBoard(board)
+                    }
+                }
+            }
+        }
         else if segue.identifier == "colorPickerSegue"  {
             if let controller = segue.destinationViewController.popoverPresentationController {
                 controller.delegate = self
@@ -295,7 +316,6 @@ class NeopixelModuleViewController: ModuleViewController {
         helpNavigationController.modalPresentationStyle = .Popover
         helpNavigationController.popoverPresentationController?.barButtonItem = sender
         
-        
         presentViewController(helpNavigationController, animated: true, completion: nil)
     }
 
@@ -405,7 +425,7 @@ extension NeopixelModuleViewController : UIPopoverPresentationControllerDelegate
     }
     
     func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
-        DLog("boardSelector dismissed")
+        DLog("selector dismissed")
     }
 }
 
@@ -426,5 +446,4 @@ extension NeopixelModuleViewController : NeopixelColorPickerViewControllerDelega
         
     }
 }
-
 

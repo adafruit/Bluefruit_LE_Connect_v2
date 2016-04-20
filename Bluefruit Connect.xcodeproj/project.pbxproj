@@ -120,6 +120,10 @@
 		A9A2FF811C3EEA6B0039D188 /* MqttSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A2FF801C3EEA6B0039D188 /* MqttSettings.swift */; };
 		A9A2FF831C3EEA9D0039D188 /* MqttManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A2FF821C3EEA9D0039D188 /* MqttManager.swift */; };
 		A9AEF90F1C7560C100E381C0 /* PinTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AEF90E1C7560C100E381C0 /* PinTableCellView.swift */; };
+		A9AF4E0F1CC63496002C1C12 /* NeopixelTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AF4E0E1CC63496002C1C12 /* NeopixelTypeSelectorViewController.swift */; };
+		A9AF4E111CC63562002C1C12 /* NeopixelTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9AF4E101CC63562002C1C12 /* NeopixelTypes.plist */; };
+		A9AF4E121CC63562002C1C12 /* NeopixelTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9AF4E101CC63562002C1C12 /* NeopixelTypes.plist */; };
+		A9AF4E141CC641E2002C1C12 /* NeopixelTypeValueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AF4E131CC641E2002C1C12 /* NeopixelTypeValueTableViewCell.swift */; };
 		A9B41F891C69675400E4A666 /* DfuModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B41F871C69675400E4A666 /* DfuModuleViewController.swift */; };
 		A9BEA6421C6690E6005F54D6 /* CocoaCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BEA6411C6690E6005F54D6 /* CocoaCompatibility.swift */; };
 		A9BEA6431C6690E6005F54D6 /* CocoaCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BEA6411C6690E6005F54D6 /* CocoaCompatibility.swift */; };
@@ -265,6 +269,9 @@
 		A9A2FF801C3EEA6B0039D188 /* MqttSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettings.swift; sourceTree = "<group>"; };
 		A9A2FF821C3EEA9D0039D188 /* MqttManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttManager.swift; sourceTree = "<group>"; };
 		A9AEF90E1C7560C100E381C0 /* PinTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinTableCellView.swift; sourceTree = "<group>"; };
+		A9AF4E0E1CC63496002C1C12 /* NeopixelTypeSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelTypeSelectorViewController.swift; sourceTree = "<group>"; };
+		A9AF4E101CC63562002C1C12 /* NeopixelTypes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelTypes.plist; sourceTree = "<group>"; };
+		A9AF4E131CC641E2002C1C12 /* NeopixelTypeValueTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelTypeValueTableViewCell.swift; sourceTree = "<group>"; };
 		A9B41F871C69675400E4A666 /* DfuModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuModuleViewController.swift; sourceTree = "<group>"; };
 		A9BEA6411C6690E6005F54D6 /* CocoaCompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CocoaCompatibility.swift; sourceTree = "<group>"; };
 		A9D7205C1C73C32F001321D3 /* PinIOModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinIOModuleManager.swift; sourceTree = "<group>"; };
@@ -338,6 +345,8 @@
 				A9941C121C80F31000AD4016 /* NeopixelBoardSelectorViewController.swift */,
 				A9941C1D1C813EF700AD4016 /* NeopixelColorPickerViewController.swift */,
 				A903A5D91CA3622C004077DE /* HelpExportViewController.swift */,
+				A9AF4E0E1CC63496002C1C12 /* NeopixelTypeSelectorViewController.swift */,
+				A9AF4E131CC641E2002C1C12 /* NeopixelTypeValueTableViewCell.swift */,
 			);
 			path = NeoPixel;
 			sourceTree = "<group>";
@@ -413,6 +422,7 @@
 				A91F9E8F1C65179E007656B7 /* localization */,
 				A903A5DB1CA364F7004077DE /* sketchs */,
 				A9941C141C80F41300AD4016 /* NeopixelBoards.plist */,
+				A9AF4E101CC63562002C1C12 /* NeopixelTypes.plist */,
 				A9941C171C812A9D00AD4016 /* NeopixelDefaultPalette.plist */,
 			);
 			path = Resources;
@@ -881,6 +891,7 @@
 			files = (
 				A903A5DD1CA364F7004077DE /* Neopixel.zip in Resources */,
 				A94F5A381C5AD41A009CC9B8 /* Main.storyboard in Resources */,
+				A9AF4E121CC63562002C1C12 /* NeopixelTypes.plist in Resources */,
 				A91F9E931C65179E007656B7 /* Localizable.strings in Resources */,
 				A9941C161C80F41300AD4016 /* NeopixelBoards.plist in Resources */,
 				A94F5A471C5AE2A4009CC9B8 /* DefaultPreferences.plist in Resources */,
@@ -895,6 +906,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9AF4E111CC63562002C1C12 /* NeopixelTypes.plist in Resources */,
 				A94370A71BB6384B002521F7 /* GattUUIDs.plist in Resources */,
 				A91F9E921C65179E007656B7 /* Localizable.strings in Resources */,
 				A9941C151C80F41300AD4016 /* NeopixelBoards.plist in Resources */,
@@ -1011,6 +1023,7 @@
 				A94F5A491C5AE3D8009CC9B8 /* ReleasesParser.m in Sources */,
 				A90D29CA1C7E108E003EB6D4 /* NeopixelModuleViewController.swift in Sources */,
 				A9EC0F951C6E99BF0019790F /* DfuUpdateProcess.swift in Sources */,
+				A9AF4E141CC641E2002C1C12 /* NeopixelTypeValueTableViewCell.swift in Sources */,
 				A91F9EBC1C666E6D007656B7 /* MqttSettings.swift in Sources */,
 				A94535821C8540DB00DF49D7 /* PeripheralDetailsCollectionViewCell.swift in Sources */,
 				A94F5A431C5AE28C009CC9B8 /* DFUOperationsDetails.m in Sources */,
@@ -1046,6 +1059,7 @@
 				A92088B21C727CD5002FF8E8 /* StyledButton.swift in Sources */,
 				A96567501C7E25B0009DB0F4 /* NeopixelModuleManager.swift in Sources */,
 				A9EC0F9F1C6E99BF0019790F /* UartModuleManager.swift in Sources */,
+				A9AF4E0F1CC63496002C1C12 /* NeopixelTypeSelectorViewController.swift in Sources */,
 				A94201F51C6A65B500C87989 /* DfuDialogViewController.swift in Sources */,
 				A92E067A1C6D18DF00BECBBA /* MqttSettingsValueAndSelector.swift in Sources */,
 				A94535831C8540DB00DF49D7 /* PeripheralDetailsViewController.swift in Sources */,
