@@ -67,9 +67,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         updateStatusContent(nil)
 
         let notificationCenter =  NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "updateStatus:", name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
-        notificationCenter.addObserver(self, selector: "updateStatus:", name: UartManager.UartNotifications.DidSendData.rawValue, object: nil)
-        notificationCenter.addObserver(self, selector: "updateStatus:", name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(AppDelegate.updateStatus(_:)), name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(AppDelegate.updateStatus(_:)), name: UartManager.UartNotifications.DidSendData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(AppDelegate.updateStatus(_:)), name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
     }
     
     func releaseStatusButton() {
@@ -166,7 +166,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     func addPeripheralToSystemMenu(blePeripheral : BlePeripheral) -> NSMenuItem {
-        let menuItem = NSMenuItem(title: blePeripheral.name, action: "onClickPeripheralMenuItem:", keyEquivalent: "")
+        let menuItem = NSMenuItem(title: blePeripheral.name, action: #selector(AppDelegate.onClickPeripheralMenuItem(_:)), keyEquivalent: "")
         let identifier = blePeripheral.peripheral.identifier.UUIDString
         menuItem.representedObject = identifier
         statusMenu.addItem(menuItem)

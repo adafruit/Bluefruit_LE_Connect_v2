@@ -18,6 +18,7 @@ class ControllerModuleViewController: ModuleViewController {
     
     // UI
     @IBOutlet weak var baseTableView: UITableView!
+    @IBOutlet weak var uartWaitingLabel: UILabel!
 
     // Data
     private let controllerData = ControllerModuleManager()
@@ -30,9 +31,10 @@ class ControllerModuleViewController: ModuleViewController {
         baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
   
         //
+        uartWaitingLabel.hidden = true
         updateContentItemsFromSensorsEnabled()
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -40,7 +42,7 @@ class ControllerModuleViewController: ModuleViewController {
             self.baseTableView.reloadData()
         }
     }
-    
+
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -224,10 +226,11 @@ extension ControllerModuleViewController : UITableViewDelegate {
             
             let viewController = storyboard!.instantiateViewControllerWithIdentifier(controllerIdentifiers[indexPath.row])
             //tabBarController!.navigationController!.showViewController(viewController, sender: self)
-//            navigationController?.showViewController(viewController, sender: self)
-  
-            viewController.modalPresentationStyle = .OverCurrentContext
-            navigationController?.presentViewController(viewController, animated: true, completion: nil)
+            navigationController?.showViewController(viewController, sender: self)
+
+//            let navigationController = UINavigationController(rootViewController: viewController)
+//            navigationController.modalPresentationStyle = .OverCurrentContext
+//            self.navigationController?.presentViewController(navigationController, animated: true, completion: nil)
             
         default:
             break

@@ -67,7 +67,7 @@ class UartModuleViewController: ModuleViewController {
         timestampDateFormatter.setLocalizedDateFormatFromTemplate("HH:mm:ss")
         
         // Setup tableView
-        // Note: Don't use automatic height because its to slow wiht large amount of rows
+        // Note: Don't use automatic height because its to slow with a large amount of rows
         baseTableView.layer.borderWidth = 1
         baseTableView.layer.borderColor = UIColor.lightGrayColor().CGColor
 

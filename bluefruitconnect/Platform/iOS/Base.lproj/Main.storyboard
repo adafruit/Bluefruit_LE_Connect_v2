@@ -1695,13 +1695,21 @@
                                     <outlet property="delegate" destination="7nD-Qw-AsN" id="DKx-pi-Ek1"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for Uart..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NPs-7b-7sq">
+                                <rect key="frame" x="233" y="230" width="135" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.20874811460000001" green="0.20874811460000001" blue="0.20874811460000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="YjF-pq-r59" firstAttribute="top" secondItem="t1t-ph-6AV" secondAttribute="topMargin" id="Oqf-Ko-SqK"/>
+                            <constraint firstItem="NPs-7b-7sq" firstAttribute="centerY" secondItem="t1t-ph-6AV" secondAttribute="centerY" multiplier="0.8" id="Ueo-gE-VKa"/>
                             <constraint firstItem="YjF-pq-r59" firstAttribute="top" secondItem="c3p-5r-6T2" secondAttribute="bottom" id="bRv-Ef-foW"/>
                             <constraint firstItem="eje-sL-so2" firstAttribute="top" secondItem="YjF-pq-r59" secondAttribute="bottom" id="bep-iL-ZRz"/>
                             <constraint firstItem="YjF-pq-r59" firstAttribute="leading" secondItem="t1t-ph-6AV" secondAttribute="leadingMargin" id="d2o-9d-FTq"/>
+                            <constraint firstItem="NPs-7b-7sq" firstAttribute="centerX" secondItem="t1t-ph-6AV" secondAttribute="centerX" id="nUX-MO-4gA"/>
                             <constraint firstAttribute="trailing" secondItem="YjF-pq-r59" secondAttribute="trailing" id="r0b-Ik-uue"/>
                             <constraint firstAttribute="trailingMargin" secondItem="YjF-pq-r59" secondAttribute="trailing" id="tyt-Vd-F9K"/>
                             <constraint firstItem="YjF-pq-r59" firstAttribute="leading" secondItem="t1t-ph-6AV" secondAttribute="leading" id="uz9-Mx-Y1j"/>
@@ -1734,6 +1742,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="baseTableView" destination="YjF-pq-r59" id="jWp-4c-spN"/>
+                        <outlet property="uartWaitingLabel" destination="NPs-7b-7sq" id="Tip-DQ-OPn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7K7-H1-Agz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3241,7 +3250,7 @@
                                         <rect key="frame" x="0.0" y="93.5" width="600" height="88"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="3A6-C5-UzQ" id="qwF-Jt-SFM">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="87.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="88"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tbt-BI-Mci">

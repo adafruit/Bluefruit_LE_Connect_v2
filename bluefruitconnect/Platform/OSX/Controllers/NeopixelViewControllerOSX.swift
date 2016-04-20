@@ -42,7 +42,7 @@ class NeopixelViewControllerOSX: NSViewController {
     func start() {
         DLog("neopixel start");
         let notificationCenter =  NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "didReceiveData:", name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(NeopixelViewControllerOSX.didReceiveData(_:)), name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
     }
     
     func stop() {
@@ -117,7 +117,7 @@ class NeopixelViewControllerOSX: NSViewController {
             return
         }
         
-        uartResponseTimer = NSTimer.scheduledTimerWithTimeInterval(NeopixelViewControllerOSX.kUartTimeout, target: self, selector: "uartResponseTimeout", userInfo: nil, repeats: false)
+        uartResponseTimer = NSTimer.scheduledTimerWithTimeInterval(NeopixelViewControllerOSX.kUartTimeout, target: self, selector: #selector(NeopixelViewControllerOSX.uartResponseTimeout), userInfo: nil, repeats: false)
         uartResponseDelegate = completionHandler
         uartData.sendData(data)
     }
@@ -205,7 +205,7 @@ extension NeopixelViewControllerOSX : DetailTab {
             DLog("Wait for uart to be ready to start PinIO setup")
             
             let notificationCenter =  NSNotificationCenter.defaultCenter()
-            notificationCenter.addObserver(self, selector: "uartIsReady:", name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(NeopixelViewControllerOSX.uartIsReady(_:)), name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
         }
         
         updateUI()

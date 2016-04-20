@@ -296,7 +296,7 @@ extension InfoViewController : CBPeripheralDelegate {
             if shouldDiscoverCharacteristics {
                 if let services = services {
                     for service in services {
-                        elementsToDiscover++
+                        elementsToDiscover += 1
                         blePeripheral?.peripheral.discoverCharacteristics(nil, forService: service)
                     }
                 }
@@ -315,7 +315,7 @@ extension InfoViewController : CBPeripheralDelegate {
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
         //DLog("centralManager didDiscoverCharacteristicsForService: \(service.UUID.UUIDString)")
         
-        elementsDiscovered++
+        elementsDiscovered += 1
         
         var discoveringDescriptors = false
         if let characteristics = service.characteristics {
@@ -324,11 +324,11 @@ extension InfoViewController : CBPeripheralDelegate {
             }
             for characteristic in characteristics {
                 if (characteristic.properties.rawValue & CBCharacteristicProperties.Read.rawValue != 0) {
-                    valuesToRead++
+                    valuesToRead += 1
                     peripheral.readValueForCharacteristic(characteristic)
                 }
                 
-                elementsToDiscover++
+                elementsToDiscover += 1
                 blePeripheral?.peripheral.discoverDescriptorsForCharacteristic(characteristic)
             }
         }
@@ -346,7 +346,7 @@ extension InfoViewController : CBPeripheralDelegate {
     func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         
         //DLog("centralManager didDiscoverDescriptorsForCharacteristic: \(characteristic.UUID.UUIDString)")
-        elementsDiscovered++
+        elementsDiscovered += 1
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.updateDiscoveringStatus()
@@ -362,7 +362,7 @@ extension InfoViewController : CBPeripheralDelegate {
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         //DLog("centralManager didUpdateValueForCharacteristic: \(characteristic.UUID.UUIDString)")
 
-        valuesRead++
+        valuesRead += 1
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.updateDiscoveringStatus()

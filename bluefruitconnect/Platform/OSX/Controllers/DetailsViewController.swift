@@ -61,9 +61,9 @@ class DetailsViewController: NSViewController {
         
         // Subscribe to Ble Notifications
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "willConnectToPeripheral:", name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
-        notificationCenter.addObserver(self, selector: "didConnectToPeripheral:", name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
-        notificationCenter.addObserver(self, selector: "willDisconnectFromPeripheral:", name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(DetailsViewController.willConnectToPeripheral(_:)), name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(DetailsViewController.didConnectToPeripheral(_:)), name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(DetailsViewController.willDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
     }
     
     override func viewDidDisappear() {
@@ -110,7 +110,7 @@ class DetailsViewController: NSViewController {
             
             self.cancelRssiTimer()
             let privateQueue = dispatch_queue_create("private_queue", DISPATCH_QUEUE_CONCURRENT);
-            self.rssiTimer = MSWeakTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: "requestUpdateRssi", userInfo: nil, repeats: true, dispatchQueue: privateQueue)
+            self.rssiTimer = MSWeakTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: #selector(DetailsViewController.requestUpdateRssi), userInfo: nil, repeats: true, dispatchQueue: privateQueue)
             
             // UI: Add Info tab
             let infoViewController = self.storyboard?.instantiateControllerWithIdentifier("InfoViewController") as! InfoViewController
@@ -194,7 +194,8 @@ class DetailsViewController: NSViewController {
                                 // Add Uart tab
                                 let uartViewController = self.storyboard?.instantiateControllerWithIdentifier("UartViewController") as! UartViewController
                                 let uartTabViewItem = NSTabViewItem(viewController: uartViewController)
-                                uartTabIndex = currentTabIndex++
+                                uartTabIndex = currentTabIndex
+                                currentTabIndex += 1
                                 self.modeTabView.insertTabViewItem(uartTabViewItem, atIndex: uartTabIndex)
                             }
                             
@@ -209,7 +210,8 @@ class DetailsViewController: NSViewController {
                                 // Add PinIO tab
                                 self.pinIOViewController = self.storyboard?.instantiateControllerWithIdentifier("PinIOViewController") as? PinIOViewController
                                 let pinIOTabViewItem = NSTabViewItem(viewController: self.pinIOViewController!)
-                                pinIOTabIndex = currentTabIndex++
+                                pinIOTabIndex = currentTabIndex
+                                currentTabIndex += 1
                                 self.modeTabView.insertTabViewItem(pinIOTabViewItem, atIndex: pinIOTabIndex)
                             }
 
@@ -233,7 +235,8 @@ class DetailsViewController: NSViewController {
                                 // Add Firmware Update tab
                                 let updateViewController = self.storyboard?.instantiateControllerWithIdentifier("FirmwareUpdateViewController") as! FirmwareUpdateViewController
                                 let updateTabViewItem = NSTabViewItem(viewController: updateViewController)
-                                dfuTabIndex = currentTabIndex++
+                                dfuTabIndex = currentTabIndex
+                                currentTabIndex += 1
                                 self.modeTabView.insertTabViewItem(updateTabViewItem, atIndex: dfuTabIndex)
                             }
                             
@@ -259,7 +262,8 @@ class DetailsViewController: NSViewController {
                             // Add Neopixel tab
                             let neopixelViewController = self.storyboard?.instantiateControllerWithIdentifier("NeopixelViewControllerOSX") as! NeopixelViewControllerOSX
                             let neopixelTabViewItem = NSTabViewItem(viewController: neopixelViewController)
-                            neopixelTabIndex = currentTabIndex++
+                            neopixelTabIndex = currentTabIndex
+                            currentTabIndex += 1
                             self.modeTabView.insertTabViewItem(neopixelTabViewItem, atIndex: neopixelTabIndex)
                         }
                         

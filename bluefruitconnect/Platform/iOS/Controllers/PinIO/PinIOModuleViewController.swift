@@ -49,7 +49,6 @@ class PinIOModuleViewController: ModuleViewController {
         })
     }
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
