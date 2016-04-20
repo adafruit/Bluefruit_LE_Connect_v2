@@ -2207,16 +2207,16 @@
                                     <action selector="onClickHelp:" destination="ZDJ-Fy-DgL" id="Zv1-Ug-mWj"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="ic_settings" id="Z2y-qM-aGK">
+                            <barButtonItem image="ic_pie_chart_outlined" id="5Xp-ps-7PT">
                                 <connections>
-                                    <segue destination="o1r-qi-r6O" kind="popoverPresentation" identifier="boardSelectorSegue" popoverAnchorBarButtonItem="Z2y-qM-aGK" id="TsU-ma-itf">
+                                    <segue destination="g3k-ts-Sca" kind="popoverPresentation" identifier="boardTypeSegue" popoverAnchorBarButtonItem="5Xp-ps-7PT" id="kp1-AL-dUl">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="ic_pie_chart_outlined" id="5Xp-ps-7PT">
+                            <barButtonItem image="ic_settings" id="Z2y-qM-aGK">
                                 <connections>
-                                    <segue destination="g3k-ts-Sca" kind="popoverPresentation" identifier="boardTypeSegue" popoverAnchorBarButtonItem="5Xp-ps-7PT" id="kp1-AL-dUl">
+                                    <segue destination="o1r-qi-r6O" kind="popoverPresentation" identifier="boardSelectorSegue" popoverAnchorBarButtonItem="Z2y-qM-aGK" id="TsU-ma-itf">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
                                 </connections>
@@ -3241,11 +3241,11 @@
                                         <rect key="frame" x="0.0" y="93.5" width="600" height="88"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="3A6-C5-UzQ" id="qwF-Jt-SFM">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="88"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="87.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tbt-BI-Mci">
-                                                    <rect key="frame" x="105" y="11" width="480" height="30"/>
+                                                    <rect key="frame" x="136" y="11" width="449" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 </textField>
@@ -3257,8 +3257,8 @@
                                                         <action selector="onClickSet:" destination="3A6-C5-UzQ" eventType="touchUpInside" id="4MT-4U-2k9"/>
                                                     </connections>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dec Value:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Iq-Bp-GHr">
-                                                    <rect key="frame" x="15" y="14" width="82" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Decimal Value:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Iq-Bp-GHr">
+                                                    <rect key="frame" x="15" y="14" width="113" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>

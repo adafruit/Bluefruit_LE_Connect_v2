@@ -50,9 +50,9 @@ extension NeopixelTypeSelectorViewController : UITableViewDataSource {
         var title: String?
         switch section {
         case 0:
-            title = "STARDARD TYPES"
+            title = "PREDEFINED BOARD TYPES"
         case 1:
-            title = "CUSTOM TYPE"
+            title = "SET TYPE"
         default:
             break
         }

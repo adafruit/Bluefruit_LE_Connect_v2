@@ -92,7 +92,15 @@ class NeopixelModuleViewController: ModuleViewController {
                 
                 let boardSelectorViewController = segue.destinationViewController as! NeopixelBoardSelectorViewController
                 boardSelectorViewController.onClickStandardBoard = { [unowned self] standardBoardIndex in
-                    let board = NeopixelModuleManager.Board.loadStandardBoard(standardBoardIndex)
+                    var currentType: UInt16!
+                    if let type = self.board?.type {
+                        currentType = type
+                    }
+                    else {
+                        currentType = NeopixelModuleManager.kDefaultType
+                    }
+                    
+                    let board = NeopixelModuleManager.Board.loadStandardBoard(standardBoardIndex, type: currentType)
                     self.changeBoard(board)
                 }
                 
@@ -265,6 +273,7 @@ class NeopixelModuleViewController: ModuleViewController {
             contentViewHeightConstrait.constant = CGFloat(board.height) * kLedHeight + boardMargin.top + boardMargin.bottom
             boardScrollView.minimumZoomScale = 0.1
             boardScrollView.maximumZoomScale = 10
+            boardScrollView.setZoomScale(1, animated: false)
             boardCenterScrollOffset = CGPointMake(boardMargin.left - horizontalMargin, boardMargin.top - verticalMargin)
             boardScrollView.contentOffset = boardCenterScrollOffset      // center board
             boardScrollView.layoutIfNeeded()
@@ -294,7 +303,6 @@ class NeopixelModuleViewController: ModuleViewController {
     @IBAction func onDoubleTapScrollView(sender: AnyObject) {
         boardScrollView.setZoomScale(1, animated: true)
         boardScrollView.setContentOffset(boardCenterScrollOffset, animated: true)
-//        boardScrollView.contentOffset = boardCenterScrollOffset      // center board
     }
     
     @IBAction func onClickClear(sender: AnyObject) {

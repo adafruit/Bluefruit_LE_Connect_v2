@@ -56,9 +56,9 @@ extension NeopixelBoardSelectorViewController : UITableViewDataSource {
         var title: String?
         switch section {
         case 0:
-            title = "STARDARD BOARDS"
+            title = "STARDARD BOARD SIZES"
         case 1:
-            title = "CUSTOM BOARD"
+            title = "CUSTOM BOARD SIZE"
         default:
             break
         }

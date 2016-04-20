@@ -28,7 +28,7 @@ class NeopixelModuleManager: NSObject {
         var stride: UInt8 = 0
         var type: UInt16 = kDefaultType
         
-        static func loadStandardBoard(standardIndex: Int) -> Board {
+        static func loadStandardBoard(standardIndex: Int, type: UInt16 = kDefaultType) -> Board {
             let path = NSBundle.mainBundle().pathForResource("NeopixelBoards", ofType: "plist")!
             let boards = NSArray(contentsOfFile: path) as? [[String: AnyObject]]
             
@@ -38,7 +38,6 @@ class NeopixelModuleManager: NSObject {
             let height = UInt8((boardData["height"] as! NSNumber).integerValue)
             let components = UInt8((boardData["components"] as! NSNumber).integerValue)
             let stride = UInt8((boardData["stride"] as! NSNumber).integerValue)
-            let type =  UInt16((boardData["type"] as! NSNumber).integerValue)
             
             let board = NeopixelModuleManager.Board(name: name, width: width, height: height, components: components, stride: stride, type: type)
             return board
