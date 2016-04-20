@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SSZipArchive
 
 class NeopixelModuleViewController: ModuleViewController {
     
@@ -322,7 +323,24 @@ class NeopixelModuleViewController: ModuleViewController {
         helpViewController.setHelp(localizationManager.localizedString("neopixel_help_text"), title: localizationManager.localizedString("neopixel_help_title"))
         helpViewController.fileTitle = "Neopixel Sketch"
         
-        if let sketchPath = NSBundle.mainBundle().pathForResource("Neopixel", ofType: "zip") {
+        let cacheDirectoryURL =  try! NSFileManager().URLForDirectory(.CachesDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
+        if let sketchPath = cacheDirectoryURL.URLByAppendingPathComponent("Neopixel.zip").path {
+            
+            let isSketchZipAvailable = NSFileManager.defaultManager().fileExistsAtPath(sketchPath)
+            
+            if !isSketchZipAvailable {
+                // Create zip from code if not exists
+                if let sketchFolder = NSBundle.mainBundle().pathForResource("Neopixel", ofType: nil) {
+                    
+                    let result = SSZipArchive.createZipFileAtPath(sketchPath, withContentsOfDirectory: sketchFolder)
+                    DLog("Neopiel zip created: \(result)")
+                }
+                else {
+                    DLog("Error creating zip file")
+                }
+            }
+            
+            // Setup file download
             helpViewController.fileURL = NSURL(fileURLWithPath: sketchPath)
         }
         

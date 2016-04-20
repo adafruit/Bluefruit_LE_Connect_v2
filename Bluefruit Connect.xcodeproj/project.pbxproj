@@ -10,7 +10,6 @@
 		35F15D3D4C4415BEC370CFF1 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 831BE235D441789FAD53B217 /* Pods_iOS.framework */; };
 		67C430DCA4D3FEBACE5F15F6 /* Pods_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B84ECF983BB30BDDF6A2FB4 /* Pods_OSX.framework */; };
 		A903A5DA1CA3622C004077DE /* HelpExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A903A5D91CA3622C004077DE /* HelpExportViewController.swift */; };
-		A903A5DD1CA364F7004077DE /* Neopixel.zip in Resources */ = {isa = PBXBuildFile; fileRef = A903A5DC1CA364F7004077DE /* Neopixel.zip */; };
 		A90D29CA1C7E108E003EB6D4 /* NeopixelModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D29C91C7E108E003EB6D4 /* NeopixelModuleViewController.swift */; };
 		A91F839D1C68F06C0023C168 /* UartModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91F83911C68EDE80023C168 /* UartModuleViewController.swift */; };
 		A91F839E1C68F0760023C168 /* UartMqttSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91F83921C68EDE80023C168 /* UartMqttSettingsViewController.swift */; };
@@ -124,6 +123,7 @@
 		A9AF4E111CC63562002C1C12 /* NeopixelTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9AF4E101CC63562002C1C12 /* NeopixelTypes.plist */; };
 		A9AF4E121CC63562002C1C12 /* NeopixelTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9AF4E101CC63562002C1C12 /* NeopixelTypes.plist */; };
 		A9AF4E141CC641E2002C1C12 /* NeopixelTypeValueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AF4E131CC641E2002C1C12 /* NeopixelTypeValueTableViewCell.swift */; };
+		A9AF4E261CC7E8C0002C1C12 /* Neopixel in Resources */ = {isa = PBXBuildFile; fileRef = A9AF4E251CC7E8C0002C1C12 /* Neopixel */; };
 		A9B41F891C69675400E4A666 /* DfuModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B41F871C69675400E4A666 /* DfuModuleViewController.swift */; };
 		A9BEA6421C6690E6005F54D6 /* CocoaCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BEA6411C6690E6005F54D6 /* CocoaCompatibility.swift */; };
 		A9BEA6431C6690E6005F54D6 /* CocoaCompatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BEA6411C6690E6005F54D6 /* CocoaCompatibility.swift */; };
@@ -167,7 +167,6 @@
 		9B84ECF983BB30BDDF6A2FB4 /* Pods_OSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A48B97DA4AFA7EB22050A2F8 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		A903A5D91CA3622C004077DE /* HelpExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpExportViewController.swift; sourceTree = "<group>"; };
-		A903A5DC1CA364F7004077DE /* Neopixel.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Neopixel.zip; sourceTree = "<group>"; };
 		A90D29C91C7E108E003EB6D4 /* NeopixelModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelModuleViewController.swift; sourceTree = "<group>"; };
 		A91F83911C68EDE80023C168 /* UartModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartModuleViewController.swift; sourceTree = "<group>"; };
 		A91F83921C68EDE80023C168 /* UartMqttSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartMqttSettingsViewController.swift; sourceTree = "<group>"; };
@@ -272,6 +271,7 @@
 		A9AF4E0E1CC63496002C1C12 /* NeopixelTypeSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelTypeSelectorViewController.swift; sourceTree = "<group>"; };
 		A9AF4E101CC63562002C1C12 /* NeopixelTypes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelTypes.plist; sourceTree = "<group>"; };
 		A9AF4E131CC641E2002C1C12 /* NeopixelTypeValueTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelTypeValueTableViewCell.swift; sourceTree = "<group>"; };
+		A9AF4E251CC7E8C0002C1C12 /* Neopixel */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Neopixel; path = bluefruitconnect/Platform/Arduino/Neopixel; sourceTree = SOURCE_ROOT; };
 		A9B41F871C69675400E4A666 /* DfuModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuModuleViewController.swift; sourceTree = "<group>"; };
 		A9BEA6411C6690E6005F54D6 /* CocoaCompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CocoaCompatibility.swift; sourceTree = "<group>"; };
 		A9D7205C1C73C32F001321D3 /* PinIOModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinIOModuleManager.swift; sourceTree = "<group>"; };
@@ -333,7 +333,7 @@
 		A903A5DB1CA364F7004077DE /* sketchs */ = {
 			isa = PBXGroup;
 			children = (
-				A903A5DC1CA364F7004077DE /* Neopixel.zip */,
+				A9AF4E251CC7E8C0002C1C12 /* Neopixel */,
 			);
 			path = sketchs;
 			sourceTree = "<group>";
@@ -889,11 +889,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A903A5DD1CA364F7004077DE /* Neopixel.zip in Resources */,
 				A94F5A381C5AD41A009CC9B8 /* Main.storyboard in Resources */,
 				A9AF4E121CC63562002C1C12 /* NeopixelTypes.plist in Resources */,
 				A91F9E931C65179E007656B7 /* Localizable.strings in Resources */,
 				A9941C161C80F41300AD4016 /* NeopixelBoards.plist in Resources */,
+				A9AF4E261CC7E8C0002C1C12 /* Neopixel in Resources */,
 				A94F5A471C5AE2A4009CC9B8 /* DefaultPreferences.plist in Resources */,
 				A949AAA61C5ACFAB002F960B /* Assets.xcassets in Resources */,
 				A94F5A371C5AD41A009CC9B8 /* LaunchScreen.storyboard in Resources */,
