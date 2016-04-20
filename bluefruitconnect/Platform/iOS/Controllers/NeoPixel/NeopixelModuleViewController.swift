@@ -15,7 +15,7 @@ class NeopixelModuleViewController: ModuleViewController {
     private let kLedWidth: CGFloat = 44
     private let kLedHeight: CGFloat = 44
     private let kDefaultLedColor = UIColor(hex: 0xffffff)
-    
+
     // UI
     @IBOutlet weak var statusView: UIView!
     @IBOutlet weak var statusLabel: UILabel!
@@ -32,7 +32,7 @@ class NeopixelModuleViewController: ModuleViewController {
     @IBOutlet weak var boardControlsView: UIView!
     
     @IBOutlet weak var rotationView: UIView!
-    
+
     // Data
     private let neopixel = NeopixelModuleManager()
     private var board: NeopixelModuleManager.Board?

@@ -11,7 +11,7 @@ import UIKit
 class ControllerModuleViewController: ModuleViewController {
 
     // Constants
-    static private let kPollInterval = 0.5
+    static private let kPollInterval = 0.25
     
     static private let kSensorTitleKeys : [String] = ["controller_sensor_quaternion", "controller_sensor_accelerometer", "controller_sensor_gyro", "controller_sensor_magnetometer", "controller_sensor_location"]
     static private let kModuleTitleKeys : [String] = ["controller_module_pad", "controller_module_colorpicker"]
@@ -27,18 +27,21 @@ class ControllerModuleViewController: ModuleViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Init
+        controllerData.delegate = self
+
         // Setup table
         baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
-  
+        updateUI()
+        
         //
-        uartWaitingLabel.hidden = true
         updateContentItemsFromSensorsEnabled()
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        controllerData.startUpdatingData(ControllerModuleViewController.kPollInterval) { [unowned self] in
+        controllerData.start(ControllerModuleViewController.kPollInterval) { [unowned self] in
             self.baseTableView.reloadData()
         }
     }
@@ -46,12 +49,19 @@ class ControllerModuleViewController: ModuleViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        controllerData.stopUpdatingData()
+        controllerData.stop()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    private func updateUI() {
+        // Setup UI
+        let isUartReady = UartManager.sharedInstance.isReady()
+        uartWaitingLabel.hidden = isUartReady
+        baseTableView.hidden = !isUartReady
     }
     
     private let kDetailItemOffset = 100
@@ -236,5 +246,15 @@ extension ControllerModuleViewController : UITableViewDelegate {
             break
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+}
+
+// MARK: - NeopixelModuleManagerDelegate
+extension ControllerModuleViewController: ControllerModuleManagerDelegate {
+    func onControllerUartIsReady() {
+        dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+            self.updateUI()
+            self.baseTableView.reloadData()
+            });
     }
 }

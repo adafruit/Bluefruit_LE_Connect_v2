@@ -15,6 +15,10 @@ import CoreLocation
     import CoreMotion
 #endif
 
+protocol ControllerModuleManagerDelegate {
+    func onControllerUartIsReady()
+}
+
 class ControllerModuleManager : NSObject {
     
     enum ControllerType : Int {
@@ -29,6 +33,8 @@ class ControllerModuleManager : NSObject {
     static private let prefixes = ["!Q", "!A", "!G", "!M", "!L"];     // same order that ControllerType
     
     // Data
+    var delegate: ControllerModuleManagerDelegate?
+    
     private var isSensorEnabled = [Bool](count:ControllerModuleManager.numSensors, repeatedValue: false)
 
     #if os(OSX)
@@ -38,10 +44,12 @@ class ControllerModuleManager : NSObject {
     private let locationManager = CLLocationManager()
     private var lastKnownLocation :CLLocation?
     
-    private var pollTimer : NSTimer?
+    private var pollTimer : MSWeakTimer?
     private var timerHandler : (()->())?
     
     private let uartManager = UartManager.sharedInstance
+    
+    private var pollInterval: NSTimeInterval = 1        // in seconds
     
     override init() {
         super.init()
@@ -60,12 +68,49 @@ class ControllerModuleManager : NSObject {
         }
     }
     
-    func startUpdatingData(pollInterval: NSTimeInterval, handler:(()->())?) {
-        timerHandler = handler
-        pollTimer = NSTimer.scheduledTimerWithTimeInterval(pollInterval, target: self, selector: #selector(ControllerModuleManager.updateSensors), userInfo: nil, repeats: true)
+    func start(pollInterval: NSTimeInterval, handler:(()->())?) {
+        self.pollInterval = pollInterval
+        self.timerHandler = handler
+        
+        // Start Uart Manager
+        UartManager.sharedInstance.blePeripheral = BleManager.sharedInstance.blePeripheralConnected       // Note: this will start the service discovery
+        
+        // Notifications
+        let notificationCenter =  NSNotificationCenter.defaultCenter()
+        if !uartManager.isReady() {
+            notificationCenter.addObserver(self, selector: #selector(ControllerModuleManager.uartIsReady(_:)), name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+        }
+        else {
+            delegate?.onControllerUartIsReady()
+            startUpdatingData()
+        }
+        
     }
     
-    func stopUpdatingData() {
+    func stop() {
+        let notificationCenter =  NSNotificationCenter.defaultCenter()
+        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+        
+        stopUpdatingData()
+    }
+    
+    // MARK: Notifications
+    func uartIsReady(notification: NSNotification) {
+        DLog("Uart is ready")
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+        
+        delegate?.onControllerUartIsReady()
+        startUpdatingData()
+    }
+    
+
+    // MARK: -
+    private func startUpdatingData() {
+        pollTimer = MSWeakTimer.scheduledTimerWithTimeInterval(pollInterval, target: self, selector: #selector(ControllerModuleManager.updateSensors), userInfo: nil, repeats: true, dispatchQueue: dispatch_get_main_queue())
+    }
+    
+    private func stopUpdatingData() {
         timerHandler = nil
         pollTimer?.invalidate()
         pollTimer = nil
