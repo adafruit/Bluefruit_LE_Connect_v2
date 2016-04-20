@@ -41,6 +41,8 @@ class NeopixelModuleViewController: ModuleViewController {
     private var currentColor: UIColor = UIColor.redColor()
     private var contentRotationAngle: CGFloat = 0
 
+    private var boardCenterScrollOffset = CGPointZero
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -174,9 +176,8 @@ class NeopixelModuleViewController: ModuleViewController {
         
         self.presentViewController(alertController, animated: true) { () -> Void in
         }
-        
     }
-    
+
     private func updateStatusUI() {
         connectButton.enabled = neopixel.isSketchDetected != true || (neopixel.isReady() && (neopixel.board == nil && !neopixel.isWaitingResponse))
         
@@ -209,8 +210,7 @@ class NeopixelModuleViewController: ModuleViewController {
         }
         statusLabel.text = statusMessage
     }
-    
-    
+
     private func createBoardUI() {
         
         // Remove old views
@@ -218,7 +218,7 @@ class NeopixelModuleViewController: ModuleViewController {
             ledView.removeFromSuperview()
         }
         
-        for subview in contentView.subviews {
+        for subview in rotationView.subviews {
             subview.removeFromSuperview()
         }
         
@@ -231,9 +231,12 @@ class NeopixelModuleViewController: ModuleViewController {
             boardScrollView.layoutIfNeeded()
             let boardWidthPoints = CGFloat(board.width) * kLedWidth
             let boardHeightPoints = CGFloat(board.height) * kLedHeight
-            let horizontalMargin = max(0, (boardScrollView.bounds.height - boardWidthPoints)/2)
+            let horizontalMargin = max(0, (boardScrollView.bounds.width - boardWidthPoints)/2)
             let verticalMargin = max(0, (boardScrollView.bounds.height - boardHeightPoints)/2)
-            let boardMargin = UIEdgeInsetsMake(verticalMargin, horizontalMargin, verticalMargin, horizontalMargin)
+            
+            //let boardMargin = UIEdgeInsetsMake(verticalMargin, horizontalMargin, verticalMargin, horizontalMargin)
+            let marginScale: CGFloat = 5
+            let boardMargin = UIEdgeInsetsMake(boardScrollView.bounds.height * marginScale, boardScrollView.bounds.width * marginScale, boardScrollView.bounds.height * marginScale, boardScrollView.bounds.width * marginScale)
             
             for j in 0..<board.height {
                 for i in 0..<board.width {
@@ -242,7 +245,7 @@ class NeopixelModuleViewController: ModuleViewController {
                     button.layer.borderWidth = 1
                     button.tag = k
                     button.addTarget(self, action: #selector(NeopixelModuleViewController.ledPressed(_:)), forControlEvents: [.TouchDown])
-                    contentView.addSubview(button)
+                    rotationView.addSubview(button)
                     
                     let colorView = UIView(frame: CGRectMake(ledCircleMargin, ledCircleMargin, kLedWidth-ledCircleMargin*2, kLedHeight-ledCircleMargin*2))
                     colorView.userInteractionEnabled = false
@@ -257,18 +260,19 @@ class NeopixelModuleViewController: ModuleViewController {
                     k += 1
                 }
             }
-            
+
             contentViewWidthConstraint.constant = CGFloat(board.width) * kLedWidth + boardMargin.left + boardMargin.right
             contentViewHeightConstrait.constant = CGFloat(board.height) * kLedHeight + boardMargin.top + boardMargin.bottom
             boardScrollView.minimumZoomScale = 0.1
             boardScrollView.maximumZoomScale = 10
+            boardCenterScrollOffset = CGPointMake(boardMargin.left - horizontalMargin, boardMargin.top - verticalMargin)
+            boardScrollView.contentOffset = boardCenterScrollOffset      // center board
             boardScrollView.layoutIfNeeded()
         }
-        
+
         boardScrollView.setZoomScale(1, animated: false)
     }
-    
-    
+
     func ledPressed(sender: UIButton) {
         let isBoardConfigured = neopixel.isBoardConfigured()
         if let board = board where isBoardConfigured {
@@ -289,6 +293,8 @@ class NeopixelModuleViewController: ModuleViewController {
     
     @IBAction func onDoubleTapScrollView(sender: AnyObject) {
         boardScrollView.setZoomScale(1, animated: true)
+        boardScrollView.setContentOffset(boardCenterScrollOffset, animated: true)
+//        boardScrollView.contentOffset = boardCenterScrollOffset      // center board
     }
     
     @IBAction func onClickClear(sender: AnyObject) {
@@ -429,7 +435,6 @@ extension NeopixelModuleViewController : UIPopoverPresentationControllerDelegate
     }
 }
 
-
 // MARK: - UIPopoverPresentationControllerDelegate
 extension NeopixelModuleViewController : NeopixelColorPickerViewControllerDelegate {
     func onColorPickerChooseColor(color: UIColor) {
@@ -439,11 +444,9 @@ extension NeopixelModuleViewController : NeopixelColorPickerViewControllerDelega
         paletteCollection.reloadData()
         
     }
-    
+
     private func updatePickerColorButton(isSelected: Bool) {
         colorPickerButton.layer.borderWidth = isSelected ? 4:2
         colorPickerButton.layer.borderColor =  (isSelected ? UIColor.whiteColor(): colorPickerButton.backgroundColor!.darker(0.5)).CGColor
-        
     }
 }
-
