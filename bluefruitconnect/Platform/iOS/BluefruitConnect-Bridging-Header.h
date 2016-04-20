@@ -11,7 +11,7 @@
 
 #import "FirmwareUpdater.h"
 #import "DFUOperations.h"
-#import "CocoaMQTT/MSWeakTimer.h"
+#import "MSWeakTimer/MSWeakTimer.h"
 #import "ISColorWheel.h"
 #import "NSObject+ENHThrottledReloading.h"
 

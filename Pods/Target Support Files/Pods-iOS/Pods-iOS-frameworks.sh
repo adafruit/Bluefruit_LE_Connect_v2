@@ -84,10 +84,16 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods-iOS/CocoaAsyncSocket.framework"
   install_framework "Pods-iOS/CocoaMQTT.framework"
+  install_framework "Pods-iOS/MSWeakTimer.framework"
+  install_framework "Pods-iOS/SSZipArchive.framework"
   install_framework "Pods-iOS/UIColor_Hex.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods-iOS/CocoaAsyncSocket.framework"
   install_framework "Pods-iOS/CocoaMQTT.framework"
+  install_framework "Pods-iOS/MSWeakTimer.framework"
+  install_framework "Pods-iOS/SSZipArchive.framework"
   install_framework "Pods-iOS/UIColor_Hex.framework"
 fi

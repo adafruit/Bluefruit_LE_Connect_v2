@@ -182,6 +182,10 @@ extension MqttManager: CocoaMQTTDelegate {
         DLog("didPublishMessage")
     }
     
+    func mqtt(mqtt: CocoaMQTT, didPublishAck id: UInt16) {
+        DLog("didPublishAck")
+    }
+    
     func mqtt(mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16) {
         
         if let string = message.string {

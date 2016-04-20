@@ -12,6 +12,6 @@
 #import "FirmwareUpdater.h"
 #import "DFUOperations.h"
 #import "NSColor+Hex.h"
-#import "CocoaMQTT/MSWeakTimer.h"
+#import "MSWeakTimer/MSWeakTimer.h"
 
 #endif /* BluefruitConnect_Bridging_Header_h */

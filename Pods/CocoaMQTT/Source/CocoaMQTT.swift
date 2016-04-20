@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import CocoaAsyncSocket
+import MSWeakTimer
 
 /**
  * MQTT Delegate
@@ -22,6 +24,8 @@ public protocol CocoaMQTTDelegate : class {
     func mqtt(mqtt: CocoaMQTT, didConnectAck ack: CocoaMQTTConnAck)
 
     func mqtt(mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16)
+    
+    func mqtt(mqtt: CocoaMQTT, didPublishAck id: UInt16)
 
     func mqtt(mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16 )
 
@@ -62,7 +66,7 @@ public protocol CocoaMQTTClient {
 
     func connect() -> Bool
 
-    func publish(topic: String, withString string: String, qos: CocoaMQTTQOS, retain: Bool, dup: Bool) -> UInt16
+    func publish(topic: String, withString string: String, qos: CocoaMQTTQOS, retained: Bool, dup: Bool) -> UInt16
 
     func publish(message: CocoaMQTTMessage) -> UInt16
 
@@ -92,7 +96,7 @@ public enum CocoaMQTTQOS: UInt8 {
 /**
  * Connection State
  */
-enum CocoaMQTTConnState: UInt8 {
+public enum CocoaMQTTConnState: UInt8 {
 
     case INIT = 0
 
@@ -156,6 +160,8 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
     public var password: String?
     
     public var secureMQTT: Bool = false
+    
+    public var backgroundOnSocket: Bool = false
 
     public var cleanSess: Bool = true
 
@@ -175,7 +181,7 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
 
     //socket and connection
 
-    var connState = CocoaMQTTConnState.INIT
+    public var connState = CocoaMQTTConnState.INIT
 
     var socket: GCDAsyncSocket?
 
@@ -191,7 +197,7 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
 
     //published messages
     
-    var messages = Dictionary<UInt16, CocoaMQTTMessage>()
+    public var messages = Dictionary<UInt16, CocoaMQTTMessage>()
 
     public init(clientId: String, host: String = "localhost", port: UInt16 = 1883) {
         self.clientId = clientId
@@ -216,8 +222,8 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
         }
     }
 
-    public func publish(topic: String, withString string: String, qos: CocoaMQTTQOS = .QOS1, retain: Bool = false, dup: Bool = false) -> UInt16 {
-        let message = CocoaMQTTMessage(topic: topic, string: string, qos: qos, retain: retain, dup: dup)
+    public func publish(topic: String, withString string: String, qos: CocoaMQTTQOS = .QOS1, retained: Bool = false, dup: Bool = false) -> UInt16 {
+        let message = CocoaMQTTMessage(topic: topic, string: string, qos: qos, retained: retained, dup: dup)
         return publish(message)
     }
 
@@ -225,14 +231,15 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
         let msgId: UInt16 = _nextMessageId()
         let frame = CocoaMQTTFramePublish(msgid: msgId, topic: message.topic, payload: message.payload)
         frame.qos = message.qos.rawValue
-        frame.retain = message.retain
+        frame.retained = message.retained
         frame.dup = message.dup
         send(frame, tag: Int(msgId))
         if message.qos != CocoaMQTTQOS.QOS0 {
             messages[msgId] = message //cache
-        } else {
-            delegate?.mqtt(self, didPublishMessage: message, id: msgId)
         }
+        
+        delegate?.mqtt(self, didPublishMessage: message, id: msgId)
+        
         return msgId
     }
 
@@ -275,11 +282,17 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
         #endif
         connState = CocoaMQTTConnState.CONNECTED
         
+        #if TARGET_OS_IPHONE
+        if backgroundOnSocket {
+            sock.performBlock { sock.enableBackgroundingOnSocket() }
+        }
+        #endif
+        
         if secureMQTT {
             #if DEBUG
-                sock.startTLS(["GCDAsyncSocketManuallyEvaluateTrust": true])
+                sock.startTLS(["GCDAsyncSocketManuallyEvaluateTrust": true, kCFStreamSSLPeerName: self.host])
             #else
-                sock.startTLS(nil)
+                sock.startTLS([kCFStreamSSLPeerName: self.host])
             #endif
         } else {
             let frame = CocoaMQTTFrameConnect(client: self)
@@ -348,7 +361,7 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
             aliveTimer = MSWeakTimer.scheduledTimerWithTimeInterval(
                 NSTimeInterval(keepAlive),
                 target: self,
-                selector: "_aliveTimerFired",
+                selector: #selector(CocoaMQTT._aliveTimerFired),
                 userInfo: nil,
                 repeats: true,
                 dispatchQueue: dispatch_get_main_queue())
@@ -396,10 +409,8 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
         #if DEBUG
         NSLog("CocoaMQTT: PUBACK Received: \(msgid)")
         #endif
-        if let message = messages[msgid] {
-            messages.removeValueForKey(msgid)
-            delegate?.mqtt(self, didPublishMessage: message, id: msgid)
-        }
+        messages.removeValueForKey(msgid)
+        delegate?.mqtt(self, didPublishAck: msgid)
     }
 
     func didReceivePubRec(reader: CocoaMQTTReader, msgid: UInt16) {
@@ -581,7 +592,7 @@ public class CocoaMQTTReader {
         frame.unpack()
         let msgId = frame.msgid!
         let qos = CocoaMQTTQOS(rawValue: frame.qos)!
-        let message = CocoaMQTTMessage(topic: frame.topic!, payload: frame.payload, qos: qos, retain: frame.retain, dup: frame.dup)
+        let message = CocoaMQTTMessage(topic: frame.topic!, payload: frame.payload, qos: qos, retained: frame.retained, dup: frame.dup)
         return (msgId, message)
     }
 

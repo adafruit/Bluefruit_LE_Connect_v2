@@ -179,7 +179,7 @@ extension PinIOViewController : DetailTab {
                 DLog("Wait for uart to be ready to start PinIO setup")
                 
                 let notificationCenter =  NSNotificationCenter.defaultCenter()
-                notificationCenter.addObserver(self, selector: "uartIsReady:", name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+                notificationCenter.addObserver(self, selector: #selector(PinIOViewController.uartIsReady(_:)), name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
             }
         }
     }

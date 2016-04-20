@@ -17,7 +17,7 @@ class StatusViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didUpdateStatus:", name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(StatusViewController.didUpdateStatus(_:)), name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
     }
     
     deinit {

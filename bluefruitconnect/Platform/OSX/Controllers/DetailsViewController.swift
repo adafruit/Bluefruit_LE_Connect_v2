@@ -8,6 +8,7 @@
 
 import Cocoa
 import CoreBluetooth
+import MSWeakTimer
 
 // Protocol that should implement viewControllers used as tabs
 protocol DetailTab {

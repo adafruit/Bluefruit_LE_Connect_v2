@@ -97,7 +97,7 @@ class PinTableCellView: NSTableCellView {
                 modeSegmentedControl.selectedSegment = i    // Select the mode we just added
             }
             
-            i++
+            i += 1
         }
     }
 

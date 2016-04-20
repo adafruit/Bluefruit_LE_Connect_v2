@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreLocation
+import MSWeakTimer
 
 // TODO: add support for OSX
 #if os(OSX)
