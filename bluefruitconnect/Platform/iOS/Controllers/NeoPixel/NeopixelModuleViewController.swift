@@ -42,6 +42,7 @@ class NeopixelModuleViewController: ModuleViewController {
     private var currentColor: UIColor = UIColor.redColor()
     private var contentRotationAngle: CGFloat = 0
 
+    private var boardMargin = UIEdgeInsetsZero
     private var boardCenterScrollOffset = CGPointZero
     
     override func viewDidLoad() {
@@ -143,11 +144,14 @@ class NeopixelModuleViewController: ModuleViewController {
         }
     }
     
+    
+    /*
     override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransitionToTraitCollection(newCollection, withTransitionCoordinator: coordinator)
         
         createBoardUI()
     }
+    */
     
     private func changeBoard(board: NeopixelModuleManager.Board) {
         self.board = board
@@ -187,6 +191,14 @@ class NeopixelModuleViewController: ModuleViewController {
         }
     }
 
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        updateBoardPositionValues()
+        setDefaultPositionAndScaleAnimated(true)
+    }
+    
     private func updateStatusUI() {
         connectButton.enabled = neopixel.isSketchDetected != true || (neopixel.isReady() && (neopixel.board == nil && !neopixel.isWaitingResponse))
         
@@ -238,14 +250,10 @@ class NeopixelModuleViewController: ModuleViewController {
         ledViews = []
         if let board = board {
             boardScrollView.layoutIfNeeded()
-            let boardWidthPoints = CGFloat(board.width) * kLedWidth
-            let boardHeightPoints = CGFloat(board.height) * kLedHeight
-            let horizontalMargin = max(0, (boardScrollView.bounds.width - boardWidthPoints)/2)
-            let verticalMargin = max(0, (boardScrollView.bounds.height - boardHeightPoints)/2)
             
+            updateBoardPositionValues()
+
             //let boardMargin = UIEdgeInsetsMake(verticalMargin, horizontalMargin, verticalMargin, horizontalMargin)
-            let marginScale: CGFloat = 5
-            let boardMargin = UIEdgeInsetsMake(boardScrollView.bounds.height * marginScale, boardScrollView.bounds.width * marginScale, boardScrollView.bounds.height * marginScale, boardScrollView.bounds.width * marginScale)
             
             for j in 0..<board.height {
                 for i in 0..<board.width {
@@ -274,15 +282,36 @@ class NeopixelModuleViewController: ModuleViewController {
             contentViewHeightConstrait.constant = CGFloat(board.height) * kLedHeight + boardMargin.top + boardMargin.bottom
             boardScrollView.minimumZoomScale = 0.1
             boardScrollView.maximumZoomScale = 10
-            boardScrollView.setZoomScale(1, animated: false)
-            boardCenterScrollOffset = CGPointMake(boardMargin.left - horizontalMargin, boardMargin.top - verticalMargin)
-            boardScrollView.contentOffset = boardCenterScrollOffset      // center board
+            setDefaultPositionAndScaleAnimated(false)
             boardScrollView.layoutIfNeeded()
         }
 
         boardScrollView.setZoomScale(1, animated: false)
     }
+    
+    private func updateBoardPositionValues() {
+        if let board = board {
+            boardScrollView.layoutIfNeeded()
+            
+            //let marginScale: CGFloat = 5
+            //boardMargin = UIEdgeInsetsMake(boardScrollView.bounds.height * marginScale, boardScrollView.bounds.width * marginScale, boardScrollView.bounds.height * marginScale, boardScrollView.bounds.width * marginScale)
+            boardMargin = UIEdgeInsetsMake(2000, 2000, 2000, 2000)
+            
+            let boardWidthPoints = CGFloat(board.width) * kLedWidth
+            let boardHeightPoints = CGFloat(board.height) * kLedHeight
+            
+            let horizontalMargin = max(0, (boardScrollView.bounds.width - boardWidthPoints)/2)
+            let verticalMargin = max(0, (boardScrollView.bounds.height - boardHeightPoints)/2)
+            
+            boardCenterScrollOffset = CGPointMake(boardMargin.left - horizontalMargin, boardMargin.top - verticalMargin)
+        }
+    }
 
+    private func setDefaultPositionAndScaleAnimated(animated: Bool) {
+        boardScrollView.setZoomScale(1, animated: animated)
+        boardScrollView.setContentOffset(boardCenterScrollOffset, animated: animated)
+    }
+    
     func ledPressed(sender: UIButton) {
         let isBoardConfigured = neopixel.isBoardConfigured()
         if let board = board where isBoardConfigured {
@@ -302,8 +331,7 @@ class NeopixelModuleViewController: ModuleViewController {
     }
     
     @IBAction func onDoubleTapScrollView(sender: AnyObject) {
-        boardScrollView.setZoomScale(1, animated: true)
-        boardScrollView.setContentOffset(boardCenterScrollOffset, animated: true)
+        setDefaultPositionAndScaleAnimated(true)
     }
     
     @IBAction func onClickClear(sender: AnyObject) {

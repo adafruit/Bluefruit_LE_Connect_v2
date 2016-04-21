@@ -50,9 +50,9 @@ extension NeopixelTypeSelectorViewController : UITableViewDataSource {
         var title: String?
         switch section {
         case 0:
-            title = "PREDEFINED BOARD TYPES"
+            title = "PREDEFINED PIXEL TYPES"
         case 1:
-            title = "SET TYPE"
+            title = "PIXEL CONFIG REGISTER"
         default:
             break
         }
@@ -93,6 +93,9 @@ extension NeopixelTypeSelectorViewController : UITableViewDataSource {
             let uartCell = cell as! UartSettingTableViewCell
             let type = types![row]
             uartCell.textLabel?.text = type["name"] as? String
+            
+            let isCurrentType = currentType == UInt16((type["value"] as! NSNumber).integerValue)
+            uartCell.accessoryType = isCurrentType ? .Checkmark:.None
         }
         else {
             let typeValueCell = cell as! NeopixelTypeValueTableViewCell

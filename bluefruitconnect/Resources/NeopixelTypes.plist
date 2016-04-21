@@ -4,13 +4,13 @@
 <array>
 	<dict>
 		<key>name</key>
-		<string>GRB NEO_KHZ800</string>
+		<string>GRB 800kHz</string>
 		<key>value</key>
 		<integer>82</integer>
 	</dict>
 	<dict>
 		<key>name</key>
-		<string>GRBW NEO_KHZ800</string>
+		<string>GRBW 800kHz</string>
 		<key>value</key>
 		<integer>210</integer>
 	</dict>
