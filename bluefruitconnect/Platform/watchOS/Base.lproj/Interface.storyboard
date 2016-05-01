@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="AgC-eL-Hgc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="10032"/>
+    </dependencies>
+    <scenes>
+        <!--MainInterfaceController-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller id="AgC-eL-Hgc" userLabel="MainInterfaceController" customClass="MainInterfaceController" customModule="watchOS_Extension">
+                    <items>
+                        <label alignment="left" verticalAlignment="center" text="Launch Bluefruit app on your phone" textAlignment="center" numberOfLines="0" id="mDi-Jv-4ST"/>
+                    </items>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="220" y="345"/>
+        </scene>
+        <!--ScanningInterfaceController-->
+        <scene sceneID="qUa-Xb-5RR">
+            <objects>
+                <controller id="vjN-rN-eF1" userLabel="ScanningInterfaceController" customClass="ScanningInterfaceController" customModule="watchOS_Extension">
+                    <items>
+                        <group width="1" alignment="left" verticalAlignment="center" layout="vertical" id="NCp-G7-nxk">
+                            <items>
+                                <label alignment="center" text="Scanning..." id="6Yb-GM-ti9"/>
+                                <label alignment="center" text="X" id="tz8-EK-7B4">
+                                    <fontDescription key="font" type="system" weight="medium" pointSize="27"/>
+                                </label>
+                                <label alignment="center" text="peripherals found" id="Cgm-J8-nRF"/>
+                            </items>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="foundPeripheralsLabel" destination="tz8-EK-7B4" id="OIa-hK-pVY"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="479" y="350"/>
+        </scene>
+        <!--Static Notification Interface Controller-->
+        <scene sceneID="AEw-b0-oYE">
+            <objects>
+                <notificationController id="YCC-NB-fut">
+                    <items>
+                        <label alignment="left" text="Alert Label" id="IdU-wH-bcW"/>
+                    </items>
+                    <notificationCategory key="notificationCategory" identifier="myCategory" id="JfB-70-Muf"/>
+                    <connections>
+                        <outlet property="notificationAlertLabel" destination="IdU-wH-bcW" id="JKC-fr-R95"/>
+                        <segue destination="4sK-HA-Art" kind="relationship" relationship="dynamicNotificationInterface" id="kXh-Jw-8B1"/>
+                    </connections>
+                </notificationController>
+            </objects>
+            <point key="canvasLocation" x="220" y="38"/>
+        </scene>
+        <!--Notification Controller-->
+        <scene sceneID="ZPc-GJ-vnh">
+            <objects>
+                <controller id="4sK-HA-Art" customClass="NotificationController" customModule="watchOS" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="463" y="38"/>
+        </scene>
+    </scenes>
+</document>
