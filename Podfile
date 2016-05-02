@@ -19,3 +19,7 @@ target 'iOS' do
 	
 end
 
+target 'watchOS' do
+	platform :watchos, '2.0'
+
+end

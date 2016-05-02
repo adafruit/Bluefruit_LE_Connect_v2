@@ -39,7 +39,7 @@ func hexString(text:String)->String{
 }
 */
 
-
+// MARK: - Strings
 func hexString(data : NSData) -> String {
     var bytes = [UInt8](count: data.length, repeatedValue: 0)
     data.getBytes(&bytes, length: data.length)
@@ -51,4 +51,5 @@ func hexString(data : NSData) -> String {
     
     return NSString(string: hexString) as String
 }
+
 

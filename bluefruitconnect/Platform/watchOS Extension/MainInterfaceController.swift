@@ -27,5 +27,11 @@ class MainInterfaceController: WKInterfaceController {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
     }
+    
+    @IBAction func onClickLaunch() {
+        DLog("updateUserActivity")
+        updateUserActivity(HandoffManager.kUserActivityType, userInfo: [HandoffManager.kIdentifierKey: "watch"], webpageURL: nil)
+    }
+    
 
 }

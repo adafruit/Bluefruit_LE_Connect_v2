@@ -33,7 +33,7 @@ class ScanningAnimationViewController: ModuleViewController {
         
         // Observe notifications for coming back from background
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(UIApplicationDelegate.applicationWillEnterForeground(_:)), name: UIApplicationWillEnterForegroundNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(applicationWillEnterForeground(_:)), name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
     override func viewDidDisappear(animated: Bool) {

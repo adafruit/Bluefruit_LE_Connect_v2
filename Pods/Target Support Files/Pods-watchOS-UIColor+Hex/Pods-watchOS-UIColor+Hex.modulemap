@@ -1,5 +1,5 @@
 framework module UIColor_Hex {
-  umbrella header "UIColor+Hex-umbrella.h"
+  umbrella header "Pods-watchOS-UIColor+Hex-umbrella.h"
 
   export *
   module * { export * }

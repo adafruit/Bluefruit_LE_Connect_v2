@@ -14,7 +14,6 @@
     
     var window: UIWindow?
     private var splitDividerCover = UIView()
-    var watchSession : WCSession?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
@@ -23,7 +22,7 @@
         Preferences.registerDefaults()
         
         // Watch Connectivity
-        setupWatchConnectivity()
+        WatchSessionManager.sharedInstance.activateWithDelegate(self)
         
         // Check if there is any update to the fimware database
         FirmwareUpdater.refreshSoftwareUpdatesDatabaseWithCompletionHandler(nil)
@@ -50,12 +49,17 @@
         splitViewController.view.addSubview(splitDividerCover)
         self.splitViewController(splitViewController, willChangeToDisplayMode: splitViewController.displayMode)
         
+        // Watch Session
+        WatchSessionManager.sharedInstance.session?.sendMessage(["isActive": true], replyHandler: nil, errorHandler: nil)
+        
+        
         return true
     }
     
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
@@ -65,6 +69,8 @@
     
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        
+        
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
@@ -73,18 +79,33 @@
     
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        // Watch Session
+        WatchSessionManager.sharedInstance.session?.sendMessage(["isActive": false], replyHandler: nil, errorHandler: nil)
+        
     }
     
     
+    // MARK: - Handoff
+    func application(application: UIApplication, willContinueUserActivityWithType userActivityType: String) -> Bool {
+        return userActivityType == HandoffManager.kUserActivityType
+    }
     
-    // MARK: Watch Connectivity
-    func setupWatchConnectivity() {
-        if(WCSession.isSupported()){
-            DLog("watchSession setup")
-            watchSession = WCSession.defaultSession()
-            watchSession!.delegate = self
-            watchSession!.activateSession()
+    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+        
+        DLog("continueUserActivity: \(userActivity.activityType)")
+        if userActivity.activityType == HandoffManager.kUserActivityType {
+            
+            DLog("continueUserActivity true")
+            return true
         }
+        
+        DLog("continueUserActivity false")
+        return false
+    }
+    
+    func application(application: UIApplication, didFailToContinueUserActivityWithType userActivityType: String, error: NSError) {
+        DLog("didFailToContinueUserActivityWithType: \(userActivityType). Error: \(error)")
     }
  }
  
@@ -117,12 +138,80 @@
     }
  }
  
-  // MARK: - WCSessionDelegate
+ // MARK: - WCSessionDelegate
  extension AppDelegate: WCSessionDelegate {
     func sessionReachabilityDidChange(session: WCSession) {
         DLog("sessionReachabilityDidChange: \(session.reachable ? "reachable":"not reachable")")
-
+        
+        if session.reachable {
+            // Update foreground status
+            let isActive = UIApplication.sharedApplication().applicationState != .Inactive
+            WatchSessionManager.sharedInstance.session?.sendMessage(["isActive": isActive], replyHandler: nil, errorHandler: nil)
+            
+        }
     }
+    
+    func session(session: WCSession, didReceiveMessage message: [String : AnyObject]) {
+        if let command = message["command"] as? String {
+            switch command {
+            case "controlPad":
+                if let controllerModuleManager = detailTabController() as? ControllerModuleViewController, let tag = message["tag"]?.integerValue {
+                    controllerModuleManager.sendTouchEvent(tag, isPressed: true)
+                    controllerModuleManager.sendTouchEvent(tag, isPressed: false)
+                }
+            
+            case "color":
+                if let controllerModuleManager = detailTabController() as? ControllerModuleViewController, let colorUInt = message["color"] as? UInt, let color = colorFromHexUInt(colorUInt) {
+                    
+                    controllerModuleManager.sendColor(color)
+                }
+                
+            default:
+                DLog("didReceiveMessage with unknown command: \(command)")
+                break
+            }
+        }
+    }
+    
+    func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
+        var replyValues: [String: AnyObject] = [:]
+        
+        if let command = message["command"] as? String {
+            switch command {
+            case "isActive":
+                let isActive = UIApplication.sharedApplication().applicationState != .Inactive
+                replyValues[command] = isActive
+
+            default:
+                DLog("didReceiveMessage with unknown command: \(command)")
+                break
+            }
+        }
+        
+        replyHandler(replyValues)
+    }
+    
+    private func detailTabController() -> UIViewController? {
+        var resultViewController: UIViewController?
+        
+        let splitViewController = self.window!.rootViewController as! UISplitViewController
+        var detailNavigationController: UINavigationController?
+        if splitViewController.viewControllers.count == 1 {     // iPhone
+            detailNavigationController = (splitViewController.viewControllers.first as! UINavigationController).topViewController as? UINavigationController
+            
+        }
+        else {      // iPad
+            detailNavigationController = splitViewController.viewControllers.last as? UINavigationController
+        }
+        
+        if let detailNavigationController = detailNavigationController, let peripheralDetailsViewController = detailNavigationController.topViewController as? PeripheralDetailsViewController, let tabViewController = peripheralDetailsViewController.selectedViewController {
+            resultViewController = tabViewController
+        }
+        
+        return resultViewController
+        
+    }
+    
  }
  
  

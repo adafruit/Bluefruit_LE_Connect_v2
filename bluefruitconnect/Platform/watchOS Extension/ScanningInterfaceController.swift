@@ -24,6 +24,11 @@ class ScanningInterfaceController: WKInterfaceController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        
+        // Update values
+        if let appContext = WatchSessionManager.sharedInstance.session?.receivedApplicationContext {
+            didReceiveApplicationContext(appContext)
+        }
     }
 
     override func didDeactivate() {
@@ -31,4 +36,15 @@ class ScanningInterfaceController: WKInterfaceController {
         super.didDeactivate()
     }
 
+    // MARK: - Session
+    func didReceiveApplicationContext(applicationContext: [String : AnyObject]) {
+        DLog("ScanningInterfaceController didReceiveApplicationContext: \(applicationContext)")
+        
+        var peripheralsCount = 0
+        if let peripheralsFound = applicationContext["bleFoundPeripherals"]?.integerValue {
+            peripheralsCount = peripheralsFound
+        }
+        
+        foundPeripheralsLabel.setText( String(peripheralsCount) )
+    }
 }

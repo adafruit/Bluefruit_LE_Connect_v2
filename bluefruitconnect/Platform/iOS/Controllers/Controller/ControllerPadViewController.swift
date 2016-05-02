@@ -58,15 +58,12 @@ class ControllerPadViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
- 
-    
     private func sendTouchEvent(tag: Int, isPressed: Bool) {
         let message = "!B\(tag)\(isPressed ? "1" : "0"))"
         if let data = message.dataUsingEncoding(NSUTF8StringEncoding) {
             UartManager.sharedInstance.sendDataWithCrc(data)
         }
     }
-    
     
     // MARK: - Actions
     func onTouchDown(sender: UIButton) {

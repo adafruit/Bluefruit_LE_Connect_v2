@@ -15,12 +15,6 @@ class BlePeripheral {
     var rssi : Int
     var lastSeenTime : CFAbsoluteTime
     
-    class UartData {
-        var receivedBytes : Int64 = 0
-        var sentBytes : Int64 = 0
-    }
-    var uartData = UartData()
-
     var name : String {
         get {
             if let name = peripheral.name {
@@ -39,15 +33,30 @@ class BlePeripheral {
         self.lastSeenTime = CFAbsoluteTimeGetCurrent()
     }
     
+    // MARK: - Uart
+    private static let kUartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"       // UART service UUID
+    class UartData {
+        var receivedBytes : Int64 = 0
+        var sentBytes : Int64 = 0
+    }
+    var uartData = UartData()
+
     func isUartAdvertised() -> Bool {
-        let kUartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"       // UART service UUID
         
         var isUartAdvertised = false
         if let serviceUUIds = advertisementData[CBAdvertisementDataServiceUUIDsKey] as? [CBUUID] {
-            isUartAdvertised = serviceUUIds.contains(CBUUID(string: kUartServiceUUID))
+            isUartAdvertised = serviceUUIds.contains(CBUUID(string: BlePeripheral.kUartServiceUUID))
         }
         return isUartAdvertised
     }
     
-
+    func hasUart() -> Bool {
+        var hasUart = false
+        if let services = peripheral.services {
+            hasUart = services.contains({ (service : CBService) -> Bool in
+                service.UUID.isEqual(CBUUID(string: BlePeripheral.kUartServiceUUID))
+            })
+        }
+        return hasUart
+    }
 }

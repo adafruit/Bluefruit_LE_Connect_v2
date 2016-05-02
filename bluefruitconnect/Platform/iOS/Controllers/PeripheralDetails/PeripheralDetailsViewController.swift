@@ -192,13 +192,8 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                     let localizationManager = LocalizationManager.sharedInstance
                     
                     // Uart Modules
-                    let kUartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"                       // UART service UUID
-                    let hasUart = services.contains({ (service : CBService) -> Bool in
-                        service.UUID.isEqual(CBUUID(string: kUartServiceUUID))
-                    })
-
                     var viewControllersToAppend: [UIViewController] = []
-                    if (hasUart) {
+                    if (blePeripheral.hasUart()) {
                         // Uart Tab
                         if Config.isUartModuleEnabled {
                             let uartViewController = self.storyboard!.instantiateViewControllerWithIdentifier("UartModuleViewController") as! UartModuleViewController

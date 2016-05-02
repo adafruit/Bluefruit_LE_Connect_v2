@@ -179,11 +179,7 @@ class DetailsViewController: NSViewController {
                     
                     var currentTabIndex = 1     // 0 is Info
                     
-                    let kUartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"                       // UART service UUID
-                    let hasUart = services.contains({ (service : CBService) -> Bool in
-                        service.UUID.isEqual(CBUUID(string: kUartServiceUUID))
-                    })
-                    
+                    let hasUart = blePeripheral.hasUart()
                     self.infoUartImageView.image = NSImage(named: hasUart ?"NSStatusAvailable":"NSStatusNone")
                     //infoUartLabel.toolTip = "UART Service \(hasUart ? "" : "not ")available"
                     

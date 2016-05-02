@@ -44,11 +44,11 @@ class PeripheralTableViewController: UITableViewController {
         //self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
         
         // Subscribe to Ble Notifications
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralTableViewController.didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralTableViewController.didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralTableViewController.didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralTableViewController.didConnectToPeripheral(_:)), name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralTableViewController.willConnectToPeripheral(_:)), name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didConnectToPeripheral(_:)), name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(willConnectToPeripheral(_:)), name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
         
         let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
         if isFullScreen {
@@ -69,6 +69,7 @@ class PeripheralTableViewController: UITableViewController {
     }
     
     private func reloadData() {
+        //
         synchronize(self) { [unowned self] in
             self.baseTableView.reloadData()
         }
@@ -115,6 +116,8 @@ class PeripheralTableViewController: UITableViewController {
     }
     
     func didConnectToPeripheral(notification : NSNotification) {
+        // Watch
+        WatchSessionManager.sharedInstance.updateApplicationContext(.Connected)
         
         // Connection is managed here if the device is in compact mode
         let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
@@ -167,7 +170,10 @@ class PeripheralTableViewController: UITableViewController {
     }
     
     func didDisconnectFromPeripheral(notification : NSNotification) {
-        
+        // Watch
+        WatchSessionManager.sharedInstance.updateApplicationContext(.Scan)
+
+        //
         dispatch_async(dispatch_get_main_queue(), {[unowned self] in
             DLog("list: disconnection detected a")
             self.peripheralList.disconnected()
@@ -233,6 +239,10 @@ class PeripheralTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // Hack to update watch when the cell count changes
+        WatchSessionManager.sharedInstance.updateApplicationContext(.Scan)
+        
+        // Calculate num cells
         cachedNumOfTableItems = BleManager.sharedInstance.blePeripheralsCount()
         return cachedNumOfTableItems
     }

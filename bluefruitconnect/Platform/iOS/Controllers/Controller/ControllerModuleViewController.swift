@@ -44,12 +44,18 @@ class ControllerModuleViewController: ModuleViewController {
         controllerData.start(ControllerModuleViewController.kPollInterval) { [unowned self] in
             self.baseTableView.reloadData()
         }
+        
+        // Watch
+        WatchSessionManager.sharedInstance.updateApplicationContext(.Controller)
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
         controllerData.stop()
+
+        // Watch
+        WatchSessionManager.sharedInstance.updateApplicationContext(.Connected)
     }
 
     override func didReceiveMemoryWarning() {
@@ -90,6 +96,35 @@ class ControllerModuleViewController: ModuleViewController {
         helpNavigationController.popoverPresentationController?.barButtonItem = sender
         
         presentViewController(helpNavigationController, animated: true, completion: nil)
+    }
+    
+    
+     // MARK: - Send Data (from Watch)
+    func sendColor(color: UIColor) {
+        let brightness: CGFloat = 1
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0
+        color.getRed(&red, green: &green, blue: &blue, alpha: nil)
+        red = red*brightness
+        green = green*brightness
+        blue = blue*brightness
+        
+        let selectedColorComponents = [UInt8(255.0 * Float(red)), UInt8(255.0 * Float(green)), UInt8(255.0 * Float(blue))]
+        
+        let data = NSMutableData()
+        let prefixData = ControllerColorWheelViewController.prefix.dataUsingEncoding(NSUTF8StringEncoding)!
+        data.appendData(prefixData)
+        for var component in selectedColorComponents {
+            data.appendBytes(&component, length: sizeof(UInt8))
+        }
+        
+        UartManager.sharedInstance.sendDataWithCrc(data)
+    }
+    
+    func sendTouchEvent(tag: Int, isPressed: Bool) {
+        let message = "!B\(tag)\(isPressed ? "1" : "0"))"
+        if let data = message.dataUsingEncoding(NSUTF8StringEncoding) {
+            UartManager.sharedInstance.sendDataWithCrc(data)
+        }
     }
 }
 
