@@ -42,7 +42,7 @@ struct Config {
     static let isPinIOModuleEnabled = true
     static let isControllerModuleEnabled = true
     static let isDfuModuleEnabled = true
-    static let isNeoPixelModuleEnabled = Config.DEBUG && true
+    static let isNeoPixelModuleEnabled = true
     #endif
     
 }
