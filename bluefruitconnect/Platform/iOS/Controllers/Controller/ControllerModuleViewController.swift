@@ -217,20 +217,34 @@ extension ControllerModuleViewController : UITableViewDataSource {
                 sensorCell.enableSwitch.on = controllerData.isSensorEnabled(item)
                 sensorCell.onSensorEnabled = { [unowned self] (enabled) in
                     
-                    self.controllerData.setSensorEnabled(enabled, index:item)
-                    self.updateContentItemsFromSensorsEnabled()
-                    
-                    if let currentRow = self.contentItems.indexOf(item) {
-                        let detailIndexPath = NSIndexPath(forRow: currentRow+1, inSection: indexPath.section)
-                        if enabled {
-                            tableView.insertRowsAtIndexPaths([detailIndexPath], withRowAnimation: .Top)
+                    if self.controllerData.isSensorEnabled[item] != enabled {       // if changed
+                        let errorMessage = self.controllerData.setSensorEnabled(enabled, index:item)
+
+                        if let errorMessage = errorMessage {
+                            let alertController = UIAlertController(title: localizationManager.localizedString("dialog_error"), message: errorMessage, preferredStyle: .Alert)
+                            
+                            let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler:nil)
+                            alertController.addAction(okAction)
+                            self.presentViewController(alertController, animated: true, completion: nil)
                         }
-                        else {
-                            tableView.deleteRowsAtIndexPaths([detailIndexPath], withRowAnimation: .Top)
+                        
+                        self.updateContentItemsFromSensorsEnabled()
+                        
+                        /* Not used because the animation for the section title looks weird. Used a reloadData instead
+                        if let currentRow = self.contentItems.indexOf(item) {
+                            let detailIndexPath = NSIndexPath(forRow: currentRow+1, inSection: indexPath.section)
+                            if enabled {
+                                tableView.insertRowsAtIndexPaths([detailIndexPath], withRowAnimation: .Top)
+                            }
+                            else {
+                                tableView.deleteRowsAtIndexPaths([detailIndexPath], withRowAnimation: .Bottom)
+                            }
                         }
+                        */
+                        
                     }
-                    
-                    // self.baseTableView.reloadData()
+ 
+                    self.baseTableView.reloadData()
                 }
                 cell = sensorCell
             }

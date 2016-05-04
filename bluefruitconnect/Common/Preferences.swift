@@ -30,6 +30,7 @@ import Foundation
     private static let uartIsInHexModeKey = "UartIsInHexMode"
     private static let uartIsEchoEnabledKey = "UartIsEchoEnabled"
     private static let uartIsAutomaticEolEnabledKey = "UartIsAutomaticEolEnabled"
+    private static let neopixelIsSketchTooltipEnabledKey = "NeopixelIsSketchTooltipEnabledKey"
     
     enum PreferencesNotifications : String {
         case DidUpdatePreferences = "didUpdatePreferences"          // Note: used on some objective-c code, so when changed, update it
@@ -146,6 +147,16 @@ import Foundation
         }
         set {
             setBoolPreference(Preferences.uartIsAutomaticEolEnabledKey, newValue: newValue)
+        }
+    }
+    
+    // MARK: - Neopixels
+    static var neopixelIsSketchTooltipEnabled : Bool {
+        get {
+            return getBoolPreference(Preferences.neopixelIsSketchTooltipEnabledKey)
+        }
+        set {
+            setBoolPreference(Preferences.neopixelIsSketchTooltipEnabledKey, newValue: newValue)
         }
     }
     

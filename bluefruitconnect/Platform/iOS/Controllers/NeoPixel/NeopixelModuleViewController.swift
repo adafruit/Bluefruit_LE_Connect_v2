@@ -45,6 +45,8 @@ class NeopixelModuleViewController: ModuleViewController {
     private var boardMargin = UIEdgeInsetsZero
     private var boardCenterScrollOffset = CGPointZero
     
+    private var isSketchTooltipAlreadyShown = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,6 +74,24 @@ class NeopixelModuleViewController: ModuleViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        // Show tooltip alert
+        if Preferences.neopixelIsSketchTooltipEnabled && !isSketchTooltipAlreadyShown{
+            let localizationManager = LocalizationManager.sharedInstance
+            let alertController = UIAlertController(title: localizationManager.localizedString("dialog_notice"), message: localizationManager.localizedString("neopixel_sketch_tooltip"), preferredStyle: .Alert)
+            
+            let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler:nil)
+            alertController.addAction(okAction)
+            
+            let dontshowAction = UIAlertAction(title: localizationManager.localizedString("dialog_dontshowagain"), style: .Destructive) { (action) in
+                Preferences.neopixelIsSketchTooltipEnabled = false
+            }
+            alertController.addAction(dontshowAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+            isSketchTooltipAlreadyShown = true
+        }
+        
+        //
         updateStatusUI()
         neopixel.start()
     }

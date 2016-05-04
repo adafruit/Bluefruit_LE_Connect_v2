@@ -87,7 +87,7 @@ https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakou
 "uart_settings_dataMode_title" = "Data Mode";
 "uart_settings_dataMode_hex" = "Hex";
 "uart_settings_dataMode_ascii" = "Ascii";
-"uart_settings_eol_title" = "Send Eol";
+"uart_settings_eol_title" = "Send EoL";
 "uart_settings_echo_title" = "Show Echo";
 
 
@@ -192,6 +192,9 @@ https://learn.adafruit.com/bluefruit-le-connect-for-ios/pin-i-slash-o
 "controller_sensor_magnetometer" = "Magnetometer";
 "controller_sensor_location" = "Location";
 
+"controller_sensor_location_disabled" = "Location Services Disabled";
+"controller_sensor_location_restricted" = "This application is not authorized to use location services";
+"controller_sensor_location_denied" = "Location Services are disabled. Go to settings and enable location services for this app to use this feature.";
 "controller_module_pad" = "Control Pad";
 "controller_module_colorpicker" = "Color Picker";
 
@@ -248,10 +251,12 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 • Click the Connect button in the Bluefruit LE Connect app
 • Select a color and tap individual pixels to set them
 • Adjust overall brightness as desired using the Brightness slider";
-
+"neopixel_sketch_tooltip" = "Neopixel support requires a custom sketch to be running in your Arduino. You can export this sketch from the app by clicking the INFO icon in the top-right corner.";
 
 
 // Common
 "dialog_ok" = "Ok";
 "dialog_cancel" = "Cancel";
 "dialog_error" = "Error";
+"dialog_notice" = "Notice";
+"dialog_dontshowagain" = "Don't show again";

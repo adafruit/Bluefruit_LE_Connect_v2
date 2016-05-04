@@ -1697,7 +1697,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "\"-D\" \"DEBUG\" $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnectosx;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.osx;
 				PRODUCT_NAME = "Bluefruit Connect";
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/OSX/BluefruitConnect-Bridging-Header.h";
 			};
@@ -1715,7 +1715,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnectosx;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.osx;
 				PRODUCT_NAME = "Bluefruit Connect";
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/OSX/BluefruitConnect-Bridging-Header.h";
 			};

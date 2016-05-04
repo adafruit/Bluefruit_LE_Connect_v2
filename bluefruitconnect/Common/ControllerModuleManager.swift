@@ -36,7 +36,7 @@ class ControllerModuleManager : NSObject {
     // Data
     var delegate: ControllerModuleManagerDelegate?
     
-    private var isSensorEnabled = [Bool](count:ControllerModuleManager.numSensors, repeatedValue: false)
+    var isSensorEnabled = [Bool](count:ControllerModuleManager.numSensors, repeatedValue: false)
 
     #if os(OSX)
     #else
@@ -213,17 +213,21 @@ class ControllerModuleManager : NSObject {
         case .Location:
             if enabled {
                 if CLLocationManager.locationServicesEnabled() {
-                    if CLLocationManager.authorizationStatus() == .NotDetermined {
+                    let authorizationStatus = CLLocationManager.authorizationStatus()
+                    switch authorizationStatus {
+                    case .NotDetermined:
                         locationManager.requestWhenInUseAuthorization()
-                    }
-                    else {
+                    case .Denied:
+                        errorString = LocalizationManager.sharedInstance.localizedString("controller_sensor_location_denied")
+                    case .Restricted:
+                        errorString = LocalizationManager.sharedInstance.localizedString("controller_sensor_location_restricted")
+                    default:
                         locationManager.startUpdatingLocation()
                     }
                 }
                 else {      // Location services disabled
-                    errorString = "Location Services Disabled"
                     DLog("Location services disabled")
-                    
+                    errorString = LocalizationManager.sharedInstance.localizedString("controller_sensor_location_disabled")
                 }
             }
             else {
