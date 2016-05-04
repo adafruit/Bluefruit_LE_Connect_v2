@@ -81,10 +81,8 @@ class ScrollingTabBarViewController: UIViewController {
     }
     
     private func changeSelectedViewController(viewController : UIViewController?) {
-        
         DLog("changeSelectedViewController \(viewController)")
        
-        
         // Add new
         if let viewController = viewController {
             let containerView = contentView
@@ -133,9 +131,7 @@ extension ScrollingTabBarViewController: UICollectionViewDelegate {
         collectionView.reloadData()
         //delegate?.onClickMenuItem(indexPath.row)
         //DLog("catalog didSelectItemAtIndexPath: \(indexPath.item)")
-        
     }
-
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout

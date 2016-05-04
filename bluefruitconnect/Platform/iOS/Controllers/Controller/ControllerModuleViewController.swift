@@ -41,23 +41,29 @@ class ControllerModuleViewController: ModuleViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        controllerData.start(ControllerModuleViewController.kPollInterval) { [unowned self] in
-            self.baseTableView.reloadData()
+        if isMovingToParentViewController() {       // To keep streaming data when pushing a child view
+            controllerData.start(ControllerModuleViewController.kPollInterval) { [unowned self] in
+                self.baseTableView.reloadData()
+            }
+            
+            // Watch
+            WatchSessionManager.sharedInstance.updateApplicationContext(.Controller)
         }
-        
-        // Watch
-        WatchSessionManager.sharedInstance.updateApplicationContext(.Controller)
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        controllerData.stop()
-
-        // Watch
-        WatchSessionManager.sharedInstance.updateApplicationContext(.Connected)
+        if isMovingFromParentViewController() {     // To keep streaming data when pushing a child view
+            controllerData.stop()
+            
+            // Watch
+            WatchSessionManager.sharedInstance.updateApplicationContext(.Connected)
+        }
+        
     }
 
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
