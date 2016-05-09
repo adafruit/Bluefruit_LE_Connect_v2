@@ -402,6 +402,7 @@ class NeopixelModuleViewController: ModuleViewController {
     @IBAction func onClickRotate(sender: AnyObject) {
         contentRotationAngle += CGFloat(M_PI_2)
         rotationView.transform = CGAffineTransformMakeRotation(contentRotationAngle)
+        setDefaultPositionAndScaleAnimated(true)
     }
 }
 
@@ -516,7 +517,6 @@ extension NeopixelModuleViewController : NeopixelColorPickerViewControllerDelega
         updatePickerColorButton(true)
         currentColor = color
         paletteCollection.reloadData()
-        
     }
 
     private func updatePickerColorButton(isSelected: Bool) {

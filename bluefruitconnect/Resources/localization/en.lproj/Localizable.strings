@@ -245,13 +245,13 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "neopixel_help_text" = "To use the NeoPixel application:
 
 • Export the Bluefruit LE Connect Neopixel sketch from this app using the export icon
-• Open the exported sketch in the Arduino IDE and run it
+• Open the exported sketch on the Arduino IDE and run it
 • Connect to your Bluefruit module and switch to the NeoPixel utility
 • Click the 'gear' icon and set your board size (8x4, 1x8, etc.)
 • Click the Connect button in the Bluefruit LE Connect app
 • Select a color and tap individual pixels to set them
 • Adjust overall brightness as desired using the Brightness slider";
-"neopixel_sketch_tooltip" = "Neopixel support requires a custom sketch to be running in your Arduino. You can export this sketch from the app by clicking the INFO icon in the top-right corner.";
+"neopixel_sketch_tooltip" = "Neopixel support requires a custom sketch to be running on your Arduino. You can export this sketch from the app by clicking the INFO icon in the top-right corner.";
 
 
 // Common

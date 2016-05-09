@@ -292,6 +292,15 @@ extension InfoViewController : CBPeripheralDelegate {
             elementsToDiscover = 0
             elementsDiscovered = 0
             
+            // Order services so "DIS" is at the top (if present)
+            let kDisServiceUUID = "180A"    // DIS service UUID
+            if let unorderedServices = services {
+                services = unorderedServices.sort({ (serviceA, serviceB) -> Bool in
+                    let isServiceBDis = serviceB.UUID.isEqual(CBUUID(string: kDisServiceUUID))
+                    return !isServiceBDis
+                })
+            }
+            
             // Discover characteristics
             if shouldDiscoverCharacteristics {
                 if let services = services {
