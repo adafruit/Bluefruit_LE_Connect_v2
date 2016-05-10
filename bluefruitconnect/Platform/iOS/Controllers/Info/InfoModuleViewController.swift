@@ -72,6 +72,11 @@ class InfoModuleViewController: ModuleViewController {
     }
 
     func discoverServices() {
+        guard isDiscoveringServices == false else {
+            DLog("warning: call to discoverServices while services discovery in process")
+            return;
+        }
+        
         isDiscoveringServices = true
         elementsToDiscover = 0
         elementsDiscovered = 0
@@ -247,7 +252,7 @@ extension InfoModuleViewController : CBPeripheralDelegate {
     
     func peripheralDidUpdateName(peripheral: CBPeripheral) {
         DLog("centralManager peripheralDidUpdateName: \(peripheral.name != nil ? peripheral.name! : "")")
-        discoverServices()
+        //discoverServices()
     }
     func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
         DLog("centralManager didModifyServices: \(peripheral.name != nil ? peripheral.name! : "")")

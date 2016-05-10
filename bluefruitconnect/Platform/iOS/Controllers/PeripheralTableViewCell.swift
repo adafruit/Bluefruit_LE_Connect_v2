@@ -28,6 +28,8 @@ class PeripheralTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        manufacturerValueLabel.text = nil
+        txPowerLevelValueLabel.text = nil
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

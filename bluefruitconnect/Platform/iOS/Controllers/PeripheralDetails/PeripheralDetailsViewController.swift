@@ -185,6 +185,8 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     }
     
     func servicesDiscovered() {
+        
+        DLog("PeripheralDetailsViewController servicesDiscovered")
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
             if let services = blePeripheral.peripheral.services {
                 dispatch_async(dispatch_get_main_queue(),{ [unowned self] in

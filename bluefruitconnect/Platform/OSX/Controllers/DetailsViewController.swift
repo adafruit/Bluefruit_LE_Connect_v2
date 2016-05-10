@@ -266,9 +266,9 @@ class DetailsViewController: NSViewController {
                         
                         let neopixelViewController = self.modeTabView.tabViewItems[neopixelTabIndex].viewController as! NeopixelViewControllerOSX
                         neopixelViewController.tabReset()
-
+                        
                     }
-
+                    
                     })
             }
         }

@@ -54,8 +54,15 @@ class PeripheralTableViewController: UITableViewController {
         if isFullScreen {
             peripheralList.connectToPeripheral(nil)
         }
-        
+
+        // Check that the peripheral is still connected
+        if BleManager.sharedInstance.blePeripheralConnected == nil {
+            peripheralList.disconnected()
+        }
+       
+        // Reload
         reloadData()
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -308,6 +315,9 @@ class PeripheralTableViewController: UITableViewController {
             peripheralCell.manufacturerValueLabel.text = manufacturerString
             isManufacturerAvailable = true
         }
+        else {
+            peripheralCell.manufacturerValueLabel.text = nil
+        }
         detailBaseStackView.subviews[0].hidden = !isManufacturerAvailable
         
         // Services
@@ -350,6 +360,9 @@ class PeripheralTableViewController: UITableViewController {
         // Tx Power
         if let txpower = advertisementData[CBAdvertisementDataTxPowerLevelKey] as? NSNumber {
             peripheralCell.txPowerLevelValueLabel.text = String(txpower)
+        }
+        else {
+            peripheralCell.txPowerLevelValueLabel.text = nil
         }
     }
     

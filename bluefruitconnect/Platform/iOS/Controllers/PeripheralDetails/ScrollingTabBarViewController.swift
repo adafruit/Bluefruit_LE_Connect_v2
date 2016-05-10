@@ -23,7 +23,7 @@ class ScrollingTabBarViewController: UIViewController {
         
         didSet {
             tabBarCollectionView.reloadData()
-            selectedIndex = viewControllers == nil ? -1:0
+            selectedIndex = viewControllers == nil || viewControllers!.count == 0 ? -1:0
         }
     }
     
@@ -81,7 +81,7 @@ class ScrollingTabBarViewController: UIViewController {
     }
     
     private func changeSelectedViewController(viewController : UIViewController?) {
-        DLog("changeSelectedViewController \(viewController)")
+        // DLog("changeSelectedViewController \(viewController)")
        
         // Add new
         if let viewController = viewController {
