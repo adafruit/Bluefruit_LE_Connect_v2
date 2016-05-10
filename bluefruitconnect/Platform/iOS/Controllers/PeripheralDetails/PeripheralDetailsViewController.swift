@@ -194,8 +194,9 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                     let localizationManager = LocalizationManager.sharedInstance
                     
                     // Uart Modules
+                    let hasUart = blePeripheral.hasUart()
                     var viewControllersToAppend: [UIViewController] = []
-                    if (blePeripheral.hasUart()) {
+                    if (hasUart) {
                         // Uart Tab
                         if Config.isUartModuleEnabled {
                             let uartViewController = self.storyboard!.instantiateViewControllerWithIdentifier("UartModuleViewController") as! UartModuleViewController
@@ -224,16 +225,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                             
                             viewControllersToAppend.append(controllerViewController)
                         }
-                        
-                        // Neopixel Tab
-                        if Config.isNeoPixelModuleEnabled {
-                            let neopixelsViewController = self.storyboard!.instantiateViewControllerWithIdentifier("NeopixelModuleViewController") as! NeopixelModuleViewController
-                            
-                            neopixelsViewController.tabBarItem.title = localizationManager.localizedString("neopixels_tab_title")      // Tab title
-                            neopixelsViewController.tabBarItem.image = UIImage(named: "tab_neopixel_icon")
-                            
-                            viewControllersToAppend.append(neopixelsViewController)
-                        }
                     }
                     
                     // DFU Tab
@@ -242,8 +233,18 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                         service.UUID.isEqual(CBUUID(string: kNordicDeviceFirmwareUpdateService))
                     })
                     
+                    if Config.isNeoPixelModuleEnabled && hasUart && hasDFU {        // Neopixel is not available on old boards (those without DFU)
+                        // Neopixel Tab
+                        let neopixelsViewController = self.storyboard!.instantiateViewControllerWithIdentifier("NeopixelModuleViewController") as! NeopixelModuleViewController
+                        
+                        neopixelsViewController.tabBarItem.title = localizationManager.localizedString("neopixels_tab_title")      // Tab title
+                        neopixelsViewController.tabBarItem.image = UIImage(named: "tab_neopixel_icon")
+                        
+                        viewControllersToAppend.append(neopixelsViewController)
+                    }
+                    
                     if (hasDFU) {
-                        if Config.isDfuModuleEnabled {
+                    if Config.isDfuModuleEnabled {
                             let dfuViewController = self.storyboard!.instantiateViewControllerWithIdentifier("DfuModuleViewController") as! DfuModuleViewController
                             dfuViewController.tabBarItem.title = localizationManager.localizedString("dfu_tab_title")      // Tab title
                             dfuViewController.tabBarItem.image = UIImage(named: "tab_dfu_icon")
