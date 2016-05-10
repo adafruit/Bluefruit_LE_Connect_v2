@@ -29,7 +29,7 @@
 Adafruit_BluefruitLE_SPI ble(BLUEFRUIT_SPI_CS, BLUEFRUIT_SPI_IRQ, BLUEFRUIT_SPI_RST);
 
 // Neopixel
-#define PIN            6   /* Pin used to drive the NeoPixels */
+#define PIN            4   /* Pin used to drive the NeoPixels */
 
 #define MAXCOMPONENTS  4
 uint8_t *pixelBuffer = NULL;
