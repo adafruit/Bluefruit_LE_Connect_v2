@@ -59,7 +59,7 @@ class ControllerPadViewController: UIViewController {
     }
     
     private func sendTouchEvent(tag: Int, isPressed: Bool) {
-        let message = "!B\(tag)\(isPressed ? "1" : "0"))"
+        let message = "!B\(tag)\(isPressed ? "1" : "0")"
         if let data = message.dataUsingEncoding(NSUTF8StringEncoding) {
             UartManager.sharedInstance.sendDataWithCrc(data)
         }

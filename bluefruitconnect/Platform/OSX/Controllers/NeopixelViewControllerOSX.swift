@@ -150,10 +150,6 @@ class NeopixelViewControllerOSX: NSViewController {
     // MARK: - Actions
     @IBAction func onClickSend(sender: AnyObject) {
         let data = NSMutableData()
-        /*
-        if let command = "C".dataUsingEncoding(NSUTF8StringEncoding) {
-            data.appendData(command)
-        }*/
         
         let width : UInt8 = 8
         let height : UInt8 = 4
