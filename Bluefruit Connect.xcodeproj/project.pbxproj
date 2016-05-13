@@ -41,6 +41,7 @@
 		A92E067E1C6D20D000BECBBA /* MqttSettingPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92E067D1C6D20D000BECBBA /* MqttSettingPickerCell.swift */; };
 		A92E06861C6D5EF900BECBBA /* ControllerModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92E06841C6D5EF900BECBBA /* ControllerModuleViewController.swift */; };
 		A92E06871C6D5EF900BECBBA /* ControllerSensorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92E06851C6D5EF900BECBBA /* ControllerSensorTableViewCell.swift */; };
+		A93EF7C21CE5243100706942 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A93EF7C01CE5243100706942 /* Settings.bundle */; };
 		A94201F51C6A65B500C87989 /* DfuDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94201F41C6A65B500C87989 /* DfuDialogViewController.swift */; };
 		A94370A71BB6384B002521F7 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A94370A61BB6384B002521F7 /* GattUUIDs.plist */; };
 		A94370BA1BB6493A002521F7 /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AB1BB6493A002521F7 /* BleManager.swift */; };
@@ -260,6 +261,8 @@
 		A92E067D1C6D20D000BECBBA /* MqttSettingPickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettingPickerCell.swift; sourceTree = "<group>"; };
 		A92E06841C6D5EF900BECBBA /* ControllerModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerModuleViewController.swift; sourceTree = "<group>"; };
 		A92E06851C6D5EF900BECBBA /* ControllerSensorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerSensorTableViewCell.swift; sourceTree = "<group>"; };
+		A93EF7BF1CE5243100706942 /* Bluefruit Connect.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Bluefruit Connect.entitlements"; sourceTree = "<group>"; };
+		A93EF7C01CE5243100706942 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A94201F41C6A65B500C87989 /* DfuDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuDialogViewController.swift; sourceTree = "<group>"; };
 		A94370A61BB6384B002521F7 /* GattUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GattUUIDs.plist; sourceTree = "<group>"; };
 		A94370AB1BB6493A002521F7 /* BleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleManager.swift; sourceTree = "<group>"; };
@@ -379,7 +382,6 @@
 		A9EC0FA21C6EC1240019790F /* InfoModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModuleViewController.swift; sourceTree = "<group>"; };
 		A9EC0FAA1C6EDBE10019790F /* PinIOModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinIOModuleViewController.swift; sourceTree = "<group>"; };
 		A9EC0FAB1C6EDBE10019790F /* PinIOTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinIOTableViewCell.swift; sourceTree = "<group>"; };
-		A9EC0FAE1C6F50D10019790F /* Bluefruit Connect.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Bluefruit Connect.entitlements"; sourceTree = "<group>"; };
 		A9EC0FAF1C6F519D0019790F /* DfuFilesPickerDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuFilesPickerDialogViewController.swift; sourceTree = "<group>"; };
 		A9EC0FB11C6F5CF60019790F /* DfuFilesPickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuFilesPickerTableViewCell.swift; sourceTree = "<group>"; };
 		A9EE1ADC1C6FB54900195028 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -627,6 +629,8 @@
 		A949AA5B1C5AC81B002F960B /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				A93EF7BF1CE5243100706942 /* Bluefruit Connect.entitlements */,
+				A93EF7C01CE5243100706942 /* Settings.bundle */,
 				A949AA9B1C5ACFAB002F960B /* AppDelegate.swift */,
 				A949AA9C1C5ACFAB002F960B /* Assets.xcassets */,
 				A94F5A331C5AD41A009CC9B8 /* LaunchScreen.storyboard */,
@@ -765,7 +769,6 @@
 		A982965F1BB1F5E600DD478C = {
 			isa = PBXGroup;
 			children = (
-				A9EC0FAE1C6F50D10019790F /* Bluefruit Connect.entitlements */,
 				A982966A1BB1F5E600DD478C /* bluefruitconnect */,
 				A98296691BB1F5E600DD478C /* Products */,
 				DB5DFBD4B95AFFB735FADD7B /* Pods */,
@@ -1084,6 +1087,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A93EF7C21CE5243100706942 /* Settings.bundle in Resources */,
 				A94F5A381C5AD41A009CC9B8 /* Main.storyboard in Resources */,
 				A9AF4E121CC63562002C1C12 /* NeopixelTypes.plist in Resources */,
 				A91F9E931C65179E007656B7 /* Localizable.strings in Resources */,
@@ -1489,7 +1493,7 @@
 			baseConfigurationReference = A48B97DA4AFA7EB22050A2F8 /* Pods-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Bluefruit Connect.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "bluefruitconnect/Platform/iOS/Bluefruit Connect.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
@@ -1511,7 +1515,7 @@
 			baseConfigurationReference = 9548835CA087C4D34EDACE99 /* Pods-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Bluefruit Connect.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "bluefruitconnect/Platform/iOS/Bluefruit Connect.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;

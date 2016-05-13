@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol DfuUpdateProcessDelegate {
+protocol DfuUpdateProcessDelegate: class {
     func onUpdateProcessSuccess()
     func onUpdateProcessError(errorMessage : String, infoMessage: String?)
     func onUpdateProgressText(message: String)
@@ -25,7 +25,7 @@ class DfuUpdateProcess : NSObject {
     private var hexUrl : NSURL?
     private var iniUrl : NSURL?
     private var deviceInfoData : DeviceInfoData?
-    var delegate : DfuUpdateProcessDelegate?
+    weak var delegate : DfuUpdateProcessDelegate?
     
     // DFU data
     private var dfuOperations : DFUOperations?

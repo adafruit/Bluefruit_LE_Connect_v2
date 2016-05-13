@@ -8,15 +8,18 @@
 
 import UIKit
 
-protocol NeopixelTypeValueTableViewCellDelegate {
+protocol NeopixelTypeValueTableViewCellDelegate: class {
     func onSetValue(value: UInt16)
 }
 
 class NeopixelTypeValueTableViewCell: UITableViewCell {
 
+    // UI
     @IBOutlet weak var valueTextField: UITextField!
     @IBOutlet weak var doneButton: StyledButton!
-    var delegate: NeopixelTypeValueTableViewCellDelegate?
+    
+    // Data
+    weak var delegate: NeopixelTypeValueTableViewCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()

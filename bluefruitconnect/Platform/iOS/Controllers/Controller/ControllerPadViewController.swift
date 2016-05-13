@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ControllerPadViewControllerDelegate: class {
+    func onSendControllerPadButtonStatus(tag: Int, isPressed: Bool)
+}
+
 class ControllerPadViewController: UIViewController {
 
     //  Constants
@@ -17,6 +21,8 @@ class ControllerPadViewController: UIViewController {
     @IBOutlet weak var directionsView: UIView!
     @IBOutlet weak var numbersView: UIView!
     
+    // Data
+    weak var delegate: ControllerPadViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,9 +65,8 @@ class ControllerPadViewController: UIViewController {
     }
     
     private func sendTouchEvent(tag: Int, isPressed: Bool) {
-        let message = "!B\(tag)\(isPressed ? "1" : "0")"
-        if let data = message.dataUsingEncoding(NSUTF8StringEncoding) {
-            UartManager.sharedInstance.sendDataWithCrc(data)
+        if let delegate = delegate {
+            delegate.onSendControllerPadButtonStatus(tag, isPressed: isPressed)
         }
     }
     

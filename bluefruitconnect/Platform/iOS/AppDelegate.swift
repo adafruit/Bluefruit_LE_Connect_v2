@@ -147,29 +147,13 @@
             // Update foreground status
             let isActive = UIApplication.sharedApplication().applicationState != .Inactive
             WatchSessionManager.sharedInstance.session?.sendMessage(["isActive": isActive], replyHandler: nil, errorHandler: nil)
-            
         }
     }
     
     func session(session: WCSession, didReceiveMessage message: [String : AnyObject]) {
-        if let command = message["command"] as? String {
-            switch command {
-            case "controlPad":
-                if let controllerModuleManager = detailTabController() as? ControllerModuleViewController, let tag = message["tag"]?.integerValue {
-                    controllerModuleManager.sendTouchEvent(tag, isPressed: true)
-                    controllerModuleManager.sendTouchEvent(tag, isPressed: false)
-                }
-            
-            case "color":
-                if let controllerModuleManager = detailTabController() as? ControllerModuleViewController, let colorUInt = message["color"] as? UInt, let color = colorFromHexUInt(colorUInt) {
-                    
-                    controllerModuleManager.sendColor(color)
-                }
-                
-            default:
-                DLog("didReceiveMessage with unknown command: \(command)")
-                break
-            }
+        if message["command"] != nil {
+            DLog("watchCommand notification")
+            NSNotificationCenter.defaultCenter().postNotificationName(WatchSessionManager.Notifications.DidReceiveWatchCommand.rawValue, object: nil, userInfo:message);
         }
     }
     
@@ -191,27 +175,7 @@
         replyHandler(replyValues)
     }
     
-    private func detailTabController() -> UIViewController? {
-        var resultViewController: UIViewController?
-        
-        let splitViewController = self.window!.rootViewController as! UISplitViewController
-        var detailNavigationController: UINavigationController?
-        if splitViewController.viewControllers.count == 1 {     // iPhone
-            detailNavigationController = (splitViewController.viewControllers.first as! UINavigationController).topViewController as? UINavigationController
-            
-        }
-        else {      // iPad
-            detailNavigationController = splitViewController.viewControllers.last as? UINavigationController
-        }
-        
-        if let detailNavigationController = detailNavigationController, let peripheralDetailsViewController = detailNavigationController.topViewController as? PeripheralDetailsViewController, let tabViewController = peripheralDetailsViewController.selectedViewController {
-            resultViewController = tabViewController
-        }
-        
-        return resultViewController
-        
-    }
-    
+
  }
  
  

@@ -58,7 +58,7 @@ class ControlPadInterfaceController: WKInterfaceController {
     }
     
     @IBAction func onClickDownArrow() {
-        onClickControlPadButton(7)
+        onClickControlPadButton(6)
     }
     
     private func onClickControlPadButton(tag: Int) {

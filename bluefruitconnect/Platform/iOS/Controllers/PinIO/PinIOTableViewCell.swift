@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol PinIoTableViewCellDelegate {
+protocol PinIoTableViewCellDelegate: class {
     func onPinToggleCell(pinIndex: Int)
     func onPinModeChanged(mode: PinIOModuleManager.PinData.Mode, pinIndex: Int)
     func onPinDigitalValueChanged(value: PinIOModuleManager.PinData.DigitalValue, pinIndex: Int)
@@ -26,7 +26,7 @@ class PinIOTableViewCell: UITableViewCell {
     @IBOutlet weak var valueSlider: UISlider!
     
     // Data
-    var delegate: PinIoTableViewCellDelegate?
+    weak var delegate: PinIoTableViewCellDelegate?
     private var modesInSegmentedControl : [PinIOModuleManager.PinData.Mode] = []
     
     override func awakeFromNib() {

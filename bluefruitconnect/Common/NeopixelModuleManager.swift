@@ -9,7 +9,7 @@
 import Foundation
 import CoreImage
 
-protocol NeopixelModuleManagerDelegate {
+protocol NeopixelModuleManagerDelegate: class {
     func onNeopixelUartIsReady()
     func onNeopixelSketchDetected(detected: Bool)
     func onNeopixelSetupFinished(sucess: Bool)
@@ -45,7 +45,7 @@ class NeopixelModuleManager: NSObject {
     }
     
     // Delegate
-    var delegate: NeopixelModuleManagerDelegate?
+    weak var delegate: NeopixelModuleManagerDelegate?
     
     // Bluetooth Uart
     private let uartData = UartManager.sharedInstance

@@ -10,6 +10,11 @@ import Foundation
 import WatchConnectivity
 
 class WatchSessionManager {
+    // Notifications
+    enum Notifications : String {
+        case DidReceiveWatchCommand = "didReceiveWatchCommand"
+    }
+
     // Constants
     enum Mode: String {
         case Inactive = "MainInterfaceController"
@@ -34,8 +39,6 @@ class WatchSessionManager {
             session!.activateSession()
         }
     }
-    
-    
     
     // MARK: - iOS Specific
 #if os(iOS)

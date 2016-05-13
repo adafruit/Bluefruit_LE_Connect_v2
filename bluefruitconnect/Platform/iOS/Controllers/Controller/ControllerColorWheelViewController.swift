@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol ControllerColorWheelViewControllerDelegate: class {
+    func onSendColorComponents(colorComponents: [UInt8])
+}
+
 class ControllerColorWheelViewController: UIViewController {
 
     //  Constants 
@@ -22,6 +26,8 @@ class ControllerColorWheelViewController: UIViewController {
     @IBOutlet weak var sliderGradientView: GradientView!
     
     // Data
+    weak var delegate: ControllerColorWheelViewControllerDelegate?
+    
     private var selectedColorComponents: [UInt8]?
     private var wheelView: ISColorWheel = ISColorWheel()
     
@@ -72,15 +78,8 @@ class ControllerColorWheelViewController: UIViewController {
 
    @IBAction func onClickSend(sender: AnyObject) {
     
-        if let selectedColorComponents = selectedColorComponents {
-            let data = NSMutableData()
-            let prefixData = ControllerColorWheelViewController.prefix.dataUsingEncoding(NSUTF8StringEncoding)!
-            data.appendData(prefixData)
-            for var component in selectedColorComponents {
-                data.appendBytes(&component, length: sizeof(UInt8))
-            }
-            
-            UartManager.sharedInstance.sendDataWithCrc(data)
+        if let delegate = delegate, selectedColorComponents = selectedColorComponents {
+            delegate.onSendColorComponents(selectedColorComponents)
         }
     }
     

@@ -8,7 +8,7 @@
 
 import Cocoa
 
-protocol PinTableCellViewDelegate {
+protocol PinTableCellViewDelegate: class {
     func onPinToggleCell(pinIndex: Int)
     func onPinModeChanged(mode: PinIOModuleManager.PinData.Mode, pinIndex: Int)
     func onPinDigitalValueChanged(value: PinIOModuleManager.PinData.DigitalValue, pinIndex: Int)
@@ -27,7 +27,7 @@ class PinTableCellView: NSTableCellView {
     @IBOutlet weak var valueSlider: NSSlider!
     
     // Data
-    var delegate: PinTableCellViewDelegate?
+    weak var delegate: PinTableCellViewDelegate?
     private var modesInSegmentedControl : [PinIOModuleManager.PinData.Mode] = []
     private var pinIndex: Int = 0
     

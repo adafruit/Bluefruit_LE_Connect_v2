@@ -217,7 +217,6 @@
                         </group>
                     </items>
                     <connections>
-                        <outlet property="onClickLeftArrow" destination="fRU-uw-tbv" id="xxX-qy-pUL"/>
                         <segue destination="xdG-PL-D3B" kind="relationship" relationship="nextPage" id="h30-zc-wXG"/>
                     </connections>
                 </controller>
@@ -244,7 +243,7 @@
                                             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="font" style="UICTFontTextStyleHeadline"/>
                                             <connections>
-                                                <action selector="twoButtonTapped" destination="xdG-PL-D3B" id="dg6-2E-qY9"/>
+                                                <action selector="onClickButton2" destination="xdG-PL-D3B" id="d1k-zc-7aJ"/>
                                             </connections>
                                         </button>
                                     </items>
@@ -261,14 +260,14 @@
                                             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="font" style="UICTFontTextStyleHeadline"/>
                                             <connections>
-                                                <action selector="threeButtonTapped" destination="xdG-PL-D3B" id="gF4-p7-FFw"/>
+                                                <action selector="onClickButton3" destination="xdG-PL-D3B" id="XCh-Pc-Koe"/>
                                             </connections>
                                         </button>
                                         <button width="0.45000000000000001" height="0.80000000000000004" alignment="right" verticalAlignment="center" title="4" id="lNm-XS-efZ">
                                             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="font" style="UICTFontTextStyleHeadline"/>
                                             <connections>
-                                                <action selector="fourButtonTapped" destination="xdG-PL-D3B" id="D3E-ir-Hno"/>
+                                                <action selector="onClickButton4" destination="xdG-PL-D3B" id="K6X-6u-xn1"/>
                                             </connections>
                                         </button>
                                     </items>

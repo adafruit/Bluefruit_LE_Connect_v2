@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol DfuFilesPickerDialogViewControllerDelegate {
+protocol DfuFilesPickerDialogViewControllerDelegate: class {
     func onFilesPickerCancel()
     func onFilesPickerStartUpdate(hexUrl: NSURL?, iniUrl: NSURL?)
 }
@@ -28,7 +28,7 @@ class DfuFilesPickerDialogViewController: UIViewController {
     @IBOutlet weak var iniPickerView: UIView!
     
     // Data
-    var delegate: DfuFilesPickerDialogViewControllerDelegate?
+    weak var delegate: DfuFilesPickerDialogViewControllerDelegate?
     
     private var isPickingHexFile = false
     private var hexFileUrl: NSURL?

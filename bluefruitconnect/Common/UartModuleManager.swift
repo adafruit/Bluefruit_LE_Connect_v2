@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol UartModuleDelegate {
+protocol UartModuleDelegate: class {
     func addChunkToUI(dataChunk: UartDataChunk)
     func mqttUpdateStatusUI()
     func mqttError(message: String, isConnectionError: Bool)
@@ -52,7 +52,7 @@ class UartModuleManager: NSObject {
     }
     
     // Current State
-    var delegate: UartModuleDelegate?
+    weak var delegate: UartModuleDelegate?
     
     // Export
     #if os(OSX)

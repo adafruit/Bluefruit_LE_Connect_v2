@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol NeopixelColorPickerViewControllerDelegate {
+protocol NeopixelColorPickerViewControllerDelegate: class {
     func onColorPickerChooseColor(color: UIColor)
 }
 
@@ -26,7 +26,7 @@ class NeopixelColorPickerViewController: UIViewController {
     private var wheelView: ISColorWheel = ISColorWheel()
 
     private var selectedColor = UIColor.whiteColor()
-    var delegate: NeopixelColorPickerViewControllerDelegate?
+    weak var delegate: NeopixelColorPickerViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

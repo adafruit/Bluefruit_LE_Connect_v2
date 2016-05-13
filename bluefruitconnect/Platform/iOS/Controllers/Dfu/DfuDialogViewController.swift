@@ -8,19 +8,18 @@
 
 import UIKit
 
-protocol DfuDialogViewControllerDelegate {
+protocol DfuDialogViewControllerDelegate: class {
     func onUpdateDialogCancel()
 }
 
 class DfuDialogViewController: UIViewController {
-
     
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var progressIndicator: UIProgressView!
     @IBOutlet weak var progressPercentageLabel: UILabel!
     @IBOutlet weak var backgroundView: UIView!
     
-    var delegate : DfuDialogViewControllerDelegate?
+    weak var delegate : DfuDialogViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

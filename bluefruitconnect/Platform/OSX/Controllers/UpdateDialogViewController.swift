@@ -8,7 +8,7 @@
 
 import Cocoa
 
-protocol UpdateDialogControllerDelegate {
+protocol UpdateDialogControllerDelegate: class {
     func onUpdateDialogCancel()
 }
 
@@ -18,7 +18,7 @@ class UpdateDialogViewController: NSViewController {
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
     @IBOutlet weak var progressPercentageLabel: NSTextField!
     
-    var delegate : UpdateDialogControllerDelegate?
+    weak var delegate : UpdateDialogControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

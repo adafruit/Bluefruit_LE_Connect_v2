@@ -10,7 +10,7 @@
 
 import Foundation
 
-protocol PinIOModuleManagerDelegate {
+protocol PinIOModuleManagerDelegate: class {
     func onPinIODidEndPinQuery(isDefaultConfigurationAssumed: Bool)
     func onPinIODidReceivePinState()
 }
@@ -77,7 +77,7 @@ class PinIOModuleManager: NSObject {
 
     var pins = [PinData]()
 
-    var delegate: PinIOModuleManagerDelegate?
+    weak var delegate: PinIOModuleManagerDelegate?
 
     var digitalPinCount: Int {
         return pins.filter{$0.isDigital}.count

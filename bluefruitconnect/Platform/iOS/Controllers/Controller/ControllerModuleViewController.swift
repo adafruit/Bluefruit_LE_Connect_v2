@@ -36,6 +36,7 @@ class ControllerModuleViewController: ModuleViewController {
         
         //
         updateContentItemsFromSensorsEnabled()
+ 
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -48,7 +49,13 @@ class ControllerModuleViewController: ModuleViewController {
             
             // Watch
             WatchSessionManager.sharedInstance.updateApplicationContext(.Controller)
+            
+            DLog("register DidReceiveWatchCommand observer")
+            let notificationCenter =  NSNotificationCenter.defaultCenter()
+            notificationCenter.addObserver(self, selector: #selector(watchCommand(_:)), name: WatchSessionManager.Notifications.DidReceiveWatchCommand.rawValue, object: nil)
         }
+        
+
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -59,10 +66,19 @@ class ControllerModuleViewController: ModuleViewController {
             
             // Watch
             WatchSessionManager.sharedInstance.updateApplicationContext(.Connected)
+            
+            DLog("remove DidReceiveWatchCommand observer")
+            let notificationCenter =  NSNotificationCenter.defaultCenter()
+            notificationCenter.removeObserver(self, name:
+            WatchSessionManager.Notifications.DidReceiveWatchCommand.rawValue, object: nil)
         }
-        
+ 
     }
 
+    
+    deinit {
+        DLog("deinit")
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -91,6 +107,30 @@ class ControllerModuleViewController: ModuleViewController {
         
         contentItems = items
     }
+    
+    // MARK: Notifications
+    func watchCommand(notification: NSNotification) {
+        if let message = notification.userInfo, let command = message["command"] as? String {
+            DLog("watchCommand notification: \(command)")
+            switch command {
+            case "controlPad":
+                if let tag = message["tag"]?.integerValue {
+                    sendTouchEvent(tag, isPressed: true)
+                    sendTouchEvent(tag, isPressed: false)
+                }
+                
+            case "color":
+                if  let colorUInt = message["color"] as? UInt, let color = colorFromHexUInt(colorUInt) {
+                    sendColor(color)
+                }
+                
+            default:
+                DLog("watchCommand with unknown command: \(command)")
+                break
+
+            }
+        }
+    }
 
     // MARK: - Actions
     @IBAction func onClickHelp(sender: UIBarButtonItem) {
@@ -105,7 +145,7 @@ class ControllerModuleViewController: ModuleViewController {
     }
     
     
-     // MARK: - Send Data (from Watch)
+     // MARK: - Send Data
     func sendColor(color: UIColor) {
         let brightness: CGFloat = 1
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0
@@ -116,6 +156,10 @@ class ControllerModuleViewController: ModuleViewController {
         
         let selectedColorComponents = [UInt8(255.0 * Float(red)), UInt8(255.0 * Float(green)), UInt8(255.0 * Float(blue))]
         
+        sendColorComponents(selectedColorComponents)
+    }
+    
+    func sendColorComponents(selectedColorComponents: [UInt8]) {
         let data = NSMutableData()
         let prefixData = ControllerColorWheelViewController.prefix.dataUsingEncoding(NSUTF8StringEncoding)!
         data.appendData(prefixData)
@@ -131,6 +175,20 @@ class ControllerModuleViewController: ModuleViewController {
         if let data = message.dataUsingEncoding(NSUTF8StringEncoding) {
             UartManager.sharedInstance.sendDataWithCrc(data)
         }
+    }
+}
+
+// MARK: - ControllerColorWheelViewControllerDelegate
+extension ControllerModuleViewController : ControllerColorWheelViewControllerDelegate {
+    func onSendColorComponents(colorComponents: [UInt8]) {
+        sendColorComponents(colorComponents)
+    }
+}
+
+// MARK: - ControllerPadViewControllerDelegate
+extension ControllerModuleViewController : ControllerPadViewControllerDelegate {
+    func onSendControllerPadButtonStatus(tag: Int, isPressed: Bool) {
+        sendTouchEvent(tag, isPressed: isPressed)
     }
 }
 
@@ -287,16 +345,18 @@ extension ControllerModuleViewController : UITableViewDelegate {
         
         switch ControllerSection(rawValue: indexPath.section)! {
         case .Module:
-            let controllerIdentifiers = ["ControllerPadViewController", "ControllerColorWheelViewController"]
-            
-            let viewController = storyboard!.instantiateViewControllerWithIdentifier(controllerIdentifiers[indexPath.row])
-            //tabBarController!.navigationController!.showViewController(viewController, sender: self)
-            navigationController?.showViewController(viewController, sender: self)
+            if indexPath.row == 0 {
+                 let viewController = storyboard!.instantiateViewControllerWithIdentifier("ControllerPadViewController") as! ControllerPadViewController
+                viewController.delegate = self
+                navigationController?.showViewController(viewController, sender: self)
+            }
+            else {
+                let viewController = storyboard!.instantiateViewControllerWithIdentifier("ControllerColorWheelViewController") as! ControllerColorWheelViewController
+                viewController.delegate = self
+                navigationController?.showViewController(viewController, sender: self)
+                
+            }
 
-//            let navigationController = UINavigationController(rootViewController: viewController)
-//            navigationController.modalPresentationStyle = .OverCurrentContext
-//            self.navigationController?.presentViewController(navigationController, animated: true, completion: nil)
-            
         default:
             break
         }
@@ -304,7 +364,7 @@ extension ControllerModuleViewController : UITableViewDelegate {
     }
 }
 
-// MARK: - NeopixelModuleManagerDelegate
+// MARK: - ControllerModuleManagerDelegate
 extension ControllerModuleViewController: ControllerModuleManagerDelegate {
     func onControllerUartIsReady() {
         dispatch_async(dispatch_get_main_queue(), { [unowned self] in

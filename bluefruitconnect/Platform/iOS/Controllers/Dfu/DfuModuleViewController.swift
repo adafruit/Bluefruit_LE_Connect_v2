@@ -24,6 +24,9 @@ class DfuModuleViewController: ModuleViewController {
     
     private var isCheckingUpdates = false
 
+    private let uartManager = UartManager.sharedInstance
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -48,7 +51,23 @@ class DfuModuleViewController: ModuleViewController {
         boardRelease = nil
         deviceInfoData = nil
         
-        startUpdatesCheck()
+        // Start Uart Manager
+        UartManager.sharedInstance.blePeripheral = BleManager.sharedInstance.blePeripheralConnected       // Note: this will start the service discovery
+        
+        // Notifications
+        let notificationCenter =  NSNotificationCenter.defaultCenter()
+        if !uartManager.isReady() {
+            notificationCenter.addObserver(self, selector: #selector(uartIsReady(_:)), name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+        }
+        else {
+            startUpdatesCheck()
+        }
+    }
+    
+    deinit {
+        let notificationCenter =  NSNotificationCenter.defaultCenter()
+        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+        
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -74,6 +93,16 @@ class DfuModuleViewController: ModuleViewController {
             isCheckingUpdates = true
             firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self)
         }
+    }
+    
+    
+    // MARK: Notifications
+    func uartIsReady(notification: NSNotification) {
+        DLog("Uart is ready")
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+
+        startUpdatesCheck()
     }
     
     // MARK: - Actions

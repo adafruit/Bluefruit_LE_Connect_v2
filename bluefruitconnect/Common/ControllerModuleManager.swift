@@ -16,7 +16,7 @@ import MSWeakTimer
     import CoreMotion
 #endif
 
-protocol ControllerModuleManagerDelegate {
+protocol ControllerModuleManagerDelegate: class {
     func onControllerUartIsReady()
 }
 
@@ -34,7 +34,7 @@ class ControllerModuleManager : NSObject {
     static private let prefixes = ["!Q", "!A", "!G", "!M", "!L"];     // same order that ControllerType
     
     // Data
-    var delegate: ControllerModuleManagerDelegate?
+    weak var delegate: ControllerModuleManagerDelegate?
     
     var isSensorEnabled = [Bool](count:ControllerModuleManager.numSensors, repeatedValue: false)
 
@@ -79,7 +79,7 @@ class ControllerModuleManager : NSObject {
         // Notifications
         let notificationCenter =  NSNotificationCenter.defaultCenter()
         if !uartManager.isReady() {
-            notificationCenter.addObserver(self, selector: #selector(ControllerModuleManager.uartIsReady(_:)), name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(uartIsReady(_:)), name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
         }
         else {
             delegate?.onControllerUartIsReady()

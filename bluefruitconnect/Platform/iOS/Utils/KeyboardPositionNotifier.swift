@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol KeyboardPositionNotifierDelegate {
+protocol KeyboardPositionNotifierDelegate: class {
     func onKeyboardPositionChanged(keyboardFrame : CGRect, keyboardShown : Bool)
 }
 
 class KeyboardPositionNotifier: NSObject {
     
-    var delegate : KeyboardPositionNotifierDelegate?
+    weak var delegate : KeyboardPositionNotifierDelegate?
 
     override init() {
         super.init()
