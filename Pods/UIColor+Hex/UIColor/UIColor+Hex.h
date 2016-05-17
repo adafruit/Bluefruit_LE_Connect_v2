@@ -2,8 +2,6 @@
 //  UIColor+Hex.h
 //
 
-#import <UIKit/UIKit.h>
-
 @interface UIColor (Hex) 
 
 + (UIColor*) colorWithCSS: (NSString*) css;

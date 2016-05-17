@@ -10,7 +10,7 @@ PODS:
     - CocoaAsyncSocket (~> 7.4.2)
     - MSWeakTimer (~> 1.1.0)
   - MSWeakTimer (1.1.0)
-  - SSZipArchive (1.1)
+  - SSZipArchive (1.2)
   - UIColor+Hex (1.0.1):
     - UIColor+Hex/NSColor (= 1.0.1)
     - UIColor+Hex/UIColor (= 1.0.1)
@@ -19,22 +19,15 @@ PODS:
 DEPENDENCIES:
   - CocoaMQTT (~> 1.0.0)
   - SSZipArchive
-  - UIColor+Hex (from `https://github.com/Inferis/UIColor-Hex`)
-
-EXTERNAL SOURCES:
-  UIColor+Hex:
-    :git: https://github.com/Inferis/UIColor-Hex
-
-CHECKOUT OPTIONS:
-  UIColor+Hex:
-    :commit: be2fca25d4864a5d1479da17ef78a2b29256187f
-    :git: https://github.com/Inferis/UIColor-Hex
+  - UIColor+Hex (~> 1.0.1)
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: a18c75dca4b08723628a0bacca6e94803d90be91
   CocoaMQTT: 31dfd6180af49cd82852d739e83b4ef0fa74f199
   MSWeakTimer: 9426150f933b80ed3acf3f6d228e4b61f0e303c8
-  SSZipArchive: de3d215ab73f87db627f81f2ce24f1731e3886c3
-  UIColor+Hex: ffc0868e88c21680a4d093a1c15b952f52eebc27
+  SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
+  UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 64770c4342122b0aa727f1ad0963d7a25dd4cad5
+
+COCOAPODS: 1.0.0

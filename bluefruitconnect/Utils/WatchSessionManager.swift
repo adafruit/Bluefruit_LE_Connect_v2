@@ -54,7 +54,7 @@ class WatchSessionManager {
             try WatchSessionManager.sharedInstance.session?.updateApplicationContext(appContext)
         }
         catch {
-            DLog("updateApplicationContext error")
+            //DLog("updateApplicationContext error")
         }
     }
 #endif

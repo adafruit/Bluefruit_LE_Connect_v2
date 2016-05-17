@@ -1,10 +1,11 @@
 CODE_SIGN_IDENTITY =
 EMBEDDED_CONTENT_CONTAINS_SWIFT = YES
-FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_FRAMEWORK_BUILD_PATH"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/CocoaAsyncSocket-OSX" "$PODS_CONFIGURATION_BUILD_DIR/CocoaMQTT-OSX" "$PODS_CONFIGURATION_BUILD_DIR/MSWeakTimer-OSX"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/../Frameworks' '@loader_path/Frameworks'
-OTHER_CFLAGS = $(inherited) -iquote "$PODS_FRAMEWORK_BUILD_PATH/CocoaAsyncSocket.framework/Headers" -iquote "$PODS_FRAMEWORK_BUILD_PATH/CocoaMQTT.framework/Headers" -iquote "$PODS_FRAMEWORK_BUILD_PATH/MSWeakTimer.framework/Headers"
+OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/CocoaAsyncSocket-OSX/CocoaAsyncSocket.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/CocoaMQTT-OSX/CocoaMQTT.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/MSWeakTimer-OSX/MSWeakTimer.framework/Headers"
 OTHER_LDFLAGS = $(inherited) -framework "CocoaAsyncSocket" -framework "CocoaMQTT" -framework "MSWeakTimer"
 OTHER_SWIFT_FLAGS = $(inherited) "-D" "COCOAPODS"
-PODS_FRAMEWORK_BUILD_PATH = $(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Pods-OSX
+PODS_BUILD_DIR = $BUILD_DIR
+PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_ROOT = ${SRCROOT}/Pods
