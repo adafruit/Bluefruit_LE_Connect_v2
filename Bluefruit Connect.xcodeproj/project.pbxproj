@@ -259,7 +259,6 @@
 		A92E067D1C6D20D000BECBBA /* MqttSettingPickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettingPickerCell.swift; sourceTree = "<group>"; };
 		A92E06841C6D5EF900BECBBA /* ControllerModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerModuleViewController.swift; sourceTree = "<group>"; };
 		A92E06851C6D5EF900BECBBA /* ControllerSensorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerSensorTableViewCell.swift; sourceTree = "<group>"; };
-		A93EF7BF1CE5243100706942 /* Bluefruit Connect.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Bluefruit Connect.entitlements"; sourceTree = "<group>"; };
 		A93EF7C01CE5243100706942 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A94201F41C6A65B500C87989 /* DfuDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuDialogViewController.swift; sourceTree = "<group>"; };
 		A94370A61BB6384B002521F7 /* GattUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GattUUIDs.plist; sourceTree = "<group>"; };
@@ -326,6 +325,7 @@
 		A9627AF71CD6184500B93737 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		A9627AFF1CD6205600B93737 /* ScanningInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningInterfaceController.swift; sourceTree = "<group>"; };
 		A965674E1C7E25B0009DB0F4 /* NeopixelModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelModuleManager.swift; sourceTree = "<group>"; };
+		A966B2031CEB6EAF00D958BB /* Bluefruit Connect.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Bluefruit Connect.entitlements"; sourceTree = "<group>"; };
 		A96A79FD1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ENHThrottledReloading.h"; sourceTree = "<group>"; };
 		A96A79FE1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ENHThrottledReloading.m"; sourceTree = "<group>"; };
 		A96A7A061C74F329000C37E3 /* Synchronize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronize.swift; sourceTree = "<group>"; };
@@ -627,7 +627,6 @@
 		A949AA5B1C5AC81B002F960B /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				A93EF7BF1CE5243100706942 /* Bluefruit Connect.entitlements */,
 				A93EF7C01CE5243100706942 /* Settings.bundle */,
 				A949AA9B1C5ACFAB002F960B /* AppDelegate.swift */,
 				A949AA9C1C5ACFAB002F960B /* Assets.xcassets */,
@@ -788,6 +787,7 @@
 		A982966A1BB1F5E600DD478C /* bluefruitconnect */ = {
 			isa = PBXGroup;
 			children = (
+				A966B2031CEB6EAF00D958BB /* Bluefruit Connect.entitlements */,
 				A9EE1ADC1C6FB54900195028 /* Config.swift */,
 				A949AA5A1C5AC81B002F960B /* Platform */,
 				A98296871BB21B5800DD478C /* Utils */,
@@ -1495,7 +1495,7 @@
 			baseConfigurationReference = C1A38E2241235B1ED6C49AA4 /* Pods-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "bluefruitconnect/Platform/iOS/Bluefruit Connect.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "bluefruitconnect/Bluefruit Connect.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
@@ -1517,7 +1517,7 @@
 			baseConfigurationReference = 84D89B88F76BCB31A1B27F96 /* Pods-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "bluefruitconnect/Platform/iOS/Bluefruit Connect.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "bluefruitconnect/Bluefruit Connect.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
@@ -1696,7 +1696,7 @@
 			baseConfigurationReference = 306E0D3C0B775E80704140AB /* Pods-OSX.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "bluefruitconnect/Platform/iOS/Bluefruit Connect.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "bluefruitconnect/Bluefruit Connect.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -1715,7 +1715,7 @@
 			baseConfigurationReference = 6AC1184E322E9E9A527BB7F2 /* Pods-OSX.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "bluefruitconnect/Platform/iOS/Bluefruit Connect.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "bluefruitconnect/Bluefruit Connect.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
