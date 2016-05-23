@@ -106,7 +106,8 @@ class DetailsViewController: NSViewController {
             }
             
             // UI: Info
-            self.infoNameLabel.stringValue = blePeripheral.name
+            let name = blePeripheral.name != nil ? blePeripheral.name! : LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
+            self.infoNameLabel.stringValue = name
             self.updateRssiUI()
             
             self.cancelRssiTimer()

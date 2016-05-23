@@ -166,7 +166,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     func addPeripheralToSystemMenu(blePeripheral : BlePeripheral) -> NSMenuItem {
-        let menuItem = NSMenuItem(title: blePeripheral.name, action: #selector(AppDelegate.onClickPeripheralMenuItem(_:)), keyEquivalent: "")
+        let name = blePeripheral.name != nil ? blePeripheral.name! : LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
+        let menuItem = NSMenuItem(title: name, action: #selector(AppDelegate.onClickPeripheralMenuItem(_:)), keyEquivalent: "")
         let identifier = blePeripheral.peripheral.identifier.UUIDString
         menuItem.representedObject = identifier
         statusMenu.addItem(menuItem)

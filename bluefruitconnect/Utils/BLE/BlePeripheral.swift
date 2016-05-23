@@ -15,14 +15,9 @@ class BlePeripheral {
     var rssi : Int
     var lastSeenTime : CFAbsoluteTime
     
-    var name : String {
+    var name : String? {
         get {
-            if let name = peripheral.name {
-                return name
-            }
-            else {
-                return LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
-            }
+            return peripheral.name
         }
     }
     

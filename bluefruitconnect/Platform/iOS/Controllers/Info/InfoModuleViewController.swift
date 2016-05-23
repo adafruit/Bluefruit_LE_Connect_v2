@@ -58,7 +58,9 @@ class InfoModuleViewController: ModuleViewController {
         
         // Title
         let localizationManager = LocalizationManager.sharedInstance
-        let title = String(format: localizationManager.localizedString("info_navigation_title_format"), arguments: [blePeripheral!.name])
+        let name = blePeripheral!.name != nil ? blePeripheral!.name! : LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
+        
+        let title = String(format: localizationManager.localizedString("info_navigation_title_format"), arguments: [name])
         //tabBarController?.navigationItem.title = title
         navigationController?.navigationItem.title = title
         

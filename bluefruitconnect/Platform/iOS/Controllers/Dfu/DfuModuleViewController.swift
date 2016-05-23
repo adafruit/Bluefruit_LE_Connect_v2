@@ -42,7 +42,8 @@ class DfuModuleViewController: ModuleViewController {
   
         // Title
         let localizationManager = LocalizationManager.sharedInstance
-        let title = String(format: localizationManager.localizedString("dfu_navigation_title_format"), arguments: [blePeripheral!.name])
+        let name = blePeripheral!.name != nil ? blePeripheral!.name! : localizationManager.localizedString("peripherallist_unnamed")
+        let title = String(format: localizationManager.localizedString("dfu_navigation_title_format"), arguments: [name])
        // tabBarController?.navigationItem.title = title
         navigationController?.navigationItem.title = title
 

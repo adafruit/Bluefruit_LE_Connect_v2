@@ -58,7 +58,8 @@ class UartModuleViewController: ModuleViewController {
         
         // Title
         let localizationManager = LocalizationManager.sharedInstance
-        let title = String(format: localizationManager.localizedString("uart_navigation_title_format"), arguments: [uartData.blePeripheral!.name])
+        let name = uartData.blePeripheral!.name != nil ? uartData.blePeripheral!.name! : localizationManager.localizedString("peripherallist_unnamed")
+        let title = String(format: localizationManager.localizedString("uart_navigation_title_format"), arguments: [name])
         //tabBarController?.navigationItem.title = title
         navigationController?.navigationItem.title = title
 
