@@ -343,7 +343,7 @@
 		A96A79FD1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ENHThrottledReloading.h"; sourceTree = "<group>"; };
 		A96A79FE1C74F02F000C37E3 /* NSObject+ENHThrottledReloading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ENHThrottledReloading.m"; sourceTree = "<group>"; };
 		A96A7A061C74F329000C37E3 /* Synchronize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronize.swift; sourceTree = "<group>"; };
-		A98296681BB1F5E600DD478C /* Bluefruit Connect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bluefruit Connect.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A98296681BB1F5E600DD478C /* Adafruit Bluefruit LE Connect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Adafruit Bluefruit LE Connect.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A982968A1BB222D700DD478C /* LogHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
 		A987F3111C66AFA00007C58D /* KeyboardPositionNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardPositionNotifier.swift; sourceTree = "<group>"; };
 		A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartDataExport.swift; sourceTree = "<group>"; };
@@ -366,7 +366,7 @@
 		A9A2FF801C3EEA6B0039D188 /* MqttSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettings.swift; sourceTree = "<group>"; };
 		A9A2FF821C3EEA9D0039D188 /* MqttManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttManager.swift; sourceTree = "<group>"; };
 		A9A37C171CD6336C00008136 /* WatchSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
-		A9A644201CEB721900C762BA /* BluefruitCommandLine */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BluefruitCommandLine; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9A644201CEB721900C762BA /* Bluefruit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Bluefruit; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9A644221CEB721900C762BA /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		A9AEF90E1C7560C100E381C0 /* PinTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinTableCellView.swift; sourceTree = "<group>"; };
 		A9AF4E0E1CC63496002C1C12 /* NeopixelTypeSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelTypeSelectorViewController.swift; sourceTree = "<group>"; };
@@ -806,11 +806,11 @@
 		A98296691BB1F5E600DD478C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A98296681BB1F5E600DD478C /* Bluefruit Connect.app */,
+				A98296681BB1F5E600DD478C /* Adafruit Bluefruit LE Connect.app */,
 				A949AA871C5ACF19002F960B /* Bluefruit Connect.app */,
 				A9627ABA1CD617B800B93737 /* watchOS.app */,
 				A9627AC61CD617B800B93737 /* watchOS Extension.appex */,
-				A9A644201CEB721900C762BA /* BluefruitCommandLine */,
+				A9A644201CEB721900C762BA /* Bluefruit */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1059,12 +1059,12 @@
 			);
 			name = OSX;
 			productName = bluefruitconnect;
-			productReference = A98296681BB1F5E600DD478C /* Bluefruit Connect.app */;
+			productReference = A98296681BB1F5E600DD478C /* Adafruit Bluefruit LE Connect.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A9A6441F1CEB721900C762BA /* BluefruitCommandLine */ = {
+		A9A6441F1CEB721900C762BA /* Bluefruit */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A9A644261CEB721900C762BA /* Build configuration list for PBXNativeTarget "BluefruitCommandLine" */;
+			buildConfigurationList = A9A644261CEB721900C762BA /* Build configuration list for PBXNativeTarget "Bluefruit" */;
 			buildPhases = (
 				A9A6441C1CEB721900C762BA /* Sources */,
 				A9A6441D1CEB721900C762BA /* Frameworks */,
@@ -1074,9 +1074,9 @@
 			);
 			dependencies = (
 			);
-			name = BluefruitCommandLine;
+			name = Bluefruit;
 			productName = BluefruitCommandLine;
-			productReference = A9A644201CEB721900C762BA /* BluefruitCommandLine */;
+			productReference = A9A644201CEB721900C762BA /* Bluefruit */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -1143,7 +1143,7 @@
 				A949AA861C5ACF19002F960B /* iOS */,
 				A9627AB91CD617B800B93737 /* watchOS */,
 				A9627AC51CD617B800B93737 /* watchOS Extension */,
-				A9A6441F1CEB721900C762BA /* BluefruitCommandLine */,
+				A9A6441F1CEB721900C762BA /* Bluefruit */,
 			);
 		};
 /* End PBXProject section */
@@ -1782,7 +1782,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "\"-D\" \"DEBUG\" $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.osx;
-				PRODUCT_NAME = "Bluefruit Connect";
+				PRODUCT_NAME = "Adafruit Bluefruit LE Connect";
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/OSX/BluefruitConnect-Bridging-Header.h";
 			};
 			name = Debug;
@@ -1801,7 +1801,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.osx;
-				PRODUCT_NAME = "Bluefruit Connect";
+				PRODUCT_NAME = "Adafruit Bluefruit LE Connect";
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/OSX/BluefruitConnect-Bridging-Header.h";
 			};
 			name = Release;
@@ -1870,7 +1870,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A9A644261CEB721900C762BA /* Build configuration list for PBXNativeTarget "BluefruitCommandLine" */ = {
+		A9A644261CEB721900C762BA /* Build configuration list for PBXNativeTarget "Bluefruit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A9A644241CEB721900C762BA /* Debug */,

@@ -10,7 +10,7 @@
 #import "LogHelper.h"
 #import "XMLDictionary.h"
 #import "Utility.h"
-#import "Bluefruit_Connect-Swift.h"
+#import "Adafruit_Bluefruit_LE_Connect-Swift.h"
 
 #pragma mark - BoardInfo
 @implementation BoardInfo

@@ -9,7 +9,7 @@
 #import "FirmwareUpdater.h"
 #import "ReleasesParser.h"
 #import "LogHelper.h"
-#import "Bluefruit_Connect-Swift.h"
+#import "Adafruit_Bluefruit_LE_Connect-Swift.h"
 
 #pragma mark - DeviceInfoData
 @implementation DeviceInfoData
