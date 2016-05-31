@@ -11,8 +11,6 @@
 
 #import "FirmwareUpdater.h"
 #import "DFUOperations.h"
-#import "NSColor+Hex.h"
-#import "MSWeakTimer/MSWeakTimer.h"
 #import "DataDownloader.h"
 #import "DeviceInfoData.h"
 

@@ -8,22 +8,28 @@
 
 import Foundation
 
-print("Bluefruit Updater")
 
-let scanner = Scanner()
-scanner.start()
+let commandLine = CommandLine()
 
-let response = readLine(stripNewline: true)
-
-
-/*
+// Process arguments
 for argument in Process.arguments {
-    switch argument {
+   
+    switch argument.uppercaseString {
+    case "-?":
+        commandLine.showHelp()
+        
+    case "-S":
+        commandLine.startScanning()
+        let _ = readLine(stripNewline: true)
+        
+    case "-DFU":
+//        commandLine.dfu()
+        break
+        
     default:
-        print("unknown argument: \(argument)");
+        DLog("unknown argument: \(argument)")
     }
 }
-*/
 
 exit(EXIT_SUCCESS)
 

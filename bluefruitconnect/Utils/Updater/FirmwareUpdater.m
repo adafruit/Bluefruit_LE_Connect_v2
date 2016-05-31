@@ -8,40 +8,10 @@
 
 #import "FirmwareUpdater.h"
 #import "ReleasesParser.h"
+#import "DeviceInfoData.h"
 #import "LogHelper.h"
 #import "Adafruit_Bluefruit_LE_Connect-Swift.h"
 
-#pragma mark - DeviceInfoData
-@implementation DeviceInfoData
-
-static NSString* const kManufacturer = @"Adafruit Industries";
-static NSString* const kDefaultBootloaderVersion = @"0.0";
-
-- (NSString *)defaultBootloaderVersion
-{
-    return kDefaultBootloaderVersion;
-}
-
-- (NSString *)bootloaderVersion
-{
-    NSString *result = kDefaultBootloaderVersion;
-    if (_firmwareRevision) {
-        NSInteger index = [_firmwareRevision rangeOfString:@", "].location;
-        if (index != NSNotFound)
-        {
-            NSString *bootloaderVersion = [_firmwareRevision substringFromIndex:index+2];
-            result = bootloaderVersion;
-        }
-    }
-    return result;
-}
-
-- (BOOL)hasDefaultBootloaderVersion
-{
-    return [[self bootloaderVersion] isEqualToString:kDefaultBootloaderVersion];
-}
-
-@end
 
 #pragma mark - FirmwareUpdater
 @interface FirmwareUpdater ()
@@ -59,6 +29,8 @@ static NSString* const kDefaultBootloaderVersion = @"0.0";
 @end
 
 @implementation FirmwareUpdater
+
+static NSString* const kManufacturer = @"Adafruit Industries";
 
 //  Config
 static NSString *kReleasesXml = @"updatemanager_releasesxml";
@@ -107,7 +79,7 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
     @synchronized(self) {
         // Download data
         NSURL *dataUrl = Preferences.updateServerUrl;
-        [FirmwareUpdater downloadDataFromURL:dataUrl withCompletionHandler:^(NSData *data) {
+        [DataDownloader downloadDataFromURL:dataUrl withCompletionHandler:^(NSData *data) {
             // Save to user defaults
             [[NSUserDefaults standardUserDefaults] setObject:data forKey:kReleasesXml];
             [[NSUserDefaults standardUserDefaults] synchronize];
@@ -120,44 +92,7 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
     }
 }
 
-+ (void)downloadDataFromURL:(NSURL *)url withCompletionHandler:(void (^)(NSData *))completionHandler
-{
-    if ([url.scheme isEqualToString:@"file"])        // Check if url is local and just open the file
-    {
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        completionHandler(data);
-    }
-    else
-    {
-        // If the url is not local, download the file
-        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
-        
-        NSURLSessionDataTask *task = [session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (error != nil) {
-                // If any error occurs then just display its description on the console.
-                DLog(@"%@", [error description]);
-                data = nil;
-            }
-            else{
-                NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
-                if (statusCode != 200) {
-                    DLog(@"Download file HTTP status code = %ld", (long)statusCode);
-                    data = nil;
-                }
-                
-                // Call the completion handler with the returned data on the main thread.
-                if (completionHandler) {
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        completionHandler(data);
-                    }];
-                }
-            }
-        }];
-        
-        [task resume];
-    }
-}
+
 
 #pragma mark  Peripheral Management
 - (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate

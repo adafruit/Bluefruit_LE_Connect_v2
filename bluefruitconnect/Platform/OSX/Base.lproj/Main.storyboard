@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -8,7 +8,7 @@
         <!--Preferences-->
         <scene sceneID="XQV-5c-Mbc">
             <objects>
-                <viewController title="Preferences" storyboardIdentifier="PreferencesViewController" id="HmX-o8-Y5x" customClass="PreferencesViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Preferences" storyboardIdentifier="PreferencesViewController" id="HmX-o8-Y5x" customClass="PreferencesViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="29d-kW-B5x">
                         <rect key="frame" x="0.0" y="0.0" width="650" height="668"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -21,7 +21,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="4bo-il-95d" customClass="SeparatorView" customModule="Bluefruit_Connect" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="4bo-il-95d" customClass="SeparatorView" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                 <rect key="frame" x="20" y="630" width="610" height="1"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="lJO-C9-XDF"/>
@@ -86,7 +86,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="NDx-Gk-WdB" customClass="SeparatorView" customModule="Bluefruit_Connect" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="NDx-Gk-WdB" customClass="SeparatorView" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                 <rect key="frame" x="20" y="505" width="610" height="1"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="HU3-wF-T4S"/>
@@ -100,7 +100,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ahn-4E-DXD" customClass="SeparatorView" customModule="Bluefruit_Connect" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ahn-4E-DXD" customClass="SeparatorView" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                 <rect key="frame" x="20" y="390" width="610" height="1"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="pCE-kD-jYb"/>
@@ -223,7 +223,7 @@
                                     <action selector="onEndEditingMqttPassword:" target="HmX-o8-Y5x" id="8th-yd-IUs"/>
                                 </connections>
                             </textField>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Vok-Zh-2XR" customClass="SeparatorView" customModule="Bluefruit_Connect" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Vok-Zh-2XR" customClass="SeparatorView" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                 <rect key="frame" x="178" y="248" width="452" height="1"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="AM9-0Q-gh2"/>
@@ -337,7 +337,7 @@
                                     <action selector="onChangedMqttSubscribeEnabled:" target="HmX-o8-Y5x" id="QMz-c1-ElA"/>
                                 </connections>
                             </button>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="pDr-02-mpD" customClass="SeparatorView" customModule="Bluefruit_Connect" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="pDr-02-mpD" customClass="SeparatorView" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                 <rect key="frame" x="178" y="144" width="452" height="1"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="Im8-dc-xyH"/>
@@ -886,7 +886,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Bluefruit_Connect" customModuleProvider="target">
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                     <connections>
                         <outlet property="peripheralsMenu" destination="P8P-qq-pRh" id="pVY-mg-S5W"/>
                         <outlet property="startScanningMenuItem" destination="KML-Ae-xHI" id="uvv-xK-fVT"/>
@@ -900,7 +900,7 @@
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
-                <windowController id="B8D-0N-5wS" customClass="MainWindowController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <windowController id="B8D-0N-5wS" customClass="MainWindowController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="BlueFruit Connect" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -969,7 +969,7 @@
         <!--Main Split View Controller-->
         <scene sceneID="GcW-sK-H9I">
             <objects>
-                <splitViewController id="rpn-KY-6d0" customClass="MainSplitViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <splitViewController id="rpn-KY-6d0" customClass="MainSplitViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <splitViewItems>
                         <splitViewItem holdingPriority="251" id="GaF-xB-bhJ"/>
                         <splitViewItem id="TeV-VI-ZV1"/>
@@ -990,7 +990,7 @@
         <!--Status View Controller-->
         <scene sceneID="Kq7-jK-3g1">
             <objects>
-                <viewController id="cHu-zC-gbC" customClass="StatusViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="cHu-zC-gbC" customClass="StatusViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="G6h-Il-Y4k">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1031,7 +1031,7 @@
         <!--Peripheral List View Controller-->
         <scene sceneID="744-pv-vma">
             <objects>
-                <viewController id="dsX-rY-pka" customClass="PeripheralListViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="dsX-rY-pka" customClass="PeripheralListViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="EeC-2s-ch1">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1063,7 +1063,7 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView identifier="PeripheralCell" horizontalCompressionResistancePriority="752" id="y2s-Zr-cca" customClass="PeripheralTableCellView" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                                        <tableCellView identifier="PeripheralCell" horizontalCompressionResistancePriority="752" id="y2s-Zr-cca" customClass="PeripheralTableCellView" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                             <rect key="frame" x="1" y="1" width="445" height="64"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
@@ -1185,7 +1185,7 @@
         <!--Details View Controller-->
         <scene sceneID="uYd-ye-qhb">
             <objects>
-                <viewController id="4Hc-mo-q0e" customClass="DetailsViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="4Hc-mo-q0e" customClass="DetailsViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="vOr-Yc-keH">
                         <rect key="frame" x="0.0" y="0.0" width="497" height="367"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1370,7 +1370,7 @@
         <!--Info-->
         <scene sceneID="UP9-O1-uqE">
             <objects>
-                <viewController title="Info" storyboardIdentifier="InfoViewController" id="ffc-GM-h6c" customClass="InfoViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Info" storyboardIdentifier="InfoViewController" id="ffc-GM-h6c" customClass="InfoViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="dzg-pK-vbr">
                         <rect key="frame" x="0.0" y="0.0" width="506" height="346"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1378,11 +1378,11 @@
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="Ft6-BK-pha">
                                 <rect key="frame" x="10" y="44" width="486" height="292"/>
                                 <clipView key="contentView" id="O1c-aY-CNR">
-                                    <rect key="frame" x="1" y="0.0" width="484" height="291"/>
+                                    <rect key="frame" x="1" y="0.0" width="484" height="276"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="ezI-Wm-v5t" viewBased="YES" indentationPerLevel="16" outlineTableColumn="V0h-5C-jYc" id="EXN-pz-48J">
-                                            <rect key="frame" x="0.0" y="0.0" width="790" height="268"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="790" height="253"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1621,7 +1621,7 @@
         <!--Uart-->
         <scene sceneID="iIn-dF-wdr">
             <objects>
-                <viewController title="Uart" storyboardIdentifier="UartViewController" id="BSx-6V-BNK" customClass="UartViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Uart" storyboardIdentifier="UartViewController" id="BSx-6V-BNK" customClass="UartViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="btz-WG-eaB">
                         <rect key="frame" x="0.0" y="0.0" width="934" height="326"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1732,10 +1732,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="912" height="181"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <size key="minSize" width="912" height="181"/>
+                                            <size key="minSize" width="897" height="181"/>
                                             <size key="maxSize" width="1044" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="minSize" width="912" height="181"/>
+                                            <size key="minSize" width="897" height="181"/>
                                             <size key="maxSize" width="1044" height="10000000"/>
                                         </textView>
                                     </subviews>
@@ -1746,7 +1746,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="1xL-UV-Sti">
-                                    <rect key="frame" x="897" y="1" width="16" height="181"/>
+                                    <rect key="frame" x="898" y="1" width="15" height="181"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -2051,7 +2051,7 @@
         <!--Updates-->
         <scene sceneID="Xz6-lS-Aq3">
             <objects>
-                <viewController title="Updates" storyboardIdentifier="FirmwareUpdateViewController" id="cYJ-uw-dp6" customClass="FirmwareUpdateViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Updates" storyboardIdentifier="FirmwareUpdateViewController" id="cYJ-uw-dp6" customClass="FirmwareUpdateViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="HhG-Jw-pbL">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="418"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -2089,7 +2089,7 @@
                                     <constraint firstItem="htr-I0-9X4" firstAttribute="leading" secondItem="wa7-oc-ugc" secondAttribute="leading" constant="20" id="xis-X2-nrI"/>
                                 </constraints>
                             </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="MAa-Gd-9Dt" customClass="SeparatorView" customModule="Bluefruit_Connect" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="MAa-Gd-9Dt" customClass="SeparatorView" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                 <rect key="frame" x="20" y="360" width="410" height="1"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="jBW-Bw-lW6"/>
@@ -2235,7 +2235,7 @@
                                     <constraint firstItem="MEo-sW-Dku" firstAttribute="leading" secondItem="fin-mA-Ocx" secondAttribute="trailing" constant="8" id="ynz-gS-gL4"/>
                                 </constraints>
                             </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Pew-BG-9yQ" customClass="SeparatorView" customModule="Bluefruit_Connect" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Pew-BG-9yQ" customClass="SeparatorView" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                 <rect key="frame" x="20" y="175" width="410" height="1"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="Evx-jB-Xpp"/>
@@ -2378,7 +2378,7 @@
         <!--Pin I/O-->
         <scene sceneID="HqS-pF-gNz">
             <objects>
-                <viewController title="Pin I/O" storyboardIdentifier="PinIOViewController" id="OWN-fV-Xpo" customClass="PinIOViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Pin I/O" storyboardIdentifier="PinIOViewController" id="OWN-fV-Xpo" customClass="PinIOViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="N5W-xS-0Q4">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -2410,7 +2410,7 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView identifier="PinCell" horizontalCompressionResistancePriority="752" id="FLq-fE-qfq" customClass="PinTableCellView" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                                        <tableCellView identifier="PinCell" horizontalCompressionResistancePriority="752" id="FLq-fE-qfq" customClass="PinTableCellView" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                             <rect key="frame" x="1" y="1" width="445" height="32"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
@@ -2583,7 +2583,7 @@
         <!--Neopixel-->
         <scene sceneID="OMS-ck-amD">
             <objects>
-                <viewController title="Neopixel" storyboardIdentifier="NeopixelViewControllerOSX" id="uFO-tO-Dvh" customClass="NeopixelViewControllerOSX" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Neopixel" storyboardIdentifier="NeopixelViewControllerOSX" id="uFO-tO-Dvh" customClass="NeopixelViewControllerOSX" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="4cF-j2-C0a">
                         <rect key="frame" x="0.0" y="0.0" width="536" height="352"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -2633,7 +2633,7 @@
         <!--Firmware Update-->
         <scene sceneID="f78-2A-rNl">
             <objects>
-                <viewController title="Firmware Update" storyboardIdentifier="UpdateDialogViewController" id="ldc-gP-jGT" customClass="UpdateDialogViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Firmware Update" storyboardIdentifier="UpdateDialogViewController" id="ldc-gP-jGT" customClass="UpdateDialogViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="jmH-IY-kUX">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="136"/>
                         <autoresizingMask key="autoresizingMask"/>

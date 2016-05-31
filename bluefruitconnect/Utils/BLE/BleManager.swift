@@ -58,8 +58,12 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     }
     
     func startScan() {
+        guard let centralManager = centralManager where centralManager.state != .PoweredOff && centralManager.state != .Unauthorized && centralManager.state != .Unsupported else {
+            DLog("startScan failed because central manager is not ready")
+            return
+        }
+                
         //DLog("startScan");
-        
         isScanning = true
         wasScanningBeforeBluetoothOff = true
         NSNotificationCenter.defaultCenter().postNotificationName(BleNotifications.DidStartScanning.rawValue, object: nil)
@@ -69,7 +73,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         
         let allowDuplicateKeys = BleManager.kAlwaysAllowDuplicateKeys || BleManager.kIsUndiscoverPeripheralsEnabled
         let scanOptions = allowDuplicateKeys ? [CBCentralManagerScanOptionAllowDuplicatesKey : true] as [String: AnyObject]? : nil
-        centralManager?.scanForPeripheralsWithServices(nil, options: scanOptions)
+        centralManager.scanForPeripheralsWithServices(nil, options: scanOptions)
     }
     
     func stopScan() {
@@ -250,7 +254,6 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         return result
     }
     
-    
     func blePeripheralFoundAlphabeticKeys() -> [String] {
         // Sort blePeripheralsFound keys alphabetically and return them as an array
         
@@ -260,7 +263,4 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         }
         return sortedKeys
     }
-    
-   
-    
 }

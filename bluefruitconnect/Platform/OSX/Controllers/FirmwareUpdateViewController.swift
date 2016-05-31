@@ -334,6 +334,7 @@ extension FirmwareUpdateViewController : UpdateDialogControllerDelegate {
     }
 }
 
+// MARK: - DfuUpdateProcessDelegate
 extension FirmwareUpdateViewController : DfuUpdateProcessDelegate {
     func onUpdateProcessSuccess() {
         BleManager.sharedInstance.restoreCentralManager()
@@ -389,5 +390,4 @@ extension FirmwareUpdateViewController : DfuUpdateProcessDelegate {
             self.updateDialogViewController?.setProgress(progress)
         })
     }
-    
 }

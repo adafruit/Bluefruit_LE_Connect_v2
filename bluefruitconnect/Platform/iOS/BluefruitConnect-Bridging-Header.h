@@ -14,5 +14,7 @@
 #import "MSWeakTimer/MSWeakTimer.h"
 #import "ISColorWheel.h"
 #import "NSObject+ENHThrottledReloading.h"
+#import "DataDownloader.h"
+#import "DeviceInfoData.h"
 
 #endif /* BluefruitConnect_Bridging_Header_h */

@@ -47,7 +47,7 @@ class DfuUpdateProcess : NSObject {
         
         // Download files
         delegate?.onUpdateProgressText(LocalizationManager.sharedInstance.localizedString("dfu_download_hex_message"))
-        FirmwareUpdater.downloadDataFromURL(hexUrl) {[weak self] (data) -> Void in
+        DataDownloader.downloadDataFromURL(hexUrl) {[weak self] (data) -> Void in
             self?.downloadedFirmwareData(data)
         }
     }
@@ -65,7 +65,7 @@ class DfuUpdateProcess : NSObject {
             }
             else {
                 delegate?.onUpdateProgressText(LocalizationManager.sharedInstance.localizedString("dfu_download_init_message"))
-                FirmwareUpdater.downloadDataFromURL(iniUrl, withCompletionHandler: {[weak self]  (iniData) -> Void in
+                DataDownloader.downloadDataFromURL(iniUrl, withCompletionHandler: {[weak self]  (iniData) -> Void in
                     self?.downloadedFirmwareHexAndInitData(data, iniData: iniData)
                     })
             }
