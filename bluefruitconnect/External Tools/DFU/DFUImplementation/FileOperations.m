@@ -23,6 +23,7 @@
 #import "FileOperations.h"
 #import "IntelHex2BinConverter.h"
 #import "Utility.h"
+#import "LogHelper.h"
 
 @implementation FileOperations
 
@@ -46,7 +47,7 @@
         [self.fileDelegate onFileOpened:self.binFileSize];
     }
     else {
-        NSLog(@"Error: file is empty!");
+        DLog(@"Error: file is empty!");
         NSString *errorMessage = [NSString stringWithFormat:@"Error on openning file\n Message: file is empty or not exist"];
         [self.fileDelegate onError:errorMessage];
     }
@@ -68,18 +69,18 @@
     NSData *fileData = [NSData dataWithContentsOfURL:fileURL];
     if ([self isFileExtension:fileName fileExtension:HEX]) {
         self.binFileData = [IntelHex2BinConverter convert:fileData];
-        NSLog(@"HexFileSize: %lu and BinFileSize: %lu",(unsigned long)fileData.length,(unsigned long)self.binFileData.length);
+        DLog(@"HexFileSize: %lu and BinFileSize: %lu",(unsigned long)fileData.length,(unsigned long)self.binFileData.length);
     }
     else if ([self isFileExtension:fileName fileExtension:BIN]) {
         self.binFileData = [NSData dataWithContentsOfURL:fileURL];
-        NSLog(@"BinFileSize: %lu",(unsigned long)self.binFileData.length);
+        DLog(@"BinFileSize: %lu",(unsigned long)self.binFileData.length);
     }
     self.numberOfPackets = ceil((double)self.binFileData.length / (double)PACKET_SIZE);
     self.bytesInLastPacket = (self.binFileData.length % PACKET_SIZE);
     if (self.bytesInLastPacket == 0) {
         self.bytesInLastPacket = PACKET_SIZE;
     }
-    NSLog(@"Number of Packets %d Bytes in last Packet %d",self.numberOfPackets,self.bytesInLastPacket);
+    DLog(@"Number of Packets %d Bytes in last Packet %d",self.numberOfPackets,self.bytesInLastPacket);
     self.writingPacketNumber = 0;
     self.binFileSize = self.binFileData.length;
 }
@@ -89,11 +90,11 @@
     int percentage = 0;
     for (int index = 0; index<PACKETS_NOTIFICATION_INTERVAL; index++) {
         if (self.writingPacketNumber > self.numberOfPackets-2) {
-            NSLog(@"writing last packet");
+            DLog(@"writing last packet");
             NSRange dataRange = NSMakeRange(self.writingPacketNumber*PACKET_SIZE, self.bytesInLastPacket);
             NSData *nextPacketData = [self.binFileData subdataWithRange:dataRange];
-            NSLog(@"writing packet number %d ...",self.writingPacketNumber+1);
-            NSLog(@"packet data: %@",nextPacketData);
+            DLog(@"writing packet number %d ...",self.writingPacketNumber+1);
+            DLog(@"packet data: %@",nextPacketData);
             [self.bluetoothPeripheral writeValue:nextPacketData forCharacteristic:self.dfuPacketCharacteristic type:CBCharacteristicWriteWithoutResponse];
             self.writingPacketNumber++;
             [self.fileDelegate onAllPacketsTranferred];            

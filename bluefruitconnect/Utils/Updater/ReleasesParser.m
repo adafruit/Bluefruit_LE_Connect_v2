@@ -45,7 +45,7 @@
 
 @implementation ReleasesParser
 
-+ (NSDictionary *)parse:(NSData *)data
++ (NSDictionary *)parse:(NSData *)data showBetaVersions:(BOOL)showBetaVersions
 {
     NSMutableDictionary *boardsReleases =  [NSMutableDictionary dictionary];
     
@@ -89,8 +89,7 @@
             }
             
             // Read beta firmware releases
-            const BOOL showBetaReleases = Preferences.showBetaVersions;
-            if (showBetaReleases)
+            if (showBetaVersions)
             {
                 id firmwareNodes = [firmwareParentNode objectForKey:@"firmwarebeta"];
                 if (firmwareNodes) {
@@ -143,7 +142,7 @@
             }
             
             // Read bootloader releases
-            if (showBetaReleases)
+            if (showBetaVersions)
             {
                 id bootloaderNodes = [bootloaderParentNode objectForKey:@"bootloaderbeta"];
                 if (bootloaderNodes) {

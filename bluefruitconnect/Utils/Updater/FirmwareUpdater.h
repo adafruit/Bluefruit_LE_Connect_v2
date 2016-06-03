@@ -26,6 +26,5 @@
 + (void)refreshSoftwareUpdatesDatabaseFromUrl:(NSURL *)url completionHandler:(void (^)(BOOL))completionHandler;
 
 // Check updates
-- (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate;
-- (void)connectAndCheckUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate;
+- (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate showBetaVersions:(BOOL)showBetaVersions shouldDiscoverServices:(BOOL)discoverServices;
 @end

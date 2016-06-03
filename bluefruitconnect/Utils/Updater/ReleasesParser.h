@@ -37,6 +37,6 @@
 #pragma mark - ReleasesParser
 @interface ReleasesParser : NSObject
 
-+ (NSDictionary *)parse:(NSData *)data;
++ (NSDictionary *)parse:(NSData *)data showBetaVersions:(BOOL)showBetaVersions;
 
 @end

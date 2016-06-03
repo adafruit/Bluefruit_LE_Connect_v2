@@ -24,7 +24,7 @@
 #import "Utility.h"
 #import "DFUOperationsDetails.h"
 #import "BLEOperations.h"
-
+#import "LogHelper.h"
 
 
 @implementation DFUOperations
@@ -62,7 +62,7 @@ NSDate *startTime, *finishTime;
         [bleOperations setBluetoothCentralManager:manager];
     }
     else {
-        NSLog(@"CBCentralManager is nil");
+        DLog(@"CBCentralManager is nil");
         NSString *errorMessage = [NSString stringWithFormat:@"Error on received CBCentralManager\n Message: Bluetooth central manager is nil"];
         [dfuDelegate onError:errorMessage];
     }
@@ -74,7 +74,7 @@ NSDate *startTime, *finishTime;
         [bleOperations connectDevice:peripheral];
     }
     else {
-        NSLog(@"CBPeripheral is nil");
+        DLog(@"CBPeripheral is nil");
         NSString *errorMessage = [NSString stringWithFormat:@"Error on received CBPeripheral\n Message: Bluetooth peripheral is nil"];
         [dfuDelegate onError:errorMessage];
     }
@@ -82,14 +82,14 @@ NSDate *startTime, *finishTime;
 
 -(void)cancelDFU
 {
-    NSLog(@"cancelDFU");
+    DLog(@"cancelDFU");
     [dfuRequests resetSystem];
     [dfuDelegate onDFUCancelled];
 }
 
 -(void)setAppToBootloaderMode
 {
-    NSLog(@"setAppToBootloaderMode");
+    DLog(@"setAppToBootloaderMode");
     [dfuRequests resetAppToDFUMode];    
 }
 
@@ -259,38 +259,38 @@ NSDate *startTime, *finishTime;
 
 -(void)processRequestedCode
 {
-    NSLog(@"processsRequestedCode");
+    DLog(@"processsRequestedCode");
     switch (dfuResponse.requestedCode) {
         case START_DFU_REQUEST:
-            NSLog(@"Requested code is StartDFU now processing response status");
+            DLog(@"Requested code is StartDFU now processing response status");
             [self processStartDFUResponseStatus];
             break;
         case RECEIVE_FIRMWARE_IMAGE_REQUEST:
-            NSLog(@"Requested code is Receive Firmware Image now processing response status");
+            DLog(@"Requested code is Receive Firmware Image now processing response status");
             [self processReceiveFirmwareResponseStatus];
             break;
         case VALIDATE_FIRMWARE_REQUEST:
-            NSLog(@"Requested code is Validate Firmware now processing response status");
+            DLog(@"Requested code is Validate Firmware now processing response status");
             [self processValidateFirmwareResponseStatus];
             break;
         case INITIALIZE_DFU_PARAMETERS_REQUEST:
-            NSLog(@"Requested code is Initialize DFU Parameters now processing response status");
+            DLog(@"Requested code is Initialize DFU Parameters now processing response status");
             [self processInitPacketResponseStatus];
             break;
             
         default:
-            NSLog(@"invalid Requested code in DFU Response %d",dfuResponse.requestedCode);
+            DLog(@"invalid Requested code in DFU Response %d",dfuResponse.requestedCode);
             break;
     }
 }
 
 -(void)processStartDFUResponseStatus
 {
-    NSLog(@"processStartDFUResponseStatus");
+    DLog(@"processStartDFUResponseStatus");
     NSString *errorMessage = [NSString stringWithFormat:@"Error on StartDFU\n Message: %@",[self responseErrorMessage:dfuResponse.responseStatus]];
     switch (dfuResponse.responseStatus) {
         case OPERATION_SUCCESSFUL_RESPONSE:
-            NSLog(@"successfully received startDFU notification");
+            DLog(@"successfully received startDFU notification");
             //Start initPacket in order to support ned DFU in SDK 7.1
             if (isVersionCharacteristicExist) {
                 [dfuRequests sendInitPacket:self.firmwareFileMetaData];
@@ -301,12 +301,12 @@ NSDate *startTime, *finishTime;
             break;
         case OPERATION_NOT_SUPPORTED_RESPONSE:
             if (!isPerformedOldDFU) {
-                NSLog(@"device has old DFU. switching to old DFU ...");
+                DLog(@"device has old DFU. switching to old DFU ...");
                 [self performOldDFUOnFile:firmwareFile];
             }
             else {
-                NSLog(@"Operation not supported");
-                NSLog(@"Firmware Image failed, Error Status: %@",[self responseErrorMessage:dfuResponse.responseStatus]);
+                DLog(@"Operation not supported");
+                DLog(@"Firmware Image failed, Error Status: %@",[self responseErrorMessage:dfuResponse.responseStatus]);
                 NSString *errorMessage = [NSString stringWithFormat:@"Error on StartDFU\n Message: %@",[self responseErrorMessage:dfuResponse.responseStatus]];
                 [dfuDelegate onError:errorMessage];
                 [dfuRequests resetSystem];
@@ -314,7 +314,7 @@ NSDate *startTime, *finishTime;
             break;
             
         default:
-            NSLog(@"StartDFU failed, Error Status: %@",[self responseErrorMessage:dfuResponse.responseStatus]);
+            DLog(@"StartDFU failed, Error Status: %@",[self responseErrorMessage:dfuResponse.responseStatus]);
             [dfuDelegate onError:errorMessage];
             [dfuRequests resetSystem];
             break;
@@ -323,14 +323,14 @@ NSDate *startTime, *finishTime;
 
 -(void)processInitPacketResponseStatus
 {
-    NSLog(@"processInitPacketResponseStatus");
+    DLog(@"processInitPacketResponseStatus");
     if(dfuResponse.responseStatus == OPERATION_SUCCESSFUL_RESPONSE) {
-        NSLog(@"successfully received initPacket notification");
+        DLog(@"successfully received initPacket notification");
         [self startSendingFile];
     }
     else {
-        //NSLog(@"unsuccessfull initPacket notification %d",dfuResponse.responseStatus);
-        NSLog(@"Init Packet failed, Error Status: %@",[self responseErrorMessage:dfuResponse.responseStatus]);
+        //DLog(@"unsuccessfull initPacket notification %d",dfuResponse.responseStatus);
+        DLog(@"Init Packet failed, Error Status: %@",[self responseErrorMessage:dfuResponse.responseStatus]);
         NSString *errorMessage = [NSString stringWithFormat:@"Error on Init Packet\n Message: %@",[self responseErrorMessage:dfuResponse.responseStatus]];
         [dfuDelegate onError:errorMessage];
         [dfuRequests resetSystem];
@@ -339,13 +339,13 @@ NSDate *startTime, *finishTime;
 
 -(void)processReceiveFirmwareResponseStatus
 {
-    NSLog(@"processReceiveFirmwareResponseStatus");
+    DLog(@"processReceiveFirmwareResponseStatus");
     if (dfuResponse.responseStatus == OPERATION_SUCCESSFUL_RESPONSE) {
-        NSLog(@"successfully received notification for whole File transfer");
+        DLog(@"successfully received notification for whole File transfer");
         [dfuRequests validateFirmware];
     }
     else {
-        NSLog(@"Firmware Image failed, Error Status: %@",[self responseErrorMessage:dfuResponse.responseStatus]);
+        DLog(@"Firmware Image failed, Error Status: %@",[self responseErrorMessage:dfuResponse.responseStatus]);
         NSString *errorMessage = [NSString stringWithFormat:@"Error on Receive Firmware Image\n Message: %@",[self responseErrorMessage:dfuResponse.responseStatus]];
         [dfuDelegate onError:errorMessage];
         [dfuRequests resetSystem];
@@ -354,15 +354,15 @@ NSDate *startTime, *finishTime;
 
 -(void)processValidateFirmwareResponseStatus
 {
-    NSLog(@"processValidateFirmwareResponseStatus");
+    DLog(@"processValidateFirmwareResponseStatus");
     if (dfuResponse.responseStatus == OPERATION_SUCCESSFUL_RESPONSE) {
-        NSLog(@"succesfully received notification for ValidateFirmware");
+        DLog(@"succesfully received notification for ValidateFirmware");
         [dfuRequests activateAndReset];
         [self calculateDFUTime];
         [dfuDelegate onSuccessfulFileTranferred];
     }
     else {
-        NSLog(@"Firmware validate failed, Error Status: %@",[self responseErrorMessage:dfuResponse.responseStatus]);
+        DLog(@"Firmware validate failed, Error Status: %@",[self responseErrorMessage:dfuResponse.responseStatus]);
         NSString *errorMessage = [NSString stringWithFormat:@"Error on Validate Firmware Request\n Message: %@",[self responseErrorMessage:dfuResponse.responseStatus]];
         [dfuDelegate onError:errorMessage];
         [dfuRequests resetSystem];
@@ -371,7 +371,7 @@ NSDate *startTime, *finishTime;
 
 -(void)processPacketNotification
 {
-    NSLog(@"received Packet Received Notification");
+    DLog(@"received Packet Received Notification");
     if (isStartingSecondFile) {
         if (fileRequests2.writingPacketNumber < fileRequests2.numberOfPackets) {
             [fileRequests2 writeNextPacket];
@@ -386,7 +386,7 @@ NSDate *startTime, *finishTime;
 
 -(void)processDFUResponse:(uint8_t *)data
 {
-    NSLog(@"processDFUResponse");
+    DLog(@"processDFUResponse");
     [self setDFUResponseStruct:data];
     if (dfuResponse.responseCode == RESPONSE_CODE) {
         [self processRequestedCode];
@@ -422,7 +422,7 @@ NSDate *startTime, *finishTime;
 {
     finishTime = [NSDate date];
     self.uploadTimeInSeconds = [finishTime timeIntervalSinceDate:startTime];
-    NSLog(@"upload time in sec: %lu",(unsigned long)self.uploadTimeInSeconds);
+    DLog(@"upload time in sec: %lu",(unsigned long)self.uploadTimeInSeconds);
 }
 
 #pragma mark - BLEOperations delegates
@@ -461,7 +461,7 @@ andControlPointCharacteristic:(CBCharacteristic *)dfuControlPointCharacteristic
 
 -(void)onReadDfuVersion:(int)version
 {
-    NSLog(@"onReadDfuVersion %d",version);
+    DLog(@"onReadDfuVersion %d",version);
     //check if DfuVersionCharacteristic has been read successfully
     //one reason is that Service Changed Indication is not enabled in Buttonless DFU update
     if (version == 0) {
@@ -481,13 +481,13 @@ andControlPointCharacteristic:(CBCharacteristic *)dfuControlPointCharacteristic
 
 -(void)onTransferPercentage:(int)percentage
 {
-    NSLog(@"DFUOperations: onTransferPercentage %d",percentage);
+    DLog(@"DFUOperations: onTransferPercentage %d",percentage);
     [dfuDelegate onTransferPercentage:percentage];
 }
 
 -(void)onAllPacketsTranferred
 {
-    NSLog(@"DFUOperations: onAllPacketsTransfered");
+    DLog(@"DFUOperations: onAllPacketsTransfered");
     if (isStartingSecondFile) {
         [dfuDelegate onBootloaderUploadCompleted];
     }
@@ -496,7 +496,7 @@ andControlPointCharacteristic:(CBCharacteristic *)dfuControlPointCharacteristic
         //if there are two files for softdevice and bootloader
         if (!isOneFileForSDAndBL) {
             isStartingSecondFile = YES;
-            NSLog(@"Firmware type is Softdevice plus Bootloader. now upload bootloader ...");
+            DLog(@"Firmware type is Softdevice plus Bootloader. now upload bootloader ...");
             [dfuDelegate onSoftDeviceUploadCompleted];
             [dfuDelegate onBootloaderUploadStarted];
             [fileRequests2 writeNextPacket];
@@ -510,13 +510,13 @@ andControlPointCharacteristic:(CBCharacteristic *)dfuControlPointCharacteristic
 
 -(void)onFileOpened:(NSUInteger)fileSizeOfBin
 {
-    NSLog(@"onFileOpened file size: %lu",(unsigned long)fileSizeOfBin);
+    DLog(@"onFileOpened file size: %lu",(unsigned long)fileSizeOfBin);
     binFileSize += fileSizeOfBin;
 }
 
 -(void)onError:(NSString *)errorMessage
 {
-    NSLog(@"DFUOperations: onError");
+    DLog(@"DFUOperations: onError");
     [dfuDelegate onError:errorMessage];
 }
 

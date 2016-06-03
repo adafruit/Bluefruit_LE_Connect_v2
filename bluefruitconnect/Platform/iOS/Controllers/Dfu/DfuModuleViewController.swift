@@ -92,7 +92,7 @@ class DfuModuleViewController: ModuleViewController {
         // Refresh updates available
         if !isCheckingUpdates {
             isCheckingUpdates = true
-            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self)
+            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, showBetaVersions: Preferences.showBetaVersions, shouldDiscoverServices: false)
         }
     }
     
@@ -133,7 +133,7 @@ class DfuModuleViewController: ModuleViewController {
     func preferencesUpdated(notification : NSNotification) {
         // Reload updates
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
-            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self)
+            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, showBetaVersions: Preferences.showBetaVersions, shouldDiscoverServices: false)
         }
     }
 
@@ -210,7 +210,7 @@ extension DfuModuleViewController: FirmwareUpdaterDelegate {
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             
             if let deviceInfoData = deviceInfoData {
-                if (deviceInfoData.hasDefaultBootloaderVersion()) {
+                if deviceInfoData.hasDefaultBootloaderVersion() {
                     self.onUpdateDialogError("The legacy bootloader on this device is not compatible with this application")
                 }
             }

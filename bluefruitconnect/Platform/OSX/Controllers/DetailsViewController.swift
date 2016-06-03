@@ -62,9 +62,9 @@ class DetailsViewController: NSViewController {
         
         // Subscribe to Ble Notifications
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(DetailsViewController.willConnectToPeripheral(_:)), name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(DetailsViewController.didConnectToPeripheral(_:)), name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(DetailsViewController.willDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(willConnectToPeripheral(_:)), name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(didConnectToPeripheral(_:)), name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(willDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
     }
     
     override func viewDidDisappear() {

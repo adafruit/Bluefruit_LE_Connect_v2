@@ -42,23 +42,23 @@ class FirmwareUpdateViewController: NSViewController {
         
         registerNotifications(true)
     }
-    
+
     override func viewDidDisappear() {
         super.viewDidDisappear()
         
         registerNotifications(false)
     }
-    
+
     func startUpdatesCheck() {
         // Refresh updates available
         if !isCheckingUpdates {
             if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
                 isCheckingUpdates = true
-                firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self)
+                firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, showBetaVersions: Preferences.showBetaVersions, shouldDiscoverServices: false)
             }
         }
     }
-    
+
     // MARK: - Preferences
     func registerNotifications(register : Bool) {
         
@@ -70,11 +70,11 @@ class FirmwareUpdateViewController: NSViewController {
             notificationCenter.removeObserver(self, name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)
         }
     }
-    
+
     func preferencesUpdated(notification : NSNotification) {
         // Reload updates
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
-            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self)
+            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, showBetaVersions: Preferences.showBetaVersions, shouldDiscoverServices: false)
         }
     }
 

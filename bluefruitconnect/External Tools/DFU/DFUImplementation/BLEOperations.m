@@ -22,6 +22,7 @@
 
 #import "BLEOperations.h"
 #import "Utility.h"
+#import "LogHelper.h"
 
 @implementation BLEOperations
 
@@ -62,19 +63,19 @@ static NSString * const hrsSensorLocationCharacteristicUUIDString = @"00002A38-0
     isDFUPacketCharacteristicFound = NO;
     isDFUVersionCharacteristicFound = NO;
     for (CBCharacteristic *characteristic in service.characteristics) {
-        NSLog(@"Found characteristic %@",characteristic.UUID);
+        DLog(@"Found characteristic %@",characteristic.UUID);
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:dfuControlPointCharacteristicUUIDString]]) {
-            NSLog(@"Control Point characteristic found");
+            DLog(@"Control Point characteristic found");
             isDFUControlPointCharacteristic = YES;
             self.dfuControlPointCharacteristic = characteristic;
         }
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:dfuPacketCharacteristicUUIDString]]) {
-            NSLog(@"Packet Characteristic is found");
+            DLog(@"Packet Characteristic is found");
             isDFUPacketCharacteristicFound = YES;
             self.dfuPacketCharacteristic = characteristic;
         }
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:dfuVersionCharacteritsicUUIDString]]) {
-            NSLog(@"Version Characteristic is found");
+            DLog(@"Version Characteristic is found");
             isDFUVersionCharacteristicFound = YES;
             self.dfuVersionCharacteristic = characteristic;
         }    }
@@ -83,24 +84,24 @@ static NSString * const hrsSensorLocationCharacteristicUUIDString = @"00002A38-0
 #pragma mark - CentralManager delegates
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
 {
-    NSLog(@"centralManagerDidUpdateState");
+    DLog(@"centralManagerDidUpdateState");
 }
 
 -(void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
 {
-    NSLog(@"didConnectPeripheral");
+    DLog(@"didConnectPeripheral");
     [self.bluetoothPeripheral discoverServices:nil];
 }
 
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
-    NSLog(@"didDisconnectPeripheral: %@", error);
+    DLog(@"didDisconnectPeripheral: %@", error);
     [self.bleDelegate onDeviceDisconnected:peripheral];
 }
 
 -(void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
-    NSLog(@"didFailToConnectPeripheral");
+    DLog(@"didFailToConnectPeripheral");
     [self.bleDelegate onDeviceDisconnected:peripheral];
 }
 
@@ -109,11 +110,11 @@ static NSString * const hrsSensorLocationCharacteristicUUIDString = @"00002A38-0
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error
 {
     isDFUServiceFound = NO;
-    NSLog(@"didDiscoverServices, found %lu services",(unsigned long)peripheral.services.count);
+    DLog(@"didDiscoverServices, found %lu services",(unsigned long)peripheral.services.count);
     for (CBService *service in peripheral.services) {
-        NSLog(@"discovered service %@",service.UUID);
+        DLog(@"discovered service %@",service.UUID);
         if ([service.UUID isEqual:[CBUUID UUIDWithString:dfuServiceUUIDString]]) {
-            NSLog(@"DFU Service is found");
+            DLog(@"DFU Service is found");
             isDFUServiceFound = YES;
         }
         [self.bluetoothPeripheral discoverCharacteristics:nil forService:service];
@@ -127,7 +128,7 @@ static NSString * const hrsSensorLocationCharacteristicUUIDString = @"00002A38-0
 
 - (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error
 {
-    NSLog(@"didDiscoverCharacteristicsForService");
+    DLog(@"didDiscoverCharacteristicsForService");
     if ([service.UUID isEqual:[CBUUID UUIDWithString:dfuServiceUUIDString]]) {
         [self searchDFURequiredCharacteristics:service];
         if (isDFUControlPointCharacteristic && isDFUPacketCharacteristicFound && isDFUVersionCharacteristicFound) {
@@ -152,7 +153,7 @@ static NSString * const hrsSensorLocationCharacteristicUUIDString = @"00002A38-0
         for (CBCharacteristic *characteristic in service.characteristics)
         {
             if ([characteristic.UUID isEqual:HR_Location_Characteristic_UUID]) {
-                NSLog(@"HR Position characteristic is found");
+                DLog(@"HR Position characteristic is found");
                 [self.bluetoothPeripheral readValueForCharacteristic:characteristic];
             }
         }
@@ -161,12 +162,12 @@ static NSString * const hrsSensorLocationCharacteristicUUIDString = @"00002A38-0
 
 -(void) peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
-    NSLog(@"didUpdateValueForCharacteristic");
+    DLog(@"didUpdateValueForCharacteristic");
     if (error) {
         NSString *errorMessage = [NSString stringWithFormat:@"Error on BLE Notification\n Message: %@",[error localizedDescription]];
-        NSLog(@"Error in Notification state: %@",[error localizedDescription]);
+        DLog(@"Error in Notification state: %@",[error localizedDescription]);
         if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:dfuVersionCharacteritsicUUIDString]]) {
-            NSLog(@"Error in Reading DfuVersionCharacteritsic. Please enable Service Changed Indication in your firmware, reset Bluetooth from IOS Settings and then try again");
+            DLog(@"Error in Reading DfuVersionCharacteritsic. Please enable Service Changed Indication in your firmware, reset Bluetooth from IOS Settings and then try again");
             errorMessage = [NSString stringWithFormat:@"Error on BLE Notification\n Message: %@\n Please enable Service Changed Indication in your firmware, reset Bluetooth from IOS Settings and then try again",[error localizedDescription]];
             [self.bleDelegate onReadDfuVersion:0];
         }
@@ -176,11 +177,11 @@ static NSString * const hrsSensorLocationCharacteristicUUIDString = @"00002A38-0
         
         
         const uint8_t *version = [characteristic.value bytes] ;
-        NSLog(@"dfu Version Characteristic first byte is %d and second byte is %d",version[0],version[1]);        
+        DLog(@"dfu Version Characteristic first byte is %d and second byte is %d",version[0],version[1]);        
         [self.bleDelegate onReadDfuVersion:version[0]];
     }
     else {
-        NSLog(@"received notification %@",characteristic.value);
+        DLog(@"received notification %@",characteristic.value);
         [self.bleDelegate onReceivedNotification:characteristic.value];
     }
 }
@@ -188,19 +189,19 @@ static NSString * const hrsSensorLocationCharacteristicUUIDString = @"00002A38-0
 -(void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
     if (error) {
-        NSLog(@"error in writing characteristic %@ and error %@",characteristic.UUID,[error localizedDescription]);
+        DLog(@"error in writing characteristic %@ and error %@",characteristic.UUID,[error localizedDescription]);
     }
     else {
-        NSLog(@"didWriteValueForCharacteristic %@ and value %@",characteristic.UUID,characteristic.value);
+        DLog(@"didWriteValueForCharacteristic %@ and value %@",characteristic.UUID,characteristic.value);
     }
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
     if (error) {
-        NSLog(@"error in updating notification state for characteristic %@ and error %@",characteristic.UUID,[error localizedDescription]);
+        DLog(@"error in updating notification state for characteristic %@ and error %@",characteristic.UUID,[error localizedDescription]);
     }
     else {
-        NSLog(@"didUpdateNotificationStateForCharacteristic %@",characteristic.UUID);
+        DLog(@"didUpdateNotificationStateForCharacteristic %@",characteristic.UUID);
     }
 }
 

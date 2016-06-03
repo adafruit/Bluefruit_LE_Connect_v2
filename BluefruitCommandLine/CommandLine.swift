@@ -9,16 +9,20 @@
 import Foundation
 
 class CommandLine: NSObject {
-
+    // Config
+    private static let appVersion = "0.1"
+    
     // Scanning
     var discoveredPeripheralsIdentifiers = [String]()
     private var scanResultsShowIndex = false
     
     // DFU
-//    private var boardRelease : BoardInfo?
-//    private var deviceInfoData : DeviceInfoData?
     private var dfuSemaphore = dispatch_semaphore_create(0)
-    
+    private let firmwareUpdater = FirmwareUpdater()
+    private let dfuUpdateProcess = DfuUpdateProcess()
+    private var dfuPeripheral: CBPeripheral?
+    private var hexUrl: NSURL?
+    private var iniUrl: NSURL?
     
     // MARK: - Bluetooth Status
     func checkBluetoothErrors() -> String? {
@@ -42,15 +46,14 @@ class CommandLine: NSObject {
     
     // MARK: - Help
     func showHelp() {
-        // App name
-        /*
-        let bundleInfo = NSBundle.mainBundle().infoDictionary
-        let appName = bundleInfo["CFBundleName"] as? String
-        */
-        //let shortVersion = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"]  as! String
-        //let appInfoString = String(format: "Bluefruit v.%@", shortVersion)
-        let appInfoString = "Bluefruit"
+        showVersion()
+        
+    }
+    
+    func showVersion() {
+        let appInfoString = "Bluefruit v\(CommandLine.appVersion)"
         print(appInfoString)
+        
     }
     
     // MARK: - Scan 
@@ -65,6 +68,12 @@ class CommandLine: NSObject {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
         
         BleManager.sharedInstance.startScan()
+    }
+    
+    func stopScanning() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
+        
+        BleManager.sharedInstance.stopScan()
     }
     
     func didDiscoverPeripheral(notification : NSNotification) {
@@ -91,61 +100,96 @@ class CommandLine: NSObject {
     }
     
     // MARK: - DFU
-    func dfuPeripheralWithUUIDString(UUIDString: String, hexPath: String, iniPath: String?) {
+    func dfuPeripheralWithUUIDString(UUIDString: String, hexUrl: NSURL, iniUrl: NSURL?) {
         
         guard let centralManager = BleManager.sharedInstance.centralManager else {
             DLog("centralManager is nil")
             return
         }
         
-        
-        
         if let peripheralUUID = NSUUID(UUIDString: UUIDString) {
             if let peripheral = centralManager.retrievePeripheralsWithIdentifiers([peripheralUUID]).first {
                 
-
+                dfuPeripheral = peripheral
+                self.hexUrl = hexUrl
+                self.iniUrl = iniUrl
+                print("Connecting...");
+                
                 // Connect to peripheral and discover characteristics. This should not be needed but the Dfu library will fail if a previous characteristics discovery has not been done
-                let firmwareUpdater = FirmwareUpdater()
-                firmwareUpdater.checkUpdatesForPeripheral(peripheral, delegate: self)
                 
+                // Subscribe to Ble Notifications
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(dfuDidConnectToPeripheral(_:)), name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
                 
+                let blePeripheral = BlePeripheral(peripheral: peripheral, advertisementData: [:], RSSI: 0)
+                BleManager.sharedInstance.connect(blePeripheral)
+                dispatch_semaphore_wait(dfuSemaphore, DISPATCH_TIME_FOREVER)
             }
         }
+        else {
+            print("Error. No peripheral found with UUID: \(UUIDString)")
+            dfuPeripheral = nil
+        }
+    }
+    
+    func dfuDidConnectToPeripheral(notification: NSNotification) {
+         NSNotificationCenter.defaultCenter().removeObserver(self, name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
+        
+        guard let dfuPeripheral = dfuPeripheral  else {
+            DLog("dfuDidConnectToPeripheral dfuPeripheral is nil")
+            dfuFinished()
+            return
+        }
+        
+        print("Reading services and characteristics...");        
+        self.firmwareUpdater.checkUpdatesForPeripheral(dfuPeripheral, delegate: self, showBetaVersions: true, shouldDiscoverServices: true)
     }
 
-    private func dfuWithPeripheral(peripheral: CBPeripheral, hexPath: String, iniPath: String?) {
+    private func dfuWithCurrentData() {
+        
+        // Check data
+        guard let dfuPeripheral = dfuPeripheral  else {
+            DLog("dfuDidConnectToPeripheral dfuPeripheral is nil")
+            dfuFinished()
+            return
+        }
+        
+        guard let hexUrl = hexUrl else {
+            DLog("dfuDidConnectToPeripheral hexPath is nil")
+            dfuFinished()
+            return
+        }
         
         // Setup
-        let dfuUpdateProcess = DfuUpdateProcess()
         dfuUpdateProcess.delegate = self
         
+        
         // Read hex
-        guard let hexData = NSFileManager.defaultManager().contentsAtPath(hexPath) else {
-            print("File not found: \(hexPath)")
+        guard let hexData = NSData(contentsOfURL: hexUrl) else {
+            print("File not found: \(hexUrl)")
             return
         }
         
         // Read ini
         var iniData: NSData? = nil
-        if let iniPath = iniPath {
-            iniData = NSFileManager.defaultManager().contentsAtPath(iniPath)
+        if let iniUrl = iniUrl {
+            iniData = NSData(contentsOfURL: iniUrl)
             guard iniData != nil else {
-                print("File not found: \(iniPath)")
+                print("File not found: \(iniUrl)")
                 return
             }
         }
-        
+
         // Start dfu
-        let isOperationInProgress = dfuUpdateProcess.startDfuOperationBypassingChecksWithPeripheral(peripheral, hexData: hexData, iniData: iniData)
-        
-        if isOperationInProgress {
-            // Wait till completion
-            dispatch_semaphore_wait(dfuSemaphore, DISPATCH_TIME_FOREVER)
+        print("Updating...");
+        let isOperationInProgress = dfuUpdateProcess.startDfuOperationBypassingChecksWithPeripheral(dfuPeripheral, hexData: hexData, iniData: iniData)
+        if !isOperationInProgress {
+            dfuFinished()
         }
+        
     }
     
     private func dfuFinished() {
-         dispatch_semaphore_signal(dfuSemaphore)
+        dispatch_semaphore_signal(dfuSemaphore)
     }
 
 }
@@ -153,9 +197,8 @@ class CommandLine: NSObject {
 // MARK: - DfuUpdateProcessDelegate
 extension CommandLine: DfuUpdateProcessDelegate {
     func onUpdateProcessSuccess() {
-        BleManager.sharedInstance.restoreCentralManager()
+        BleManager.sharedInstance.restoreCentralManager()        
         
-       
         print("Update completed successfully")
         dfuFinished()
     }
@@ -169,15 +212,11 @@ extension CommandLine: DfuUpdateProcessDelegate {
     }
     
     func onUpdateProgressText(message: String) {
-        dispatch_async(dispatch_get_main_queue(),{
-            print("\t"+message)
-        })
+        print("\t"+message)
     }
     
     func onUpdateProgressValue(progress : Double) {
-        dispatch_async(dispatch_get_main_queue(),{
-            print(".", terminator: "")
-        })
+        print(".", terminator: "")
     }
 }
 
@@ -186,15 +225,28 @@ extension CommandLine: DfuUpdateProcessDelegate {
 extension CommandLine: FirmwareUpdaterDelegate {
     
     func onFirmwareUpdatesAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo!, deviceInfoData: DeviceInfoData!, allReleases: [NSObject : AnyObject]!) {
-    
+        
         DLog("onFirmwareUpdatesAvailable: \(isUpdateAvailable)")
-        //dfuWithPeripheral(peripheral, hexPath: hexPath, iniPath: iniPath)
-
+        
+        print("\tManufacturer: \(deviceInfoData.manufacturer)")
+        print("\tModel:        \(deviceInfoData.modelNumber)")
+        print("\tSoftware:     \(deviceInfoData.softwareRevision)")
+        print("\tFirmware:     \(deviceInfoData.firmwareRevision)")
+        print("\tBootlader:    \(deviceInfoData.bootloaderVersion())")
+        
+        guard deviceInfoData.hasDefaultBootloaderVersion() == false else {
+            print("The legacy bootloader on this device is not compatible with this application")
+            dfuFinished()
+            return
+        }
+        
+        dfuWithCurrentData()
     }
     
     func onDfuServiceNotFound() {
         print("DFU service not found")
-        dfuFinished()
+             dfuFinished()
+
     }
     
 }

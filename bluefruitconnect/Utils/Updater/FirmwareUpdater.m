@@ -22,9 +22,11 @@
     BOOL isModelNumberCharacteristicAvailable;
     BOOL isSoftwareRevisionCharacteristicAvailable;
     BOOL isFirmwareRevisionCharacteristicAvailable;
+    __weak id<FirmwareUpdaterDelegate> delegate;
+    BOOL showBetaVersions;
 }
 
-@property (weak) id<FirmwareUpdaterDelegate> delegate;
+//@property (weak) id<FirmwareUpdaterDelegate> delegate;
 
 @end
 
@@ -68,7 +70,7 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
     if (data)
     {
         // Parse data
-        boardsInfoDictionary = [ReleasesParser parse:data];
+        boardsInfoDictionary = [ReleasesParser parse:data showBetaVersions:showBetaVersions];
     }
     
     return boardsInfoDictionary;
@@ -91,24 +93,23 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
     }
 }
 
-
-
 #pragma mark  Peripheral Management
-- (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate
+- (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) aDelegate showBetaVersions:(BOOL)aShowBetaVersions shouldDiscoverServices:(BOOL)discoverServices
 {
-    _delegate = delegate;
+    showBetaVersions = aShowBetaVersions;
+    delegate = aDelegate;
     previousPeripheralDelegate = peripheral.delegate;
     peripheral.delegate = self;
     
-    // The peripheral is already connected, so got to didDiscoverServices
-    [self peripheral:peripheral didDiscoverServices:nil];
+    if (discoverServices) {
+        [peripheral discoverServices:nil];
+    }
+    else {
+        // The peripheral is already connected and services discovered, so go to didDiscoverServices
+        [self peripheral:peripheral didDiscoverServices:nil];
+    }
 }
 
-- (void)connectAndCheckUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate
-{
-    _delegate = delegate;
-    [self connectToPeripheral:peripheral];
-}
 
 - (void)connectToPeripheral:(CBPeripheral *)peripheral {
     
@@ -156,10 +157,10 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
     {
         peripheral.delegate = previousPeripheralDelegate;
         
-        if (error && self.delegate) {
+        if (error && delegate) {
             DLog(@"Peripheral has no dfu or dis service available");
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.delegate onDfuServiceNotFound];
+                [delegate onDfuServiceNotFound];
             });
         }
     }
@@ -219,7 +220,7 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
     if ((_deviceInfoData.manufacturer || !isManufacturerCharacteristicAvailable) && (_deviceInfoData.modelNumber || !isModelNumberCharacteristicAvailable) && (_deviceInfoData.softwareRevision || !isSoftwareRevisionCharacteristicAvailable) && (_deviceInfoData.firmwareRevision || !isFirmwareRevisionCharacteristicAvailable)) {
         DLog(@"Device Info Data received");
         
-        if (_delegate == nil) {
+        if (delegate == nil) {
             DLog(@"Error: onDeviceInfoUpdatedForPeripheral with no delegate");
         }
         
@@ -308,7 +309,7 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
         }
         
         peripheral.delegate = previousPeripheralDelegate;
-        [_delegate onFirmwareUpdatesAvailable:isFirmwareUpdateAvailable latestRelease:latestRelease deviceInfoData:_deviceInfoData allReleases:allReleases];
+        [delegate onFirmwareUpdatesAvailable:isFirmwareUpdateAvailable latestRelease:latestRelease deviceInfoData:_deviceInfoData allReleases:allReleases];
     }
 }
 

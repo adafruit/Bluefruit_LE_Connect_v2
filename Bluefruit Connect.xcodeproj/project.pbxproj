@@ -34,6 +34,7 @@
 		A92088B41C7357D5002FF8E8 /* StyleConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92088B31C7357D5002FF8E8 /* StyleConfig.swift */; };
 		A92088B61C73910D002FF8E8 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92088B51C73910D002FF8E8 /* UIImage+Color.swift */; };
 		A92883CB1C5AF8DF00CC1566 /* PeripheralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92883CA1C5AF8DF00CC1566 /* PeripheralTableViewCell.swift */; };
+		A92D91B71D01ABC500CAB0E5 /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = A9FE75721BB9CF1000F7A5BF /* XMLDictionary.m */; };
 		A92E06761C6D136100BECBBA /* MqttSettingsStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92E06751C6D136100BECBBA /* MqttSettingsStatusCell.swift */; };
 		A92E06781C6D15A300BECBBA /* MqttSettingsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92E06771C6D15A300BECBBA /* MqttSettingsHeaderCell.swift */; };
 		A92E067A1C6D18DF00BECBBA /* MqttSettingsValueAndSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92E06791C6D18DF00BECBBA /* MqttSettingsValueAndSelector.swift */; };
@@ -1532,6 +1533,7 @@
 				A9675D8B1CFD19E60041A6F0 /* DeviceInfoData.m in Sources */,
 				A9A644291CEB78E800C762BA /* LogHelper.swift in Sources */,
 				A9675D731CFD139B0041A6F0 /* DFUOperations.m in Sources */,
+				A92D91B71D01ABC500CAB0E5 /* XMLDictionary.m in Sources */,
 				A9675D741CFD139D0041A6F0 /* DFUOperationsDetails.m in Sources */,
 				A9675D721CFD13970041A6F0 /* BLEOperations.m in Sources */,
 				A9A6442A1CEB790B00C762BA /* Synchronize.swift in Sources */,
@@ -1860,7 +1862,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
-				OTHER_SWIFT_FLAGS = "-D DEBUG";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "Adafruit Bluefruit LE Connect";
 				SWIFT_OBJC_BRIDGING_HEADER = "BluefruitCommandLine/BluefruitConnect-Bridging-Header.h";
 			};
