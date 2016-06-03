@@ -10,9 +10,9 @@ import Foundation
 
 protocol DfuUpdateProcessDelegate: class {
     func onUpdateProcessSuccess()
-    func onUpdateProcessError(errorMessage : String, infoMessage: String?)
+    func onUpdateProcessError(errorMessage: String, infoMessage: String?)
     func onUpdateProgressText(message: String)
-    func onUpdateProgressValue(progress : Double)
+    func onUpdateProgressValue(progress: Double)
 }
 
 class DfuUpdateProcess : NSObject {
@@ -21,11 +21,11 @@ class DfuUpdateProcess : NSObject {
     private static let kApplicationIniFilename = "application.bin"     // don't change extensions. dfuOperations will look for these specific extensions
     
     // Parameters
-    private var peripheral : CBPeripheral?
-    private var hexUrl : NSURL?
-    private var iniUrl : NSURL?
+    private var peripheral: CBPeripheral?
+    private var hexUrl: NSURL?
+    private var iniUrl: NSURL?
     private var deviceInfoData : DeviceInfoData?
-    weak var delegate : DfuUpdateProcessDelegate?
+    weak var delegate: DfuUpdateProcessDelegate?
     
     // DFU data
     private var dfuOperations : DFUOperations?
@@ -35,9 +35,9 @@ class DfuUpdateProcess : NSObject {
     private var isConnected = false
     private var isDFUVersionExits = false
     private var isTransferring  = false
-    private var dfuVersion : Int32 = -1
+    private var dfuVersion: Int32 = -1
     
-    func setUpdateParameters(peripheral : CBPeripheral, hexUrl : NSURL, iniUrl: NSURL?, deviceInfoData : DeviceInfoData) {
+    func setUpdateParameters(peripheral: CBPeripheral, hexUrl: NSURL, iniUrl: NSURL?, deviceInfoData: DeviceInfoData) {
         self.peripheral = peripheral
         self.hexUrl = hexUrl
         self.iniUrl = iniUrl
@@ -52,7 +52,7 @@ class DfuUpdateProcess : NSObject {
         }
     }
     
-    func downloadedFirmwareData(data : NSData?) {
+    private func downloadedFirmwareData(data: NSData?) {
         // Single hex file needed
         if let data = data {
             let bootloaderVersion = deviceInfoData!.bootloaderVersion()
@@ -75,7 +75,7 @@ class DfuUpdateProcess : NSObject {
         }
     }
     
-    func downloadedFirmwareHexAndInitData(hexData: NSData?, iniData:NSData?) {
+    private func downloadedFirmwareHexAndInitData(hexData: NSData?, iniData: NSData?) {
         //  hex + dat file needed
         if (hexData != nil && iniData != nil)
         {
@@ -100,11 +100,16 @@ class DfuUpdateProcess : NSObject {
         }
     }
     
-    func showSoftwareDownloadError() {
+    private func showSoftwareDownloadError() {
         delegate?.onUpdateProcessError("Software download error", infoMessage: "Please check your internet connection and try again later")
     }
     
-    func startDfuOperation() {
+    private func startDfuOperation() {
+        guard let peripheral = peripheral else {
+            DLog("startDfuOperation error: No peripheral defined")
+            return
+        }
+        
         DLog("startDfuOperation");
         isDfuStarted = false
         isDFUCancelled = false
@@ -114,9 +119,45 @@ class DfuUpdateProcess : NSObject {
         if let centralManager = BleManager.sharedInstance.centralManager {
             //            BleManager.sharedInstance.stopScan()
             
+            dfuOperations = DFUOperations(delegate: self)
             dfuOperations!.setCentralManager(centralManager)
             dfuOperations!.connectDevice(peripheral)
         }
+    }
+    
+    func startDfuOperationBypassingChecksWithPeripheral(peripheral: CBPeripheral, hexData: NSData, iniData: NSData?) -> Bool {
+        // This funcion bypass all checks and start the dfu operation with the data provided. Used by the command line app
+        
+        // Set peripheral
+        self.peripheral = peripheral
+        
+        // Simulate deviceInfoData. Fake the bootloaderversion to the defaultBootloaderVersion if only an hex file is provided or a newer version if both hex and ini files are provided
+        deviceInfoData = DeviceInfoData()
+        if iniData != nil {
+            deviceInfoData?.firmwareRevision = ", 1.0"
+        }
+        
+        // Copy files to where dfu will read them
+        let hexPath = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(DfuUpdateProcess.kApplicationHexFilename)
+        let hexFileUrl = NSURL.fileURLWithPath(hexPath)
+        let hexDataWritten = hexData.writeToURL(hexFileUrl, atomically: true)
+        if (!hexDataWritten) {
+            DLog("Error saving hex file")
+            return false
+        }
+        
+        if let iniData = iniData {
+            let initPath = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(DfuUpdateProcess.kApplicationIniFilename)
+            let iniFileUrl = NSURL.fileURLWithPath(initPath)
+            let initDataWritten = iniData.writeToURL(iniFileUrl, atomically: true)
+            if (!initDataWritten) {
+                DLog("Error saving ini file")
+                return false
+            }
+        }
+
+        startDfuOperation()
+        return true
     }
     
     func cancel() {

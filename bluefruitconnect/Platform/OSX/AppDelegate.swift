@@ -32,7 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         Preferences.registerDefaults()
 
         // Check if there is any update to the fimware database
-        FirmwareUpdater.refreshSoftwareUpdatesDatabaseWithCompletionHandler(nil)
+        FirmwareUpdater.refreshSoftwareUpdatesDatabaseFromUrl(Preferences.updateServerUrl, completionHandler: nil)
 
         // Add system status button
         setupStatusButton()

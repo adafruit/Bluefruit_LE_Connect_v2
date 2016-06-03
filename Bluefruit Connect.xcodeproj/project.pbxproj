@@ -153,6 +153,8 @@
 		A9A644281CEB747600C762BA /* BlePeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94370AC1BB6493A002521F7 /* BlePeripheral.swift */; };
 		A9A644291CEB78E800C762BA /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982968A1BB222D700DD478C /* LogHelper.swift */; };
 		A9A6442A1CEB790B00C762BA /* Synchronize.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96A7A061C74F329000C37E3 /* Synchronize.swift */; };
+		A9A82E491D0180740086DB1F /* FirmwareUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = A94B850F1BB65C48007B88C7 /* FirmwareUpdater.m */; };
+		A9A82E4C1D019C0B0086DB1F /* ReleasesParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A94B85121BB65C71007B88C7 /* ReleasesParser.m */; };
 		A9AEF90F1C7560C100E381C0 /* PinTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AEF90E1C7560C100E381C0 /* PinTableCellView.swift */; };
 		A9AF4E0F1CC63496002C1C12 /* NeopixelTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AF4E0E1CC63496002C1C12 /* NeopixelTypeSelectorViewController.swift */; };
 		A9AF4E111CC63562002C1C12 /* NeopixelTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9AF4E101CC63562002C1C12 /* NeopixelTypes.plist */; };
@@ -1525,6 +1527,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9A82E4C1D019C0B0086DB1F /* ReleasesParser.m in Sources */,
 				A9675D751CFD13A00041A6F0 /* FileOperations.m in Sources */,
 				A9675D8B1CFD19E60041A6F0 /* DeviceInfoData.m in Sources */,
 				A9A644291CEB78E800C762BA /* LogHelper.swift in Sources */,
@@ -1539,6 +1542,7 @@
 				A9985F2A1CEB7B5300F2B9AD /* CommandLine.swift in Sources */,
 				A9675D771CFD13B60041A6F0 /* DfuUpdateProcess.swift in Sources */,
 				A9675D761CFD13A50041A6F0 /* IntelHex2BinConverter.m in Sources */,
+				A9A82E491D0180740086DB1F /* FirmwareUpdater.m in Sources */,
 				A9675D861CFD19250041A6F0 /* DataDownloader.m in Sources */,
 				A9A644271CEB747300C762BA /* BleManager.swift in Sources */,
 			);

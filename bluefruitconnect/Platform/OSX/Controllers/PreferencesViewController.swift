@@ -109,11 +109,11 @@ class PreferencesViewController: NSViewController {
         
         Preferences.updateServerUrl = url
         
-        FirmwareUpdater.refreshSoftwareUpdatesDatabaseWithCompletionHandler { [weak self] (success) -> Void in
+        FirmwareUpdater.refreshSoftwareUpdatesDatabaseFromUrl(Preferences.updateServerUrl, completionHandler: { [weak self] (success) -> Void in
             let text = success ?"Database updated successfully" : "Error updating database. Check the URL and Internet connectivity"
             self?.databaseStatusLabel.stringValue = text
             self?.databaseStatusWaitView.stopAnimation(nil)
-        }
+        })
     }
     
     @IBAction func onChangedShowBetaVersions(sender: NSButton) {

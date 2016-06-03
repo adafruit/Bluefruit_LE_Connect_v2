@@ -74,11 +74,10 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
     return boardsInfoDictionary;
 }
 
-+ (void)refreshSoftwareUpdatesDatabaseWithCompletionHandler:(void (^)(BOOL))completionHandler
++ (void)refreshSoftwareUpdatesDatabaseFromUrl:(NSURL *)dataUrl completionHandler:(void (^)(BOOL))completionHandler
 {
     @synchronized(self) {
         // Download data
-        NSURL *dataUrl = Preferences.updateServerUrl;
         [DataDownloader downloadDataFromURL:dataUrl withCompletionHandler:^(NSData *data) {
             // Save to user defaults
             [[NSUserDefaults standardUserDefaults] setObject:data forKey:kReleasesXml];
@@ -98,7 +97,6 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
 - (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate
 {
     _delegate = delegate;
-    //    currentPeripheral = peripheral;
     previousPeripheralDelegate = peripheral.delegate;
     peripheral.delegate = self;
     

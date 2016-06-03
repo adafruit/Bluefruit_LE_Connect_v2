@@ -32,7 +32,7 @@
         andControlPointCharacteristic:(CBCharacteristic *)dfuControlPointCharacteristic
         andVersionCharacteristic:(CBCharacteristic *)dfuVersionCharacteristic;
 -(void)onDeviceConnected:(CBPeripheral *)peripheral
-withPacketCharacteristic:(CBCharacteristic *)dfuPacketCharacteristic
+withPacketCharacteristic:(CBCharacteristic *)dfuPa1cketCharacteristic
 andControlPointCharacteristic:(CBCharacteristic *)dfuControlPointCharacteristic;
 -(void)onDeviceDisconnected:(CBPeripheral *)peripheral;
 -(void)onReceivedNotification:(NSData *)data;

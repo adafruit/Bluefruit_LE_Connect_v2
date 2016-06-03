@@ -124,6 +124,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         centralManager?.connectPeripheral(blePeripheral.peripheral, options: nil)
     }
     
+    
     func disconnect(blePeripheral : BlePeripheral) {
         
        // DLog("disconnecting from: \(blePeripheral.name)")

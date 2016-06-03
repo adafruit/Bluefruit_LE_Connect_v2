@@ -23,7 +23,7 @@
 @property DeviceInfoData *deviceInfoData;
 
 // Releases database
-+ (void)refreshSoftwareUpdatesDatabaseWithCompletionHandler:(void (^)(BOOL))completionHandler;
++ (void)refreshSoftwareUpdatesDatabaseFromUrl:(NSURL *)url completionHandler:(void (^)(BOOL))completionHandler;
 
 // Check updates
 - (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate;

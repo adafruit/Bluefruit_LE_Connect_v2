@@ -25,7 +25,7 @@
         WatchSessionManager.sharedInstance.activateWithDelegate(self)
         
         // Check if there is any update to the fimware database
-        FirmwareUpdater.refreshSoftwareUpdatesDatabaseWithCompletionHandler(nil)
+        FirmwareUpdater.refreshSoftwareUpdatesDatabaseFromUrl(Preferences.updateServerUrl, completionHandler: nil)
         
         // Setup SpliView
         let splitViewController = self.window!.rootViewController as! UISplitViewController
@@ -51,7 +51,6 @@
         
         // Watch Session
         WatchSessionManager.sharedInstance.session?.sendMessage(["isActive": true], replyHandler: nil, errorHandler: nil)
-        
         
         return true
     }

@@ -27,7 +27,6 @@ class PeripheralTableCellView: NSTableCellView {
     @IBAction func onClickDisconnect(sender: AnyObject) {
         onDisconnect?()
     }
-    
 
     func showDisconnectButton(show: Bool) {
         disconnectButtonWidthConstraint.constant = show ? 24: 0

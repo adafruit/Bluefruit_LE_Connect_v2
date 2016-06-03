@@ -23,7 +23,7 @@ class StatusManager : NSObject {
         case Unknown
         case Resetting
         case Unsupported
-        case Unathorized
+        case Unauthorized
         case PoweredOff
         case Ready        
     }
@@ -94,7 +94,7 @@ class StatusManager : NSObject {
                 case .Unsupported:
                     status = .Unsupported
                 case .Unauthorized:
-                    status = .Unathorized
+                    status = .Unauthorized
                 case .PoweredOff:
                     status = .PoweredOff
                 case .PoweredOn:
@@ -136,7 +136,7 @@ class StatusManager : NSObject {
             message = "The connection with the system service was momentarily lost, update imminent..."
         case .Unsupported:
             message = "Bluetooth Low Energy unsupported"
-        case .Unathorized:
+        case .Unauthorized:
             message = "Unathorized to use Bluetooth Low Energy"
             
         case .PoweredOff:
@@ -155,9 +155,8 @@ class StatusManager : NSObject {
         switch(status) {
         case .Unsupported:
             errorMessage = "This computer doesn't support Bluetooth Low Energy"
-        case .Unathorized:
+        case .Unauthorized:
             errorMessage = "The application is not authorized to use the Bluetooth Low Energy"
-            
         case .PoweredOff:
             errorMessage = "Bluetooth is currently powered off"
         default:

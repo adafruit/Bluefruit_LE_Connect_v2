@@ -13,6 +13,4 @@
 // Download helper
 + (void)downloadDataFromURL:(NSURL *)url withCompletionHandler:(void (^)(NSData *))completionHandler;
 
-
-
 @end

@@ -188,7 +188,7 @@ class DfuModuleViewController: ModuleViewController {
 }
 
 // MARK: - FirmwareUpdaterDelegate
-extension DfuModuleViewController : FirmwareUpdaterDelegate {
+extension DfuModuleViewController: FirmwareUpdaterDelegate {
     func onFirmwareUpdatesAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo!, deviceInfoData: DeviceInfoData?, allReleases: [NSObject : AnyObject]?) {
         DLog("onFirmwareUpdatesAvailable")
         
@@ -245,7 +245,7 @@ extension DfuModuleViewController : FirmwareUpdaterDelegate {
 }
 
 // MARK: - UITableViewDataSource
-extension DfuModuleViewController : UITableViewDataSource {
+extension DfuModuleViewController: UITableViewDataSource {
     
     enum DfuSection : Int  {
         case CurrentVersion = 0
