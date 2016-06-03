@@ -427,14 +427,18 @@ extension  DfuModuleViewController : DfuUpdateProcessDelegate {
         alertController.addAction(okAction)
         self.presentViewController(alertController, animated: true, completion: nil)
     }
-
+    
     
     func onUpdateProgressText(message: String) {
-        dfuDialogViewController?.setProgressText(message)
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.dfuDialogViewController?.setProgressText(message)
+            })
     }
     
     func onUpdateProgressValue(progress : Double) {
-        dfuDialogViewController?.setProgress(progress)
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.dfuDialogViewController?.setProgress(progress)
+            })
     }
 }
 

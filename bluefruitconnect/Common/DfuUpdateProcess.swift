@@ -37,11 +37,14 @@ class DfuUpdateProcess : NSObject {
     private var isTransferring  = false
     private var dfuVersion: Int32 = -1
     
+    private var currentTransferPercentage: Int32 = -1
+    
     func setUpdateParameters(peripheral: CBPeripheral, hexUrl: NSURL, iniUrl: NSURL?, deviceInfoData: DeviceInfoData) {
         self.peripheral = peripheral
         self.hexUrl = hexUrl
         self.iniUrl = iniUrl
         self.deviceInfoData = deviceInfoData
+        currentTransferPercentage = -1
         
         dfuOperations = DFUOperations(delegate: self)
         
@@ -277,12 +280,16 @@ extension DfuUpdateProcess : DFUOperationsDelegate {
         
     }
     
+    
     func onTransferPercentage(percentage: Int32) {
         DLog("DFUOperationsDelegate - onTransferPercentage: \(percentage)")
         
-        dispatch_async(dispatch_get_main_queue(), { [weak self] in
-            self?.delegate?.onUpdateProgressValue(Double(percentage))
-            })
+        if currentTransferPercentage != percentage {
+            currentTransferPercentage = percentage
+            dispatch_async(dispatch_get_main_queue(), { [weak self] in
+                self?.delegate?.onUpdateProgressValue(Double(percentage))
+                })
+        }
     }
     
     func onSuccessfulFileTranferred() {

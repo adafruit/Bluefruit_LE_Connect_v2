@@ -10,6 +10,7 @@ import Foundation
 
 class CommandLine: NSObject {
     // Config
+    private static let appName = "bluefruit"
     private static let appVersion = "0.1"
     
     // Scanning
@@ -48,10 +49,20 @@ class CommandLine: NSObject {
     func showHelp() {
         showVersion()
         
+        print("Usage:")
+        print("\t\(CommandLine.appName) scan")
+        print("\t\(CommandLine.appName) dfu -hex <filename>")
+        print("\t\(CommandLine.appName) dfu -hex <filename> -init <filename>")
+        print("\t\(CommandLine.appName) dfu -uuid <uuid> -hex <filename> -init <filename>")
+        
+        print("Extra:")
+        print("\t-h --help        Show this screen")
+        print("\t-v --version     Show version")
+        
     }
     
     func showVersion() {
-        let appInfoString = "Bluefruit v\(CommandLine.appVersion)"
+        let appInfoString = "\(CommandLine.appName) v\(CommandLine.appVersion)"
         print(appInfoString)
         
     }
@@ -180,7 +191,7 @@ class CommandLine: NSObject {
         }
 
         // Start dfu
-        print("Updating...");
+        print("Start DFU...");
         let isOperationInProgress = dfuUpdateProcess.startDfuOperationBypassingChecksWithPeripheral(dfuPeripheral, hexData: hexData, iniData: iniData)
         if !isOperationInProgress {
             dfuFinished()
@@ -199,6 +210,7 @@ extension CommandLine: DfuUpdateProcessDelegate {
     func onUpdateProcessSuccess() {
         BleManager.sharedInstance.restoreCentralManager()        
         
+        print("")
         print("Update completed successfully")
         dfuFinished()
     }
@@ -212,11 +224,13 @@ extension CommandLine: DfuUpdateProcessDelegate {
     }
     
     func onUpdateProgressText(message: String) {
+        
         print("\t"+message)
     }
     
     func onUpdateProgressValue(progress : Double) {
         print(".", terminator: "")
+        fflush(__stdoutp)        
     }
 }
 

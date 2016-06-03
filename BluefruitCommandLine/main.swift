@@ -10,17 +10,19 @@ import Foundation
 
 func main() {
     
-    enum Order: String {
+    enum Command: String {
         case Version = "-v"
-        case Help = "-?"
-        case Scan = "-scan"
-        case Dfu = "-dfu"
+        case Version2 = "--version"
+        case Help = "-h"
+        case Help2 = "--help"
+        case Scan = "scan"
+        case Dfu = "dfu"
     }
     
     enum Parameter: String {
-        case PeripheralUuid = "uuid"
-        case HexFile = "hex"
-        case IniFile = "ini"
+        case PeripheralUuid = "-uuid"
+        case HexFile = "-hex"
+        case IniFile = "-init"
     }
     
     // Data
@@ -28,7 +30,7 @@ func main() {
     let queue = dispatch_queue_create("", DISPATCH_QUEUE_CONCURRENT)
     let commandLine = CommandLine()
     
-    var order: Order?
+    var command: Command?
     var peripheralUuid: String?
     var hexUrl: NSURL?
     var iniUrl: NSURL?
@@ -46,17 +48,17 @@ func main() {
             
             switch argument.lowercaseString {
             
-            case Order.Version.rawValue:
-                order = .Version
+            case Command.Version.rawValue, Command.Version2.rawValue:
+                command = .Version
                 
-            case Order.Help.rawValue:
-                order = .Help
+            case Command.Help.rawValue, Command.Help2.rawValue:
+                command = .Help
                 
-            case Order.Scan.rawValue:
-                order = .Scan
+            case Command.Scan.rawValue:
+                command = .Scan
                 
-            case Order.Dfu.rawValue:
-                order = .Dfu
+            case Command.Dfu.rawValue:
+                command = .Dfu
                 
             case Parameter.PeripheralUuid.rawValue:
                 peripheralUuid = nil
@@ -114,16 +116,21 @@ func main() {
     
     
     // Execute order
-    if let order = order {
-        switch order {
+    if let command = command {
+        switch command {
         case .Version:
             commandLine.showVersion()
-            
+
+        case .Help:
+            commandLine.showVersion()
+
         case .Scan:
+            print("Scannnig...")
             commandLine.startScanning()
             let _ = readLine(stripNewline: true)
             
         case .Dfu:
+            print("DFU Update")
             guard let hexUrl = hexUrl else {
                 print(".hex file not defined")
                 exit(EXIT_FAILURE)
@@ -148,6 +155,12 @@ func main() {
                 exit(EXIT_FAILURE)
             }
             
+            print("\tuuid: \(peripheralUuid)")
+            print("\thex:  \(hexUrl)")
+            if let iniUrl = iniUrl {
+                print("\tinit: \(iniUrl)")
+            }
+            
             dispatch_group_async(group, queue) {
                 commandLine.dfuPeripheralWithUUIDString(peripheralUuid, hexUrl: hexUrl, iniUrl: iniUrl)
             }
@@ -155,9 +168,12 @@ func main() {
             
             
         default:
-            commandLine.showHelp()
+            print("Unknown command: \(command.rawValue)")
             break
         }
+    }
+    else {
+        commandLine.showHelp()
     }
     
     exit(EXIT_SUCCESS)
