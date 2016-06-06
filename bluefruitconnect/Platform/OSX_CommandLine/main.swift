@@ -12,20 +12,25 @@ import Foundation
 func main() {
     
     enum Command: String {
-        case Version = "-v"
-        case Version2 = "--version"
-        case Help = "-h"
-        case Help2 = "--help"
+        case Version = "--version"
+        case VersionShort = "--v"
+        case Help = "--help"
+        case HelpShort = "--?"
+
         case Scan = "scan"
         case Dfu = "dfu"
         case Update = "update"
     }
     
     enum Parameter: String {
-        case PeripheralUuid = "-uuid"
-        case HexFile = "-hex"
-        case IniFile = "-init"
-        case ShowBetaVersions = "-enable-beta"
+        case PeripheralUuid = "--uuid"
+        case PeripheralUuidShort = "-u"
+        case HexFile = "--hex"
+        case HexFileShort = "-h"
+        case IniFile = "--init"
+        case IniFileShort = "-i"
+        case ShowBetaVersions = "--enable-beta"
+        case ShowBetaVersionsShort = "-b"
     }
     
     // Data
@@ -51,10 +56,10 @@ func main() {
             
             switch argument.lowercaseString {
             
-            case Command.Version.rawValue, Command.Version2.rawValue:
+            case Command.Version.rawValue, Command.VersionShort.rawValue:
                 command = .Version
                 
-            case Command.Help.rawValue, Command.Help2.rawValue:
+            case Command.Help.rawValue, Command.HelpShort.rawValue:
                 command = .Help
                 
             case Command.Scan.rawValue:
@@ -66,7 +71,7 @@ func main() {
             case Command.Update.rawValue:
                 command = .Update
                 
-            case Parameter.PeripheralUuid.rawValue:
+            case Parameter.PeripheralUuid.rawValue, Parameter.PeripheralUuidShort.rawValue:
                 peripheralUuid = nil
                 if arguments.count >= index+1 {
                     peripheralUuid = arguments[index+1]
@@ -77,7 +82,7 @@ func main() {
                     print("\(Parameter.PeripheralUuid.rawValue) needs a valid peripheral identifier")
                 }
                 
-            case Parameter.HexFile.rawValue:
+            case Parameter.HexFile.rawValue, Parameter.HexFileShort.rawValue:
                 hexUrl = nil
                 if arguments.count >= index+1 {
                     let hexFileName = arguments[index+1]
@@ -91,7 +96,7 @@ func main() {
                     print("\(Parameter.HexFile.rawValue) needs a valid file name")
                 }
                 
-            case Parameter.IniFile.rawValue:
+            case Parameter.IniFile.rawValue, Parameter.IniFileShort.rawValue:
                 iniUrl = nil
                 if arguments.count >= index+1 {
                     let iniFileName = arguments[index+1]
@@ -103,7 +108,7 @@ func main() {
                     print("\(Parameter.IniFile.rawValue) needs a valid file name")
                 }
                 
-            case Parameter.ShowBetaVersions.rawValue:
+            case Parameter.ShowBetaVersions.rawValue, Parameter.ShowBetaVersionsShort.rawValue:
                 showBetaVersions = true
 
             default:
@@ -227,8 +232,3 @@ CFRunLoopPerformBlock(runloop, kCFRunLoopDefaultMode) { () -> Void in
     }
 }
 CFRunLoopRun()
-
-
-// Notes:
-// Embed plist: https://developer.apple.com/library/mac/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html
-//              http://stackoverflow.com/questions/7797773/retrieve-info-plist-file-from-command-line-tool

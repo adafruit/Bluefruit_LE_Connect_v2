@@ -44,22 +44,34 @@ class CommandLine: NSObject {
     
     // MARK: - Help
     func showHelp() {
-        print(appName())
-        
+        showVersion()
         print("Usage:")
         print( "\t\(appName()) <command> [options...]")
         print("")
         print("Commands:")
         print("\tScan peripherals:   scan")
         print("\tAutomatic update:   update [--enable-beta] [--uuid <uuid>]")
-        print("\tCustom firmware:    dfu -hex <filename> [-init <filename>] [--uuid <uuid>]")
-        print("\tShow this screen:   -h --help")
-        print("\tShow version:       -v --version")
+        print("\tCustom firmware:    dfu --hex <filename> [--init <filename>] [--uuid <uuid>]")
+        print("\tShow this screen:   --help")
+        print("\tShow version:       --version")
         print("")
         print("Options:")
         print("\t--uuid <uuid>    If present the peripheral with that uuid is used. If not present a list of peripherals is displayed")
         print("\t--enable-beta    If not present only stable versions are used")
         print("")
+        print("Short syntax:")
+        print("\t-u = --uuid, -b = --enable-beta, -h = --hex, -i = --init, -v = --version, -? = --help")
+        /*
+        print("\t--uuid -u")
+        print("\t--enable-beta -b")
+        print("\t--hex -h")
+        print("\t--init -i")
+        print("\t--help -h")
+        print("\t--version -v")
+        */
+        
+        print("")
+        
         /*
          print("\tscan                                                       Scan peripherals")
          print("\tupdate [--uuid <uuid>] [--enable-beta]                     Automatic update")
