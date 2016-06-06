@@ -29,6 +29,8 @@
                 // If any error occurs then just display its description on the console.
                 DLog(@"%@", [error description]);
                 data = nil;
+                
+                completionHandler(data);
             }
             else{
                 NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];

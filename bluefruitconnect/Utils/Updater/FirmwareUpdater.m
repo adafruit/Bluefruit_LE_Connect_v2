@@ -23,10 +23,9 @@
     BOOL isSoftwareRevisionCharacteristicAvailable;
     BOOL isFirmwareRevisionCharacteristicAvailable;
     __weak id<FirmwareUpdaterDelegate> delegate;
-    BOOL showBetaVersions;
+    NSDictionary *releases;
+    BOOL shouldRecommendBetaReleases;
 }
-
-//@property (weak) id<FirmwareUpdaterDelegate> delegate;
 
 @end
 
@@ -62,7 +61,8 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
     firmwareRevisionCharacteristicUUID = [CBUUID UUIDWithString:kFirmwareRevisionCharacteristic];
 }
 
-- (NSDictionary *)releases
+
++ (NSDictionary *)releasesWithBetaVersions:(BOOL)showBetaVersions
 {
     NSDictionary *boardsInfoDictionary = nil;
     
@@ -94,10 +94,11 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
 }
 
 #pragma mark  Peripheral Management
-- (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) aDelegate showBetaVersions:(BOOL)aShowBetaVersions shouldDiscoverServices:(BOOL)discoverServices
+- (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>)aDelegate shouldDiscoverServices:(BOOL)discoverServices releases:(NSDictionary *)aReleases shouldRecommendBetaReleases: (BOOL)aShouldRecommendBetaReleases
 {
-    showBetaVersions = aShowBetaVersions;
+    releases = aReleases;
     delegate = aDelegate;
+    shouldRecommendBetaReleases = aShouldRecommendBetaReleases;
     previousPeripheralDelegate = peripheral.delegate;
     peripheral.delegate = self;
     
@@ -227,7 +228,7 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
         NSString *versionToIgnore = [[NSUserDefaults standardUserDefaults] stringForKey:@"softwareUpdateIgnoredVersion"];
         BOOL isFirmwareUpdateAvailable = NO;
         
-        NSDictionary *allReleases = [self releases];
+        NSDictionary *allReleases = releases; //[self releases];
         FirmwareInfo *latestRelease = nil;
         
         if (_deviceInfoData.firmwareRevision != nil) {
@@ -244,9 +245,9 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
                                 do {
                                     latestRelease = [modelReleases objectAtIndex:selectedRelease];
                                     selectedRelease++;
-                                } while(latestRelease.isBeta && selectedRelease<modelReleases.count);
+                                } while(latestRelease.isBeta && !shouldRecommendBetaReleases && selectedRelease<modelReleases.count);
                                 
-                                if (!latestRelease.isBeta)
+                                if (!latestRelease.isBeta || shouldRecommendBetaReleases)
                                 {
                                     // Check if the bootloader is compatible with this version
                                     if (_deviceInfoData.bootloaderVersion && [_deviceInfoData.bootloaderVersion compare:latestRelease.minBootloaderVersion options:NSNumericSearch] != NSOrderedAscending) {

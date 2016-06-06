@@ -425,6 +425,7 @@
 		A9EC0FB11C6F5CF60019790F /* DfuFilesPickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuFilesPickerTableViewCell.swift; sourceTree = "<group>"; };
 		A9EE1ADC1C6FB54900195028 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		A9F5D8BF1CD6D7F500C6A468 /* HexColorConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexColorConversions.swift; sourceTree = "<group>"; };
+		A9FC04711D04575800519722 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9FE75711BB9CF1000F7A5BF /* XMLDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLDictionary.h; sourceTree = "<group>"; };
 		A9FE75721BB9CF1000F7A5BF /* XMLDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLDictionary.m; sourceTree = "<group>"; };
 		B86FF3BB211A024B2AE48AD1 /* Pods-watchOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-watchOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-watchOS/Pods-watchOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -897,9 +898,10 @@
 		A99FBF3C1D01D6D200140647 /* OSX_CommandLine */ = {
 			isa = PBXGroup;
 			children = (
+				A9FC04711D04575800519722 /* Info.plist */,
 				A99FBF3D1D01D6D200140647 /* BluefruitConnect-Bridging-Header.h */,
-				A99FBF3E1D01D6D200140647 /* CommandLine.swift */,
 				A99FBF3F1D01D6D200140647 /* main.swift */,
+				A99FBF3E1D01D6D200140647 /* CommandLine.swift */,
 			);
 			path = OSX_CommandLine;
 			sourceTree = "<group>";
@@ -1852,6 +1854,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/bluefruitconnect/Platform/OSX_CommandLine/Info.plist";
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"$(INFOPLIST_FILE)",
+				);
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_NAME = "Adafruit Bluefruit LE Connect";
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/OSX_CommandLine/BluefruitConnect-Bridging-Header.h";
@@ -1862,6 +1871,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/bluefruitconnect/Platform/OSX_CommandLine/Info.plist";
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"$(INFOPLIST_FILE)",
+				);
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "Adafruit Bluefruit LE Connect";
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/OSX_CommandLine/BluefruitConnect-Bridging-Header.h";

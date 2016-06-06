@@ -24,7 +24,8 @@
 
 // Releases database
 + (void)refreshSoftwareUpdatesDatabaseFromUrl:(NSURL *)url completionHandler:(void (^)(BOOL))completionHandler;
++ (NSDictionary *)releasesWithBetaVersions:(BOOL)showBetaVersions;
 
 // Check updates
-- (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate showBetaVersions:(BOOL)showBetaVersions shouldDiscoverServices:(BOOL)discoverServices;
+- (void)checkUpdatesForPeripheral:(CBPeripheral *)peripheral delegate:(__weak id<FirmwareUpdaterDelegate>) delegate shouldDiscoverServices:(BOOL)discoverServices releases:(NSDictionary *)aReleases shouldRecommendBetaReleases: (BOOL)shouldRecommendBetaReleases;
 @end

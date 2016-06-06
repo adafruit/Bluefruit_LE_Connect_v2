@@ -54,7 +54,8 @@ class FirmwareUpdateViewController: NSViewController {
         if !isCheckingUpdates {
             if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
                 isCheckingUpdates = true
-                firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, showBetaVersions: Preferences.showBetaVersions, shouldDiscoverServices: false)
+                let releases = FirmwareUpdater.releasesWithBetaVersions(Preferences.showBetaVersions)
+                firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, shouldDiscoverServices: false, releases: releases, shouldRecommendBetaReleases: false)
             }
         }
     }
@@ -74,7 +75,8 @@ class FirmwareUpdateViewController: NSViewController {
     func preferencesUpdated(notification : NSNotification) {
         // Reload updates
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
-            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, showBetaVersions: Preferences.showBetaVersions, shouldDiscoverServices: false)
+            let releases = FirmwareUpdater.releasesWithBetaVersions(Preferences.showBetaVersions)
+            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, shouldDiscoverServices: false, releases: releases, shouldRecommendBetaReleases: false)
         }
     }
 
@@ -173,7 +175,7 @@ class FirmwareUpdateViewController: NSViewController {
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
      
             // Setup update process
-            dfuUpdateProcess.setUpdateParameters(blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfoData: deviceInfoData!)
+            dfuUpdateProcess.startUpdateForPeripheral(blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfoData: deviceInfoData!)
             dfuUpdateProcess.delegate = self
 
             // Show dialog

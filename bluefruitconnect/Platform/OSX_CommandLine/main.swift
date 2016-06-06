@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 func main() {
     
     enum Command: String {
@@ -17,12 +18,14 @@ func main() {
         case Help2 = "--help"
         case Scan = "scan"
         case Dfu = "dfu"
+        case Update = "update"
     }
     
     enum Parameter: String {
         case PeripheralUuid = "-uuid"
         case HexFile = "-hex"
         case IniFile = "-init"
+        case ShowBetaVersions = "-enable-beta"
     }
     
     // Data
@@ -34,9 +37,9 @@ func main() {
     var peripheralUuid: String?
     var hexUrl: NSURL?
     var iniUrl: NSURL?
+    var showBetaVersions = false
     
     let currentDirectoryUrl = NSURL(fileURLWithPath: NSFileManager.defaultManager().currentDirectoryPath)
-    
     
     // Process arguments
     var arguments = Process.arguments
@@ -59,6 +62,9 @@ func main() {
                 
             case Command.Dfu.rawValue:
                 command = .Dfu
+
+            case Command.Update.rawValue:
+                command = .Update
                 
             case Parameter.PeripheralUuid.rawValue:
                 peripheralUuid = nil
@@ -92,14 +98,16 @@ func main() {
                     iniUrl = currentDirectoryUrl.URLByAppendingPathComponent(iniFileName)
                     skipNextArgument = true
                 }
-                
+
                 if iniUrl == nil {
                     print("\(Parameter.IniFile.rawValue) needs a valid file name")
                 }
                 
+            case Parameter.ShowBetaVersions.rawValue:
+                showBetaVersions = true
+
             default:
-                DLog("unknown argument: \(argument)")
-                
+                print("Unknown argument: \(argument)")
             }
         }
         else {
@@ -122,32 +130,24 @@ func main() {
             commandLine.showVersion()
 
         case .Help:
-            commandLine.showVersion()
+            commandLine.showHelp()
 
         case .Scan:
-            print("Scannnig...")
+            print("Scanning...")
             commandLine.startScanning()
             let _ = readLine(stripNewline: true)
-            
+        
         case .Dfu:
             print("DFU Update")
+            
+            // Check input parameters
             guard let hexUrl = hexUrl else {
                 print(".hex file not defined")
                 exit(EXIT_FAILURE)
             }
             
             if peripheralUuid == nil {
-                print("Select a peripheral for dfu. Scanning...")
-                
-                commandLine.startScanningAndShowIndex(true)
-                let peripheralIndexString = readLine(stripNewline: true)
-                //0DLog("selected: \(peripheralIndexString)")
-                if let peripheralIndexString = peripheralIndexString, peripheralIndex = Int(peripheralIndexString) where peripheralIndex>=0 && peripheralIndex < commandLine.discoveredPeripheralsIdentifiers.count {
-                    peripheralUuid = commandLine.discoveredPeripheralsIdentifiers[peripheralIndex]
-                    
-                    print("Selected UUID: \(peripheralUuid!)")
-                    commandLine.stopScanning()
-                }
+                peripheralUuid = commandLine.askUserForPeripheral()
             }
             
             guard let peripheralUuid = peripheralUuid else {
@@ -155,17 +155,56 @@ func main() {
                 exit(EXIT_FAILURE)
             }
             
-            print("\tuuid: \(peripheralUuid)")
-            print("\thex:  \(hexUrl)")
+            print("\tUUID: \(peripheralUuid)")
+            print("\tHex:  \(hexUrl)")
             if let iniUrl = iniUrl {
-                print("\tinit: \(iniUrl)")
+                print("\tInit: \(iniUrl)")
             }
             
+            // Launch dfu
             dispatch_group_async(group, queue) {
                 commandLine.dfuPeripheralWithUUIDString(peripheralUuid, hexUrl: hexUrl, iniUrl: iniUrl)
             }
             dispatch_group_wait(group, DISPATCH_TIME_FOREVER)
             
+            
+        case .Update:
+            print("Automatic Update")
+            
+            let serverUrl = NSURL(string: "https://raw.githubusercontent.com/adafruit/Adafruit_BluefruitLE_Firmware/master/releases.xml")!
+            
+            var releases: [NSObject : AnyObject]? = nil
+            let downloadReleasesSemaphore = dispatch_semaphore_create(0)
+            dispatch_group_async(group, queue) {
+                commandLine.downloadFirmwareUpdatesDatabaseFromUrl(serverUrl, showBetaVersions: showBetaVersions, completionHandler: { (boardInfo) in
+                    DLog("releases downloaded")
+                    releases = boardInfo
+                    dispatch_semaphore_signal(downloadReleasesSemaphore)
+                })
+            }
+            
+            // Check input parameters
+            if peripheralUuid == nil {
+                peripheralUuid = commandLine.askUserForPeripheral()
+            }
+            
+            guard let peripheralUuid = peripheralUuid else {
+                print("Peripheral UUID invalid")
+                exit(EXIT_FAILURE)
+            }
+
+            dispatch_semaphore_wait(downloadReleasesSemaphore, DISPATCH_TIME_FOREVER)      // Wait for server download
+            
+            guard releases != nil else {
+                print("Error downloading updates info from: \(serverUrl)")
+                exit(EXIT_FAILURE)
+            }
+            
+            // Launch dfu
+            dispatch_group_async(group, queue) {
+                commandLine.dfuPeripheralWithUUIDString(peripheralUuid, releases: releases)
+            }
+            dispatch_group_wait(group, DISPATCH_TIME_FOREVER)
             
         default:
             print("Unknown command: \(command.rawValue)")
@@ -188,3 +227,8 @@ CFRunLoopPerformBlock(runloop, kCFRunLoopDefaultMode) { () -> Void in
     }
 }
 CFRunLoopRun()
+
+
+// Notes:
+// Embed plist: https://developer.apple.com/library/mac/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html
+//              http://stackoverflow.com/questions/7797773/retrieve-info-plist-file-from-command-line-tool

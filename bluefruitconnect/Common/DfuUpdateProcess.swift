@@ -39,7 +39,7 @@ class DfuUpdateProcess : NSObject {
     
     private var currentTransferPercentage: Int32 = -1
     
-    func setUpdateParameters(peripheral: CBPeripheral, hexUrl: NSURL, iniUrl: NSURL?, deviceInfoData: DeviceInfoData) {
+    func startUpdateForPeripheral(peripheral: CBPeripheral, hexUrl: NSURL, iniUrl: NSURL?, deviceInfoData: DeviceInfoData) {
         self.peripheral = peripheral
         self.hexUrl = hexUrl
         self.iniUrl = iniUrl
@@ -49,7 +49,8 @@ class DfuUpdateProcess : NSObject {
         dfuOperations = DFUOperations(delegate: self)
         
         // Download files
-        delegate?.onUpdateProgressText(LocalizationManager.sharedInstance.localizedString("dfu_download_hex_message"))
+        delegate?.onUpdateProgressText("Opening hex file")      // command line doesnt have localizationManager
+        //delegate?.onUpdateProgressText(LocalizationManager.sharedInstance.localizedString("dfu_download_hex_message"))
         DataDownloader.downloadDataFromURL(hexUrl) {[weak self] (data) -> Void in
             self?.downloadedFirmwareData(data)
         }
@@ -67,7 +68,8 @@ class DfuUpdateProcess : NSObject {
                 startDfuOperation()
             }
             else {
-                delegate?.onUpdateProgressText(LocalizationManager.sharedInstance.localizedString("dfu_download_init_message"))
+                delegate?.onUpdateProgressText("Opening init file")     // command line doesnt have localizationManager
+                //delegate?.onUpdateProgressText(LocalizationManager.sharedInstance.localizedString("dfu_download_init_message"))
                 DataDownloader.downloadDataFromURL(iniUrl, withCompletionHandler: {[weak self]  (iniData) -> Void in
                     self?.downloadedFirmwareHexAndInitData(data, iniData: iniData)
                     })
@@ -128,6 +130,7 @@ class DfuUpdateProcess : NSObject {
         }
     }
     
+    /*
     func startDfuOperationBypassingChecksWithPeripheral(peripheral: CBPeripheral, hexData: NSData, iniData: NSData?) -> Bool {
         // This funcion bypass all checks and start the dfu operation with the data provided. Used by the command line app
         
@@ -162,6 +165,7 @@ class DfuUpdateProcess : NSObject {
         startDfuOperation()
         return true
     }
+    */
     
     func cancel() {
         // Cancel current operation

@@ -89,10 +89,12 @@ class DfuModuleViewController: ModuleViewController {
     }
 
     func startUpdatesCheck() {
+        
         // Refresh updates available
         if !isCheckingUpdates {
             isCheckingUpdates = true
-            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, showBetaVersions: Preferences.showBetaVersions, shouldDiscoverServices: false)
+            let releases = FirmwareUpdater.releasesWithBetaVersions(Preferences.showBetaVersions)
+            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, shouldDiscoverServices: false, releases: releases, shouldRecommendBetaReleases: false)
         }
     }
     
@@ -133,7 +135,8 @@ class DfuModuleViewController: ModuleViewController {
     func preferencesUpdated(notification : NSNotification) {
         // Reload updates
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
-            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, showBetaVersions: Preferences.showBetaVersions, shouldDiscoverServices: false)
+            let releases = FirmwareUpdater.releasesWithBetaVersions(Preferences.showBetaVersions)
+            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, shouldDiscoverServices: false, releases: releases, shouldRecommendBetaReleases: false)
         }
     }
 
@@ -178,7 +181,7 @@ class DfuModuleViewController: ModuleViewController {
             self.presentViewController(dfuDialogViewController, animated: true, completion: { [unowned self] () -> Void in
                 // Setup update process
                 self.dfuUpdateProcess.delegate = self
-                self.dfuUpdateProcess.setUpdateParameters(blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfoData: self.deviceInfoData!)
+                self.dfuUpdateProcess.startUpdateForPeripheral(blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfoData: self.deviceInfoData!)
             })
         }
         else {
@@ -453,7 +456,7 @@ extension  DfuModuleViewController : DfuFilesPickerDialogViewControllerDelegate 
             self.presentViewController(dfuDialogViewController, animated: true, completion: { [unowned self] () -> Void in
                 // Setup update process
                 self.dfuUpdateProcess.delegate = self
-                self.dfuUpdateProcess.setUpdateParameters(self.blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfoData: self.deviceInfoData!)
+                self.dfuUpdateProcess.startUpdateForPeripheral(self.blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfoData: self.deviceInfoData!)
                 })
         }
         else {
