@@ -6,11 +6,11 @@ PODS:
     - CocoaAsyncSocket/RunLoop
   - CocoaAsyncSocket/GCD (7.4.3)
   - CocoaAsyncSocket/RunLoop (7.4.3)
-  - CocoaMQTT (1.0.5):
+  - CocoaMQTT (1.0.7):
     - CocoaAsyncSocket (~> 7.4.2)
     - MSWeakTimer (~> 1.1.0)
   - MSWeakTimer (1.1.0)
-  - SSZipArchive (1.2)
+  - SSZipArchive (1.4)
   - UIColor+Hex (1.0.1):
     - UIColor+Hex/NSColor (= 1.0.1)
     - UIColor+Hex/UIColor (= 1.0.1)
@@ -23,11 +23,11 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   CocoaAsyncSocket: a18c75dca4b08723628a0bacca6e94803d90be91
-  CocoaMQTT: 31dfd6180af49cd82852d739e83b4ef0fa74f199
+  CocoaMQTT: 28160fd4f599285000b8f321d4f11a6fb0d48d01
   MSWeakTimer: 9426150f933b80ed3acf3f6d228e4b61f0e303c8
-  SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
+  SSZipArchive: bab21000ee11b7ba68d5880bcd87d80e4eb93e65
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
 PODFILE CHECKSUM: eee27fcce241ad88e4c367c74679e7f84602dfa2
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.0.1

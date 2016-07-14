@@ -54,7 +54,7 @@
         <!--About-->
         <scene sceneID="hXT-Yb-KV9">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="y7f-2g-NG8" customClass="AboutViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="y7f-2g-NG8" customClass="AboutViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="AIp-SW-IzS"/>
                         <viewControllerLayoutGuide type="bottom" id="syT-4I-zh0"/>
@@ -138,7 +138,7 @@
         <!--Help-->
         <scene sceneID="ifB-ll-kvc">
             <objects>
-                <viewController storyboardIdentifier="HelpViewController" automaticallyAdjustsScrollViewInsets="NO" id="Y14-VM-HtV" customClass="HelpViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HelpViewController" automaticallyAdjustsScrollViewInsets="NO" id="Y14-VM-HtV" customClass="HelpViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gsk-aZ-g9f"/>
                         <viewControllerLayoutGuide type="bottom" id="fFh-uB-zdz"/>
@@ -200,7 +200,7 @@
         <!--Help-->
         <scene sceneID="agx-G3-1a3">
             <objects>
-                <viewController storyboardIdentifier="HelpExportViewController" automaticallyAdjustsScrollViewInsets="NO" id="kxA-ae-YSs" customClass="HelpExportViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HelpExportViewController" automaticallyAdjustsScrollViewInsets="NO" id="kxA-ae-YSs" customClass="HelpExportViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jRB-nb-UE4"/>
                         <viewControllerLayoutGuide type="bottom" id="que-ls-Im6"/>
@@ -272,7 +272,7 @@
         <!--Info-->
         <scene sceneID="rq8-iD-Syg">
             <objects>
-                <viewController storyboardIdentifier="InfoModuleViewController" id="Ahc-vg-AUq" customClass="InfoModuleViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InfoModuleViewController" id="Ahc-vg-AUq" customClass="InfoModuleViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iQP-fm-5Pw"/>
                         <viewControllerLayoutGuide type="bottom" id="hmg-Af-K2b"/>
@@ -285,7 +285,7 @@
                                 <rect key="frame" x="20" y="0.0" width="560" height="556"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ServiceCell" id="NKk-tm-okp" customClass="InfoCharacteristicTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ServiceCell" id="NKk-tm-okp" customClass="InfoCharacteristicTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="113.5" width="560" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NKk-tm-okp" id="ZkM-a3-AEg">
@@ -321,7 +321,7 @@
                                             <outlet property="titleLabel" destination="wKf-Gm-4a0" id="H7d-Vg-oC5"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CharacteristicCell" id="Y6w-XW-mdm" customClass="InfoCharacteristicTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CharacteristicCell" id="Y6w-XW-mdm" customClass="InfoCharacteristicTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="173.5" width="560" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="Y6w-XW-mdm" id="0r5-Vw-TMQ">
@@ -421,7 +421,7 @@
         <!--Uart-->
         <scene sceneID="w3V-gu-5eN">
             <objects>
-                <viewController storyboardIdentifier="UartModuleViewController" automaticallyAdjustsScrollViewInsets="NO" id="nMN-bC-Caa" customClass="UartModuleViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UartModuleViewController" automaticallyAdjustsScrollViewInsets="NO" id="nMN-bC-Caa" customClass="UartModuleViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Tei-AJ-0RM"/>
                         <viewControllerLayoutGuide type="bottom" id="d2F-LV-YnT"/>
@@ -544,7 +544,7 @@
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TimestampCell" id="5Uj-BI-jDm" customClass="UartTimetampTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TimestampCell" id="5Uj-BI-jDm" customClass="UartTimetampTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28" width="760" height="36"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="5Uj-BI-jDm" id="x9i-cp-NPv">
@@ -610,7 +610,7 @@
                                     <action selector="onInputTextFieldEdidtingDidEndOnExit:" destination="nMN-bC-Caa" eventType="editingDidEndOnExit" id="h2Y-Ax-NmO"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hwu-uD-5tU" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hwu-uD-5tU" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                 <rect key="frame" x="724" y="479" width="56" height="30"/>
                                 <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                 <state key="normal" title="Send"/>
@@ -744,7 +744,7 @@
         <!--Uart Settings View Controller-->
         <scene sceneID="iKe-YH-2db">
             <objects>
-                <viewController id="86j-sS-EKj" customClass="UartSettingsViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="86j-sS-EKj" customClass="UartSettingsViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rxK-49-3cc"/>
                         <viewControllerLayoutGuide type="bottom" id="wed-aK-GDS"/>
@@ -762,7 +762,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UartSettingSegmentedCell" id="nJc-hM-DPF" customClass="UartSettingTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UartSettingSegmentedCell" id="nJc-hM-DPF" customClass="UartSettingTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="49.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="nJc-hM-DPF" id="gds-1s-XpV">
@@ -802,7 +802,7 @@
                                             <outlet property="titleLabel" destination="5zk-n9-gvo" id="VYu-iK-4R4"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UartSettingSwitchCell" id="I4J-76-3h2" customClass="UartSettingTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UartSettingSwitchCell" id="I4J-76-3h2" customClass="UartSettingTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="93.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="I4J-76-3h2" id="bY5-ir-khB">
@@ -836,7 +836,7 @@
                                             <outlet property="titleLabel" destination="NRM-4M-4Fc" id="kbS-JW-Hnc"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UartTextCell" id="CbO-Gg-RVW" customClass="UartSettingTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UartTextCell" id="CbO-Gg-RVW" customClass="UartSettingTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="137.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="CbO-Gg-RVW" id="Fjb-Dt-XNS">
@@ -872,7 +872,7 @@
         <!--Uart Mqtt Settings View Controller-->
         <scene sceneID="k1T-mf-DQQ">
             <objects>
-                <viewController storyboardIdentifier="UartMqttSettingsViewController" id="PNH-fZ-eAJ" customClass="UartMqttSettingsViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UartMqttSettingsViewController" id="PNH-fZ-eAJ" customClass="UartMqttSettingsViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Njx-q4-Lrr"/>
                         <viewControllerLayoutGuide type="bottom" id="bHd-FD-yRd"/>
@@ -885,7 +885,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StatusCell" id="iLC-e1-HqN" customClass="MqttSettingsStatusCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StatusCell" id="iLC-e1-HqN" customClass="MqttSettingsStatusCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="49.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="iLC-e1-HqN" id="5dJ-Lm-cgv">
@@ -937,7 +937,7 @@
                                             <outlet property="waitView" destination="jnl-66-tPd" id="krf-pc-iBR"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="HeaderCell" id="O4p-EN-MdL" customClass="MqttSettingsHeaderCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="HeaderCell" id="O4p-EN-MdL" customClass="MqttSettingsHeaderCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="93.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="O4p-EN-MdL" id="ZTz-F1-861">
@@ -977,7 +977,7 @@
                                             <outlet property="nameLabel" destination="hEc-sR-M9T" id="ovU-TU-HO1"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ValueCell" id="EU2-ef-Sqi" customClass="MqttSettingsValueAndSelector" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ValueCell" id="EU2-ef-Sqi" customClass="MqttSettingsValueAndSelector" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="137.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="EU2-ef-Sqi" id="IdN-9H-dEs">
@@ -1011,7 +1011,7 @@
                                             <outlet property="valueTextField" destination="0zl-GG-3oh" id="Gue-GY-KAz"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ValueAndSelectorCell" id="Cmc-39-blY" customClass="MqttSettingsValueAndSelector" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ValueAndSelectorCell" id="Cmc-39-blY" customClass="MqttSettingsValueAndSelector" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="181.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="Cmc-39-blY" id="DHl-CH-VmJ">
@@ -1054,7 +1054,7 @@
                                             <outlet property="valueTextField" destination="8MA-Y8-Alr" id="BD8-Yh-IDR"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SelectorCell" id="Y00-fz-ph9" customClass="MqttSettingsValueAndSelector" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SelectorCell" id="Y00-fz-ph9" customClass="MqttSettingsValueAndSelector" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="225.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="Y00-fz-ph9" id="bQL-PV-mBw">
@@ -1089,7 +1089,7 @@
                                             <outlet property="typeButton" destination="C0C-5r-3Mi" id="24M-as-4S8"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PickerCell" rowHeight="100" id="het-rC-bPD" customClass="MqttSettingPickerCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PickerCell" rowHeight="100" id="het-rC-bPD" customClass="MqttSettingPickerCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="269.5" width="600" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="het-rC-bPD" id="XRJ-Me-buS">
@@ -1157,7 +1157,7 @@
         <!--Dfu Dialog View Controller-->
         <scene sceneID="XHG-F4-i04">
             <objects>
-                <viewController storyboardIdentifier="DfuDialogViewController" modalPresentationStyle="overCurrentContext" id="kl6-aX-7zS" customClass="DfuDialogViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DfuDialogViewController" modalPresentationStyle="overCurrentContext" id="kl6-aX-7zS" customClass="DfuDialogViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DKu-Ib-GKq"/>
                         <viewControllerLayoutGuide type="bottom" id="0FG-pz-BED"/>
@@ -1240,7 +1240,7 @@
         <!--Dfu Files Picker Dialog View Controller-->
         <scene sceneID="MVa-5a-7Xt">
             <objects>
-                <viewController storyboardIdentifier="DfuFilesPickerDialogViewController" modalPresentationStyle="overCurrentContext" id="r8l-Qa-GeS" customClass="DfuFilesPickerDialogViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DfuFilesPickerDialogViewController" modalPresentationStyle="overCurrentContext" id="r8l-Qa-GeS" customClass="DfuFilesPickerDialogViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="44P-g6-kIZ"/>
                         <viewControllerLayoutGuide type="bottom" id="Tx9-j5-zds"/>
@@ -1262,7 +1262,7 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6nq-He-ouN" userLabel="Hex File Picker View" customClass="StyledSubview" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6nq-He-ouN" userLabel="Hex File Picker View" customClass="StyledSubview" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="8" y="36" width="544" height="53"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hex File:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rMR-jU-qWF">
@@ -1271,7 +1271,7 @@
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAq-dF-uyR" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAq-dF-uyR" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="461" y="11" width="73" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="vX6-pL-MJt"/>
@@ -1311,7 +1311,7 @@
                                             <constraint firstAttribute="height" constant="1" id="FDD-ia-eFL"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="55g-AW-GQ8" userLabel="Init File Picker View" customClass="StyledSubview" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="55g-AW-GQ8" userLabel="Init File Picker View" customClass="StyledSubview" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="8" y="108" width="544" height="53"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Init File:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9n-LN-nph">
@@ -1326,7 +1326,7 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BCp-Y3-Gn4" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                            <button opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BCp-Y3-Gn4" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="461" y="12" width="73" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="WvO-b6-uul"/>
@@ -1476,7 +1476,7 @@
         <!--Dfu-->
         <scene sceneID="Yvj-wv-Nd0">
             <objects>
-                <viewController storyboardIdentifier="DfuModuleViewController" id="Mjq-f8-FLn" customClass="DfuModuleViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DfuModuleViewController" id="Mjq-f8-FLn" customClass="DfuModuleViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kiY-3A-Dn5"/>
                         <viewControllerLayoutGuide type="bottom" id="NUd-3c-fjX"/>
@@ -1489,14 +1489,14 @@
                                 <rect key="frame" x="20" y="0.0" width="560" height="556"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FilesPickerCell" id="iHe-rZ-pVm" customClass="DfuFilesPickerTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FilesPickerCell" id="iHe-rZ-pVm" customClass="DfuFilesPickerTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="113.5" width="560" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iHe-rZ-pVm" id="7Y0-sV-mhR">
                                             <rect key="frame" x="0.0" y="0.0" width="560" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6RV-AM-iVj" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6RV-AM-iVj" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                     <rect key="frame" x="8" y="7" width="544" height="30"/>
                                                     <state key="normal" title="Use Custom Firmware">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1573,7 +1573,7 @@
         <!--Controller-->
         <scene sceneID="KTW-R3-VSd">
             <objects>
-                <viewController storyboardIdentifier="ControllerModuleViewController" id="7nD-Qw-AsN" customClass="ControllerModuleViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ControllerModuleViewController" id="7nD-Qw-AsN" customClass="ControllerModuleViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="c3p-5r-6T2"/>
                         <viewControllerLayoutGuide type="bottom" id="eje-sL-so2"/>
@@ -1586,7 +1586,7 @@
                                 <rect key="frame" x="20" y="0.0" width="560" height="556"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SensorCell" id="5Og-na-RiJ" customClass="ControllerSensorTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SensorCell" id="5Og-na-RiJ" customClass="ControllerSensorTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="113.5" width="560" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="5Og-na-RiJ" id="Vrf-Uy-E9n">
@@ -1626,14 +1626,14 @@
                                             <outlet property="titleLabel" destination="GOQ-oW-I6g" id="TiG-t8-d7h"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ComponentsCell" rowHeight="120" id="dXM-FF-U5V" customClass="ControllerComponentsTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ComponentsCell" rowHeight="120" id="dXM-FF-U5V" customClass="ControllerComponentsTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="157.5" width="560" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="dXM-FF-U5V" id="Ejt-2v-Zbc">
                                             <rect key="frame" x="0.0" y="0.0" width="560" height="119.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ShE-Yn-oq7" customClass="StyledSubview" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ShE-Yn-oq7" customClass="StyledSubview" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                     <rect key="frame" x="35" y="18" width="502" height="84"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="jgc-oq-Dqb">
@@ -1752,7 +1752,7 @@
         <!--Pin I/O-->
         <scene sceneID="gkv-DK-sWO">
             <objects>
-                <viewController storyboardIdentifier="PinIOModuleViewController" id="75Z-zZ-8DR" customClass="PinIOModuleViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PinIOModuleViewController" id="75Z-zZ-8DR" customClass="PinIOModuleViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DfH-fj-KIw"/>
                         <viewControllerLayoutGuide type="bottom" id="orT-fI-eSQ"/>
@@ -1765,7 +1765,7 @@
                                 <rect key="frame" x="20" y="0.0" width="560" height="556"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PinCell" id="RHl-fy-Sqt" customClass="PinIOTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PinCell" id="RHl-fy-Sqt" customClass="PinIOTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="113.5" width="560" height="150"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="RHl-fy-Sqt" id="3Xr-Ev-69Y">
@@ -1962,7 +1962,7 @@
         <!--NeoPixel-->
         <scene sceneID="KPI-Mt-xHk">
             <objects>
-                <viewController storyboardIdentifier="NeopixelModuleViewController" id="ZDJ-Fy-DgL" customClass="NeopixelModuleViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NeopixelModuleViewController" id="ZDJ-Fy-DgL" customClass="NeopixelModuleViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NC9-Uu-otV"/>
                         <viewControllerLayoutGuide type="bottom" id="hB7-b6-bPf"/>
@@ -1986,7 +1986,7 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dEf-i3-H4n" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dEf-i3-H4n" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="482" y="10" width="68" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="CpS-4c-rOc"/>
@@ -2260,7 +2260,7 @@
         <!--Control Pad-->
         <scene sceneID="gi7-A2-U8X">
             <objects>
-                <viewController storyboardIdentifier="ControllerPadViewController" id="Y9H-cS-16y" customClass="ControllerPadViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ControllerPadViewController" id="Y9H-cS-16y" customClass="ControllerPadViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="C5p-u2-sYI"/>
                         <viewControllerLayoutGuide type="bottom" id="Kte-Js-8xd"/>
@@ -2412,7 +2412,7 @@
         <!--Color Picker-->
         <scene sceneID="Jm5-Yn-Fap">
             <objects>
-                <viewController storyboardIdentifier="ControllerColorWheelViewController" id="iQe-Ig-Yuy" customClass="ControllerColorWheelViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ControllerColorWheelViewController" id="iQe-Ig-Yuy" customClass="ControllerColorWheelViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5er-L9-BiR"/>
                         <viewControllerLayoutGuide type="bottom" id="PW5-N6-7G6"/>
@@ -2428,7 +2428,7 @@
                                     <constraint firstAttribute="width" secondItem="bYE-Wl-kHC" secondAttribute="height" multiplier="1:1" id="NQz-DO-nVv"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IOb-EM-U0J" customClass="GradientView" customModule="Bluefruit_Connect" customModuleProvider="target">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IOb-EM-U0J" customClass="GradientView" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                 <rect key="frame" x="150" y="394" width="300" height="16"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -2469,7 +2469,7 @@
                                                         <color key="textColor" red="0.79215686269999996" green="0.79215686269999996" blue="0.79215686269999996" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AKz-6M-2o8" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AKz-6M-2o8" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                         <rect key="frame" x="12" y="57" width="157" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="0bA-sk-WRA"/>
@@ -2554,7 +2554,7 @@
         <!--Color Picker-->
         <scene sceneID="6tL-cg-cmp">
             <objects>
-                <viewController id="Ttw-M6-d1l" customClass="NeopixelColorPickerViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Ttw-M6-d1l" customClass="NeopixelColorPickerViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Mm4-bJ-gHY"/>
                         <viewControllerLayoutGuide type="bottom" id="gLI-h3-oi9"/>
@@ -2570,7 +2570,7 @@
                                     <constraint firstAttribute="width" secondItem="rlD-ch-1FQ" secondAttribute="height" multiplier="1:1" id="vOR-ho-m08"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bIP-vA-sDU" customClass="GradientView" customModule="Bluefruit_Connect" customModuleProvider="target">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bIP-vA-sDU" customClass="GradientView" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                 <rect key="frame" x="150" y="394" width="300" height="16"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -2611,7 +2611,7 @@
                                                         <color key="textColor" red="0.14901960780000001" green="0.14901960780000001" blue="0.14901960780000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rVL-sF-pD1" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rVL-sF-pD1" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                         <rect key="frame" x="58" y="57" width="64" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="mli-hB-2Fp"/>
@@ -2704,7 +2704,7 @@
         <!--Peripheral Details View Controller-->
         <scene sceneID="xUx-Of-AHY">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="K1h-e6-Cmj" customClass="PeripheralDetailsViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="K1h-e6-Cmj" customClass="PeripheralDetailsViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="q6d-1x-lfs"/>
                         <viewControllerLayoutGuide type="bottom" id="d6V-mq-PL4"/>
@@ -2732,7 +2732,7 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ItemCell" id="zr5-Lz-8sA" customClass="PeripheralDetailsCollectionViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ItemCell" id="zr5-Lz-8sA" customClass="PeripheralDetailsCollectionViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="60" height="49"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -2813,7 +2813,7 @@
         <!--Empty Details View Controller-->
         <scene sceneID="D4E-eU-f75">
             <objects>
-                <viewController storyboardIdentifier="EmptyDetailsViewController" id="lBx-2R-GIm" customClass="EmptyDetailsViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EmptyDetailsViewController" id="lBx-2R-GIm" customClass="EmptyDetailsViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="QUY-hg-EYz"/>
                         <viewControllerLayoutGuide type="bottom" id="JFf-Oj-ybZ"/>
@@ -2860,7 +2860,7 @@
         <!--Scanning Animation View Controller-->
         <scene sceneID="gMt-um-e9A">
             <objects>
-                <viewController storyboardIdentifier="ScanningAnimationViewController" id="EWb-Sz-0kF" customClass="ScanningAnimationViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScanningAnimationViewController" id="EWb-Sz-0kF" customClass="ScanningAnimationViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="atI-ec-77M"/>
                         <viewControllerLayoutGuide type="bottom" id="AWJ-hQ-Uao"/>
@@ -2946,13 +2946,13 @@
         <!--Bluefruit-->
         <scene sceneID="smW-Zh-WAh">
             <objects>
-                <tableViewController clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" customClass="PeripheralTableViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" customClass="PeripheralTableViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="225" sectionHeaderHeight="18" sectionFooterHeight="18" id="r7i-6Z-zg0">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PeripheralCell" id="YVl-Jd-bA4" customClass="PeripheralTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PeripheralCell" id="YVl-Jd-bA4" customClass="PeripheralTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="113.5" width="600" height="225"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="YVl-Jd-bA4" id="PVH-Zk-7Fn">
@@ -2988,7 +2988,7 @@
                                                         <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="T0L-Oq-1xx">
                                                             <rect key="frame" x="498" y="6" width="72" height="32"/>
                                                             <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qer-IC-ujc" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qer-IC-ujc" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="72" height="32"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="Qer-IC-ujc" secondAttribute="height" multiplier="1:1" id="Pqd-sn-IFI"/>
@@ -3010,7 +3010,7 @@
                                                                         <action selector="onClickDisconnect:" destination="YVl-Jd-bA4" eventType="touchUpInside" id="78T-21-AgA"/>
                                                                     </connections>
                                                                 </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kLd-vf-3cu" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kLd-vf-3cu" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="72" height="32"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="4" maxY="0.0"/>
@@ -3038,7 +3038,7 @@
                                                         <constraint firstAttribute="height" priority="999" constant="44" id="OXo-II-thW"/>
                                                     </constraints>
                                                 </stackView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q24-e0-0sD" customClass="StyledSubview" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q24-e0-0sD" customClass="StyledSubview" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="54" width="570" height="151"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="L2E-NQ-bnI">
@@ -3200,7 +3200,7 @@
         <!--Neopixel Type Selector View Controller-->
         <scene sceneID="QHp-Nn-jML">
             <objects>
-                <viewController id="g3k-ts-Sca" customClass="NeopixelTypeSelectorViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="g3k-ts-Sca" customClass="NeopixelTypeSelectorViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kRh-Sa-LmT"/>
                         <viewControllerLayoutGuide type="bottom" id="ONT-b1-F3o"/>
@@ -3218,7 +3218,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TextCell" id="ywf-II-SHi" customClass="UartSettingTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TextCell" id="ywf-II-SHi" customClass="UartSettingTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="49.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="ywf-II-SHi" id="zeT-ue-VfN">
@@ -3226,7 +3226,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeValueCell" rowHeight="88" id="3A6-C5-UzQ" customClass="NeopixelTypeValueTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TypeValueCell" rowHeight="88" id="3A6-C5-UzQ" customClass="NeopixelTypeValueTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="93.5" width="600" height="88"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="3A6-C5-UzQ" id="qwF-Jt-SFM">
@@ -3238,7 +3238,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                 </textField>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TU9-eE-cRU" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TU9-eE-cRU" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                     <rect key="frame" x="269" y="51" width="63" height="26"/>
                                                     <inset key="contentEdgeInsets" minX="20" minY="4" maxX="20" maxY="4"/>
                                                     <state key="normal" title="Set"/>
@@ -3296,7 +3296,7 @@
         <!--Neopixel Board Selector View Controller-->
         <scene sceneID="dbl-VQ-cry">
             <objects>
-                <viewController id="o1r-qi-r6O" customClass="NeopixelBoardSelectorViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="o1r-qi-r6O" customClass="NeopixelBoardSelectorViewController" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Vxh-2D-NUq"/>
                         <viewControllerLayoutGuide type="bottom" id="aU1-tD-IYE"/>
@@ -3314,7 +3314,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TextCell" id="HVK-Uf-th5" customClass="UartSettingTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TextCell" id="HVK-Uf-th5" customClass="UartSettingTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="49.5" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="HVK-Uf-th5" id="lod-4G-kIJ">

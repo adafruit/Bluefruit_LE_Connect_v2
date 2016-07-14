@@ -167,7 +167,7 @@ void swapBuffers()
 
 void commandVersion() {
   Serial.println(F("Command: Version check"));
-  sendResponse("Neopixel v0.1");
+  sendResponse("Neopixel v1.0");
 }
 
 void commandSetup() {

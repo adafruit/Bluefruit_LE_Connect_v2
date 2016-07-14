@@ -463,8 +463,8 @@ extension NeopixelModuleViewController: UIScrollViewDelegate {
 
 // MARK: - NeopixelModuleManagerDelegate
 extension NeopixelModuleViewController: NeopixelModuleManagerDelegate {
-    func onNeopixelSetupFinished(sucess: Bool) {
-        if (sucess) {
+    func onNeopixelSetupFinished(success: Bool) {
+        if (success) {
             neopixel.clearBoard(kDefaultLedColor)
         }
         

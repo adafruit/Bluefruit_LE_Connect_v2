@@ -244,7 +244,8 @@ class NeopixelModuleManager: NSObject {
     
     func setImage(completionHandler: ((Bool)->())?) {
         DLog("Command: set Image");
-        
+    
+        // todo: implement
         let width : UInt8 = 8
         let height : UInt8 = 4
         var command : [UInt8] = [0x49]                          // Command: 'I'

@@ -108,7 +108,7 @@ class ControllerModuleManager : NSObject {
 
     // MARK: -
     private func startUpdatingData() {
-        pollTimer = MSWeakTimer.scheduledTimerWithTimeInterval(pollInterval, target: self, selector: #selector(ControllerModuleManager.updateSensors), userInfo: nil, repeats: true, dispatchQueue: dispatch_get_main_queue())
+        pollTimer = MSWeakTimer.scheduledTimerWithTimeInterval(pollInterval, target: self, selector: #selector(updateSensors), userInfo: nil, repeats: true, dispatchQueue: dispatch_get_main_queue())
     }
     
     private func stopUpdatingData() {
