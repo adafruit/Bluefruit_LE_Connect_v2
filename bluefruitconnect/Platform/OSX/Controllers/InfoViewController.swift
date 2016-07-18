@@ -215,14 +215,14 @@ extension InfoViewController: NSOutlineViewDelegate {
                 var value : String = ""
                 if let characteristic = item as? CBCharacteristic {
                     if let characteristicValue = characteristic.value {
-                        if let characteristicString = NSString(data:characteristicValue, encoding: NSUTF8StringEncoding) as String? {
+                        if let characteristicString = NSString(data: characteristicValue, encoding: NSUTF8StringEncoding) as String? {
                             value = characteristicString
                         }
                     }
                 }
                 else if let descriptor = item as? CBDescriptor {
-                    if let descriptorValue = descriptor.value as? NSData{
-                        if let descriptorString = NSString(data:descriptorValue, encoding: NSUTF8StringEncoding) as String? {
+                    if let descriptorValue = InfoModuleManager.parseDescriptorValue(descriptor) {//descriptor.value as? NSData{
+                        if let descriptorString = NSString(data: descriptorValue, encoding: NSUTF8StringEncoding) as String? {
                             value = descriptorString
                         }
                     }
@@ -239,7 +239,7 @@ extension InfoViewController: NSOutlineViewDelegate {
                     }
                 }
                 else if let descriptor = item as? CBDescriptor {
-                    if let descriptorValue = descriptor.value as? NSData{
+                    if let descriptorValue = InfoModuleManager.parseDescriptorValue(descriptor) {//descriptor.value as? NSData{
                         value = hexString(descriptorValue)
                     }
                 }
@@ -357,6 +357,13 @@ extension InfoViewController : CBPeripheralDelegate {
         //DLog("centralManager didDiscoverDescriptorsForCharacteristic: \(characteristic.UUID.UUIDString)")
         elementsDiscovered += 1
         
+        if let descriptors = characteristic.descriptors {
+            for descriptor in descriptors {
+                valuesToRead += 1
+                peripheral.readValueForDescriptor(descriptor)
+            }
+        }
+        
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.updateDiscoveringStatus()
             self.baseTableView.reloadData()
@@ -381,7 +388,8 @@ extension InfoViewController : CBPeripheralDelegate {
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
         //DLog("centralManager didUpdateValueForDescriptor: \(descriptor.UUID.UUIDString)")
-
+       valuesRead += 1
+        
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.updateDiscoveringStatus()
             self.baseTableView.reloadData()

@@ -265,7 +265,7 @@ class PeripheralTableViewController: UITableViewController {
             if let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier] {
                 
                 let peripheralCell =  cell as! PeripheralTableViewCell
-                peripheralCell.titleLabel.text = blePeripheral.name
+                peripheralCell.titleLabel.text = blePeripheral.name ?? "{No Name}"
                 
                 let isUartCapable = blePeripheral.isUartAdvertised()
                 peripheralCell.subtitleLabel.text = isUartCapable ?"Uart capable":"No Uart detected"

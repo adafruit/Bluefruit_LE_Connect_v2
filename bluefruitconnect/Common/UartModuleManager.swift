@@ -14,7 +14,7 @@ protocol UartModuleDelegate: class {
     func mqttError(message: String, isConnectionError: Bool)
 }
 
-// Wrapper around UartManager to implent an UartModule
+// Wrapper around UartManager to implenent an UartModule
 class UartModuleManager: NSObject {
     enum DisplayMode {
         case Text           // Display a TextView with all uart data as a String

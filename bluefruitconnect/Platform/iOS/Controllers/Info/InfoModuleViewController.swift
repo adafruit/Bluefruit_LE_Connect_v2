@@ -21,7 +21,7 @@ class InfoModuleViewController: ModuleViewController {
     // Data
     private var blePeripheral : BlePeripheral?
     private var services : [CBService]?
-    private var characteristicDisplayMode = [String : DisplayMode]()
+    private var itemDisplayMode = [String : DisplayMode]()
     
     private var shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
     
@@ -128,8 +128,21 @@ extension InfoModuleViewController : UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let service = services![section]
-        let numCharacteristics = service.characteristics == nil ? 0 : service.characteristics!.count
-        return numCharacteristics
+        
+        if let characteristics = service.characteristics {
+            let numCharacteristics = characteristics.count
+
+            var numDescriptors = 0
+            for characteristic in characteristics {
+                numDescriptors += characteristic.descriptors?.count ?? 0
+            }
+            
+            return numCharacteristics + numDescriptors
+        }
+        else {
+            return 0
+        }
+        
     }
 
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -146,59 +159,112 @@ extension InfoModuleViewController : UITableViewDataSource {
         return 60
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    private func itemForIndexPath(indexPath: NSIndexPath) -> (Int, CBAttribute, Bool) {
+        let service = services![indexPath.section]
         
-        let reuseIdentifier = "CharacteristicCell"
+        // The same table view section is used for characteristics and descriptors. So first calculate if the current indexPath.row is for a characteristic or descriptor
+        var currentItem: CBAttribute?
+        var currentCharacteristicIndex = 0
+        var currentRow = 0
+        var isDescriptor = false
+        while currentRow <= indexPath.row {
+            if let characteristic = service.characteristics?[currentCharacteristicIndex] {
+                
+                if currentRow == indexPath.row {
+                    currentItem = characteristic
+                    currentRow += 1     // same as break
+                }
+                else {
+                    currentRow += 1     // + 1 characteristic
+                    
+                    let numDescriptors = characteristic.descriptors?.count ?? 0
+                    if numDescriptors > 0 {
+                        let remaining = indexPath.row-currentRow
+                        if remaining < numDescriptors {
+                            currentItem = characteristic.descriptors![remaining]
+                            isDescriptor = true
+                        }
+                        currentRow += numDescriptors
+                    }
+                }
+            }
+            if currentItem == nil {
+                currentCharacteristicIndex += 1
+            }
+        }
+        
+        if currentItem == nil {
+            DLog("Error populating tableview")
+        }
+        
+        return (currentCharacteristicIndex, currentItem!, isDescriptor)
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
+        let (currentCharacteristicIndex, currentItem, isDescriptor) = itemForIndexPath(indexPath)
+        
+        //DLog("secrow: \(indexPath.section)/\(indexPath.row): ci: \(currentCharacteristicIndex) isD: \(isDescriptor))")
+        
+        // Intanciate cell
+        let reuseIdentifier = isDescriptor ? "DescriptorCell":"CharacteristicCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath:indexPath)
 
-        let service = services![indexPath.section]
         
         var identifier = ""
         var value = " "
-        var hasValue = false
-        if let characteristic = service.characteristics?[indexPath.row] {
+        var valueData: NSData?
+        let service = services![indexPath.section]
+        if let characteristic = service.characteristics?[currentCharacteristicIndex] {
             
-            identifier = characteristic.UUID.UUIDString
+            identifier = currentItem.UUID.UUIDString
             
+            let displayModeIdentifier = "\(currentCharacteristicIndex)_\(identifier)"       // Descriptors in different characteristics could have the same CBUUID
             var currentDisplayMode = DisplayMode.Auto
-            if let displayMode = characteristicDisplayMode[identifier] {
+            if let displayMode = itemDisplayMode[displayModeIdentifier] {
                 currentDisplayMode = displayMode
             }
             else {
-                characteristicDisplayMode[identifier] = .Auto
+                itemDisplayMode[displayModeIdentifier] = .Auto
             }
             
             if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
                 identifier = name
             }
             
-            if let characteristicValue = characteristic.value {
-                hasValue = true
-                
+            if isDescriptor {
+                let descriptor = currentItem as! CBDescriptor
+                valueData = InfoModuleManager.parseDescriptorValue(descriptor)
+            }
+            else {
+                valueData = characteristic.value
+            }
+            
+            if valueData != nil {
                 switch currentDisplayMode {
                 case .Auto:
-                    if let characteristicString = NSString(data:characteristicValue, encoding: NSUTF8StringEncoding) as String? {
+                    if let characteristicString = NSString(data: valueData!, encoding: NSUTF8StringEncoding) as String? {
                         if isStringPrintable(characteristicString) {
                             value = characteristicString
                         }
                         else {      // print as hex
-                            value = hexString(characteristicValue)
+                            value = hexString(valueData!)
                         }
                     }
                 case .Text:
-                    if let text = NSString(data:characteristicValue, encoding: NSUTF8StringEncoding) as? String {
+                    if let text = NSString(data:valueData!, encoding: NSUTF8StringEncoding) as? String {
                         value = text
                     }
                 case .Hex:
-                    value = hexString(characteristicValue)
+                    value = hexString(valueData!)
                 }
             }
-            
         }
+        
         let characteristicCell = cell as! InfoCharacteristicTableViewCell
         characteristicCell.titleLabel.text = identifier
-        characteristicCell.subtitleLabel.text = hasValue ? value : LocalizationManager.sharedInstance.localizedString("info_type_characteristic")
-        characteristicCell.subtitleLabel.textColor = hasValue ? UIColor.blackColor() : UIColor.lightGrayColor()
+        characteristicCell.subtitleLabel.text = valueData != nil ? value : LocalizationManager.sharedInstance.localizedString(isDescriptor ? "info_type_descriptor":"info_type_characteristic")
+        characteristicCell.subtitleLabel.textColor = valueData != nil ? UIColor.blackColor() : UIColor.lightGrayColor()
         
         return cell
     }
@@ -216,28 +282,38 @@ extension InfoModuleViewController : UITableViewDataSource {
 extension InfoModuleViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 
+        let (currentCharacteristicIndex, currentItem, isDescriptor) = itemForIndexPath(indexPath)
+        
         let service = services![indexPath.section]
-        if let characteristic = service.characteristics?[indexPath.row] {
+        if let characteristic = service.characteristics?[currentCharacteristicIndex] {
             
-            let identifier = characteristic.UUID.UUIDString
-            if let displayMode =  characteristicDisplayMode[identifier] {
+            let identifier = currentItem.UUID.UUIDString
+            let displayModeIdentifier = "\(currentCharacteristicIndex)_\(identifier)"       // Descriptors in different characteristics could have the same CBUUID
+            if let displayMode =  itemDisplayMode[displayModeIdentifier] {
                 switch displayMode {
                 case .Text:
-                    characteristicDisplayMode[identifier] = .Hex
+                    itemDisplayMode[displayModeIdentifier] = .Hex
                 case .Hex:
-                    characteristicDisplayMode[identifier] = .Text
+                    itemDisplayMode[displayModeIdentifier] = .Text
                 default:
                     
                     // Check if is printable
                     var isPrintable = false
-                    if let characteristic = service.characteristics?[indexPath.row] {
-                        if let characteristicValue = characteristic.value {
-                            if let characteristicString = NSString(data:characteristicValue, encoding: NSUTF8StringEncoding) as String? {
-                                isPrintable = isStringPrintable(characteristicString)
-                            }
+                    var valueData: NSData?
+                    if isDescriptor {
+                        let descriptor = currentItem as! CBDescriptor
+                        valueData = InfoModuleManager.parseDescriptorValue(descriptor)
+                    }
+                    else {
+                        valueData = characteristic.value
+                    }
+                    
+                    if let value = valueData {
+                        if let characteristicString = NSString(data:value, encoding: NSUTF8StringEncoding) as String? {
+                            isPrintable = isStringPrintable(characteristicString)
                         }
                     }
-                    characteristicDisplayMode[identifier] = isPrintable ? .Hex: .Text
+                    itemDisplayMode[displayModeIdentifier] = isPrintable ? .Hex: .Text
                 }
             }
             
@@ -306,10 +382,10 @@ extension InfoModuleViewController : CBPeripheralDelegate {
         
         elementsDiscovered += 1
         
-//        var discoveringDescriptors = false
+ //       var discoveringDescriptors = false
         if let characteristics = service.characteristics {
             if (characteristics.count > 0)  {
-               // discoveringDescriptors = true
+//                discoveringDescriptors = true
             }
             for characteristic in characteristics {
                 if (characteristic.properties.rawValue & CBCharacteristicProperties.Read.rawValue != 0) {
@@ -324,7 +400,7 @@ extension InfoModuleViewController : CBPeripheralDelegate {
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             //self.updateDiscoveringStatusLabel()
-            //if (self.elementsDiscovered == self.elementsToDiscover) {
+            //if (!discoveringDescriptors && && self.elementsDiscovered == self.elementsToDiscover) {
                 self.baseTableView.reloadData()
             //}
             })
@@ -334,6 +410,13 @@ extension InfoModuleViewController : CBPeripheralDelegate {
         
         //DLog("centralManager didDiscoverDescriptorsForCharacteristic: \(characteristic.UUID.UUIDString)")
         elementsDiscovered += 1
+        
+        if let descriptors = characteristic.descriptors {
+            for descriptor in descriptors {
+                valuesToRead += 1
+                peripheral.readValueForDescriptor(descriptor)
+            }
+        }
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             //self.updateDiscoveringStatusLabel()
@@ -358,6 +441,7 @@ extension InfoModuleViewController : CBPeripheralDelegate {
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
         //DLog("centralManager didUpdateValueForDescriptor: \(descriptor.UUID.UUIDString)")
+        valuesRead += 1
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             //self.updateDiscoveringStatusLabel()

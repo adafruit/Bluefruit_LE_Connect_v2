@@ -11,6 +11,8 @@
 		63B47532EB88090E3B90C584 /* Pods_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA7A96714D3B161B31CFD27 /* Pods_OSX.framework */; };
 		A903A5DA1CA3622C004077DE /* HelpExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A903A5D91CA3622C004077DE /* HelpExportViewController.swift */; };
 		A90D29CA1C7E108E003EB6D4 /* NeopixelModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90D29C91C7E108E003EB6D4 /* NeopixelModuleViewController.swift */; };
+		A90F88771D3D0AEB009A71CF /* InfoModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90F88761D3D0AEB009A71CF /* InfoModuleManager.swift */; };
+		A90F88781D3D0C24009A71CF /* InfoModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90F88761D3D0AEB009A71CF /* InfoModuleManager.swift */; };
 		A91F839D1C68F06C0023C168 /* UartModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91F83911C68EDE80023C168 /* UartModuleViewController.swift */; };
 		A91F839E1C68F0760023C168 /* UartMqttSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91F83921C68EDE80023C168 /* UartMqttSettingsViewController.swift */; };
 		A91F839F1C68F0790023C168 /* UartSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91F83931C68EDE80023C168 /* UartSettingsViewController.swift */; };
@@ -267,6 +269,7 @@
 		84D89B88F76BCB31A1B27F96 /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		A903A5D91CA3622C004077DE /* HelpExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpExportViewController.swift; sourceTree = "<group>"; };
 		A90D29C91C7E108E003EB6D4 /* NeopixelModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelModuleViewController.swift; sourceTree = "<group>"; };
+		A90F88761D3D0AEB009A71CF /* InfoModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModuleManager.swift; sourceTree = "<group>"; };
 		A91F83911C68EDE80023C168 /* UartModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartModuleViewController.swift; sourceTree = "<group>"; };
 		A91F83921C68EDE80023C168 /* UartMqttSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartMqttSettingsViewController.swift; sourceTree = "<group>"; };
 		A91F83931C68EDE80023C168 /* UartSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSettingsViewController.swift; sourceTree = "<group>"; };
@@ -960,6 +963,7 @@
 				A9EC0F901C6E99BF0019790F /* UartManager.swift */,
 				A9EC0F911C6E99BF0019790F /* UartModuleManager.swift */,
 				A9EC0F8C1C6E99BF0019790F /* DfuUpdateProcess.swift */,
+				A90F88761D3D0AEB009A71CF /* InfoModuleManager.swift */,
 				A9EC0F8B1C6E99BF0019790F /* ControllerModuleManager.swift */,
 				A9D7205C1C73C32F001321D3 /* PinIOModuleManager.swift */,
 				A965674E1C7E25B0009DB0F4 /* NeopixelModuleManager.swift */,
@@ -1441,6 +1445,7 @@
 				A92E06781C6D15A300BECBBA /* MqttSettingsHeaderCell.swift in Sources */,
 				A9EE1ADE1C6FB54900195028 /* Config.swift in Sources */,
 				A9EC0F9D1C6E99BF0019790F /* UartManager.swift in Sources */,
+				A90F88781D3D0C24009A71CF /* InfoModuleManager.swift in Sources */,
 				A94535811C8540DB00DF49D7 /* ModuleViewController.swift in Sources */,
 				A96A7A081C74F329000C37E3 /* Synchronize.swift in Sources */,
 			);
@@ -1491,6 +1496,7 @@
 				A94370BB1BB6493A002521F7 /* BlePeripheral.swift in Sources */,
 				A9EC0F981C6E99BF0019790F /* Preferences.swift in Sources */,
 				A9EE1ADD1C6FB54900195028 /* Config.swift in Sources */,
+				A90F88771D3D0AEB009A71CF /* InfoModuleManager.swift in Sources */,
 				A949AA761C5AC977002F960B /* DetailsViewController.swift in Sources */,
 				A949AA811C5AC977002F960B /* UpdateDialogViewController.swift in Sources */,
 				A949AA671C5AC912002F960B /* AppDelegate.swift in Sources */,
