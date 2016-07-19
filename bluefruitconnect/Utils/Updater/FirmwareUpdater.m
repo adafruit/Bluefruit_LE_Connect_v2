@@ -228,7 +228,7 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
         NSString *versionToIgnore = [[NSUserDefaults standardUserDefaults] stringForKey:@"softwareUpdateIgnoredVersion"];
         BOOL isFirmwareUpdateAvailable = NO;
         
-        NSDictionary *allReleases = releases; //[self releases];
+        NSDictionary *allReleases = releases;
         FirmwareInfo *latestRelease = nil;
         
         if (_deviceInfoData.firmwareRevision != nil) {

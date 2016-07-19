@@ -21,10 +21,11 @@ class FirmwareUpdateViewController: NSViewController {
     // Data
     private let firmwareUpdater = FirmwareUpdater()
     private let dfuUpdateProcess = DfuUpdateProcess()
-    private var updateDialogViewController : UpdateDialogViewController?
+    private var updateDialogViewController: UpdateDialogViewController?
     
-    private var boardRelease : BoardInfo?
-    private var deviceInfoData : DeviceInfoData?
+    private var boardRelease: BoardInfo?
+    private var deviceInfoData: DeviceInfoData?
+    private var allReleases: [NSObject: AnyObject]?
     
     private var isCheckingUpdates = false
     
@@ -212,16 +213,18 @@ extension FirmwareUpdateViewController : FirmwareUpdaterDelegate {
         
         self.deviceInfoData = deviceInfoData
         
+        self.allReleases = allReleases
         if let allReleases = allReleases {
-            if deviceInfoData?.modelNumber != nil {
-                boardRelease = allReleases[deviceInfoData!.modelNumber] as? BoardInfo
+            if let modelNumber = deviceInfoData?.modelNumber {
+                boardRelease = allReleases[modelNumber] as? BoardInfo
             }
             else {
+                DLog("Warning: no releases found for this board")
                 boardRelease = nil
             }
         }
         else {
-            DLog("Warning: no releases found for this board")
+            DLog("Warning: no releases found")
         }
         
         // Update UI
@@ -240,7 +243,6 @@ extension FirmwareUpdateViewController : FirmwareUpdaterDelegate {
                 }
             }
             
-            
             self.firmwareCurrentVersionWaitView.stopAnimation(nil)
             })
     }
@@ -253,12 +255,19 @@ extension FirmwareUpdateViewController : FirmwareUpdaterDelegate {
 // MARK: - NSTableViewDataSource
 extension FirmwareUpdateViewController : NSTableViewDataSource {
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        if (boardRelease != nil && boardRelease!.firmwareReleases != nil) {
-            let firmwareReleases = boardRelease!.firmwareReleases!
+        if let firmwareReleases = boardRelease?.firmwareReleases {
             return firmwareReleases.count
         }
         else {
-            return 0
+            // Show all releases
+            var numReleases = 0
+            if let allReleases = allReleases {
+                for (_, value) in allReleases {
+                    let boardInfo = value as! BoardInfo
+                    numReleases += boardInfo.firmwareReleases.count
+                }
+            }
+            return numReleases
         }
     }
 }
@@ -266,22 +275,21 @@ extension FirmwareUpdateViewController : NSTableViewDataSource {
 // MARK: NSTableViewDelegate
 extension FirmwareUpdateViewController : NSTableViewDelegate {
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        
-        let firmwareRelases = boardRelease!.firmwareReleases as NSArray as! [FirmwareInfo]
-        let firmwareInfo = firmwareRelases[row]
+
+        let firmwareInfo = firmwareInfoForRow(row)
         
         var cell = NSTableCellView()
         
         if let columnIdentifier = tableColumn?.identifier {
-            switch(columnIdentifier) {
+            switch columnIdentifier {
             case "VersionColumn":
                 cell = tableView.makeViewWithIdentifier("FirmwareVersionCell", owner: self) as! NSTableCellView
                 
                 var text = firmwareInfo.version
-                if (text == nil) {
+                if text == nil {
                     text = "<unknown>"
                 }
-                if (firmwareInfo.isBeta) {
+                if firmwareInfo.isBeta {
                     text! += " Beta"
                 }
                 cell.textField?.stringValue = text
@@ -298,23 +306,60 @@ extension FirmwareUpdateViewController : NSTableViewDelegate {
         
         return cell;
     }
-    
+
     func tableViewSelectionDidChange(notification: NSNotification) {
         
         let selectedRow = firmwareTableView.selectedRow
-        
-        if (selectedRow >= 0) {
+        if selectedRow >= 0 {
             if (deviceInfoData!.hasDefaultBootloaderVersion()) {
                 onUpdateProcessError("The legacy bootloader on this device is not compatible with this application", infoMessage: nil)
             }
             else {
-                let firmwareRelases = boardRelease!.firmwareReleases
-                let firmwareInfo = firmwareRelases[selectedRow] as! FirmwareInfo
+                let firmwareInfo = firmwareInfoForRow(selectedRow)
                 
                 confirmDfuUpdateWithFirmware(firmwareInfo)
                 firmwareTableView.deselectAll(nil)
             }
         }
+        
+    }
+    
+    private func firmwareInfoForRow(row: Int) -> FirmwareInfo {
+        var firmwareInfo: FirmwareInfo!
+        
+        if let firmwareReleases: NSArray = boardRelease?.firmwareReleases {     // If showing releases for a specific board
+            let firmwareInfos = firmwareReleases as! [FirmwareInfo]
+            firmwareInfo = firmwareInfos[row]
+        }
+        else {      // If showing all available releases
+            var currentRow = 0
+            var currentBoardIndex = 0
+            while currentRow <= row {
+                
+                let sortedKeys = allReleases!.keys.sort({($0 as! String) < ($1 as! String)})        // Order alphabetically
+                let currentKey = sortedKeys[currentBoardIndex]
+                let boardRelease = allReleases![currentKey] as! BoardInfo
+                
+                        // order versions numerically
+                let firmwareReleases = boardRelease.firmwareReleases.sort({ (firmwareA, firmwareB) -> Bool in
+                    let versionA = (firmwareA as! FirmwareInfo).version
+                    let versionB = (firmwareB as! FirmwareInfo).version
+                    return versionA.compare(versionB, options: .NumericSearch) == .OrderedAscending
+                })
+                    
+                let numReleases = firmwareReleases.count
+                let remaining = row - currentRow
+                if remaining < numReleases {
+                    firmwareInfo = firmwareReleases[remaining] as! FirmwareInfo
+                }
+                else {
+                    currentBoardIndex += 1
+                }
+                currentRow += numReleases
+            }
+        }
+
+        return firmwareInfo
     }
 }
 

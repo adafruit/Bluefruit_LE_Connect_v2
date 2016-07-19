@@ -21,7 +21,8 @@ class DfuModuleViewController: ModuleViewController {
    
     private var boardRelease : BoardInfo?
     private var deviceInfoData : DeviceInfoData?
-    
+    private var allReleases: [NSObject: AnyObject]?
+
     private var isCheckingUpdates = false
 
     private let uartManager = UartManager.sharedInstance
@@ -197,16 +198,18 @@ extension DfuModuleViewController: FirmwareUpdaterDelegate {
         
         self.deviceInfoData = deviceInfoData
         
+        self.allReleases = allReleases
         if let allReleases = allReleases {
             if deviceInfoData?.modelNumber != nil {
                 boardRelease = allReleases[deviceInfoData!.modelNumber] as? BoardInfo
             }
             else {
+                DLog("Warning: no releases found for this board")
                 boardRelease = nil
             }
         }
         else {
-            DLog("Warning: no releases found for this board")
+            DLog("Warning: no releases found")
         }
         
         // Update UI
@@ -268,6 +271,14 @@ extension DfuModuleViewController: UITableViewDataSource {
             var numRows = 1      // at least a custom firmware button
             if let firmwareReleases = boardRelease?.firmwareReleases {
                 numRows += firmwareReleases.count
+            }
+            else {              // Show all releases
+                if let allReleases = allReleases {
+                    for (_, value) in allReleases {
+                        let boardInfo = value as! BoardInfo
+                        numRows += boardInfo.firmwareReleases.count
+                    }
+                }
             }
             return numRows
         default:
@@ -352,17 +363,57 @@ extension DfuModuleViewController: UITableViewDataSource {
                  cell.selectionStyle = .None
             }
             else {
-                let firmwareInfo = boardRelease?.firmwareReleases[indexPath.row] as! FirmwareInfo
+                let firmwareInfo = firmwareInfoForRow(indexPath.row)
+                //let firmwareInfo = boardRelease?.firmwareReleases[indexPath.row] as! FirmwareInfo
                 let versionFormat = localizationManager.localizedString(firmwareInfo.isBeta ? "dfu_betaversion_format" : "dfu_version_format")
                 cell.textLabel!.text = String(format: versionFormat , arguments: [firmwareInfo.version])
                 cell.detailTextLabel!.text = firmwareInfo.boardName
             }
             
             cell.contentView.backgroundColor = UIColor.whiteColor()
-            cell.selectionStyle = .Blue
+            cell.selectionStyle = isLastRow ? .None:.Blue
 
         }
     }
+    
+    private func firmwareInfoForRow(row: Int) -> FirmwareInfo {
+        var firmwareInfo: FirmwareInfo!
+        
+        if let firmwareReleases: NSArray = boardRelease?.firmwareReleases {     // If showing releases for a specific board
+            let firmwareInfos = firmwareReleases as! [FirmwareInfo]
+            firmwareInfo = firmwareInfos[row]
+        }
+        else {      // If showing all available releases
+            var currentRow = 0
+            var currentBoardIndex = 0
+            while currentRow <= row {
+                
+                let sortedKeys = allReleases!.keys.sort({($0 as! String) < ($1 as! String)})        // Order alphabetically
+                let currentKey = sortedKeys[currentBoardIndex]
+                let boardRelease = allReleases![currentKey] as! BoardInfo
+                
+                // order versions numerically
+                let firmwareReleases = boardRelease.firmwareReleases.sort({ (firmwareA, firmwareB) -> Bool in
+                    let versionA = (firmwareA as! FirmwareInfo).version
+                    let versionB = (firmwareB as! FirmwareInfo).version
+                    return versionA.compare(versionB, options: .NumericSearch) == .OrderedAscending
+                })
+                
+                let numReleases = firmwareReleases.count
+                let remaining = row - currentRow
+                if remaining < numReleases {
+                    firmwareInfo = firmwareReleases[remaining] as! FirmwareInfo
+                }
+                else {
+                    currentBoardIndex += 1
+                }
+                currentRow += numReleases
+            }
+        }
+        
+        return firmwareInfo
+    }
+
 }
 
 // MARK: UITableViewDelegate
@@ -378,9 +429,7 @@ extension DfuModuleViewController: UITableViewDelegate {
                     onUpdateProcessError(LocalizationManager.sharedInstance.localizedString("dfu_legacybootloader"), infoMessage: nil)
                 }
                 else {
-                    let firmwareRelases = boardRelease!.firmwareReleases
-                    let firmwareInfo = firmwareRelases[selectedRow] as! FirmwareInfo
-                    
+                    let firmwareInfo = firmwareInfoForRow(indexPath.row)                    
                     confirmDfuUpdateWithFirmware(firmwareInfo)
                 }
             }
@@ -392,6 +441,8 @@ extension DfuModuleViewController: UITableViewDelegate {
         
         tableView .deselectRowAtIndexPath(indexPath, animated: true)
     }
+    
+    
 }
 
 // MARK: - UpdateDialogViewControlerDelegate

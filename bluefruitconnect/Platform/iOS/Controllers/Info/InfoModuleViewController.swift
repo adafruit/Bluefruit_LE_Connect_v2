@@ -34,7 +34,6 @@ class InfoModuleViewController: ModuleViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         // Peripheral should be connected
         blePeripheral = BleManager.sharedInstance.blePeripheralConnected
         guard blePeripheral != nil else {

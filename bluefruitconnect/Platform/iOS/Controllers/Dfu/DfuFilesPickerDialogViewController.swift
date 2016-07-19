@@ -17,8 +17,6 @@ class DfuFilesPickerDialogViewController: UIViewController {
 
     // UI
     @IBOutlet weak var dialogView: UIView!
-    @IBOutlet weak var leftButtonView: UIView!
-    @IBOutlet weak var rightButtonView: UIView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var hexFileUrlLabel: UILabel!
     @IBOutlet weak var iniFileUrlLabel: UILabel!
@@ -40,14 +38,7 @@ class DfuFilesPickerDialogViewController: UIViewController {
         // UI
         dialogView.layer.cornerRadius = 4;
         dialogView.layer.masksToBounds = true;
-        //cancelButton.transform = CGAffineTransformMakeTranslation(-1, 0);
-        
-        leftButtonView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        leftButtonView.layer.borderWidth = 1
-        
-        rightButtonView.layer.borderColor = UIColor.lightGrayColor().CGColor
-        rightButtonView.layer.borderWidth = 1
-        
+
     }
 
     override func viewWillAppear(animated: Bool) {

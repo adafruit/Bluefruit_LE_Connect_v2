@@ -360,7 +360,7 @@
                                         <rect key="frame" x="0.0" y="234" width="560" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="XYC-2Y-Wi9" id="mCW-Z3-R0Z">
-                                            <rect key="frame" x="0.0" y="0.0" width="560" height="59.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="560" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8cO-Ms-R94">
@@ -1289,7 +1289,7 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59628232758620692" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NRm-6q-3uD">
-                                <rect key="frame" x="20" y="194" width="560" height="212"/>
+                                <rect key="frame" x="20" y="186" width="560" height="228"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Custom Firmware" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c92-OX-mQs">
                                         <rect key="frame" x="8" y="8" width="544" height="18"/>
@@ -1389,67 +1389,48 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t70-VU-V7V" userLabel="Buttons View">
-                                        <rect key="frame" x="-1" y="169" width="562" height="44"/>
+                                        <rect key="frame" x="0.0" y="173" width="560" height="52"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rRr-2i-Lqh">
-                                                <rect key="frame" x="0.0" y="0.0" width="282" height="44"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RjN-Qd-b3X">
-                                                        <rect key="frame" x="0.0" y="0.0" width="282" height="44"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="44" id="pUJ-Kj-s4z"/>
-                                                        </constraints>
-                                                        <state key="normal" title="Start Update">
-                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="onClickStartUpdate:" destination="r8l-Qa-GeS" eventType="touchUpInside" id="JYz-QF-tUp"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RjN-Qd-b3X" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="0.0" width="262" height="44"/>
                                                 <constraints>
-                                                    <constraint firstItem="RjN-Qd-b3X" firstAttribute="leading" secondItem="rRr-2i-Lqh" secondAttribute="leading" id="6Hx-D0-f5c"/>
-                                                    <constraint firstItem="RjN-Qd-b3X" firstAttribute="top" secondItem="rRr-2i-Lqh" secondAttribute="top" id="mgr-zF-dyp"/>
-                                                    <constraint firstAttribute="bottom" secondItem="RjN-Qd-b3X" secondAttribute="bottom" id="nIK-4X-70y"/>
-                                                    <constraint firstAttribute="trailing" secondItem="RjN-Qd-b3X" secondAttribute="trailing" id="vXx-g4-UkS"/>
+                                                    <constraint firstAttribute="height" constant="44" id="pUJ-Kj-s4z"/>
                                                 </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LdT-xA-qeC">
-                                                <rect key="frame" x="281" y="0.0" width="282" height="44"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d5a-Hq-fLf">
-                                                        <rect key="frame" x="0.0" y="0.0" width="282" height="44"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="44" id="Crg-IJ-S44"/>
-                                                        </constraints>
-                                                        <state key="normal" title="Cancel">
-                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="onClickCancel:" destination="r8l-Qa-GeS" eventType="touchUpInside" id="8Pl-n6-I89"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <state key="normal" title="Start Update">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onClickStartUpdate:" destination="r8l-Qa-GeS" eventType="touchUpInside" id="JYz-QF-tUp"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d5a-Hq-fLf" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
+                                                <rect key="frame" x="290" y="0.0" width="262" height="44"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="d5a-Hq-fLf" secondAttribute="trailing" id="B6e-zN-59Q"/>
-                                                    <constraint firstAttribute="bottom" secondItem="d5a-Hq-fLf" secondAttribute="bottom" id="CIH-7i-qqa"/>
-                                                    <constraint firstItem="d5a-Hq-fLf" firstAttribute="top" secondItem="LdT-xA-qeC" secondAttribute="top" id="Cyj-6Z-5Ue"/>
-                                                    <constraint firstItem="d5a-Hq-fLf" firstAttribute="leading" secondItem="LdT-xA-qeC" secondAttribute="leading" id="Hpl-h4-JA9"/>
+                                                    <constraint firstAttribute="height" constant="44" id="Crg-IJ-S44"/>
                                                 </constraints>
-                                            </view>
+                                                <state key="normal" title="Cancel">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="Crg-IJ-S44"/>
+                                                    </mask>
+                                                </variation>
+                                                <connections>
+                                                    <action selector="onClickCancel:" destination="r8l-Qa-GeS" eventType="touchUpInside" id="8Pl-n6-I89"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="LdT-xA-qeC" firstAttribute="top" secondItem="t70-VU-V7V" secondAttribute="top" id="0Sj-4v-2bp"/>
-                                            <constraint firstItem="rRr-2i-Lqh" firstAttribute="leading" secondItem="t70-VU-V7V" secondAttribute="leading" id="C2E-ee-iwX"/>
-                                            <constraint firstItem="rRr-2i-Lqh" firstAttribute="top" secondItem="t70-VU-V7V" secondAttribute="top" id="Gg6-7w-2To"/>
-                                            <constraint firstAttribute="trailing" secondItem="LdT-xA-qeC" secondAttribute="trailing" constant="-1" id="MYG-HJ-BAA"/>
-                                            <constraint firstAttribute="bottom" secondItem="rRr-2i-Lqh" secondAttribute="bottom" id="NUp-dE-N71"/>
-                                            <constraint firstItem="rRr-2i-Lqh" firstAttribute="width" secondItem="LdT-xA-qeC" secondAttribute="width" id="TLS-td-987"/>
-                                            <constraint firstAttribute="bottom" secondItem="LdT-xA-qeC" secondAttribute="bottom" id="cAY-0C-7dg"/>
-                                            <constraint firstItem="LdT-xA-qeC" firstAttribute="leading" secondItem="rRr-2i-Lqh" secondAttribute="trailing" constant="-1" id="fi2-Kr-mDY"/>
+                                            <constraint firstItem="RjN-Qd-b3X" firstAttribute="leading" secondItem="t70-VU-V7V" secondAttribute="leadingMargin" id="E5u-I1-ehY"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="RjN-Qd-b3X" secondAttribute="bottom" id="TPR-Sa-y3K"/>
+                                            <constraint firstItem="d5a-Hq-fLf" firstAttribute="top" secondItem="RjN-Qd-b3X" secondAttribute="top" id="hF2-O0-Jbo"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="d5a-Hq-fLf" secondAttribute="trailing" id="hwM-IB-Gnn"/>
+                                            <constraint firstItem="d5a-Hq-fLf" firstAttribute="leading" secondItem="RjN-Qd-b3X" secondAttribute="trailing" constant="20" id="mHQ-S4-shZ"/>
+                                            <constraint firstItem="RjN-Qd-b3X" firstAttribute="top" secondItem="t70-VU-V7V" secondAttribute="top" id="pEP-HB-dSP"/>
+                                            <constraint firstItem="RjN-Qd-b3X" firstAttribute="width" secondItem="d5a-Hq-fLf" secondAttribute="width" id="qXC-aM-cq4"/>
+                                            <constraint firstItem="d5a-Hq-fLf" firstAttribute="bottom" secondItem="RjN-Qd-b3X" secondAttribute="bottom" id="u3O-sy-y6h"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -1458,26 +1439,20 @@
                                     <constraint firstItem="6nq-He-ouN" firstAttribute="leading" secondItem="NRm-6q-3uD" secondAttribute="leadingMargin" id="8FH-5z-iUS"/>
                                     <constraint firstItem="Hp1-nJ-nan" firstAttribute="leading" secondItem="6nq-He-ouN" secondAttribute="leading" id="8nt-hG-OVU"/>
                                     <constraint firstItem="c92-OX-mQs" firstAttribute="trailing" secondItem="NRm-6q-3uD" secondAttribute="trailingMargin" id="9wP-GR-eRO"/>
-                                    <constraint firstAttribute="trailing" secondItem="t70-VU-V7V" secondAttribute="trailing" constant="-1" id="BAF-Eo-O7h"/>
+                                    <constraint firstAttribute="trailing" secondItem="t70-VU-V7V" secondAttribute="trailing" id="BAF-Eo-O7h"/>
                                     <constraint firstItem="Hp1-nJ-nan" firstAttribute="trailing" secondItem="6nq-He-ouN" secondAttribute="trailing" id="IMn-LB-vWn"/>
                                     <constraint firstItem="c92-OX-mQs" firstAttribute="leading" secondItem="NRm-6q-3uD" secondAttribute="leadingMargin" id="Q0Z-wJ-pw6"/>
                                     <constraint firstItem="Hp1-nJ-nan" firstAttribute="top" secondItem="6nq-He-ouN" secondAttribute="bottom" constant="10" id="Tth-m6-snS"/>
                                     <constraint firstItem="6nq-He-ouN" firstAttribute="top" secondItem="c92-OX-mQs" secondAttribute="bottom" constant="10" id="V5x-Hi-h0n"/>
                                     <constraint firstItem="55g-AW-GQ8" firstAttribute="leading" secondItem="6nq-He-ouN" secondAttribute="leading" id="ay1-k7-A8p"/>
                                     <constraint firstItem="55g-AW-GQ8" firstAttribute="trailing" secondItem="6nq-He-ouN" secondAttribute="trailing" id="dsF-8Q-QTd"/>
-                                    <constraint firstItem="t70-VU-V7V" firstAttribute="top" secondItem="55g-AW-GQ8" secondAttribute="bottom" id="fFX-Ib-1Sm"/>
-                                    <constraint firstItem="t70-VU-V7V" firstAttribute="top" secondItem="55g-AW-GQ8" secondAttribute="bottom" constant="8" id="lYf-sM-yIN"/>
-                                    <constraint firstItem="t70-VU-V7V" firstAttribute="leading" secondItem="NRm-6q-3uD" secondAttribute="leading" constant="-1" id="nNe-Yt-gBx"/>
+                                    <constraint firstItem="t70-VU-V7V" firstAttribute="top" secondItem="55g-AW-GQ8" secondAttribute="bottom" constant="12" id="lYf-sM-yIN"/>
+                                    <constraint firstItem="t70-VU-V7V" firstAttribute="leading" secondItem="NRm-6q-3uD" secondAttribute="leading" id="nNe-Yt-gBx"/>
                                     <constraint firstItem="c92-OX-mQs" firstAttribute="top" secondItem="NRm-6q-3uD" secondAttribute="topMargin" id="oEK-X2-wVw"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="6nq-He-ouN" secondAttribute="trailing" id="txA-yo-NHH"/>
-                                    <constraint firstAttribute="bottom" secondItem="t70-VU-V7V" secondAttribute="bottom" constant="-1" id="y5D-6o-e4U"/>
+                                    <constraint firstAttribute="bottom" secondItem="t70-VU-V7V" secondAttribute="bottom" constant="3" id="y5D-6o-e4U"/>
                                     <constraint firstItem="55g-AW-GQ8" firstAttribute="top" secondItem="Hp1-nJ-nan" secondAttribute="bottom" constant="8" symbolic="YES" id="zlW-VP-Fbs"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="fFX-Ib-1Sm"/>
-                                    </mask>
-                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1500,8 +1475,6 @@
                         <outlet property="hexPickerView" destination="6nq-He-ouN" id="DLy-f4-huh"/>
                         <outlet property="iniFileUrlLabel" destination="pKv-bb-iBn" id="8f0-AF-F8h"/>
                         <outlet property="iniPickerView" destination="55g-AW-GQ8" id="irN-rB-lUa"/>
-                        <outlet property="leftButtonView" destination="rRr-2i-Lqh" id="Lt6-GA-Ukq"/>
-                        <outlet property="rightButtonView" destination="LdT-xA-qeC" id="xDf-I4-UUh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N19-6p-c2o" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1520,19 +1493,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ybV-FE-sFr">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="50" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ybV-FE-sFr">
                                 <rect key="frame" x="20" y="0.0" width="560" height="556"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FilesPickerCell" id="iHe-rZ-pVm" customClass="DfuFilesPickerTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="114" width="560" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FilesPickerCell" id="iHe-rZ-pVm" customClass="DfuFilesPickerTableViewCell" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="114" width="560" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iHe-rZ-pVm" id="7Y0-sV-mhR">
-                                            <rect key="frame" x="0.0" y="0.0" width="560" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="560" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6RV-AM-iVj" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
-                                                    <rect key="frame" x="8" y="7" width="544" height="30"/>
+                                                    <rect key="frame" x="8" y="4" width="544" height="42"/>
+                                                    <inset key="contentEdgeInsets" minX="0.0" minY="12" maxX="0.0" maxY="12"/>
                                                     <state key="normal" title="Use Custom Firmware">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
