@@ -41,6 +41,7 @@ class DetailsViewController: NSViewController {
     
     // Modules
     private var pinIOViewController: PinIOViewController?
+    private var updateViewController: FirmwareUpdateViewController?
     
     // Rssi
     private static let kRssiUpdateInterval = 2.0       // in seconds
@@ -125,6 +126,7 @@ class DetailsViewController: NSViewController {
             infoViewController.onInfoScanFinished = { [weak self] in
                 // tell the pinio that can start querying without problems
                 self?.pinIOViewController?.infoFinishedScanning = true
+                self?.updateViewController?.infoFinishedScanning = true
             }
             
 
@@ -231,14 +233,14 @@ class DetailsViewController: NSViewController {
                             var dfuTabIndex = self.indexForTabWithClass("FirmwareUpdateViewController")
                             if dfuTabIndex < 0 {
                                 // Add Firmware Update tab
-                                let updateViewController = self.storyboard?.instantiateControllerWithIdentifier("FirmwareUpdateViewController") as! FirmwareUpdateViewController
-                                let updateTabViewItem = NSTabViewItem(viewController: updateViewController)
+                                self.updateViewController = self.storyboard?.instantiateControllerWithIdentifier("FirmwareUpdateViewController") as? FirmwareUpdateViewController
+                                let updateTabViewItem = NSTabViewItem(viewController: self.updateViewController!)
                                 dfuTabIndex = currentTabIndex
                                 currentTabIndex += 1
                                 self.modeTabView.insertTabViewItem(updateTabViewItem, atIndex: dfuTabIndex)
                             }
                             
-                            let updateViewController = self.modeTabView.tabViewItems[dfuTabIndex].viewController as! FirmwareUpdateViewController
+                            let updateViewController = (self.modeTabView.tabViewItems[dfuTabIndex].viewController as! FirmwareUpdateViewController)
                             updateViewController.tabReset()
                         }
                         
@@ -335,14 +337,6 @@ extension DetailsViewController : CBPeripheralDelegate {
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        
-        /*
-        if let characteristicDataValue = characteristic.value {
-            if let utf8Value = NSString(data:characteristicDataValue, encoding: NSUTF8StringEncoding) as String? {
-                DLog("received: \(utf8Value)")
-            }
-        }
-*/
 
         for tabViewItem in modeTabView.tabViewItems {
             (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)
@@ -350,8 +344,9 @@ extension DetailsViewController : CBPeripheralDelegate {
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
-        if let viewController = modeTabView.selectedTabViewItem?.viewController {
-            (viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForDescriptor: descriptor, error: error)
+ 
+        for tabViewItem in modeTabView.tabViewItems {
+            (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForDescriptor: descriptor, error: error)
         }
     }
     

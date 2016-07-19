@@ -27,7 +27,19 @@ class FirmwareUpdateViewController: NSViewController {
     private var deviceInfoData: DeviceInfoData?
     private var allReleases: [NSObject: AnyObject]?
     
+    private var isTabVisible = false
     private var isCheckingUpdates = false
+    
+    var infoFinishedScanning = false {
+        didSet {
+            if infoFinishedScanning != oldValue {
+                DLog("updates infoFinishedScanning: \(infoFinishedScanning)")
+                if infoFinishedScanning && isTabVisible {
+                    startUpdatesCheck()
+                }
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -193,10 +205,14 @@ class FirmwareUpdateViewController: NSViewController {
 // MARK: - DetailTab
 extension FirmwareUpdateViewController : DetailTab {
     func tabWillAppear() {
-        startUpdatesCheck()
+        isTabVisible = true
+        if infoFinishedScanning {
+            startUpdatesCheck()
+        }
     }
     
     func tabWillDissapear() {
+        isTabVisible = false
     }
     
     func tabReset() {

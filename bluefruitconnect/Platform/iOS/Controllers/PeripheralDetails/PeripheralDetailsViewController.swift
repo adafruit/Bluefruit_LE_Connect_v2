@@ -333,14 +333,20 @@ extension PeripheralDetailsViewController : CBPeripheralDelegate {
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        
-        /*
-        if let characteristicDataValue = characteristic.value {
-        if let utf8Value = NSString(data:characteristicDataValue, encoding: NSUTF8StringEncoding) as String? {
-        DLog("received: \(utf8Value)")
+
+        if let viewControllers = viewControllers {
+            for var tabViewController in viewControllers {
+                if let childViewController = (tabViewController as? UINavigationController)?.viewControllers.last {
+                    tabViewController = childViewController
+                }
+                
+                (tabViewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)
+            }
         }
-        }
-        */
+    }
+    
+    func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
+
         
         if let viewControllers = viewControllers {
             for var tabViewController in viewControllers {
@@ -348,24 +354,14 @@ extension PeripheralDetailsViewController : CBPeripheralDelegate {
                     tabViewController = childViewController
                 }
                 
-            (tabViewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)
-        }
-        }
-    }
-    
-    func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
-        if var tabViewController = selectedViewController {
-            if let childViewController = (tabViewController as? UINavigationController)?.viewControllers.last {
-                tabViewController = childViewController
+                (tabViewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForDescriptor: descriptor, error: error)
             }
-            
-            (tabViewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForDescriptor: descriptor, error: error)
         }
     }
     
     
     func peripheral(peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: NSError?) {
-    
+        
         // Update peripheral rssi
         let identifierString = peripheral.identifier.UUIDString
         if let existingPeripheral = BleManager.sharedInstance.blePeripherals()[identifierString] {

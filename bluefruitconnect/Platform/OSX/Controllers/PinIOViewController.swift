@@ -20,12 +20,12 @@ class PinIOViewController: NSViewController {
     private var tableRowOpen: Int?
     private var isQueryingFinished = false
     private var isTabVisible = false
-    
+
     private var waitingDiscoveryAlert: NSAlert?
     var infoFinishedScanning = false {
         didSet {
             if infoFinishedScanning != oldValue {
-                DLog("infoFinishedScanning: \(infoFinishedScanning)")
+                DLog("pinio infoFinishedScanning: \(infoFinishedScanning)")
                 if infoFinishedScanning && waitingDiscoveryAlert != nil {
                     view.window?.endSheet(waitingDiscoveryAlert!.window)
                     waitingDiscoveryAlert = nil

@@ -59,6 +59,8 @@ class InfoViewController: NSViewController {
 
     func updateDiscoveringStatus() {
         
+        DLog("Discovering (\(elementsDiscovered)/\(elementsToDiscover)) and reading values (\(valuesRead)/\(valuesToRead))...")
+        
         if !isDiscoveringAndUpdatingInitialValues() {
             onInfoScanFinished?()
         }

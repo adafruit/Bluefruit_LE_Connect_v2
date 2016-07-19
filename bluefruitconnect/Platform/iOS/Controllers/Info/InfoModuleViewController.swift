@@ -392,7 +392,7 @@ extension InfoModuleViewController : CBPeripheralDelegate {
                     peripheral.readValueForCharacteristic(characteristic)
                 }
                 
-                elementsToDiscover += 1
+                //elementsToDiscover += 1       // Dont add descriptors to elementsToDiscover because the number of descriptors found is unknown
                 blePeripheral?.peripheral.discoverDescriptorsForCharacteristic(characteristic)
             }
         }
@@ -408,7 +408,7 @@ extension InfoModuleViewController : CBPeripheralDelegate {
     func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         
         //DLog("centralManager didDiscoverDescriptorsForCharacteristic: \(characteristic.UUID.UUIDString)")
-        elementsDiscovered += 1
+        //elementsDiscovered += 1
         
         if let descriptors = characteristic.descriptors {
             for descriptor in descriptors {
