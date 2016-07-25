@@ -49,7 +49,7 @@ class UartManager: NSObject {
         super.init()
 
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(UartManager.didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
     }
 
     deinit {
@@ -63,6 +63,7 @@ class UartManager: NSObject {
     }
     
     private func resetService() {
+        DLog("Uart: reset service")
         uartService = nil
         rxCharacteristic = nil
         txCharacteristic = nil
@@ -154,6 +155,13 @@ class UartManager: NSObject {
 
 // MARK: - CBPeripheralDelegate
 extension UartManager: CBPeripheralDelegate {
+    
+    
+    func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        DLog("UartManager: resetService because didModifyServices")
+        resetService()
+    }
+    
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
         
         if (uartService == nil) {
@@ -205,6 +213,9 @@ extension UartManager: CBPeripheralDelegate {
                 
                 // Send notification that uart is ready
                 NSNotificationCenter.defaultCenter().postNotificationName(UartNotifications.DidBecomeReady.rawValue, object: nil, userInfo:nil)
+                
+                DLog("Uart: did become ready")
+
             }
         }
     }

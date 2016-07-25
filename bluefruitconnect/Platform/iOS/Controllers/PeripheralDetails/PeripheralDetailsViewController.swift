@@ -188,6 +188,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         
         DLog("PeripheralDetailsViewController servicesDiscovered")
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
+            
             if let services = blePeripheral.peripheral.services {
                 dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
                     
@@ -203,7 +204,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                             uartViewController.tabBarItem.title = localizationManager.localizedString("uart_tab_title")      // Tab title
                             uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
                             
-                            self.viewControllers?.append(uartViewController)
+                            viewControllersToAppend.append(uartViewController)
                         }
                         
                         // PinIO
@@ -244,7 +245,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                     }
                     
                     if (hasDFU) {
-                    if Config.isDfuModuleEnabled {
+                        if Config.isDfuModuleEnabled {
                             let dfuViewController = self.storyboard!.instantiateViewControllerWithIdentifier("DfuModuleViewController") as! DfuModuleViewController
                             dfuViewController.tabBarItem.title = localizationManager.localizedString("dfu_tab_title")      // Tab title
                             dfuViewController.tabBarItem.image = UIImage(named: "tab_dfu_icon")
@@ -252,9 +253,16 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                         }
                     }
                     
-                    // Append viewcontrollers (do it here all together to avoid deleting/creating addchilviewcontrollers)+
-                    if viewControllersToAppend.count > 0 {
-                        self.viewControllers?.appendContentsOf(viewControllersToAppend)
+                    if self.viewControllers != nil {
+                        let numViewControllers = self.viewControllers!.count
+                        if  numViewControllers > 1 {      // if we already have viewcontrollers, remove all except info (to avoud duplicates)
+                            self.viewControllers!.removeRange(Range(1..<numViewControllers))
+                        }
+                        
+                        // Append viewcontrollers (do it here all together to avoid deleting/creating addchilviewcontrollers)
+                        if viewControllersToAppend.count > 0 {
+                            self.viewControllers!.appendContentsOf(viewControllersToAppend)
+                        }
                     }
                     
                     })

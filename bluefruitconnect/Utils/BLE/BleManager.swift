@@ -134,6 +134,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     }
     
     func discover(blePeripheral : BlePeripheral, serviceUUIDs: [CBUUID]?) {
+        DLog("discover services")
         blePeripheral.peripheral.discoverServices(serviceUUIDs)
     }
     

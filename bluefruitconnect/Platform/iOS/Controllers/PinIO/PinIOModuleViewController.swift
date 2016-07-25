@@ -67,6 +67,11 @@ class PinIOModuleViewController: ModuleViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
     
+        // if a dialog is being shown, dismiss it. For example: when querying capabilities but a didmodifyservices callback is received and pinio is removed from the tabbar
+        if let presentedViewController = presentedViewController {
+            presentedViewController.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
         DLog("PinIO viewWillDisappear")
         pinIO.stop()
     }
@@ -91,13 +96,13 @@ class PinIOModuleViewController: ModuleViewController {
         let localizationManager = LocalizationManager.sharedInstance
         let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("pinio_capabilityquery_querying_title"), preferredStyle: .Alert)
         
-        alertController.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_cancel"), style: .Cancel, handler: { [unowned self] (_) -> Void in
-            self.pinIO.endPinQuery(true)
+        alertController.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_cancel"), style: .Cancel, handler: { [weak self] (_) -> Void in
+            self?.pinIO.endPinQuery(true)
             }))
 
-        self.presentViewController(alertController, animated: true) {[unowned self] () -> Void in
+        self.presentViewController(alertController, animated: true) {[weak self] () -> Void in
             // Query Capabilities
-            self.pinIO.queryCapabilities()
+            self?.pinIO.queryCapabilities()
         }
     }
     

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -1391,18 +1391,6 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t70-VU-V7V" userLabel="Buttons View">
                                         <rect key="frame" x="0.0" y="173" width="560" height="52"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RjN-Qd-b3X" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="0.0" width="262" height="44"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="pUJ-Kj-s4z"/>
-                                                </constraints>
-                                                <state key="normal" title="Start Update">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="onClickStartUpdate:" destination="r8l-Qa-GeS" eventType="touchUpInside" id="JYz-QF-tUp"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d5a-Hq-fLf" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="290" y="0.0" width="262" height="44"/>
                                                 <constraints>
@@ -1418,6 +1406,18 @@
                                                 </variation>
                                                 <connections>
                                                     <action selector="onClickCancel:" destination="r8l-Qa-GeS" eventType="touchUpInside" id="8Pl-n6-I89"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RjN-Qd-b3X" customClass="StyledButton" customModule="Adafruit_Bluefruit_LE_Connect" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="0.0" width="262" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="pUJ-Kj-s4z"/>
+                                                </constraints>
+                                                <state key="normal" title="Start Update">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onClickStartUpdate:" destination="r8l-Qa-GeS" eventType="touchUpInside" id="JYz-QF-tUp"/>
                                                 </connections>
                                             </button>
                                         </subviews>

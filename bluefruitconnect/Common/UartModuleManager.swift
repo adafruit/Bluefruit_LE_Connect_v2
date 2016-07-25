@@ -65,7 +65,7 @@ class UartModuleManager: NSObject {
         super.init()
         
         let notificationCenter =  NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(UartModuleManager.didReceiveData(_:)), name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(didReceiveData(_:)), name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
     }
     
     deinit {
@@ -164,6 +164,10 @@ class UartModuleManager: NSObject {
 // MARK: - CBPeripheralDelegate
 extension UartModuleManager: CBPeripheralDelegate {
     // Pass peripheral callbacks to UartData
+    
+    func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        UartManager.sharedInstance.peripheral(peripheral, didModifyServices: invalidatedServices)
+    }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
         UartManager.sharedInstance.peripheral(peripheral, didDiscoverServices:error)

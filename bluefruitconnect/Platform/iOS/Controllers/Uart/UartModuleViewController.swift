@@ -543,6 +543,10 @@ extension UartModuleViewController: UartModuleDelegate {
 extension UartModuleViewController: CBPeripheralDelegate {
     // Pass peripheral callbacks to UartData
     
+    func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        uartData.peripheral(peripheral, didModifyServices: invalidatedServices)
+    }
+    
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
         uartData.peripheral(peripheral, didDiscoverServices:error)
     }

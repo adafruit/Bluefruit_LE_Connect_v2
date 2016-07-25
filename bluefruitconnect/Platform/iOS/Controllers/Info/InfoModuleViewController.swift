@@ -16,11 +16,11 @@ class InfoModuleViewController: ModuleViewController {
  //   @IBOutlet weak var enclosingView: UIView!
     
     // Delegates
-    var onServicesDiscovered : (() -> ())?
+    var onServicesDiscovered: (() -> ())?
     
     // Data
-    private var blePeripheral : BlePeripheral?
-    private var services : [CBService]?
+    private var blePeripheral: BlePeripheral?
+    private var services: [CBService]?
     private var itemDisplayMode = [String : DisplayMode]()
     
     private var shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
@@ -105,7 +105,6 @@ class InfoModuleViewController: ModuleViewController {
         
         presentViewController(helpNavigationController, animated: true, completion: nil)
     }
-    
 }
 
 extension InfoModuleViewController : UITableViewDataSource {
@@ -141,11 +140,14 @@ extension InfoModuleViewController : UITableViewDataSource {
         else {
             return 0
         }
-        
     }
 
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let service = services![section]
+        guard let service = services?[section] else {
+            DLog("warning: titleForHeaderInSection service is nil")
+            return nil
+        }
+        
         var identifier = service.UUID.UUIDString
         if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
             identifier = name
@@ -167,26 +169,26 @@ extension InfoModuleViewController : UITableViewDataSource {
         var currentRow = 0
         var isDescriptor = false
         while currentRow <= indexPath.row {
-            if let characteristic = service.characteristics?[currentCharacteristicIndex] {
+            let characteristic = service.characteristics![currentCharacteristicIndex]
+            
+            if currentRow == indexPath.row {
+                currentItem = characteristic
+                currentRow += 1     // same as break
+            }
+            else {
+                currentRow += 1     // + 1 characteristic
                 
-                if currentRow == indexPath.row {
-                    currentItem = characteristic
-                    currentRow += 1     // same as break
-                }
-                else {
-                    currentRow += 1     // + 1 characteristic
-                    
-                    let numDescriptors = characteristic.descriptors?.count ?? 0
-                    if numDescriptors > 0 {
-                        let remaining = indexPath.row-currentRow
-                        if remaining < numDescriptors {
-                            currentItem = characteristic.descriptors![remaining]
-                            isDescriptor = true
-                        }
-                        currentRow += numDescriptors
+                let numDescriptors = characteristic.descriptors?.count ?? 0
+                if numDescriptors > 0 {
+                    let remaining = indexPath.row-currentRow
+                    if remaining < numDescriptors {
+                        currentItem = characteristic.descriptors![remaining]
+                        isDescriptor = true
                     }
+                    currentRow += numDescriptors
                 }
             }
+            
             if currentItem == nil {
                 currentCharacteristicIndex += 1
             }
@@ -201,6 +203,11 @@ extension InfoModuleViewController : UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
+        guard let service = services?[indexPath.section] where service.characteristics != nil else {
+            DLog("warning: cellForRowAtIndexPath characteristics is nil")
+            return tableView.dequeueReusableCellWithIdentifier("CharacteristicCell", forIndexPath:indexPath)
+        }
+        
         let (currentCharacteristicIndex, currentItem, isDescriptor) = itemForIndexPath(indexPath)
         
         //DLog("secrow: \(indexPath.section)/\(indexPath.row): ci: \(currentCharacteristicIndex) isD: \(isDescriptor))")
@@ -213,7 +220,6 @@ extension InfoModuleViewController : UITableViewDataSource {
         var identifier = ""
         var value = " "
         var valueData: NSData?
-        let service = services![indexPath.section]
         if let characteristic = service.characteristics?[currentCharacteristicIndex] {
             
             identifier = currentItem.UUID.UUIDString
@@ -280,10 +286,15 @@ extension InfoModuleViewController : UITableViewDataSource {
 
 extension InfoModuleViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-
+        
+        guard let service = services?[indexPath.section] where service.characteristics != nil else {
+            DLog("warning: didSelectRowAtIndexPath characteristics is nil")
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            return
+        }
+        
         let (currentCharacteristicIndex, currentItem, isDescriptor) = itemForIndexPath(indexPath)
         
-        let service = services![indexPath.section]
         if let characteristic = service.characteristics?[currentCharacteristicIndex] {
             
             let identifier = currentItem.UUID.UUIDString
@@ -329,11 +340,18 @@ extension InfoModuleViewController : CBPeripheralDelegate {
     
     func peripheralDidUpdateName(peripheral: CBPeripheral) {
         DLog("centralManager peripheralDidUpdateName: \(peripheral.name != nil ? peripheral.name! : "")")
-        //discoverServices()
+        /*
+        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
+            self?.discoverServices()
+            })
+ */
     }
     func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
         DLog("centralManager didModifyServices: \(peripheral.name != nil ? peripheral.name! : "")")
-        discoverServices()
+        
+        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
+            self?.discoverServices()
+        })
     }
 
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
@@ -417,12 +435,12 @@ extension InfoModuleViewController : CBPeripheralDelegate {
             }
         }
         
-        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            //self.updateDiscoveringStatusLabel()
-            if (self.elementsDiscovered == self.elementsToDiscover) {
+        if (self.elementsDiscovered == self.elementsToDiscover) {
+            dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+                //self.updateDiscoveringStatusLabel()
                 self.baseTableView.reloadData()
-            }
-            })
+                })
+        }
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
@@ -430,23 +448,26 @@ extension InfoModuleViewController : CBPeripheralDelegate {
         
         valuesRead += 1
         
-        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            //self.updateDiscoveringStatusLabel()
-            if (self.elementsDiscovered == self.elementsToDiscover) {
+        if (self.elementsDiscovered >= self.elementsToDiscover) {
+            dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+                //self.updateDiscoveringStatusLabel()
                 self.baseTableView.reloadData()
-            }
-            })
+                })
+        }
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
         //DLog("centralManager didUpdateValueForDescriptor: \(descriptor.UUID.UUIDString)")
         valuesRead += 1
         
-        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            //self.updateDiscoveringStatusLabel()
-            if (self.elementsDiscovered == self.elementsToDiscover) {
+        DLog("didUpdateValueForDescriptor: \(descriptor.UUID.UUIDString) characteristic: \(descriptor.characteristic.UUID.UUIDString)")
+        
+//        DLog("disco \(self.elementsDiscovered)/\(self.elementsToDiscover)")
+        if (self.elementsDiscovered >= self.elementsToDiscover) {
+            dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+                //self.updateDiscoveringStatusLabel()
                 self.baseTableView.reloadData()
-            }
-            })
+                })
+        }
     }
 }

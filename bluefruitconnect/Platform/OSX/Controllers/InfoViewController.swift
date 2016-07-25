@@ -277,11 +277,16 @@ extension InfoViewController : CBPeripheralDelegate {
     
     func peripheralDidUpdateName(peripheral: CBPeripheral) {
         DLog("centralManager peripheralDidUpdateName: \(peripheral.name != nil ? peripheral.name! : "")")
-        discoverServices()
+        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
+            self?.discoverServices()
+            })
     }
     func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
         DLog("centralManager didModifyServices: \(peripheral.name != nil ? peripheral.name! : "")")
-        discoverServices()
+        
+        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
+            self?.discoverServices()
+            })
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
@@ -339,7 +344,7 @@ extension InfoViewController : CBPeripheralDelegate {
                     peripheral.readValueForCharacteristic(characteristic)
                 }
                 
-                elementsToDiscover += 1
+                //elementsToDiscover += 1       // Dont add descriptors to elementsToDiscover because the number of descriptors found is unknown
                 blePeripheral?.peripheral.discoverDescriptorsForCharacteristic(characteristic)
             }
         }
@@ -357,7 +362,7 @@ extension InfoViewController : CBPeripheralDelegate {
     func peripheral(peripheral: CBPeripheral, didDiscoverDescriptorsForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         
         //DLog("centralManager didDiscoverDescriptorsForCharacteristic: \(characteristic.UUID.UUIDString)")
-        elementsDiscovered += 1
+        //elementsDiscovered += 1
         
         if let descriptors = characteristic.descriptors {
             for descriptor in descriptors {

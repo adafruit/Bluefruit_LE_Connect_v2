@@ -318,13 +318,11 @@ extension DetailsViewController : CBPeripheralDelegate {
     
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
         for tabViewItem in modeTabView.tabViewItems {
-
-                (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverServices: error)
+            (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverServices: error)
         }
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
-        
         for tabViewItem in modeTabView.tabViewItems {
             (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverCharacteristicsForService: service, error: error)
         }
