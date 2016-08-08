@@ -139,10 +139,10 @@ class UartModuleManager: NSObject {
     }
     
     // MARK: - UI Utils
-    static func attributeTextFromData(data : NSData, useHexMode : Bool, color : Color, font: Font) -> NSAttributedString? {
+    static func attributeTextFromData(data: NSData, useHexMode: Bool, color: Color, font: Font) -> NSAttributedString? {
         var attributedString : NSAttributedString?
         
-        let textAttributes : [String:AnyObject] = [NSFontAttributeName : font, NSForegroundColorAttributeName: color]
+        let textAttributes: [String:AnyObject] = [NSFontAttributeName: font, NSForegroundColorAttributeName: color]
         
         if (useHexMode) {
             let hexValue = hexString(data)
@@ -151,7 +151,8 @@ class UartModuleManager: NSObject {
         else {
             let utf8Value = NSString(data:data, encoding: NSUTF8StringEncoding) as String?
             if let utf8Value = utf8Value {
-                let text = utf8Value.stringByReplacingOccurrencesOfString("\r\n", withString: " ")       // Replace newlines with spaces to show the whole line
+                let text = utf8Value
+                //let text = utf8Value.stringByReplacingOccurrencesOfString("\r\n", withString: " ")       // Replace newlines with spaces to show the whole line
                 //                text = utf8Value.stringByReplacingOccurrencesOfString("\r", withString: "")       // Replace newlines with spaces to show the whole line
                 attributedString = NSAttributedString(string: text, attributes: textAttributes)
             }
