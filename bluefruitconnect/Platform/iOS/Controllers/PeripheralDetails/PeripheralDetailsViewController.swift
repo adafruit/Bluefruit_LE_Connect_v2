@@ -55,11 +55,11 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         // Subscribe to Ble Notifications
         let notificationCenter = NSNotificationCenter.defaultCenter()
         if !isFullScreen {       // For compact mode, the connection is managed by the peripheral list
-            notificationCenter.addObserver(self, selector: #selector(PeripheralDetailsViewController.willConnectToPeripheral(_:)), name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
-            notificationCenter.addObserver(self, selector: #selector(PeripheralDetailsViewController.didConnectToPeripheral(_:)), name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(willConnectToPeripheral(_:)), name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(didConnectToPeripheral(_:)), name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
         }
-        notificationCenter.addObserver(self, selector: #selector(PeripheralDetailsViewController.willDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(PeripheralDetailsViewController.didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(willDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
         isObservingBle = true
     }
     

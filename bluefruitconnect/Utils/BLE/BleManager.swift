@@ -35,15 +35,15 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     
     // Main
     static let sharedInstance = BleManager()
-    var centralManager : CBCentralManager?
+    var centralManager: CBCentralManager?
     
     // Scanning
     var isScanning = false
     var wasScanningBeforeBluetoothOff = false;
     private var blePeripheralsFound = [String : BlePeripheral]()
-    var blePeripheralConnecting : BlePeripheral?
-    var blePeripheralConnected : BlePeripheral?             // last peripheral connected (note: only one peripheral can can be connected at the same time
-    var undiscoverTimer : NSTimer?
+    var blePeripheralConnecting: BlePeripheral?
+    var blePeripheralConnected: BlePeripheral?             // last peripheral connected (note: only one peripheral can can be connected at the same time
+    var undiscoverTimer: NSTimer?
     
     //
     override init() {
@@ -109,7 +109,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     }
     
     
-    func connect(blePeripheral : BlePeripheral) {
+    func connect(blePeripheral: BlePeripheral) {
         
         // Stop scanning when connecting to a peripheral (to improve discovery time)
         if (BleManager.kStopScanningWhenConnectingToPeripheral) {
@@ -125,7 +125,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
     }
     
     
-    func disconnect(blePeripheral : BlePeripheral) {
+    func disconnect(blePeripheral: BlePeripheral) {
         
        // DLog("disconnecting from: \(blePeripheral.name)")
         blePeripheralConnecting = nil

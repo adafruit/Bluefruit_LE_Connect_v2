@@ -40,12 +40,12 @@ class DfuModuleViewController: ModuleViewController {
         
         // Setup table
         firmwareTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
-  
+        
         // Title
         let localizationManager = LocalizationManager.sharedInstance
         let name = blePeripheral!.name != nil ? blePeripheral!.name! : localizationManager.localizedString("peripherallist_unnamed")
         let title = String(format: localizationManager.localizedString("dfu_navigation_title_format"), arguments: [name])
-       // tabBarController?.navigationItem.title = title
+        // tabBarController?.navigationItem.title = title
         navigationController?.navigationItem.title = title
 
         // Init Data
@@ -57,6 +57,7 @@ class DfuModuleViewController: ModuleViewController {
         UartManager.sharedInstance.blePeripheral = BleManager.sharedInstance.blePeripheralConnected       // Note: this will start the service discovery
         
         // Notifications
+        /*
         let notificationCenter =  NSNotificationCenter.defaultCenter()
         if !uartManager.isReady() {
             notificationCenter.addObserver(self, selector: #selector(uartIsReady(_:)), name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
@@ -64,14 +65,18 @@ class DfuModuleViewController: ModuleViewController {
         else {
             startUpdatesCheck()
         }
+        */
+        startUpdatesCheck()
     }
     
     deinit {
+        /*
         let notificationCenter =  NSNotificationCenter.defaultCenter()
         notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
-        
+        */
     }
 
+    /*
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -83,6 +88,7 @@ class DfuModuleViewController: ModuleViewController {
         
         registerNotifications(false)
     }
+ */
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -99,7 +105,7 @@ class DfuModuleViewController: ModuleViewController {
         }
     }
     
-    
+    /*
     // MARK: Notifications
     func uartIsReady(notification: NSNotification) {
         DLog("Uart is ready")
@@ -107,7 +113,7 @@ class DfuModuleViewController: ModuleViewController {
         notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
 
         startUpdatesCheck()
-    }
+    }*/
     
     // MARK: - Actions
     @IBAction func onClickHelp(sender: UIBarButtonItem) {
@@ -121,6 +127,7 @@ class DfuModuleViewController: ModuleViewController {
         presentViewController(helpNavigationController, animated: true, completion: nil)
     }
 
+    /*
     // MARK: - Preferences
     func registerNotifications(register : Bool) {
         
@@ -131,7 +138,7 @@ class DfuModuleViewController: ModuleViewController {
         else {
             notificationCenter.removeObserver(self, name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)
         }
-    }
+    }*/
     
     func preferencesUpdated(notification : NSNotification) {
         // Reload updates
@@ -524,3 +531,27 @@ extension  DfuModuleViewController : DfuFilesPickerDialogViewControllerDelegate 
         
     }
 }
+
+/*
+// MARK: - CBPeripheralDelegate
+extension DfuModuleViewController: CBPeripheralDelegate {
+    // Pass peripheral callbacks to UartData
+    
+    func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        uartManager.peripheral(peripheral, didModifyServices: invalidatedServices)
+    }
+    
+    func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
+        uartManager.peripheral(peripheral, didDiscoverServices:error)
+    }
+    
+    func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
+        
+        uartManager.peripheral(peripheral, didDiscoverCharacteristicsForService: service, error: error)
+    }
+    
+    func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
+        uartManager.peripheral(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)
+    }
+}
+*/
