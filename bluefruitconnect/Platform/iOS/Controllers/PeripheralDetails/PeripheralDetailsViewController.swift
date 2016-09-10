@@ -15,6 +15,9 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
 
     private var emptyViewController : EmptyDetailsViewController!
     
+    private let firmwareUpdater = FirmwareUpdater()
+    private var dfuTabIndex = -1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -104,6 +107,10 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         // UI
         self.showEmpty(false)
         
+        startUpdatesCheck()
+    }
+    
+    private func setupConnectedPeripheral() {
         // UI: Add Info tab
         let infoViewController = self.storyboard!.instantiateViewControllerWithIdentifier("InfoModuleViewController") as! InfoModuleViewController
         
@@ -153,19 +160,33 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                 self.emptyViewController.setConnecting(false)
             }
             
-            let localizationManager = LocalizationManager.sharedInstance
-            let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("peripherallist_peripheraldisconnected"), preferredStyle: .Alert)
-            let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler: { (_) -> Void in
-                if isFullScreen {
-                    // Back to peripheral list
-                    if let parentNavigationController = (self.navigationController?.parentViewController as? UINavigationController) {
-                        parentNavigationController.popToRootViewControllerAnimated(true)
+            // Show disconnected alert (if no previous alert is shown)
+            if self.presentedViewController == nil {
+                let localizationManager = LocalizationManager.sharedInstance
+                let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("peripherallist_peripheraldisconnected"), preferredStyle: .Alert)
+                let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler: { (_) -> Void in
+                    let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
+                    
+                    if isFullScreen {
+                        self.goBackToPeripheralList()
                     }
-                }
+                })
+                alertController.addAction(okAction)
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
+            else {
+                DLog("disconnection detected but cannot go to periperalList because there is a presentedViewController on screen")
+            }
+            
             })
-            alertController.addAction(okAction)
-            self.presentViewController(alertController, animated: true, completion: nil)
-            })
+    }
+
+    private func goBackToPeripheralList() {
+        // Back to peripheral list
+        if let parentNavigationController = (self.navigationController?.parentViewController as? UINavigationController) {
+            parentNavigationController.popToRootViewControllerAnimated(true)
+        }
+
     }
     
     func showEmpty(showEmpty : Bool) {
@@ -250,9 +271,11 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                             dfuViewController.tabBarItem.title = localizationManager.localizedString("dfu_tab_title")      // Tab title
                             dfuViewController.tabBarItem.image = UIImage(named: "tab_dfu_icon")
                             viewControllersToAppend.append(dfuViewController)
+                            self.dfuTabIndex = viewControllersToAppend.count         // don't -1 because index is always present and adds 1 to the index
                         }
                     }
                     
+                    // Add tabs
                     if self.viewControllers != nil {
                         let numViewControllers = self.viewControllers!.count
                         if  numViewControllers > 1 {      // if we already have viewcontrollers, remove all except info (to avoud duplicates)
@@ -266,10 +289,22 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                     }
                     
                     })
+                
+                
             }
         }
     }
 
+    private func startUpdatesCheck() {
+        
+        // Refresh updates available
+        if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected  {
+            let releases = FirmwareUpdater.releasesWithBetaVersions(Preferences.showBetaVersions)
+            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, shouldDiscoverServices: true, releases: releases, shouldRecommendBetaReleases: false)
+        }
+    }
+
+    
     func updateRssiUI() {
         /*
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
@@ -279,6 +314,20 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             infoRssiImageView.image = signalImageForRssi(rssi)
         }
 */
+    }
+    
+    private func showUpdateAvailableForRelease(latestRelease: FirmwareInfo!) {
+        let alert = UIAlertController(title:"Update available", message: "Software version \(latestRelease.version) is available", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: "Go to updates", style: UIAlertActionStyle.Default, handler: { [unowned self] _ in
+            self.selectedIndex = self.dfuTabIndex
+        }))
+        alert.addAction(UIAlertAction(title: "Ask later", style: UIAlertActionStyle.Default, handler: {  _ in
+        }))
+        alert.addAction(UIAlertAction(title: "Ignore", style: UIAlertActionStyle.Cancel, handler: {  _ in
+            Preferences.softwareUpdateIgnoredVersion = latestRelease.version
+        }))
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 }
 
@@ -393,4 +442,34 @@ extension PeripheralDetailsViewController : CBPeripheralDelegate {
         }
     }
     
+}
+
+// MARK: - FirmwareUpdaterDelegate
+extension PeripheralDetailsViewController: FirmwareUpdaterDelegate {
+    func onFirmwareUpdatesAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo!, deviceInfoData: DeviceInfoData?, allReleases: [NSObject : AnyObject]?) {
+        DLog("FirmwareUpdaterDelegate isUpdateAvailable: \(isUpdateAvailable)")
+        
+        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
+            
+            if let context = self {
+
+                context.setupConnectedPeripheral()
+                if isUpdateAvailable {
+                    self?.showUpdateAvailableForRelease(latestRelease)
+                }
+            }
+            })
+    }
+    
+    func onDfuServiceNotFound() {
+        DLog("FirmwareUpdaterDelegate: onDfuServiceNotFound")
+        
+        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
+            self?.setupConnectedPeripheral()
+            })
+    }
+    
+    private func onUpdateDialogError(errorMessage:String, exitOnDismiss: Bool = false) {
+        DLog("FirmwareUpdaterDelegate: onUpdateDialogError")
+    }
 }

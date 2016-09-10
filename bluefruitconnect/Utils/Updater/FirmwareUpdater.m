@@ -158,8 +158,8 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
     {
         peripheral.delegate = previousPeripheralDelegate;
         
-        if (error && delegate) {
-            DLog(@"Peripheral has no dfu or dis service available");
+        DLog(@"Peripheral has no dfu or dis service available");
+        if (/*error && */delegate) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [delegate onDfuServiceNotFound];
             });
@@ -225,7 +225,7 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
             DLog(@"Error: onDeviceInfoUpdatedForPeripheral with no delegate");
         }
         
-        NSString *versionToIgnore = [[NSUserDefaults standardUserDefaults] stringForKey:@"softwareUpdateIgnoredVersion"];
+        NSString *versionToIgnore = [Preferences softwareUpdateIgnoredVersion]; //[[NSUserDefaults standardUserDefaults] stringForKey:@"softwareUpdateIgnoredVersion"];
         BOOL isFirmwareUpdateAvailable = NO;
         
         NSDictionary *allReleases = releases;

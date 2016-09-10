@@ -450,3 +450,21 @@ extension FirmwareUpdateViewController : DfuUpdateProcessDelegate {
         updateDialogViewController?.setProgress(progress)
     }
 }
+
+// MARK: - CBPeripheralDelegate
+extension FirmwareUpdateViewController: CBPeripheralDelegate {
+    // Pass peripheral callbacks to UartData
+    
+    func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        DLog("FirmwareUpdateViewController didModifyServices")
+        
+        if infoFinishedScanning {
+            DLog("didModify servies updates check")
+            isCheckingUpdates = false
+            startUpdatesCheck()
+        }
+    }
+    
+}
+
+

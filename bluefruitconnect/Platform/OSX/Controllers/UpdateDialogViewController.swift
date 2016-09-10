@@ -41,3 +41,6 @@ class UpdateDialogViewController: NSViewController {
         delegate?.onUpdateDialogCancel()
     }
 }
+
+
+

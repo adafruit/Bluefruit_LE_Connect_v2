@@ -36,7 +36,6 @@ class ControllerModuleViewController: ModuleViewController {
         
         //
         updateContentItemsFromSensorsEnabled()
- 
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -54,8 +53,6 @@ class ControllerModuleViewController: ModuleViewController {
             let notificationCenter =  NSNotificationCenter.defaultCenter()
             notificationCenter.addObserver(self, selector: #selector(watchCommand(_:)), name: WatchSessionManager.Notifications.DidReceiveWatchCommand.rawValue, object: nil)
         }
-        
-
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -72,9 +69,7 @@ class ControllerModuleViewController: ModuleViewController {
             notificationCenter.removeObserver(self, name:
             WatchSessionManager.Notifications.DidReceiveWatchCommand.rawValue, object: nil)
         }
- 
     }
-
     
     deinit {
         DLog("deinit")

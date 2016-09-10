@@ -21,7 +21,8 @@ import Foundation
     private static let appInSystemStatusBarKey = "AppInSystemStatusBar"
     private static let updateServerUrlKey = "UpdateServerUrl"
     private static let updateShowBetaVersionsKey = "UpdateShowBetaVersions"
-
+    private static let updateIgnoredVersionKey = "UpdateIgnoredVersion"
+    
     private static let infoRefreshOnLoadKey = "InfoRefreshOnLoad"
     
     private static let uartReceivedDataColorKey = "UartReceivedDataColor"
@@ -32,12 +33,12 @@ import Foundation
     private static let uartIsAutomaticEolEnabledKey = "UartIsAutomaticEolEnabled"
     private static let neopixelIsSketchTooltipEnabledKey = "NeopixelIsSketchTooltipEnabledKey"
     
-    enum PreferencesNotifications : String {
+    enum PreferencesNotifications: String {
         case DidUpdatePreferences = "didUpdatePreferences"          // Note: used on some objective-c code, so when changed, update it
     }
-
+    
     // MARK: - General
-    static var appInSystemStatusBar : Bool {
+    static var appInSystemStatusBar: Bool {
         get {
             return getBoolPreference(Preferences.appInSystemStatusBarKey)
         }
@@ -47,7 +48,7 @@ import Foundation
     }
     
     // MARK: - Firmware Updates
-    static var updateServerUrl : NSURL? {
+    static var updateServerUrl: NSURL? {
         get {
             let defaults = NSUserDefaults.standardUserDefaults()
             let urlString = defaults.stringForKey(Preferences.updateServerUrlKey)
@@ -65,7 +66,7 @@ import Foundation
         }
     }
     
-    static var showBetaVersions : Bool {
+    static var showBetaVersions: Bool {
         get {
             return getBoolPreference(Preferences.updateShowBetaVersionsKey)
         }
@@ -74,24 +75,36 @@ import Foundation
         }
     }
     
-    // MARK: - Info
-    static var infoIsRefreshOnLoadEnabled : Bool {
+    static var softwareUpdateIgnoredVersion: String? {
         get {
-        return getBoolPreference(Preferences.infoRefreshOnLoadKey)
+            let defaults = NSUserDefaults.standardUserDefaults()
+            return defaults.stringForKey(Preferences.updateIgnoredVersionKey)
+        }
+        set {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setObject(newValue, forKey: Preferences.updateIgnoredVersionKey)
+        }
+        
+    }
+    
+    // MARK: - Info
+    static var infoIsRefreshOnLoadEnabled: Bool {
+        get {
+            return getBoolPreference(Preferences.infoRefreshOnLoadKey)
         }
         set {
             setBoolPreference(Preferences.infoRefreshOnLoadKey, newValue: newValue)
         }
     }
-
+    
     
     // MARK: - Uart
-//    #if os(OSX)
-    static var uartReceveivedDataColor : Color {
+    //    #if os(OSX)
+    static var uartReceveivedDataColor: Color {
         get {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let hexColorString = defaults.stringForKey(Preferences.uartReceivedDataColorKey)
-        return Color(CSS: hexColorString)
+            let defaults = NSUserDefaults.standardUserDefaults()
+            let hexColorString = defaults.stringForKey(Preferences.uartReceivedDataColorKey)
+            return Color(CSS: hexColorString)
         }
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
@@ -100,11 +113,11 @@ import Foundation
         }
     }
     
-    static var uartSentDataColor : Color {
+    static var uartSentDataColor: Color {
         get {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let hexColorString = defaults.stringForKey(Preferences.uartSentDataColorKey)
-        return Color(CSS: hexColorString)
+            let defaults = NSUserDefaults.standardUserDefaults()
+            let hexColorString = defaults.stringForKey(Preferences.uartSentDataColorKey)
+            return Color(CSS: hexColorString)
         }
         set {
             let defaults = NSUserDefaults.standardUserDefaults()
@@ -112,9 +125,9 @@ import Foundation
             NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
         }
     }
-//    #endif
+    //    #endif
     
-    static var uartIsDisplayModeTimestamp : Bool {
+    static var uartIsDisplayModeTimestamp: Bool {
         get {
             return getBoolPreference(Preferences.uartIsDisplayModeTimestampKey)
         }
@@ -122,28 +135,28 @@ import Foundation
             setBoolPreference(Preferences.uartIsDisplayModeTimestampKey, newValue: newValue)
         }
     }
-
-    static var uartIsInHexMode : Bool {
+    
+    static var uartIsInHexMode: Bool {
         get {
-        return getBoolPreference(Preferences.uartIsInHexModeKey)
+            return getBoolPreference(Preferences.uartIsInHexModeKey)
         }
         set {
             setBoolPreference(Preferences.uartIsInHexModeKey, newValue: newValue)
         }
     }
     
-    static var uartIsEchoEnabled : Bool {
+    static var uartIsEchoEnabled: Bool {
         get {
-        return getBoolPreference(Preferences.uartIsEchoEnabledKey)
+            return getBoolPreference(Preferences.uartIsEchoEnabledKey)
         }
         set {
             setBoolPreference(Preferences.uartIsEchoEnabledKey, newValue: newValue)
         }
     }
-
-    static var uartIsAutomaticEolEnabled : Bool {
+    
+    static var uartIsAutomaticEolEnabled: Bool {
         get {
-        return getBoolPreference(Preferences.uartIsAutomaticEolEnabledKey)
+            return getBoolPreference(Preferences.uartIsAutomaticEolEnabledKey)
         }
         set {
             setBoolPreference(Preferences.uartIsAutomaticEolEnabledKey, newValue: newValue)
@@ -151,7 +164,7 @@ import Foundation
     }
     
     // MARK: - Neopixels
-    static var neopixelIsSketchTooltipEnabled : Bool {
+    static var neopixelIsSketchTooltipEnabled: Bool {
         get {
             return getBoolPreference(Preferences.neopixelIsSketchTooltipEnabledKey)
         }

@@ -15,6 +15,7 @@ class PreferencesViewController: NSViewController {
     @IBOutlet weak var updateServerUrlLabel: NSTextField!
     @IBOutlet weak var databaseStatusLabel: NSTextField!
     @IBOutlet weak var databaseStatusWaitView: NSProgressIndicator!
+    @IBOutlet weak var ignoredVersionTextField: NSTextField!
 
     // Uart
     @IBOutlet weak var receivedDataColorWell: NSColorWell!
@@ -39,7 +40,11 @@ class PreferencesViewController: NSViewController {
         super.viewDidLoad()
       
         // Firmware Updates
-        showBetaVersionsButton.state = Preferences.showBetaVersions ?NSOnState:NSOffState
+        showBetaVersionsButton.state = Preferences.showBetaVersions ? NSOnState:NSOffState
+        
+        if let softwareUpdateIgnoredVersion = Preferences.softwareUpdateIgnoredVersion {
+            ignoredVersionTextField.stringValue = softwareUpdateIgnoredVersion
+        }
         
         databaseStatusLabel.stringValue = ""
         databaseStatusWaitView.stopAnimation(nil)
@@ -114,6 +119,12 @@ class PreferencesViewController: NSViewController {
             self?.databaseStatusLabel.stringValue = text
             self?.databaseStatusWaitView.stopAnimation(nil)
         })
+    }
+    
+    @IBAction func onEndEditingIgnoredVesion(sender: NSTextField) {
+        // DLog("url: \(sender.stringValue)")
+        
+        Preferences.softwareUpdateIgnoredVersion = sender.stringValue
     }
     
     @IBAction func onChangedShowBetaVersions(sender: NSButton) {

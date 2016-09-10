@@ -47,6 +47,10 @@ class DetailsViewController: NSViewController {
     private static let kRssiUpdateInterval = 2.0       // in seconds
     private var rssiTimer : MSWeakTimer?
     
+    // Software upate autocheck
+    private let firmwareUpdater = FirmwareUpdater()
+
+    
     //
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +61,7 @@ class DetailsViewController: NSViewController {
         
         showEmpty(true)
     }
+    
     
     override func viewWillAppear() {
         super.viewWillAppear()
@@ -106,36 +111,56 @@ class DetailsViewController: NSViewController {
                 self.modeTabView.removeTabViewItem(tabViewItem)
             }
             
-            // UI: Info
-            let name = blePeripheral.name != nil ? blePeripheral.name! : LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
-            self.infoNameLabel.stringValue = name
-            self.updateRssiUI()
-            
-            self.cancelRssiTimer()
-            let privateQueue = dispatch_queue_create("private_queue", DISPATCH_QUEUE_CONCURRENT);
-            self.rssiTimer = MSWeakTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: #selector(DetailsViewController.requestUpdateRssi), userInfo: nil, repeats: true, dispatchQueue: privateQueue)
-            
-            // UI: Add Info tab
-            let infoViewController = self.storyboard?.instantiateControllerWithIdentifier("InfoViewController") as! InfoViewController
-            
-            infoViewController.onServicesDiscovered = { [weak self] in
-                // optimization: wait till info discover services to continue, instead of discovering services by myself
-                self?.servicesDiscovered()
-            }
-            
-            infoViewController.onInfoScanFinished = { [weak self] in
-                // tell the pinio that can start querying without problems
-                self?.pinIOViewController?.infoFinishedScanning = true
-                self?.updateViewController?.infoFinishedScanning = true
-            }
-            
+            self.startUpdatesCheck()
 
-            let infoTabViewItem = NSTabViewItem(viewController: infoViewController)
-            self.modeTabView.addTabViewItem(infoTabViewItem)
-            infoViewController.tabReset()
             
-            self.modeTabView.selectFirstTabViewItem(nil)
         })
+    }
+    
+    private func startUpdatesCheck() {
+        
+        // Refresh updates available
+        if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
+            
+            let releases = FirmwareUpdater.releasesWithBetaVersions(Preferences.showBetaVersions)
+            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, shouldDiscoverServices: true, releases: releases, shouldRecommendBetaReleases: false)
+        }
+    }
+
+    private func setupConnectedPeripheral() {
+        guard let blePeripheral = BleManager.sharedInstance.blePeripheralConnected else {
+            return
+        }
+        
+        // UI: Info
+        let name = blePeripheral.name != nil ? blePeripheral.name! : LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
+        self.infoNameLabel.stringValue = name
+        self.updateRssiUI()
+        
+        self.cancelRssiTimer()
+        let privateQueue = dispatch_queue_create("private_queue", DISPATCH_QUEUE_CONCURRENT);
+        self.rssiTimer = MSWeakTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: #selector(DetailsViewController.requestUpdateRssi), userInfo: nil, repeats: true, dispatchQueue: privateQueue)
+        
+        // UI: Add Info tab
+        let infoViewController = self.storyboard?.instantiateControllerWithIdentifier("InfoViewController") as! InfoViewController
+        
+        infoViewController.onServicesDiscovered = { [weak self] in
+            // optimization: wait till info discover services to continue, instead of discovering services by myself
+            self?.servicesDiscovered()
+        }
+        
+        infoViewController.onInfoScanFinished = { [weak self] in
+            // tell the pinio that can start querying without problems
+            self?.pinIOViewController?.infoFinishedScanning = true
+            self?.updateViewController?.infoFinishedScanning = true
+        }
+        
+        
+        let infoTabViewItem = NSTabViewItem(viewController: infoViewController)
+        self.modeTabView.addTabViewItem(infoTabViewItem)
+        infoViewController.tabReset()
+        
+        self.modeTabView.selectFirstTabViewItem(nil)
     }
     
     func requestUpdateRssi() {
@@ -298,6 +323,31 @@ class DetailsViewController: NSViewController {
             infoRssiImageView.image = signalImageForRssi(rssi)
         }
     }
+    
+    private func showUpdateAvailableForRelease(latestRelease: FirmwareInfo!) {
+        if let window = self.view.window {
+            let alert = NSAlert()
+            alert.messageText = "Update available"
+            alert.informativeText = "Software version \(latestRelease.version) is available"
+            alert.addButtonWithTitle("Go to updates")
+            alert.addButtonWithTitle("Ask later")
+            alert.addButtonWithTitle("Ignore")
+            alert.alertStyle = .WarningAlertStyle
+            alert.beginSheetModalForWindow(window, completionHandler: { modalResponse in
+                if modalResponse == NSAlertFirstButtonReturn {
+                    self.modeTabView.selectLastTabViewItem(nil)
+                }
+                else if modalResponse == NSAlertThirdButtonReturn {
+                     Preferences.softwareUpdateIgnoredVersion = latestRelease.version
+                }
+            })
+        }
+        else {
+            DLog("onUpdateDialogSuccess: window not defined")
+        }        
+        
+    }
+
 }
 
 // MARK: - CBPeripheralDelegate
@@ -311,6 +361,12 @@ extension DetailsViewController : CBPeripheralDelegate {
     }
     
     func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        
+        // Services needs to be discovered again
+        pinIOViewController?.infoFinishedScanning = false
+        updateViewController?.infoFinishedScanning = false
+        
+        //
         for tabViewItem in modeTabView.tabViewItems {
             (tabViewItem.viewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didModifyServices: invalidatedServices)
         }
@@ -401,3 +457,34 @@ extension DetailsViewController: NSTabViewDelegate {
     }
 */
 }
+
+// MARK: - FirmwareUpdaterDelegate
+extension DetailsViewController: FirmwareUpdaterDelegate {
+    func onFirmwareUpdatesAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo!, deviceInfoData: DeviceInfoData?, allReleases: [NSObject : AnyObject]?) {
+        DLog("FirmwareUpdaterDelegate isUpdateAvailable: \(isUpdateAvailable)")
+        
+        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
+            
+            if let context = self {
+                
+                context.setupConnectedPeripheral()
+                if isUpdateAvailable {
+                    self?.showUpdateAvailableForRelease(latestRelease)
+                }
+            }
+            })
+    }
+    
+    func onDfuServiceNotFound() {
+        DLog("FirmwareUpdaterDelegate: onDfuServiceNotFound")
+        
+        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
+            self?.setupConnectedPeripheral()
+            })
+    }
+    
+    private func onUpdateDialogError(errorMessage:String, exitOnDismiss: Bool = false) {
+        DLog("FirmwareUpdaterDelegate: onUpdateDialogError")
+    }
+}
+

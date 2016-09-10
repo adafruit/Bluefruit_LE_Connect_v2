@@ -14,10 +14,10 @@ class DfuModuleViewController: ModuleViewController {
     @IBOutlet weak var firmwareTableView: UITableView!
 
     // Data
-    private var blePeripheral :BlePeripheral!
+    private var blePeripheral: BlePeripheral!
     private let firmwareUpdater = FirmwareUpdater()
     private let dfuUpdateProcess = DfuUpdateProcess()
-    private var dfuDialogViewController : DfuDialogViewController!
+    private var dfuDialogViewController: DfuDialogViewController!
    
     private var boardRelease : BoardInfo?
     private var deviceInfoData : DeviceInfoData?
@@ -25,7 +25,7 @@ class DfuModuleViewController: ModuleViewController {
 
     private var isCheckingUpdates = false
 
-    private let uartManager = UartManager.sharedInstance
+    //private let uartManager = UartManager.sharedInstance
 
     
     override func viewDidLoad() {
@@ -52,10 +52,10 @@ class DfuModuleViewController: ModuleViewController {
         isCheckingUpdates = false
         boardRelease = nil
         deviceInfoData = nil
-        
+
         // Start Uart Manager
-        UartManager.sharedInstance.blePeripheral = BleManager.sharedInstance.blePeripheralConnected       // Note: this will start the service discovery
-        
+        //uartManager.blePeripheral = BleManager.sharedInstance.blePeripheralConnected       // Note: this will start the service discovery
+
         // Notifications
         /*
         let notificationCenter =  NSNotificationCenter.defaultCenter()
@@ -186,6 +186,7 @@ class DfuModuleViewController: ModuleViewController {
   
             // Show dialog
             dfuDialogViewController = self.storyboard!.instantiateViewControllerWithIdentifier("DfuDialogViewController") as! DfuDialogViewController
+            dfuDialogViewController.delegate = self
             self.presentViewController(dfuDialogViewController, animated: true, completion: { [unowned self] () -> Void in
                 // Setup update process
                 self.dfuUpdateProcess.delegate = self
@@ -453,43 +454,59 @@ extension DfuModuleViewController: UITableViewDelegate {
 }
 
 // MARK: - UpdateDialogViewControlerDelegate
-extension DfuModuleViewController : DfuDialogViewControllerDelegate {
+extension DfuModuleViewController: DfuDialogViewControllerDelegate {
     
     func onUpdateDialogCancel() {
         dfuUpdateProcess.cancel()
         BleManager.sharedInstance.restoreCentralManager()
+        
     }
 }
 
 // MARK: - DfuUpdateProcessDelegate
-extension  DfuModuleViewController : DfuUpdateProcessDelegate {
+extension  DfuModuleViewController: DfuUpdateProcessDelegate {
     func onUpdateProcessSuccess() {
+        
+        if let dfuDialogViewController = self.dfuDialogViewController {
+            dfuDialogViewController.dismissViewControllerAnimated(false, completion: nil)
+        }
+        
         BleManager.sharedInstance.restoreCentralManager()
         
         let localizationManager = LocalizationManager.sharedInstance
         let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("dfu_udaptedcompleted_message"), preferredStyle: .Alert)
         
-        let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler:nil)
-        alertController.addAction(okAction)
-        self.presentViewController(alertController, animated: true) { () -> Void in
-            if self.dfuDialogViewController != nil {
-                self.dfuDialogViewController.dismissViewControllerAnimated(true, completion:nil)
-            }
+        let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default) { [unowned self] _ in
+            self.gotoScanController()
         }
+        alertController.addAction(okAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    private func gotoScanController() {
+        // Simulate disonnection to trigger the go back to scanning
+        NSNotificationCenter.defaultCenter().postNotificationName(BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil,  userInfo: nil)
+        
     }
     
     func onUpdateProcessError(errorMessage : String, infoMessage: String?) {
         BleManager.sharedInstance.restoreCentralManager()
         
+        if let dfuDialogViewController = self.dfuDialogViewController {
+            dfuDialogViewController.dismissViewControllerAnimated(false, completion: nil)
+        }
+        
         let localizationManager = LocalizationManager.sharedInstance
         let alertController = UIAlertController(title: (infoMessage != nil ? errorMessage:nil), message: (infoMessage != nil ? infoMessage : errorMessage), preferredStyle: .Alert)
         
-        let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler:nil)
+        let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default) { [weak self] _ in
+             self?.gotoScanController()
+        }
         alertController.addAction(okAction)
         self.presentViewController(alertController, animated: true, completion: nil)
     }
-    
-    
+
+
     func onUpdateProgressText(message: String) {
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.dfuDialogViewController?.setProgressText(message)
@@ -505,7 +522,7 @@ extension  DfuModuleViewController : DfuUpdateProcessDelegate {
 
 
 // MARK: - DfuUpdateProcessDelegate
-extension  DfuModuleViewController : DfuFilesPickerDialogViewControllerDelegate {
+extension DfuModuleViewController: DfuFilesPickerDialogViewControllerDelegate {
 
     func onFilesPickerStartUpdate(hexUrl: NSURL?, iniUrl: NSURL?) {
         if let hexUrl = hexUrl {

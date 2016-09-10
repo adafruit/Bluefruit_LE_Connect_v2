@@ -9,14 +9,16 @@
 import UIKit
 
 class InfoModuleViewController: ModuleViewController {
-
+    // Config
+    private static let kReadForbiddenCCCD = false     // Added to avoid generating a didModifyServices callback when reading Uart/DFU CCCD (bug??)
+    
     // UI
     @IBOutlet weak var baseTableView: UITableView!
     @IBOutlet weak var waitView: UIActivityIndicatorView!
- //   @IBOutlet weak var enclosingView: UIView!
     
     // Delegates
     var onServicesDiscovered: (() -> ())?
+//    var onInfoScanFinished: (() ->())?
     
     // Data
     private var blePeripheral: BlePeripheral?
@@ -135,6 +137,7 @@ extension InfoModuleViewController : UITableViewDataSource {
                 numDescriptors += characteristic.descriptors?.count ?? 0
             }
             
+            //DLog("section:\(section) - numCharacteristics: \(numCharacteristics), numDescriptors:\(numDescriptors), service: \(service.UUID.UUIDString)")
             return numCharacteristics + numDescriptors
         }
         else {
@@ -160,7 +163,7 @@ extension InfoModuleViewController : UITableViewDataSource {
         return 60
     }
     
-    private func itemForIndexPath(indexPath: NSIndexPath) -> (Int, CBAttribute, Bool) {
+    private func itemForIndexPath(indexPath: NSIndexPath) -> (Int, CBAttribute?, Bool) {
         let service = services![indexPath.section]
         
         // The same table view section is used for characteristics and descriptors. So first calculate if the current indexPath.row is for a characteristic or descriptor
@@ -168,7 +171,9 @@ extension InfoModuleViewController : UITableViewDataSource {
         var currentCharacteristicIndex = 0
         var currentRow = 0
         var isDescriptor = false
-        while currentRow <= indexPath.row {
+        
+//        DLog("section:\(indexPath.section) - service: \(service.UUID.UUIDString)")
+        while currentRow <= indexPath.row && currentCharacteristicIndex < service.characteristics!.count && service.characteristics != nil {
             let characteristic = service.characteristics![currentCharacteristicIndex]
             
             if currentRow == indexPath.row {
@@ -198,7 +203,7 @@ extension InfoModuleViewController : UITableViewDataSource {
             DLog("Error populating tableview")
         }
         
-        return (currentCharacteristicIndex, currentItem!, isDescriptor)
+        return (currentCharacteristicIndex, currentItem, isDescriptor)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -208,7 +213,13 @@ extension InfoModuleViewController : UITableViewDataSource {
             return tableView.dequeueReusableCellWithIdentifier("CharacteristicCell", forIndexPath:indexPath)
         }
         
-        let (currentCharacteristicIndex, currentItem, isDescriptor) = itemForIndexPath(indexPath)
+        let (currentCharacteristicIndex, currentItemOptional, isDescriptor) = itemForIndexPath(indexPath)
+        
+        guard let currentItem = currentItemOptional else  {
+            DLog("warning: current item is nil")
+            return tableView.dequeueReusableCellWithIdentifier("CharacteristicCell", forIndexPath:indexPath)
+            
+        }
         
         //DLog("secrow: \(indexPath.section)/\(indexPath.row): ci: \(currentCharacteristicIndex) isD: \(isDescriptor))")
         
@@ -293,7 +304,13 @@ extension InfoModuleViewController: UITableViewDelegate {
             return
         }
         
-        let (currentCharacteristicIndex, currentItem, isDescriptor) = itemForIndexPath(indexPath)
+        let (currentCharacteristicIndex, currentItemOptional, isDescriptor) = itemForIndexPath(indexPath)
+        
+        guard let currentItem = currentItemOptional else  {
+            DLog("warning: current item is nil")
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            return
+        }
         
         if let characteristic = service.characteristics?[currentCharacteristicIndex] {
             
@@ -382,6 +399,10 @@ extension InfoModuleViewController : CBPeripheralDelegate {
                     }
                 }
             }
+                /*
+            else {
+                onInfoScanFinished?()
+            }*/
             
             // Update UI
             dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
@@ -399,11 +420,8 @@ extension InfoModuleViewController : CBPeripheralDelegate {
         
         elementsDiscovered += 1
         
- //       var discoveringDescriptors = false
         if let characteristics = service.characteristics {
-            if (characteristics.count > 0)  {
-//                discoveringDescriptors = true
-            }
+
             for characteristic in characteristics {
                 if (characteristic.properties.rawValue & CBCharacteristicProperties.Read.rawValue != 0) {
                     valuesToRead += 1
@@ -416,10 +434,7 @@ extension InfoModuleViewController : CBPeripheralDelegate {
         }
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            //self.updateDiscoveringStatusLabel()
-            //if (!discoveringDescriptors && && self.elementsDiscovered == self.elementsToDiscover) {
-                self.baseTableView.reloadData()
-            //}
+            self.baseTableView.reloadData()
             })
     }
 
@@ -430,17 +445,29 @@ extension InfoModuleViewController : CBPeripheralDelegate {
         
         if let descriptors = characteristic.descriptors {
             for descriptor in descriptors {
-                valuesToRead += 1
-                peripheral.readValueForDescriptor(descriptor)
+                
+                let isAForbiddenCCCD = descriptor.UUID.UUIDString.caseInsensitiveCompare("2902") == .OrderedSame && (characteristic.UUID.UUIDString.caseInsensitiveCompare(UartManager.RxCharacteristicUUID) == .OrderedSame || characteristic.UUID.UUIDString.caseInsensitiveCompare(dfuControlPointCharacteristicUUIDString) == .OrderedSame)
+                if InfoModuleViewController.kReadForbiddenCCCD || !isAForbiddenCCCD {
+                    
+                    valuesToRead += 1
+                    peripheral.readValueForDescriptor(descriptor)
+                }
             }
         }
         
         if (self.elementsDiscovered == self.elementsToDiscover) {
             dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-                //self.updateDiscoveringStatusLabel()
                 self.baseTableView.reloadData()
                 })
         }
+        
+        /*
+        if (self.valuesRead == self.valuesToRead) {
+            dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
+            self.onInfoScanFinished?()
+                })
+        }
+ */
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {

@@ -18,11 +18,14 @@ class DfuDialogViewController: UIViewController {
     @IBOutlet weak var progressIndicator: UIProgressView!
     @IBOutlet weak var progressPercentageLabel: UILabel!
     @IBOutlet weak var backgroundView: UIView!
+    @IBOutlet weak var cancelButton: UIButton!
     
     weak var delegate : DfuDialogViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        cancelButton.hidden = true
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -40,12 +43,13 @@ class DfuDialogViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     func setProgressText(text : String) {
         progressLabel.text = text
     }
     
     func setProgress(value : Double) {
+        cancelButton.hidden = value <= 0
         progressIndicator.progress = Float(value/100.0)
         progressPercentageLabel.text = String(format: "%1.0f%%", value);
     }

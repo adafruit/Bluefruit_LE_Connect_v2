@@ -283,7 +283,7 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
 
     //AsyncSocket Delegate
 
-    public func socket(sock: GCDAsyncSocket!, didConnectToHost host: String!, port: UInt16) {
+    public func socket(sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
         #if DEBUG
             NSLog("CocoaMQTT: connected to \(host) : \(port)")
         #endif
@@ -295,37 +295,38 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
         #endif
         
         if secureMQTT {
+            
             #if DEBUG
-                sock.startTLS(["GCDAsyncSocketManuallyEvaluateTrust": true, kCFStreamSSLPeerName: self.host])
+                sock.startTLS([GCDAsyncSocketManuallyEvaluateTrust: true])
             #else
-                sock.startTLS([kCFStreamSSLPeerName: self.host])
+                sock.startTLS(nil)
             #endif
         } else {
             sendConnectFrame()
         }
     }
     
-    public func socket(sock: GCDAsyncSocket!, didReceiveTrust trust: SecTrust!, completionHandler: ((Bool) -> Void)!) {
+    public func socket(sock: GCDAsyncSocket, didReceiveTrust trust: SecTrust, completionHandler: ((Bool) -> Void)) {
         #if DEBUG
             NSLog("CocoaMQTT: didReceiveTrust")
         #endif
         completionHandler(true)
     }
     
-    public func socketDidSecure(sock: GCDAsyncSocket!) {
+    public func socketDidSecure(sock: GCDAsyncSocket) {
         #if DEBUG
             NSLog("CocoaMQTT: socketDidSecure")
         #endif
         sendConnectFrame()
     }
 
-    public func socket(sock: GCDAsyncSocket!, didWriteDataWithTag tag: Int) {
+    public func socket(sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
         #if DEBUG
         NSLog("CocoaMQTT: Socket write message with tag: \(tag)")
         #endif
     }
 
-    public func socket(sock: GCDAsyncSocket!, didReadData data: NSData!, withTag tag: Int) {
+    public func socket(sock: GCDAsyncSocket, didReadData data: NSData, withTag tag: Int) {
         let etag: CocoaMQTTReadTag = CocoaMQTTReadTag(rawValue: tag)!
         var bytes = [UInt8]([0])
         switch etag {
@@ -340,7 +341,7 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
         }
     }
 
-    public func socketDidDisconnect(sock: GCDAsyncSocket!, withError err: NSError!) {
+    public func socketDidDisconnect(sock: GCDAsyncSocket, withError err: NSError?) {
         connState = CocoaMQTTConnState.DISCONNECTED
         delegate?.mqttDidDisconnect(self, withError: err)
     }
@@ -395,7 +396,7 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
         case .PUBREC: descr = "PUBREC"
         case .PUBREL: descr = "PUBREL"
         case .PUBCOMP: descr = "PUBCOMP"
-        default: assert(false)
+        default: break
         }
         #if DEBUG
         if descr != nil {
@@ -424,10 +425,6 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
         #if DEBUG
         NSLog("CocoaMQTT: PUBREL Received: \(msgid)")
         #endif
-        if let message = messages[msgid] {
-            messages.removeValueForKey(msgid)
-            delegate?.mqtt(self, didPublishMessage: message, id: msgid)
-        }
         _puback(CocoaMQTTFrameType.PUBCOMP, msgid: msgid)
     }
 
@@ -435,6 +432,7 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
         #if DEBUG
         NSLog("CocoaMQTT: PUBCOMP Received: \(msgid)")
         #endif
+        messages.removeValueForKey(msgid)
     }
 
     func didReceiveSubAck(reader: CocoaMQTTReader, msgid: UInt16) {
@@ -461,11 +459,13 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, GCDAsyncSocketDelegate, Cocoa
         #endif
         delegate?.mqttDidReceivePong(self)
     }
-
+    
     func _nextMessageId() -> UInt16 {
-        let id = self.gmid++
-        if id >= UInt16.max { gmid = 1 }
-        return id
+        if gmid == UInt16.max {
+            gmid = 0
+        }
+        gmid += 1
+        return gmid
     }
 
 }
@@ -582,7 +582,7 @@ public class CocoaMQTTReader {
         case .PINGRESP:
             delegate.didReceivePong(self)
         default:
-            assert(false)
+            break
         }
         readHeader()
     }

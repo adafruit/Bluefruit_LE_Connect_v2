@@ -10,7 +10,9 @@ import Cocoa
 import CoreBluetooth
 
 class InfoViewController: NSViewController {
+    // Config
     private static let kExpandAllNodes  = true
+    private static let kReadForbiddenCCCD = false     // Added to avoid generating a didModifyServices callback when reading Uart/DFU CCCD (bug??)
     
     // UI
     @IBOutlet weak var baseTableView: NSOutlineView!
@@ -366,11 +368,17 @@ extension InfoViewController : CBPeripheralDelegate {
         
         if let descriptors = characteristic.descriptors {
             for descriptor in descriptors {
-                valuesToRead += 1
-                peripheral.readValueForDescriptor(descriptor)
+                
+                let isAForbiddenCCCD = descriptor.UUID.UUIDString.caseInsensitiveCompare("2902") == .OrderedSame && (characteristic.UUID.UUIDString.caseInsensitiveCompare(UartManager.RxCharacteristicUUID) == .OrderedSame || characteristic.UUID.UUIDString.caseInsensitiveCompare(dfuControlPointCharacteristicUUIDString) == .OrderedSame)
+                if InfoViewController.kReadForbiddenCCCD || !isAForbiddenCCCD {
+                    DLog("Read descritor: \(descriptor.UUID.UUIDString) for characteristic: \(characteristic.UUID.UUIDString)")
+                    
+                    valuesToRead += 1
+                    peripheral.readValueForDescriptor(descriptor)
+                }
             }
         }
-        
+
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.updateDiscoveringStatus()
             self.baseTableView.reloadData()
@@ -384,7 +392,6 @@ extension InfoViewController : CBPeripheralDelegate {
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         //DLog("centralManager didUpdateValueForCharacteristic: \(characteristic.UUID.UUIDString)")
-
         valuesRead += 1
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
@@ -394,8 +401,8 @@ extension InfoViewController : CBPeripheralDelegate {
     }
     
     func peripheral(peripheral: CBPeripheral, didUpdateValueForDescriptor descriptor: CBDescriptor, error: NSError?) {
-        //DLog("centralManager didUpdateValueForDescriptor: \(descriptor.UUID.UUIDString)")
-       valuesRead += 1
+        DLog("centralManager didUpdateValueForDescriptor: \(descriptor.UUID.UUIDString), characteristic: \(descriptor.characteristic.UUID.UUIDString)")
+        valuesRead += 1
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.updateDiscoveringStatus()
