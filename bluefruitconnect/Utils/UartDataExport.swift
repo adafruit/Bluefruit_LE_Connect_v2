@@ -129,7 +129,7 @@ class UartDataExport {
                 let xmlItemElement = NSXMLElement(name: "item")
                 xmlItemElement.addChild(NSXMLElement(name: "timestamp", stringValue:"\(unixDate)"))
                 xmlItemElement.addChild(NSXMLElement(name: "mode", stringValue:mode))
-                let dataNode = NSXMLElement(kind: .TextKind, options: NSXMLNodeIsCDATA)
+                let dataNode = NSXMLElement(kind: .TextKind, options: NSXMLNodeOptions.NodeIsCDATA)
                 dataNode.name = "data"
                 dataNode.stringValue = dataString
                 xmlItemElement.addChild(dataNode)
@@ -139,7 +139,7 @@ class UartDataExport {
         }
         
         let xml = NSXMLDocument(rootElement: xmlRootElement)
-        let result = xml.XMLStringWithOptions(NSXMLNodePrettyPrint)
+        let result = xml.XMLStringWithOptions(Int(NSXMLNodeOptions.NodePrettyPrint.rawValue))
         
         return result
 

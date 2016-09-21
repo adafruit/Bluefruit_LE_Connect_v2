@@ -1117,12 +1117,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Adafruit;
 				TargetAttributes = {
 					A949AA861C5ACF19002F960B = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 2X94RM7457;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1135,14 +1136,17 @@
 					A9627AB91CD617B800B93737 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 2X94RM7457;
+						LastSwiftMigration = 0800;
 					};
 					A9627AC51CD617B800B93737 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = 2X94RM7457;
+						LastSwiftMigration = 0800;
 					};
 					A98296671BB1F5E600DD478C = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = 2X94RM7457;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 1;
@@ -1154,6 +1158,7 @@
 					};
 					A9A6441F1CEB721900C762BA = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -1621,6 +1626,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C1A38E2241235B1ED6C49AA4 /* Pods-iOS.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = bluefruitconnect/Platform/iOS/Bluefruit_iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1629,12 +1635,14 @@
 				INFOPLIST_FILE = bluefruitconnect/Platform/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "Adafruit Bluefruit LE Connect";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/iOS/BluefruitConnect-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1643,6 +1651,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 84D89B88F76BCB31A1B27F96 /* Pods-iOS.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = bluefruitconnect/Platform/iOS/Bluefruit_iOS.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1656,6 +1665,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/iOS/BluefruitConnect-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1668,11 +1678,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "bluefruitconnect/Platform/watchOS Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				OTHER_SWIFT_FLAGS = "-D DEBUG";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -1689,6 +1701,7 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
@@ -1699,17 +1712,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBA828893B1A8F67C4BBEE0F /* Pods-watchOS.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = watchOS_Extension;
 				INFOPLIST_FILE = bluefruitconnect/Platform/watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
 			};
@@ -1719,17 +1733,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B86FF3BB211A024B2AE48AD1 /* Pods-watchOS.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				IBSC_MODULE = watchOS_Extension;
 				INFOPLIST_FILE = bluefruitconnect/Platform/watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = 4;
 				VALIDATE_PRODUCT = YES;
 				WATCHOS_DEPLOYMENT_TARGET = 2.2;
@@ -1749,8 +1764,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -1794,8 +1811,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -1815,6 +1834,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -1822,18 +1842,25 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 306E0D3C0B775E80704140AB /* Pods-OSX.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = bluefruitconnect/Platform/OSX/Bluefruit_OSX.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/bluefruitconnect/Platform/OSX/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				OTHER_SWIFT_FLAGS = "\"-D\" \"DEBUG\" $(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.osx;
 				PRODUCT_NAME = "Adafruit Bluefruit LE Connect";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/OSX/BluefruitConnect-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -1841,18 +1868,25 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6AC1184E322E9E9A527BB7F2 /* Pods-OSX.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = bluefruitconnect/Platform/OSX/Bluefruit_OSX.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/bluefruitconnect/Platform/OSX/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.osx;
 				PRODUCT_NAME = "Adafruit Bluefruit LE Connect";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/OSX/BluefruitConnect-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -1860,6 +1894,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					COMMANDLINE,
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/bluefruitconnect/Platform/OSX_CommandLine/Info.plist";
 				OTHER_LDFLAGS = (
 					"-sectcreate",
@@ -1867,9 +1906,11 @@
 					__info_plist,
 					"$(INFOPLIST_FILE)",
 				);
-				OTHER_SWIFT_FLAGS = "-D DEBUG";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "Adafruit Bluefruit LE Connect";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/OSX_CommandLine/BluefruitConnect-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -1877,6 +1918,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = COMMANDLINE;
 				INFOPLIST_FILE = "$(SRCROOT)/bluefruitconnect/Platform/OSX_CommandLine/Info.plist";
 				OTHER_LDFLAGS = (
 					"-sectcreate",
@@ -1887,6 +1929,7 @@
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "Adafruit Bluefruit LE Connect";
 				SWIFT_OBJC_BRIDGING_HEADER = "bluefruitconnect/Platform/OSX_CommandLine/BluefruitConnect-Bridging-Header.h";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};

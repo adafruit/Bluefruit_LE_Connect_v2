@@ -332,7 +332,7 @@ class DetailsViewController: NSViewController {
             alert.addButtonWithTitle("Go to updates")
             alert.addButtonWithTitle("Ask later")
             alert.addButtonWithTitle("Ignore")
-            alert.alertStyle = .WarningAlertStyle
+            alert.alertStyle = .Warning
             alert.beginSheetModalForWindow(window, completionHandler: { modalResponse in
                 if modalResponse == NSAlertFirstButtonReturn {
                     self.modeTabView.selectLastTabViewItem(nil)

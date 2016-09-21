@@ -84,7 +84,7 @@ class PinIOViewController: NSViewController {
             let alert = NSAlert()
             alert.messageText = localizationManager.localizedString("pinio_capabilityquery_querying_title")
             alert.addButtonWithTitle(localizationManager.localizedString("dialog_cancel"))
-            alert.alertStyle = .WarningAlertStyle
+            alert.alertStyle = .Warning
             alert.beginSheetModalForWindow(window) { [unowned self] (returnCode) -> Void in
                 if returnCode == NSAlertFirstButtonReturn {
                     self.pinIO.endPinQuery(true)
@@ -108,7 +108,7 @@ class PinIOViewController: NSViewController {
             alert.messageText = localizationManager.localizedString("pinio_capabilityquery_expired_title")
             alert.informativeText = localizationManager.localizedString("pinio_capabilityquery_expired_message")
             alert.addButtonWithTitle(localizationManager.localizedString("dialog_ok"))
-            alert.alertStyle = .WarningAlertStyle
+            alert.alertStyle = .Warning
             alert.beginSheetModalForWindow(window) { (returnCode) -> Void in
                 if returnCode == NSAlertFirstButtonReturn {
                 }
@@ -163,7 +163,7 @@ extension PinIOViewController : DetailTab {
                     waitingDiscoveryAlert = NSAlert()
                     waitingDiscoveryAlert!.messageText = "Waiting for discovery to finish..."
                     waitingDiscoveryAlert!.addButtonWithTitle(localizationManager.localizedString("dialog_cancel"))
-                    waitingDiscoveryAlert!.alertStyle = .WarningAlertStyle
+                    waitingDiscoveryAlert!.alertStyle = .Warning
                     waitingDiscoveryAlert!.beginSheetModalForWindow(window) { [unowned self] (returnCode) -> Void in
                         if returnCode == NSAlertFirstButtonReturn {
                             self.waitingDiscoveryAlert = nil

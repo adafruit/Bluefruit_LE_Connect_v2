@@ -174,7 +174,19 @@
         replyHandler(replyValues)
     }
     
+    // Mandatory methods for XCode8
+    @available(iOS 9.3, *)
+    func session(session: WCSession, activationDidCompleteWithState activationState: WCSessionActivationState, error: NSError?) {
+        
+    }
 
+    func sessionDidDeactivate(session: WCSession) {
+        
+    }
+    
+    func sessionDidBecomeInactive(session: WCSession) {
+        
+    }
  }
  
  

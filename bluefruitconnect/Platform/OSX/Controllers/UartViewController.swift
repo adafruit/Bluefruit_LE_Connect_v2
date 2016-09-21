@@ -42,7 +42,7 @@ class UartViewController: NSViewController {
     private var tableModeDataMaxWidth : CGFloat = 0
 
     // Export
-    private var exportFileDialog : NSSavePanel?
+    private var exportFileDialog: NSSavePanel?
 
     // MARK:
     override func viewDidLoad() {
@@ -217,7 +217,7 @@ class UartViewController: NSViewController {
                 alert.messageText = localizationManager.localizedString("uart_mqtt_undefinedserver")
                 alert.addButtonWithTitle(localizationManager.localizedString("dialog_ok"))
                 alert.addButtonWithTitle(localizationManager.localizedString("uart_mqtt_editsettings"))
-                alert.alertStyle = .WarningAlertStyle
+                alert.alertStyle = .Warning
                 alert.beginSheetModalForWindow(self.view.window!) { [unowned self] (returnCode) -> Void in
                     if returnCode == NSAlertSecondButtonReturn {
                         let preferencesViewController = self.storyboard?.instantiateControllerWithIdentifier("PreferencesViewController") as! PreferencesViewController
@@ -242,7 +242,7 @@ class UartViewController: NSViewController {
             let alert = NSAlert()
             alert.messageText = localizationManager.localizedString("uart_export_nodata")
             alert.addButtonWithTitle(localizationManager.localizedString("dialog_ok"))
-            alert.alertStyle = .WarningAlertStyle
+            alert.alertStyle = .Warning
             alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
             return
         }
@@ -522,7 +522,7 @@ extension UartViewController: UartModuleDelegate {
             alert.addButtonWithTitle(localizationManager.localizedString("uart_mqtt_editsettings_action"))
             alert.informativeText = message
         }
-        alert.alertStyle = .WarningAlertStyle
+        alert.alertStyle = .Warning
         alert.beginSheetModalForWindow(self.view.window!) { [unowned self] (returnCode) -> Void in
             if isConnectionError && returnCode == NSAlertSecondButtonReturn {
                 let preferencesViewController = self.storyboard?.instantiateControllerWithIdentifier("PreferencesViewController") as! PreferencesViewController

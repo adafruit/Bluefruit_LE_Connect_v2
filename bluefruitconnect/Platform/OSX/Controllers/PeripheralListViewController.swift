@@ -60,7 +60,7 @@ class PeripheralListViewController: NSViewController {
                     let alert = NSAlert()
                     alert.messageText = localizationManager.localizedString("peripherallist_peripheraldisconnected")
                     alert.addButtonWithTitle(localizationManager.localizedString("dialog_ok"))
-                    alert.alertStyle = .WarningAlertStyle
+                    alert.alertStyle = .Warning
                     alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
                 }
             }

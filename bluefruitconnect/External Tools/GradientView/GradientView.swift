@@ -46,16 +46,16 @@ class GradientView: UIView {
         
         let context = UIGraphicsGetCurrentContext()
         
-        CGContextSaveGState(context)
+        CGContextSaveGState(context!)
 //        CGContextClip(context) 
         
         let startPoint = CGPointMake(CGRectGetMinX(rect), CGRectGetMidY(rect))
         let endPoint = CGPointMake(CGRectGetMaxX(rect), CGRectGetMidY(rect))
         
-        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, CGGradientDrawingOptions.DrawsBeforeStartLocation)
+        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions.DrawsBeforeStartLocation)
 //        CGGradientRelease(gradient), gradient = NULL
         
-        CGContextRestoreGState(context)
+        CGContextRestoreGState(context!)
         
         //    CGContextDrawPath(context, kCGPathStroke);
     }

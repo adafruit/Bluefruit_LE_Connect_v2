@@ -162,7 +162,7 @@ class FirmwareUpdateViewController: NSViewController {
             alert.informativeText = "The firmware will be downloaded and updated. Please wait until the process finishes before disconnecting the peripheral"
             alert.addButtonWithTitle("Ok")
             alert.addButtonWithTitle("Cancel")
-            alert.alertStyle = .WarningAlertStyle
+            alert.alertStyle = .Warning
             alert.beginSheetModalForWindow(self.view.window!, completionHandler: { [unowned self](modalResponse) -> Void in
                 if (modalResponse == NSAlertFirstButtonReturn) {
                     self.startDfuUpdateWithFirmware(firmwareInfo)
@@ -173,7 +173,7 @@ class FirmwareUpdateViewController: NSViewController {
             let alert = NSAlert()
             alert.messageText = "This firmware update is not compatible with your bootloader. You need to update your bootloader to version %@ before installing this firmware release \(firmwareInfo.version)"
             alert.addButtonWithTitle("Ok")
-            alert.alertStyle = .WarningAlertStyle
+            alert.alertStyle = .Warning
             alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
         }
     }
@@ -411,7 +411,7 @@ extension FirmwareUpdateViewController : DfuUpdateProcessDelegate {
             let alert = NSAlert()
             alert.messageText = "Update completed successfully"
             alert.addButtonWithTitle("Ok")
-            alert.alertStyle = .WarningAlertStyle
+            alert.alertStyle = .Warning
             alert.beginSheetModalForWindow(window, completionHandler: nil)
         }
         else {
@@ -434,7 +434,7 @@ extension FirmwareUpdateViewController : DfuUpdateProcessDelegate {
                 alert.informativeText = infoMessage
             }
             alert.addButtonWithTitle("Ok")
-            alert.alertStyle = .WarningAlertStyle
+            alert.alertStyle = .Warning
             alert.beginSheetModalForWindow(window, completionHandler: nil)
         }
         else {

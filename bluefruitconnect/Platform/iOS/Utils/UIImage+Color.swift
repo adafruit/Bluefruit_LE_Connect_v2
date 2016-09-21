@@ -19,6 +19,6 @@ extension UIImage
         UIRectFill(rect)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        self.init(CGImage: image.CGImage!)
+        self.init(CGImage: image!.CGImage!)
     }
 }

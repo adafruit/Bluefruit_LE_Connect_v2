@@ -38,7 +38,7 @@ class StatusViewController: NSViewController {
                     let alert = NSAlert()
                     alert.messageText = errorMessage
                     alert.addButtonWithTitle("Ok")
-                    alert.alertStyle = .WarningAlertStyle
+                    alert.alertStyle = .Warning
                     alert.beginSheetModalForWindow(self.view.window!, completionHandler: { [unowned self] (modalResponse) -> Void in
                         self.isAlertBeingPresented = false
                         })

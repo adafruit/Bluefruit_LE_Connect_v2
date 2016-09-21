@@ -372,7 +372,7 @@ class NeopixelModuleViewController: ModuleViewController {
         helpViewController.fileTitle = "Neopixel Sketch"
         
         let cacheDirectoryURL =  try! NSFileManager().URLForDirectory(.CachesDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
-        if let sketchPath = cacheDirectoryURL.URLByAppendingPathComponent("Neopixel.zip").path {
+        if let sketchPath = cacheDirectoryURL.URLByAppendingPathComponent("Neopixel.zip")!.path {
             
             let isSketchZipAvailable = NSFileManager.defaultManager().fileExistsAtPath(sketchPath)
             

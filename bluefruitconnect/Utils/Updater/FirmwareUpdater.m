@@ -10,8 +10,11 @@
 #import "ReleasesParser.h"
 #import "DeviceInfoData.h"
 #import "LogHelper.h"
-#import "Adafruit_Bluefruit_LE_Connect-Swift.h"
+#import "DataDownloader.h"
 
+#ifndef COMMANDLINE
+    #import "Adafruit_Bluefruit_LE_Connect-Swift.h"
+#endif
 
 #pragma mark - FirmwareUpdater
 @interface FirmwareUpdater ()
@@ -225,7 +228,12 @@ static CBUUID *firmwareRevisionCharacteristicUUID;
             DLog(@"Error: onDeviceInfoUpdatedForPeripheral with no delegate");
         }
         
-        NSString *versionToIgnore = [Preferences softwareUpdateIgnoredVersion]; //[[NSUserDefaults standardUserDefaults] stringForKey:@"softwareUpdateIgnoredVersion"];
+#ifdef COMMANDLINE
+        NSString *versionToIgnore =  [[NSUserDefaults standardUserDefaults] stringForKey:@"UpdateIgnoredVersion"];
+#else
+        NSString *versionToIgnore =  [Preferences softwareUpdateIgnoredVersion];
+#endif
+        
         BOOL isFirmwareUpdateAvailable = NO;
         
         NSDictionary *allReleases = releases;
