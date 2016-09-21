@@ -249,11 +249,17 @@ class UartViewController: NSViewController {
         
         // Show save dialog
         exportFileDialog = NSSavePanel()
-        exportFileDialog!.delegate = self
-        exportFileDialog!.message = localizationManager.localizedString("uart_export_save_message")
-        exportFileDialog!.prompt = localizationManager.localizedString("uart_export_save_prompt")
-        exportFileDialog!.canCreateDirectories = true
-        exportFileDialog!.accessoryView = saveDialogCustomView
+        
+        guard let exportFileDialog = exportFileDialog else {
+            DLog("Error: Cannot create NSSavePanel")
+            return
+        }
+        
+        exportFileDialog.delegate = self
+        exportFileDialog.message = localizationManager.localizedString("uart_export_save_message")
+        exportFileDialog.prompt = localizationManager.localizedString("uart_export_save_prompt")
+        exportFileDialog.canCreateDirectories = true
+        exportFileDialog.accessoryView = saveDialogCustomView
 
         for exportFormat in uartData.exportFormats {
             saveDialogPopupButton.addItemWithTitle(exportFormat.rawValue)
@@ -261,40 +267,44 @@ class UartViewController: NSViewController {
 
         updateSaveFileName()
 
-        if let window = self.view.window {
-            exportFileDialog!.beginSheetModalForWindow(window) {[unowned self] (result) -> Void in
-                if result == NSFileHandlingPanelOKButton {
-                    if let url = self.exportFileDialog!.URL {
-
-                        // Save
-                        var text : String?
-                        let exportFormatSelected = self.uartData.exportFormats[self.saveDialogPopupButton.indexOfSelectedItem]
-
-                        let dataBuffer = self.uartData.dataBuffer
-                        switch(exportFormatSelected) {
-                        case .txt:
-                            text = UartDataExport.dataAsText(dataBuffer)
-                        case .csv:
-                            text = UartDataExport.dataAsCsv(dataBuffer)
-                        case .json:
-                            text = UartDataExport.dataAsJson(dataBuffer)
-                            break
-                        case .xml:
-                            text = UartDataExport.dataAsXml(dataBuffer)
-                            break
-                        }
-                        
-                        // Write data
-                        do {
-                            try text?.writeToURL(url, atomically: true, encoding: NSUTF8StringEncoding)
-                        }
-                        catch let error {
-                            DLog("Error exporting file \(url.absoluteString): \(error)")
-                        }
+        guard let window = self.view.window else {
+            DLog("Error: window not defined")
+            return
+        }
+        
+        exportFileDialog.beginSheetModalForWindow(window) {[unowned self] (result) -> Void in
+            if result == NSFileHandlingPanelOKButton {
+                if let url = self.exportFileDialog!.URL {
+                    
+                    // Save
+                    var text : String?
+                    let exportFormatSelected = self.uartData.exportFormats[self.saveDialogPopupButton.indexOfSelectedItem]
+                    
+                    let dataBuffer = self.uartData.dataBuffer
+                    switch(exportFormatSelected) {
+                    case .txt:
+                        text = UartDataExport.dataAsText(dataBuffer)
+                    case .csv:
+                        text = UartDataExport.dataAsCsv(dataBuffer)
+                    case .json:
+                        text = UartDataExport.dataAsJson(dataBuffer)
+                        break
+                    case .xml:
+                        text = UartDataExport.dataAsXml(dataBuffer)
+                        break
+                    }
+                    
+                    // Write data
+                    do {
+                        try text?.writeToURL(url, atomically: true, encoding: NSUTF8StringEncoding)
+                    }
+                    catch let error {
+                        DLog("Error exporting file \(url.absoluteString): \(error)")
                     }
                 }
             }
         }
+        
     }
     
     @IBAction func onExportFormatChanged(sender: AnyObject) {
@@ -302,11 +312,14 @@ class UartViewController: NSViewController {
     }
     
     private func updateSaveFileName() {
-        if let exportFileDialog = exportFileDialog {
-            let isInHexMode = Preferences.uartIsInHexMode
-            let exportFormatSelected = uartData.exportFormats[saveDialogPopupButton.indexOfSelectedItem]
-            exportFileDialog.nameFieldStringValue = "uart\(isInHexMode ? ".hex" : "").\(exportFormatSelected.rawValue)"
+        
+        guard let exportFileDialog = exportFileDialog else {
+            return
         }
+        
+        let isInHexMode = Preferences.uartIsInHexMode
+        let exportFormatSelected = uartData.exportFormats[saveDialogPopupButton.indexOfSelectedItem]
+        exportFileDialog.nameFieldStringValue = "uart\(isInHexMode ? ".hex" : "").\(exportFormatSelected.rawValue)"
     }
 }
 
