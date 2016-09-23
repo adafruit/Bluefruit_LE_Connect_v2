@@ -10,12 +10,12 @@ import Foundation
 import CoreBluetooth
 
 class BlePeripheral {
-    var peripheral : CBPeripheral!
-    var advertisementData : [String : AnyObject]
-    var rssi : Int
-    var lastSeenTime : CFAbsoluteTime
+    var peripheral: CBPeripheral!
+    var advertisementData: [String: AnyObject]
+    var rssi: Int
+    var lastSeenTime: CFAbsoluteTime
     
-    var name : String? {
+    var name: String? {
         get {
             return peripheral.name
         }

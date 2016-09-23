@@ -177,7 +177,68 @@ class PeripheralListViewController: NSViewController {
     }
     
     
-    // MARK - Actions
+    // MARK: - Advertising Packet
+    private func showAdverisingPacketData(blePeripheral: BlePeripheral) {
+        let localizationManager = LocalizationManager.sharedInstance
+        var advertisementString = ""
+
+        for (key, value) in blePeripheral.advertisementData {
+            switch key {
+            case CBAdvertisementDataLocalNameKey:
+                let name = value as! String
+                advertisementString += "Local name: \(name)\n"
+            case CBAdvertisementDataManufacturerDataKey:
+                let manufacturerData = value as! NSData
+                let manufacturerHexString =  hexString(manufacturerData)
+                advertisementString += "Manufacturer: \(manufacturerHexString)\n"
+                
+            case CBAdvertisementDataServiceUUIDsKey:
+                let serviceUuids = value as! [CBUUID]
+                advertisementString += "Services UUIDs:\n"
+                for (cbuuid) in serviceUuids {
+                    advertisementString += "\t\(cbuuid.UUIDString)\n"
+                }
+                
+            case CBAdvertisementDataServiceDataKey:
+                let serviceData = value as! [CBUUID: NSData]
+                advertisementString += "Services Data:\n"
+                for (cbuuid, data) in serviceData {
+                    advertisementString += "\tUUID: \(cbuuid.UUIDString) Data: \(hexString(data))\n"
+                }
+                
+            case CBAdvertisementDataOverflowServiceUUIDsKey:
+                let serviceUuids = value as! [CBUUID]
+                advertisementString += "Overflow services:\n"
+                for (cbuuid) in serviceUuids {
+                    advertisementString += "\t\(cbuuid.UUIDString)\n"
+                }
+            case CBAdvertisementDataTxPowerLevelKey:
+                let txPower = value as! NSNumber
+                advertisementString += "TX Power Level: \(txPower.integerValue)\n"
+            case CBAdvertisementDataIsConnectable:
+                let isConnectable = value as! Bool
+                advertisementString += "Connectable: \(isConnectable ? "true":"false")\n"
+            case CBAdvertisementDataSolicitedServiceUUIDsKey:
+                let serviceUuids = value as! [CBUUID]
+                advertisementString += "Solicited Service: \(value)\n"
+                for (cbuuid) in serviceUuids {
+                    advertisementString += "\t\(cbuuid.UUIDString)\n"
+                }
+                
+            default:
+                DLog("unknown advertising key: \(key)")
+            }
+        }
+        
+        let alert = NSAlert()
+        alert.messageText = "Advertising packet data"
+        alert.informativeText = advertisementString
+        alert.addButtonWithTitle(localizationManager.localizedString("dialog_ok"))
+        alert.alertStyle = .Warning
+        alert.beginSheetModalForWindow(self.view.window!, completionHandler: nil)
+    }
+    
+    // MARK: - Actions
     @IBAction func onClickRefresh(sender: AnyObject) {
         BleManager.sharedInstance.refreshPeripherals()
     }
@@ -258,12 +319,19 @@ extension PeripheralListViewController : NSTableViewDelegate {
             let name = blePeripheral.name != nil ? blePeripheral.name! : LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
             cell.titleTextField.stringValue = name
             
+            let localizationManager = LocalizationManager.sharedInstance
+
             let isUartCapable = blePeripheral.isUartAdvertised()
-            cell.subtitleTextField.stringValue = LocalizationManager.sharedInstance.localizedString(isUartCapable ? "peripherallist_uartavailable" : "peripherallist_uartunavailable")
+            cell.subtitleTextField.stringValue = localizationManager.localizedString(isUartCapable ? "peripherallist_uartavailable" : "peripherallist_uartunavailable")
+            //cell.subtitleTextField.stringValue = isUartCapable ? LocalizationManager.sharedInstance.localizedString("peripherallist_uartavailable"):""
             cell.rssiImageView.image = signalImageForRssi(blePeripheral.rssi)
             
             cell.onDisconnect = {
                 tableView.deselectAll(nil)
+            }
+            
+            cell.onClickAdvertising = { [unowned self] in
+                self.showAdverisingPacketData(blePeripheral)
             }
             
             cell.showDisconnectButton(row == peripheralList.selectedPeripheralRow)
