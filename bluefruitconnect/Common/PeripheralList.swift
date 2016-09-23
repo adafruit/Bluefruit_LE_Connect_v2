@@ -122,7 +122,7 @@ class PeripheralList {
         
         return result
     }
-    /*
+    
     func disconnected() {
         // Check that is really disconnected
         if BleManager.sharedInstance.blePeripheralConnected == nil {
@@ -130,7 +130,7 @@ class PeripheralList {
            // DLog("Peripheral selected row: -1")
             
         }
-    }*/
+    }
     
     func connectToPeripheral(identifier: String?) {
         let bleManager = BleManager.sharedInstance

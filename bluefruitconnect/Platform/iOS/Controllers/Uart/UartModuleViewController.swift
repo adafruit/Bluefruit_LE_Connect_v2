@@ -307,24 +307,24 @@ class UartModuleViewController: ModuleViewController {
         let localizationManager = LocalizationManager.sharedInstance
         let alertController = UIAlertController(title: "Export data", message: "Choose the prefered format:", preferredStyle: .ActionSheet)
         
-        for exportFormat in uartData.exportFormats {
+        for exportFormat in UartModuleManager.kExportFormats {
             let exportAction = UIAlertAction(title: exportFormat.rawValue, style: .Default) {[unowned self] (_) in
-                var text : String?
+                
+                var exportData: AnyObject?
                 
                 switch(exportFormat) {
                 case .txt:
-                    text = UartDataExport.dataAsText(dataBuffer)
+                    exportData = UartDataExport.dataAsText(dataBuffer)
                 case .csv:
-                    text = UartDataExport.dataAsCsv(dataBuffer)
+                    exportData = UartDataExport.dataAsCsv(dataBuffer)
                 case .json:
-                    text = UartDataExport.dataAsJson(dataBuffer)
-                    break
+                    exportData = UartDataExport.dataAsJson(dataBuffer)
                 case .xml:
-                    text = UartDataExport.dataAsXml(dataBuffer)
-                    break
+                    exportData = UartDataExport.dataAsXml(dataBuffer)
+                case .bin:
+                    exportData = UartDataExport.dataAsBinary(dataBuffer)
                 }
-                self.exportString(text)
-                
+                self.exportData(exportData)
             }
             alertController.addAction(exportAction)
         }
@@ -336,19 +336,21 @@ class UartModuleViewController: ModuleViewController {
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     
-    private func exportString(text: String?) {
-        if let text = text {
-            let activityViewController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+    
+    private func exportData(data: AnyObject?) {
+        if let data = data {
+            let activityViewController = UIActivityViewController(activityItems: [data], applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = exportButton
             
             navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
-
+            
         }
         else {
             DLog("exportString with empty text")
             showDialogWarningNoTextToExport()
         }
     }
+    
     
     private func showDialogWarningNoTextToExport() {
         let localizationManager = LocalizationManager.sharedInstance

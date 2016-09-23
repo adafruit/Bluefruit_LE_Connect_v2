@@ -306,9 +306,9 @@ class UartViewController: NSViewController {
         }
     }
     
-    private func exportData(data: NSData, url: NSURL) {
+    private func exportData(data: NSData?, url: NSURL) {
         do {
-            try data.writeToURL(url, options: [.DataWritingAtomic])
+            try data?.writeToURL(url, options: [.DataWritingAtomic])
         }
         catch let error {
             DLog("Error exporting file \(url.absoluteString): \(error)")

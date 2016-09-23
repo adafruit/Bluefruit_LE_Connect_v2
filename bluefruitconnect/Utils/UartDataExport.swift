@@ -152,7 +152,11 @@ class UartDataExport {
         #endif
     }
     
-    static func dataAsBinary(dataBuffer: [UartDataChunk]) -> NSData {
+    static func dataAsBinary(dataBuffer: [UartDataChunk]) -> NSData? {
+        guard dataBuffer.count > 0 else {
+            return nil
+        }
+        
         let result = NSMutableData()
         for dataChunk in dataBuffer {
             result.appendData(dataChunk.data)

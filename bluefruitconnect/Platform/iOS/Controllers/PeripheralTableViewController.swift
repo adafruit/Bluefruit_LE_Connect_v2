@@ -250,7 +250,7 @@ class PeripheralTableViewController: UITableViewController {
         WatchSessionManager.sharedInstance.updateApplicationContext(.Scan)
         
         // Calculate num cells
-        cachedNumOfTableItems = BleManager.sharedInstance.blePeripheralsCount()
+        cachedNumOfTableItems = peripheralList.filteredPeripherals(true).count
         return cachedNumOfTableItems
     }
     
@@ -260,15 +260,18 @@ class PeripheralTableViewController: UITableViewController {
         let row = indexPath.row
         let bleManager = BleManager.sharedInstance
         let blePeripheralsFound = bleManager.blePeripherals()
-        if row < peripheralList.blePeripherals.count {      // To avoid problems with peripherals disconnecting
-            let selectedBlePeripheralIdentifier = peripheralList.blePeripherals[row]
+        let filteredPeripherals = peripheralList.filteredPeripherals(false)
+        
+        if row < filteredPeripherals.count {      // To avoid problems with peripherals disconnecting
+            let selectedBlePeripheralIdentifier = filteredPeripherals[row];
             if let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier] {
-                
+                let localizationManager = LocalizationManager.sharedInstance
+
                 let peripheralCell =  cell as! PeripheralTableViewCell
-                peripheralCell.titleLabel.text = blePeripheral.name ?? "{No Name}"
+                peripheralCell.titleLabel.text = blePeripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")
                 
                 let isUartCapable = blePeripheral.isUartAdvertised()
-                peripheralCell.subtitleLabel.text = isUartCapable ?"Uart capable":"No Uart detected"
+                peripheralCell.subtitleLabel.text = localizationManager.localizedString(isUartCapable ? "peripherallist_uartavailable" : "peripherallist_uartunavailable")
                 peripheralCell.rssiImageView.image = signalImageForRssi(blePeripheral.rssi)
                 
                 // Show either a disconnect button or a disclosure indicator depending on the UISplitViewController displayMode
