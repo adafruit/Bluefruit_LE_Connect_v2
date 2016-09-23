@@ -20,6 +20,7 @@ class PreferencesViewController: NSViewController {
     // Uart
     @IBOutlet weak var receivedDataColorWell: NSColorWell!
     @IBOutlet weak var sentDataColorWell: NSColorWell!
+    @IBOutlet weak var uartShowInvisibleCharsButton: NSButton!
     
     // Mqtt
     @IBOutlet weak var mqttServerTextField: NSTextField!
@@ -59,6 +60,8 @@ class PreferencesViewController: NSViewController {
         let uartSentDataColor = Preferences.uartSentDataColor
         sentDataColorWell.color = uartSentDataColor
 
+        uartShowInvisibleCharsButton.state = Preferences.uartShowInvisibleChars ? NSOnState:NSOffState
+        
         // Mqtt Server
         let mqttSettings = MqttSettings.sharedInstance
         if let serverAddress = mqttSettings.serverAddress {
@@ -139,6 +142,10 @@ class PreferencesViewController: NSViewController {
         else if (sender == sentDataColorWell) {
             Preferences.uartSentDataColor = sender.color
         }
+    }
+    
+    @IBAction func onChangedUartShowInvisibleChars(sender: NSButton) {
+        Preferences.uartShowInvisibleChars = sender.state == NSOnState
     }
     
     // MARK: - Mqtt

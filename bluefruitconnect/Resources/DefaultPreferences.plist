@@ -24,6 +24,8 @@
 	<true/>
 	<key>UartIsAutomaticEolEnabled</key>
 	<true/>
+	<key>UartShowInvisibleChars</key>
+	<true/>
 	<key>NeopixelIsSketchTooltipEnabledKey</key>
 	<true/>
 </dict>

@@ -149,12 +149,24 @@ class UartModuleManager: NSObject {
             attributedString = NSAttributedString(string: hexValue, attributes: textAttributes)
         }
         else {
-            let utf8Value = NSString(data:data, encoding: NSUTF8StringEncoding) as String?
-            if let utf8Value = utf8Value {
-                let text = utf8Value
-                //let text = utf8Value.stringByReplacingOccurrencesOfString("\r\n", withString: " ")       // Replace newlines with spaces to show the whole line
-                //                text = utf8Value.stringByReplacingOccurrencesOfString("\r", withString: "")       // Replace newlines with spaces to show the whole line
-                attributedString = NSAttributedString(string: text, attributes: textAttributes)
+            if let value = NSString(data:data, encoding: NSASCIIStringEncoding) as String? {
+                
+                var representableValue: String
+                
+                if Preferences.uartShowInvisibleChars {
+                    representableValue = ""
+                    for scalar in value.unicodeScalars {
+                        let isRepresentable = scalar.value>=32 && scalar.value<127
+                        DLog("\(scalar.value). isVis: \( isRepresentable ? "true":"false" )")
+                        
+                        representableValue.append(isRepresentable ? scalar:UnicodeScalar("�"))
+                    }
+                }
+                else {
+                    representableValue = value
+                }
+                
+                attributedString = NSAttributedString(string: representableValue, attributes: textAttributes)
             }
         }
         

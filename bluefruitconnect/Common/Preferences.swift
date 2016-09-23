@@ -31,6 +31,8 @@ import Foundation
     private static let uartIsInHexModeKey = "UartIsInHexMode"
     private static let uartIsEchoEnabledKey = "UartIsEchoEnabled"
     private static let uartIsAutomaticEolEnabledKey = "UartIsAutomaticEolEnabled"
+    private static let uartShowInvisibleCharsKey = "UartShowInvisibleChars"
+    
     private static let neopixelIsSketchTooltipEnabledKey = "NeopixelIsSketchTooltipEnabledKey"
     
     enum PreferencesNotifications: String {
@@ -99,7 +101,6 @@ import Foundation
     
     
     // MARK: - Uart
-    //    #if os(OSX)
     static var uartReceveivedDataColor: Color {
         get {
             let defaults = NSUserDefaults.standardUserDefaults()
@@ -125,7 +126,16 @@ import Foundation
             NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
         }
     }
-    //    #endif
+    
+    static var uartShowInvisibleChars: Bool {
+        get {
+            return getBoolPreference(Preferences.uartShowInvisibleCharsKey)
+        }
+        set {
+            setBoolPreference(Preferences.uartShowInvisibleCharsKey, newValue: newValue)
+        }
+    }
+    
     
     static var uartIsDisplayModeTimestamp: Bool {
         get {
