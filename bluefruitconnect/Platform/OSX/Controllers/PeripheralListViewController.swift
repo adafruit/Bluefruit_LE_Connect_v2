@@ -10,10 +10,26 @@ import Cocoa
 import CoreBluetooth
 
 class PeripheralListViewController: NSViewController {
-    
-    @IBOutlet weak var baseTableView: NSTableView!
+    // Config
+    static let kFiltersPanelClosedHeight: CGFloat = 55
+    static let kFiltersPanelOpenHeight: CGFloat = 150
 
+    // UI
+    @IBOutlet weak var baseTableView: NSTableView!
+    @IBOutlet weak var filtersPanelView: NSView!
+    @IBOutlet weak var filtersPanelViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var filterTitleTextField: NSTextField!
+    @IBOutlet weak var filtersDisclosureButton: NSButton!
+    @IBOutlet weak var filtersNameSearchField: NSSearchField!
+    @IBOutlet weak var filterRssiValueLabel: NSTextField!
+    @IBOutlet weak var filtersRssiSlider: NSSlider!
+    @IBOutlet weak var filtersOnlyWithUartButton: NSButton!
+    @IBOutlet weak var filtersClearButton: NSButton!
+
+    // Data
     private let peripheralList = PeripheralList()
+    private var isFilterPanelOpen = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,15 +38,24 @@ class PeripheralListViewController: NSViewController {
         StatusManager.sharedInstance.peripheralListViewController = self
         
         // Subscribe to Ble Notifications
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralListViewController.didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralListViewController.didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PeripheralListViewController.didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
     }
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: BleManager.BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
+    }
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+
+        // Filters
+        peripheralList.setDefaultFilters()
+        openFiltersPanel(false, animated: false)
+        updateFiltersTitle()        
     }
     
     func didDiscoverPeripheral(notification : NSNotification) {
@@ -81,16 +106,139 @@ class PeripheralListViewController: NSViewController {
         }
     }
     
+    // MARK: - Filters
+    private func openFiltersPanel(isOpen: Bool, animated: Bool) {
+        
+        self.filtersDisclosureButton.state = isOpen ? NSOnState:NSOffState
+        
+        NSAnimationContext.runAnimationGroup({ [unowned self] (context) in
+            
+            context.duration = animated ? 0.3:0
+            self.filtersPanelViewHeightConstraint.animator().constant = isOpen ? PeripheralListViewController.kFiltersPanelOpenHeight:PeripheralListViewController.kFiltersPanelClosedHeight
+            
+            }, completionHandler: nil)
+    }
+
+    private func updateFiltersTitle() {
+        var filtersTitle: String?
+        if let filterName = peripheralList.filterName {
+            filtersTitle = filterName
+        }
+        
+        if let rssiFilterValue = peripheralList.rssiFilterValue {
+            let rssiString = "Rssi >= \(rssiFilterValue)"
+            if filtersTitle != nil {
+                filtersTitle!.appendContentsOf(", \(rssiString)")
+            }
+            else {
+                filtersTitle = rssiString
+            }
+        }
+        
+        if peripheralList.isOnlyUartEnabled {
+            let uartString = "with Uart"
+            if filtersTitle != nil {
+                filtersTitle!.appendContentsOf(", \(uartString)")
+            }
+            else {
+                filtersTitle = uartString
+            }
+        }
+        
+        filterTitleTextField.stringValue = filtersTitle ?? "No filter selected"
+        
+        filtersClearButton.hidden = !peripheralList.isAnyFilterEnabled()
+    }
+
+    
+    func onFilterNameSettingsNameContains(sender: NSMenuItem) {
+        peripheralList.isFilterNameExact = false
+        updateFilters()
+    }
+    
+    func onFilterNameSettingsNameEquals(sender: NSMenuItem) {
+        peripheralList.isFilterNameExact = true
+        updateFilters()
+    }
+    
+    func onFilterNameSettingsMatchCase(sender: NSMenuItem) {
+        peripheralList.isFilterNameCaseInsensitive = false
+        updateFilters()
+    }
+    
+    func onFilterNameSettingsIgnoreCase(sender: NSMenuItem) {
+        peripheralList.isFilterNameCaseInsensitive = true
+        updateFilters()
+    }
+    
+    private func updateFilters() {
+        updateFiltersTitle()
+        baseTableView.reloadData()
+    }
+    
+    
     // MARK - Actions
     @IBAction func onClickRefresh(sender: AnyObject) {
         BleManager.sharedInstance.refreshPeripherals()
     }
+    
+    @IBAction func onClickFilters(sender: AnyObject) {
+        isFilterPanelOpen = !isFilterPanelOpen
+        openFiltersPanel(isFilterPanelOpen, animated: true)
+    }
+    
+    
+    @IBAction func onEditFilterName(sender: AnyObject) {
+        let isEmpty = (sender.stringValue as String).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).characters.count == 0
+        peripheralList.filterName = isEmpty ? nil:sender.stringValue
+        updateFilters()
+    }
+   
+    @IBAction func onClickFilterNameSettings(sender: AnyObject) {
+        let menu = NSMenu(title: "Settings")
+        
+        menu.addItemWithTitle("Name contains", action: #selector(onFilterNameSettingsNameContains(_:)), keyEquivalent: "")
+        menu.addItemWithTitle("Name equals", action: #selector(onFilterNameSettingsNameEquals(_:)), keyEquivalent: "")
+        menu.addItem(NSMenuItem.separatorItem())
+        menu.addItemWithTitle("Matching case", action: #selector(onFilterNameSettingsMatchCase(_:)), keyEquivalent: "")
+        menu.addItemWithTitle("Ignoring case", action: #selector(onFilterNameSettingsIgnoreCase(_:)), keyEquivalent: "")
+        //NSMenu.popUpContextMenu(menu, withEvent: NSEvent(), forView: view)
+        
+        let selectedOption0 = peripheralList.isFilterNameExact ? 1:0
+        menu.itemAtIndex(selectedOption0)!.offStateImage = NSImage(named: "NSMenuOnStateTemplate")
+        let selectedOption1 = peripheralList.isFilterNameCaseInsensitive ? 4:3
+        menu.itemAtIndex(selectedOption1)!.offStateImage = NSImage(named: "NSMenuOnStateTemplate")
+        
+        menu.popUpMenuPositioningItem(nil, atLocation: NSEvent.mouseLocation(), inView: nil)
+    }
+    
+    
+    @IBAction func onFilterRssiChanged(sender: NSSlider) {
+        let rssiValue = -sender.integerValue
+        peripheralList.rssiFilterValue = rssiValue
+        filterRssiValueLabel.stringValue = "\(rssiValue) dBM"
+        updateFilters()
+    }
+    
+    @IBAction func onFilterOnlyUartChanged(sender: NSButton) {
+        peripheralList.isOnlyUartEnabled = sender.state == NSOnState
+        updateFilters()
+    }
+    
+    @IBAction func onClickRemoveFilters(sender: AnyObject) {
+        peripheralList.setDefaultFilters()
+        filtersNameSearchField.stringValue = peripheralList.filterName ?? ""
+        filtersRssiSlider.integerValue = peripheralList.rssiFilterValue != nil ? -peripheralList.rssiFilterValue! : 100
+        filtersOnlyWithUartButton.state = peripheralList.isOnlyUartEnabled ? NSOnState:NSOffState
+        updateFilters()
+    }
+    
 }
 
 // MARK: - NSTableViewDataSource
 extension PeripheralListViewController : NSTableViewDataSource {
     func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-        return BleManager.sharedInstance.blePeripheralsCount()
+        return peripheralList.filteredPeripherals(true).count
     }
 }
 
@@ -102,20 +250,24 @@ extension PeripheralListViewController : NSTableViewDelegate {
         
         let bleManager = BleManager.sharedInstance
         let blePeripheralsFound = bleManager.blePeripherals()
-        let selectedBlePeripheralIdentifier = peripheralList.blePeripherals[row];
-        let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-        let name = blePeripheral.name != nil ? blePeripheral.name! : LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
-        cell.titleTextField.stringValue = name
+        let filteredPeripherals = peripheralList.filteredPeripherals(false)
         
-        let isUartCapable = blePeripheral.isUartAdvertised()
-        cell.subtitleTextField.stringValue = LocalizationManager.sharedInstance.localizedString(isUartCapable ? "peripherallist_uartavailable" : "peripherallist_uartunavailable")
-        cell.rssiImageView.image = signalImageForRssi(blePeripheral.rssi)
-        
-        cell.onDisconnect = {
-            tableView.deselectAll(nil)
+        if row < filteredPeripherals.count {        // Check to avoid race conditions
+            let selectedBlePeripheralIdentifier = filteredPeripherals[row];
+            let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
+            let name = blePeripheral.name != nil ? blePeripheral.name! : LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
+            cell.titleTextField.stringValue = name
+            
+            let isUartCapable = blePeripheral.isUartAdvertised()
+            cell.subtitleTextField.stringValue = LocalizationManager.sharedInstance.localizedString(isUartCapable ? "peripherallist_uartavailable" : "peripherallist_uartunavailable")
+            cell.rssiImageView.image = signalImageForRssi(blePeripheral.rssi)
+            
+            cell.onDisconnect = {
+                tableView.deselectAll(nil)
+            }
+            
+            cell.showDisconnectButton(row == peripheralList.selectedPeripheralRow)
         }
-        
-        cell.showDisconnectButton(row == peripheralList.selectedPeripheralRow)
         
         return cell;
     }

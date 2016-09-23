@@ -67,9 +67,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         updateStatusContent(nil)
 
         let notificationCenter =  NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(AppDelegate.updateStatus(_:)), name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(AppDelegate.updateStatus(_:)), name: UartManager.UartNotifications.DidSendData.rawValue, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(AppDelegate.updateStatus(_:)), name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(updateStatus(_:)), name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(updateStatus(_:)), name: UartManager.UartNotifications.DidSendData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(updateStatus(_:)), name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
     }
     
     func releaseStatusButton() {
@@ -106,68 +106,71 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         statusItem.title = title
     }
  
-    func updateStatusContent(notification : NSNotification?) {
+    func updateStatusContent(notification: NSNotification?) {
         let bleManager = BleManager.sharedInstance
 
         let statusText = StatusManager.sharedInstance.statusDescription()
-
-        statusMenu.removeAllItems()
-
-        // Main Area
-        let descriptionItem = NSMenuItem(title: statusText, action: nil, keyEquivalent: "")
-        descriptionItem.enabled = false
-        statusMenu.addItem(descriptionItem)
-//        statusMenu.addItem(NSMenuItem(title: isScanning ?"Stop Scanning":"Start Scanning", action: "statusGeneralAction:", keyEquivalent: ""))
-        statusMenu.addItem(NSMenuItem.separatorItem())
-
-        // Connecting/Connected Peripheral
-        var featuredPeripheral = bleManager.blePeripheralConnected
-        if (featuredPeripheral == nil) {
-            featuredPeripheral = bleManager.blePeripheralConnecting
-        }
-        if let featuredPeripheral = featuredPeripheral {
-            let menuItem = addPeripheralToSystemMenu(featuredPeripheral)
-            menuItem.offStateImage = NSImage(named: "NSMenuOnStateTemplate")
-        }
-
-        // Discovered Peripherals
-        let blePeripheralsFound = bleManager.blePeripherals()
-        for identifier in bleManager.blePeripheralFoundAlphabeticKeys() {
-            if (identifier != featuredPeripheral?.peripheral.identifier.UUIDString) {
-                let blePeripheral = blePeripheralsFound[identifier]!
-                addPeripheralToSystemMenu(blePeripheral)
-            }
-        }
         
-        // Uart data
-        if let featuredPeripheral = featuredPeripheral {
-            // Separator
-            statusMenu.addItem(NSMenuItem.separatorItem())
+        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in            // Execute on main thrad to avoid flickering on macOS Sierra
             
-            // Uart title
-            let uartTitleMenuItem = NSMenuItem(title: "\(featuredPeripheral.name) Stats:", action: nil, keyEquivalent: "")
-            uartTitleMenuItem.enabled = false
-            statusMenu.addItem(uartTitleMenuItem)
-
-            // Stats
-            let receivedBytes = featuredPeripheral.uartData.receivedBytes
-            let sentBytes = featuredPeripheral.uartData.sentBytes
-
-            let uartSentMenuItem = NSMenuItem(title: "Uart Sent: \(sentBytes) bytes", action: nil, keyEquivalent: "")
-            let uartReceivedMenuItem = NSMenuItem(title: "Uart Received: \(receivedBytes) bytes", action: nil, keyEquivalent: "")
+            self.statusMenu.removeAllItems()
             
-            uartSentMenuItem.indentationLevel = 1
-            uartReceivedMenuItem.indentationLevel = 1
-            uartSentMenuItem.enabled = false
-            uartReceivedMenuItem.enabled = false
-            statusMenu.addItem(uartSentMenuItem)
-            statusMenu.addItem(uartReceivedMenuItem)
-        }
+            // Main Area
+            let descriptionItem = NSMenuItem(title: statusText, action: nil, keyEquivalent: "")
+            descriptionItem.enabled = false
+            self.statusMenu.addItem(descriptionItem)
+            //        statusMenu.addItem(NSMenuItem(title: isScanning ?"Stop Scanning":"Start Scanning", action: "statusGeneralAction:", keyEquivalent: ""))
+            self.statusMenu.addItem(NSMenuItem.separatorItem())
+            
+            // Connecting/Connected Peripheral
+            var featuredPeripheral = bleManager.blePeripheralConnected
+            if (featuredPeripheral == nil) {
+                featuredPeripheral = bleManager.blePeripheralConnecting
+            }
+            if let featuredPeripheral = featuredPeripheral {
+                let menuItem = self.addPeripheralToSystemMenu(featuredPeripheral)
+                menuItem.offStateImage = NSImage(named: "NSMenuOnStateTemplate")
+            }
+            
+            // Discovered Peripherals
+            let blePeripheralsFound = bleManager.blePeripherals()
+            for identifier in bleManager.blePeripheralFoundAlphabeticKeys() {
+                if (identifier != featuredPeripheral?.peripheral.identifier.UUIDString) {
+                    let blePeripheral = blePeripheralsFound[identifier]!
+                    self.addPeripheralToSystemMenu(blePeripheral)
+                }
+            }
+            
+            // Uart data
+            if let featuredPeripheral = featuredPeripheral {
+                // Separator
+                self.statusMenu.addItem(NSMenuItem.separatorItem())
+                
+                // Uart title
+                let uartTitleMenuItem = NSMenuItem(title: "\(featuredPeripheral.name) Stats:", action: nil, keyEquivalent: "")
+                uartTitleMenuItem.enabled = false
+                self.statusMenu.addItem(uartTitleMenuItem)
+                
+                // Stats
+                let receivedBytes = featuredPeripheral.uartData.receivedBytes
+                let sentBytes = featuredPeripheral.uartData.sentBytes
+                
+                let uartSentMenuItem = NSMenuItem(title: "Uart Sent: \(sentBytes) bytes", action: nil, keyEquivalent: "")
+                let uartReceivedMenuItem = NSMenuItem(title: "Uart Received: \(receivedBytes) bytes", action: nil, keyEquivalent: "")
+                
+                uartSentMenuItem.indentationLevel = 1
+                uartReceivedMenuItem.indentationLevel = 1
+                uartSentMenuItem.enabled = false
+                uartReceivedMenuItem.enabled = false
+                self.statusMenu.addItem(uartSentMenuItem)
+                self.statusMenu.addItem(uartReceivedMenuItem)
+            }
+            })
     }
 
-    func addPeripheralToSystemMenu(blePeripheral : BlePeripheral) -> NSMenuItem {
+    func addPeripheralToSystemMenu(blePeripheral: BlePeripheral) -> NSMenuItem {
         let name = blePeripheral.name != nil ? blePeripheral.name! : LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
-        let menuItem = NSMenuItem(title: name, action: #selector(AppDelegate.onClickPeripheralMenuItem(_:)), keyEquivalent: "")
+        let menuItem = NSMenuItem(title: name, action: #selector(onClickPeripheralMenuItem(_:)), keyEquivalent: "")
         let identifier = blePeripheral.peripheral.identifier.UUIDString
         menuItem.representedObject = identifier
         statusMenu.addItem(menuItem)

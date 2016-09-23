@@ -129,6 +129,7 @@
 		A96A7A071C74F329000C37E3 /* Synchronize.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96A7A061C74F329000C37E3 /* Synchronize.swift */; };
 		A96A7A081C74F329000C37E3 /* Synchronize.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96A7A061C74F329000C37E3 /* Synchronize.swift */; };
 		A982968B1BB222D700DD478C /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A982968A1BB222D700DD478C /* LogHelper.swift */; };
+		A984FEED1D943BF1001C5951 /* SeparatorLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A984FEEC1D943BF1001C5951 /* SeparatorLineView.swift */; };
 		A987F3121C66AFA00007C58D /* KeyboardPositionNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A987F3111C66AFA00007C58D /* KeyboardPositionNotifier.swift */; };
 		A98AE3AD1C42AB5000FA8E80 /* UartDataExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */; };
 		A98E03951BBA2A0300F8924C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A98E03941BBA2A0300F8924C /* Credits.rtf */; };
@@ -369,6 +370,7 @@
 		A96A7A061C74F329000C37E3 /* Synchronize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Synchronize.swift; sourceTree = "<group>"; };
 		A98296681BB1F5E600DD478C /* Adafruit Bluefruit LE Connect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Adafruit Bluefruit LE Connect.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A982968A1BB222D700DD478C /* LogHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
+		A984FEEC1D943BF1001C5951 /* SeparatorLineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeparatorLineView.swift; sourceTree = "<group>"; };
 		A987F3111C66AFA00007C58D /* KeyboardPositionNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardPositionNotifier.swift; sourceTree = "<group>"; };
 		A98AE3AC1C42AB5000FA8E80 /* UartDataExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartDataExport.swift; sourceTree = "<group>"; };
 		A98E03941BBA2A0300F8924C /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
@@ -921,6 +923,7 @@
 		A9AEF9111C75F9CF00E381C0 /* Style */ = {
 			isa = PBXGroup;
 			children = (
+				A984FEEC1D943BF1001C5951 /* SeparatorLineView.swift */,
 			);
 			path = Style;
 			sourceTree = "<group>";
@@ -1514,6 +1517,7 @@
 				A9E8AE571C7B0A3A00DFEFB0 /* NeopixelViewControllerOSX.swift in Sources */,
 				A9BEA6421C6690E6005F54D6 /* CocoaCompatibility.swift in Sources */,
 				A949AA801C5AC977002F960B /* UartViewController.swift in Sources */,
+				A984FEED1D943BF1001C5951 /* SeparatorLineView.swift in Sources */,
 				A9EC0F941C6E99BF0019790F /* DfuUpdateProcess.swift in Sources */,
 				A949AA7D1C5AC977002F960B /* PeripheralTableCellView.swift in Sources */,
 				A949AA771C5AC977002F960B /* FirmwareUpdateViewController.swift in Sources */,
