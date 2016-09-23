@@ -11,14 +11,14 @@ import Foundation
 class UartDataExport {
     
     // MARK: - Export formatters
-    static func dataAsText(dataBuffer : [UartDataChunk]) -> String? {
+    static func dataAsText(dataBuffer: [UartDataChunk]) -> String? {
         // Compile all data
         let data = NSMutableData()
         for dataChunk in dataBuffer {
             data.appendData(dataChunk.data)
         }
         
-        var text : String?
+        var text: String?
         if (Preferences.uartIsInHexMode) {
             text = hexString(data)
         }
@@ -29,7 +29,7 @@ class UartDataExport {
         return text
     }
     
-    static func dataAsCsv(dataBuffer : [UartDataChunk])  -> String? {
+    static func dataAsCsv(dataBuffer: [UartDataChunk])  -> String? {
         var text = "Timestamp,Mode,Data\r\n"        // csv Header
         
         let timestampDateFormatter = NSDateFormatter()
@@ -39,7 +39,7 @@ class UartDataExport {
             let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
             let dateString = timestampDateFormatter.stringFromDate(date).stringByReplacingOccurrencesOfString(",", withString: ".")         //  comma messes with csv, so replace it by point
             let mode = dataChunk.mode == .RX ? "RX" : "TX"
-            var dataString : String?
+            var dataString: String?
             if (Preferences.uartIsInHexMode) {
                 dataString = hexString(dataChunk.data)
             }
@@ -60,7 +60,7 @@ class UartDataExport {
         return text
     }
     
-    static func dataAsJson(dataBuffer : [UartDataChunk])  -> String? {
+    static func dataAsJson(dataBuffer: [UartDataChunk])  -> String? {
         
         var jsonItemsDictionary : [AnyObject] = []
         
@@ -68,7 +68,7 @@ class UartDataExport {
             let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
             let unixDate = date.timeIntervalSince1970
             let mode = dataChunk.mode == .RX ? "RX" : "TX"
-            var dataString : String?
+            var dataString: String?
             if (Preferences.uartIsInHexMode) {
                 dataString = hexString(dataChunk.data)
             }
@@ -86,7 +86,7 @@ class UartDataExport {
             }
         }
         
-        let jsonRootDictionary : [String : AnyObject] = [
+        let jsonRootDictionary: [String : AnyObject] = [
             "items": jsonItemsDictionary
         ]
         
@@ -107,7 +107,7 @@ class UartDataExport {
         return result
     }
 
-    static func dataAsXml(dataBuffer : [UartDataChunk])  -> String? {
+    static func dataAsXml(dataBuffer: [UartDataChunk])  -> String? {
         
         #if os(OSX)
         let xmlRootElement = NSXMLElement(name: "uart")
@@ -116,7 +116,7 @@ class UartDataExport {
             let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
             let unixDate = date.timeIntervalSince1970
             let mode = dataChunk.mode == .RX ? "RX" : "TX"
-            var dataString : String?
+            var dataString: String?
             if (Preferences.uartIsInHexMode) {
                 dataString = hexString(dataChunk.data)
             }
@@ -150,5 +150,14 @@ class UartDataExport {
             return nil
             
         #endif
+    }
+    
+    static func dataAsBinary(dataBuffer: [UartDataChunk]) -> NSData {
+        let result = NSMutableData()
+        for dataChunk in dataBuffer {
+            result.appendData(dataChunk.data)
+        }
+        
+        return result
     }
 }

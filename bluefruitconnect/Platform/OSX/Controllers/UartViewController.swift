@@ -261,9 +261,13 @@ class UartViewController: NSViewController {
         exportFileDialog.canCreateDirectories = true
         exportFileDialog.accessoryView = saveDialogCustomView
 
-        for exportFormat in uartData.exportFormats {
+        for exportFormat in UartModuleManager.kExportFormats {
+            //let menuItem = NSMenuItem(title: exportFormat.rawValue, action: nil, keyEquivalent: "")
+            //menuItem.representedObject = exportFormat
+            //saveDialogPopupButton.menu?.addItem(menuItem)
             saveDialogPopupButton.addItemWithTitle(exportFormat.rawValue)
         }
+        saveDialogPopupButton.menu?.delegate = self
 
         updateSaveFileName()
 
@@ -274,37 +278,50 @@ class UartViewController: NSViewController {
         
         exportFileDialog.beginSheetModalForWindow(window) {[unowned self] (result) -> Void in
             if result == NSFileHandlingPanelOKButton {
-                if let url = self.exportFileDialog!.URL {
+                if let url = exportFileDialog.URL {
                     
                     // Save
-                    var text : String?
-                    let exportFormatSelected = self.uartData.exportFormats[self.saveDialogPopupButton.indexOfSelectedItem]
+                    let exportFormatSelected = UartModuleManager.kExportFormats[self.saveDialogPopupButton.indexOfSelectedItem]
                     
                     let dataBuffer = self.uartData.dataBuffer
                     switch(exportFormatSelected) {
                     case .txt:
-                        text = UartDataExport.dataAsText(dataBuffer)
+                        let text = UartDataExport.dataAsText(dataBuffer)
+                        self.exportData(text, url: url)
                     case .csv:
-                        text = UartDataExport.dataAsCsv(dataBuffer)
+                        let text = UartDataExport.dataAsCsv(dataBuffer)
+                        self.exportData(text, url: url)
                     case .json:
-                        text = UartDataExport.dataAsJson(dataBuffer)
-                        break
+                        let text = UartDataExport.dataAsJson(dataBuffer)
+                        self.exportData(text, url: url)
                     case .xml:
-                        text = UartDataExport.dataAsXml(dataBuffer)
-                        break
-                    }
-                    
-                    // Write data
-                    do {
-                        try text?.writeToURL(url, atomically: true, encoding: NSUTF8StringEncoding)
-                    }
-                    catch let error {
-                        DLog("Error exporting file \(url.absoluteString): \(error)")
+                        let text = UartDataExport.dataAsXml(dataBuffer)
+                        self.exportData(text, url: url)
+                    case .bin:
+                        let data = UartDataExport.dataAsBinary(dataBuffer)
+                        self.exportData(data, url: url)
                     }
                 }
             }
         }
-        
+    }
+    
+    private func exportData(data: NSData, url: NSURL) {
+        do {
+            try data.writeToURL(url, options: [.DataWritingAtomic])
+        }
+        catch let error {
+            DLog("Error exporting file \(url.absoluteString): \(error)")
+        }
+    }
+    
+    private func exportData(text: String?, url: NSURL) {
+        do {
+            try text?.writeToURL(url, atomically: true, encoding: NSUTF8StringEncoding)
+        }
+        catch let error {
+            DLog("Error exporting file \(url.absoluteString): \(error)")
+        }
     }
     
     @IBAction func onExportFormatChanged(sender: AnyObject) {
@@ -318,13 +335,26 @@ class UartViewController: NSViewController {
         }
         
         let isInHexMode = Preferences.uartIsInHexMode
-        let exportFormatSelected = uartData.exportFormats[saveDialogPopupButton.indexOfSelectedItem]
-        exportFileDialog.nameFieldStringValue = "uart\(isInHexMode ? ".hex" : "").\(exportFormatSelected.rawValue)"
+        let exportFormatSelected = UartModuleManager.kExportFormats[saveDialogPopupButton.indexOfSelectedItem]
+        if exportFormatSelected == .bin {
+            exportFileDialog.nameFieldStringValue = "uart.bin"
+        }
+        else {
+            exportFileDialog.nameFieldStringValue = "uart\(isInHexMode ? ".hex" : "").\(exportFormatSelected.rawValue)"
+        }
+        exportFileDialog.allowedFileTypes = [exportFormatSelected.rawValue]
+    }
+}
+
+// MARK: - NSMenuDelegate
+extension UartViewController: NSMenuDelegate {
+    func menuDidClose(menu: NSMenu) {
+        updateSaveFileName()
     }
 }
 
 // MARK: - DetailTab
-extension UartViewController : DetailTab {
+extension UartViewController: DetailTab {
     func tabWillAppear() {
         reloadDataUI()
         

@@ -26,6 +26,7 @@ class UartModuleManager: NSObject {
         case csv = "csv"
         case json = "json"
         case xml = "xml"
+        case bin = "bin"
     }
     
     // Proxies
@@ -56,9 +57,9 @@ class UartModuleManager: NSObject {
     
     // Export
     #if os(OSX)
-    let exportFormats = [ExportFormat.txt, ExportFormat.csv, ExportFormat.json, ExportFormat.xml]
+    static let kExportFormats: [ExportFormat] = [.txt, .csv, .json, .xml, .bin]
     #else
-    let exportFormats = [ExportFormat.txt, ExportFormat.csv, ExportFormat.json/*, ExportFormat.xml*/]
+    static let kExportFormats: [ExportFormat] = [.txt, .csv, .json/*, .xml*/]
     #endif
     
     override init() {
@@ -157,8 +158,7 @@ class UartModuleManager: NSObject {
                     representableValue = ""
                     for scalar in value.unicodeScalars {
                         let isRepresentable = scalar.value>=32 && scalar.value<127
-                        DLog("\(scalar.value). isVis: \( isRepresentable ? "true":"false" )")
-                        
+                        //DLog("\(scalar.value). isVis: \( isRepresentable ? "true":"false" )")
                         representableValue.append(isRepresentable ? scalar:UnicodeScalar("�"))
                     }
                 }
