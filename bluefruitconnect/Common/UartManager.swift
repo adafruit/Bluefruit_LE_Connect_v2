@@ -60,8 +60,9 @@ class UartManager: NSObject {
         notificationCenter.removeObserver(self, name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
     }
     
-    func didDisconnectFromPeripheral(notification : NSNotification) {
+    func didDisconnectFromPeripheral(notification: NSNotification) {
         blePeripheral = nil
+        clearData()
         resetService()
     }
     
