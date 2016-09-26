@@ -112,8 +112,6 @@ class DetailsViewController: NSViewController {
             }
             
             self.startUpdatesCheck()
-
-            
         })
     }
     

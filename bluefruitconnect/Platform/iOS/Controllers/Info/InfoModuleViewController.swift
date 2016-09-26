@@ -107,6 +107,11 @@ class InfoModuleViewController: ModuleViewController {
         
         presentViewController(helpNavigationController, animated: true, completion: nil)
     }
+    
+    @IBAction func onClickRefresh(sender: AnyObject) {
+        discoverServices()
+    }
+    
 }
 
 extension InfoModuleViewController : UITableViewDataSource {

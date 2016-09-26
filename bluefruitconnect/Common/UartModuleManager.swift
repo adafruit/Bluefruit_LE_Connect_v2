@@ -197,7 +197,7 @@ extension UartModuleManager: CBPeripheralDelegate {
 }
 
 // MARK: - MqttManagerDelegate
-extension UartModuleManager : MqttManagerDelegate {
+extension UartModuleManager: MqttManagerDelegate {
     func onMqttConnected() {
         dispatch_async(dispatch_get_main_queue(), { [unowned self] in
             self.delegate?.mqttUpdateStatusUI()
@@ -211,13 +211,13 @@ extension UartModuleManager : MqttManagerDelegate {
         
     }
     
-    func onMqttMessageReceived(message : String, topic: String) {
+    func onMqttMessageReceived(message: String, topic: String) {
         dispatch_async(dispatch_get_main_queue(), { [unowned self] in
             self.sendMessageToUart(message, wasReceivedFromMqtt: true)
             })
     }
     
-    func onMqttError(message : String) {
+    func onMqttError(message: String) {
         let mqttManager = MqttManager.sharedInstance
         let status = mqttManager.status
         let isConnectionError = status == .Connecting

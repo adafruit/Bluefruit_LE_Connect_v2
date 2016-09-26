@@ -320,7 +320,6 @@ extension PeripheralListViewController : NSTableViewDelegate {
             let name = blePeripheral.name != nil ? blePeripheral.name! : localizationManager.localizedString("peripherallist_unnamed")
             cell.titleTextField.stringValue = name
             
-
             let isUartCapable = blePeripheral.isUartAdvertised()
             cell.subtitleTextField.stringValue = localizationManager.localizedString(isUartCapable ? "peripherallist_uartavailable" : "peripherallist_uartunavailable")
             //cell.subtitleTextField.stringValue = isUartCapable ? LocalizationManager.sharedInstance.localizedString("peripherallist_uartavailable"):""

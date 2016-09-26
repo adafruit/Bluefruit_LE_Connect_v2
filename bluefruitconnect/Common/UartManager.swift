@@ -257,7 +257,6 @@ extension UartManager: CBPeripheralDelegate {
 */
     }
 
-    
     func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
         
         guard blePeripheral != nil else {

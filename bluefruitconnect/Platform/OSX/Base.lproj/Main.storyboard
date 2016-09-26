@@ -1148,8 +1148,8 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NuP-UE-FtP">
-                                                                    <rect key="frame" x="44" y="16" width="14" height="15"/>
-                                                                    <buttonCell key="cell" type="inline" bezelStyle="inline" image="ic_wifi_white_9pt" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WNW-Ff-OVs">
+                                                                    <rect key="frame" x="44" y="14" width="37" height="17"/>
+                                                                    <buttonCell key="cell" type="inline" title="ADV" bezelStyle="inline" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WNW-Ff-OVs">
                                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                         <font key="font" metaFont="smallSystemBold"/>
                                                                     </buttonCell>
@@ -1158,7 +1158,7 @@
                                                                     </connections>
                                                                 </button>
                                                                 <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="eZv-Ay-ncE">
-                                                                    <rect key="frame" x="60" y="16" width="357" height="17"/>
+                                                                    <rect key="frame" x="83" y="15" width="334" height="17"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="vdL-Vq-ouf">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1278,7 +1278,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="sMb-5H-ycl"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="BE46C9D0-0A41-4BD8-A00C-7138FB906ECB" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="hTs-js-lg8">
+                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="4084D99C-3C0D-42D1-A730-3177BD46BD2E" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="hTs-js-lg8">
                                             <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2933,7 +2933,7 @@ Gw
         </scene>
     </scenes>
     <resources>
-        <image name="BE46C9D0-0A41-4BD8-A00C-7138FB906ECB" width="1" height="1">
+        <image name="4084D99C-3C0D-42D1-A730-3177BD46BD2E" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -2993,7 +2993,6 @@ CiEKKQosCjEKOQo8Ck4KUQpWAAAAAAAAAgEAAAAAAAAAQQAAAAAAAAAAAAAAAAAAClg
         <image name="adaflower_osxtablebackground" width="57" height="57"/>
         <image name="ic_bluetooth_disabled" width="24" height="24"/>
         <image name="ic_bluetooth_searching" width="24" height="24"/>
-        <image name="ic_wifi_white_9pt" width="9" height="9"/>
         <image name="signalstrength0" width="24" height="21"/>
     </resources>
 </document>

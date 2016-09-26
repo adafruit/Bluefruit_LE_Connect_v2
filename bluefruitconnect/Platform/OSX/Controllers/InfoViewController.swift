@@ -95,7 +95,6 @@ class InfoViewController: NSViewController {
 
     
     // MARK: - Actions
-
     @IBAction func onClickRefreshOnLoad(sender: NSButton) {
         Preferences.infoIsRefreshOnLoadEnabled = sender.state == NSOnState
     }
@@ -315,6 +314,7 @@ extension InfoViewController : CBPeripheralDelegate {
                 if let services = services {
                     for service in services {
                         elementsToDiscover += 1
+                        DLog("Discover characteristics for service: \(service.UUID)")
                         blePeripheral?.peripheral.discoverCharacteristics(nil, forService: service)
                     }
                 }
@@ -334,6 +334,7 @@ extension InfoViewController : CBPeripheralDelegate {
         //DLog("centralManager didDiscoverCharacteristicsForService: \(service.UUID.UUIDString)")
         
         elementsDiscovered += 1
+        DLog("Discovered characteristics for service: \(service.UUID)")
         
         var discoveringDescriptors = false
         if let characteristics = service.characteristics {
@@ -343,6 +344,7 @@ extension InfoViewController : CBPeripheralDelegate {
             for characteristic in characteristics {
                 if (characteristic.properties.rawValue & CBCharacteristicProperties.Read.rawValue != 0) {
                     valuesToRead += 1
+                    DLog("Read characteristic: \(characteristic.UUID) for service: \(service.UUID)")
                     peripheral.readValueForCharacteristic(characteristic)
                 }
                 
@@ -394,6 +396,7 @@ extension InfoViewController : CBPeripheralDelegate {
         //DLog("centralManager didUpdateValueForCharacteristic: \(characteristic.UUID.UUIDString)")
         valuesRead += 1
         
+        DLog("Read value for characteristic: \(characteristic.UUID) for service: \(characteristic.service.UUID)")
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.updateDiscoveringStatus()
             self.baseTableView.reloadData()
