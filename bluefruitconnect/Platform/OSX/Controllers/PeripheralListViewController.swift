@@ -12,7 +12,7 @@ import CoreBluetooth
 class PeripheralListViewController: NSViewController {
     // Config
     static let kFiltersPanelClosedHeight: CGFloat = 55
-    static let kFiltersPanelOpenHeight: CGFloat = 150
+    static let kFiltersPanelOpenHeight: CGFloat = 170
 
     // UI
     @IBOutlet weak var baseTableView: NSTableView!
@@ -23,12 +23,12 @@ class PeripheralListViewController: NSViewController {
     @IBOutlet weak var filtersNameSearchField: NSSearchField!
     @IBOutlet weak var filterRssiValueLabel: NSTextField!
     @IBOutlet weak var filtersRssiSlider: NSSlider!
+    @IBOutlet weak var filtersShowUnnamed: NSButton!
     @IBOutlet weak var filtersOnlyWithUartButton: NSButton!
     @IBOutlet weak var filtersClearButton: NSButton!
 
     // Data
     private let peripheralList = PeripheralList()
-    private var isFilterPanelOpen = false
     
     
     override func viewDidLoad() {
@@ -53,11 +53,15 @@ class PeripheralListViewController: NSViewController {
         super.viewWillAppear()
 
         // Filters
-        peripheralList.setDefaultFilters()
-        openFiltersPanel(false, animated: false)
-        updateFiltersTitle()        
+        openFiltersPanel(Preferences.scanFilterIsPanelOpen, animated: false)
+        updateFiltersTitle()
+        filtersNameSearchField.stringValue = peripheralList.filterName ?? ""
+        setRssiSliderValue(peripheralList.rssiFilterValue)
+        filtersShowUnnamed.state = peripheralList.isUnnamedEnabled ? NSOnState:NSOffState
+        filtersOnlyWithUartButton.state = peripheralList.isOnlyUartEnabled ? NSOnState:NSOffState
     }
     
+
     func didDiscoverPeripheral(notification : NSNotification) {
         dispatch_async(dispatch_get_main_queue(), {[unowned self] in
 
@@ -109,6 +113,7 @@ class PeripheralListViewController: NSViewController {
     // MARK: - Filters
     private func openFiltersPanel(isOpen: Bool, animated: Bool) {
         
+        Preferences.scanFilterIsPanelOpen = isOpen
         self.filtersDisclosureButton.state = isOpen ? NSOnState:NSOffState
         
         NSAnimationContext.runAnimationGroup({ [unowned self] (context) in
@@ -135,8 +140,18 @@ class PeripheralListViewController: NSViewController {
             }
         }
         
+        if !peripheralList.isUnnamedEnabled {
+            let namedString = "with name"
+            if filtersTitle != nil {
+                filtersTitle!.appendContentsOf(", \(namedString)")
+            }
+            else {
+                filtersTitle = namedString
+            }
+        }
+        
         if peripheralList.isOnlyUartEnabled {
-            let uartString = "with Uart"
+            let uartString = "with UART"
             if filtersTitle != nil {
                 filtersTitle!.appendContentsOf(", \(uartString)")
             }
@@ -145,7 +160,7 @@ class PeripheralListViewController: NSViewController {
             }
         }
         
-        filterTitleTextField.stringValue = filtersTitle ?? "No filter selected"
+        filterTitleTextField.stringValue = filtersTitle != nil ? "Filter: \(filtersTitle!)" : "No filter selected"
         
         filtersClearButton.hidden = !peripheralList.isAnyFilterEnabled()
     }
@@ -174,6 +189,14 @@ class PeripheralListViewController: NSViewController {
     private func updateFilters() {
         updateFiltersTitle()
         baseTableView.reloadData()
+    }
+    
+    private func setRssiSliderValue(value: Int?) {
+        filtersRssiSlider.integerValue = value != nil ? -value! : 100
+    }
+    
+    private func updateRssiValueLabel() {
+        filterRssiValueLabel.stringValue = "\(filtersRssiSlider.integerValue) dBM"
     }
     
     
@@ -244,8 +267,7 @@ class PeripheralListViewController: NSViewController {
     }
     
     @IBAction func onClickFilters(sender: AnyObject) {
-        isFilterPanelOpen = !isFilterPanelOpen
-        openFiltersPanel(isFilterPanelOpen, animated: true)
+        openFiltersPanel(!Preferences.scanFilterIsPanelOpen, animated: true)
     }
     
     
@@ -277,7 +299,7 @@ class PeripheralListViewController: NSViewController {
     @IBAction func onFilterRssiChanged(sender: NSSlider) {
         let rssiValue = -sender.integerValue
         peripheralList.rssiFilterValue = rssiValue
-        filterRssiValueLabel.stringValue = "\(rssiValue) dBM"
+        updateRssiValueLabel()
         updateFilters()
     }
     
@@ -286,14 +308,18 @@ class PeripheralListViewController: NSViewController {
         updateFilters()
     }
     
-    @IBAction func onClickRemoveFilters(sender: AnyObject) {
-        peripheralList.setDefaultFilters()
-        filtersNameSearchField.stringValue = peripheralList.filterName ?? ""
-        filtersRssiSlider.integerValue = peripheralList.rssiFilterValue != nil ? -peripheralList.rssiFilterValue! : 100
-        filtersOnlyWithUartButton.state = peripheralList.isOnlyUartEnabled ? NSOnState:NSOffState
+    @IBAction func onFilterUnnamedChanged(sender: AnyObject) {
+        peripheralList.isUnnamedEnabled = sender.state == NSOnState
         updateFilters()
     }
     
+    @IBAction func onClickRemoveFilters(sender: AnyObject) {
+        peripheralList.setDefaultFilters()
+        filtersNameSearchField.stringValue = peripheralList.filterName ?? ""
+        setRssiSliderValue(peripheralList.rssiFilterValue)
+        filtersOnlyWithUartButton.state = peripheralList.isOnlyUartEnabled ? NSOnState:NSOffState
+        updateFilters()
+    }
 }
 
 // MARK: - NSTableViewDataSource
@@ -321,8 +347,9 @@ extension PeripheralListViewController : NSTableViewDelegate {
             cell.titleTextField.stringValue = name
             
             let isUartCapable = blePeripheral.isUartAdvertised()
-            cell.subtitleTextField.stringValue = localizationManager.localizedString(isUartCapable ? "peripherallist_uartavailable" : "peripherallist_uartunavailable")
-            //cell.subtitleTextField.stringValue = isUartCapable ? LocalizationManager.sharedInstance.localizedString("peripherallist_uartavailable"):""
+            cell.hasUartView.hidden = !isUartCapable
+            cell.subtitleTextField.stringValue = ""
+            //cell.subtitleTextField.stringValue = localizationManager.localizedString(isUartCapable ? "peripherallist_uartavailable" : "peripherallist_uartunavailable")
             cell.rssiImageView.image = signalImageForRssi(blePeripheral.rssi)
             
             cell.onDisconnect = {

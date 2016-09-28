@@ -19,12 +19,21 @@ import Foundation
     
     // Note: if these contanst change, update DefaultPreferences.plist
     private static let appInSystemStatusBarKey = "AppInSystemStatusBar"
+    
+    private static let scanFilterIsPanelOpenKey = "ScanFilterIsPanelOpen"
+    private static let scanFilterNameKey = "ScanFilterName"
+    private static let scanFilterIsNameExactKey = "ScanFilterIsNameExact"
+    private static let scanFilterIsNameCaseInsensitiveKey = "ScanFilterIsNameCaseInsensitive"
+    private static let scanFilterRssiValueKey = "ScanFilterRssiValue"
+    private static let scanFilterIsUnnamedEnabledKey = "ScanFilterIsUnnamedEnabled"
+    private static let scanFilterIsOnlyWithUartEnabledKey = "ScanFilterIsOnlyWithUartEnabled"
+    
     private static let updateServerUrlKey = "UpdateServerUrl"
     private static let updateShowBetaVersionsKey = "UpdateShowBetaVersions"
     private static let updateIgnoredVersionKey = "UpdateIgnoredVersion"
-    
+
     private static let infoRefreshOnLoadKey = "InfoRefreshOnLoad"
-    
+
     private static let uartReceivedDataColorKey = "UartReceivedDataColor"
     private static let uartSentDataColorKey = "UartSentDataColor"
     private static let uartIsDisplayModeTimestampKey = "UartIsDisplayModeTimestamp"
@@ -46,6 +55,75 @@ import Foundation
         }
         set {
             setBoolPreference(Preferences.appInSystemStatusBarKey, newValue: newValue)
+        }
+    }
+    
+    // MARK: - Scanning Filters
+    static var scanFilterIsPanelOpen: Bool {
+        get {
+            return getBoolPreference(Preferences.scanFilterIsPanelOpenKey)
+        }
+        set {
+            setBoolPreference(Preferences.scanFilterIsPanelOpenKey, newValue: newValue)
+        }
+    }
+
+    static var scanFilterName: String? {
+        get {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            return defaults.stringForKey(Preferences.scanFilterNameKey)
+        }
+        set {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setObject(newValue, forKey: Preferences.scanFilterNameKey)
+        }
+    }
+    
+    static var scanFilterIsNameExact: Bool {
+        get {
+            return getBoolPreference(Preferences.scanFilterIsNameExactKey)
+        }
+        set {
+            setBoolPreference(Preferences.scanFilterIsNameExactKey, newValue: newValue)
+        }
+    }
+
+    static var scanFilterIsNameCaseInsensitive: Bool {
+        get {
+            return getBoolPreference(Preferences.scanFilterIsNameCaseInsensitiveKey)
+        }
+        set {
+            setBoolPreference(Preferences.scanFilterIsNameCaseInsensitiveKey, newValue: newValue)
+        }
+    }
+
+    static var scanFilterRssiValue: Int? {
+        get {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            let rssiValue = defaults.integerForKey(Preferences.scanFilterRssiValueKey)
+            return rssiValue >= 0 ? rssiValue:nil
+        }
+        set {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setInteger(newValue ?? -1, forKey: Preferences.scanFilterRssiValueKey)
+        }
+    }
+    
+    static var scanFilterIsUnnamedEnabled: Bool {
+        get {
+            return getBoolPreference(Preferences.scanFilterIsUnnamedEnabledKey)
+        }
+        set {
+            setBoolPreference(Preferences.scanFilterIsUnnamedEnabledKey, newValue: newValue)
+        }
+    }
+    
+    static var scanFilterIsOnlyWithUartEnabled: Bool {
+        get {
+            return getBoolPreference(Preferences.scanFilterIsOnlyWithUartEnabledKey)
+        }
+        set {
+            setBoolPreference(Preferences.scanFilterIsOnlyWithUartEnabledKey, newValue: newValue)
         }
     }
     
@@ -86,7 +164,6 @@ import Foundation
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setObject(newValue, forKey: Preferences.updateIgnoredVersionKey)
         }
-        
     }
     
     // MARK: - Info

@@ -26,7 +26,6 @@ struct Config {
     static let uartLogSend = Config.DEBUG && true
     static let uartLogReceive = Config.DEBUG && true
     
-    
     // Enabled Modules
     #if os(OSX)
     

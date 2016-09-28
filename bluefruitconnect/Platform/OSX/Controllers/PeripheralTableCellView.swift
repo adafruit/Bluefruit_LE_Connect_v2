@@ -14,6 +14,7 @@ class PeripheralTableCellView: NSTableCellView {
     @IBOutlet weak var rssiImageView: NSImageView!
     @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var subtitleTextField: NSTextField!
+    @IBOutlet weak var hasUartView: NSButton!
     @IBOutlet weak var disconnectButton: NSButton!
     @IBOutlet weak var disconnectButtonWidthConstraint: NSLayoutConstraint!
     

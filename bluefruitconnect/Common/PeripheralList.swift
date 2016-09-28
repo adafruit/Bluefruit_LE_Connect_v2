@@ -12,46 +12,60 @@ class PeripheralList {
     private var lastUserSelectionTime = CFAbsoluteTimeGetCurrent()
     private var selectedPeripheralIdentifier: String?
     
-    var filterName: String? {
+    var filterName: String? = Preferences.scanFilterName {
         didSet {
+            Preferences.scanFilterName = filterName
             isFilterDirty = true
         }
     }
-    var isFilterNameExact = false {
+    var isFilterNameExact = Preferences.scanFilterIsNameExact {
         didSet {
+            Preferences.scanFilterIsNameExact = isFilterNameExact
             isFilterDirty = true
         }
     }
-    var isFilterNameCaseInsensitive = true {
+    var isFilterNameCaseInsensitive = Preferences.scanFilterIsNameCaseInsensitive {
         didSet {
+            Preferences.scanFilterIsNameCaseInsensitive = isFilterNameCaseInsensitive
+            isFilterDirty = true
+        }
+    }
+    var rssiFilterValue: Int? = Preferences.scanFilterRssiValue {
+        didSet {
+            Preferences.scanFilterRssiValue = rssiFilterValue
+            isFilterDirty = true
+        }
+    }
+    var isUnnamedEnabled = Preferences.scanFilterIsUnnamedEnabled {
+        didSet {
+            Preferences.scanFilterIsUnnamedEnabled = isUnnamedEnabled
+            isFilterDirty = true
+        }
+    }
+    var isOnlyUartEnabled = Preferences.scanFilterIsOnlyWithUartEnabled {
+        didSet {
+            Preferences.scanFilterIsOnlyWithUartEnabled = isOnlyUartEnabled
             isFilterDirty = true
         }
     }
     
-    var isOnlyUartEnabled = false {
-        didSet {
-            isFilterDirty = true
-        }
-    }
-    var rssiFilterValue: Int? {
-        didSet {
-            isFilterDirty = true
-        }
-    }
     private var isFilterDirty = true
    
     private var cachedFilteredPeripherals: [String] = []
+    
     
     func setDefaultFilters() {
         filterName = nil
         isFilterNameExact = false
         isFilterNameCaseInsensitive = true
-        isOnlyUartEnabled = false
         rssiFilterValue = nil
+        isUnnamedEnabled = true
+        isOnlyUartEnabled = false
     }
+ 
     
     func isAnyFilterEnabled() -> Bool {
-        return filterName != nil || isOnlyUartEnabled || rssiFilterValue != nil
+        return filterName != nil || rssiFilterValue != nil || isOnlyUartEnabled || !isUnnamedEnabled
     }
     
     func filteredPeripherals(forceUpdate: Bool) -> [String] {
@@ -71,6 +85,10 @@ class PeripheralList {
         // Apply filters
         if isOnlyUartEnabled {
             peripherals = peripherals.filter({blePeripheralsFound[$0]?.isUartAdvertised() ?? false})
+        }
+        
+        if !isUnnamedEnabled {
+            peripherals = peripherals.filter({blePeripheralsFound[$0]?.name != nil})
         }
         
         if let filterName = filterName {

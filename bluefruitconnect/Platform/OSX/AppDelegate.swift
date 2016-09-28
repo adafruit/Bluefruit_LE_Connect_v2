@@ -147,7 +147,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 self.statusMenu.addItem(NSMenuItem.separatorItem())
                 
                 // Uart title
-                let uartTitleMenuItem = NSMenuItem(title: "\(featuredPeripheral.name) Stats:", action: nil, keyEquivalent: "")
+                let title = featuredPeripheral.name != nil ? "\(featuredPeripheral.name) Stats:" : "Stats:"
+                let uartTitleMenuItem = NSMenuItem(title: title, action: nil, keyEquivalent: "")
                 uartTitleMenuItem.enabled = false
                 self.statusMenu.addItem(uartTitleMenuItem)
                 

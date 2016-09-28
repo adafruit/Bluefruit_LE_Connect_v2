@@ -4,6 +4,20 @@
 <dict>
 	<key>AppInSystemStatusBar</key>
 	<true/>
+	<key>ScanFilterIsPanelOpen</key>
+	<true/>
+	<key>ScanFilterName</key>
+	<string></string>
+	<key>ScanFilterIsNameExact</key>
+	<false/>
+	<key>ScanFilterIsNameCaseInsensitive</key>
+	<true/>
+	<key>ScanFilterRssiValue</key>
+	<integer>-100</integer>
+	<key>ScanFilterIsUnnamedEnabled</key>
+	<true/>
+	<key>scanFilterIsOnlyWithUartEnabledKey</key>
+	<false/>
 	<key>UpdateServerUrl</key>
 	<string>https://raw.githubusercontent.com/adafruit/Adafruit_BluefruitLE_Firmware/master/releases.xml</string>
 	<key>UpdateShowBetaVersions</key>
