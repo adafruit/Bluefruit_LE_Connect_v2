@@ -51,11 +51,15 @@ class InfoModuleViewController: ModuleViewController {
         // Discover services
         shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
         services = nil
-        discoverServices()
     }
 
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+
+        if services == nil && !isDiscoveringServices {        // only the first time
+            discoverServices()
+        }
         
         // Title
         let localizationManager = LocalizationManager.sharedInstance

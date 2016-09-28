@@ -40,7 +40,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             }
         }
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -49,10 +49,10 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        let isFullScreen =  UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
+        let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
         guard !isFullScreen || selectedBlePeripheral != nil else {
             DLog("detail: peripheral disconnected by viewWillAppear. Abort")
-            return;
+            return
         }
         
         // Subscribe to Ble Notifications
@@ -82,14 +82,14 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         }
     }
     
-    func willConnectToPeripheral(notification : NSNotification) {
+    func willConnectToPeripheral(notification: NSNotification) {
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.showEmpty(true)
             self.emptyViewController.setConnecting(true)
             })
     }
 
-    func didConnectToPeripheral(notification : NSNotification) {
+    func didConnectToPeripheral(notification: NSNotification) {
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
             self.didConnectToPeripheral()
             })
@@ -108,11 +108,13 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         self.showEmpty(false)
         
         startUpdatesCheck()
+        //setupConnectedPeripheral()
     }
     
     private func setupConnectedPeripheral() {
         // UI: Add Info tab
         let infoViewController = self.storyboard!.instantiateViewControllerWithIdentifier("InfoModuleViewController") as! InfoModuleViewController
+        
         
         infoViewController.onServicesDiscovered = { [weak self] in
             // optimization: wait till info discover services to continue, instead of discovering services by myself
@@ -124,7 +126,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         infoViewController.tabBarItem.image = UIImage(named: "tab_info_icon")
 
         setViewControllers([infoViewController], animated: false)
-        selectedIndex = 0
+        //selectedIndex = 0
     }
     
     func willDisconnectFromPeripheral(notification : NSNotification) {
@@ -332,7 +334,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
 }
 
 // MARK: - CBPeripheralDelegate
-extension PeripheralDetailsViewController : CBPeripheralDelegate {
+extension PeripheralDetailsViewController: CBPeripheralDelegate {
     
     // Send peripheral delegate methods to tab active (each tab will handle these methods)
     func peripheralDidUpdateName(peripheral: CBPeripheral) {
@@ -455,7 +457,7 @@ extension PeripheralDetailsViewController: FirmwareUpdaterDelegate {
 
                 context.setupConnectedPeripheral()
                 if isUpdateAvailable {
-                    self?.showUpdateAvailableForRelease(latestRelease)
+                    context.showUpdateAvailableForRelease(latestRelease)
                 }
             }
             })

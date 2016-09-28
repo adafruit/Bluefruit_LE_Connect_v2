@@ -17,13 +17,23 @@ class ScrollingTabBarViewController: UIViewController {
     // Data
     var viewControllers: [UIViewController]? {
         willSet {
-            removeSelectedViewController()
-            selectedIndex = -1
+            if newValue == nil || selectedIndex >= newValue!.count {
+                removeSelectedViewController()
+                selectedIndex = -1
+            }
         }
         
         didSet {
             tabBarCollectionView.reloadData()
-            selectedIndex = viewControllers == nil || viewControllers!.count == 0 ? -1:0
+            if viewControllers == nil || viewControllers!.count == 0 {
+                selectedIndex = -1
+            }
+            else if selectedIndex >= viewControllers!.count  {
+                selectedIndex = viewControllers!.count - 1
+            }
+            else if selectedIndex < 0 {
+                selectedIndex = 0
+            }
         }
     }
     
@@ -65,38 +75,45 @@ class ScrollingTabBarViewController: UIViewController {
         self.viewControllers = viewControllers
     }
     
-
     func hideTabBar(hide: Bool) {
        // tabBarContentView.transform = hide ? CGAffineTransformMakeTranslation(0, tabBarContentView.bounds.size.height):CGAffineTransformIdentity
         tabBarCollectionView.hidden = hide
     }
     
     private func removeSelectedViewController() {
-        // Remove previous
-        if let currentViewController = selectedViewController {
-            currentViewController.willMoveToParentViewController(nil)
-            currentViewController.view.removeFromSuperview()
-            currentViewController.removeFromParentViewController()
+        guard let currentViewController = selectedViewController else {
+            return
         }
+        
+        // Remove previous
+        currentViewController.willMoveToParentViewController(nil)
+        currentViewController.beginAppearanceTransition(false, animated: false)
+        currentViewController.view.removeFromSuperview()
+        currentViewController.endAppearanceTransition()
+        currentViewController.removeFromParentViewController()
     }
     
-    private func changeSelectedViewController(viewController : UIViewController?) {
+    private func changeSelectedViewController(viewController: UIViewController?) {
         // DLog("changeSelectedViewController \(viewController)")
-       
-        // Add new
-        if let viewController = viewController {
-            let containerView = contentView
-            let subview = viewController.view
-            self.addChildViewController(viewController)
-            subview.translatesAutoresizingMaskIntoConstraints = false
-            containerView.addSubview(subview)
-            
-            let dictionaryOfVariableBindings = ["subview" :subview]
-            containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
-            containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
-            
-            viewController.didMoveToParentViewController(self)
+        guard let viewController = viewController else {
+            return
         }
+        
+        // Add new
+        let containerView = contentView
+        let subview = viewController.view
+        subview.translatesAutoresizingMaskIntoConstraints = false
+        self.addChildViewController(viewController)
+        
+        viewController.beginAppearanceTransition(true, animated: true)
+        containerView.addSubview(subview)
+        viewController.endAppearanceTransition()
+        
+        let dictionaryOfVariableBindings = ["subview" :subview]
+        containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
+        containerView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
+        
+        viewController.didMoveToParentViewController(self)
     }
 }
 

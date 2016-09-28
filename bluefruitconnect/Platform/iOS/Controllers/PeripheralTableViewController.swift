@@ -102,7 +102,7 @@ class PeripheralTableViewController: UITableViewController {
                 
                 // Reload data
                 let currentPeripheralsCount = context.peripheralList.filteredPeripherals(true).count
-                DLog("discover count: \(currentPeripheralsCount)")
+                // DLog("discover count: \(currentPeripheralsCount)")
                 if currentPeripheralsCount != context.cachedNumOfTableItems  {
                     context.tableView.reloadData()
                 }
