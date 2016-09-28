@@ -27,9 +27,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         peripheralsMenu.delegate = self
         peripheralsMenu.autoenablesItems = false
 
-        // Register default preferences
-        //Preferences.resetDefaults()       // Debug Reset
-        Preferences.registerDefaults()
 
         // Check if there is any update to the fimware database
         FirmwareUpdater.refreshSoftwareUpdatesDatabaseFromUrl(Preferences.updateServerUrl, completionHandler: nil)

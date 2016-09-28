@@ -14,12 +14,14 @@ class PeripheralTableViewController: UITableViewController {
     @IBOutlet var baseTableView: UITableView!
     
     // Data
-    private var peripheralList = PeripheralList()
+    private var peripheralList: PeripheralList!
     private var tableRowOpen: Int?
     private var cachedNumOfTableItems = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        peripheralList = PeripheralList()                  // Initialize here to wait for Preferences.registerDefaults to be executed
         
         // Setup table refresh
         self.refreshControl?.addTarget(self, action: #selector(PeripheralTableViewController.onTableRefresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
@@ -43,12 +45,16 @@ class PeripheralTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         //self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
         
+        didUpdateBleState(nil)      // Force update state to show any pending errors
+        
         // Subscribe to Ble Notifications
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didConnectToPeripheral(_:)), name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(willConnectToPeripheral(_:)), name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didUpdateBleState(_:)), name: BleManager.BleNotifications.DidUpdateBleState.rawValue, object: nil)
+
         
         let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
         if isFullScreen {
@@ -73,6 +79,8 @@ class PeripheralTableViewController: UITableViewController {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: BleManager.BleNotifications.DidUpdateBleState.rawValue, object: nil)
+
     }
     
     private func reloadData() {
@@ -87,22 +95,27 @@ class PeripheralTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func didDiscoverPeripheral(notification : NSNotification) {
+    func didDiscoverPeripheral(notification: NSNotification) {
         dispatch_async(dispatch_get_main_queue(), {[weak self] in
             
-            // Reload data
-            if  BleManager.sharedInstance.blePeripheralsCount() != self?.cachedNumOfTableItems  {
-                self?.tableView.reloadData()
-            }
-            
-            // Select identifier if still available
-            if let selectedPeripheralRow = self?.peripheralList.selectedPeripheralRow {
-                self?.tableView.selectRowAtIndexPath(NSIndexPath(forRow: selectedPeripheralRow, inSection: 0), animated: false, scrollPosition: .None)
+            if let context = self {
+                
+                // Reload data
+                let currentPeripheralsCount = context.peripheralList.filteredPeripherals(true).count
+                DLog("discover count: \(currentPeripheralsCount)")
+                if currentPeripheralsCount != context.cachedNumOfTableItems  {
+                    context.tableView.reloadData()
+                }
+                
+                // Select identifier if still available
+                if let selectedPeripheralRow = self?.peripheralList.selectedPeripheralRow {
+                    context.tableView.selectRowAtIndexPath(NSIndexPath(forRow: selectedPeripheralRow, inSection: 0), animated: false, scrollPosition: .None)
+                }
             }
             })
     }
     
-    func willConnectToPeripheral(notification : NSNotification) {
+    func willConnectToPeripheral(notification: NSNotification) {
         let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
         if isFullScreen {
             dispatch_async(dispatch_get_main_queue(), {[unowned self] in
@@ -122,7 +135,7 @@ class PeripheralTableViewController: UITableViewController {
         }
     }
     
-    func didConnectToPeripheral(notification : NSNotification) {
+    func didConnectToPeripheral(notification: NSNotification) {
         // Watch
         WatchSessionManager.sharedInstance.updateApplicationContext(.Connected)
         
@@ -131,7 +144,7 @@ class PeripheralTableViewController: UITableViewController {
         if isFullScreen {
             DLog("list: connection on compact mode detected")
             
-            let kTimeToWaitForPeripheralConnectionError : Double = 0.5
+            let kTimeToWaitForPeripheralConnectionError: Double = 0.5
             let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), Int64(kTimeToWaitForPeripheralConnectionError * Double(NSEC_PER_SEC)))
             dispatch_after(time, dispatch_get_main_queue()) { [unowned self] in
                 
@@ -158,9 +171,44 @@ class PeripheralTableViewController: UITableViewController {
             }
         }
     }
+    
+    func didUpdateBleState(notification: NSNotification?) {
+        guard let state = BleManager.sharedInstance.centralManager?.state else {
+            return
+        }
+        
+        // Check if there is any error
+        var errorMessage: String?
+        switch state {
+        case .Unsupported:
+            errorMessage = "This device doesn't support Bluetooth Low Energy"
+        case .Unauthorized:
+            errorMessage = "This app is not authorized to use the Bluetooth Low Energy"
+        case.PoweredOff:
+            errorMessage = "Bluetooth is currently powered off"
+            
+        default:
+            errorMessage = nil
+        }
+        
+        // Show alert if error found
+        if let errorMessage = errorMessage {
+            let localizationManager = LocalizationManager.sharedInstance
+            let alertController = UIAlertController(title: localizationManager.localizedString("dialog_error"), message: errorMessage, preferredStyle: .Alert)
+            let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler: { (_) -> Void in
+                if let navController = self.splitViewController?.viewControllers[0] as? UINavigationController {
+                    navController.popViewControllerAnimated(true)
+                }
+            })
+            
+            alertController.addAction(okAction)
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
+    }
+    
     override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
         if identifier == "showDetailSegue" {
-            let isPeripheralStillConnected =  BleManager.sharedInstance.blePeripheralConnected != nil  // peripheral should still be connected
+            let isPeripheralStillConnected = BleManager.sharedInstance.blePeripheralConnected != nil  // peripheral should still be connected
             //DLog("shouldPerformSegueWithIdentifier: \(isPeripheralStillConnected)")
             return isPeripheralStillConnected
         }
@@ -175,7 +223,7 @@ class PeripheralTableViewController: UITableViewController {
             peripheralDetailsViewController.selectedBlePeripheral = BleManager.sharedInstance.blePeripheralConnected
         }
     }
-    
+
     func didDisconnectFromPeripheral(notification : NSNotification) {
         // Watch
         WatchSessionManager.sharedInstance.updateApplicationContext(.Scan)
@@ -376,9 +424,9 @@ class PeripheralTableViewController: UITableViewController {
         tableRowOpen = row == tableRowOpen ? nil: row
         
         synchronize(self) { [unowned self] in
-            // Animate if the nubmer the items have not changed
+            // Animate if the number the items have not changed
             if BleManager.sharedInstance.blePeripheralsCount() == self.cachedNumOfTableItems  {
-                
+
                 // Reload data
                 var reloadPaths = [indexPath]
                 if let previousTableRowOpen = previousTableRowOpen {
@@ -397,4 +445,3 @@ class PeripheralTableViewController: UITableViewController {
         }
     }
 }
-

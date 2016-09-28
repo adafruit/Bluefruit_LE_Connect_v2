@@ -29,11 +29,16 @@ class PeripheralListViewController: NSViewController {
     @IBOutlet weak var filtersClearButton: NSButton!
 
     // Data
-    private let peripheralList = PeripheralList()
-    
+    private var peripheralList: PeripheralList! = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Register default preferences
+        //Preferences.resetDefaults()       // Debug Reset
+        Preferences.registerDefaults()
+
+        peripheralList = PeripheralList()                  // Initialize here to wait for Preferences.registerDefaults to be executed
         
         // Setup StatusManager
         StatusManager.sharedInstance.peripheralListViewController = self

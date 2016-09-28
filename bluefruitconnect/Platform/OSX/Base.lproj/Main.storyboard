@@ -1291,7 +1291,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="sMb-5H-ycl"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="04510375-50DB-4F39-B1B9-ED7EC5559BF8" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="hTs-js-lg8">
+                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="4479C03E-A236-4503-839C-BFB741F94BD1" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="hTs-js-lg8">
                                             <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -1638,7 +1638,7 @@
                 </viewController>
                 <customObject id="hTp-yy-F2T" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1282.5" y="487.5"/>
+            <point key="canvasLocation" x="1281" y="487"/>
         </scene>
         <!--Info-->
         <scene sceneID="UP9-O1-uqE">
@@ -2964,7 +2964,7 @@ Gw
         </scene>
     </scenes>
     <resources>
-        <image name="04510375-50DB-4F39-B1B9-ED7EC5559BF8" width="1" height="1">
+        <image name="4479C03E-A236-4503-839C-BFB741F94BD1" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

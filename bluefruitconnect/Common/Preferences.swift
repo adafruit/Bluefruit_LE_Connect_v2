@@ -15,7 +15,7 @@ import Foundation
     import UIColor_Hex
 #endif
 
-@objc class Preferences : NSObject {                // will be used from objective-c so make it inherit from NSObject
+@objc class Preferences: NSObject {                // will be used from objective-c so make it inherit from NSObject
     
     // Note: if these contanst change, update DefaultPreferences.plist
     private static let appInSystemStatusBarKey = "AppInSystemStatusBar"
@@ -270,7 +270,6 @@ import Foundation
         let defaults = NSUserDefaults.standardUserDefaults()
         defaults.setBool(newValue, forKey: key)
         NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
-        
     }
     
     // MARK: - Defaults

@@ -62,10 +62,9 @@ class PeripheralList {
         isUnnamedEnabled = true
         isOnlyUartEnabled = false
     }
- 
     
     func isAnyFilterEnabled() -> Bool {
-        return filterName != nil || rssiFilterValue != nil || isOnlyUartEnabled || !isUnnamedEnabled
+        return (filterName != nil && filterName!.characters.count > 0) || rssiFilterValue != nil || isOnlyUartEnabled || !isUnnamedEnabled
     }
     
     func filteredPeripherals(forceUpdate: Bool) -> [String] {
@@ -91,7 +90,7 @@ class PeripheralList {
             peripherals = peripherals.filter({blePeripheralsFound[$0]?.name != nil})
         }
         
-        if let filterName = filterName {
+        if let filterName = filterName where filterName.characters.count > 0 {
             peripherals = peripherals.filter({ identifier -> Bool in
                 if let name = blePeripheralsFound[identifier]?.name {
                     let compareOptions = isFilterNameCaseInsensitive ? NSStringCompareOptions.CaseInsensitiveSearch: NSStringCompareOptions()
@@ -119,7 +118,7 @@ class PeripheralList {
                 }
             })
         }
-        
+
         return peripherals
     }
     
@@ -191,7 +190,7 @@ class PeripheralList {
         }
     }
     
-    func selectRow(row: Int ) {
+    func selectRow(row: Int) {
         if (row != selectedPeripheralRow) {
             //DLog("Peripheral selected row: \(row)")
             connectToPeripheral(row >= 0 ? cachedFilteredPeripherals[row] : nil)

@@ -28,7 +28,7 @@ class WatchSessionManager {
     static let sharedInstance = WatchSessionManager()
 
     // Data
-    var session : WCSession?
+    var session: WCSession?
     
     //
     func activateWithDelegate(delegate: WCSessionDelegate?) {
@@ -43,6 +43,16 @@ class WatchSessionManager {
     // MARK: - iOS Specific
 #if os(iOS)
     func updateApplicationContext(mode: Mode) {
+        guard let session = WatchSessionManager.sharedInstance.session where session.paired && session.watchAppInstalled else {
+            return
+        }
+    
+        if #available(iOS 9.3, *) {
+            guard session.activationState == .Activated else {
+                return
+            }
+        }
+    
         do {
             let bleFoundPeripherals = BleManager.sharedInstance.blePeripheralsCount()
             var appContext: [String: AnyObject] = ["mode": mode.rawValue, "bleFoundPeripherals": bleFoundPeripherals]
@@ -51,7 +61,7 @@ class WatchSessionManager {
                 appContext["bleConnectedPeripheralName"] = bleConnectedPeripheral.name
                 appContext["bleHasUart"] = bleConnectedPeripheral.isUartAdvertised()
             }
-            try WatchSessionManager.sharedInstance.session?.updateApplicationContext(appContext)
+            try session.updateApplicationContext(appContext)
         }
         catch {
             //DLog("updateApplicationContext error")

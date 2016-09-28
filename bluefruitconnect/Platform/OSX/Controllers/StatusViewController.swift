@@ -17,14 +17,14 @@ class StatusViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(StatusViewController.didUpdateStatus(_:)), name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didUpdateStatus(_:)), name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
     }
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
     }
     
-    func didUpdateStatus(notification : NSNotification) {
+    func didUpdateStatus(notification: NSNotification) {
         
         let message = StatusManager.sharedInstance.statusDescription()
         
@@ -32,7 +32,7 @@ class StatusViewController: NSViewController {
             self.setText(message)
             //DLog("new status: \(message)")
             
-            if (!self.isAlertBeingPresented) {       // Dont show a alert while another alert is being presented
+            if (!self.isAlertBeingPresented) {       // Don't show a alert while another alert is being presented
                 if let errorMessage = StatusManager.sharedInstance.errorDescription() {
                     self.isAlertBeingPresented = true
                     let alert = NSAlert()
@@ -47,8 +47,7 @@ class StatusViewController: NSViewController {
             })
     }
     
-    func setText(text : String) {
+    func setText(text: String) {
         statusTextField.stringValue = text
     }
-    
 }
