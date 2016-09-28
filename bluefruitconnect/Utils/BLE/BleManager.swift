@@ -62,6 +62,11 @@ class BleManager : NSObject, CBCentralManagerDelegate {
             DLog("startScan failed because central manager is not ready")
             return
         }
+        
+        guard centralManager.state == .PoweredOn else {
+            wasScanningBeforeBluetoothOff = true    // set true to start scanning as soon as bluetooth is powered on
+            return
+        }
                 
         //DLog("startScan");
         isScanning = true
@@ -180,7 +185,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         // DLog("--")
     }
     
-    func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral,  advertisementData: [String : AnyObject], RSSI: NSNumber) {
+    func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
         
         let identifierString = peripheral.identifier.UUIDString
         //DLog("didDiscoverPeripheral \(peripheral.name)")
