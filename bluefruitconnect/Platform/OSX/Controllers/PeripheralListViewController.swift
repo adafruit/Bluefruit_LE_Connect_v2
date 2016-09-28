@@ -17,6 +17,7 @@ class PeripheralListViewController: NSViewController {
     // UI
     @IBOutlet weak var baseTableView: NSTableView!
     @IBOutlet weak var filtersPanelView: NSView!
+    @IBOutlet weak var filtersBackgroundView: NSView!
     @IBOutlet weak var filtersPanelViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var filterTitleTextField: NSTextField!
     @IBOutlet weak var filtersDisclosureButton: NSButton!
@@ -41,6 +42,11 @@ class PeripheralListViewController: NSViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidDiscoverPeripheral.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
+        
+        
+        // Appearance
+        filtersBackgroundView.wantsLayer = true
+        filtersBackgroundView.layer?.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.1).CGColor
     }
 
     deinit {
@@ -278,6 +284,8 @@ class PeripheralListViewController: NSViewController {
     }
    
     @IBAction func onClickFilterNameSettings(sender: AnyObject) {
+        filtersNameSearchField.window?.makeFirstResponder(filtersNameSearchField)           // Force first responder to the text field, so the menu is not grayed down if the text field was not previously selected
+        
         let menu = NSMenu(title: "Settings")
         
         menu.addItemWithTitle("Name contains", action: #selector(onFilterNameSettingsNameContains(_:)), keyEquivalent: "")
