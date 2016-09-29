@@ -17,23 +17,13 @@ class ScrollingTabBarViewController: UIViewController {
     // Data
     var viewControllers: [UIViewController]? {
         willSet {
-            if newValue == nil || selectedIndex >= newValue!.count {
-                removeSelectedViewController()
-                selectedIndex = -1
-            }
+            removeSelectedViewController()
+            selectedIndex = -1
         }
         
         didSet {
             tabBarCollectionView.reloadData()
-            if viewControllers == nil || viewControllers!.count == 0 {
-                selectedIndex = -1
-            }
-            else if selectedIndex >= viewControllers!.count  {
-                selectedIndex = viewControllers!.count - 1
-            }
-            else if selectedIndex < 0 {
-                selectedIndex = 0
-            }
+            selectedIndex = viewControllers == nil || viewControllers!.count == 0 ? -1:0
         }
     }
     

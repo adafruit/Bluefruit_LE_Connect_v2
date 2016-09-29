@@ -40,7 +40,7 @@ class UartModuleViewController: ModuleViewController {
     private var txColor = Preferences.uartSentDataColor
     private var rxColor = Preferences.uartReceveivedDataColor
     private let timestampDateFormatter = NSDateFormatter()
-    private var tableCachedDataBuffer : [UartDataChunk]?
+    private var tableCachedDataBuffer: [UartDataChunk]?
     private var textCachedBuffer = NSMutableAttributedString()
     
     private let keyboardPositionNotifier = KeyboardPositionNotifier()
@@ -351,7 +351,6 @@ class UartModuleViewController: ModuleViewController {
         }
     }
     
-    
     private func showDialogWarningNoTextToExport() {
         let localizationManager = LocalizationManager.sharedInstance
         let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("uart_export_nodata"), preferredStyle: .Alert)
@@ -388,7 +387,6 @@ class UartModuleViewController: ModuleViewController {
         
         presentViewController(helpNavigationController, animated: true, completion: nil)
     }
-    
 }
 
 // MARK: - UITableViewDataSource
@@ -591,7 +589,7 @@ extension UartModuleViewController: KeyboardPositionNotifierDelegate {
 }
 
 // MARK: - UIPopoverPresentationControllerDelegate
-extension UartModuleViewController : UIPopoverPresentationControllerDelegate {
+extension UartModuleViewController: UIPopoverPresentationControllerDelegate {
     
     func adaptivePresentationStyleForPresentationController(PC: UIPresentationController) -> UIModalPresentationStyle {
         // This *forces* a popover to be displayed on the iPhone

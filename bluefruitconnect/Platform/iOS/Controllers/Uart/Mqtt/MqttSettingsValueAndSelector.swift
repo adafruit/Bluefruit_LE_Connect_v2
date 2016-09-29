@@ -10,20 +10,17 @@ import UIKit
 
 class MqttSettingsValueAndSelector: UITableViewCell {
 
+    // UI
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var valueTextField: UITextField?
     @IBOutlet weak var typeButton: UIButton?
     
-    var indexPath : NSIndexPath?
+    // Data
+    var indexPath: NSIndexPath?
     
     func reset() {
         valueTextField?.text = nil
         valueTextField?.placeholder = nil
-        valueTextField?.keyboardType = UIKeyboardType.Default;
-        /*
-        typeTextField?.text = nil
-        typeTextField?.inputView = nil
-        typeTextField?.inputAccessoryView = nil
-*/
+        valueTextField?.keyboardType = UIKeyboardType.Default
     }
 }

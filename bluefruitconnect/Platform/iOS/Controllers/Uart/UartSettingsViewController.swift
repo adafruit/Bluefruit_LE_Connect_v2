@@ -36,16 +36,16 @@ class UartSettingsViewController: UIViewController {
 }
 
 // MARK: - UITableViewDataSource
-extension UartSettingsViewController : UITableViewDataSource {
+extension UartSettingsViewController: UITableViewDataSource {
     
-    private enum SettingsSection : Int {
+    private enum SettingsSection: Int {
         case DisplayMode = 0
         case DataMode = 1
         case Echo = 2
         case Eol = 3
     }
     
-    private enum ActionsSetion : Int {
+    private enum ActionsSetion: Int {
         case Clear = 0
         case Export = 1
     }
@@ -80,7 +80,7 @@ extension UartSettingsViewController : UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let row = indexPath.row
-        var reuseIdentifier : String!
+        var reuseIdentifier: String!
         
         if indexPath.section == 0 {
             switch SettingsSection(rawValue: row)! {
@@ -152,7 +152,7 @@ extension UartSettingsViewController : UITableViewDataSource {
             uartCell.titleLabel.text = titleKey == nil ? nil : localizationManager.localizedString(titleKey!)+":"
         }
         else {
-            var iconIdentifier : String?
+            var iconIdentifier: String?
             switch ActionsSetion(rawValue: row)! {
             case .Clear:
                 titleKey = "uart_settings_clear_title"

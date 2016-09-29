@@ -122,6 +122,45 @@ class PeripheralList {
         return peripherals
     }
     
+    func filtersDescription() -> String? {
+        var filtersTitle: String?
+        if let filterName = filterName {
+            filtersTitle = filterName
+        }
+        
+        if let rssiFilterValue = rssiFilterValue {
+            let rssiString = "Rssi >= \(rssiFilterValue)"
+            if filtersTitle != nil && !filtersTitle!.isEmpty {
+                filtersTitle!.appendContentsOf(", \(rssiString)")
+            }
+            else {
+                filtersTitle = rssiString
+            }
+        }
+        
+        if !isUnnamedEnabled {
+            let namedString = "with name"
+            if filtersTitle != nil && !filtersTitle!.isEmpty {
+                filtersTitle!.appendContentsOf(", \(namedString)")
+            }
+            else {
+                filtersTitle = namedString
+            }
+        }
+        
+        if isOnlyUartEnabled {
+            let uartString = "with UART"
+            if filtersTitle != nil && !filtersTitle!.isEmpty {
+                filtersTitle!.appendContentsOf(", \(uartString)")
+            }
+            else {
+                filtersTitle = uartString
+            }
+        }
+        
+        return filtersTitle
+    }
+    
     
     var selectedPeripheralRow: Int? {
         return indexOfPeripheralIdentifier(selectedPeripheralIdentifier)

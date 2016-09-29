@@ -164,7 +164,6 @@ class NeopixelModuleViewController: ModuleViewController {
         }
     }
     
-    
     /*
     override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransitionToTraitCollection(newCollection, withTransitionCoordinator: coordinator)
@@ -493,7 +492,7 @@ extension NeopixelModuleViewController: NeopixelModuleManagerDelegate {
 }
 
 // MARK: - UIPopoverPresentationControllerDelegate
-extension NeopixelModuleViewController : UIPopoverPresentationControllerDelegate {
+extension NeopixelModuleViewController: UIPopoverPresentationControllerDelegate {
     
     func adaptivePresentationStyleForPresentationController(PC: UIPresentationController) -> UIModalPresentationStyle {
         // This *forces* a popover to be displayed on the iPhone
@@ -511,7 +510,7 @@ extension NeopixelModuleViewController : UIPopoverPresentationControllerDelegate
 }
 
 // MARK: - UIPopoverPresentationControllerDelegate
-extension NeopixelModuleViewController : NeopixelColorPickerViewControllerDelegate {
+extension NeopixelModuleViewController: NeopixelColorPickerViewControllerDelegate {
     func onColorPickerChooseColor(color: UIColor) {
         colorPickerButton.backgroundColor = color
         updatePickerColorButton(true)

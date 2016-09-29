@@ -126,7 +126,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         infoViewController.tabBarItem.image = UIImage(named: "tab_info_icon")
 
         setViewControllers([infoViewController], animated: false)
-        //selectedIndex = 0
+        selectedIndex = 0
     }
     
     func willDisconnectFromPeripheral(notification : NSNotification) {

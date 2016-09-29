@@ -1291,7 +1291,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="sMb-5H-ycl"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="4479C03E-A236-4503-839C-BFB741F94BD1" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="hTs-js-lg8">
+                                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="D48E36D9-FA4A-463F-B186-0C061A765825" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="hTs-js-lg8">
                                             <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -2964,7 +2964,7 @@ Gw
         </scene>
     </scenes>
     <resources>
-        <image name="4479C03E-A236-4503-839C-BFB741F94BD1" width="1" height="1">
+        <image name="D48E36D9-FA4A-463F-B186-0C061A765825" width="1" height="1">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

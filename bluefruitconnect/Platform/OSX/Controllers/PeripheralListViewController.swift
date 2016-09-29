@@ -48,7 +48,6 @@ class PeripheralListViewController: NSViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDiscoverPeripheral(_:)), name: BleManager.BleNotifications.DidUnDiscoverPeripheral.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
         
-        
         // Appearance
         filtersBackgroundView.wantsLayer = true
         filtersBackgroundView.layer?.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.1).CGColor
@@ -136,46 +135,11 @@ class PeripheralListViewController: NSViewController {
     }
 
     private func updateFiltersTitle() {
-        var filtersTitle: String?
-        if let filterName = peripheralList.filterName {
-            filtersTitle = filterName
-        }
-        
-        if let rssiFilterValue = peripheralList.rssiFilterValue {
-            let rssiString = "Rssi >= \(rssiFilterValue)"
-            if filtersTitle != nil {
-                filtersTitle!.appendContentsOf(", \(rssiString)")
-            }
-            else {
-                filtersTitle = rssiString
-            }
-        }
-        
-        if !peripheralList.isUnnamedEnabled {
-            let namedString = "with name"
-            if filtersTitle != nil {
-                filtersTitle!.appendContentsOf(", \(namedString)")
-            }
-            else {
-                filtersTitle = namedString
-            }
-        }
-        
-        if peripheralList.isOnlyUartEnabled {
-            let uartString = "with UART"
-            if filtersTitle != nil {
-                filtersTitle!.appendContentsOf(", \(uartString)")
-            }
-            else {
-                filtersTitle = uartString
-            }
-        }
-        
+        let filtersTitle = peripheralList.filtersDescription()
         filterTitleTextField.stringValue = filtersTitle != nil ? "Filter: \(filtersTitle!)" : "No filter selected"
         
         filtersClearButton.hidden = !peripheralList.isAnyFilterEnabled()
     }
-
     
     func onFilterNameSettingsNameContains(sender: NSMenuItem) {
         peripheralList.isFilterNameExact = false
@@ -207,7 +171,7 @@ class PeripheralListViewController: NSViewController {
     }
     
     private func updateRssiValueLabel() {
-        filterRssiValueLabel.stringValue = "\(filtersRssiSlider.integerValue) dBM"
+        filterRssiValueLabel.stringValue = "\(-filtersRssiSlider.integerValue) dBM"
     }
     
     
@@ -283,7 +247,7 @@ class PeripheralListViewController: NSViewController {
     
     
     @IBAction func onEditFilterName(sender: AnyObject) {
-        let isEmpty = (sender.stringValue as String).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).characters.count == 0
+        let isEmpty = (sender.stringValue as String).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).isEmpty
         peripheralList.filterName = isEmpty ? nil:sender.stringValue
         updateFilters()
     }
@@ -330,6 +294,7 @@ class PeripheralListViewController: NSViewController {
         peripheralList.setDefaultFilters()
         filtersNameSearchField.stringValue = peripheralList.filterName ?? ""
         setRssiSliderValue(peripheralList.rssiFilterValue)
+        filtersShowUnnamed.state = peripheralList.isUnnamedEnabled ? NSOnState:NSOffState
         filtersOnlyWithUartButton.state = peripheralList.isOnlyUartEnabled ? NSOnState:NSOffState
         updateFilters()
     }

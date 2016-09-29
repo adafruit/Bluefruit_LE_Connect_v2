@@ -21,6 +21,7 @@ class InfoModuleViewController: ModuleViewController {
 //    var onInfoScanFinished: (() ->())?
     
     // Data
+    private let refreshControl = UIRefreshControl()
     private var blePeripheral: BlePeripheral?
     private var services: [CBService]?
     private var itemDisplayMode = [String : DisplayMode]()
@@ -44,10 +45,17 @@ class InfoModuleViewController: ModuleViewController {
         }
 
         // Setup table
-        baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
+       // baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
         baseTableView.estimatedRowHeight = 60
         baseTableView.rowHeight = UITableViewAutomaticDimension
 
+        // Setup table refresh
+        /*
+        refreshControl.addTarget(self, action: #selector(onTableRefresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        baseTableView.addSubview(refreshControl)
+        baseTableView.sendSubviewToBack(refreshControl)
+        */
+        
         // Discover services
         shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
         services = nil
@@ -112,13 +120,22 @@ class InfoModuleViewController: ModuleViewController {
         presentViewController(helpNavigationController, animated: true, completion: nil)
     }
     
+    // MARK - Actions
+    func onTableRefresh(sender: AnyObject) {
+        refreshControl.endRefreshing()
+        discoverServices()
+//        baseTableView.reloadData()
+//        baseTableView.layoutIfNeeded()
+        
+    }
+    
     @IBAction func onClickRefresh(sender: AnyObject) {
         discoverServices()
     }
     
 }
 
-extension InfoModuleViewController : UITableViewDataSource {
+extension InfoModuleViewController: UITableViewDataSource {
     enum DisplayMode : Int {
         case Auto = 0
         case Text = 1
@@ -417,7 +434,7 @@ extension InfoModuleViewController : CBPeripheralDelegate {
             dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
  
                 //self.updateDiscoveringStatusLabel()
-                self.baseTableView.reloadData()
+                self.baseTableView?.reloadData()
                 self.showWait(false)
                 self.onServicesDiscovered?()
                 })
@@ -443,7 +460,7 @@ extension InfoModuleViewController : CBPeripheralDelegate {
         }
         
         dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            self.baseTableView.reloadData()
+            self.baseTableView?.reloadData()
             })
     }
 
@@ -466,7 +483,7 @@ extension InfoModuleViewController : CBPeripheralDelegate {
         
         if (self.elementsDiscovered == self.elementsToDiscover) {
             dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-                self.baseTableView.reloadData()
+                self.baseTableView?.reloadData()
                 })
         }
         
@@ -487,7 +504,7 @@ extension InfoModuleViewController : CBPeripheralDelegate {
         if (self.elementsDiscovered >= self.elementsToDiscover) {
             dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
                 //self.updateDiscoveringStatusLabel()
-                self.baseTableView.reloadData()
+                self.baseTableView?.reloadData()
                 })
         }
     }
@@ -502,7 +519,7 @@ extension InfoModuleViewController : CBPeripheralDelegate {
         if (self.elementsDiscovered >= self.elementsToDiscover) {
             dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
                 //self.updateDiscoveringStatusLabel()
-                self.baseTableView.reloadData()
+                self.baseTableView?.reloadData()
                 })
         }
     }
