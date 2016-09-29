@@ -182,7 +182,7 @@ class NeopixelModuleViewController: ModuleViewController {
     private func showLineStripDialog() {
         // Show dialog
         let localizationManager = LocalizationManager.sharedInstance
-        let alertController = UIAlertController(title: nil, message: "Selet line strip length", preferredStyle: .Alert)
+        let alertController = UIAlertController(title: nil, message: "Select line strip length", preferredStyle: .Alert)
         
         let okAction = UIAlertAction(title: "Select", style: .Default) { (_) in
             let stripLengthTextField = alertController.textFields![0] as UITextField
