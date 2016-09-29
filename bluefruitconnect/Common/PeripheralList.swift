@@ -64,7 +64,7 @@ class PeripheralList {
     }
     
     func isAnyFilterEnabled() -> Bool {
-        return (filterName != nil && filterName!.characters.count > 0) || rssiFilterValue != nil || isOnlyUartEnabled || !isUnnamedEnabled
+        return (filterName != nil && !filterName!.isEmpty) || rssiFilterValue != nil || isOnlyUartEnabled || !isUnnamedEnabled
     }
     
     func filteredPeripherals(forceUpdate: Bool) -> [String] {
@@ -124,7 +124,7 @@ class PeripheralList {
     
     func filtersDescription() -> String? {
         var filtersTitle: String?
-        if let filterName = filterName {
+        if let filterName = filterName where !filterName.isEmpty {
             filtersTitle = filterName
         }
         

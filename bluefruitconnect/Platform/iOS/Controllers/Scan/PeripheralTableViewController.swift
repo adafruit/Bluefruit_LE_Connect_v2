@@ -30,6 +30,7 @@ class PeripheralTableViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     private var peripheralList: PeripheralList!
     private var tableRowOpen: Int?
+    private var tableRowOpenPeripheralIdentifier: String?
     private var cachedNumOfTableItems = 0
     
     override func viewDidLoad() {
@@ -134,16 +135,30 @@ class PeripheralTableViewController: UIViewController {
             if let context = self {
                 
                 // Reload data
-                let currentPeripheralsCount = context.peripheralList.filteredPeripherals(true).count
+                let filteredPeripherals = context.peripheralList.filteredPeripherals(true)
+                let currentPeripheralsCount = filteredPeripherals.count
                 // DLog("discover count: \(currentPeripheralsCount)")
-                if currentPeripheralsCount != context.cachedNumOfTableItems  {
+                if currentPeripheralsCount != context.cachedNumOfTableItems {
+
+                    // Update row open if still available
+                    if let tableRowOpenPeripheralIdentifier = context.tableRowOpenPeripheralIdentifier {
+                        context.tableRowOpen = filteredPeripherals.indexOf(tableRowOpenPeripheralIdentifier)
+                    }
+                    else {
+                        context.tableRowOpen = nil
+                    }
+
                     context.baseTableView.reloadData()
+                    
+                    // Select identifier if still available
+                    if let selectedPeripheralRow = self?.peripheralList.selectedPeripheralRow {
+                        context.baseTableView.selectRowAtIndexPath(NSIndexPath(forRow: selectedPeripheralRow, inSection: 0), animated: false, scrollPosition: .None)
+                    }
+                    
+                    
                 }
                 
-                // Select identifier if still available
-                if let selectedPeripheralRow = self?.peripheralList.selectedPeripheralRow {
-                    context.baseTableView.selectRowAtIndexPath(NSIndexPath(forRow: selectedPeripheralRow, inSection: 0), animated: false, scrollPosition: .None)
-                }
+                
             }
             })
     }
@@ -352,10 +367,11 @@ class PeripheralTableViewController: UIViewController {
     private func updateRssiValueLabel() {
         filterRssiValueLabel.text = "\(Int(-filtersRssiSlider.value)) dBM"
     }
-    
+
     // MARK: - Actions
     func onTableRefresh(sender: AnyObject) {
         tableRowOpen = nil
+        tableRowOpenPeripheralIdentifier = nil
         BleManager.sharedInstance.refreshPeripherals()
         refreshControl.endRefreshing()
     }
@@ -544,8 +560,11 @@ extension PeripheralTableViewController: UITableViewDelegate {
         tableRowOpen = row == tableRowOpen ? nil: row
         
         synchronize(self) { [unowned self] in
+            let filteredPeripherals = self.peripheralList.filteredPeripherals(false)
+            self.tableRowOpenPeripheralIdentifier = self.tableRowOpen != nil && self.tableRowOpen! < filteredPeripherals.count ?  filteredPeripherals[self.tableRowOpen!] : nil
+
             // Animate if the number the items have not changed
-            if BleManager.sharedInstance.blePeripheralsCount() == self.cachedNumOfTableItems  {
+            if filteredPeripherals.count == self.cachedNumOfTableItems  {
                 
                 // Reload data
                 var reloadPaths = [indexPath]
