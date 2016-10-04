@@ -20,8 +20,13 @@ class PeripheralTableViewCell: UITableViewCell {
     
     @IBOutlet weak var detailBaseStackView: UIStackView!
     @IBOutlet weak var servicesStackView: UIStackView!
+    @IBOutlet weak var servicesOverflowStackView: UIStackView!
+    @IBOutlet weak var servicesSolicitedStackView: UIStackView!
     @IBOutlet weak var txPowerLevelValueLabel: UILabel!
+    @IBOutlet weak var localNameValueLabel: UILabel!
     @IBOutlet weak var manufacturerValueLabel: UILabel!
+    @IBOutlet weak var connectableValueLabel: UILabel!
+    
     
     var onConnect : (() -> ())?
     var onDisconnect : (() -> ())?

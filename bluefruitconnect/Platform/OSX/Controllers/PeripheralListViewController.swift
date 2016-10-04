@@ -50,7 +50,7 @@ class PeripheralListViewController: NSViewController {
         
         // Appearance
         filtersBackgroundView.wantsLayer = true
-        filtersBackgroundView.layer?.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.1).CGColor
+        filtersBackgroundView.layer?.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.05).CGColor
     }
 
     deinit {
@@ -185,6 +185,7 @@ class PeripheralListViewController: NSViewController {
             case CBAdvertisementDataLocalNameKey:
                 let name = value as! String
                 advertisementString += "Local name: \(name)\n"
+                
             case CBAdvertisementDataManufacturerDataKey:
                 let manufacturerData = value as! NSData
                 let manufacturerHexString =  hexString(manufacturerData)
@@ -213,9 +214,11 @@ class PeripheralListViewController: NSViewController {
             case CBAdvertisementDataTxPowerLevelKey:
                 let txPower = value as! NSNumber
                 advertisementString += "TX Power Level: \(txPower.integerValue)\n"
+                
             case CBAdvertisementDataIsConnectable:
                 let isConnectable = value as! Bool
                 advertisementString += "Connectable: \(isConnectable ? "true":"false")\n"
+                
             case CBAdvertisementDataSolicitedServiceUUIDsKey:
                 let serviceUuids = value as! [CBUUID]
                 advertisementString += "Solicited Service: \(value)\n"

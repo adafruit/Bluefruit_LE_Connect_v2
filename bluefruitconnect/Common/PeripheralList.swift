@@ -90,7 +90,7 @@ class PeripheralList {
             peripherals = peripherals.filter({blePeripheralsFound[$0]?.name != nil})
         }
         
-        if let filterName = filterName where filterName.characters.count > 0 {
+        if let filterName = filterName where !filterName.isEmpty {
             peripherals = peripherals.filter({ identifier -> Bool in
                 if let name = blePeripheralsFound[identifier]?.name {
                     let compareOptions = isFilterNameCaseInsensitive ? NSStringCompareOptions.CaseInsensitiveSearch: NSStringCompareOptions()
@@ -100,7 +100,6 @@ class PeripheralList {
                     else {
                         return name.rangeOfString(filterName, options: compareOptions, range: nil, locale: nil) != nil
                     }
-                    
                 }
                 else {
                     return false
@@ -111,7 +110,8 @@ class PeripheralList {
         if let rssiFilterValue = rssiFilterValue {
             peripherals = peripherals.filter({ identifier -> Bool in
                 if let rssi = blePeripheralsFound[identifier]?.rssi {
-                    return rssi >= rssiFilterValue
+                    let validRssi = rssi >= rssiFilterValue
+                    return validRssi
                 }
                 else {
                     return false

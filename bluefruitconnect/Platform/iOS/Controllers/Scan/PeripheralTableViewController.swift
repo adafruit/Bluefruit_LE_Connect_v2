@@ -40,10 +40,10 @@ class PeripheralTableViewController: UIViewController {
         
         // Setup filters
         filtersNameTextField.leftViewMode = .Always
-        let nameImageView = UIImageView(image: UIImage(named: "ic_search_18pt"))
-        nameImageView.contentMode = UIViewContentMode.Right
-        nameImageView.frame = CGRectMake(0.0, 0.0, nameImageView.image!.size.width + 6.0, nameImageView.image!.size.height)
-        filtersNameTextField.leftView = nameImageView
+        let searchImageView = UIImageView(image: UIImage(named: "ic_search_18pt"))
+        searchImageView.contentMode = UIViewContentMode.Right
+        searchImageView.frame = CGRectMake(0.0, 0.0, searchImageView.image!.size.width + 6.0, searchImageView.image!.size.height)
+        filtersNameTextField.leftView = searchImageView
         
         // Setup table refresh
         refreshControl.addTarget(self, action: #selector(onTableRefresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
@@ -362,6 +362,7 @@ class PeripheralTableViewController: UIViewController {
     
     private func setRssiSliderValue(value: Int?) {
         filtersRssiSlider.value = value != nil ? Float(-value!) : 100.0
+        updateRssiValueLabel()
     }
     
     private func updateRssiValueLabel() {
@@ -492,6 +493,19 @@ extension PeripheralTableViewController: UITableViewDataSource {
     private func setupPeripheralExtendedView(peripheralCell: PeripheralTableViewCell, advertisementData: [String : AnyObject]) {
         let detailBaseStackView = peripheralCell.detailBaseStackView
         
+        var currentIndex = 0
+        
+        // Local Name 
+        var isLocalNameAvailable = false
+        if let localName = advertisementData[CBAdvertisementDataLocalNameKey] as? String {
+            
+            peripheralCell.localNameValueLabel.text = localName
+            isLocalNameAvailable = true
+        }
+        detailBaseStackView.subviews[currentIndex].hidden = !isLocalNameAvailable
+        currentIndex = currentIndex+1
+
+        
         // Manufacturer Name
         var isManufacturerAvailable = false
         if let manufacturerData = advertisementData[CBAdvertisementDataManufacturerDataKey] as? NSData, manufacturerString = String(data: manufacturerData, encoding: NSUTF8StringEncoding) {
@@ -502,52 +516,96 @@ extension PeripheralTableViewController: UITableViewDataSource {
         else {
             peripheralCell.manufacturerValueLabel.text = nil
         }
-        detailBaseStackView.subviews[0].hidden = !isManufacturerAvailable
+        detailBaseStackView.subviews[currentIndex].hidden = !isManufacturerAvailable
+        currentIndex = currentIndex+1
         
         // Services
-        let stackView = peripheralCell.servicesStackView
-        let styledLabel = stackView.arrangedSubviews.first! as! UILabel
-        styledLabel.hidden = true     // The first view is only to define style in InterfaceBuilder. Hide it
-        
         var areServicesAvailable = false
-        if let services = advertisementData[CBAdvertisementDataServiceUUIDsKey] as? NSArray {
+        if let services = advertisementData[CBAdvertisementDataServiceUUIDsKey] as? [CBUUID] {
             //DLog("services: \(services.count)")
-            
-            // Clear current subviews
-            for arrangedSubview in stackView.arrangedSubviews {
-                if arrangedSubview != stackView.arrangedSubviews.first {
-                    arrangedSubview.removeFromSuperview()
-                    stackView.removeArrangedSubview(arrangedSubview)
-                }
-            }
-            
-            // Add services as subviews
-            for serviceUUID in services {
-                if let serviceCBUUID = serviceUUID as? CBUUID {
-                    let label = UILabel()
-                    var identifier = serviceCBUUID.UUIDString
-                    if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
-                        identifier = name
-                    }
-                    label.text = identifier
-                    label.font = styledLabel.font
-                    label.minimumScaleFactor = styledLabel.minimumScaleFactor
-                    label.adjustsFontSizeToFitWidth = styledLabel.adjustsFontSizeToFitWidth
-                    stackView.addArrangedSubview(label)
-                }
-            }
+            let stackView = peripheralCell.servicesStackView
+    
+            addServiceNames(stackView, services: services)
             
             areServicesAvailable = services.count > 0
         }
-        detailBaseStackView.subviews[1].hidden = !areServicesAvailable
+        detailBaseStackView.subviews[currentIndex].hidden = !areServicesAvailable
+        currentIndex = currentIndex+1
+
+        // Services Overflow
+        var areServicesOverflowAvailable = false
+        if let servicesOverflow = advertisementData[CBAdvertisementDataOverflowServiceUUIDsKey] as? [CBUUID] {
+            let stackView = peripheralCell.servicesOverflowStackView
+
+            addServiceNames(stackView, services: servicesOverflow)
+            
+            areServicesOverflowAvailable = servicesOverflow.count > 0
+        }
+        detailBaseStackView.subviews[currentIndex].hidden = !areServicesOverflowAvailable
+        currentIndex = currentIndex+1
+        
+        // Solicited Services
+        var areSolicitedServicesAvailable = false
+        if let servicesSolicited = advertisementData[CBAdvertisementDataSolicitedServiceUUIDsKey] as? [CBUUID] {
+            let stackView = peripheralCell.servicesOverflowStackView
+            
+            addServiceNames(stackView, services: servicesSolicited)
+            
+            areSolicitedServicesAvailable = servicesSolicited.count > 0
+        }
+        detailBaseStackView.subviews[currentIndex].hidden = !areSolicitedServicesAvailable
+        currentIndex = currentIndex+1
+
         
         // Tx Power
+        var isTxPowerAvailable: Bool
         if let txpower = advertisementData[CBAdvertisementDataTxPowerLevelKey] as? NSNumber {
             peripheralCell.txPowerLevelValueLabel.text = String(txpower)
+            isTxPowerAvailable = true
         }
         else {
-            peripheralCell.txPowerLevelValueLabel.text = nil
+            isTxPowerAvailable = false
         }
+        detailBaseStackView.subviews[currentIndex].hidden = !isTxPowerAvailable
+        currentIndex = currentIndex+1
+
+        
+        // Connectable
+        var isConnectable: Bool?
+        if let connectableNumber = advertisementData[CBAdvertisementDataIsConnectable] as? NSNumber {
+            isConnectable = connectableNumber.boolValue
+        }
+        peripheralCell.connectableValueLabel.text = isConnectable != nil ? "\(isConnectable! ? "true":"false")":"unknown"
+        currentIndex = currentIndex+1
+
+    }
+    
+    private func addServiceNames(stackView: UIStackView, services: [CBUUID]) {
+        let styledLabel = stackView.arrangedSubviews.first! as! UILabel
+        styledLabel.hidden = true     // The first view is only to define style in InterfaceBuilder. Hide it
+        
+        // Clear current subviews
+        for arrangedSubview in stackView.arrangedSubviews {
+            if arrangedSubview != stackView.arrangedSubviews.first {
+                arrangedSubview.removeFromSuperview()
+                stackView.removeArrangedSubview(arrangedSubview)
+            }
+        }
+        
+        // Add services as subviews
+        for serviceCBUUID in services {
+            let label = UILabel()
+            var identifier = serviceCBUUID.UUIDString
+            if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
+                identifier = name
+            }
+            label.text = identifier
+            label.font = styledLabel.font
+            label.minimumScaleFactor = styledLabel.minimumScaleFactor
+            label.adjustsFontSizeToFitWidth = styledLabel.adjustsFontSizeToFitWidth
+            stackView.addArrangedSubview(label)
+        }
+
     }
 }
 
@@ -584,8 +642,6 @@ extension PeripheralTableViewController: UITableViewDelegate {
         }
     }
 }
-
-
 
 // MARK: - UIPopoverPresentationControllerDelegate
 extension PeripheralTableViewController: UIPopoverPresentationControllerDelegate {

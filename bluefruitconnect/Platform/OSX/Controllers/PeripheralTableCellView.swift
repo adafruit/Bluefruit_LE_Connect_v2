@@ -14,7 +14,7 @@ class PeripheralTableCellView: NSTableCellView {
     @IBOutlet weak var rssiImageView: NSImageView!
     @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var subtitleTextField: NSTextField!
-    @IBOutlet weak var hasUartView: NSButton!
+    @IBOutlet weak var hasUartView: NSTextField!
     @IBOutlet weak var disconnectButton: NSButton!
     @IBOutlet weak var disconnectButtonWidthConstraint: NSLayoutConstraint!
     
@@ -22,6 +22,16 @@ class PeripheralTableCellView: NSTableCellView {
     var onDisconnect : (() -> ())?
     var onClickAdvertising : (() -> ())?
 
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        hasUartView.wantsLayer = true
+        hasUartView.layer?.borderWidth = 1
+        hasUartView.layer?.borderColor = NSColor.lightGrayColor().CGColor
+        hasUartView.layer?.cornerRadius = 4
+    }
+    
     override func drawRect(dirtyRect: NSRect) {
         super.drawRect(dirtyRect)
 
