@@ -339,6 +339,8 @@ class UartModuleViewController: ModuleViewController {
     
     private func exportData(data: AnyObject?) {
         if let data = data {
+            // TODO: replace randomly generated iOS filenames: https://thomasguenzel.com/blog/2015/04/16/uiactivityviewcontroller-nsdata-with-filename/
+            
             let activityViewController = UIActivityViewController(activityItems: [data], applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = exportButton
             

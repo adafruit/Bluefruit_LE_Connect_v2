@@ -59,7 +59,7 @@ class UartModuleManager: NSObject {
     #if os(OSX)
     static let kExportFormats: [ExportFormat] = [.txt, .csv, .json, .xml, .bin]
     #else
-    static let kExportFormats: [ExportFormat] = [.txt, .csv, .json/*, .xml*/]
+    static let kExportFormats: [ExportFormat] = [.txt, .csv, .json/*, .xml*/, .bin]
     #endif
     
     override init() {
