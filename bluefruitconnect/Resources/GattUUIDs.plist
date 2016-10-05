@@ -302,5 +302,9 @@
 	<string>Eddystone Reset</string>
 	<key>EE0C2090-8786-40BA-AB96-99B91AC981D8</key>
 	<string>Eddystone (Reserved)</string>
+	<key>8D53DC1D-1DB7-4CD3-868B-8A527460AA84</key>
+	<string>Newtmgr Service</string>
+	<key>DA2E7828-FBCE-4E01-AE9E-261174997C48</key>
+	<string>Newtmgr Characteristic</string>
 </dict>
 </plist>
