@@ -61,8 +61,8 @@ class UartManager: NSObject {
     }
     
     func didDisconnectFromPeripheral(notification: NSNotification) {
-        blePeripheral = nil
         clearData()
+        blePeripheral = nil
         resetService()
     }
     
