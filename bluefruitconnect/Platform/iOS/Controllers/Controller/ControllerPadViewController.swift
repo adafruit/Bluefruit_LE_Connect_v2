@@ -53,15 +53,37 @@ class ControllerPadViewController: UIViewController {
         let hightlightedImage = UIImage(color: UIColor.darkGrayColor())
         button.setBackgroundImage(hightlightedImage, forState: .Highlighted)
         
-        button.addTarget(self, action: #selector(ControllerPadViewController.onTouchDown(_:)), forControlEvents: .TouchDown)
-        button.addTarget(self, action: #selector(ControllerPadViewController.onTouchUp(_:)), forControlEvents: .TouchUpInside)
-        button.addTarget(self, action: #selector(ControllerPadViewController.onTouchUp(_:)), forControlEvents: .TouchDragExit)
-        button.addTarget(self, action: #selector(ControllerPadViewController.onTouchUp(_:)), forControlEvents: .TouchCancel)
+        button.addTarget(self, action: #selector(onTouchDown(_:)), forControlEvents: .TouchDown)
+        button.addTarget(self, action: #selector(onTouchUp(_:)), forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(onTouchUp(_:)), forControlEvents: .TouchDragExit)
+        button.addTarget(self, action: #selector(onTouchUp(_:)), forControlEvents: .TouchCancel)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Fix: remove the UINavigationController pop gesture to avoid problems with the arrows left button
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) { [unowned self] in
+            
+            self.navigationController?.interactivePopGestureRecognizer?.delaysTouchesBegan = false
+            self.navigationController?.interactivePopGestureRecognizer?.delaysTouchesEnded = false
+            self.navigationController?.interactivePopGestureRecognizer?.enabled = false
+        }
+    }
+ 
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        
     }
     
     private func sendTouchEvent(tag: Int, isPressed: Bool) {

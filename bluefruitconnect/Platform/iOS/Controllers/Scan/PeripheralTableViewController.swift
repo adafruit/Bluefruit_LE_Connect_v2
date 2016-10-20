@@ -465,11 +465,9 @@ extension PeripheralTableViewController: UITableViewDataSource {
                 peripheralCell.disconnectButton.hidden = !showDisconnect
                 peripheralCell.connectButton.hidden = !showConnect // showDisconnect
                 peripheralCell.onDisconnect = { [unowned self] in
-                    if let indexPathForSelectedRow = tableView.indexPathForSelectedRow {
-                        tableView.deselectRowAtIndexPath(indexPathForSelectedRow, animated: true)
-                        self.peripheralList.selectRow(-1)
-                        self.reloadData()
-                    }
+                    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                    self.peripheralList.selectRow(-1)
+                    self.reloadData()
                 }
                 peripheralCell.onConnect = { [unowned self] in
                     
