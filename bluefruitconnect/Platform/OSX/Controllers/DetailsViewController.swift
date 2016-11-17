@@ -137,7 +137,7 @@ class DetailsViewController: NSViewController {
         
         self.cancelRssiTimer()
         let privateQueue = dispatch_queue_create("private_queue", DISPATCH_QUEUE_CONCURRENT);
-        self.rssiTimer = MSWeakTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: #selector(DetailsViewController.requestUpdateRssi), userInfo: nil, repeats: true, dispatchQueue: privateQueue)
+        self.rssiTimer = MSWeakTimer.scheduledTimerWithTimeInterval(DetailsViewController.kRssiUpdateInterval, target: self, selector: #selector(requestUpdateRssi), userInfo: nil, repeats: true, dispatchQueue: privateQueue)
         
         // UI: Add Info tab
         let infoViewController = self.storyboard?.instantiateControllerWithIdentifier("InfoViewController") as! InfoViewController

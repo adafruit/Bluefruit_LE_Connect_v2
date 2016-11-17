@@ -117,7 +117,7 @@ class NeopixelModuleManager: NSObject {
             return
         }
         
-        uartResponseTimer = NSTimer.scheduledTimerWithTimeInterval(NeopixelModuleManager.kUartTimeout, target: self, selector: #selector(NeopixelModuleManager.uartResponseTimeout), userInfo: nil, repeats: false)
+        uartResponseTimer = NSTimer.scheduledTimerWithTimeInterval(NeopixelModuleManager.kUartTimeout, target: self, selector: #selector(uartResponseTimeout), userInfo: nil, repeats: false)
         uartResponseDelegate = completionHandler
         uartData.sendData(data)
     }

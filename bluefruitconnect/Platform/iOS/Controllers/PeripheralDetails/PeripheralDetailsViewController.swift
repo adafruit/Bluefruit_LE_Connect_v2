@@ -39,15 +39,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                 self.emptyViewController.setConnecting(false)
             }
         }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+        
         
         let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
         guard !isFullScreen || selectedBlePeripheral != nil else {
@@ -64,11 +56,27 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         notificationCenter.addObserver(self, selector: #selector(willDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
         notificationCenter.addObserver(self, selector: #selector(didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
         isObservingBle = true
+
     }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+           }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
+        
+    }
+    
+    deinit {
+        // Remove notifications. Note: don't do this on viewwilldissapear because connection should still work when a new viewcontroller is pushed. i.e.: ControlPad)
         if isObservingBle {
             let notificationCenter = NSNotificationCenter.defaultCenter()
             let isFullScreen =  UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
@@ -158,6 +166,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             
             if !isFullScreen {
                 DLog("detail: show empty")
+                self.navigationController?.popToRootViewControllerAnimated(false)       // pop any viewcontrollers (like ControlPad)
                 self.showEmpty(true)
                 self.emptyViewController.setConnecting(false)
             }

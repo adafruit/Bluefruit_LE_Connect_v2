@@ -291,6 +291,9 @@ class PeripheralTableViewController: UIViewController {
         dispatch_async(dispatch_get_main_queue(), {[unowned self] in
             DLog("list: disconnection detected a")
             self.peripheralList.disconnected()
+            
+            let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
+            
             if BleManager.sharedInstance.blePeripheralConnected == nil, let indexPathForSelectedRow = self.baseTableView.indexPathForSelectedRow {
                 DLog("list: disconnection detected b")
                 
@@ -301,7 +304,6 @@ class PeripheralTableViewController: UIViewController {
                 
                 DLog("list: disconnection detected c")
                 
-                let isFullScreen = UIScreen.mainScreen().traitCollection.horizontalSizeClass == .Compact
                 if isFullScreen {
                     
                     DLog("list: compact mode show alert")
@@ -315,10 +317,13 @@ class PeripheralTableViewController: UIViewController {
                     }
                     //   }
                 }
-                else {
-                    self.reloadData()
-                }
+                
             }
+            
+            if !isFullScreen {
+                self.reloadData()
+            }
+            
             })
     }
     
