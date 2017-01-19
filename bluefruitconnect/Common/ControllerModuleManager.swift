@@ -151,7 +151,7 @@ class ControllerModuleManager : NSObject {
         switch ControllerType(rawValue: index)! {
         case .Attitude:
             if let attitude = coreMotionManager.deviceMotion?.attitude {
-                return [attitude.quaternion.x, attitude.quaternion.y, attitude.quaternion.z, attitude.quaternion.z]
+                return [attitude.quaternion.x, attitude.quaternion.y, attitude.quaternion.z, attitude.quaternion.w]
             }
         case .Accelerometer:
             if let acceleration = coreMotionManager.accelerometerData?.acceleration {
