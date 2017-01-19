@@ -370,7 +370,7 @@ class NeopixelModuleViewController: ModuleViewController {
         helpViewController.setHelp(localizationManager.localizedString("neopixel_help_text"), title: localizationManager.localizedString("neopixel_help_title"))
         helpViewController.fileTitle = "Neopixel Sketch"
         
-        let cacheDirectoryURL =  try! NSFileManager().URLForDirectory(.CachesDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
+        let cacheDirectoryURL = try! NSFileManager().URLForDirectory(.CachesDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
         if let sketchPath = cacheDirectoryURL.URLByAppendingPathComponent("Neopixel.zip")!.path {
             
             let isSketchZipAvailable = NSFileManager.defaultManager().fileExistsAtPath(sketchPath)

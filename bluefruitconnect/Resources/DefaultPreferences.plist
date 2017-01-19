@@ -16,7 +16,7 @@
 	<integer>-100</integer>
 	<key>ScanFilterIsUnnamedEnabled</key>
 	<true/>
-	<key>scanFilterIsOnlyWithUartEnabledKey</key>
+	<key>ScanFilterIsOnlyWithUartEnabledKey</key>
 	<false/>
 	<key>UpdateServerUrl</key>
 	<string>https://raw.githubusercontent.com/adafruit/Adafruit_BluefruitLE_Firmware/master/releases.xml</string>

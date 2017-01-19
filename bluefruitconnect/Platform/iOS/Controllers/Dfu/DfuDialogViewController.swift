@@ -36,8 +36,22 @@ class DfuDialogViewController: UIViewController {
         UIView.animateWithDuration(0.5, animations: { [unowned self] () -> Void in
             self.backgroundView.alpha = 1
             })
+        
+        
+        // Disable sleep mode while the DFU Dialog progress is shown
+        UIApplication.sharedApplication().idleTimerDisabled = true
+        DLog("Disable sleep mode")
     }
     
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Enable sleep again mode when the DFU Dialog progress dissapears
+        UIApplication.sharedApplication().idleTimerDisabled = false
+        DLog("Restore sleep mode")
+        
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
