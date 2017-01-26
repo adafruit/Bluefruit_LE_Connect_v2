@@ -7,21 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A9286C9A1E3A9216008E5F81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286C991E3A9216008E5F81 /* AppDelegate.swift */; };
-		A9286C9C1E3A9216008E5F81 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286C9B1E3A9216008E5F81 /* ViewController.swift */; };
-		A9286C9F1E3A9216008E5F81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9286C9D1E3A9216008E5F81 /* Main.storyboard */; };
-		A9286CA11E3A9216008E5F81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9286CA01E3A9216008E5F81 /* Assets.xcassets */; };
-		A9286CA41E3A9216008E5F81 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9286CA21E3A9216008E5F81 /* LaunchScreen.storyboard */; };
+		A9286CB41E3A931E008E5F81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CAD1E3A931E008E5F81 /* AppDelegate.swift */; };
+		A9286CB51E3A931E008E5F81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9286CAE1E3A931E008E5F81 /* Assets.xcassets */; };
+		A9286CB61E3A931E008E5F81 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9286CAF1E3A931E008E5F81 /* LaunchScreen.storyboard */; };
+		A9286CB71E3A931E008E5F81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9286CB11E3A931E008E5F81 /* Main.storyboard */; };
+		A9286CB81E3A931E008E5F81 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9286CB31E3A931E008E5F81 /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A9286C961E3A9216008E5F81 /* Bluefruit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bluefruit.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A9286C991E3A9216008E5F81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A9286C9B1E3A9216008E5F81 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		A9286C9E1E3A9216008E5F81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		A9286CA01E3A9216008E5F81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A9286CA31E3A9216008E5F81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A9286CA51E3A9216008E5F81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A9286CAD1E3A931E008E5F81 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A9286CAE1E3A931E008E5F81 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A9286CB01E3A931E008E5F81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A9286CB21E3A931E008E5F81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A9286CB31E3A931E008E5F81 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A9286CBD1E3A947F008E5F81 /* Bluefruit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bluefruit.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +54,54 @@
 		A9286C981E3A9216008E5F81 /* Bluefruit */ = {
 			isa = PBXGroup;
 			children = (
-				A9286C991E3A9216008E5F81 /* AppDelegate.swift */,
-				A9286C9B1E3A9216008E5F81 /* ViewController.swift */,
-				A9286C9D1E3A9216008E5F81 /* Main.storyboard */,
-				A9286CA01E3A9216008E5F81 /* Assets.xcassets */,
-				A9286CA21E3A9216008E5F81 /* LaunchScreen.storyboard */,
-				A9286CA51E3A9216008E5F81 /* Info.plist */,
+				A9286CAB1E3A931E008E5F81 /* Platform */,
 			);
 			path = Bluefruit;
+			sourceTree = "<group>";
+		};
+		A9286CAB1E3A931E008E5F81 /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				A9286CAC1E3A931E008E5F81 /* iOS */,
+			);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		A9286CAC1E3A931E008E5F81 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				A9286CAD1E3A931E008E5F81 /* AppDelegate.swift */,
+				A9286CAE1E3A931E008E5F81 /* Assets.xcassets */,
+				A9286CAF1E3A931E008E5F81 /* LaunchScreen.storyboard */,
+				A9286CB11E3A931E008E5F81 /* Main.storyboard */,
+				A9286CB31E3A931E008E5F81 /* Info.plist */,
+				A9286CBD1E3A947F008E5F81 /* Bluefruit.entitlements */,
+				A9286CB91E3A9383008E5F81 /* Controllers */,
+				A9286CBA1E3A9383008E5F81 /* Style */,
+				A9286CBB1E3A9383008E5F81 /* Utils */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		A9286CB91E3A9383008E5F81 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		A9286CBA1E3A9383008E5F81 /* Style */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
+		A9286CBB1E3A9383008E5F81 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -98,6 +138,11 @@
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 2X94RM7457;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -124,9 +169,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9286CA41E3A9216008E5F81 /* LaunchScreen.storyboard in Resources */,
-				A9286CA11E3A9216008E5F81 /* Assets.xcassets in Resources */,
-				A9286C9F1E3A9216008E5F81 /* Main.storyboard in Resources */,
+				A9286CB81E3A931E008E5F81 /* Info.plist in Resources */,
+				A9286CB71E3A931E008E5F81 /* Main.storyboard in Resources */,
+				A9286CB51E3A931E008E5F81 /* Assets.xcassets in Resources */,
+				A9286CB61E3A931E008E5F81 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,28 +183,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9286C9C1E3A9216008E5F81 /* ViewController.swift in Sources */,
-				A9286C9A1E3A9216008E5F81 /* AppDelegate.swift in Sources */,
+				A9286CB41E3A931E008E5F81 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		A9286C9D1E3A9216008E5F81 /* Main.storyboard */ = {
+		A9286CAF1E3A931E008E5F81 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A9286C9E1E3A9216008E5F81 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		A9286CA21E3A9216008E5F81 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A9286CA31E3A9216008E5F81 /* Base */,
+				A9286CB01E3A931E008E5F81 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A9286CB11E3A931E008E5F81 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A9286CB21E3A931E008E5F81 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -261,10 +306,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Bluefruit/Platform/iOS/Bluefruit.entitlements;
 				DEVELOPMENT_TEAM = 2X94RM7457;
-				INFOPLIST_FILE = Bluefruit/Info.plist;
+				INFOPLIST_FILE = Bluefruit/Platform/iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.Bluefruit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -274,10 +321,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Bluefruit/Platform/iOS/Bluefruit.entitlements;
 				DEVELOPMENT_TEAM = 2X94RM7457;
-				INFOPLIST_FILE = Bluefruit/Info.plist;
+				INFOPLIST_FILE = Bluefruit/Platform/iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.Bluefruit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -302,6 +351,7 @@
 				A9286CAA1E3A9216008E5F81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
