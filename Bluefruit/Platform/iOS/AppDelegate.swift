@@ -12,10 +12,34 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    fileprivate var splitDividerCover = UIView()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+  
+        // Register default preferences
+        //Preferences.resetDefaults()       // Debug Reset
+        Preferences.registerDefaults()
+  
+        // Check if there is any update to the fimware database
+        FirmwareUpdater.refreshSoftwareUpdatesDatabase(url: Preferences.updateServerUrl, completion: nil)
+        
+        // Setup SpliView
+        let splitViewController = self.window!.rootViewController as! UISplitViewController
+        splitViewController.delegate = self
+        
+        // Style
+        let navigationBarAppearance = UINavigationBar.appearance()
+        navigationBarAppearance.barTintColor = UIColor.black
+        navigationBarAppearance.isTranslucent = true
+        navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+
+        // Hack to hide the white split divider
+        splitViewController.view.backgroundColor = UIColor.darkGray
+        splitDividerCover.backgroundColor = UIColor.darkGray
+        splitViewController.view.addSubview(splitDividerCover)
+        self.splitViewController(splitViewController, willChangeTo:  splitViewController.displayMode)
+        
         return true
     }
 
@@ -40,7 +64,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 
+// MARK: - UISplitViewControllerDelegate
+extension AppDelegate: UISplitViewControllerDelegate {
+    
+    
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        
+        let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
+        return connectedPeripherals.isEmpty
+    }
+    
+    
+    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
+        // Hack to hide splitdivider cover
+        let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
+        let isCoverHidden = isFullScreen || displayMode != .allVisible
+        splitDividerCover.isHidden = isCoverHidden
+        DLog("cover hidden: \(isCoverHidden)")
+        if !isCoverHidden {
+            let masterViewWidth = svc.primaryColumnWidth
+            splitDividerCover.frame = CGRect(x: masterViewWidth, y: 0, width: 1, height: svc.view.bounds.size.height)
+            DLog("cover frame: \(splitDividerCover.frame)")
+            
+        }
+    }
+}

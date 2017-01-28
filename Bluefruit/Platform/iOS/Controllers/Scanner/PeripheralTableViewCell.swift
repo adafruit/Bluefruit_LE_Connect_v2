@@ -1,0 +1,51 @@
+//
+//  PeripheralTableViewCell.swift
+//  Bluefruit Connect
+//
+//  Created by Antonio García on 29/01/16.
+//  Copyright © 2016 Adafruit. All rights reserved.
+//
+
+import UIKit
+
+class PeripheralTableViewCell: UITableViewCell {
+
+    @IBOutlet weak var baseStackView: UIStackView!
+    @IBOutlet weak var rssiImageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var connectButton: UIButton!
+    @IBOutlet weak var disconnectButton: UIButton!
+    @IBOutlet weak var disconnectButtonWidthConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var detailBaseStackView: UIStackView!
+    @IBOutlet weak var servicesStackView: UIStackView!
+    @IBOutlet weak var servicesOverflowStackView: UIStackView!
+    @IBOutlet weak var servicesSolicitedStackView: UIStackView!
+    @IBOutlet weak var txPowerLevelValueLabel: UILabel!
+    @IBOutlet weak var localNameValueLabel: UILabel!
+    @IBOutlet weak var manufacturerValueLabel: UILabel!
+    @IBOutlet weak var connectableValueLabel: UILabel!
+    
+    
+    var onConnect : (() -> ())?
+    var onDisconnect : (() -> ())?
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        manufacturerValueLabel.text = nil
+        txPowerLevelValueLabel.text = nil
+    }
+    
+    @IBAction func onClickDisconnect(_ sender: AnyObject) {
+        onDisconnect?()
+    }
+    
+    @IBAction func onClickConnect(_ sender: AnyObject) {
+        onConnect?()
+    }
+    
+    func showDisconnectButton(show: Bool) {
+        disconnectButtonWidthConstraint.constant = show ? 24: 0
+    }
+}

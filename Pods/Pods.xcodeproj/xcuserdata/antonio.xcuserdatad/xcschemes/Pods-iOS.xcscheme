@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A9286C951E3A9216008E5F81"
-               BuildableName = "Bluefruit.app"
-               BlueprintName = "Bluefruit"
-               ReferencedContainer = "container:Bluefruit.xcodeproj">
+               BlueprintIdentifier = "D30BBAA80E1EB1F496EBA0E296CF6CC0"
+               BuildableName = "Pods_iOS.framework"
+               BlueprintName = "Pods-iOS"
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A9286C951E3A9216008E5F81"
-            BuildableName = "Bluefruit.app"
-            BlueprintName = "Bluefruit"
-            ReferencedContainer = "container:Bluefruit.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -51,16 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A9286C951E3A9216008E5F81"
-            BuildableName = "Bluefruit.app"
-            BlueprintName = "Bluefruit"
-            ReferencedContainer = "container:Bluefruit.xcodeproj">
+            BlueprintIdentifier = "D30BBAA80E1EB1F496EBA0E296CF6CC0"
+            BuildableName = "Pods_iOS.framework"
+            BlueprintName = "Pods-iOS"
+            ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -70,16 +60,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A9286C951E3A9216008E5F81"
-            BuildableName = "Bluefruit.app"
-            BlueprintName = "Bluefruit"
-            ReferencedContainer = "container:Bluefruit.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
