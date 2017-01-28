@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreBluetooth
 
 class ScannerViewController: UIViewController {
     // Config
@@ -32,6 +33,7 @@ class ScannerViewController: UIViewController {
     // Data
     private let refreshControl = UIRefreshControl()
     fileprivate var peripheralList: PeripheralList!
+    fileprivate var isRowDetailOpenForPeripheral = [UUID: Bool]()          // Is the detailed info row open [PeripheralIdentifier: Bool]
 
     fileprivate var selectedPeripheral: BlePeripheral?
     
@@ -96,6 +98,7 @@ class ScannerViewController: UIViewController {
         
         // Clear peripherals
         peripheralList.clear()
+        isRowDetailOpenForPeripheral.removeAll()
     }
     
     // MARK: - BLE Notifications
@@ -153,39 +156,24 @@ class ScannerViewController: UIViewController {
             return
         }
         
-        setupUart(peripheral: selectedPeripheral)
-    }
-    
-    private func setupUart(peripheral: BlePeripheral) {
-        // Setup Uart
-        peripheral.uartInit(uartRxHandler: UartManager.sharedInstance.uartRxDataReceived) { [weak self] error in
+        // Connection is managed here if the device is in compact mode
+        let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
+        if isFullScreen {
+            DLog("list: connection on compact mode detected")
             
-            guard let context = self else {
-                return
+            // Deselect current row
+            if let indexPathForSelectedRow = self.baseTableView.indexPathForSelectedRow {
+                self.baseTableView.deselectRow(at: indexPathForSelectedRow, animated: true)
             }
             
-            DispatchQueue.main.async { [unowned context] in
-                guard error == nil else {
-                    DLog("Error initializing uart")
-                    context.dismiss(animated: true, completion: { [weak self] () -> Void in
-                        if let context = self {
-                            showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
-                            
-                            BleManager.sharedInstance.disconnect(from: peripheral)
-                        }
-                    })
-                    return
-                }
-                
-                // Show peripheral details
-                if context.presentedViewController != nil {   // Dismiss current dialog if present
-                    context.dismiss(animated: true, completion: { [weak self] () -> Void in
-                        self?.showPeripheralDetails()
-                    })
-                }
-                else {
-                    context.showPeripheralDetails()
-                }
+            // Dismiss current dialog
+            if self.presentedViewController != nil {
+                self.dismiss(animated: true, completion: { [unowned self] () -> Void in
+                    self.performSegue(withIdentifier: "showDetailSegue", sender: self)
+                })
+            }
+            else {
+                self.performSegue(withIdentifier: "showDetailSegue", sender: self)
             }
         }
     }
@@ -237,7 +225,6 @@ class ScannerViewController: UIViewController {
             filterNameSettingsViewController.onSettingsChanged = { [unowned self] in
                 self.updateFilters()
             }
-            
         }
     }
     
@@ -326,6 +313,22 @@ class ScannerViewController: UIViewController {
         }
     }
     
+    // MARK: - Connections
+    fileprivate func connect(peripheral: BlePeripheral) {
+        // Dismiss keyboard
+        filtersNameTextField.resignFirstResponder()
+        
+        // Connect to selected peripheral
+        selectedPeripheral = peripheral
+        BleManager.sharedInstance.connect(to: peripheral)
+        baseTableView.reloadData()
+    }
+    
+    fileprivate func disconnect(peripheral: BlePeripheral) {
+        selectedPeripheral = nil
+        BleManager.sharedInstance.disconnect(from: peripheral)
+        baseTableView.reloadData()
+    }
     
     // MARK: - UI
     private func updateScannedPeripherals() {
@@ -355,28 +358,139 @@ extension ScannerViewController: UITableViewDataSource {
         let peripheral = peripheralList.filteredPeripherals(forceUpdate: false)[indexPath.row]
         
         // Fill data
-        peripheralCell.titleLabel.text = peripheral.name ?? "<Unknown>"
+        let localizationManager = LocalizationManager.sharedInstance
+        peripheralCell.titleLabel.text = peripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")
         peripheralCell.rssiImageView.image = signalImage(for: peripheral.rssi)
+
+        let isUartCapable = peripheral.isUartAdvertised()
+        peripheralCell.subtitleLabel.text = localizationManager.localizedString(isUartCapable ? "peripherallist_uartavailable" : "peripherallist_uartunavailable")
         
-        peripheralCell.subtitleLabel.isHidden = true
+        // Show either a disconnect button or a disclosure indicator depending on the UISplitViewController displayMode
+        //peripheralCell.accessoryType = .disclosureIndicator
+        let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
+
+        let showConnect = isFullScreen || selectedPeripheral == nil
+        let showDisconnect = !isFullScreen && peripheral.identifier == selectedPeripheral?.identifier
+        peripheralCell.connectButton.isHidden = !showConnect
+        peripheralCell.disconnectButton.isHidden = !showDisconnect
         
-        peripheralCell.disconnectButton.isHidden = true
-        peripheralCell.connectButton.isHidden = true
-        peripheralCell.accessoryType = .disclosureIndicator
-        
-        /*
         peripheralCell.onConnect = { [unowned self] in
-            self.showPeripheralDetails()
-        }*/
+            self.connect(peripheral: peripheral)
+        }
+        peripheralCell.onDisconnect = { [unowned self] in
+            tableView.deselectRow(at: indexPath, animated: true)
+            self.disconnect(peripheral: peripheral)
+        }
         
         // Detail Subview
-        let isDetailViewOpen = false //row == tableRowOpen
+        let isDetailViewOpen = isRowDetailOpenForPeripheral[peripheral.identifier] ?? false
         peripheralCell.baseStackView.subviews[1].isHidden = !isDetailViewOpen
         if isDetailViewOpen {
-            // setupPeripheralExtendedView(peripheralCell, advertisementData: blePeripheral.advertisementData)
+            setupPeripheralExtendedView(peripheralCell: peripheralCell, peripheral: peripheral)
         }
         
         return peripheralCell
+    }
+    
+    private func setupPeripheralExtendedView(peripheralCell: PeripheralTableViewCell, peripheral: BlePeripheral) {
+        guard let detailBaseStackView = peripheralCell.detailBaseStackView else { return }
+        
+        var currentIndex = 0
+        
+        // Local Name
+        var isLocalNameAvailable = false
+        if let localName = peripheral.advertisement.localName {
+            peripheralCell.localNameValueLabel.text = localName
+            isLocalNameAvailable = true
+        }
+        detailBaseStackView.subviews[currentIndex].isHidden = !isLocalNameAvailable
+        currentIndex = currentIndex+1
+        
+        // Manufacturer Name
+        var isManufacturerAvailable = false
+        if let manufacturerString = peripheral.advertisement.manufacturerString {
+            peripheralCell.manufacturerValueLabel.text = manufacturerString
+            isManufacturerAvailable = true
+        }
+        else {
+            peripheralCell.manufacturerValueLabel.text = nil
+        }
+        detailBaseStackView.subviews[currentIndex].isHidden = !isManufacturerAvailable
+        currentIndex = currentIndex+1
+        
+        // Services
+        var areServicesAvailable = false
+        if let services = peripheral.advertisement.services, let stackView = peripheralCell.servicesStackView {
+            //DLog("services: \(services.count)")
+            addServiceNames(stackView: stackView, services: services)
+            areServicesAvailable = services.count > 0
+        }
+        detailBaseStackView.subviews[currentIndex].isHidden = !areServicesAvailable
+        currentIndex = currentIndex+1
+        
+        // Services Overflow
+        var areServicesOverflowAvailable = false
+        if let servicesOverflow =  peripheral.advertisement.servicesOverflow, let stackView = peripheralCell.servicesOverflowStackView {
+            addServiceNames(stackView: stackView, services: servicesOverflow)
+            areServicesOverflowAvailable = servicesOverflow.count > 0
+        }
+        detailBaseStackView.subviews[currentIndex].isHidden = !areServicesOverflowAvailable
+        currentIndex = currentIndex+1
+        
+        // Solicited Services
+        var areSolicitedServicesAvailable = false
+        if let servicesSolicited = peripheral.advertisement.servicesSolicited, let stackView = peripheralCell.servicesOverflowStackView {
+            addServiceNames(stackView: stackView, services: servicesSolicited)
+            areSolicitedServicesAvailable = servicesSolicited.count > 0
+        }
+        detailBaseStackView.subviews[currentIndex].isHidden = !areSolicitedServicesAvailable
+        currentIndex = currentIndex+1
+        
+        
+        // Tx Power
+        var isTxPowerAvailable: Bool
+        if let txpower = peripheral.advertisement.txPower {
+            peripheralCell.txPowerLevelValueLabel.text = String(txpower)
+            isTxPowerAvailable = true
+        }
+        else {
+            isTxPowerAvailable = false
+        }
+        detailBaseStackView.subviews[currentIndex].isHidden = !isTxPowerAvailable
+        currentIndex = currentIndex+1
+        
+        // Connectable
+        let isConnectable = peripheral.advertisement.isConnectable
+        peripheralCell.connectableValueLabel.text = isConnectable != nil ? "\(isConnectable! ? "true":"false")":"unknown"
+        currentIndex = currentIndex+1
+        
+    }
+    
+    private func addServiceNames(stackView: UIStackView, services: [CBUUID]) {
+        let styledLabel = stackView.arrangedSubviews.first! as! UILabel
+        styledLabel.isHidden = true     // The first view is only to define style in InterfaceBuilder. Hide it
+        
+        // Clear current subviews
+        for arrangedSubview in stackView.arrangedSubviews {
+            if arrangedSubview != stackView.arrangedSubviews.first {
+                arrangedSubview.removeFromSuperview()
+                stackView.removeArrangedSubview(arrangedSubview)
+            }
+        }
+        
+        // Add services as subviews
+        for serviceCBUUID in services {
+            let label = UILabel()
+            var identifier = serviceCBUUID.uuidString
+            if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
+                identifier = name
+            }
+            label.text = identifier
+            label.font = styledLabel.font
+            label.minimumScaleFactor = styledLabel.minimumScaleFactor
+            label.adjustsFontSizeToFitWidth = styledLabel.adjustsFontSizeToFitWidth
+            stackView.addArrangedSubview(label)
+        }
     }
 }
 
@@ -384,13 +498,16 @@ extension ScannerViewController: UITableViewDataSource {
 extension ScannerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Dismiss keyboard
-        filtersNameTextField.resignFirstResponder()
-        
-        // Connect to selected peripheral
         let peripheral = peripheralList.filteredPeripherals(forceUpdate: false)[indexPath.row]
-        selectedPeripheral = peripheral
-        BleManager.sharedInstance.connect(to: peripheral)
+        let isDetailViewOpen = !(isRowDetailOpenForPeripheral[peripheral.identifier] ?? false)
+        isRowDetailOpenForPeripheral[peripheral.identifier] = isDetailViewOpen
+
+        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.deselectRow(at: indexPath, animated: false)
+
+        // Animate changes
+//        tableView.beginUpdates()
+//        tableView.endUpdates()
     }
 }
 

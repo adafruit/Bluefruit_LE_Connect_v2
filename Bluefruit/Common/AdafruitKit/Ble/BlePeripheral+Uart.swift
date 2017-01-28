@@ -192,12 +192,7 @@ extension BlePeripheral {
     // MARK: - Utils
     
     func isUartAdvertised() -> Bool {
-        
-        var isUartAdvertised = false
-        if let serviceUUIds = advertisementData[CBAdvertisementDataServiceUUIDsKey] as? [CBUUID] {
-            isUartAdvertised = serviceUUIds.contains(BlePeripheral.kUartServiceUUID)
-        }
-        return isUartAdvertised
+        return advertisement.services?.contains(BlePeripheral.kUartServiceUUID) ?? false
     }
 }
 

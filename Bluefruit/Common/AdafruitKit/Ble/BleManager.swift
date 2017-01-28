@@ -186,7 +186,7 @@ class BleManager: NSObject {
             existingPeripheral.rssi = rssi
             if let advertisementData = advertisementData {
                 for (key, value) in advertisementData {
-                    existingPeripheral.advertisementData.updateValue(value, forKey: key);
+                    existingPeripheral.advertisement.advertisementData.updateValue(value, forKey: key);
                 }
             }
             peripheralsFound[peripheral.identifier] = existingPeripheral

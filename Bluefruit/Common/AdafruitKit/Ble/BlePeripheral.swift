@@ -15,10 +15,9 @@ class BlePeripheral: NSObject {
     fileprivate static var kProfileCharacteristicUpdates = true
     
     // Data
-    var peripheral: CBPeripheral!
-    var advertisementData: [String: Any]!
+    var peripheral: CBPeripheral
     var rssi: Int?
-    var lastSeenTime: CFAbsoluteTime!
+    var lastSeenTime: CFAbsoluteTime
     
     var identifier: UUID {
         return peripheral.identifier
@@ -31,6 +30,46 @@ class BlePeripheral: NSObject {
     var state: CBPeripheralState {
         return peripheral.state
     }
+
+    struct Advertisement {
+        var advertisementData: [String: Any]
+        
+        init(advertisementData: [String: Any]?) {
+            self.advertisementData = advertisementData ?? [String:Any]()
+        }
+        
+        // Advertisement data formatted
+        var localName: String? {
+            return advertisementData[CBAdvertisementDataLocalNameKey] as? String
+        }
+        var manufacturerString: String? {
+            guard let manufacturerData = advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data else {return nil}
+            return String(data: manufacturerData, encoding: .utf8)
+        }
+        
+        var services: [CBUUID]? {
+            return advertisementData[CBAdvertisementDataServiceUUIDsKey] as? [CBUUID]
+        }
+
+        var servicesOverflow: [CBUUID]? {
+            return advertisementData[CBAdvertisementDataOverflowServiceUUIDsKey] as? [CBUUID]
+        }
+
+        var servicesSolicited: [CBUUID]? {
+            return advertisementData[CBAdvertisementDataSolicitedServiceUUIDsKey] as? [CBUUID]
+        }
+
+        var txPower: Int? {
+            let number = advertisementData[CBAdvertisementDataTxPowerLevelKey] as? NSNumber
+            return number?.intValue
+        }
+        
+        var isConnectable: Bool? {
+            let connectableNumber = advertisementData[CBAdvertisementDataIsConnectable] as? NSNumber
+            return connectableNumber?.boolValue
+        }
+    }
+    var advertisement: Advertisement
     
     typealias CapturedReadCompletionHandler = ((_ data: Any?, _ error: Error?) -> Void)
     fileprivate class CaptureReadHandler {
@@ -64,17 +103,16 @@ class BlePeripheral: NSObject {
     // Profiling
     //fileprivate var profileStartTime: CFTimeInterval = 0
     
-    
-    init(peripheral: CBPeripheral, advertisementData: [String: Any]?, rssi: Int?) {
-        super.init()
-        
+    init(peripheral: CBPeripheral, advertisementData: [String: Any]?, rssi: Int?) {        
         self.peripheral = peripheral
-        self.peripheral.delegate = self
-        self.advertisementData = advertisementData ?? [String: Any]()
+        self.advertisement = Advertisement(advertisementData: advertisementData)
         self.rssi = rssi
         self.lastSeenTime = CFAbsoluteTimeGetCurrent()
         
+        super.init()
+        self.peripheral.delegate = self
         commandQueue.executeHandler = executeCommand
+
     }
     
     deinit {

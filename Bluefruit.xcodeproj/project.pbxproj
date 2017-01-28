@@ -27,6 +27,7 @@
 		A969466C1E3CD0CC00BA8DAA /* IntrinsicSizeWithInsetsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969466A1E3CD0CC00BA8DAA /* IntrinsicSizeWithInsetsButton.swift */; };
 		A969466D1E3CD0CC00BA8DAA /* StyledButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969466B1E3CD0CC00BA8DAA /* StyledButton.swift */; };
 		A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969466E1E3CD0F600BA8DAA /* StyledSubview.swift */; };
+		A96946711E3D02F300BA8DAA /* BleUUIDNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */; };
 		A99339751E3CC14B00CCA83D /* ReleasesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99339741E3CC14B00CCA83D /* ReleasesParser.swift */; };
 		A9D2342C1E3AD64500DC0C99 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A9D234231E3AD64500DC0C99 /* Credits.rtf */; };
 		A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */; };
@@ -79,6 +80,7 @@
 		A969466A1E3CD0CC00BA8DAA /* IntrinsicSizeWithInsetsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntrinsicSizeWithInsetsButton.swift; sourceTree = "<group>"; };
 		A969466B1E3CD0CC00BA8DAA /* StyledButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledButton.swift; sourceTree = "<group>"; };
 		A969466E1E3CD0F600BA8DAA /* StyledSubview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledSubview.swift; sourceTree = "<group>"; };
+		A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleUUIDNames.swift; sourceTree = "<group>"; };
 		A99339741E3CC14B00CCA83D /* ReleasesParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleasesParser.swift; sourceTree = "<group>"; };
 		A9D234231E3AD64500DC0C99 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				A9286CC11E3A9B22008E5F81 /* BleManager.swift */,
 				A9286CC41E3A9B22008E5F81 /* BlePeripheral.swift */,
 				A9286CC31E3A9B22008E5F81 /* BlePeripheral+Uart.swift */,
+				A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */,
 				A9286CC61E3A9B22008E5F81 /* UartLogManager.swift */,
 				A9286CC71E3A9B22008E5F81 /* UartManager.swift */,
 			);
@@ -486,6 +489,7 @@
 				A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */,
 				A9286CD41E3A9B22008E5F81 /* UartLogManager.swift in Sources */,
 				A9286CD81E3A9B22008E5F81 /* Data+ScanValue.swift in Sources */,
+				A96946711E3D02F300BA8DAA /* BleUUIDNames.swift in Sources */,
 				A9D234391E3AD70300DC0C99 /* AboutViewController.swift in Sources */,
 				A9D234421E3AD81D00DC0C99 /* RssiUI.swift in Sources */,
 				A9D2343D1E3AD70300DC0C99 /* ScannerViewController.swift in Sources */,

@@ -58,7 +58,7 @@ class PeripheralList {
         isFilterNameCaseInsensitive = true
         rssiFilterValue = nil
         isUnnamedEnabled = true
-        isOnlyUartEnabled = true
+        isOnlyUartEnabled = false
     }
     
     func isAnyFilterEnabled() -> Bool {
