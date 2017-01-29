@@ -1,6 +1,6 @@
 //
 //  Data+ScanValues.swift
-//  Calibration
+//  Bluefruit
 //
 //  Created by Antonio García on 17/11/2016.
 //  Copyright © 2016 Adafruit. All rights reserved.

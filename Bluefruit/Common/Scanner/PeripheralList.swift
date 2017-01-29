@@ -9,6 +9,11 @@
 import Foundation
 
 class PeripheralList {
+    // Constants
+    static let kMinRssiValue = 0
+    static let kMaxRssiValue = 100
+    static let kDefaultRssiValue = PeripheralList.kMaxRssiValue
+    
     //
     var filterName: String? = Preferences.scanFilterName {
         didSet {
@@ -31,7 +36,7 @@ class PeripheralList {
     }
     var rssiFilterValue: Int? = Preferences.scanFilterRssiValue {
         didSet {
-            Preferences.scanFilterRssiValue = rssiFilterValue
+            Preferences.scanFilterRssiValue = rssiFilterValue != PeripheralList.kDefaultRssiValue ? rssiFilterValue:nil
             isFilterDirty = true
         }
     }
@@ -129,7 +134,7 @@ class PeripheralList {
         }
         
         if let rssiFilterValue = rssiFilterValue {
-            let rssiString = "Rssi >= \(rssiFilterValue)"
+            let rssiString = "RSSI >= \(rssiFilterValue)"
             if filtersTitle != nil && !filtersTitle!.isEmpty {
                 filtersTitle!.append(", \(rssiString)")
             }

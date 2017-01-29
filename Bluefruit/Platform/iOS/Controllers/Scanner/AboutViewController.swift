@@ -22,7 +22,7 @@ class AboutViewController: UIViewController {
         }
         
         // Text
-        let message = ""
+        let message = LocalizationManager.sharedInstance.localizedString("about_text")
         messageLabel.text = message
         
         messageLabel.layer.borderColor = UIColor(red: 202/255, green: 202/255, blue: 202/255, alpha: 1).cgColor
@@ -30,12 +30,9 @@ class AboutViewController: UIViewController {
         
         messageLabel.contentInset = UIEdgeInsetsMake(10, 0, 10, 0);
     }
-
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-
     }
     
     override func viewDidLayoutSubviews() {

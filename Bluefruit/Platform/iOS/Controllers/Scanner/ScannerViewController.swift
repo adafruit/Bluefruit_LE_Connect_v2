@@ -15,7 +15,10 @@ class ScannerViewController: UIViewController {
 
     static let kFiltersPanelClosedHeight: CGFloat = 44
     static let kFiltersPanelOpenHeight: CGFloat = 226
-    
+
+    static let kMultiConnectPanelClosedHeight: CGFloat = 44
+    static let kMultiConnectPanelOpenHeight: CGFloat = 100
+
     // UI
     @IBOutlet weak var baseTableView: UITableView!
     @IBOutlet weak var filtersPanelView: UIView!
@@ -30,12 +33,20 @@ class ScannerViewController: UIViewController {
     @IBOutlet weak var filtersUartSwitch: UISwitch!
     @IBOutlet weak var scanningWaitView: UIView!
 
+    @IBOutlet weak var multiConnectPanelView: UIView!
+    @IBOutlet weak var multiConnectDisclosureButton: UIButton!
+    @IBOutlet weak var multiConnectPanelViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var multiConnectSwitch: UISwitch!
+
+
     // Data
-    private let refreshControl = UIRefreshControl()
+    fileprivate let refreshControl = UIRefreshControl()
     fileprivate var peripheralList: PeripheralList!
     fileprivate var isRowDetailOpenForPeripheral = [UUID: Bool]()          // Is the detailed info row open [PeripheralIdentifier: Bool]
 
     fileprivate var selectedPeripheral: BlePeripheral?
+    
+    fileprivate var isMultiConnectEnabled = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +69,10 @@ class ScannerViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(onTableRefresh(_:)), for: UIControlEvents.valueChanged)
         baseTableView.addSubview(refreshControl)
         baseTableView.sendSubview(toBack: refreshControl)
+        
+        // Setup filters
+        filtersRssiSlider.minimumValue = Float(PeripheralList.kMinRssiValue)
+        filtersRssiSlider.maximumValue = Float(PeripheralList.kMaxRssiValue)
     }
 
     override func didReceiveMemoryWarning() {
@@ -75,6 +90,9 @@ class ScannerViewController: UIViewController {
         setRssiSlider(value: peripheralList.rssiFilterValue)
         filtersUnnamedSwitch.isOn = peripheralList.isUnnamedEnabled
         filtersUartSwitch.isOn = peripheralList.isOnlyUartEnabled
+        
+        // MultiConnect
+//        multiConnectSwitch.isOn = Preferences.
         
         // Ble Notifications
         registerNotifications(enabled: true)
@@ -208,11 +226,11 @@ class ScannerViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        /*
-        if let viewController = segue.destination as? UartViewController {
-            viewController.blePeripheral = selectedPeripheral
+        
+        if let peripheralDetailsViewController = segue.destination as? PeripheralDetailsViewController {
+            peripheralDetailsViewController.peripheral = selectedPeripheral
         }
-        else*/ if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController  {
+        else if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController  {
             controller.delegate = self
 
             if let sourceView = sender as? UIView {
@@ -253,12 +271,23 @@ class ScannerViewController: UIViewController {
     }
     
     private func setRssiSlider(value: Int?) {
-        filtersRssiSlider.value = value != nil ? Float(-value!) : 100.0
+        filtersRssiSlider.value = value != nil ? Float(-value!) : Float(PeripheralList.kDefaultRssiValue)
         updateRssiValueLabel()
     }
     
     private func updateRssiValueLabel() {
         filterRssiValueLabel.text = "\(Int(-filtersRssiSlider.value)) dBM"
+    }
+    
+    // MARK: - MultiConnect
+    private func openMultiConnectPanel(isOpen: Bool, animated: Bool) {
+        Preferences.scanMultiConnectIsPanelOpen = isOpen
+        self.multiConnectDisclosureButton.isSelected = isOpen
+        
+        self.multiConnectPanelViewHeightConstraint.constant = isOpen ? ScannerViewController.kMultiConnectPanelOpenHeight:ScannerViewController.kMultiConnectPanelClosedHeight
+        UIView.animate(withDuration: animated ? 0.3:0) { [unowned self] in
+            self.view.layoutIfNeeded()
+        }
     }
     
     // MARK: - Actions
@@ -313,6 +342,15 @@ class ScannerViewController: UIViewController {
         }
     }
     
+    @IBAction func onMultiConnectEnabled(_ sender: UISwitch) {
+        isMultiConnectEnabled = sender.isOn
+    }
+    
+    @IBAction func onClickExpandMultiConnect(_ sender: Any) {
+        openMultiConnectPanel(isOpen: !Preferences.scanMultiConnectIsPanelOpen, animated: true)
+    }
+    
+    
     // MARK: - Connections
     fileprivate func connect(peripheral: BlePeripheral) {
         // Dismiss keyboard
@@ -338,7 +376,7 @@ class ScannerViewController: UIViewController {
         
         // Select the previously selected row
         let peripherals = peripheralList.filteredPeripherals(forceUpdate: false)
-        scanningWaitView.isHidden = peripherals.count > 0
+       // scanningWaitView.isHidden = peripherals.count > 0
         if let selectedPeripheral = selectedPeripheral, let selectedRow = peripherals.index(of: selectedPeripheral) {
             baseTableView.selectRow(at: IndexPath(row: selectedRow, section: 0), animated: false, scrollPosition: .none)
         }
@@ -502,7 +540,7 @@ extension ScannerViewController: UITableViewDelegate {
         let isDetailViewOpen = !(isRowDetailOpenForPeripheral[peripheral.identifier] ?? false)
         isRowDetailOpenForPeripheral[peripheral.identifier] = isDetailViewOpen
 
-        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.reloadRows(at: [indexPath], with: .fade)
         tableView.deselectRow(at: indexPath, animated: false)
 
         // Animate changes

@@ -1,6 +1,6 @@
 //
 //  DataConversions.swift
-//  NewtManager
+//  Bluefruit
 //
 //  Created by Antonio García on 15/10/16.
 //  Copyright © 2015 Adafruit. All rights reserved.

@@ -18,40 +18,43 @@ class UartManager {
     static let sharedInstance = UartManager()
     
     // Data
+    var enabled: Bool {
+        didSet {
+            registerNotifications(enabled: enabled)
+        }
+    }
     weak var delegate: UartDelegate?
     fileprivate var cachedRxData = Data()
     fileprivate var cachedRxDataSemaphore = DispatchSemaphore(value: 1)
     
     init() {
-        registerNotifications(enabled: true)
-
+        enabled = true
+        
         #if DEBUG
-        //cachedRxData = "Test".data(using: .utf8)!
+            //cachedRxData = "Test".data(using: .utf8)!
         #endif
     }
     
     deinit {
-        registerNotifications(enabled: false)
+        enabled = false
     }
     
     // MARK: - BLE Notifications
+    var didConnectToPeripheralObserver: NSObjectProtocol?
     private func registerNotifications(enabled: Bool) {
-        struct Holder {
-            static var didConnectToPeripheralObserver: NSObjectProtocol?
-        }
-        
+        let notificationCenter = NotificationCenter.default
         if enabled {
-            Holder.didConnectToPeripheralObserver = NotificationCenter.default.addObserver(forName: .didConnectToPeripheral, object: nil, queue: OperationQueue.main, using: didConnectToPeripheral)
+            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: OperationQueue.main, using: didConnectToPeripheral)
         }
         else {
-            if let didConnectToPeripheralObserver = Holder.didConnectToPeripheralObserver {NotificationCenter.default.removeObserver(didConnectToPeripheralObserver)}
+            if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
         }
     }
     
     private func didConnectToPeripheral(notification: Notification) {
         clearRxCache()
     }
-
+    
     // MARK: - Received data
     func uartRxDataReceived(data: Data?, error: Error?) {
         
@@ -59,19 +62,19 @@ class UartManager {
             DLog("uartRxDataReceived error: \(error!)")
             return
         }
-
+        
         guard let data = data else {
             return
         }
-
+        
         cachedRxDataSemaphore.wait()            // don't append more data, till the delegate has finished processing it
         cachedRxData.append(data)
         
         // Send data to delegate
         delegate?.onUartRx(data: cachedRxData)
-
+        
         //DLog("cachedRxData: \(cachedRxData.count)")
-
+        
         cachedRxDataSemaphore.signal()
     }
     
@@ -87,7 +90,7 @@ class UartManager {
             clearRxCache()
         }
     }
-
+    
     func flushRxCache() {
         if cachedRxData.count > 0 {
             cachedRxDataSemaphore.wait()

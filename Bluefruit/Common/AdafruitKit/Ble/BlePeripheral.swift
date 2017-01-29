@@ -71,7 +71,7 @@ class BlePeripheral: NSObject {
     }
     var advertisement: Advertisement
     
-    typealias CapturedReadCompletionHandler = ((_ data: Any?, _ error: Error?) -> Void)
+    typealias CapturedReadCompletionHandler = ((_ data: Data?, _ error: Error?) -> Void)
     fileprivate class CaptureReadHandler {
 
         var identifier: String
@@ -220,8 +220,8 @@ class BlePeripheral: NSObject {
         commandQueue.append(command)
     }
     
-    func read(data: Data, for characteristic: CBCharacteristic, type: CBCharacteristicWriteType, completion: ((Error?) -> Void)? = nil) {
-        let command = BleCommand(type: .readCharacteristic, parameters: [characteristic], completion: completion)
+    func read(from characteristic: CBCharacteristic, completion readCompletion: @escaping CapturedReadCompletionHandler) {
+        let command = BleCommand(type: .readCharacteristic, parameters: [characteristic, readCompletion as Any], completion: nil)
         commandQueue.append(command)
     }
     
@@ -245,7 +245,7 @@ class BlePeripheral: NSObject {
             case writeCharacteristic
             case writeCharacteristicAndWaitNofity
         }
-
+        
         enum CommandError: Error {
             case invalidService
         }
@@ -271,7 +271,7 @@ class BlePeripheral: NSObject {
     }
     
     private func executeCommand(command: BleCommand) {
-
+        
         switch command.type {
         case .discoverService:
             discoverService(with: command)
@@ -285,11 +285,11 @@ class BlePeripheral: NSObject {
             write(with: command)
         }
     }
- 
+    
     fileprivate func handlerIdentifier(from characteristic: CBCharacteristic) -> String {
         return "\(characteristic.service.uuid.uuidString)-\(characteristic.uuid.uuidString)"
     }
-
+    
     fileprivate func finishedExecutingCommand(error: Error?) {
         // Result Callback
         if let command = commandQueue.first(), !command.isCancelled {
@@ -349,9 +349,9 @@ class BlePeripheral: NSObject {
     private func setNotify(with command: BleCommand) {
         let characteristic = command.parameters![0] as! CBCharacteristic
         let enabled = command.parameters![1] as! Bool
-        let handler = command.parameters![2] as? ((Error?) -> Void)
         let identifier = handlerIdentifier(from: characteristic)
         if enabled {
+            let handler = command.parameters![2] as? ((Error?) -> Void)
             notifyHandlers[identifier] = handler
         }
         else {
@@ -362,6 +362,12 @@ class BlePeripheral: NSObject {
     
     private func read(with command: BleCommand) {
         let characteristic = command.parameters!.first as! CBCharacteristic
+        let completion = command.parameters![1] as! CapturedReadCompletionHandler
+
+        let identifier = handlerIdentifier(from: characteristic)
+        let captureReadHandler = CaptureReadHandler(identifier: identifier, result: completion, timeout: nil)
+        captureReadHandlers.append(captureReadHandler)
+
         peripheral.readValue(for: characteristic)
     }
     
@@ -406,30 +412,30 @@ extension BlePeripheral: CBPeripheralDelegate {
             DLog("elapsed: \(String(format: "%.1f", elapsedTime * 1000))")
             profileStartTime = currentTime
         }
- */
+         */
         //DLog("didUpdateValueFor \(characteristic.uuid.uuidString): \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? "<invalid>")")
-
+        
         // Check if waiting to capture this read
         var isNotifyOmmited = false
         if captureReadHandlers.count > 0, let index = captureReadHandlers.index(where: {$0.identifier == identifier}) {
-
-           // DLog("captureReadHandlers index: \(index) / \(captureReadHandlers.count)")
-
+            
+            // DLog("captureReadHandlers index: \(index) / \(captureReadHandlers.count)")
+            
             // Remove capture handler
             let captureReadHandler = captureReadHandlers.remove(at: index)
-
-          //  DLog("captureReadHandlers postRemove count: \(captureReadHandlers.count)")
-
+            
+            //  DLog("captureReadHandlers postRemove count: \(captureReadHandlers.count)")
+            
             // Send result
             captureReadHandler.timeoutTimer?.invalidate()
             captureReadHandler.timeoutTimer = nil
             let value = characteristic.value
-          //  DLog("updated value: \(String(data: value!, encoding: .utf8)!)")
+            //  DLog("updated value: \(String(data: value!, encoding: .utf8)!)")
             captureReadHandler.result(value, error)
             
             isNotifyOmmited = captureReadHandler.isNotifyOmitted
         }
-            
+        
         // Notify
         if !isNotifyOmmited {
             if let notifyHandler = notifyHandlers[identifier] {
@@ -440,7 +446,7 @@ extension BlePeripheral: CBPeripheralDelegate {
             }
         }
     }
-
+    
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         if let command = commandQueue.first(), !command.isCancelled, command.type == .writeCharacteristicAndWaitNofity {
             let characteristic = command.parameters![3] as! CBCharacteristic
@@ -452,7 +458,7 @@ extension BlePeripheral: CBPeripheralDelegate {
             let captureReadHandler = CaptureReadHandler(identifier: identifier, result: readCompletion, timeout: timeout)
             captureReadHandlers.append(captureReadHandler)
         }
-
+        
         finishedExecutingCommand(error: error)
     }
 }

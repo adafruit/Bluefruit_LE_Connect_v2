@@ -49,7 +49,6 @@ extension BlePeripheral {
         set {
             objc_setAssociatedObject(self, &CustomPropertiesKeys.uartTxCharacteristicWriteType, newValue, .OBJC_ASSOCIATION_RETAIN)
         }
-        
     }
     
     // MARK: -
@@ -163,7 +162,7 @@ extension BlePeripheral {
             return
         }
         
-        // Split data  in txmaxcharacters bytes packets
+        // Split data  in kUartTxMaxBytes bytes packets
         var offset = 0
         repeat {
             let chunkSize = min(data.count-offset, BlePeripheral.kUartTxMaxBytes)
@@ -183,14 +182,12 @@ extension BlePeripheral {
                 if offset >= data.count {
                     writeCompletion?(error)
                 }
-                
             }, readCharacteristic: uartRxCharacteristic, readTimeout: readTimeout, readCompletion: readCompletion)
             
         } while offset < data.count
     }
     
     // MARK: - Utils
-    
     func isUartAdvertised() -> Bool {
         return advertisement.services?.contains(BlePeripheral.kUartServiceUUID) ?? false
     }

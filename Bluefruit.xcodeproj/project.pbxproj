@@ -17,7 +17,7 @@
 		A9286CD21E3A9B22008E5F81 /* BlePeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC41E3A9B22008E5F81 /* BlePeripheral.swift */; };
 		A9286CD41E3A9B22008E5F81 /* UartLogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC61E3A9B22008E5F81 /* UartLogManager.swift */; };
 		A9286CD51E3A9B22008E5F81 /* UartManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC71E3A9B22008E5F81 /* UartManager.swift */; };
-		A9286CD61E3A9B22008E5F81 /* AlertUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC91E3A9B22008E5F81 /* AlertUtils.swift */; };
+		A9286CD61E3A9B22008E5F81 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC91E3A9B22008E5F81 /* AlertHelper.swift */; };
 		A9286CD71E3A9B22008E5F81 /* CommandQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCA1E3A9B22008E5F81 /* CommandQueue.swift */; };
 		A9286CD81E3A9B22008E5F81 /* Data+ScanValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCB1E3A9B22008E5F81 /* Data+ScanValue.swift */; };
 		A9286CD91E3A9B22008E5F81 /* DataConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */; };
@@ -70,7 +70,7 @@
 		A9286CC41E3A9B22008E5F81 /* BlePeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlePeripheral.swift; sourceTree = "<group>"; };
 		A9286CC61E3A9B22008E5F81 /* UartLogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartLogManager.swift; sourceTree = "<group>"; };
 		A9286CC71E3A9B22008E5F81 /* UartManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartManager.swift; sourceTree = "<group>"; };
-		A9286CC91E3A9B22008E5F81 /* AlertUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertUtils.swift; sourceTree = "<group>"; };
+		A9286CC91E3A9B22008E5F81 /* AlertHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		A9286CCA1E3A9B22008E5F81 /* CommandQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandQueue.swift; sourceTree = "<group>"; };
 		A9286CCB1E3A9B22008E5F81 /* Data+ScanValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+ScanValue.swift"; sourceTree = "<group>"; };
 		A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataConversions.swift; sourceTree = "<group>"; };
@@ -253,11 +253,11 @@
 		A9286CC81E3A9B22008E5F81 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				A9286CC91E3A9B22008E5F81 /* AlertUtils.swift */,
 				A9286CCA1E3A9B22008E5F81 /* CommandQueue.swift */,
 				A9286CCB1E3A9B22008E5F81 /* Data+ScanValue.swift */,
 				A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */,
 				A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */,
+				A9286CC91E3A9B22008E5F81 /* AlertHelper.swift */,
 				A9286CCD1E3A9B22008E5F81 /* LogHelper.swift */,
 			);
 			path = Utils;
@@ -483,7 +483,7 @@
 				A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */,
 				A9D2343A1E3AD70300DC0C99 /* FilterTextSettingsViewController.swift in Sources */,
 				A9D2345C1E3AE06D00DC0C99 /* LocalizationManager.swift in Sources */,
-				A9286CD61E3A9B22008E5F81 /* AlertUtils.swift in Sources */,
+				A9286CD61E3A9B22008E5F81 /* AlertHelper.swift in Sources */,
 				A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */,
 				A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */,
 				A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */,
