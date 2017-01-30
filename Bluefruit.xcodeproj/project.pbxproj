@@ -29,6 +29,7 @@
 		A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969466E1E3CD0F600BA8DAA /* StyledSubview.swift */; };
 		A96946711E3D02F300BA8DAA /* BleUUIDNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */; };
 		A99339751E3CC14B00CCA83D /* ReleasesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99339741E3CC14B00CCA83D /* ReleasesParser.swift */; };
+		A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */; };
 		A9D2342C1E3AD64500DC0C99 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A9D234231E3AD64500DC0C99 /* Credits.rtf */; };
 		A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */; };
 		A9D2342E1E3AD64500DC0C99 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */; };
@@ -82,6 +83,7 @@
 		A969466E1E3CD0F600BA8DAA /* StyledSubview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledSubview.swift; sourceTree = "<group>"; };
 		A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleUUIDNames.swift; sourceTree = "<group>"; };
 		A99339741E3CC14B00CCA83D /* ReleasesParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleasesParser.swift; sourceTree = "<group>"; };
+		A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A9D234231E3AD64500DC0C99 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
 		A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GattUUIDs.plist; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				A9286CAE1E3A931E008E5F81 /* Assets.xcassets */,
 				A9286CAF1E3A931E008E5F81 /* LaunchScreen.storyboard */,
 				A9286CB11E3A931E008E5F81 /* Main.storyboard */,
+				A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */,
 				A9286CB31E3A931E008E5F81 /* Info.plist */,
 				A9286CBD1E3A947F008E5F81 /* Bluefruit.entitlements */,
 				A9286CB91E3A9383008E5F81 /* Controllers */,
@@ -319,8 +322,8 @@
 			isa = PBXGroup;
 			children = (
 				A9D234511E3AD9A200DC0C99 /* ModuleViewController.swift */,
-				A9D234521E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift */,
 				A9D234531E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift */,
+				A9D234521E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift */,
 				A9D234541E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift */,
 			);
 			path = PeripheralDetails;
@@ -413,6 +416,7 @@
 				A9D234301E3AD64500DC0C99 /* NeopixelBoards.plist in Resources */,
 				A9286CB61E3A931E008E5F81 /* LaunchScreen.storyboard in Resources */,
 				A9D2342C1E3AD64500DC0C99 /* Credits.rtf in Resources */,
+				A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */,
 				A9D234311E3AD64500DC0C99 /* NeopixelDefaultPalette.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

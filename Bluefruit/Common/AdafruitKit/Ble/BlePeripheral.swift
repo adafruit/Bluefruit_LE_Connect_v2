@@ -417,8 +417,9 @@ extension BlePeripheral: CBPeripheralDelegate {
         
         // Check if waiting to capture this read
         var isNotifyOmmited = false
+        var hasCaptureHandler = false
         if captureReadHandlers.count > 0, let index = captureReadHandlers.index(where: {$0.identifier == identifier}) {
-            
+            hasCaptureHandler = true
             // DLog("captureReadHandlers index: \(index) / \(captureReadHandlers.count)")
             
             // Remove capture handler
@@ -434,6 +435,7 @@ extension BlePeripheral: CBPeripheralDelegate {
             captureReadHandler.result(value, error)
             
             isNotifyOmmited = captureReadHandler.isNotifyOmitted
+            
         }
         
         // Notify
@@ -444,6 +446,10 @@ extension BlePeripheral: CBPeripheralDelegate {
                 notifyHandler(error)
                 //DLog("elapsed: \(String(format: "%.1f", (CACurrentMediaTime() - currentTime) * 1000))")
             }
+        }
+        
+        if hasCaptureHandler {
+            finishedExecutingCommand(error: error)
         }
     }
     
@@ -458,7 +464,8 @@ extension BlePeripheral: CBPeripheralDelegate {
             let captureReadHandler = CaptureReadHandler(identifier: identifier, result: readCompletion, timeout: timeout)
             captureReadHandlers.append(captureReadHandler)
         }
-        
-        finishedExecutingCommand(error: error)
+        else {
+            finishedExecutingCommand(error: error)
+        }
     }
 }

@@ -10,18 +10,40 @@ import Foundation
 import CoreBluetooth
 
 struct DeviceInformationService {
+    // Config
+    static let kDefaultBootloaderVersion = "0.0"
+    
+    // Data
     var manufacturer: String?
     var modelNumber: String?
     var firmwareRevision: String?
     var softwareRevision: String?
+    
+    var bootloaderVersion: String? {
+        get {
+            var result = DeviceInformationService.kDefaultBootloaderVersion
+            if let firmwareRevision = firmwareRevision, let versionSepartorUpperBound = firmwareRevision.range(of: ", ")?.upperBound {
+                let bootloaderVersion = firmwareRevision.substring(from: versionSepartorUpperBound)
+                result = bootloaderVersion
+            }
+            return result
+        }
+    }
+    
+    var hasDefaultBootloaderVersion: Bool {
+        get {
+            return bootloaderVersion == DeviceInformationService.kDefaultBootloaderVersion
+        }
+    }
 }
 
 protocol FirmwareUpdaterDelegate: class {
-    func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceInfo: DeviceInformationService?, allReleases:[FirmwareInfo]?)
+    func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceInfo: DeviceInformationService?)
 }
 
 class FirmwareUpdater {
     // Config
+    fileprivate static let kManufacturer = "Adafruit Industries"
     fileprivate static let kReleasesXml = "updatemanager_releasesxml"
     
     // Constants
@@ -54,7 +76,7 @@ class FirmwareUpdater {
         }
     }
     
-    func releases(showBetaVersions: Bool) -> [BoardInfo]? {
+    func releases(showBetaVersions: Bool) -> [String: BoardInfo]? {
         guard let data = UserDefaults.standard.object(forKey: FirmwareUpdater.kReleasesXml) as? Data else {
             return nil
         }
@@ -68,19 +90,19 @@ class FirmwareUpdater {
         
         if shouldDiscoverServices {
             peripheral.discover(serviceUuids: nil) { [weak self] error in
-                self?.servicesDiscovered(peripheral: peripheral, delegate: delegate, versionToIgnore: versionToIgnore)
+                self?.servicesDiscovered(peripheral: peripheral, delegate: delegate, shouldRecommendBetaReleases: shouldRecommendBetaReleases, versionToIgnore: versionToIgnore)
             }
         }
         else {
-            servicesDiscovered(peripheral: peripheral, delegate: delegate, versionToIgnore: versionToIgnore)
+            servicesDiscovered(peripheral: peripheral, delegate: delegate, shouldRecommendBetaReleases: shouldRecommendBetaReleases, versionToIgnore: versionToIgnore)
         }
     }
     
-    private func servicesDiscovered(peripheral: BlePeripheral, delegate: FirmwareUpdaterDelegate, versionToIgnore: String?) {
+    private func servicesDiscovered(peripheral: BlePeripheral, delegate: FirmwareUpdaterDelegate, shouldRecommendBetaReleases: Bool, versionToIgnore: String?) {
         guard let _ = peripheral.discoveredService(uuid: FirmwareUpdater.kDfuServiceUUID), let disService = peripheral.discoveredService(uuid: FirmwareUpdater.kDisServiceUUID) else {
             DLog("Updates: Peripheral has no DFU or DIS service available")
             DispatchQueue.main.async {
-                delegate.onFirmwareUpdateAvailable(isUpdateAvailable: false, latestRelease: nil, deviceInfo: nil, allReleases: nil)
+                delegate.onFirmwareUpdateAvailable(isUpdateAvailable: false, latestRelease: nil, deviceInfo: nil)
             }
             return
         }
@@ -105,13 +127,11 @@ class FirmwareUpdater {
             // All read
             dispatchGroup.notify(queue: .global(), execute: { [weak strongSelf] in
                 DLog("Device Info Data received")
-                strongSelf?.checkUpdates(delegate: delegate, versionToIgnore: versionToIgnore)
+                strongSelf?.checkUpdatesForDeviceInfoService(dis, delegate: delegate, shouldRecommendBetaReleases: shouldRecommendBetaReleases, versionToIgnore: versionToIgnore)
             })
         }
-        
     }
-    
-    
+
     private func readCharacteristic(uuid: CBUUID, peripheral: BlePeripheral, service: CBService, dispatchGroup: DispatchGroup, completion: @escaping ((String?) -> Void)) {
         dispatchGroup.enter()
         if let characteristic = peripheral.discoveredCharacteristic(uuid: uuid, service: service) {
@@ -130,23 +150,72 @@ class FirmwareUpdater {
         }
     }
     
-    
-    private func checkUpdates(delegate: FirmwareUpdaterDelegate, versionToIgnore: String?) {
+    private func checkUpdatesForDeviceInfoService(_ dis: DeviceInformationService, delegate: FirmwareUpdaterDelegate, shouldRecommendBetaReleases: Bool, versionToIgnore: String?) {
         var isFirmwareUpdateAvailable = false
+        var latestRelease: FirmwareInfo?
+        let allReleases = releases(showBetaVersions: shouldRecommendBetaReleases)
         
+        if let allReleases = allReleases {
+            if dis.firmwareRevision != nil {
+                if !dis.hasDefaultBootloaderVersion {       // Nordic dfu library for iOS doesn't work with the default booloader version
+                    if let manufacturer = dis.manufacturer, FirmwareUpdater.kManufacturer.caseInsensitiveCompare(manufacturer) == .orderedSame {
+                        if let modelNumber = dis.modelNumber, let boardInfo = allReleases[modelNumber] {
+                            let modelReleases = boardInfo.firmwareReleases
+                            if !modelReleases.isEmpty {
+                                // Get the latest release
+                                let filteredModelReleases = modelReleases.filter{!$0.isBeta || shouldRecommendBetaReleases}
+                                latestRelease = filteredModelReleases.first
+                                
+                                // Check if the bootloader is compatible with this version
+                                if let latestRelease = latestRelease, let minBootloaderVersion = latestRelease.minBootloaderVersion, let bootloaderVersion = dis.bootloaderVersion, bootloaderVersion.compare(minBootloaderVersion, options: [.numeric]) != .orderedAscending {
+                                    
+                                    // Check if the user chose to ignore this version
+                                    if versionToIgnore == nil || latestRelease.version.compare(versionToIgnore!, options: [.numeric]) != .orderedSame {
+                                        
+                                        let isNewerVersion = dis.softwareRevision != nil && latestRelease.version.compare(dis.softwareRevision!, options: [.numeric]) == .orderedDescending
+                                        isFirmwareUpdateAvailable = isNewerVersion
+                                        #if DEBUG
+                                            if isNewerVersion {
+                                                DLog("Updates: New version found. Ask the user to install: \(latestRelease.version)")
+                                            }
+                                            else {
+                                                DLog("Updates: Device has already latest version: \(dis.softwareRevision ?? "<unknown>")")
+                                            }
+                                        #endif
+                                    }
+                                    else {
+                                        DLog("Updates: User ignored version: \(versionToIgnore ?? "<unknown>"). Skipping...")
+                                    }
+                                }
+                                else {
+                                    DLog("Updates: Bootloader version \(dis.bootloaderVersion ?? "<unknown>") below minimum needed: \(latestRelease?.minBootloaderVersion ?? "<unknown>")")
+                                }
+                            }
+                            else {
+                                DLog("Updates: No firmware releases found for model: \(dis.modelNumber ?? "<unknown>")")
+                            }
+                        }
+                        else {
+                            DLog("Updates: No releases found for model: \(dis.modelNumber ?? "<unknown>")")
+                        }
+                    }
+                    else {
+                        DLog("Updates: No updates for unknown manufacturer: \(dis.manufacturer ?? "<unknown>")")
+                    }
+                }
+                else {
+                    DLog("Updates: The legacy bootloader on this device is not compatible with this application")
+                    return
+                }
+            }
+            else {
+                DLog("Updates: firmwareRevision not defined")
+            }
+        }
+        else {
+            DLog("Updates: releases array is empty")
+        }
         
+        delegate.onFirmwareUpdateAvailable(isUpdateAvailable: isFirmwareUpdateAvailable, latestRelease: latestRelease, deviceInfo: dis)
     }
-    
-    
-    /*
- 
-     guard let releases = releases else {
-     DLog("Updates: releases array is empty")
-     DispatchQueue.main.async {
-     delegate.onFirmwareUpdateAvailable(isUpdateAvailable: false, latestRelease: nil, deviceInfo: nil, allReleases: nil)
-     }
-     return
-     }
-
- */
 }

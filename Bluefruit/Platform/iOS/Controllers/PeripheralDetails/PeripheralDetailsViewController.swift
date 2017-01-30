@@ -22,6 +22,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // UI
         if let splitViewController = self.splitViewController {
             navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
             navigationItem.leftItemsSupplementBackButton = true
@@ -29,6 +30,10 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
 
         emptyViewController = storyboard!.instantiateViewController(withIdentifier: "EmptyDetailsViewController") as! EmptyDetailsViewController
         
+        // Subscribe to Ble Notifications
+        registerNotifications(enabled: true)
+        
+        //
         if let peripheral = peripheral {
             didConnect(peripheral: peripheral)
         }
@@ -45,10 +50,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             DLog("detail: peripheral disconnected by viewWillAppear. Abort")
             return
         }
-
-        // Subscribe to Ble Notifications
-        registerNotifications(enabled: true)
-
     }
     
     override func didReceiveMemoryWarning() {
@@ -59,7 +60,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     deinit {
         // Remove notifications. Note: don't do this on viewwilldissapear because connection should still work when a new viewcontroller is pushed. i.e.: ControlPad)
         registerNotifications(enabled: false)
-       
     }
     
     // MARK: - BLE Notifications
@@ -100,16 +100,17 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     }
     
     func didConnect(peripheral: BlePeripheral) {
-        peripheral.peripheral.delegate = self
+//        peripheral.peripheral.delegate = self
         
         // UI
         showEmpty(false)
         
+        // Start updates check (will receive answer via FirmwareUpdaterDelegate)
         startUpdatesCheck()
     }
 
-/*
-    private func setupConnectedPeripheral() {
+    fileprivate func setupConnectedPeripheral() {
+        /*
         // UI: Add Info tab
         let infoViewController = self.storyboard!.instantiateViewControllerWithIdentifier("InfoModuleViewController") as! InfoModuleViewController
         
@@ -124,11 +125,10 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         
         setViewControllers([infoViewController], animated: false)
         selectedIndex = 0
+ */
     }
+
     
-*/
- 
- 
     func willDisconnectFromPeripheral(notification: Notification) {
         DLog("detail: peripheral willDisconnect")
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
@@ -199,6 +199,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             emptyViewController.stopAnimating()
         }
     }
+    
     /*
     func servicesDiscovered() {
         
@@ -296,7 +297,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         firmwareUpdater.checkUpdatesForPeripheral(peripheral, delegate: self, shouldDiscoverServices: true, shouldRecommendBetaReleases: false, versionToIgnore: nil)
     }
  
-    func updateRssiUI() {
+    fileprivate func updateRssiUI() {
         /*
         if let rssi = peripheral?.rssi {
             //DLog("rssi: \(rssi)")
@@ -305,21 +306,22 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         }*/
     }
     
-    /*
-    private func showUpdateAvailableForRelease(latestRelease: FirmwareInfo!) {
-        let alert = UIAlertController(title:"Update available", message: "Software version \(latestRelease.version) is available", preferredStyle: UIAlertControllerStyle.Alert)
+    fileprivate func showUpdateAvailableForRelease(_ latestRelease: FirmwareInfo) {
+        let localizationManager = LocalizationManager.sharedInstance
+        let alert = UIAlertController(title: localizationManager.localizedString("autoupdate_title"),
+                                      message: String(format: localizationManager.localizedString("auoupadte_description_format"), latestRelease.version),
+                                      preferredStyle: UIAlertControllerStyle.alert)
         
-        alert.addAction(UIAlertAction(title: "Go to updates", style: UIAlertActionStyle.Default, handler: { [unowned self] _ in
+        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_update"), style: UIAlertActionStyle.default, handler: { [unowned self] _ in
             self.selectedIndex = self.dfuTabIndex
         }))
-        alert.addAction(UIAlertAction(title: "Ask later", style: UIAlertActionStyle.Default, handler: {  _ in
+        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_later"), style: UIAlertActionStyle.default, handler: {  _ in
         }))
-        alert.addAction(UIAlertAction(title: "Ignore", style: UIAlertActionStyle.Cancel, handler: {  _ in
+        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_ignore"), style: UIAlertActionStyle.cancel, handler: {  _ in
             Preferences.softwareUpdateIgnoredVersion = latestRelease.version
         }))
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
-     */
 }
 
     
@@ -461,37 +463,16 @@ extension PeripheralDetailsViewController: CBPeripheralDelegate {
 // MARK: - FirmwareUpdaterDelegate
 extension PeripheralDetailsViewController: FirmwareUpdaterDelegate {
     
-    func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceInfo: DeviceInformationService?, allReleases: [FirmwareInfo]?) {
+    func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceInfo: DeviceInformationService?) {
         
-    }
-    
-    func onDfuRequiredServicesNotFound() {
-        
-    }
-    /*
-    func onFirmwareUpdatesAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo!, deviceInfoData: DeviceInfoData?, allReleases: [NSObject : AnyObject]?) {
         DLog("FirmwareUpdaterDelegate isUpdateAvailable: \(isUpdateAvailable)")
-        
+
         DispatchQueue.main.async { [weak self] in
-            if let context = self {
-                context.setupConnectedPeripheral()
-                if isUpdateAvailable {
-                    context.showUpdateAvailableForRelease(latestRelease)
-                }
+            self?.setupConnectedPeripheral()
+            if isUpdateAvailable, let latestRelease = latestRelease {
+                self?.showUpdateAvailableForRelease(latestRelease)
             }
         }
     }
-    
-    func onDfuServiceNotFound() {
-        DLog("FirmwareUpdaterDelegate: onDfuServiceNotFound")
-        
-        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
-            self?.setupConnectedPeripheral()
-            })
-    }
-    
-    private func onUpdateDialogError(errorMessage:String, exitOnDismiss: Bool = false) {
-        DLog("FirmwareUpdaterDelegate: onUpdateDialogError")
-    }
- */
+  
 }

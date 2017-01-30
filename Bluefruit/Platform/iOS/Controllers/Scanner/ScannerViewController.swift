@@ -187,11 +187,11 @@ class ScannerViewController: UIViewController {
             // Dismiss current dialog
             if self.presentedViewController != nil {
                 self.dismiss(animated: true, completion: { [unowned self] () -> Void in
-                    self.performSegue(withIdentifier: "showDetailSegue", sender: self)
+                    self.showPeripheralDetails()
                 })
             }
             else {
-                self.performSegue(withIdentifier: "showDetailSegue", sender: self)
+                showPeripheralDetails()
             }
         }
     }
@@ -227,7 +227,7 @@ class ScannerViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if let peripheralDetailsViewController = segue.destination as? PeripheralDetailsViewController {
+        if segue.identifier == "showDetailSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
             peripheralDetailsViewController.peripheral = selectedPeripheral
         }
         else if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController  {
@@ -401,7 +401,7 @@ extension ScannerViewController: UITableViewDataSource {
         peripheralCell.rssiImageView.image = signalImage(for: peripheral.rssi)
 
         let isUartCapable = peripheral.isUartAdvertised()
-        peripheralCell.subtitleLabel.text = localizationManager.localizedString(isUartCapable ? "peripherallist_uartavailable" : "peripherallist_uartunavailable")
+        peripheralCell.subtitleLabel.text = isUartCapable ? localizationManager.localizedString("peripherallist_uartavailable") : nil
         
         // Show either a disconnect button or a disclosure indicator depending on the UISplitViewController displayMode
         //peripheralCell.accessoryType = .disclosureIndicator

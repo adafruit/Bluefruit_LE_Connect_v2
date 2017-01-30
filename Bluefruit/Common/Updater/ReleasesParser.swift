@@ -8,16 +8,17 @@
 
 import Foundation
 import SwiftyXMLParser
+import iOSDFULibrary
 
 class BasicVersionInfo {
-    var fileType: Int
+    var fileType: DFUFirmwareType
     var version: String
     var hexFileUrl: URL?
     var iniFileUrl: URL?
     var boardName: String
     var isBeta: Bool
     
-    init(fileType: Int, version: String, hexFileUrl: URL?, iniFileUrl: URL?, boardName: String, isBeta: Bool) {
+    init(fileType: DFUFirmwareType, version: String, hexFileUrl: URL?, iniFileUrl: URL?, boardName: String, isBeta: Bool) {
         self.fileType = fileType
         self.version = version
         self.hexFileUrl = hexFileUrl
@@ -28,9 +29,9 @@ class BasicVersionInfo {
 }
 
 class FirmwareInfo: BasicVersionInfo {
-    var minBootloaderVersion: String
+    var minBootloaderVersion: String?
     
-    init(fileType: Int, version: String, hexFileUrl: URL?, iniFileUrl: URL?, boardName: String,  isBeta: Bool, minBootloaderVersion: String) {
+    init(fileType: DFUFirmwareType, version: String, hexFileUrl: URL?, iniFileUrl: URL?, boardName: String,  isBeta: Bool, minBootloaderVersion: String?) {
         self.minBootloaderVersion = minBootloaderVersion
         super.init(fileType: fileType, version: version, hexFileUrl: hexFileUrl, iniFileUrl: iniFileUrl, boardName: boardName, isBeta: isBeta)
     }
@@ -45,23 +46,104 @@ struct BoardInfo {
 }
 
 class ReleasesParser {
-    static func parse(data: Data, showBetaVersions: Bool) -> [BoardInfo] {
-        var boardsReleases = [BoardInfo]()
+    static func parse(data: Data, showBetaVersions: Bool) -> [String: BoardInfo] {
+        var boardsReleases = [String: BoardInfo]()
         
         let xml = XML.parse(data)
-        let boards = xml["boards"]["board"]
+        let boards = xml["bluefruitle"]["boards"]["board"]
         for board in boards {
-            let boardName = board["_name"].text
-            let firmware = board["firmware"]
-            
-            parseFirmware(board: firmware["firmwarerelease"])
+            if let boardName = board.attributes["name"] {
+
+                var boardInfo = BoardInfo()
+                
+                // Read firmware releases
+                let firmwareNode = board["firmware"]
+                parseFirmwareNodes(firmwareNode["firmwarerelease"], boardName: boardName, isBeta: false, into: &boardInfo.firmwareReleases)
+
+                // Read beta firmware releases
+                if showBetaVersions {
+                    parseFirmwareNodes(firmwareNode["firmwarebeta"], boardName: boardName, isBeta: true, into: &boardInfo.firmwareReleases)
+                }
+                
+                // Sort based on version (descending)
+                boardInfo.firmwareReleases.sort(by: { (f1, f2) -> Bool in
+                    return f1.version.compare(f2.version, options: [.numeric]) == .orderedDescending
+                })
+                
+                // Read bootloader releases
+                let bootloaderNode = board["bootloader"]
+                parseBootloaderNodes(bootloaderNode["bootloaderrelease"], boardName: boardName, isBeta: false, into: &boardInfo.bootloaderReleases)
+
+                // Read beta firmware releases
+                if showBetaVersions {
+                    parseBootloaderNodes(bootloaderNode["bootloaderbeta"], boardName: boardName, isBeta: true, into: &boardInfo.bootloaderReleases)
+                }
+
+                // Sort based on version (descending)
+                boardInfo.bootloaderReleases.sort(by: { (f1, f2) -> Bool in
+                    return f1.version.compare(f2.version, options: [.numeric]) == .orderedDescending
+                })
+                
+
+                // Add result
+                boardsReleases[boardName] = boardInfo
+            }
+            else {
+                DLog("Warning: board with no name")
+            }
         }
         
         return boardsReleases
     }
     
     
-    private static func parseFirmware(board: XML.Accessor) {
+    private static func parseFirmwareNodes(_ nodes: XML.Accessor, boardName: String, isBeta: Bool, into firmwareReleases: inout [FirmwareInfo]) {
+        for node in nodes {
+            if let firmwareInfo = parseFirmwareNode(node, boardName: boardName, isBeta: isBeta) {
+                firmwareReleases.append(firmwareInfo)
+            }
+        }
+    }
+    
+    private static func parseBootloaderNodes(_ nodes: XML.Accessor, boardName: String, isBeta: Bool, into bootloaderReleases: inout [BootloaderInfo]) {
+        for node in nodes {
+            if let bootloaderInfo = parseBootloaderNode(node, boardName: boardName, isBeta: isBeta) {
+                bootloaderReleases.append(bootloaderInfo)
+            }
+        }
+    }
+
+    
+    private static func parseFirmwareNode(_ node: XML.Accessor, boardName: String, isBeta: Bool) -> FirmwareInfo? {
+        let attributes = node.attributes
+        let hexFile = attributes["hexfile"]
+        let hexFileUrl =  hexFile != nil ? URL(string: hexFile!):nil
+        let iniFile = attributes["initfile"]
+        let iniFileUrl = iniFile != nil ? URL(string: iniFile!):nil
+        let minBootloaderVersion = attributes["minbootloader"]
         
+        guard let version = attributes["version"] else {
+            DLog("Warning: Firmware node with invalid version")
+            return nil
+        }
+        
+        let releaseInfo = FirmwareInfo(fileType: DFUFirmwareType.application, version: version, hexFileUrl: hexFileUrl, iniFileUrl: iniFileUrl, boardName: boardName, isBeta: isBeta, minBootloaderVersion: minBootloaderVersion)
+        return releaseInfo
+    }
+    
+    private static func parseBootloaderNode(_ node: XML.Accessor, boardName: String, isBeta: Bool) -> BootloaderInfo? {
+        let attributes = node.attributes
+        let hexFile = attributes["hexfile"]
+        let hexFileUrl =  hexFile != nil ? URL(string: hexFile!):nil
+        let iniFile = attributes["initfile"]
+        let iniFileUrl = iniFile != nil ? URL(string: iniFile!):nil
+        
+        guard let version = attributes["version"] else {
+            DLog("Warning: Bootloader node with invalid version")
+            return nil
+        }
+        
+        let bootloaderInfo = BootloaderInfo(fileType: DFUFirmwareType.bootloader, version: version, hexFileUrl: hexFileUrl, iniFileUrl: iniFileUrl, boardName: boardName, isBeta: isBeta)
+        return bootloaderInfo
     }
 }

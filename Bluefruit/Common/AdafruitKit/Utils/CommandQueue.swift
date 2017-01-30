@@ -31,7 +31,6 @@ class CommandQueue<Element> {
         }
     }
 
-    
     func first() -> Element? {
         queueLock.lock() ; defer { queueLock.unlock() }
         return queue.first
@@ -54,7 +53,5 @@ class CommandQueue<Element> {
     
     func removeAll() {
         queue.removeAll()
-        
     }
-    
 }
