@@ -109,7 +109,8 @@ extension UartSettingsViewController: UITableViewDataSource {
         return cell
     }
     
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         let localizationManager = LocalizationManager.sharedInstance
         let uartCell = cell as! UartSettingTableViewCell
@@ -148,7 +149,7 @@ extension UartSettingsViewController: UITableViewDataSource {
                     Preferences.uartIsAutomaticEolEnabled = enabled
                 }
             }
-
+            
             uartCell.titleLabel.text = titleKey == nil ? nil : localizationManager.localizedString(titleKey!)+":"
         }
         else {

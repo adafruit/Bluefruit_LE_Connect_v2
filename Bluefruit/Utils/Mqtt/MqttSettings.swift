@@ -11,41 +11,41 @@ import Foundation
 
 class MqttSettings
 {
+    // Config
+    static let defaultServerAddress = "io.adafruit.com"
+    static let defaultServerPort = 1883
+
     // Singleton
     static let sharedInstance = MqttSettings()
-    
-    // Config
-    static let defaultServerAddress = "io.adafruit.com";
-    static let defaultServerPort = 1883;
 
     // Constants
-    private static let preferences_serveraddress = "serveraddress";
-    private static let preferences_serverport = "serverport";
-    private static let preferences_publishtopic = "publishtopic";
-    private static let preferences_publishqos = "publishqos";
-    private static let preferences_publishenabled = "publishenabled";
-    private static let preferences_subscribetopic = "subscribetopic";
-    private static let preferences_subscribeqos = "subscribeqos";
-    private static let preferences_subscribebehaviour = "subscribebehaviour";
-    private static let preferences_subscribeenabled = "subscribeenabled";
-    private static let preferences_connected = "connected";
-    private static let preferences_username = "username";
-    private static let preferences_password = "password";
-    private static let preferences_cleansession = "cleansession";
-    private static let preferences_sslconnection = "sslconnection";
+    private static let preferences_serveraddress = "serveraddress"
+    private static let preferences_serverport = "serverport"
+    private static let preferences_publishtopic = "publishtopic"
+    private static let preferences_publishqos = "publishqos"
+    private static let preferences_publishenabled = "publishenabled"
+    private static let preferences_subscribetopic = "subscribetopic"
+    private static let preferences_subscribeqos = "subscribeqos"
+    private static let preferences_subscribebehaviour = "subscribebehaviour"
+    private static let preferences_subscribeenabled = "subscribeenabled"
+    private static let preferences_connected = "connected"
+    private static let preferences_username = "username"
+    private static let preferences_password = "password"
+    private static let preferences_cleansession = "cleansession"
+    private static let preferences_sslconnection = "sslconnection"
 
     // Data
-    enum SubscribeBehaviour : Int {
-        case LocalOnly = 0
-        case Transmit = 1
+    enum SubscribeBehaviour: Int {
+        case localOnly = 0
+        case transmit = 1
     }
     
-    enum PublishFeed : Int {
-        case RX = 0
-        case TX = 1
+    enum PublishFeed: Int {
+        case rx = 0
+        case tx = 1
     }
     
-    var serverAddress : String? {
+    var serverAddress: String? {
         get {
             return loadStringPref(MqttSettings.preferences_serveraddress, defaultValue: MqttSettings.defaultServerAddress)
         }
@@ -55,7 +55,7 @@ class MqttSettings
         }
     }
     
-    var serverPort : Int {
+    var serverPort: Int {
         get {
             return loadIntPref(MqttSettings.preferences_serverport, defaultValue: MqttSettings.defaultServerPort)
         }
@@ -65,7 +65,7 @@ class MqttSettings
         }
     }
 
-    var isConnected : Bool {
+    var isConnected: Bool {
         get {
             return loadBoolPref(MqttSettings.preferences_connected, defaultValue: false)
         }
@@ -75,7 +75,7 @@ class MqttSettings
         }
     }
     
-    var isPublishEnabled : Bool {
+    var isPublishEnabled: Bool {
         get {
             return loadBoolPref(MqttSettings.preferences_publishenabled, defaultValue: true)
         }
@@ -85,7 +85,7 @@ class MqttSettings
         }
     }
     
-    var isSubscribeEnabled : Bool {
+    var isSubscribeEnabled: Bool {
         get {
             return loadBoolPref(MqttSettings.preferences_subscribeenabled, defaultValue: true)
         }
@@ -95,18 +95,18 @@ class MqttSettings
         }
     }
     
-    func getPublishQos(index:Int) -> MqttManager.MqttQos {
-        let value = loadIntPref(MqttSettings.preferences_publishqos+"\(index)", defaultValue: MqttManager.MqttQos.AtMostOnce.rawValue)
+    func getPublishQos(index: Int) -> MqttManager.MqttQos {
+        let value = loadIntPref(MqttSettings.preferences_publishqos+"\(index)", defaultValue: MqttManager.MqttQos.atMostOnce.rawValue)
         return MqttManager.MqttQos(rawValue: value)!
     }
     
-    func setPublishQos(index:Int, qos:MqttManager.MqttQos) {
+    func setPublishQos(index: Int, qos:MqttManager.MqttQos) {
         saveIntPref(MqttSettings.preferences_publishqos+"\(index)", value: qos.rawValue)
     }
     
-    var subscribeQos : MqttManager.MqttQos {
+    var subscribeQos: MqttManager.MqttQos {
         get {
-            let value = loadIntPref(MqttSettings.preferences_subscribeqos, defaultValue: MqttManager.MqttQos.AtMostOnce.rawValue)
+            let value = loadIntPref(MqttSettings.preferences_subscribeqos, defaultValue: MqttManager.MqttQos.atMostOnce.rawValue)
             return MqttManager.MqttQos(rawValue: value)!
         }
         
@@ -115,17 +115,17 @@ class MqttSettings
         }
     }
     
-    func getPublishTopic(index:Int) -> String? {
+    func getPublishTopic(index: Int) -> String? {
         return loadStringPref(MqttSettings.preferences_publishtopic+"\(index)", defaultValue: nil)
     }
     
-    func setPublishTopic(index:Int, topic:String?) {
+    func setPublishTopic(index: Int, topic:String?) {
         saveStringPref(MqttSettings.preferences_publishtopic+"\(index)", value: topic)
     }
 
-    var subscribeBehaviour : SubscribeBehaviour {
+    var subscribeBehaviour: SubscribeBehaviour {
         get {
-            let value = loadIntPref(MqttSettings.preferences_subscribebehaviour, defaultValue: SubscribeBehaviour.LocalOnly.rawValue)
+            let value = loadIntPref(MqttSettings.preferences_subscribebehaviour, defaultValue: SubscribeBehaviour.localOnly.rawValue)
             return SubscribeBehaviour(rawValue: value)!
         }
         
@@ -134,7 +134,7 @@ class MqttSettings
         }
     }
     
-    var subscribeTopic : String? {
+    var subscribeTopic: String? {
         get {
             return loadStringPref(MqttSettings.preferences_subscribetopic, defaultValue: nil)
         }
@@ -145,7 +145,7 @@ class MqttSettings
     }
     
     
-    var username : String? {
+    var username: String? {
         get {
             return loadStringPref(MqttSettings.preferences_username, defaultValue: nil)
         }
@@ -176,14 +176,14 @@ class MqttSettings
     }
     
     // Common load and save
-    func saveStringPref(key: String, value: String?) {
+    func saveStringPref(_ key: String, value: String?) {
         let defaults = UserDefaults.standard
         defaults.set(value, forKey: key)
         defaults.synchronize()
         
     }
     
-    func loadStringPref(key: String, defaultValue: String?) -> String? {
+    func loadStringPref(_ key: String, defaultValue: String?) -> String? {
         let defaults = UserDefaults.standard
         if let value = defaults.string(forKey: key) {
             return value
@@ -192,14 +192,14 @@ class MqttSettings
         }
     }
     
-    func saveIntPref(key: String, value: Int) {
+    func saveIntPref(_ key: String, value: Int) {
         let defaults = UserDefaults.standard
         defaults.set(value, forKey: key)
         defaults.synchronize()
         
     }
     
-    func loadIntPref(key: String, defaultValue: Int) -> Int {
+    func loadIntPref(_ key: String, defaultValue: Int) -> Int {
         let defaults = UserDefaults.standard
         if let value = defaults.object(forKey: key) as! Int? {
             return value
@@ -208,14 +208,14 @@ class MqttSettings
         }
     }
 
-    func saveBoolPref(key: String, value: Bool) {
+    func saveBoolPref(_ key: String, value: Bool) {
         let defaults = UserDefaults.standard
         defaults.set(value, forKey: key)
         defaults.synchronize()
         
     }
     
-    func loadBoolPref(key: String, defaultValue: Bool) -> Bool {
+    func loadBoolPref(_ key: String, defaultValue: Bool) -> Bool {
         let defaults = UserDefaults.standard
         if let value = defaults.object(forKey: key) as! Bool? {
             return value

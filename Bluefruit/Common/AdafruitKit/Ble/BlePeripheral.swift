@@ -406,12 +406,23 @@ class BlePeripheral: NSObject {
         peripheral.readValue(for: characteristic)
     }
     
+    private static let hasWithoutResponseBug = !(ProcessInfo().operatingSystemVersion.majorVersion >= 10 &&  ProcessInfo().operatingSystemVersion.minorVersion >= 2)
     private func write(with command: BleCommand) {
         let characteristic = command.parameters![0] as! CBCharacteristic
         let writeType = command.parameters![1] as! CBCharacteristicWriteType
         let data = command.parameters![2] as! Data
         
         peripheral.writeValue(data, for: characteristic, type: writeType)
+        
+        // Warning: iOS 9.x, 10.0 and 10.1, always call didWrite even for .wihtoutResponse. It is fixed on iOS 10.2
+        if writeType == .withoutResponse {
+            if BlePeripheral.hasWithoutResponseBug {
+                // didWrite will be called. Continue processing there (didWriteValueFor)
+            }
+            else {
+                finishedExecutingCommand(error: nil)
+            }
+        }
     }
     
     private func readDescriptor(with command: BleCommand) {

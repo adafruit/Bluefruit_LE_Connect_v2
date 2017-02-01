@@ -46,10 +46,6 @@ import Foundation
     
     fileprivate static let neopixelIsSketchTooltipEnabledKey = "NeopixelIsSketchTooltipEnabledKey"
     
-    enum PreferencesNotifications: String {
-        case DidUpdatePreferences = "didUpdatePreferences"          // Note: used on some objective-c code, so when changed, update it
-    }
-    
     // MARK: - General
     static var appInSystemStatusBar: Bool {
         get {
@@ -155,7 +151,7 @@ import Foundation
         set {
             let defaults = UserDefaults.standard
             defaults.set(newValue?.absoluteString, forKey: Preferences.updateServerUrlKey)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: PreferencesNotifications.DidUpdatePreferences.rawValue), object: nil);
+            NotificationCenter.default.post(name: .didUpdatePreferences, object: nil)
         }
     }
     
@@ -200,7 +196,7 @@ import Foundation
         set {
             let defaults = UserDefaults.standard
             defaults.set(newValue.hexString(), forKey: Preferences.uartReceivedDataColorKey)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: PreferencesNotifications.DidUpdatePreferences.rawValue), object: nil);
+            NotificationCenter.default.post(name: .didUpdatePreferences, object: nil)
         }
     }
     
@@ -213,7 +209,7 @@ import Foundation
         set {
             let defaults = UserDefaults.standard
             defaults.set(newValue.hexString(), forKey: Preferences.uartSentDataColorKey)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: PreferencesNotifications.DidUpdatePreferences.rawValue), object: nil);
+            NotificationCenter.default.post(name: .didUpdatePreferences, object: nil)
         }
     }
     
@@ -282,7 +278,7 @@ import Foundation
     static func setBoolPreference(_ key: String, newValue: Bool) {
         let defaults = UserDefaults.standard
         defaults.set(newValue, forKey: key)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: PreferencesNotifications.DidUpdatePreferences.rawValue), object: nil);
+        NotificationCenter.default.post(name: .didUpdatePreferences, object: nil)
     }
     
     // MARK: - Defaults

@@ -10,6 +10,10 @@ import Foundation
 import CoreBluetooth
 
 extension BlePeripheral {
+    
+    // Config
+    private static let kDebugLog = false
+    
     // Costants
     static let kUartServiceUUID =           CBUUID(string: "6e400001-b5a3-f393-e0a9-e50e24dcca9e")
     static let kUartTxCharacteristicUUID =  CBUUID(string: "6e400002-b5a3-f393-e0a9-e50e24dcca9e")
@@ -77,7 +81,6 @@ extension BlePeripheral {
                     return
                 }
                 
-                
                 // Get characteristic info
                 self.uartRxCharacteristic = characteristic
                 
@@ -85,7 +88,7 @@ extension BlePeripheral {
                 self.setNotify(for: characteristic, enabled: true, handler: { (error) in
                     
                     let value = characteristic.value
-                    if let value = value, error == nil {
+                    if let value = value, BlePeripheral.kDebugLog == true, error == nil {
                         UartLogManager.log(data: value, type: .uartRx)
                     }
                     
@@ -126,7 +129,7 @@ extension BlePeripheral {
             return
         }
         
-        // Split data  in txmaxcharacters bytes packets
+        // Split data in kUartTxMaxBytes bytes packets
         var offset = 0
         repeat {
             let chunkSize = min(data.count-offset, BlePeripheral.kUartTxMaxBytes)
@@ -141,7 +144,9 @@ extension BlePeripheral {
                     DLog("uart tx write (dec): \(decimalDescription(data: chunk))")
                     DLog("uart tx write (utf8): \(String(data: chunk, encoding: .utf8) ?? "<invalid>")")
                     
-                    UartLogManager.log(data: chunk, type: .uartTx)
+                    if BlePeripheral.kDebugLog {
+                        UartLogManager.log(data: chunk, type: .uartTx)
+                    }
                 }
                 
                 if offset >= data.count {

@@ -42,6 +42,9 @@
 		A96946711E3D02F300BA8DAA /* BleUUIDNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */; };
 		A98378011E42229200170319 /* DataFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378001E42229200170319 /* DataFormatter.swift */; };
 		A98378091E422C4B00170319 /* NSObject+ENHThrottledReloading.m in Sources */ = {isa = PBXBuildFile; fileRef = A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */; };
+		A983780F1E4266CD00170319 /* UartDataExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983780E1E4266CD00170319 /* UartDataExport.swift */; };
+		A98378131E4270E800170319 /* MqttManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378111E4270E800170319 /* MqttManager.swift */; };
+		A98378141E4270E800170319 /* MqttSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378121E4270E800170319 /* MqttSettings.swift */; };
 		A99339751E3CC14B00CCA83D /* ReleasesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99339741E3CC14B00CCA83D /* ReleasesParser.swift */; };
 		A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */; };
 		A9BAD2121E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */; };
@@ -113,6 +116,9 @@
 		A98378051E422C4B00170319 /* NSObject+ENHThrottledReloading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ENHThrottledReloading.h"; sourceTree = "<group>"; };
 		A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ENHThrottledReloading.m"; sourceTree = "<group>"; };
 		A983780B1E422CBC00170319 /* Bluefruit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bluefruit-Bridging-Header.h"; sourceTree = "<group>"; };
+		A983780E1E4266CD00170319 /* UartDataExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartDataExport.swift; sourceTree = "<group>"; };
+		A98378111E4270E800170319 /* MqttManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttManager.swift; sourceTree = "<group>"; };
+		A98378121E4270E800170319 /* MqttSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettings.swift; sourceTree = "<group>"; };
 		A99339741E3CC14B00CCA83D /* ReleasesParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleasesParser.swift; sourceTree = "<group>"; };
 		A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoCharacteristicTableViewCell.swift; sourceTree = "<group>"; };
@@ -321,8 +327,10 @@
 		A9286CDC1E3A9C98008E5F81 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A98378101E4270E800170319 /* Mqtt */,
 				A9286CDD1E3A9C98008E5F81 /* CocoaCompatibility.swift */,
 				A9D2345B1E3AE06D00DC0C99 /* LocalizationManager.swift */,
+				A983780E1E4266CD00170319 /* UartDataExport.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -353,6 +361,15 @@
 				A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */,
 			);
 			path = "NSObject+ENHThrottledReloading";
+			sourceTree = "<group>";
+		};
+		A98378101E4270E800170319 /* Mqtt */ = {
+			isa = PBXGroup;
+			children = (
+				A98378111E4270E800170319 /* MqttManager.swift */,
+				A98378121E4270E800170319 /* MqttSettings.swift */,
+			);
+			path = Mqtt;
 			sourceTree = "<group>";
 		};
 		A9BAD20F1E3FC6CA0021DFA9 /* Info */ = {
@@ -572,6 +589,7 @@
 				A9286CD11E3A9B22008E5F81 /* BlePeripheral+Uart.swift in Sources */,
 				A9286CD91E3A9B22008E5F81 /* DataConversions.swift in Sources */,
 				A9286CDA1E3A9B22008E5F81 /* LogHelper.swift in Sources */,
+				A98378131E4270E800170319 /* MqttManager.swift in Sources */,
 				A9286CD71E3A9B22008E5F81 /* CommandQueue.swift in Sources */,
 				A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */,
 				A9D234561E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift in Sources */,
@@ -592,6 +610,7 @@
 				A94A21AD1E417271006A5F33 /* UartModeViewController.swift in Sources */,
 				A90C79781E40CBFA0076E8AD /* InfoModuleManager.swift in Sources */,
 				A9D234391E3AD70300DC0C99 /* AboutViewController.swift in Sources */,
+				A98378141E4270E800170319 /* MqttSettings.swift in Sources */,
 				A9D234421E3AD81D00DC0C99 /* RssiUI.swift in Sources */,
 				A9D2343D1E3AD70300DC0C99 /* ScannerViewController.swift in Sources */,
 				A9D234571E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift in Sources */,
@@ -614,6 +633,7 @@
 				A9BAD2131E3FC6CA0021DFA9 /* InfoModeViewController.swift in Sources */,
 				A98378091E422C4B00170319 /* NSObject+ENHThrottledReloading.m in Sources */,
 				A9D234581E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift in Sources */,
+				A983780F1E4266CD00170319 /* UartDataExport.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

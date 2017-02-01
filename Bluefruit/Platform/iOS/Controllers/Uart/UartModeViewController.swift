@@ -13,6 +13,9 @@ class UartModeViewController: PeripheralModeViewController {
     // Config
     fileprivate static var dataFont = UIFont(name: "CourierNewPSMT", size: 14)! //Font.systemFontOfSize(Font.systemFontSize())
 
+    // Export
+    fileprivate static let kExportFormats: [ExportFormat] = [.txt, .csv, .json/*, .xml*/, .bin]
+    
     // UI
     @IBOutlet weak var baseTableView: UITableView!
     @IBOutlet weak var baseTextView: UITextView!
@@ -24,8 +27,8 @@ class UartModeViewController: PeripheralModeViewController {
     @IBOutlet weak var sendInputButton: UIButton!
     @IBOutlet weak var keyboardSpacerHeightConstraint: NSLayoutConstraint!
     
-    private var mqttBarButtonItem: UIBarButtonItem!
-    private var mqttBarButtonItemImageView : UIImageView?
+    fileprivate var mqttBarButtonItem: UIBarButtonItem!
+    fileprivate var mqttBarButtonItemImageView : UIImageView?
     @IBOutlet weak var moreOptionsNavigationItem: UIBarButtonItem!
     @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet weak var controlsView: UIView!
@@ -41,6 +44,14 @@ class UartModeViewController: PeripheralModeViewController {
     enum DisplayMode {
         case text           // Display a TextView with all uart data as a String
         case table          // Display a table where each data chunk is a row
+    }
+    
+    enum ExportFormat: String {
+        case txt = "txt"
+        case csv = "csv"
+        case json = "json"
+        case xml = "xml"
+        case bin = "bin"
     }
     
     fileprivate var uartData: UartPacketManager!// = UartPacketManager(delegate: self)
@@ -106,14 +117,12 @@ class UartModeViewController: PeripheralModeViewController {
          mqttBarButtonItemImageView = UIImageView(image: UIImage(named: "mqtt_disconnected")!.tintWithColor(self.view.tintColor))      // use a uiimageview as custom barbuttonitem to allow frame animations
          mqttBarButtonItemImageView!.tintColor = self.view.tintColor
          mqttBarButtonItemImageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(UartModeViewController.onClickMqtt)))
-         
-        /*
-         let mqttManager = MqttManager.sharedInstance
-         if (MqttSettings.sharedInstance.isConnected) {
-         mqttManager.delegate = uartData
-         mqttManager.connectFromSavedSettings()
-         }
-         */
+        
+        let mqttManager = MqttManager.sharedInstance
+        if MqttSettings.sharedInstance.isConnected {
+            mqttManager.delegate = self
+            mqttManager.connectFromSavedSettings()
+        }
         
         // Init Uarts
         uartData = UartPacketManager(delegate: self)
@@ -127,11 +136,6 @@ class UartModeViewController: PeripheralModeViewController {
             controlsView.isHidden = true
         }
     }
-    
-    deinit {
-        uartData = nil
-    }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -167,7 +171,7 @@ class UartModeViewController: PeripheralModeViewController {
 
         // Enable Uart
         updateUartReadyUI(isReady: false)
-        blePeripheral?.uartEnable(uartRxHandler: uartData.uartRxPacketReceived) { [weak self] error in
+        blePeripheral?.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
             guard let context = self else {
                 return
             }
@@ -192,34 +196,22 @@ class UartModeViewController: PeripheralModeViewController {
                 context.updateUartReadyUI(isReady: true)
             }
         }
-
         
-        /*
         // MQTT
         let mqttManager = MqttManager.sharedInstance
-        if (MqttSettings.sharedInstance.isConnected) {
-            mqttManager.delegate = uartData
+        if MqttSettings.sharedInstance.isConnected {
+            mqttManager.delegate = self
         }
         mqttUpdateStatusUI()
- */
     }
+
     
-    private func updateUartReadyUI(isReady: Bool) {
-        inputTextField.isEnabled = isReady
-        inputTextField.backgroundColor = isReady ? UIColor.white : UIColor.black.withAlphaComponent(0.1)
-  
-    }
-    
-    /*
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         baseTableView.enh_cancelPendingReload()
         
-        if !Config.uartShowAllUartCommunication {
-            uartData.dataBufferEnabled = false
-        }
-        registerNotifications(false)
+        registerNotifications(enabled: false)
     }
 
     override func didReceiveMemoryWarning() {
@@ -228,27 +220,29 @@ class UartModeViewController: PeripheralModeViewController {
     }
     
     deinit {
+        uartData = nil
+        
         let mqttManager = MqttManager.sharedInstance
         mqttManager.disconnect()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "uartSettingsSegue"  {
             if let controller = segue.destination.popoverPresentationController {
                 controller.delegate = self
                 
                 let uartSettingsViewController = segue.destination as! UartSettingsViewController
-                uartSettingsViewController.onClickClear = {
+                uartSettingsViewController.onClickClear = { [unowned self] in
                     self.onClickClear(self)
                 }
-                uartSettingsViewController.onClickExport = {
+                uartSettingsViewController.onClickExport = { [unowned self] in
                     self.onClickExport(self)
                 }
             }
         }
     }
-
-    */
+    
     
     // MARK: - BLE Notifications
     private var didUpdatePreferencesObserver: NSObjectProtocol?
@@ -277,11 +271,11 @@ class UartModeViewController: PeripheralModeViewController {
         baseTableView.isHidden = displayMode == .text
         baseTextView.isHidden = displayMode == .table
         
-        switch(displayMode) {
+        switch displayMode {
         case .text:
             
             textCachedBuffer.setAttributedString(NSAttributedString())
-            let dataPackets = uartData.rxCache()
+            let dataPackets = uartData.packetsCache()
             for dataPacket in dataPackets {
                 addPacketToUIText(dataPacket)
             }
@@ -302,10 +296,15 @@ class UartModeViewController: PeripheralModeViewController {
         
         statsLabel.text = String(format: "%@     %@", arguments: [sentBytesMessage, receivedBytesMessage])
     }
+    
+    private func updateUartReadyUI(isReady: Bool) {
+        inputTextField.isEnabled = isReady
+        inputTextField.backgroundColor = isReady ? UIColor.white : UIColor.black.withAlphaComponent(0.1)
+        
+    }
 
     // MARK: - UI Actions
     func onClickMqtt() {
-        /*
         let viewController = storyboard!.instantiateViewController(withIdentifier: "UartMqttSettingsViewController")
         viewController.modalPresentationStyle = .popover
         if let popovoverController = viewController.popoverPresentationController
@@ -314,59 +313,60 @@ class UartModeViewController: PeripheralModeViewController {
             popovoverController.delegate = self
         }
         present(viewController, animated: true, completion: nil)
- */
     }
-/*
-    @IBAction func onClickSend(sender: AnyObject) {
-        let text = inputTextField.text != nil ? inputTextField.text! : ""
+
+    @IBAction func onClickSend(_ sender: AnyObject) {
+        guard let blePeripheral = blePeripheral else { return }
         
-        var newText = text
+        var newText = inputTextField.text ?? ""
+        
         // Eol
-        if (Preferences.uartIsAutomaticEolEnabled)  {
+        if Preferences.uartIsAutomaticEolEnabled {
             newText += "\n"
         }
         
-        uartData.sendMessageToUart(newText)
+        uartData.send(blePeripheral: blePeripheral, text: newText)
         inputTextField.text = ""
     }
     
-    @IBAction func onInputTextFieldEdidtingDidEndOnExit(sender: UITextField) {
+    @IBAction func onInputTextFieldEdidtingDidEndOnExit(_ sender: UITextField) {
         onClickSend(sender)
     }
     
-    @IBAction func onClickClear(sender: AnyObject) {
-        uartData.clearData()
+    @IBAction func onClickClear(_ sender: AnyObject) {
+        uartData.clearPacketsCache()
         reloadDataUI()
     }
     
-    @IBAction func onClickExport(sender: AnyObject) {
-        let dataBuffer = self.uartData.dataBuffer
-        guard dataBuffer.count>0 else {
+    @IBAction func onClickExport(_ sender: AnyObject) {
+        let uartRxCache = uartData.packetsCache()
+        guard !uartRxCache.isEmpty else {
             showDialogWarningNoTextToExport()
-            return;
+            return
         }
-        
+    
         let localizationManager = LocalizationManager.sharedInstance
         let alertController = UIAlertController(title: "Export data", message: "Choose the prefered format:", preferredStyle: .actionSheet)
         
-        for exportFormat in UartModuleManager.kExportFormats {
-            let exportAction = UIAlertAction(title: exportFormat.rawValue, style: .Default) {[unowned self] (_) in
+        for exportFormat in UartModeViewController.kExportFormats {
+            let exportAction = UIAlertAction(title: exportFormat.rawValue, style: .default) { [unowned self] (_) in
                 
-                var exportData: AnyObject?
+                var exportObject: AnyObject?
                 
                 switch(exportFormat) {
                 case .txt:
-                    exportData = UartDataExport.dataAsText(dataBuffer)
+                    exportObject = UartDataExport.packetsAsText(uartRxCache) as AnyObject
                 case .csv:
-                    exportData = UartDataExport.dataAsCsv(dataBuffer)
+                    exportObject = UartDataExport.packetsAsCsv(uartRxCache) as AnyObject
                 case .json:
-                    exportData = UartDataExport.dataAsJson(dataBuffer)
+                    exportObject = UartDataExport.packetsAsJson(uartRxCache) as AnyObject
                 case .xml:
-                    exportData = UartDataExport.dataAsXml(dataBuffer)
+                    exportObject = UartDataExport.packetsAsXml(uartRxCache) as AnyObject
                 case .bin:
-                    exportData = UartDataExport.dataAsBinary(dataBuffer)
+                    exportObject = UartDataExport.packetsAsBinary(uartRxCache) as AnyObject
                 }
-                self.exportData(exportData)
+                
+                self.export(object: exportObject)
             }
             alertController.addAction(exportAction)
         }
@@ -377,14 +377,12 @@ class UartModeViewController: PeripheralModeViewController {
         alertController.popoverPresentationController?.sourceView = exportButton
         self.present(alertController, animated: true, completion: nil)
     }
-     */
- 
     
-    private func exportData(data: AnyObject?) {
-        if let data = data {
+    private func export(object: AnyObject?) {
+        if let object = object {
             // TODO: replace randomly generated iOS filenames: https://thomasguenzel.com/blog/2015/04/16/uiactivityviewcontroller-nsdata-with-filename/
             
-            let activityViewController = UIActivityViewController(activityItems: [data], applicationActivities: nil)
+            let activityViewController = UIActivityViewController(activityItems: [object], applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = exportButton
             
             navigationController?.present(activityViewController, animated: true, completion: nil)
@@ -438,10 +436,10 @@ class UartModeViewController: PeripheralModeViewController {
 extension UartModeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if Preferences.uartIsEchoEnabled  {
-            tableCachedDataBuffer = uartData.rxCache()
+            tableCachedDataBuffer = uartData.packetsCache()
         }
         else {
-            tableCachedDataBuffer = uartData.rxCache().filter({ (dataChunk: UartPacket) -> Bool in
+            tableCachedDataBuffer = uartData.packetsCache().filter({ (dataChunk: UartPacket) -> Bool in
                 dataChunk.mode == .rx
             })
         }
@@ -511,14 +509,14 @@ extension UartModeViewController: UartPacketManagerDelegate {
     
     func reloadData() {
         let displayMode: UartModeViewController.DisplayMode = Preferences.uartIsDisplayModeTimestamp ? .table : .text
-        switch(displayMode) {
+        switch displayMode {
         case .text:
             baseTextView.attributedText = textCachedBuffer
             
             let textLength = textCachedBuffer.length
             if textLength > 0 {
-                let range = NSMakeRange(textLength - 1, 1);
-                baseTextView.scrollRangeToVisible(range);
+                let range = NSMakeRange(textLength - 1, 1)
+                baseTextView.scrollRangeToVisible(range)
             }
             
         case .table:
@@ -533,7 +531,6 @@ extension UartModeViewController: UartPacketManagerDelegate {
     }
     
     fileprivate func addPacketToUIText(_ packet: UartPacket) {
-        
         if (Preferences.uartIsEchoEnabled || packet.mode == .rx) {
             let color = packet.mode == .tx ? txColor : rxColor
             
@@ -542,35 +539,32 @@ extension UartModeViewController: UartPacketManagerDelegate {
             }
         }
     }
-
+    
     func mqttUpdateStatusUI() {
-        /*
-        if let imageView = mqttBarButtonItemImageView {
-            let status = MqttManager.sharedInstance.status
-            let tintColor = self.view.tintColor
+        guard let imageView = mqttBarButtonItemImageView, let tintColor = self.view.tintColor else { return }
+        
+        let status = MqttManager.sharedInstance.status
+        
+        switch status {
+        case .connecting:
+            let imageFrames = [
+                UIImage(named:"mqtt_connecting1")!.tintWithColor(tintColor),
+                UIImage(named:"mqtt_connecting2")!.tintWithColor(tintColor),
+                UIImage(named:"mqtt_connecting3")!.tintWithColor(tintColor)
+            ]
+            imageView.animationImages = imageFrames
+            imageView.animationDuration = 0.5 * Double(imageFrames.count)
+            imageView.animationRepeatCount = 0
+            imageView.startAnimating()
             
-            switch (status) {
-            case .Connecting:
-                let imageFrames = [
-                    UIImage(named:"mqtt_connecting1")!.tintWithColor(tintColor),
-                    UIImage(named:"mqtt_connecting2")!.tintWithColor(tintColor),
-                    UIImage(named:"mqtt_connecting3")!.tintWithColor(tintColor)
-                ]
-                imageView.animationImages = imageFrames
-                imageView.animationDuration = 0.5 * Double(imageFrames.count)
-                imageView.animationRepeatCount = 0;
-                imageView.startAnimating()
-                
-            case .Connected:
-                imageView.stopAnimating()
-                imageView.image = UIImage(named:"mqtt_connected")!.tintWithColor(tintColor)
-                
-            default:
-                imageView.stopAnimating()
-                imageView.image = UIImage(named:"mqtt_disconnected")!.tintWithColor(tintColor)
-            }
+        case .connected:
+            imageView.stopAnimating()
+            imageView.image = UIImage(named:"mqtt_connected")!.tintWithColor(tintColor)
+            
+        default:
+            imageView.stopAnimating()
+            imageView.image = UIImage(named:"mqtt_disconnected")!.tintWithColor(tintColor)
         }
- */
     }
 
     func mqttError(message: String, isConnectionError: Bool) {
@@ -585,62 +579,25 @@ extension UartModeViewController: UartPacketManagerDelegate {
     }
 }
 
-
-/*
-// MARK: - CBPeripheralDelegate
-extension UartModeViewController: CBPeripheralDelegate {
-    // Pass peripheral callbacks to UartData
-    
-    func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
-        uartData.peripheral(peripheral, didModifyServices: invalidatedServices)
-    }
-    
-    func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
-        uartData.peripheral(peripheral, didDiscoverServices:error)
-    }
-    
-    func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
-        
-        uartData.peripheral(peripheral, didDiscoverCharacteristicsForService: service, error: error)
-        
-        // Check if ready
-        if uartData.isReady() {
-            // Enable input
-            dispatch_get_main_queue().asynchronously(DispatchQueue.mainexecute: { [unowned self] in
-                if self.inputTextField != nil {     // could be nil if the viewdidload has not been executed yet
-                    self.inputTextField.isEnabled = true
-                    self.inputTextField.backgroundColor = UIColor.whiteColor
-                }
-                });
-        }
-    }
-    
-    func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        uartData.peripheral(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)
-    }
-}
-
-
-
 // MARK: - UIPopoverPresentationControllerDelegate
 extension UartModeViewController: UIPopoverPresentationControllerDelegate {
     
-    func adaptivePresentationStyleForPresentationController(PC: UIPresentationController) -> UIModalPresentationStyle {
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         // This *forces* a popover to be displayed on the iPhone
         return .none
     }
     
-    func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
-
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        
         // MQTT
         let mqttManager = MqttManager.sharedInstance
-        if (MqttSettings.sharedInstance.isConnected) {
-            mqttManager.delegate = uartData
+        if MqttSettings.sharedInstance.isConnected {
+            mqttManager.delegate = self
         }
         mqttUpdateStatusUI()
     }
 }
- */
+
 
 // MARK: - KeyboardPositionNotifierDelegate
 extension UartModeViewController: KeyboardPositionNotifierDelegate {
@@ -653,3 +610,35 @@ extension UartModeViewController: KeyboardPositionNotifierDelegate {
 }
 
 
+// MARK: - MqttManagerDelegate
+extension UartModeViewController: MqttManagerDelegate {
+    func onMqttConnected() {
+        DispatchQueue.main.async { [unowned self] in
+            self.mqttUpdateStatusUI()
+        }
+    }
+    
+    func onMqttDisconnected() {
+        DispatchQueue.main.async { [unowned self] in
+            self.mqttUpdateStatusUI()
+        }
+    }
+    
+    func onMqttMessageReceived(message: String, topic: String) {
+        guard let blePeripheral = blePeripheral else { return }
+        
+        DispatchQueue.main.async { [unowned self] in
+            self.uartData.send(blePeripheral: blePeripheral, text: message, wasReceivedFromMqtt: true)
+        }
+    }
+    
+    func onMqttError(message: String) {
+        let mqttManager = MqttManager.sharedInstance
+        let status = mqttManager.status
+        let isConnectionError = status == .connecting
+        
+        DispatchQueue.main.async { [unowned self] in
+            self.mqttError(message: message, isConnectionError: isConnectionError)
+        }
+    }
+}

@@ -9,25 +9,14 @@
 import Foundation
 
 protocol UartPacketManagerDelegate: class {
-    //func onUartRx(cache: [UartPacket])
     func addPacketToUI(packet: UartPacket)
-    func mqttUpdateStatusUI()
-    func mqttError(message: String, isConnectionError: Bool)
 }
 
 class UartPacketManager {
     // Data
-    var enabled: Bool = false {
-        didSet {
-            if enabled != oldValue {
-                registerNotifications(enabled: enabled)
-            }
-        }
-    }
-    
     weak var delegate: UartPacketManagerDelegate?
-    fileprivate var cachedRx = [UartPacket]()
-    fileprivate var cachedRxSemaphore = DispatchSemaphore(value: 1)
+    fileprivate var packets = [UartPacket]()
+    fileprivate var packetsSemaphore = DispatchSemaphore(value: 1)
     
     var receivedBytes: Int64 = 0
     var sentBytes: Int64 = 0
@@ -35,11 +24,11 @@ class UartPacketManager {
     init(delegate: UartPacketManagerDelegate) {
         self.delegate = delegate
         
-        enabled = true
+        registerNotifications(enabled: true)
     }
     
     deinit {
-        enabled = false
+        registerNotifications(enabled: false)
     }
     
     // MARK: - BLE Notifications
@@ -55,49 +44,51 @@ class UartPacketManager {
     }
     
     private func didConnectToPeripheral(notification: Notification) {
-        clearRxCache()
+        clearPacketsCache()
     }
     
     // MARK: - Send data
-    
-    
-    private func uartSend(blePeripheral: BlePeripheral, data: Data?, completion: ((Error?) -> Void)? = nil) {
-        sentBytes += data?.count ?? 0
+    private func send(blePeripheral: BlePeripheral, data: Data?, completion: ((Error?) -> Void)? = nil) {
         blePeripheral.uartSend(data: data, completion: completion)
     }
 
-    private func uartSendWithAndWaitReply(blePeripheral: BlePeripheral, data: Data?, writeCompletion: ((Error?) -> Void)? = nil, readTimeout: Double? = BlePeripheral.kUartReplyDefaultTimeout, readCompletion: @escaping BlePeripheral.CapturedReadCompletionHandler) {
-        sentBytes += data?.count ?? 0
+    /*
+    private func sendAndWaitReply(blePeripheral: BlePeripheral, data: Data?, writeCompletion: ((Error?) -> Void)? = nil, readTimeout: Double? = BlePeripheral.kUartReplyDefaultTimeout, readCompletion: @escaping BlePeripheral.CapturedReadCompletionHandler) {
         blePeripheral.uartSendWithAndWaitReply(data: data, writeCompletion: writeCompletion, readTimeout: readTimeout, readCompletion: readCompletion)
-    }
+    }*/
 
-    func uartSend(blePeripheral: BlePeripheral, text: String, wasReceivedFromMqtt: Bool = false) {
-        /*
+    func send(blePeripheral: BlePeripheral, text: String, wasReceivedFromMqtt: Bool = false) {
         // Mqtt publish to TX
         let mqttSettings = MqttSettings.sharedInstance
-        if(mqttSettings.isPublishEnabled) {
-            if let topic = mqttSettings.getPublishTopic(MqttSettings.PublishFeed.TX.rawValue) {
-                let qos = mqttSettings.getPublishQos(MqttSettings.PublishFeed.TX.rawValue)
-                MqttManager.sharedInstance.publish(text, topic: topic, qos: qos)
+        if mqttSettings.isPublishEnabled {
+            if let topic = mqttSettings.getPublishTopic(index: MqttSettings.PublishFeed.tx.rawValue) {
+                let qos = mqttSettings.getPublishQos(index: MqttSettings.PublishFeed.tx.rawValue)
+                MqttManager.sharedInstance.publish(message: text, topic: topic, qos: qos)
             }
-        }*/
+        }
         
         // Create data and send to Uart
         if let data = text.data(using: .utf8) {
             let uartPacket = UartPacket(timestamp: CFAbsoluteTimeGetCurrent(), mode: .tx, data: data)
             
-            self.delegate?.addPacketToUI(packet: uartPacket)
+            DispatchQueue.main.async { [unowned self] in
+                self.delegate?.addPacketToUI(packet: uartPacket)
+            }
             
-            /*
             if (!wasReceivedFromMqtt || mqttSettings.subscribeBehaviour == .transmit) {
-                UartManager.sharedInstance.sendChunk(dataChunk)
-            }*/
+                send(blePeripheral: blePeripheral, data: data)
+                
+                packetsSemaphore.wait()            // don't append more data, till the delegate has finished processing it
+                sentBytes += data.count
+                packets.append(uartPacket)
+                packetsSemaphore.signal()
+
+            }
         }
     }
-    
 
     // MARK: - Received data
-    func uartRxPacketReceived(data: Data?, error: Error?) {
+    func rxPacketReceived(data: Data?, error: Error?) {
         
         guard error == nil else {
             DLog("uartRxPacketReceived error: \(error!)")
@@ -111,51 +102,52 @@ class UartPacketManager {
         let uartPacket = UartPacket(timestamp: CFAbsoluteTimeGetCurrent(), mode: .rx, data: data)
         
         // Mqtt publish to RX
-        /*
         let mqttSettings = MqttSettings.sharedInstance
         if mqttSettings.isPublishEnabled {
             if let message = String(data: uartPacket.data, encoding: .utf8) {
-                if let topic = mqttSettings.getPublishTopic(MqttSettings.PublishFeed.rx.rawValue) {
-                    let qos = mqttSettings.getPublishQos(MqttSettings.PublishFeed.rx.rawValue)
-                    MqttManager.sharedInstance.publish(message, topic: topic, qos: qos)
+                if let topic = mqttSettings.getPublishTopic(index: MqttSettings.PublishFeed.rx.rawValue) {
+                    let qos = mqttSettings.getPublishQos(index: MqttSettings.PublishFeed.rx.rawValue)
+                    MqttManager.sharedInstance.publish(message: message, topic: topic, qos: qos)
                 }
             }
-        }*/
+        }
         
-        cachedRxSemaphore.wait()            // don't append more data, till the delegate has finished processing it
-        cachedRx.append(uartPacket)
+        packetsSemaphore.wait()            // don't append more data, till the delegate has finished processing it
+        receivedBytes += data.count
+        packets.append(uartPacket)
         
         // Send data to delegate
-        delegate?.addPacketToUI(packet: uartPacket)
+        DispatchQueue.main.async { [unowned self] in
+            self.delegate?.addPacketToUI(packet: uartPacket)
+        }
         
-        //DLog("cachedRxData: \(cachedRxData.count)")
+        //DLog("packetsData: \(packetsData.count)")
         
-        cachedRxSemaphore.signal()
+        packetsSemaphore.signal()
     }
     
-    func clearRxCache() {
-        cachedRx.removeAll()
+    func clearPacketsCache() {
+        packets.removeAll()
     }
     
+    /*
     func removeRxCacheFirst(n: Int) {
-        if n <= cachedRx.count {
-            cachedRx.removeFirst(n)
+        if n <= packets.count {
+            packets.removeFirst(n)
         }
         else {
             clearRxCache()
         }
-    }
+    }*/
         
-    func rxCache() -> [UartPacket] {
-        return cachedRx
+    func packetsCache() -> [UartPacket] {
+        return packets
     }
-    
     
     // MARK: - Counters
     func resetCounters() {
         receivedBytes = 0
         sentBytes = 0
     }
-    
-    
 }
+
