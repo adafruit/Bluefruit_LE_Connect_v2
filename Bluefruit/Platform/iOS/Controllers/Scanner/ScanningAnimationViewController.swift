@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ScanningAnimationViewController: ModuleViewController {
+class ScanningAnimationViewController: PeripheralModeViewController {
 
     @IBOutlet weak var scanningWave0ImageView: UIImageView!
     @IBOutlet weak var scanningWave1ImageView: UIImageView!

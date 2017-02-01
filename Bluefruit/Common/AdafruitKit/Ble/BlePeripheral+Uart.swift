@@ -15,7 +15,7 @@ extension BlePeripheral {
     static let kUartTxCharacteristicUUID =  CBUUID(string: "6e400002-b5a3-f393-e0a9-e50e24dcca9e")
     static let kUartRxCharacteristicUUID =  CBUUID(string: "6e400003-b5a3-f393-e0a9-e50e24dcca9e")
     fileprivate static let kUartTxMaxBytes = 20
-    fileprivate static let kUartReplyDefaultTimeout = 2.0               // seconds
+    static let kUartReplyDefaultTimeout = 2.0               // seconds
     
     // MARK: - Custom properties
     fileprivate struct CustomPropertiesKeys {
@@ -59,7 +59,7 @@ extension BlePeripheral {
     }
     
     // MARK: - Initialization
-    func uartInit(uartRxHandler: ((Data?, Error?) -> Void)?, completion: ((Error?) -> Void)?) {
+    func uartEnable(uartRxHandler: ((Data?, Error?) -> Void)?, completion: ((Error?) -> Void)?) {
         
         // Get uart communications characteristic
         characteristic(uuid: BlePeripheral.kUartTxCharacteristicUUID, serviceUuid: BlePeripheral.kUartServiceUUID) { [unowned self] (characteristic, error) in
@@ -76,6 +76,7 @@ extension BlePeripheral {
                     completion?(error != nil ? error : UartError.invalidCharacteristic)
                     return
                 }
+                
                 
                 // Get characteristic info
                 self.uartRxCharacteristic = characteristic
@@ -96,7 +97,7 @@ extension BlePeripheral {
         }
     }
     
-    func uartDeInit() {
+    func uartDisable() {
         // Clear all Uart specific data
         defer {
             uartRxCharacteristic = nil
@@ -190,6 +191,10 @@ extension BlePeripheral {
     // MARK: - Utils
     func isUartAdvertised() -> Bool {
         return advertisement.services?.contains(BlePeripheral.kUartServiceUUID) ?? false
+    }
+    
+    func hasUart() -> Bool {
+        return peripheral.services?.first(where: {$0.uuid == BlePeripheral.kUartServiceUUID}) != nil
     }
 }
 

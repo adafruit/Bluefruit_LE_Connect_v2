@@ -12,27 +12,25 @@ protocol UartDelegate: class {
     func onUartRx(data: Data)
 }
 
+// TODO: make this class use Generics so that the data type can be changed
 class UartManager {
     
-    // Singleton
-    static let sharedInstance = UartManager()
-    
     // Data
-    var enabled: Bool {
+    var enabled: Bool = false  {
         didSet {
-            registerNotifications(enabled: enabled)
+            if enabled != oldValue {
+                registerNotifications(enabled: enabled)
+            }
         }
     }
     weak var delegate: UartDelegate?
     fileprivate var cachedRxData = Data()
     fileprivate var cachedRxDataSemaphore = DispatchSemaphore(value: 1)
     
-    init() {
-        enabled = true
+    init(delegate: UartDelegate) {
+        self.delegate = delegate
         
-        #if DEBUG
-            //cachedRxData = "Test".data(using: .utf8)!
-        #endif
+        enabled = true
     }
     
     deinit {

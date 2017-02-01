@@ -107,7 +107,7 @@ class FirmwareUpdater {
             return
         }
         
-        DLog("Discover DIS Characteristics")
+        // DLog("Discover DIS Characteristics")
         // Note: macOS seems to have problems discovering a specific set of characteristics, so nil is passed to discover all of them
         peripheral.discover(characteristicUuids: nil, service: disService) { [weak self] error in
             guard let strongSelf = self else { return }
@@ -117,7 +117,7 @@ class FirmwareUpdater {
                 return
             }
             
-            DLog("Read DIS characteristics")
+            // DLog("Read DIS characteristics")
             var dis = DeviceInformationService()
             let dispatchGroup = DispatchGroup()         // Wait till all the required characteristics are read to continue
             
@@ -132,7 +132,7 @@ class FirmwareUpdater {
 
             // All read
             dispatchGroup.notify(queue: .global(), execute: { [weak strongSelf] in
-                DLog("Device Info Data received")
+                // DLog("Device Info Data received")
                 strongSelf?.checkUpdatesForDeviceInfoService(dis, delegate: delegate, shouldRecommendBetaReleases: shouldRecommendBetaReleases, versionToIgnore: versionToIgnore)
             })
         }

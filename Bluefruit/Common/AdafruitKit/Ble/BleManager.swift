@@ -274,7 +274,7 @@ extension BleManager: CBCentralManagerDelegate {
         DLog("didDisconnectPeripheral")
 
         // Clean
-        peripheralsFound[peripheral.identifier]?.disconnected()
+        peripheralsFound[peripheral.identifier]?.reset()
 
         // Notify
         NotificationCenter.default.post(name: .didDisconnectFromPeripheral, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier])

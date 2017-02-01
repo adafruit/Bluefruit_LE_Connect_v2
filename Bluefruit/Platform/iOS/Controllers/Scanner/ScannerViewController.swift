@@ -245,10 +245,10 @@ class ScannerViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "showDetailSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
-            peripheralDetailsViewController.peripheral = selectedPeripheral
+            peripheralDetailsViewController.blePeripheral = selectedPeripheral
         }
         else if segue.identifier == "showUpdateSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
-            peripheralDetailsViewController.peripheral = selectedPeripheral
+            peripheralDetailsViewController.blePeripheral = selectedPeripheral
             peripheralDetailsViewController.startingController = .update
         }
         else if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController  {
@@ -304,8 +304,7 @@ class ScannerViewController: UIViewController {
     }
     
     fileprivate func showUpdateAvailableForRelease(_ latestRelease: FirmwareInfo) {
-        
-        
+
         let localizationManager = LocalizationManager.sharedInstance
         let alert = UIAlertController(title: localizationManager.localizedString("autoupdate_title"),
                                       message: String(format: localizationManager.localizedString("auoupadte_description_format"), latestRelease.version),

@@ -17,7 +17,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         case update
     }
     
-    weak var peripheral: BlePeripheral?
+    weak var blePeripheral: BlePeripheral?
     var startingController = ModuleController.info
     
     // Data
@@ -28,8 +28,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        assert(peripheral != nil)
-
         // UI
         if let splitViewController = self.splitViewController {
             navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
@@ -39,8 +37,9 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         emptyViewController = storyboard!.instantiateViewController(withIdentifier: "EmptyDetailsViewController") as! EmptyDetailsViewController
 
         //
-        if let peripheral = peripheral {
-            didConnect(peripheral: peripheral)
+        if let _ = blePeripheral {
+            //didConnect(peripheral: blePeripheral)
+            setupConnectedPeripheral()
         }
         else {
             let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
@@ -48,12 +47,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                 showEmpty(true)
                 self.emptyViewController.setConnecting(false)
             }
-        }
-
-        let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
-        guard !isFullScreen || peripheral != nil else {
-            DLog("detail: peripheral disconnected by viewWillAppear. Abort")
-            return
         }
     }
 
@@ -78,7 +71,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     
     // MARK: - BLE Notifications
     private var willConnectToPeripheralObserver: NSObjectProtocol?
-    private var didConnectToPeripheralObserver: NSObjectProtocol?
+//    private var didConnectToPeripheralObserver: NSObjectProtocol?
     private var willDisconnectFromPeripheralObserver: NSObjectProtocol?
     private var didDisconnectFromPeripheralObserver: NSObjectProtocol?
     
@@ -87,17 +80,18 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         
         if enabled {
             willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: OperationQueue.main, using: willConnectToPeripheral)
-            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: OperationQueue.main, using: didConnectToPeripheral)
+//            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: OperationQueue.main, using: didConnectToPeripheral)
             willDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .willDisconnectFromPeripheral, object: nil, queue: OperationQueue.main, using: willDisconnectFromPeripheral)
             didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: OperationQueue.main, using: didDisconnectFromPeripheral)
         }
         else {
             if let willConnectToPeripheralObserver = willConnectToPeripheralObserver {notificationCenter.removeObserver(willConnectToPeripheralObserver)}
-            if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
+//            if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
             if let willDisconnectFromPeripheralObserver = willDisconnectFromPeripheralObserver {notificationCenter.removeObserver(willDisconnectFromPeripheralObserver)}
             if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {notificationCenter.removeObserver(didDisconnectFromPeripheralObserver)}
         }
     }
+    
     func willConnectToPeripheral(notification: Notification) {
         showEmpty(true)
         emptyViewController.setConnecting(true)
@@ -114,26 +108,8 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     }
     
     func didConnect(peripheral: BlePeripheral) {
-        
-        // UI
+                // UI
         showEmpty(false)
-        
-        // Start updates check (will receive answer via FirmwareUpdaterDelegate)
-        //startUpdatesCheck()
-        setupConnectedPeripheral()
-    }
-
-    fileprivate func setupConnectedPeripheral() {
-        // UI: Add Info tab
-        let infoViewController = self.storyboard!.instantiateViewController(withIdentifier: "InfoModuleViewController") as! InfoModuleViewController
-        infoViewController.blePeripheral = peripheral
-        
-        let localizationManager = LocalizationManager.sharedInstance
-        infoViewController.tabBarItem.title = localizationManager.localizedString("info_tab_title")      // Tab title
-        infoViewController.tabBarItem.image = UIImage(named: "tab_info_icon")
-        
-        setViewControllers([infoViewController], animated: false)
-        selectedIndex = 0
     }
     
     func willDisconnectFromPeripheral(notification: Notification) {
@@ -181,7 +157,17 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             DLog("disconnection detected but cannot go to periperalList because there is a presentedViewController on screen")
         }
     }
+    
+    // MARK: - 
+    /*
+    override func changeSelectedViewController(_ viewController: UIViewController?) {
+        super.changeSelectedViewController(viewController)
+        
+        DLog("Changing to: \(viewController?.title ?? "<unknown>"). Reset peripheral")
+        blePeripheral?.reset()
+    }*/
 
+    // MARK: - UI
     private func goBackToPeripheralList() {
         // Back to peripheral list
         if let parentNavigationController = (self.navigationController?.parent as? UINavigationController) {
@@ -205,6 +191,36 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         }
     }
     
+    fileprivate func setupConnectedPeripheral() {
+        // Note: Services should have been discovered previously
+        guard let blePeripheral = blePeripheral else { return }
+        
+        var viewControllers = [PeripheralModeViewController]()
+        
+        // UI: Add Info tab
+        let infoViewController = self.storyboard!.instantiateViewController(withIdentifier: "InfoModeViewController") as! InfoModeViewController
+        infoViewController.blePeripheral = blePeripheral
+        
+        let localizationManager = LocalizationManager.sharedInstance
+        infoViewController.tabBarItem.title = localizationManager.localizedString("info_tab_title")      // Tab title
+        infoViewController.tabBarItem.image = UIImage(named: "tab_info_icon")
+        viewControllers.append(infoViewController)
+        
+        // Uart Modules
+        let hasUart = blePeripheral.hasUart()
+        if hasUart {
+            //Uart Tab
+            let uartViewController = self.storyboard!.instantiateViewController(withIdentifier: "UartModeViewController") as! UartModeViewController
+            uartViewController.blePeripheral = blePeripheral
+            uartViewController.tabBarItem.title = localizationManager.localizedString("uart_tab_title")      // Tab title
+            uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
+            viewControllers.append(uartViewController)
+        }
+        
+        
+        setViewControllers(viewControllers, animated: false)
+        selectedIndex = 0
+    }
     /*
     func servicesDiscovered() {
         
@@ -222,7 +238,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                     if (hasUart) {
                         // Uart Tab
                         if Config.isUartModuleEnabled {
-                            let uartViewController = self.storyboard!.instantiateViewControllerWithIdentifier("UartModuleViewController") as! UartModuleViewController
+                            let uartViewController = self.storyboard!.instantiateViewControllerWithIdentifier("UartModeViewController") as! UartModeViewController
                             uartViewController.tabBarItem.title = localizationManager.localizedString("uart_tab_title")      // Tab title
                             uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
                             

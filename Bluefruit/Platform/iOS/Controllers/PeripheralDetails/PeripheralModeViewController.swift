@@ -1,5 +1,5 @@
 //
-//  ModuleViewController.swift
+//  PeripheralModeViewController.swift
 //  bluefruitconnect
 //
 //  Created by Antonio García on 28/01/16.
@@ -8,11 +8,15 @@
 
 import UIKit
 
-class ModuleViewController: UIViewController {
+class PeripheralModeViewController: UIViewController {
 
+    // Parameters
+    weak var blePeripheral: BlePeripheral?
+    
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         self.view.backgroundColor = StyleConfig.backgroundColor
     }
 
@@ -26,6 +30,8 @@ class ModuleViewController: UIViewController {
             parentNavigationItem.title = navigationItem.title
             parentNavigationItem.rightBarButtonItems = navigationItem.rightBarButtonItems
         }
+        
+
     }
     
     override func didReceiveMemoryWarning() {

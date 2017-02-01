@@ -87,7 +87,7 @@ class ScrollingTabBarViewController: UIViewController {
         currentViewController.removeFromParentViewController()
     }
     
-    private func changeSelectedViewController(_ viewController: UIViewController?) {
+    func changeSelectedViewController(_ viewController: UIViewController?) {
         // DLog("changeSelectedViewController \(viewController)")
         guard let viewController = viewController else {
             return

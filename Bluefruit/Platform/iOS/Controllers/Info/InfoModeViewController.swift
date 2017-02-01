@@ -9,7 +9,7 @@
 import UIKit
 import CoreBluetooth
 
-class InfoModuleViewController: ModuleViewController {
+class InfoModeViewController: PeripheralModeViewController {
     // Config
     private static let kReadForbiddenCCCD = false     // Added to avoid generating a didModifyServices callback when reading Uart/DFU CCCD (bug??)
 
@@ -22,13 +22,10 @@ class InfoModuleViewController: ModuleViewController {
     @IBOutlet weak var baseTableView: UITableView!
     @IBOutlet weak var waitView: UIActivityIndicatorView!
     
-    // Parameters
-    weak var blePeripheral: BlePeripheral?
-    
     // Data
-    private static let kDisServiceUUID = CBUUID(string: InfoModuleViewController.kDeviceInformationService)
-    private static let kForbiddenDescriptorUUID = CBUUID(string: InfoModuleViewController.kForbiddenCCCD)
-    private static let kDfuControlPointCharacteristicUUID = CBUUID(string: InfoModuleViewController.kDfuControlPointCharacteristicUUIDString)
+    private static let kDisServiceUUID = CBUUID(string: InfoModeViewController.kDeviceInformationService)
+    private static let kForbiddenDescriptorUUID = CBUUID(string: InfoModeViewController.kForbiddenCCCD)
+    private static let kDfuControlPointCharacteristicUUID = CBUUID(string: InfoModeViewController.kDfuControlPointCharacteristicUUIDString)
 
     enum DisplayMode: Int {
         case auto = 0
@@ -53,18 +50,11 @@ class InfoModuleViewController: ModuleViewController {
         super.viewDidLoad()
         
         assert(blePeripheral != nil)
-        
-        // Peripheral should be connected
-        guard blePeripheral != nil else {
-            DLog("Error: Info: blePeripheral is nil")
-            return
-        }
 
         // Init
         shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
         
         // Setup table
-       // baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
         baseTableView.estimatedRowHeight = 60
         baseTableView.rowHeight = UITableViewAutomaticDimension
 
@@ -260,8 +250,8 @@ class InfoModuleViewController: ModuleViewController {
         if let descriptors = characteristic.descriptors {
             for descriptor in descriptors {
                 
-                let isAForbiddenCCCD = descriptor.uuid == InfoModuleViewController.kForbiddenDescriptorUUID && (characteristic.uuid == BlePeripheral.kUartServiceUUID || characteristic.uuid == InfoModuleViewController.kDfuControlPointCharacteristicUUID)
-                if InfoModuleViewController.kReadForbiddenCCCD || !isAForbiddenCCCD {
+                let isAForbiddenCCCD = descriptor.uuid == InfoModeViewController.kForbiddenDescriptorUUID && (characteristic.uuid == BlePeripheral.kUartServiceUUID || characteristic.uuid == InfoModeViewController.kDfuControlPointCharacteristicUUID)
+                if InfoModeViewController.kReadForbiddenCCCD || !isAForbiddenCCCD {
                     valuesToRead += 1
                     blePeripheral?.readDescriptor(descriptor) { [weak self] (data, error) in
                         self?.didReadDescriptor()
@@ -311,7 +301,7 @@ class InfoModuleViewController: ModuleViewController {
 }
 
 // MARK: - UITableViewDataSource
-extension InfoModuleViewController: UITableViewDataSource {
+extension InfoModeViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return services?.count ?? 0
@@ -351,11 +341,6 @@ extension InfoModuleViewController: UITableViewDataSource {
 
         return identifier
     }
-    
-    /*
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }*/
     
     fileprivate func itemForIndexPath(_ indexPath: IndexPath) -> (Int, CBAttribute?, Bool) {
         let service = services![indexPath.section]
@@ -486,7 +471,7 @@ extension InfoModuleViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 
-extension InfoModuleViewController: UITableViewDelegate {
+extension InfoModeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         guard let service = services?[indexPath.section], service.characteristics != nil else {

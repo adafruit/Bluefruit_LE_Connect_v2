@@ -126,10 +126,11 @@ class BlePeripheral: NSObject {
         DLog("peripheral deinit")
     }
     
-    func disconnected() {
+    func reset() {
         rssi = nil
         notifyHandlers.removeAll()
         captureReadHandlers.removeAll()
+        commandQueue.first()?.isCancelled = true        // Stop current command if is processing
         commandQueue.removeAll()
     }
     

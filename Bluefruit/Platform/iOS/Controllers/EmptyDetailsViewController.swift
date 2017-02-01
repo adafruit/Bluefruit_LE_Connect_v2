@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EmptyDetailsViewController: ModuleViewController {
+class EmptyDetailsViewController: PeripheralModeViewController {
 
     // UI
     @IBOutlet weak var emptyLabel: UILabel!
