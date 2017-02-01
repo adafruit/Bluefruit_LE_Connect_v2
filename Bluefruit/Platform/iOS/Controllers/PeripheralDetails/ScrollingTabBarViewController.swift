@@ -61,7 +61,11 @@ class ScrollingTabBarViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func setViewControllers(viewControllers: [UIViewController]?, animated: Bool) {
+    deinit {
+        selectedIndex = -1
+    }
+    
+    func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
         self.viewControllers = viewControllers
     }
     
@@ -159,6 +163,5 @@ extension ScrollingTabBarViewController : UICollectionViewDelegateFlowLayout {
         
         return CGSize(width: itemWidth, height: 49)
     }
-    
 }
 

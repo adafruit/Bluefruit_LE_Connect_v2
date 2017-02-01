@@ -12,16 +12,24 @@ import CoreBluetooth
 class PeripheralDetailsViewController: ScrollingTabBarViewController {
     
     // Parameters
-    var peripheral: BlePeripheral?
-
+    enum ModuleController {
+        case info
+        case update
+    }
+    
+    weak var peripheral: BlePeripheral?
+    var startingController = ModuleController.info
+    
     // Data
     private var emptyViewController: EmptyDetailsViewController!
-    private let firmwareUpdater = FirmwareUpdater()
+//    private let firmwareUpdater = FirmwareUpdater()
     private var dfuTabIndex = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        assert(peripheral != nil)
+
         // UI
         if let splitViewController = self.splitViewController {
             navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
@@ -29,10 +37,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         }
 
         emptyViewController = storyboard!.instantiateViewController(withIdentifier: "EmptyDetailsViewController") as! EmptyDetailsViewController
-        
-        // Subscribe to Ble Notifications
-        registerNotifications(enabled: true)
-        
+
         //
         if let peripheral = peripheral {
             didConnect(peripheral: peripheral)
@@ -51,16 +56,25 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             return
         }
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Subscribe to Ble Notifications
+        registerNotifications(enabled: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        registerNotifications(enabled: false)
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    deinit {
-        // Remove notifications. Note: don't do this on viewwilldissapear because connection should still work when a new viewcontroller is pushed. i.e.: ControlPad)
-        registerNotifications(enabled: false)
-    }
     
     // MARK: - BLE Notifications
     private var willConnectToPeripheralObserver: NSObjectProtocol?
@@ -100,34 +114,27 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     }
     
     func didConnect(peripheral: BlePeripheral) {
-//        peripheral.peripheral.delegate = self
         
         // UI
         showEmpty(false)
         
         // Start updates check (will receive answer via FirmwareUpdaterDelegate)
-        startUpdatesCheck()
+        //startUpdatesCheck()
+        setupConnectedPeripheral()
     }
 
     fileprivate func setupConnectedPeripheral() {
-        /*
         // UI: Add Info tab
-        let infoViewController = self.storyboard!.instantiateViewControllerWithIdentifier("InfoModuleViewController") as! InfoModuleViewController
+        let infoViewController = self.storyboard!.instantiateViewController(withIdentifier: "InfoModuleViewController") as! InfoModuleViewController
+        infoViewController.blePeripheral = peripheral
         
-        infoViewController.onServicesDiscovered = { [weak self] in
-            // optimization: wait till info discover services to continue, instead of discovering services by myself
-            self?.servicesDiscovered()
-        }
-
         let localizationManager = LocalizationManager.sharedInstance
         infoViewController.tabBarItem.title = localizationManager.localizedString("info_tab_title")      // Tab title
         infoViewController.tabBarItem.image = UIImage(named: "tab_info_icon")
         
         setViewControllers([infoViewController], animated: false)
         selectedIndex = 0
- */
     }
-
     
     func willDisconnectFromPeripheral(notification: Notification) {
         DLog("detail: peripheral willDisconnect")
@@ -142,8 +149,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             showEmpty(true)
             emptyViewController.setConnecting(false)
         }
-        
-        peripheral?.peripheral.delegate = nil
     }
     
     func didDisconnectFromPeripheral(notification: Notification) {
@@ -290,13 +295,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     }
      */
 
-    private func startUpdatesCheck() {
-        guard let peripheral = peripheral else { return }
-        
-        // Refresh updates available
-        firmwareUpdater.checkUpdatesForPeripheral(peripheral, delegate: self, shouldDiscoverServices: true, shouldRecommendBetaReleases: false, versionToIgnore: nil)
-    }
- 
     fileprivate func updateRssiUI() {
         /*
         if let rssi = peripheral?.rssi {
@@ -305,174 +303,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             infoRssiImageView.image = signalImageForRssi(rssi)
         }*/
     }
-    
-    fileprivate func showUpdateAvailableForRelease(_ latestRelease: FirmwareInfo) {
-        let localizationManager = LocalizationManager.sharedInstance
-        let alert = UIAlertController(title: localizationManager.localizedString("autoupdate_title"),
-                                      message: String(format: localizationManager.localizedString("auoupadte_description_format"), latestRelease.version),
-                                      preferredStyle: UIAlertControllerStyle.alert)
-        
-        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_update"), style: UIAlertActionStyle.default, handler: { [unowned self] _ in
-            self.selectedIndex = self.dfuTabIndex
-        }))
-        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_later"), style: UIAlertActionStyle.default, handler: {  _ in
-        }))
-        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_ignore"), style: UIAlertActionStyle.cancel, handler: {  _ in
-            Preferences.softwareUpdateIgnoredVersion = latestRelease.version
-        }))
-        self.present(alert, animated: true, completion: nil)
-    }
+
 }
 
-    
-// MARK: - CBPeripheralDelegate
-extension PeripheralDetailsViewController: CBPeripheralDelegate {
-    
-    // Send peripheral delegate methods to tab active (each tab will handle these methods)
-    func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
-        
-        /*
-        guard let viewControllers = viewControllers else { return }
-        
-        for tabViewController in viewControllers {
-            (tabViewController as? CBPeripheralDelegate)?.peripheralDidUpdateName?(peripheral)
-        }*/
-        
-        (selectedViewController as? CBPeripheralDelegate)?.peripheralDidUpdateName?(peripheral)
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
-/*
-        if let viewControllers = viewControllers {
-            for tabViewController in viewControllers {
-                (tabViewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didModifyServices: invalidatedServices)
-            }
-        }
-*/
-        
-        (selectedViewController as? CBPeripheralDelegate)?.peripheral!(peripheral, didModifyServices: invalidatedServices)
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-/*
-        if let viewControllers = viewControllers {
-            for var tabViewController in viewControllers {
-                if let childViewController = (tabViewController as? UINavigationController)?.viewControllers.last {
-                    tabViewController = childViewController
-                }
-         
-                (tabViewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverServices: error)
-            }
-        }
-*/
-        (selectedViewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverServices: error)
-
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        /*
-        if let viewControllers = viewControllers {
-            for var tabViewController in viewControllers {
-                if let childViewController = (tabViewController as? UINavigationController)?.viewControllers.last {
-                    tabViewController = childViewController
-                }
-                
-                (tabViewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverCharacteristicsForService: service, error: error)
-            }
-         }*/
-        
-        (selectedViewController as? CBPeripheralDelegate)?.peripheral!(peripheral, didDiscoverCharacteristicsFor: service, error: error)
-        
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
-        /*
-        if let viewControllers = viewControllers {
-            for var tabViewController in viewControllers {
-                if let childViewController = (tabViewController as? UINavigationController)?.viewControllers.last {
-                    tabViewController = childViewController
-                }
-                
-                (tabViewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didDiscoverDescriptorsForCharacteristic: characteristic, error: error)
-            }
-        }*/
-        
-        (selectedViewController as? CBPeripheralDelegate)?.peripheral!(peripheral, didDiscoverDescriptorsFor: characteristic, error: error)
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-/*
-        if let viewControllers = viewControllers {
-            for var tabViewController in viewControllers {
-                if let childViewController = (tabViewController as? UINavigationController)?.viewControllers.last {
-                    tabViewController = childViewController
-                }
-                
-                (tabViewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)
-            }
-        }
-         */
-        (selectedViewController as? CBPeripheralDelegate)?.peripheral!(peripheral, didUpdateValueFor: characteristic, error: error)
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
-
-        /*
-        if let viewControllers = viewControllers {
-            for var tabViewController in viewControllers {
-                if let childViewController = (tabViewController as? UINavigationController)?.viewControllers.last {
-                    tabViewController = childViewController
-                }
-         
-                (tabViewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didUpdateValueForDescriptor: descriptor, error: error)
-            }
-        }*/
-        (selectedViewController as? CBPeripheralDelegate)?.peripheral!(peripheral, didUpdateValueFor: descriptor, error: error)
-    }
-    
-    func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
-        
-        // Update peripheral rssi
-        if let existingPeripheral = BleManager.sharedInstance.peripheral(with: peripheral.identifier) {
-            existingPeripheral.rssi = RSSI.intValue
-            //            DLog("received rssi for \(existingPeripheral.name): \(rssi)")
-            
-            // Update UI
-            DispatchQueue.main.async { [weak self] in
-                self?.updateRssiUI()
-            }
-            
-            /*
-            if let viewControllers = viewControllers {
-                for var tabViewController in viewControllers {
-                    if let childViewController = (tabViewController as? UINavigationController)?.viewControllers.last {
-                        tabViewController = childViewController
-                    }
-                    
-                    (tabViewController as? CBPeripheralDelegate)?.peripheral?(peripheral, didReadRSSI: RSSI, error: error)
-                }
-            }
- */
-            (selectedViewController as? CBPeripheralDelegate)?.peripheral!(peripheral, didReadRSSI: RSSI, error: error)
-        }
-    }
-}
-
-
-
-// MARK: - FirmwareUpdaterDelegate
-extension PeripheralDetailsViewController: FirmwareUpdaterDelegate {
-    
-    func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceInfo: DeviceInformationService?) {
-        
-        DLog("FirmwareUpdaterDelegate isUpdateAvailable: \(isUpdateAvailable)")
-
-        DispatchQueue.main.async { [weak self] in
-            self?.setupConnectedPeripheral()
-            if isUpdateAvailable, let latestRelease = latestRelease {
-                self?.showUpdateAvailableForRelease(latestRelease)
-            }
-        }
-    }
-  
-}

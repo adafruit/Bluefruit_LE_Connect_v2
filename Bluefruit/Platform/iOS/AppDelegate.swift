@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         splitViewController.view.backgroundColor = UIColor.darkGray
         splitDividerCover.backgroundColor = UIColor.darkGray
         splitViewController.view.addSubview(splitDividerCover)
-        self.splitViewController(splitViewController, willChangeTo:  splitViewController.displayMode)
+        self.splitViewController(splitViewController, willChangeTo: splitViewController.displayMode)
         
         return true
     }
@@ -82,12 +82,11 @@ extension AppDelegate: UISplitViewControllerDelegate {
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
         let isCoverHidden = isFullScreen || displayMode != .allVisible
         splitDividerCover.isHidden = isCoverHidden
-        DLog("cover hidden: \(isCoverHidden)")
+//        DLog("cover hidden: \(isCoverHidden)")
         if !isCoverHidden {
             let masterViewWidth = svc.primaryColumnWidth
             splitDividerCover.frame = CGRect(x: masterViewWidth, y: 0, width: 1, height: svc.view.bounds.size.height)
-            DLog("cover frame: \(splitDividerCover.frame)")
-            
+//            DLog("cover frame: \(splitDividerCover.frame)")
         }
     }
 }

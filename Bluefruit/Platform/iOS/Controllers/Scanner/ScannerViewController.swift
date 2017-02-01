@@ -47,6 +47,8 @@ class ScannerViewController: UIViewController {
     fileprivate var selectedPeripheral: BlePeripheral?
     
     fileprivate var isMultiConnectEnabled = false
+    fileprivate let firmwareUpdater = FirmwareUpdater()
+    fileprivate var infoAlertController: UIAlertController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,6 +98,15 @@ class ScannerViewController: UIViewController {
         
         // Ble Notifications
         registerNotifications(enabled: true)
+        
+
+        // If only connected to 1 peripheral and coming back to this
+        let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
+        if connectedPeripherals.count == 1, let peripheral = connectedPeripherals.first {
+            DLog("Disconnect form previously connected peripheral")
+            // Disconnect from peripheral
+            BleManager.sharedInstance.disconnect(from: peripheral)
+        }
         
         // Start scannning
         BleManager.sharedInstance.startScan()
@@ -155,17 +166,24 @@ class ScannerViewController: UIViewController {
     }
     
     private func willConnectToPeripheral(notification: Notification) {
-        
         guard let peripheral = BleManager.sharedInstance.peripheral(from: notification) else {
             return
         }
         
-        DLog("Connecting...");
-        let alertController = UIAlertController(title: nil, message: "Connecting...", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) -> Void in
+        presentInfoDialog(title: "Connecting...", peripheral: peripheral)
+    }
+    
+    fileprivate func presentInfoDialog(title: String, peripheral: BlePeripheral) {
+        infoAlertController = UIAlertController(title: nil, message: title, preferredStyle: .alert)
+        infoAlertController!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) -> Void in
             BleManager.sharedInstance.disconnect(from: peripheral)
         }))
-        present(alertController, animated: true, completion:nil)
+        present(infoAlertController!, animated: true, completion:nil)
+    }
+    
+    fileprivate func dismissInfoDialog(completion: (() -> Void)? = nil) {
+        infoAlertController?.dismiss(animated: true, completion: completion)
+        infoAlertController = nil
     }
     
     private func didConnectToPeripheral(notification: Notification) {
@@ -184,15 +202,9 @@ class ScannerViewController: UIViewController {
                 self.baseTableView.deselectRow(at: indexPathForSelectedRow, animated: true)
             }
             
-            // Dismiss current dialog
-            if self.presentedViewController != nil {
-                self.dismiss(animated: true, completion: { [unowned self] () -> Void in
-                    self.showPeripheralDetails()
-                })
-            }
-            else {
-                showPeripheralDetails()
-            }
+            // Discover services
+            infoAlertController?.message = "Discovering services..."
+            discoverServices(peripheral: selectedPeripheral)
         }
     }
 
@@ -221,6 +233,11 @@ class ScannerViewController: UIViewController {
         performSegue(withIdentifier: "showDetailSegue", sender: self)
     }
     
+    fileprivate func showPeripheralUpdate() {
+        // Segue
+        performSegue(withIdentifier: "showUpdateSegue", sender: self)
+    }
+    
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         return selectedPeripheral != nil
     }
@@ -229,6 +246,10 @@ class ScannerViewController: UIViewController {
         
         if segue.identifier == "showDetailSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
             peripheralDetailsViewController.peripheral = selectedPeripheral
+        }
+        else if segue.identifier == "showUpdateSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
+            peripheralDetailsViewController.peripheral = selectedPeripheral
+            peripheralDetailsViewController.startingController = .update
         }
         else if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController  {
             controller.delegate = self
@@ -245,6 +266,64 @@ class ScannerViewController: UIViewController {
             }
         }
     }
+    
+    // MARK: - Device setup
+    private func discoverServices(peripheral: BlePeripheral) {
+        DLog("Discovering services")
+        
+        peripheral.discover(serviceUuids: nil) { [weak self] error in
+            guard let context = self else {
+                return
+            }
+        
+            DispatchQueue.main.async { [unowned context] in
+                guard error == nil else {
+                    DLog("Error initializing peripheral")
+                    context.dismiss(animated: true, completion: { [weak self] () -> Void in
+                        if let context = self {
+                            showErrorAlert(from: context, title: "Error", message: "Error discovering peripheral services")
+                            BleManager.sharedInstance.disconnect(from: peripheral)
+                        }
+                    })
+                    return
+                }
+                
+                // Check updates if needed
+                context.infoAlertController?.message = "Checking updates..."
+                context.startUpdatesCheck(peripheral: peripheral)
+            }
+        }
+    }
+    
+    // MARK: - Check Updates
+    private func startUpdatesCheck(peripheral: BlePeripheral) {
+        DLog("Check firmware updates")
+
+        // Refresh updates available
+        firmwareUpdater.checkUpdatesForPeripheral(peripheral, delegate: self, shouldDiscoverServices: false, shouldRecommendBetaReleases: false, versionToIgnore: nil)
+    }
+    
+    fileprivate func showUpdateAvailableForRelease(_ latestRelease: FirmwareInfo) {
+        
+        
+        let localizationManager = LocalizationManager.sharedInstance
+        let alert = UIAlertController(title: localizationManager.localizedString("autoupdate_title"),
+                                      message: String(format: localizationManager.localizedString("auoupadte_description_format"), latestRelease.version),
+                                      preferredStyle: UIAlertControllerStyle.alert)
+        
+        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_update"), style: UIAlertActionStyle.default, handler: { [unowned self] _ in
+            self.showPeripheralDetails()
+        }))
+        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_later"), style: UIAlertActionStyle.default, handler: { [unowned self] _ in
+            self.showPeripheralUpdate()
+            
+        }))
+        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_ignore"), style: UIAlertActionStyle.cancel, handler: {  _ in
+            Preferences.softwareUpdateIgnoredVersion = latestRelease.version
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+
     
     // MARK: - Filters
     private func openFiltersPanel(isOpen: Bool, animated: Bool) {
@@ -574,3 +653,24 @@ extension ScannerViewController: UITextFieldDelegate {
         return true
     }
 }
+
+// MARK: - FirmwareUpdaterDelegate
+extension ScannerViewController: FirmwareUpdaterDelegate {
+    
+    func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceInfo: DeviceInformationService?) {
+        
+        DLog("FirmwareUpdaterDelegate isUpdateAvailable: \(isUpdateAvailable)")
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.dismissInfoDialog(completion: {
+                if isUpdateAvailable, let latestRelease = latestRelease {
+                    self?.showUpdateAvailableForRelease(latestRelease)
+                }
+                else {
+                    self?.showPeripheralDetails()
+                }
+            })
+        }
+    }
+}
+

@@ -45,6 +45,11 @@ class BleManager: NSObject {
         centralManager = CBCentralManager(delegate: self, queue: DispatchQueue.global(qos: .background), options: [:])
     }
     
+    deinit {
+        scanningServicesFilter?.removeAll()
+        peripheralsFound.removeAll()
+    }
+    
     // MARK: - Scan
     func startScan(withServices services: [CBUUID]? = nil) {
         centralManagerPoweredOnSemaphore.wait()
@@ -98,7 +103,6 @@ class BleManager: NSObject {
         NotificationCenter.default.post(name: .didUnDiscoverPeripheral, object: nil)
         startScan(withServices: scanningServicesFilter)
     }
-    
     
     // MARK: - Connection Management
     func connect(to peripheral: BlePeripheral, timeout: TimeInterval? = nil, shouldNotifyOnConnection: Bool = false, shouldNotifyOnDisconnection: Bool = false, shouldNotifyOnNotification: Bool = false) {

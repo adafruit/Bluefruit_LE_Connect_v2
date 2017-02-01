@@ -19,25 +19,26 @@ class CommandQueue<Element> {
             var shouldExecute = false
             queueLock.lock()
             // Start executing the first command (if it was not already executing)
-            let nextCommand = queue.first
-            if oldValue.isEmpty, nextCommand != nil {
+            let nextElement = queue.first
+            if oldValue.isEmpty, nextElement != nil {
                 shouldExecute = true
             }
+            //DLog("queue size: \(queue.count)")
             queueLock.unlock()
             
             if shouldExecute {
-                self.executeHandler?(nextCommand!)
+                self.executeHandler?(nextElement!)
             }
         }
     }
 
     func first() -> Element? {
-        queueLock.lock() ; defer { queueLock.unlock() }
+        queueLock.lock(); defer { queueLock.unlock() }
         return queue.first
     }
     
-    func append(_ command: Element) {
-        queue.append(command)
+    func append(_ element: Element) {
+        queue.append(element)
     }
 
     func next() {
@@ -46,8 +47,8 @@ class CommandQueue<Element> {
         // Delete finished command and trigger next execution if needed
         queue.removeFirst()
         
-        if let nextCommand = queue.first {
-            executeHandler?(nextCommand)
+        if let nextElement = queue.first {
+            executeHandler?(nextElement)
         }
     }
     

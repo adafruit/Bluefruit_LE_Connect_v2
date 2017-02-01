@@ -55,12 +55,12 @@ class FirmwareUpdater {
     static let kFirmwareRevisionCharacteristic = "00002A26-0000-1000-8000-00805F9B34FB"
 
     // Data
-    static let kDisServiceUUID =  CBUUID.init(string: FirmwareUpdater.kDeviceInformationService)
-    static let kDfuServiceUUID =  CBUUID.init(string: FirmwareUpdater.kNordicDeviceFirmwareUpdateService)
-    static let kManufacturerCharacteristicUUID =  CBUUID.init(string: FirmwareUpdater.kManufacturerNameCharacteristic)
-    static let kModelNumberCharacteristicUUID =  CBUUID.init(string: FirmwareUpdater.kModelNumberCharacteristic)
-    static let kSoftwareRevisionCharacteristicUUID =  CBUUID.init(string: FirmwareUpdater.kSoftwareRevisionCharacteristic)
-    static let kFirmwareRevisionCharacteristicUUID =  CBUUID.init(string: FirmwareUpdater.kFirmwareRevisionCharacteristic)
+    static let kDisServiceUUID =  CBUUID(string: FirmwareUpdater.kDeviceInformationService)
+    static let kDfuServiceUUID =  CBUUID(string: FirmwareUpdater.kNordicDeviceFirmwareUpdateService)
+    static let kManufacturerCharacteristicUUID =  CBUUID(string: FirmwareUpdater.kManufacturerNameCharacteristic)
+    static let kModelNumberCharacteristicUUID =  CBUUID(string: FirmwareUpdater.kModelNumberCharacteristic)
+    static let kSoftwareRevisionCharacteristicUUID =  CBUUID(string: FirmwareUpdater.kSoftwareRevisionCharacteristic)
+    static let kFirmwareRevisionCharacteristicUUID =  CBUUID(string: FirmwareUpdater.kFirmwareRevisionCharacteristic)
     
     
     static func refreshSoftwareUpdatesDatabase(url: URL?, completion: ((Bool) -> Void)?) {
@@ -107,11 +107,17 @@ class FirmwareUpdater {
             return
         }
         
+        DLog("Discover DIS Characteristics")
         // Note: macOS seems to have problems discovering a specific set of characteristics, so nil is passed to discover all of them
         peripheral.discover(characteristicUuids: nil, service: disService) { [weak self] error in
-            
             guard let strongSelf = self else { return }
+
+            guard error == nil else {
+                DLog("Error discovering DIS characteristics")
+                return
+            }
             
+            DLog("Read DIS characteristics")
             var dis = DeviceInformationService()
             let dispatchGroup = DispatchGroup()         // Wait till all the required characteristics are read to continue
             
@@ -123,7 +129,7 @@ class FirmwareUpdater {
             strongSelf.readCharacteristic(uuid: FirmwareUpdater.kFirmwareRevisionCharacteristicUUID, peripheral: peripheral, service: disService, dispatchGroup: dispatchGroup) { dis.firmwareRevision = $0 }
             // Software Revision
             strongSelf.readCharacteristic(uuid: FirmwareUpdater.kSoftwareRevisionCharacteristicUUID, peripheral: peripheral, service: disService, dispatchGroup: dispatchGroup) { dis.softwareRevision = $0 }
-    
+
             // All read
             dispatchGroup.notify(queue: .global(), execute: { [weak strongSelf] in
                 DLog("Device Info Data received")
@@ -135,9 +141,9 @@ class FirmwareUpdater {
     private func readCharacteristic(uuid: CBUUID, peripheral: BlePeripheral, service: CBService, dispatchGroup: DispatchGroup, completion: @escaping ((String?) -> Void)) {
         dispatchGroup.enter()
         if let characteristic = peripheral.discoveredCharacteristic(uuid: uuid, service: service) {
-            peripheral.read(from: characteristic) { (data, error) in
+            peripheral.readCharacteristic(characteristic) { (value, error) in
                 defer { dispatchGroup.leave() }
-                guard error == nil, let data = data, let stringValue = String(data: data, encoding: .utf8) else {
+                guard error == nil, let data = value as? Data, let stringValue = String(data: data, encoding: .utf8) else {
                     completion(nil)
                     return
                 }
@@ -146,6 +152,7 @@ class FirmwareUpdater {
             }
         }
         else {
+            DLog("Warning: updates check didnt find characteristic: \(uuid.uuidString)")
             dispatchGroup.leave()
         }
     }

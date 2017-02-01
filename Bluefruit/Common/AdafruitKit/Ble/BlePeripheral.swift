@@ -14,6 +14,13 @@ class BlePeripheral: NSObject {
     // Config
     fileprivate static var kProfileCharacteristicUpdates = true
     
+    // Notifications
+    enum NotificationUserInfoKey: String {
+        case uuid = "uuid"
+        case name = "name"
+        case invalidatedServices = "invalidatedServices"
+    }
+    
     // Data
     var peripheral: CBPeripheral
     var rssi: Int?
@@ -71,7 +78,7 @@ class BlePeripheral: NSObject {
     }
     var advertisement: Advertisement
     
-    typealias CapturedReadCompletionHandler = ((_ data: Data?, _ error: Error?) -> Void)
+    typealias CapturedReadCompletionHandler = ((_ value: Any?, _ error: Error?) -> Void)
     fileprivate class CaptureReadHandler {
 
         var identifier: String
@@ -155,6 +162,11 @@ class BlePeripheral: NSObject {
         }
     }
     
+    func discoverDescriptors(characteristic: CBCharacteristic, completion: ((Error?) -> Void)?) {
+        let command = BleCommand(type: .discoverDescriptor, parameters: [characteristic], completion: completion)
+        commandQueue.append(command)
+    }
+    
     // MARK: - Service
     func discoveredService(uuid: CBUUID) -> CBService? {
         let service = peripheral.services?.first(where: {$0.uuid == uuid})
@@ -220,7 +232,7 @@ class BlePeripheral: NSObject {
         commandQueue.append(command)
     }
     
-    func read(from characteristic: CBCharacteristic, completion readCompletion: @escaping CapturedReadCompletionHandler) {
+    func readCharacteristic(_ characteristic: CBCharacteristic, completion readCompletion: @escaping CapturedReadCompletionHandler) {
         let command = BleCommand(type: .readCharacteristic, parameters: [characteristic, readCompletion as Any], completion: nil)
         commandQueue.append(command)
     }
@@ -235,15 +247,24 @@ class BlePeripheral: NSObject {
         commandQueue.append(command)
     }
     
+    // MARK: - Descriptors
+    func readDescriptor(_ descriptor: CBDescriptor, completion readCompletion: @escaping CapturedReadCompletionHandler) {
+        let command = BleCommand(type: .readDescriptor, parameters: [descriptor, readCompletion as Any], completion: nil)
+        commandQueue.append(command)
+    }
+
+    
     // MARK: - Command Queue
     fileprivate class BleCommand: Equatable {
         enum CommandType {
             case discoverService
             case discoverCharacteristic
+            case discoverDescriptor
             case setNotify
             case readCharacteristic
             case writeCharacteristic
             case writeCharacteristicAndWaitNofity
+            case readDescriptor
         }
         
         enum CommandError: Error {
@@ -277,17 +298,25 @@ class BlePeripheral: NSObject {
             discoverService(with: command)
         case .discoverCharacteristic:
             discoverCharacteristic(with: command)
+        case .discoverDescriptor:
+            discoverDescriptor(with: command)
         case .setNotify:
             setNotify(with: command)
         case .readCharacteristic:
-            read(with: command)
+            readCharacteristic(with: command)
         case .writeCharacteristic, .writeCharacteristicAndWaitNofity:
             write(with: command)
+        case .readDescriptor:
+            readDescriptor(with: command)
         }
     }
     
     fileprivate func handlerIdentifier(from characteristic: CBCharacteristic) -> String {
         return "\(characteristic.service.uuid.uuidString)-\(characteristic.uuid.uuidString)"
+    }
+    
+    fileprivate func handlerIdentifier(from descriptor: CBDescriptor) -> String {
+        return "\(descriptor.characteristic.service.uuid.uuidString)-\(descriptor.characteristic.uuid.uuidString)-\(descriptor.uuid.uuidString)"
     }
     
     fileprivate func finishedExecutingCommand(error: Error?) {
@@ -346,6 +375,11 @@ class BlePeripheral: NSObject {
         }
     }
     
+    private func discoverDescriptor(with command: BleCommand) {
+        let characteristic = command.parameters![0] as! CBCharacteristic
+        peripheral.discoverDescriptors(for: characteristic)
+    }
+    
     private func setNotify(with command: BleCommand) {
         let characteristic = command.parameters![0] as! CBCharacteristic
         let enabled = command.parameters![1] as! Bool
@@ -360,7 +394,7 @@ class BlePeripheral: NSObject {
         peripheral.setNotifyValue(enabled, for: characteristic)
     }
     
-    private func read(with command: BleCommand) {
+    private func readCharacteristic(with command: BleCommand) {
         let characteristic = command.parameters!.first as! CBCharacteristic
         let completion = command.parameters![1] as! CapturedReadCompletionHandler
 
@@ -378,15 +412,29 @@ class BlePeripheral: NSObject {
         
         peripheral.writeValue(data, for: characteristic, type: writeType)
     }
+    
+    private func readDescriptor(with command: BleCommand) {
+        let descriptor = command.parameters!.first as! CBDescriptor
+        let completion = command.parameters![1] as! CapturedReadCompletionHandler
+        
+        let identifier = handlerIdentifier(from: descriptor)
+        let captureReadHandler = CaptureReadHandler(identifier: identifier, result: completion, timeout: nil)
+        captureReadHandlers.append(captureReadHandler)
+        
+        peripheral.readValue(for: descriptor)
+    }
 }
 
 extension BlePeripheral: CBPeripheralDelegate {
     func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
-         DLog("peripheralDidUpdateName: \(String(describing: name))")
+        DLog("peripheralDidUpdateName: \(String(describing: name))")
+        NotificationCenter.default.post(name: .peripheralDidUpdateName, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier, NotificationUserInfoKey.name.rawValue: name as Any])
+        
     }
     
     func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
         DLog("didModifyServices")
+        NotificationCenter.default.post(name: .peripheralDidModifyServices, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier, NotificationUserInfoKey.invalidatedServices.rawValue: invalidatedServices])
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
@@ -468,4 +516,31 @@ extension BlePeripheral: CBPeripheralDelegate {
             finishedExecutingCommand(error: error)
         }
     }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
+        finishedExecutingCommand(error: error)
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
+        let identifier = handlerIdentifier(from: descriptor)
+        
+        if captureReadHandlers.count > 0, let index = captureReadHandlers.index(where: {$0.identifier == identifier}) {
+            // Remove capture handler
+            let captureReadHandler = captureReadHandlers.remove(at: index)
+ 
+            // Send result
+            let value = descriptor.value
+            captureReadHandler.result(value, error)
+            
+            
+            finishedExecutingCommand(error: error)
+        }
+    }
+}
+
+// MARK: - Custom Notifications
+extension Notification.Name {
+    private static let kPrefix = Bundle.main.bundleIdentifier!
+    static let peripheralDidUpdateName = Notification.Name(kPrefix+".peripheralDidUpdateName")
+    static let peripheralDidModifyServices = Notification.Name(kPrefix+".peripheralDidModifyServices")
 }

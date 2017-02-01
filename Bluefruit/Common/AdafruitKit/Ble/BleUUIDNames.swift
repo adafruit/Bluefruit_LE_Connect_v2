@@ -23,7 +23,7 @@ class BleUUIDNames {
         gattUUIds = NSDictionary(contentsOfFile: path) as? [String : String]
     }
     
-    func nameForUUID(_ uuid: String) -> String? {
-        return gattUUIds?[uuid]
+    func nameForUUID(_ uuidString: String) -> String? {
+        return gattUUIds?[uuidString]
     }
 }
