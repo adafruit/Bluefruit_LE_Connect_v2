@@ -454,6 +454,7 @@ extension BlePeripheral: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        DLog("didDiscoverCharacteristicsFor")
         finishedExecutingCommand(error: error)
     }
     

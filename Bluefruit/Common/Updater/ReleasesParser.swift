@@ -49,8 +49,12 @@ class ReleasesParser {
     static func parse(data: Data, showBetaVersions: Bool) -> [String: BoardInfo] {
         var boardsReleases = [String: BoardInfo]()
         
-        guard let xml = XML(data: data) else { return [:] }
-        let boards = xml["bluefruitle"]["boards"]["board"]
+        guard let xml = XML(data: data) else {
+            DLog("Error: Releases xml not valid")
+            return [:]
+        }
+        
+        let boards = xml["boards"]["board"]
         for board in boards {
             if let boardName = board.attributes["name"] {
 

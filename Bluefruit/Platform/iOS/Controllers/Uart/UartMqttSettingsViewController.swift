@@ -39,8 +39,6 @@ class UartMqttSettingsViewController: UIViewController {
         super.viewDidLoad()
         
         self.title = LocalizationManager.sharedInstance.localizedString("uart_mqtt_settings_title")
-     
-       // view.backgroundColor = StyleConfig.backgroundColor
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,10 +54,10 @@ class UartMqttSettingsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func headerTitleForSection(section: Int) -> String? {
+    fileprivate func headerTitleForSection(_ section: Int) -> String? {
         var key : String?
         switch SettingsSections(rawValue: section)! {
-        case .status: key = "uart_mqtt_settings_group_status" //  nil
+        case .status: key = "uart_mqtt_settings_group_status"
         case .server: key = "uart_mqtt_settings_group_server"
         case .publish: key = "uart_mqtt_settings_group_publish"
         case .subscribe: key = "uart_mqtt_settings_group_subscribe"
@@ -69,7 +67,7 @@ class UartMqttSettingsViewController: UIViewController {
         return (key==nil ? nil : LocalizationManager.sharedInstance.localizedString(key!).uppercased())
     }
     
-    func subscriptionTopicChanged(newTopic: String?, qos: MqttManager.MqttQos) {
+    fileprivate func subscriptionTopicChanged(_ newTopic: String?, qos: MqttManager.MqttQos) {
         DLog("subscription changed from: \(previousSubscriptionTopic != nil ? previousSubscriptionTopic!:"") to: \(newTopic != nil ? newTopic!:"")");
         
         let mqttManager = MqttManager.sharedInstance
@@ -121,11 +119,11 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
             pickerCell.backgroundColor = UIColor(hex: 0xe2e1e0)
             cell = pickerCell
         }
-        else if section == .Status {
+        else if section == .status {
             let statusCell = tableView.dequeueReusableCell(withIdentifier: "StatusCell", for: indexPath as IndexPath) as! MqttSettingsStatusCell
             
             let status = MqttManager.sharedInstance.status
-            let showWait = status == .Connecting || status == .Disconnecting
+            let showWait = status == .connecting || status == .disconnecting
             if (showWait) {
                 statusCell.waitView.startAnimating()
             }else {
@@ -135,7 +133,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
             statusCell.statusLabel.text = titleForMqttManagerStatus(status)
             
             UIView.performWithoutAnimation({ () -> Void in      // Change title disabling animations (if enabled the user can see the old title for a moment)
-                statusCell.actionButton.setTitle(status == .Connected ?"Disconnect":"Connect", for: UIControlState.normal)
+                statusCell.actionButton.setTitle(status == .connected ?"Disconnect":"Connect", for: UIControlState.normal)
                 statusCell.layoutIfNeeded()
             })
             
@@ -190,12 +188,12 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 let labels = ["Uart RX:", "Uart TX:"]
                 editValueCell.nameLabel.text = labels[row]
                 
-                editValueCell.valueTextField!.text = mqttSettings.getPublishTopic(row)
+                editValueCell.valueTextField!.text = mqttSettings.getPublishTopic(index: row)
 
                 let typeButton = editValueCell.typeButton!
                 typeButton.tag = tagFromIndexPath(indexPath, scale:100)
-                typeButton.setTitle(titleForQos(mqttSettings.getPublishQos(row)), for: .Normal)
-                typeButton.addTarget(self, action: #selector(UartMqttSettingsViewController.onClickTypeButton(_:)), for: .TouchUpInside)
+                typeButton.setTitle(titleForQos(mqttSettings.getPublishQos(index: row)), for: .normal)
+                typeButton.addTarget(self, action: #selector(UartMqttSettingsViewController.onClickTypeButton(_:)), for: .touchUpInside)
                 
             case .subscribe:
                 editValueCell = tableView.dequeueReusableCell(withIdentifier: row==0 ? "ValueAndSelectorCell":"SelectorCell", for: indexPath as IndexPath) as! MqttSettingsValueAndSelector
@@ -206,13 +204,13 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 
                 let typeButton = editValueCell.typeButton!
                 typeButton.tag = tagFromIndexPath(indexPath, scale:100)
-                typeButton.addTarget(self, action: #selector(UartMqttSettingsViewController.onClickTypeButton(_:)), for: .TouchUpInside)
+                typeButton.addTarget(self, action: #selector(UartMqttSettingsViewController.onClickTypeButton(_:)), for: .touchUpInside)
                 if (row == 0) {
                     editValueCell.valueTextField!.text = mqttSettings.subscribeTopic
-                    typeButton.setTitle(titleForQos(mqttSettings.subscribeQos), for: .Normal)
+                    typeButton.setTitle(titleForQos(mqttSettings.subscribeQos), for: .normal)
                 }
                 else if (row == 1) {
-                    typeButton.setTitle(titleForSubscribeBehaviour(mqttSettings.subscribeBehaviour), for: .Normal)
+                    typeButton.setTitle(titleForSubscribeBehaviour(mqttSettings.subscribeBehaviour), for: .normal)
                 }
                 
             case .advanced:
@@ -256,20 +254,20 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         return indexPath.section * scale + indexPath.row
     }
     
-    fileprivate func indexPathFromTag(tag: Int, scale: Int) -> NSIndexPath {
+    fileprivate func indexPathFromTag(_ tag: Int, scale: Int) -> IndexPath {
         // To help identify each textfield a tag is added with this format: 12 (1 is the section, 2 is the row)
-        return NSIndexPath(forRow: tag % scale, inSection: tag / scale)
+        return IndexPath(row: tag % scale, section: tag / scale)
     }
     
-    func onClickTypeButton(sender : UIButton) {
+    func onClickTypeButton(_ sender: UIButton) {
         let selectedIndexPath = indexPathFromTag(sender.tag, scale:100)
-        let isAction = selectedIndexPath.section ==  SettingsSections.Subscribe.rawValue && selectedIndexPath.row == 1
-        pickerViewType = isAction ? PickerViewType.Action : PickerViewType.Qos
+        let isAction = selectedIndexPath.section ==  SettingsSections.subscribe.rawValue && selectedIndexPath.row == 1
+        pickerViewType = isAction ? PickerViewType.action : PickerViewType.qos
         
         displayInlineDatePickerForRowAtIndexPath(selectedIndexPath)
     }
     
-    private func displayInlineDatePickerForRowAtIndexPath(indexPath: IndexPath) {
+    fileprivate func displayInlineDatePickerForRowAtIndexPath(_ indexPath: IndexPath) {
         // display the date picker inline with the table content
         baseTableView.beginUpdates()
         
@@ -288,10 +286,10 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         if !sameCellClicked {
             // hide the old date picker and display the new one
             let rowToReveal = before ? indexPath.row - 1 : indexPath.row
-            let indexPathToReveal = IndexPath(forRow:rowToReveal, inSection:indexPath.section)
+            let indexPathToReveal = IndexPath(row:rowToReveal, section:indexPath.section)
             
             toggleDatePickerForSelectedIndexPath(indexPathToReveal)
-            self.openCellIndexPath = IndexPath(forRow:indexPathToReveal.row + 1, inSection:indexPathToReveal.section)
+            self.openCellIndexPath = IndexPath(row:indexPathToReveal.row + 1, section:indexPathToReveal.section)
         }
         
         // always deselect the row containing the start or end date
@@ -303,35 +301,35 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         //updateOpenCell()
     }
     
-    func toggleDatePickerForSelectedIndexPath(indexPath: IndexPath) {
+    fileprivate func toggleDatePickerForSelectedIndexPath(_ indexPath: IndexPath) {
         
         baseTableView.beginUpdates()
-        let indexPaths = [IndexPath(forRow:indexPath.row + 1, inSection:indexPath.section)]
+        let indexPaths = [IndexPath(row:indexPath.row + 1, section:indexPath.section)]
         
         // check if 'indexPath' has an attached date picker below it
         if hasPickerForIndexPath(indexPath) {
             // found a picker below it, so remove it
-            baseTableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation:.Fade)
+            baseTableView.deleteRows(at: indexPaths, with:.fade)
         }
         else {
             // didn't find a picker below it, so we should insert it
-            baseTableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation:.Fade)
+            baseTableView.insertRows(at: indexPaths, with:.fade)
         }
         
         baseTableView.endUpdates()
     }
     
-    private func hasPickerForIndexPath(indexPath: IndexPath) -> Bool {
+    fileprivate func hasPickerForIndexPath(_ indexPath: IndexPath) -> Bool {
         var hasPicker = false
         
-        if baseTableView.cellForRowAtIndexPath(IndexPath(forRow: indexPath.row+1, inSection: indexPath.section)) is MqttSettingPickerCell {
+        if baseTableView.cellForRow(at: IndexPath(row: indexPath.row+1, section: indexPath.section)) is MqttSettingPickerCell {
             hasPicker = true
         }
         
         return hasPicker
     }
     
-    private func titleForMqttManagerStatus(status : MqttManager.ConnectionStatus) -> String {
+    fileprivate func titleForMqttManagerStatus(_ status: MqttManager.ConnectionStatus) -> String {
         let statusText : String
         switch status {
         case .connected: statusText = "Connected"
@@ -343,14 +341,14 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         return statusText
     }
     
-    private func titleForSubscribeBehaviour(behaviour: MqttSettings.SubscribeBehaviour) -> String {
+    fileprivate func titleForSubscribeBehaviour(_ behaviour: MqttSettings.SubscribeBehaviour) -> String {
         switch behaviour {
-        case .LocalOnly: return "Local Only"
-        case .Transmit: return "Transmit"
+        case .localOnly: return "Local Only"
+        case .transmit: return "Transmit"
         }
     }
     
-    private func titleForQos(qos: MqttManager.MqttQos) -> String {
+    fileprivate func titleForQos(_ qos: MqttManager.MqttQos) -> String {
         switch qos  {
         case .atLeastOnce : return "At Least Once"
         case .atMostOnce : return "At Most Once"
@@ -366,8 +364,8 @@ extension UartMqttSettingsViewController : UITableViewDelegate {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell") as! MqttSettingsHeaderCell
         headerCell.backgroundColor = UIColor.clear
         headerCell.nameLabel.text = headerTitleForSection(section)
-        let hasSwitch = section == SettingsSections.Publish.rawValue || section == SettingsSections.Subscribe.rawValue;
-        headerCell.isOnSwitch.hidden = !hasSwitch;
+        let hasSwitch = section == SettingsSections.publish.rawValue || section == SettingsSections.subscribe.rawValue;
+        headerCell.isOnSwitch.isHidden = !hasSwitch;
         if (hasSwitch) {
             let mqttSettings = MqttSettings.sharedInstance
             if (section == SettingsSections.publish.rawValue) {
@@ -390,7 +388,6 @@ extension UartMqttSettingsViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if (headerTitleForSection(section) == nil) {
-            UITableViewAutomaticDimension
             return 0.5;       // no title, so 0 height (hack: set to 0.5 because 0 height is not correctly displayed)
         }
         else {
@@ -401,20 +398,20 @@ extension UartMqttSettingsViewController : UITableViewDelegate {
 
 // MARK: UIPickerViewDataSource
 extension UartMqttSettingsViewController: UIPickerViewDataSource {
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return pickerViewType == .action ? 2:3
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
     {
         switch(pickerViewType) {
-        case .Qos:
+        case .qos:
             return titleForQos(MqttManager.MqttQos(rawValue: row)!)
-        case .Action:
+        case .action:
             return titleForSubscribeBehaviour(MqttSettings.SubscribeBehaviour(rawValue: row)!)
         }
     }
@@ -430,10 +427,10 @@ extension UartMqttSettingsViewController: UIPickerViewDelegate {
         let mqttSettings = MqttSettings.sharedInstance;
         
         switch section {
-        case .Publish:
-            mqttSettings.setPublishQos(selectedIndexPath.row, qos: MqttManager.MqttQos(rawValue: row)!)
+        case .publish:
+            mqttSettings.setPublishQos(index: selectedIndexPath.row, qos: MqttManager.MqttQos(rawValue: row)!)
             
-        case .Subscribe:
+        case .subscribe:
             if (selectedIndexPath.row == 0) {     // Topic Qos
                 let qos = MqttManager.MqttQos(rawValue: row)!
                 mqttSettings.subscribeQos =  qos
@@ -447,30 +444,30 @@ extension UartMqttSettingsViewController: UIPickerViewDelegate {
         }
         
         // Refresh cell
-        baseTableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
+        baseTableView.reloadRows(at: [selectedIndexPath], with: .none)
     }
 }
 
 // MARK: - UITextFieldDelegate
 extension UartMqttSettingsViewController: UITextFieldDelegate {
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         // Go to next textField
         if (textField.returnKeyType == UIReturnKeyType.next) {
             let tag = textField.tag;
             var nextPathForTag = indexPathFromTag(tag+1, scale:10)
-            var nextView = baseTableView.cellForRowAtIndexPath(nextPathForTag)?.viewWithTag(tag+1)
+            var nextView = baseTableView.cellForRow(at: nextPathForTag)?.viewWithTag(tag+1)
             if (nextView == nil) {
                 let nexSectionTag = ((tag/10)+1)*10
                 nextPathForTag = indexPathFromTag(nexSectionTag, scale:10)
-                nextView = baseTableView.cellForRowAtIndexPath(nextPathForTag)?.viewWithTag(nexSectionTag)
+                nextView = baseTableView.cellForRow(at: nextPathForTag)?.viewWithTag(nexSectionTag)
             }
             if let next = nextView as? UITextField {
                 next.becomeFirstResponder()
                 
                 // Scroll to show it
-                baseTableView.scrollToRowAtIndexPath(nextPathForTag, atScrollPosition: .Middle, animated: true)
+                baseTableView.scrollToRow(at: nextPathForTag, at: .middle, animated: true)
                 
             }
             else {
@@ -489,7 +486,7 @@ extension UartMqttSettingsViewController: UITextFieldDelegate {
         
         // Update settings with new values
         switch(section) {
-        case SettingsSections.Server.rawValue:
+        case SettingsSections.server.rawValue:
             if (row == 0) {         // Server Address
                 mqttSettings.serverAddress = textField.text
             }
@@ -503,15 +500,15 @@ extension UartMqttSettingsViewController: UITextFieldDelegate {
                 }
             }
             
-        case SettingsSections.Publish.rawValue:
-            mqttSettings.setPublishTopic(row, topic: textField.text)
+        case SettingsSections.publish.rawValue:
+            mqttSettings.setPublishTopic(index: row, topic: textField.text)
             
-        case SettingsSections.Subscribe.rawValue:
+        case SettingsSections.subscribe.rawValue:
             let topic = textField.text
             mqttSettings.subscribeTopic = topic
             subscriptionTopicChanged(topic, qos: mqttSettings.subscribeQos)
             
-        case SettingsSections.Advanced.rawValue:
+        case SettingsSections.advanced.rawValue:
             if (row == 0) {            // Username
                 mqttSettings.username = textField.text;
             }

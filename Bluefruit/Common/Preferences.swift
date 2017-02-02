@@ -185,7 +185,6 @@ import Foundation
         }
     }
     
-    
     // MARK: - Uart
     static var uartReceveivedDataColor: Color {
         get {

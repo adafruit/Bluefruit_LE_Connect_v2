@@ -213,7 +213,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         selectedIndex = 0
         let hasDFU = blePeripheral.peripheral.services?.first(where: {$0.uuid == FirmwareUpdater.kDfuServiceUUID}) != nil
         if hasDFU {
-            let dfuViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuModuleViewController") as! DfuModeViewController
+            let dfuViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuModeViewController") as! DfuModeViewController
             dfuViewController.blePeripheral = blePeripheral
             dfuViewController.tabBarItem.title = localizationManager.localizedString("dfu_tab_title")      // Tab title
             dfuViewController.tabBarItem.image = UIImage(named: "tab_dfu_icon")
