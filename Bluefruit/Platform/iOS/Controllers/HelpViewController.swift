@@ -12,8 +12,8 @@ class HelpViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UITextView!
 
-    private var helpTitle: String?
-    private var helpMessage: String?
+    fileprivate var helpTitle: String?
+    fileprivate var helpMessage: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +39,7 @@ class HelpViewController: UIViewController {
         }
     }
     
-    private func updateUI() {
+    fileprivate func updateUI() {
         // Title
         titleLabel.text = helpTitle
         

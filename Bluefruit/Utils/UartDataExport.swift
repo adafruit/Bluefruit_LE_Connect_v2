@@ -49,7 +49,7 @@ class UartDataExport {
             }
             
             // Remove newline characters from data (it messes with the csv format and Excel wont recognize it)
-            dataString = dataString?.trimmingCharacters(in: NSCharacterSet.newlines) ?? ""
+            dataString = dataString?.trimmingCharacters(in: CharacterSet.newlines) ?? ""
             text += "\(dateString),\(mode),\"\(dataString!)\"\r\n"
         }
         

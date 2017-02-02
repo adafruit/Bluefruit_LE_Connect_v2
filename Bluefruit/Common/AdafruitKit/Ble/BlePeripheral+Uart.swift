@@ -19,7 +19,7 @@ extension BlePeripheral {
     static let kUartTxCharacteristicUUID =  CBUUID(string: "6e400002-b5a3-f393-e0a9-e50e24dcca9e")
     static let kUartRxCharacteristicUUID =  CBUUID(string: "6e400003-b5a3-f393-e0a9-e50e24dcca9e")
     fileprivate static let kUartTxMaxBytes = 20
-    static let kUartReplyDefaultTimeout = 2.0               // seconds
+    static let kUartReplyDefaultTimeout = 2.0       // seconds
     
     // MARK: - Custom properties
     fileprivate struct CustomPropertiesKeys {
@@ -116,7 +116,6 @@ extension BlePeripheral {
         setNotify(for: characteristic, enabled: false)
     }
     
-    
     // MARK: - Send
     func uartSend(data: Data?, completion: ((Error?) -> Void)? = nil) {
         guard let data = data else {
@@ -140,9 +139,9 @@ extension BlePeripheral {
                     DLog("write chunk at offset: \(offset) error: \(error)")
                 }
                 else {
-                    DLog("uart tx write: \(hexDescription(data: chunk))")
-                    DLog("uart tx write (dec): \(decimalDescription(data: chunk))")
-                    DLog("uart tx write (utf8): \(String(data: chunk, encoding: .utf8) ?? "<invalid>")")
+                    DLog("uart tx write (hex): \(hexDescription(data: chunk))")
+//                    DLog("uart tx write (dec): \(decimalDescription(data: chunk))")
+//                    DLog("uart tx write (utf8): \(String(data: chunk, encoding: .utf8) ?? "<invalid>")")
                     
                     if BlePeripheral.kDebugLog {
                         UartLogManager.log(data: chunk, type: .uartTx)
@@ -181,8 +180,8 @@ extension BlePeripheral {
                 }
                 else {
                     DLog("uart tx writeAndWait (hex): \(hexDescription(data: chunk))")
-                    DLog("uart tx writeAndWait (dec): \(decimalDescription(data: chunk))")
-                    DLog("uart tx writeAndWait (utf8): \(String(data: chunk, encoding: .utf8) ?? "<invalid>")")
+//                    DLog("uart tx writeAndWait (dec): \(decimalDescription(data: chunk))")
+//                    DLog("uart tx writeAndWait (utf8): \(String(data: chunk, encoding: .utf8) ?? "<invalid>")")
                 }
                 
                 if offset >= data.count {

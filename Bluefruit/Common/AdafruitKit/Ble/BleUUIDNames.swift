@@ -15,7 +15,7 @@ class BleUUIDNames {
     static let sharedInstance = BleUUIDNames()
 
     // Data
-    private var gattUUIds: [String:String]?
+    fileprivate var gattUUIds: [String:String]?
 
     init() {
         // Read known UUIDs

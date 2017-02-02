@@ -158,15 +158,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         }
     }
     
-    // MARK: - 
-    /*
-    override func changeSelectedViewController(_ viewController: UIViewController?) {
-        super.changeSelectedViewController(viewController)
-        
-        DLog("Changing to: \(viewController?.title ?? "<unknown>"). Reset peripheral")
-        blePeripheral?.reset()
-    }*/
-
     // MARK: - UI
     private func goBackToPeripheralList() {
         // Back to peripheral list
@@ -217,6 +208,18 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             viewControllers.append(uartViewController)
         }
         
+        // DFU Tab
+        setViewControllers(viewControllers, animated: false)
+        selectedIndex = 0
+        let hasDFU = blePeripheral.peripheral.services?.first(where: {$0.uuid == FirmwareUpdater.kDfuServiceUUID}) != nil
+        if hasDFU {
+            let dfuViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuModuleViewController") as! DfuModeViewController
+            dfuViewController.blePeripheral = blePeripheral
+            dfuViewController.tabBarItem.title = localizationManager.localizedString("dfu_tab_title")      // Tab title
+            dfuViewController.tabBarItem.image = UIImage(named: "tab_dfu_icon")
+            viewControllers.append(dfuViewController)
+            self.dfuTabIndex = viewControllers.count-1
+        }
         
         setViewControllers(viewControllers, animated: false)
         selectedIndex = 0

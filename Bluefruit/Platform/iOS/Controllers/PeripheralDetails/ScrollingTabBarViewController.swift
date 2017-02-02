@@ -74,7 +74,7 @@ class ScrollingTabBarViewController: UIViewController {
         tabBarCollectionView.isHidden = hide
     }
     
-    private func removeSelectedViewController() {
+    fileprivate func removeSelectedViewController() {
         guard let currentViewController = selectedViewController else {
             return
         }

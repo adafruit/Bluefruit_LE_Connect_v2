@@ -50,6 +50,12 @@ class BleManager: NSObject {
         peripheralsFound.removeAll()
     }
     
+    
+    func restoreCentralManager() {
+        // Restore central manager delegate if was changed
+        centralManager?.delegate = self
+    }
+    
     // MARK: - Scan
     func startScan(withServices services: [CBUUID]? = nil) {
         centralManagerPoweredOnSemaphore.wait()

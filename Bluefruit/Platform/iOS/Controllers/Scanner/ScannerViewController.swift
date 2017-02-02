@@ -300,7 +300,7 @@ class ScannerViewController: UIViewController {
         DLog("Check firmware updates")
 
         // Refresh updates available
-        firmwareUpdater.checkUpdatesForPeripheral(peripheral, delegate: self, shouldDiscoverServices: false, shouldRecommendBetaReleases: false, versionToIgnore: nil)
+        firmwareUpdater.checkUpdatesForPeripheral(peripheral, delegate: self, shouldDiscoverServices: false, shouldRecommendBetaReleases: false, versionToIgnore: Preferences.softwareUpdateIgnoredVersion)
     }
     
     fileprivate func showUpdateAvailableForRelease(_ latestRelease: FirmwareInfo) {

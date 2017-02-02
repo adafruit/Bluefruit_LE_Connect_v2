@@ -38,7 +38,7 @@ class UartSettingsViewController: UIViewController {
 // MARK: - UITableViewDataSource
 extension UartSettingsViewController: UITableViewDataSource {
     
-    private enum SettingsSection: Int {
+    fileprivate enum SettingsSection: Int {
         case displayMode = 0
         case dataMode = 1
         case echo = 2
@@ -50,7 +50,7 @@ extension UartSettingsViewController: UITableViewDataSource {
         case export = 1
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     

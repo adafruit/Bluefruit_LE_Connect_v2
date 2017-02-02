@@ -45,6 +45,11 @@
 		A983780F1E4266CD00170319 /* UartDataExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983780E1E4266CD00170319 /* UartDataExport.swift */; };
 		A98378131E4270E800170319 /* MqttManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378111E4270E800170319 /* MqttManager.swift */; };
 		A98378141E4270E800170319 /* MqttSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378121E4270E800170319 /* MqttSettings.swift */; };
+		A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378161E42A96400170319 /* DfuDialogViewController.swift */; };
+		A983781B1E42A96400170319 /* DfuFilesPickerDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378171E42A96400170319 /* DfuFilesPickerDialogViewController.swift */; };
+		A983781C1E42A96400170319 /* DfuFilesPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378181E42A96400170319 /* DfuFilesPickerTableViewCell.swift */; };
+		A983781D1E42A96400170319 /* DfuModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378191E42A96400170319 /* DfuModeViewController.swift */; };
+		A983781F1E42ACC600170319 /* DfuUpdateProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983781E1E42ACC600170319 /* DfuUpdateProcess.swift */; };
 		A99339751E3CC14B00CCA83D /* ReleasesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99339741E3CC14B00CCA83D /* ReleasesParser.swift */; };
 		A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */; };
 		A9BAD2121E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */; };
@@ -119,6 +124,11 @@
 		A983780E1E4266CD00170319 /* UartDataExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartDataExport.swift; sourceTree = "<group>"; };
 		A98378111E4270E800170319 /* MqttManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttManager.swift; sourceTree = "<group>"; };
 		A98378121E4270E800170319 /* MqttSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettings.swift; sourceTree = "<group>"; };
+		A98378161E42A96400170319 /* DfuDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuDialogViewController.swift; sourceTree = "<group>"; };
+		A98378171E42A96400170319 /* DfuFilesPickerDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuFilesPickerDialogViewController.swift; sourceTree = "<group>"; };
+		A98378181E42A96400170319 /* DfuFilesPickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuFilesPickerTableViewCell.swift; sourceTree = "<group>"; };
+		A98378191E42A96400170319 /* DfuModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuModeViewController.swift; sourceTree = "<group>"; };
+		A983781E1E42ACC600170319 /* DfuUpdateProcess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuUpdateProcess.swift; sourceTree = "<group>"; };
 		A99339741E3CC14B00CCA83D /* ReleasesParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleasesParser.swift; sourceTree = "<group>"; };
 		A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoCharacteristicTableViewCell.swift; sourceTree = "<group>"; };
@@ -252,6 +262,7 @@
 				A9D234501E3AD9A200DC0C99 /* PeripheralDetails */,
 				A9BAD20F1E3FC6CA0021DFA9 /* Info */,
 				A94A219E1E417271006A5F33 /* Uart */,
+				A98378151E42A96400170319 /* Dfu */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -372,6 +383,17 @@
 			path = Mqtt;
 			sourceTree = "<group>";
 		};
+		A98378151E42A96400170319 /* Dfu */ = {
+			isa = PBXGroup;
+			children = (
+				A98378191E42A96400170319 /* DfuModeViewController.swift */,
+				A98378161E42A96400170319 /* DfuDialogViewController.swift */,
+				A98378171E42A96400170319 /* DfuFilesPickerDialogViewController.swift */,
+				A98378181E42A96400170319 /* DfuFilesPickerTableViewCell.swift */,
+			);
+			path = Dfu;
+			sourceTree = "<group>";
+		};
 		A9BAD20F1E3FC6CA0021DFA9 /* Info */ = {
 			isa = PBXGroup;
 			children = (
@@ -440,6 +462,7 @@
 			children = (
 				A9D234601E3B4D1100DC0C99 /* FirmwareUpdater.swift */,
 				A99339741E3CC14B00CCA83D /* ReleasesParser.swift */,
+				A983781E1E42ACC600170319 /* DfuUpdateProcess.swift */,
 			);
 			path = Updater;
 			sourceTree = "<group>";
@@ -586,8 +609,10 @@
 				A9D234551E3AD9A200DC0C99 /* PeripheralModeViewController.swift in Sources */,
 				A94A21B01E417271006A5F33 /* UartSettingTableViewCell.swift in Sources */,
 				A91E7D5D1E4216ED00DE90C6 /* UIImage+Tint.swift in Sources */,
+				A983781D1E42A96400170319 /* DfuModeViewController.swift in Sources */,
 				A9286CD11E3A9B22008E5F81 /* BlePeripheral+Uart.swift in Sources */,
 				A9286CD91E3A9B22008E5F81 /* DataConversions.swift in Sources */,
+				A983781B1E42A96400170319 /* DfuFilesPickerDialogViewController.swift in Sources */,
 				A9286CDA1E3A9B22008E5F81 /* LogHelper.swift in Sources */,
 				A98378131E4270E800170319 /* MqttManager.swift in Sources */,
 				A9286CD71E3A9B22008E5F81 /* CommandQueue.swift in Sources */,
@@ -598,6 +623,7 @@
 				A9286CD51E3A9B22008E5F81 /* UartManager.swift in Sources */,
 				A9286CD21E3A9B22008E5F81 /* BlePeripheral.swift in Sources */,
 				A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */,
+				A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */,
 				A9D2343A1E3AD70300DC0C99 /* FilterTextSettingsViewController.swift in Sources */,
 				A9D2345C1E3AE06D00DC0C99 /* LocalizationManager.swift in Sources */,
 				A9286CD61E3A9B22008E5F81 /* AlertHelper.swift in Sources */,
@@ -625,7 +651,9 @@
 				A91E7D591E420E2400DE90C6 /* UartPacketManager.swift in Sources */,
 				A98378011E42229200170319 /* DataFormatter.swift in Sources */,
 				A9286CB41E3A931E008E5F81 /* AppDelegate.swift in Sources */,
+				A983781C1E42A96400170319 /* DfuFilesPickerTableViewCell.swift in Sources */,
 				A9286CCF1E3A9B22008E5F81 /* BleManager.swift in Sources */,
+				A983781F1E42ACC600170319 /* DfuUpdateProcess.swift in Sources */,
 				A9D234611E3B4D1100DC0C99 /* FirmwareUpdater.swift in Sources */,
 				A9286CDE1E3A9C98008E5F81 /* CocoaCompatibility.swift in Sources */,
 				A9D2343C1E3AD70300DC0C99 /* PeripheralTableViewCell.swift in Sources */,

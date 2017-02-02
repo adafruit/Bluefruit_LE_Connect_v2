@@ -1482,7 +1482,7 @@
         <!--Dfu-->
         <scene sceneID="Yvj-wv-Nd0">
             <objects>
-                <viewController storyboardIdentifier="DfuModuleViewController" id="Mjq-f8-FLn" customClass="DfuModuleViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DfuModeViewController" id="Mjq-f8-FLn" customClass="DfuModeViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kiY-3A-Dn5"/>
                         <viewControllerLayoutGuide type="bottom" id="NUd-3c-fjX"/>
