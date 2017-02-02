@@ -23,7 +23,7 @@ class BleManager: NSObject {
     fileprivate var centralManagerPoweredOnSemaphore = DispatchSemaphore(value: 1)
     
     // Scanning
-    fileprivate var isScanning = false
+    var isScanning = false
     fileprivate var isScanningWaitingToStart = false
     fileprivate var scanningServicesFilter: [CBUUID]?
     fileprivate var peripheralsFound = [UUID: BlePeripheral]()
@@ -93,6 +93,11 @@ class BleManager: NSObject {
     func connectedPeripherals() -> [BlePeripheral] {
         return peripherals().filter{$0.state == .connected}
     }
+
+    func connectingPeripherals() -> [BlePeripheral] {
+        return peripherals().filter{$0.state == .connecting}
+    }
+
     
     func refreshPeripherals() {
         stopScan()
@@ -126,9 +131,13 @@ class BleManager: NSObject {
         
         //DLog("connect")
         var options: [String: Bool]?
-        if shouldNotifyOnConnection || shouldNotifyOnDisconnection || shouldNotifyOnDisconnection {
-            options = [CBConnectPeripheralOptionNotifyOnConnectionKey: shouldNotifyOnConnection, CBConnectPeripheralOptionNotifyOnDisconnectionKey: shouldNotifyOnDisconnection, CBConnectPeripheralOptionNotifyOnNotificationKey: shouldNotifyOnDisconnection]
-        }
+        
+        #if os(OSX)
+        #else
+            if shouldNotifyOnConnection || shouldNotifyOnDisconnection || shouldNotifyOnDisconnection {
+                options = [CBConnectPeripheralOptionNotifyOnConnectionKey: shouldNotifyOnConnection, CBConnectPeripheralOptionNotifyOnDisconnectionKey: shouldNotifyOnDisconnection, CBConnectPeripheralOptionNotifyOnNotificationKey: shouldNotifyOnDisconnection]
+            }
+        #endif
         
         if let timeout = timeout {
             connectionTimeoutTimers[peripheral.identifier] = MSWeakTimer.scheduledTimer(withTimeInterval: timeout, target: self, selector: #selector(connectionTimeoutFired), userInfo: peripheral.identifier, repeats: false, dispatchQueue: .global(qos: .background))

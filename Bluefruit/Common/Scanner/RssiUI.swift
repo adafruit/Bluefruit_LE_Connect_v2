@@ -8,14 +8,13 @@
 
 
 #if os(OSX)
-    import Foundation
+    import AppKit
     public typealias Image = NSImage
 #else
     import UIKit
     public typealias Image = UIImage
     
 #endif
-
 
 func signalImage(for rssi: Int?) -> Image {
     

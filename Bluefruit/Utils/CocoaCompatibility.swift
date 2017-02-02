@@ -7,6 +7,8 @@
 //
 
 #if os(OSX)
+    import AppKit
+    
     public typealias Color = NSColor
     public typealias Font = NSFont
 #else

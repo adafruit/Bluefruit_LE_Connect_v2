@@ -84,19 +84,19 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_framework "$BUILT_PRODUCTS_DIR/CocoaAsyncSocket/CocoaAsyncSocket.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/CocoaMQTT/CocoaMQTT.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/MSWeakTimer/MSWeakTimer.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/SwiftyXMLParser/SwiftyXMLParser.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CocoaAsyncSocket-iOS/CocoaAsyncSocket.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CocoaMQTT-iOS/CocoaMQTT.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MSWeakTimer-iOS/MSWeakTimer.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SwiftyXML-iOS/SwiftyXML.framework"
   install_framework "$BUILT_PRODUCTS_DIR/UIColor+Hex/UIColor_Hex.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Zip/Zip.framework"
   install_framework "$BUILT_PRODUCTS_DIR/iOSDFULibrary/iOSDFULibrary.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_framework "$BUILT_PRODUCTS_DIR/CocoaAsyncSocket/CocoaAsyncSocket.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/CocoaMQTT/CocoaMQTT.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/MSWeakTimer/MSWeakTimer.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/SwiftyXMLParser/SwiftyXMLParser.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CocoaAsyncSocket-iOS/CocoaAsyncSocket.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/CocoaMQTT-iOS/CocoaMQTT.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MSWeakTimer-iOS/MSWeakTimer.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/SwiftyXML-iOS/SwiftyXML.framework"
   install_framework "$BUILT_PRODUCTS_DIR/UIColor+Hex/UIColor_Hex.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Zip/Zip.framework"
   install_framework "$BUILT_PRODUCTS_DIR/iOSDFULibrary/iOSDFULibrary.framework"

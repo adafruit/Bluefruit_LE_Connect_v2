@@ -107,7 +107,7 @@ class UartDataExport {
     static func packetsAsXml(_ packets: [UartPacket]) -> String? {
         
         #if os(OSX)
-        let xmlRootElement = NSXMLElement(name: "uart")
+        let xmlRootElement = XMLElement(name: "uart")
         
         for packet in packets {
             let date = Date(timeIntervalSinceReferenceDate: packet.timestamp)
@@ -124,10 +124,10 @@ class UartDataExport {
             
             if let dataString = dataString {
                 
-                let xmlItemElement = NSXMLElement(name: "item")
-                xmlItemElement.addChild(NSXMLElement(name: "timestamp", stringValue:"\(unixDate)"))
-                xmlItemElement.addChild(NSXMLElement(name: "mode", stringValue:mode))
-                let dataNode = NSXMLElement(kind: .TextKind, options: NSXMLNodeOptions.NodeIsCDATA)
+                let xmlItemElement = XMLElement(name: "item")
+                xmlItemElement.addChild(XMLElement(name: "timestamp", stringValue:"\(unixDate)"))
+                xmlItemElement.addChild(XMLElement(name: "mode", stringValue:mode))
+                let dataNode = XMLElement(kind: .TextKind, options: XMLNode.Options.NodeIsCDATA)
                 dataNode.name = "data"
                 dataNode.stringValue = dataString
                 xmlItemElement.addChild(dataNode)
@@ -136,8 +136,8 @@ class UartDataExport {
             }
         }
         
-        let xml = NSXMLDocument(rootElement: xmlRootElement)
-        let result = xml.XMLStringWithOptions(Int(NSXMLNodeOptions.NodePrettyPrint.rawValue))
+        let xml = XMLDocument(rootElement: xmlRootElement)
+        let result = xml.xmlString(withOptions: Int(XMLNode.Options.nodePrettyPrint.rawValue))
         
         return result
 

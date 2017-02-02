@@ -8,7 +8,7 @@ PODS:
   - iOSDFULibrary (3.0.6):
     - Zip (~> 0.6)
   - MSWeakTimer (1.1.0)
-  - SwiftyXMLParser (3.0.0)
+  - SwiftyXML (1.1.0)
   - UIColor+Hex (1.0.1):
     - UIColor+Hex/NSColor (= 1.0.1)
     - UIColor+Hex/UIColor (= 1.0.1)
@@ -18,7 +18,7 @@ PODS:
 DEPENDENCIES:
   - CocoaMQTT (~> 1.0.11)
   - iOSDFULibrary
-  - SwiftyXMLParser (~> 3.0.0)
+  - SwiftyXML
   - UIColor+Hex (~> 1.0.1)
 
 SPEC CHECKSUMS:
@@ -26,10 +26,10 @@ SPEC CHECKSUMS:
   CocoaMQTT: 41a67eab08a8c8aa3c0be6f55ef2f4ace197f193
   iOSDFULibrary: e9f7838a54eed84228669c7739d8d7ed98d3da31
   MSWeakTimer: 9426150f933b80ed3acf3f6d228e4b61f0e303c8
-  SwiftyXMLParser: 8d2295fb4fbc6e2ff241e7c8d7717e159be35969
+  SwiftyXML: 3054a135ca252ef97991cd264aa698a41ef854c3
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   Zip: 805fc2fa9d2f05bbb7762d982d7a42ccdcc51f42
 
-PODFILE CHECKSUM: 5ec182dc1d160439788cdf666f3eacbdc917fe3b
+PODFILE CHECKSUM: 1c184d3aa41b9d98a282f4d5106132c3e51bf4ac
 
 COCOAPODS: 1.1.1

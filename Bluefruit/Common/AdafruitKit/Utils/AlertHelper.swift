@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 func showErrorAlert(from controller: UIViewController, title: String?, message: String?, okHandler: ((UIAlertAction) -> Void)? = nil) {
     
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)

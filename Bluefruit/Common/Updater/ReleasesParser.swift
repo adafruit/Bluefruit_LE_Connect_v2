@@ -7,18 +7,18 @@
 //
 
 import Foundation
-import SwiftyXMLParser
-import iOSDFULibrary
+import SwiftyXML
+//import iOSDFULibrary
 
 class BasicVersionInfo {
-    var fileType: DFUFirmwareType
+    var fileType: UInt8 // DFUFirmwareType
     var version: String
     var hexFileUrl: URL?
     var iniFileUrl: URL?
     var boardName: String
     var isBeta: Bool
     
-    init(fileType: DFUFirmwareType, version: String, hexFileUrl: URL?, iniFileUrl: URL?, boardName: String, isBeta: Bool) {
+    init(fileType: UInt8/*DFUFirmwareType*/, version: String, hexFileUrl: URL?, iniFileUrl: URL?, boardName: String, isBeta: Bool) {
         self.fileType = fileType
         self.version = version
         self.hexFileUrl = hexFileUrl
@@ -31,7 +31,7 @@ class BasicVersionInfo {
 class FirmwareInfo: BasicVersionInfo {
     var minBootloaderVersion: String?
     
-    init(fileType: DFUFirmwareType, version: String, hexFileUrl: URL?, iniFileUrl: URL?, boardName: String,  isBeta: Bool, minBootloaderVersion: String?) {
+    init(fileType: UInt8 /*DFUFirmwareType*/, version: String, hexFileUrl: URL?, iniFileUrl: URL?, boardName: String,  isBeta: Bool, minBootloaderVersion: String?) {
         self.minBootloaderVersion = minBootloaderVersion
         super.init(fileType: fileType, version: version, hexFileUrl: hexFileUrl, iniFileUrl: iniFileUrl, boardName: boardName, isBeta: isBeta)
     }
@@ -49,7 +49,7 @@ class ReleasesParser {
     static func parse(data: Data, showBetaVersions: Bool) -> [String: BoardInfo] {
         var boardsReleases = [String: BoardInfo]()
         
-        let xml = XML.parse(data)
+        guard let xml = XML(data: data) else { return [:] }
         let boards = xml["bluefruitle"]["boards"]["board"]
         for board in boards {
             if let boardName = board.attributes["name"] {
@@ -96,8 +96,7 @@ class ReleasesParser {
         return boardsReleases
     }
     
-    
-    private static func parseFirmwareNodes(_ nodes: XML.Accessor, boardName: String, isBeta: Bool, into firmwareReleases: inout [FirmwareInfo]) {
+    private static func parseFirmwareNodes(_ nodes: XMLSubscriptResult, boardName: String, isBeta: Bool, into firmwareReleases: inout [FirmwareInfo]) {
         for node in nodes {
             if let firmwareInfo = parseFirmwareNode(node, boardName: boardName, isBeta: isBeta) {
                 firmwareReleases.append(firmwareInfo)
@@ -105,7 +104,7 @@ class ReleasesParser {
         }
     }
     
-    private static func parseBootloaderNodes(_ nodes: XML.Accessor, boardName: String, isBeta: Bool, into bootloaderReleases: inout [BootloaderInfo]) {
+    private static func parseBootloaderNodes(_ nodes: XMLSubscriptResult, boardName: String, isBeta: Bool, into bootloaderReleases: inout [BootloaderInfo]) {
         for node in nodes {
             if let bootloaderInfo = parseBootloaderNode(node, boardName: boardName, isBeta: isBeta) {
                 bootloaderReleases.append(bootloaderInfo)
@@ -113,8 +112,7 @@ class ReleasesParser {
         }
     }
 
-    
-    private static func parseFirmwareNode(_ node: XML.Accessor, boardName: String, isBeta: Bool) -> FirmwareInfo? {
+    private static func parseFirmwareNode(_ node: XMLSubscriptResultIterator.Element, boardName: String, isBeta: Bool) -> FirmwareInfo? {
         let attributes = node.attributes
         let hexFile = attributes["hexfile"]
         let hexFileUrl =  hexFile != nil ? URL(string: hexFile!):nil
@@ -127,11 +125,11 @@ class ReleasesParser {
             return nil
         }
         
-        let releaseInfo = FirmwareInfo(fileType: DFUFirmwareType.application, version: version, hexFileUrl: hexFileUrl, iniFileUrl: iniFileUrl, boardName: boardName, isBeta: isBeta, minBootloaderVersion: minBootloaderVersion)
+        let releaseInfo = FirmwareInfo(fileType: UInt8(4) /*DFUFirmwareType.application*/, version: version, hexFileUrl: hexFileUrl, iniFileUrl: iniFileUrl, boardName: boardName, isBeta: isBeta, minBootloaderVersion: minBootloaderVersion)
         return releaseInfo
     }
     
-    private static func parseBootloaderNode(_ node: XML.Accessor, boardName: String, isBeta: Bool) -> BootloaderInfo? {
+    private static func parseBootloaderNode(_ node: XMLSubscriptResultIterator.Element, boardName: String, isBeta: Bool) -> BootloaderInfo? {
         let attributes = node.attributes
         let hexFile = attributes["hexfile"]
         let hexFileUrl =  hexFile != nil ? URL(string: hexFile!):nil
@@ -143,7 +141,7 @@ class ReleasesParser {
             return nil
         }
         
-        let bootloaderInfo = BootloaderInfo(fileType: DFUFirmwareType.bootloader, version: version, hexFileUrl: hexFileUrl, iniFileUrl: iniFileUrl, boardName: boardName, isBeta: isBeta)
+        let bootloaderInfo = BootloaderInfo(fileType: UInt8(2) /*DFUFirmwareType.bootloader*/, version: version, hexFileUrl: hexFileUrl, iniFileUrl: iniFileUrl, boardName: boardName, isBeta: isBeta)
         return bootloaderInfo
     }
 }
