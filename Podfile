@@ -16,6 +16,7 @@ target 'iOS' do
 	platform :ios, '9.0'
 	shared_pods
 	pod 'UIColor+Hex', '~> 1.0.1'
+    pod 'iOS-color-wheel' '~> '0.1'
     pod 'iOSDFULibrary'
 end
 

@@ -107,9 +107,8 @@ class FirmwareUpdater {
             return
         }
         
-        // DLog("Discover DIS Characteristics")
+        DLog("Discover DIS Characteristics")
         // Note: macOS seems to have problems discovering a specific set of characteristics, so nil is passed to discover all of them
-        DLog("Discover DIS characteristics")
         peripheral.discover(characteristicUuids: nil, service: disService) { [weak self] error in
             guard let strongSelf = self else { return }
 

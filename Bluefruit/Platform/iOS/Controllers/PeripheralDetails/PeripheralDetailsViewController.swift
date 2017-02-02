@@ -206,6 +206,14 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             uartViewController.tabBarItem.title = localizationManager.localizedString("uart_tab_title")      // Tab title
             uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
             viewControllers.append(uartViewController)
+            
+            
+            // Controller Tab
+            let controllerViewController = self.storyboard!.instantiateViewController(withIdentifier: "ControllerModeViewController") as! ControllerModeViewController
+            controllerViewController.blePeripheral = blePeripheral
+            controllerViewController.tabBarItem.title = localizationManager.localizedString("controller_tab_title")      // Tab title
+            controllerViewController.tabBarItem.image = UIImage(named: "tab_controller_icon")
+            viewControllers.append(controllerViewController)
         }
         
         // DFU Tab
@@ -260,7 +268,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                         
                         // Controller Tab
                         if Config.isControllerModuleEnabled {
-                            let controllerViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ControllerModuleViewController") as! ControllerModuleViewController
+                            let controllerViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ControllerModeViewController") as! ControllerModeViewController
                             
                             controllerViewController.tabBarItem.title = localizationManager.localizedString("controller_tab_title")      // Tab title
                             controllerViewController.tabBarItem.image = UIImage(named: "tab_controller_icon")

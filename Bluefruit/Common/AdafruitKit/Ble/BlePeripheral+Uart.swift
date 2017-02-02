@@ -84,20 +84,33 @@ extension BlePeripheral {
                 // Get characteristic info
                 self.uartRxCharacteristic = characteristic
                 
-                // Enable notifications
-                self.setNotify(for: characteristic, enabled: true, handler: { (error) in
-                    
+                
+                // Prepare notification handler
+                let notifyHandler: ((Error?) -> Void)? = { error in
                     let value = characteristic.value
                     if let value = value, BlePeripheral.kDebugLog == true, error == nil {
                         UartLogManager.log(data: value, type: .uartRx)
                     }
                     
                     uartRxHandler?(value, error)
-                }, completion: { error in
-                    completion?(error != nil ? error : (characteristic.isNotifying ? nil : UartError.enableNotifyFailed))
-                })
+                }
+                
+                // Enable notifications
+                if !characteristic.isNotifying {
+                    self.setNotify(for: characteristic, enabled: true, handler: notifyHandler, completion: { error in
+                        completion?(error != nil ? error : (characteristic.isNotifying ? nil : UartError.enableNotifyFailed))
+                    })
+                }
+                else {
+                    self.updateNotifyHandler(for: characteristic, handler: notifyHandler)
+                    completion?(nil)
+                }
             }
         }
+    }
+    
+    func isUartEnabled() -> Bool {
+        return uartRxCharacteristic != nil && uartTxCharacteristic != nil && uartTxCharacteristicWriteType != nil && uartRxCharacteristic!.isNotifying
     }
     
     func uartDisable() {
@@ -109,7 +122,7 @@ extension BlePeripheral {
         }
         
         // Disable notify
-        guard let characteristic = uartRxCharacteristic else {
+        guard let characteristic = uartRxCharacteristic, characteristic.isNotifying else {
             return
         }
         
@@ -200,6 +213,8 @@ extension BlePeripheral {
     func hasUart() -> Bool {
         return peripheral.services?.first(where: {$0.uuid == BlePeripheral.kUartServiceUUID}) != nil
     }
+    
+   
 }
 
 // MARK: - Data + CRC

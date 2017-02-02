@@ -1,0 +1,6 @@
+framework module iOS_color_wheel {
+  umbrella header "iOS-color-wheel-umbrella.h"
+
+  export *
+  module * { export * }
+}

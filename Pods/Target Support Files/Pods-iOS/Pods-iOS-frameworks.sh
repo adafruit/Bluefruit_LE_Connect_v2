@@ -90,6 +90,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyXML-iOS/SwiftyXML.framework"
   install_framework "$BUILT_PRODUCTS_DIR/UIColor+Hex/UIColor_Hex.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Zip/Zip.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/iOS-color-wheel/iOS_color_wheel.framework"
   install_framework "$BUILT_PRODUCTS_DIR/iOSDFULibrary/iOSDFULibrary.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -99,5 +100,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyXML-iOS/SwiftyXML.framework"
   install_framework "$BUILT_PRODUCTS_DIR/UIColor+Hex/UIColor_Hex.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Zip/Zip.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/iOS-color-wheel/iOS_color_wheel.framework"
   install_framework "$BUILT_PRODUCTS_DIR/iOSDFULibrary/iOSDFULibrary.framework"
 fi

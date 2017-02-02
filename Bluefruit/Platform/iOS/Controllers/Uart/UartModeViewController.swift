@@ -54,7 +54,7 @@ class UartModeViewController: PeripheralModeViewController {
         case bin = "bin"
     }
     
-    fileprivate var uartData: UartPacketManager!// = UartPacketManager(delegate: self)
+    fileprivate var uartData: UartPacketManager!
     fileprivate var txColor = Preferences.uartSentDataColor
     fileprivate var rxColor = Preferences.uartReceveivedDataColor
     fileprivate let timestampDateFormatter = DateFormatter()
@@ -190,7 +190,7 @@ class UartModeViewController: PeripheralModeViewController {
                     })
                     return
                 }
-                
+
                 // Done
                 DLog("Uart enabled")
                 context.updateUartReadyUI(isReady: true)
@@ -206,12 +206,17 @@ class UartModeViewController: PeripheralModeViewController {
     }
 
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        registerNotifications(enabled: false)
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        baseTableView.enh_cancelPendingReload()
         
-        registerNotifications(enabled: false)
+        baseTableView.enh_cancelPendingReload()
     }
 
     override func didReceiveMemoryWarning() {

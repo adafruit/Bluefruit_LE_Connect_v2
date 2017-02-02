@@ -233,6 +233,16 @@ class BlePeripheral: NSObject {
         commandQueue.append(command)
     }
     
+    func updateNotifyHandler(for characteristic: CBCharacteristic, handler: ((Error?) -> Void)? = nil) {
+        let identifier = handlerIdentifier(from: characteristic)
+        if notifyHandlers[identifier] != nil {
+            notifyHandlers[identifier] = handler
+        }
+        else {
+            DLog("Warning: trying to update inexistent notifyHanlder")
+        }
+    }
+    
     func readCharacteristic(_ characteristic: CBCharacteristic, completion readCompletion: @escaping CapturedReadCompletionHandler) {
         let command = BleCommand(type: .readCharacteristic, parameters: [characteristic, readCompletion as Any], completion: nil)
         commandQueue.append(command)
@@ -368,6 +378,7 @@ class BlePeripheral: NSObject {
         
         // Discover remaining uuids
         if discoverAll || characteristicUuids != nil {
+            DLog("discover all characteristics for \(service.uuid.uuidString)")
             peripheral.discoverCharacteristics(characteristicUuids, for: service)
         }
         else {
@@ -454,7 +465,7 @@ extension BlePeripheral: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        DLog("didDiscoverCharacteristicsFor")
+        DLog("didDiscoverCharacteristicsFor: \(service.uuid.uuidString)")
         finishedExecutingCommand(error: error)
     }
     

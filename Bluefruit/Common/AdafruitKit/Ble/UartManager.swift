@@ -12,7 +12,7 @@ protocol UartDelegate: class {
     func onUartRx(data: Data)
 }
 
-// TODO: make this class use Generics so that the data type can be changed
+// Basic Uart Managemnet. Use it to cache all data received and help parsint it
 class UartManager {
     
     // Data
@@ -24,10 +24,10 @@ class UartManager {
         }
     }
     weak var delegate: UartDelegate?
-    fileprivate var cachedRxData = Data()
-    fileprivate var cachedRxDataSemaphore = DispatchSemaphore(value: 1)
+    fileprivate var rxData = Data()
+    fileprivate var rxDataSemaphore = DispatchSemaphore(value: 1)
     
-    init(delegate: UartDelegate) {
+    init(delegate: UartDelegate?) {
         self.delegate = delegate
         
         enabled = true
@@ -53,11 +53,16 @@ class UartManager {
         clearRxCache()
     }
     
+    // MARK: - Send data
+    func send(blePeripheral: BlePeripheral, data: Data?, completion: ((Error?) -> Void)? = nil) {
+        blePeripheral.uartSend(data: data, completion: completion)
+    }
+    
     // MARK: - Received data
-    func uartRxDataReceived(data: Data?, error: Error?) {
+    func rxDataReceived(data: Data?, error: Error?) {
         
         guard error == nil else {
-            DLog("uartRxDataReceived error: \(error!)")
+            DLog("rxDataReceived error: \(error!)")
             return
         }
         
@@ -65,24 +70,24 @@ class UartManager {
             return
         }
         
-        cachedRxDataSemaphore.wait()            // don't append more data, till the delegate has finished processing it
-        cachedRxData.append(data)
+        rxDataSemaphore.wait()            // don't append more data, till the delegate has finished processing it
+        rxData.append(data)
         
         // Send data to delegate
-        delegate?.onUartRx(data: cachedRxData)
+        delegate?.onUartRx(data: rxData)
         
         //DLog("cachedRxData: \(cachedRxData.count)")
         
-        cachedRxDataSemaphore.signal()
+        rxDataSemaphore.signal()
     }
     
     func clearRxCache() {
-        cachedRxData.removeAll()
+        rxData.removeAll()
     }
     
     func removeRxCacheFirst(n: Int) {
-        if n <= cachedRxData.count {
-            cachedRxData.removeFirst(n)
+        if n <= rxData.count {
+            rxData.removeFirst(n)
         }
         else {
             clearRxCache()
@@ -90,10 +95,10 @@ class UartManager {
     }
     
     func flushRxCache() {
-        if cachedRxData.count > 0 {
-            cachedRxDataSemaphore.wait()
-            delegate?.onUartRx(data: cachedRxData)
-            cachedRxDataSemaphore.signal()
+        if rxData.count > 0 {
+            rxDataSemaphore.wait()
+            delegate?.onUartRx(data: rxData)
+            rxDataSemaphore.signal()
         }
     }
 }

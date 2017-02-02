@@ -82,7 +82,6 @@ class UartPacketManager {
                 sentBytes += data.count
                 packets.append(uartPacket)
                 packetsSemaphore.signal()
-
             }
         }
     }
@@ -129,16 +128,6 @@ class UartPacketManager {
     func clearPacketsCache() {
         packets.removeAll()
     }
-    
-    /*
-    func removeRxCacheFirst(n: Int) {
-        if n <= packets.count {
-            packets.removeFirst(n)
-        }
-        else {
-            clearRxCache()
-        }
-    }*/
         
     func packetsCache() -> [UartPacket] {
         return packets

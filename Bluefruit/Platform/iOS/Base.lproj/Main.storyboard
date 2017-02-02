@@ -1577,7 +1577,7 @@
         <!--Controller-->
         <scene sceneID="KTW-R3-VSd">
             <objects>
-                <viewController storyboardIdentifier="ControllerModuleViewController" id="7nD-Qw-AsN" customClass="ControllerModuleViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ControllerModeViewController" id="7nD-Qw-AsN" customClass="ControllerModeViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="c3p-5r-6T2"/>
                         <viewControllerLayoutGuide type="bottom" id="eje-sL-so2"/>
@@ -3534,6 +3534,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Peripherals" id="qMW-AH-yIG">
+                        <barButtonItem key="backBarButtonItem" title="Disconnect" id="Uhk-EF-ls1"/>
                         <barButtonItem key="rightBarButtonItem" image="info_icon" id="hlq-Ac-NuC">
                             <connections>
                                 <action selector="onClickInfo:" destination="DSy-Yb-eRw" id="fyc-PY-lid"/>
