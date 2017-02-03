@@ -53,8 +53,9 @@ class ControllerModuleManager : NSObject {
     
     private var pollInterval: TimeInterval = 1        // in seconds
     
-    init(blePeripheral: BlePeripheral) {
+    init(blePeripheral: BlePeripheral, delegate: ControllerModuleManagerDelegate) {
         self.blePeripheral = blePeripheral
+        self.delegate = delegate
         super.init()        
         
         // Setup Location Manager

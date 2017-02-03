@@ -207,6 +207,12 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
             viewControllers.append(uartViewController)
             
+            // PinIO
+            let pinioViewController = self.storyboard!.instantiateViewController(withIdentifier: "PinIOModeViewController") as! PinIOModeViewController
+            pinioViewController.blePeripheral = blePeripheral
+            pinioViewController.tabBarItem.title = localizationManager.localizedString("pinio_tab_title")      // Tab title
+            pinioViewController.tabBarItem.image = UIImage(named: "tab_pinio_icon")
+            viewControllers.append(pinioViewController)
             
             // Controller Tab
             let controllerViewController = self.storyboard!.instantiateViewController(withIdentifier: "ControllerModeViewController") as! ControllerModeViewController
@@ -258,7 +264,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                         
                         // PinIO
                         if Config.isPinIOModuleEnabled {
-                            let pinioViewController = self.storyboard!.instantiateViewControllerWithIdentifier("PinIOModuleViewController") as! PinIOModuleViewController
+                            let pinioViewController = self.storyboard!.instantiateViewControllerWithIdentifier("PinIOModeViewController") as! PinIOModeViewController
                             
                             pinioViewController.tabBarItem.title = localizationManager.localizedString("pinio_tab_title")      // Tab title
                             pinioViewController.tabBarItem.image = UIImage(named: "tab_pinio_icon")

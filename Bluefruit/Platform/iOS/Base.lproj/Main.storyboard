@@ -1747,7 +1747,7 @@
         <!--Pin I/O-->
         <scene sceneID="gkv-DK-sWO">
             <objects>
-                <viewController storyboardIdentifier="PinIOModuleViewController" id="75Z-zZ-8DR" customClass="PinIOModuleViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PinIOModeViewController" id="75Z-zZ-8DR" customClass="PinIOModeViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DfH-fj-KIw"/>
                         <viewControllerLayoutGuide type="bottom" id="orT-fI-eSQ"/>
@@ -1928,7 +1928,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hfz-gl-mKi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1126" y="1960"/>
+            <point key="canvasLocation" x="1084" y="1936"/>
         </scene>
         <!--NeoPixel-->
         <scene sceneID="KPI-Mt-xHk">
@@ -2225,7 +2225,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1127" y="2658"/>
+            <point key="canvasLocation" x="1084" y="2637"/>
         </scene>
         <!--Control Pad-->
         <scene sceneID="gi7-A2-U8X">

@@ -17,6 +17,11 @@
 		A90798311E438E60005470A5 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798301E438E60005470A5 /* GradientView.swift */; };
 		A90798331E439508005470A5 /* HexColorConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798321E439508005470A5 /* HexColorConversions.swift */; };
 		A90798341E439583005470A5 /* HexColorConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798321E439508005470A5 /* HexColorConversions.swift */; };
+		A90798361E439DB9005470A5 /* PinIOModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798351E439DB9005470A5 /* PinIOModuleManager.swift */; };
+		A90798371E439DBC005470A5 /* PinIOModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798351E439DB9005470A5 /* PinIOModuleManager.swift */; };
+		A90798381E439DC2005470A5 /* ControllerModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378711E43479400170319 /* ControllerModuleManager.swift */; };
+		A907983C1E43A4DA005470A5 /* PinIOModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A907983A1E43A4DA005470A5 /* PinIOModuleViewController.swift */; };
+		A907983D1E43A4DA005470A5 /* PinIOTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A907983B1E43A4DA005470A5 /* PinIOTableViewCell.swift */; };
 		A90C79741E40CB150076E8AD /* EmptyDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79721E40CB150076E8AD /* EmptyDetailsViewController.swift */; };
 		A90C79751E40CB150076E8AD /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79731E40CB150076E8AD /* HelpViewController.swift */; };
 		A90C79781E40CBFA0076E8AD /* InfoModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */; };
@@ -138,6 +143,9 @@
 		A90798281E4349D6005470A5 /* ControllerSensorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerSensorTableViewCell.swift; sourceTree = "<group>"; };
 		A90798301E438E60005470A5 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		A90798321E439508005470A5 /* HexColorConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexColorConversions.swift; sourceTree = "<group>"; };
+		A90798351E439DB9005470A5 /* PinIOModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinIOModuleManager.swift; sourceTree = "<group>"; };
+		A907983A1E43A4DA005470A5 /* PinIOModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinIOModuleViewController.swift; sourceTree = "<group>"; };
+		A907983B1E43A4DA005470A5 /* PinIOTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinIOTableViewCell.swift; sourceTree = "<group>"; };
 		A90C79721E40CB150076E8AD /* EmptyDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyDetailsViewController.swift; sourceTree = "<group>"; };
 		A90C79731E40CB150076E8AD /* HelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModuleManager.swift; sourceTree = "<group>"; };
@@ -280,6 +288,15 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		A90798391E43A4DA005470A5 /* PinIO */ = {
+			isa = PBXGroup;
+			children = (
+				A907983A1E43A4DA005470A5 /* PinIOModuleViewController.swift */,
+				A907983B1E43A4DA005470A5 /* PinIOTableViewCell.swift */,
+			);
+			path = PinIO;
+			sourceTree = "<group>";
+		};
 		A90C79761E40CBFA0076E8AD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
@@ -287,6 +304,7 @@
 				A91E7D561E4178E700DE90C6 /* UartPacket.swift */,
 				A91E7D581E420E2400DE90C6 /* UartPacketManager.swift */,
 				A98378711E43479400170319 /* ControllerModuleManager.swift */,
+				A90798351E439DB9005470A5 /* PinIOModuleManager.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -359,6 +377,7 @@
 				A9BAD20F1E3FC6CA0021DFA9 /* Info */,
 				A94A219E1E417271006A5F33 /* Uart */,
 				A90798231E4349D6005470A5 /* Controller */,
+				A90798391E43A4DA005470A5 /* PinIO */,
 				A98378151E42A96400170319 /* Dfu */,
 			);
 			path = Controllers;
@@ -859,7 +878,9 @@
 				A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */,
 				A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */,
 				A9D2343A1E3AD70300DC0C99 /* FilterTextSettingsViewController.swift in Sources */,
+				A907983C1E43A4DA005470A5 /* PinIOModuleViewController.swift in Sources */,
 				A9D2345C1E3AE06D00DC0C99 /* LocalizationManager.swift in Sources */,
+				A907983D1E43A4DA005470A5 /* PinIOTableViewCell.swift in Sources */,
 				A9286CD61E3A9B22008E5F81 /* AlertHelper.swift in Sources */,
 				A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */,
 				A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */,
@@ -901,6 +922,7 @@
 				A9286CDE1E3A9C98008E5F81 /* CocoaCompatibility.swift in Sources */,
 				A9D2343C1E3AD70300DC0C99 /* PeripheralTableViewCell.swift in Sources */,
 				A969466D1E3CD0CC00BA8DAA /* StyledButton.swift in Sources */,
+				A90798361E439DB9005470A5 /* PinIOModuleManager.swift in Sources */,
 				A983786E1E43422100170319 /* MqttSettingsHeaderCell.swift in Sources */,
 				A9BAD2131E3FC6CA0021DFA9 /* InfoModeViewController.swift in Sources */,
 				A98378091E422C4B00170319 /* NSObject+ENHThrottledReloading.m in Sources */,
@@ -933,6 +955,7 @@
 				A983783A1E42BFF900170319 /* AppDelegate.swift in Sources */,
 				A98378541E42C11400170319 /* LogHelper.swift in Sources */,
 				A98378581E42C52900170319 /* MqttSettings.swift in Sources */,
+				A90798371E439DBC005470A5 /* PinIOModuleManager.swift in Sources */,
 				A98378641E42C79F00170319 /* SeparatorView.swift in Sources */,
 				A983784D1E42C11000170319 /* UartLogManager.swift in Sources */,
 				A98378401E42C10600170319 /* FirmwareUpdater.swift in Sources */,
@@ -942,6 +965,7 @@
 				A98378461E42C10C00170319 /* UartPacket.swift in Sources */,
 				A98378421E42C10600170319 /* DfuUpdateProcess.swift in Sources */,
 				A98378451E42C10C00170319 /* InfoModuleManager.swift in Sources */,
+				A90798381E439DC2005470A5 /* ControllerModuleManager.swift in Sources */,
 				A983784C1E42C11000170319 /* BleUUIDNames.swift in Sources */,
 				A98378511E42C11400170319 /* DataConversions.swift in Sources */,
 				A98378571E42C52900170319 /* MqttManager.swift in Sources */,

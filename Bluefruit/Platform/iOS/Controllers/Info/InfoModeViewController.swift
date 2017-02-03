@@ -132,19 +132,19 @@ class InfoModeViewController: PeripheralModeViewController {
             return
         }
         // let invalidatedServices =  notification.userInfo?[BlePeripheral.NotificationUserInfoKey.invalidatedServices.rawValue] as? [CBService]
-        DLog("centralManager didModifyServices: \(selectedPeripheral.name ?? "<unknown>")")
+        DLog("info didModifyServices: \(selectedPeripheral.name ?? "<unknown>")")
         
         DispatchQueue.main.async { [weak self] in
+            self?.blePeripheral?.reset()
             self?.discoverServices()
         }
     }
-
     
     // MARK: - Services
     private func discoverServices() {
         guard isDiscoveringServices == false else {
             DLog("warning: call to discoverServices while services discovery in process")
-            return;
+            return
         }
         
         isDiscoveringServices = true
@@ -250,7 +250,7 @@ class InfoModeViewController: PeripheralModeViewController {
         if let descriptors = characteristic.descriptors {
             for descriptor in descriptors {
                 
-                let isAForbiddenCCCD = descriptor.uuid == InfoModeViewController.kForbiddenDescriptorUUID && (characteristic.uuid == BlePeripheral.kUartServiceUUID || characteristic.uuid == InfoModeViewController.kDfuControlPointCharacteristicUUID)
+                let isAForbiddenCCCD = descriptor.uuid == InfoModeViewController.kForbiddenDescriptorUUID && (characteristic.uuid == BlePeripheral.kUartRxCharacteristicUUID || characteristic.uuid == InfoModeViewController.kDfuControlPointCharacteristicUUID)
                 if InfoModeViewController.kReadForbiddenCCCD || !isAForbiddenCCCD {
                     valuesToRead += 1
                     blePeripheral?.readDescriptor(descriptor) { [weak self] (data, error) in

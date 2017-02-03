@@ -50,7 +50,7 @@ class BlePeripheral: NSObject {
             return advertisementData[CBAdvertisementDataLocalNameKey] as? String
         }
         var manufacturerString: String? {
-            guard let manufacturerData = advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data else {return nil}
+            guard let manufacturerData = advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data else { return nil }
             return String(data: manufacturerData, encoding: .utf8)
         }
         

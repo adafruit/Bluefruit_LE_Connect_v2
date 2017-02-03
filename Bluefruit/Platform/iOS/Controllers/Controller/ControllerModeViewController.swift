@@ -27,12 +27,10 @@ class ControllerModeViewController: PeripheralModeViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        assert(blePeripheral != nil)
-        controllerData = ControllerModuleManager(blePeripheral: blePeripheral!)
-        
         // Init
-        controllerData.delegate = self
-
+        assert(blePeripheral != nil)
+        controllerData = ControllerModuleManager(blePeripheral: blePeripheral!, delegate: self)
+        
         // Setup table
         baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
         updateUartUI(isReady: false)
@@ -363,7 +361,6 @@ extension ControllerModeViewController : UITableViewDelegate {
 
 // MARK: - ControllerModuleManagerDelegate
 extension ControllerModeViewController: ControllerModuleManagerDelegate {
-    
     func onControllerUartIsReady(error: Error?) {
         DispatchQueue.main.async { [weak self] in
             guard let context = self else {
@@ -385,6 +382,7 @@ extension ControllerModeViewController: ControllerModuleManagerDelegate {
                 return
             }
             
+            // Uart Ready
             context.baseTableView.reloadData()
         }
     }
