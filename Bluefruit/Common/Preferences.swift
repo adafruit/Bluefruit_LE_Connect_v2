@@ -28,7 +28,7 @@ import Foundation
     fileprivate static let scanFilterIsUnnamedEnabledKey = "ScanFilterIsUnnamedEnabled"
     fileprivate static let scanFilterIsOnlyWithUartEnabledKey = "ScanFilterIsOnlyWithUartEnabled"
     
-    fileprivate static let scanMultiConnectIsPanelOpenKey = "ScanMultiConnectIsPanelOpenKey"
+  //  fileprivate static let scanMultiConnectIsPanelOpenKey = "ScanMultiConnectIsPanelOpenKey"
     
     fileprivate static let updateServerUrlKey = "UpdateServerUrl"
     fileprivate static let updateShowBetaVersionsKey = "UpdateShowBetaVersions"
@@ -124,7 +124,7 @@ import Foundation
             setBoolPreference(Preferences.scanFilterIsOnlyWithUartEnabledKey, newValue: newValue)
         }
     }
-    
+    /*
     // MARK: - Scanning MultiConnect
     static var scanMultiConnectIsPanelOpen: Bool {
         get {
@@ -134,7 +134,7 @@ import Foundation
             setBoolPreference(Preferences.scanMultiConnectIsPanelOpenKey, newValue: newValue)
         }
     }
-    
+    */
     
     // MARK: - Firmware Updates
     static var updateServerUrl: URL? {

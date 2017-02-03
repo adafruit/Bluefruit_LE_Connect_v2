@@ -15,6 +15,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     enum ModuleController {
         case info
         case update
+        case multiUart
     }
     
     weak var blePeripheral: BlePeripheral?
@@ -22,7 +23,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     
     // Data
     private var emptyViewController: EmptyDetailsViewController!
-//    private let firmwareUpdater = FirmwareUpdater()
     private var dfuTabIndex = -1
     
     override func viewDidLoad() {
@@ -38,8 +38,10 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
 
         //
         if let _ = blePeripheral {
-            //didConnect(peripheral: blePeripheral)
             setupConnectedPeripheral()
+        }
+        else if startingController == .multiUart {
+            setupMultiUart()
         }
         else {
             let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
@@ -93,10 +95,17 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     }
     
     func willConnectToPeripheral(notification: Notification) {
-        showEmpty(true)
-        emptyViewController.setConnecting(true)
+        
+        if isInMultiUartMode() {
+            
+        }
+        else {
+            showEmpty(true)
+            emptyViewController.setConnecting(true)
+        }
     }
     
+    /*
     func didConnectToPeripheral(notification: Notification) {
 
         guard let connectedPeripheral = BleManager.sharedInstance.peripheral(from: notification) else {
@@ -111,14 +120,16 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                 // UI
         showEmpty(false)
     }
+ */
     
     func willDisconnectFromPeripheral(notification: Notification) {
         DLog("detail: peripheral willDisconnect")
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
         if isFullScreen {       // executed when bluetooth is stopped
+            
             // Back to peripheral list
             if let parentNavigationController = (self.navigationController?.parent as? UINavigationController) {
-                parentNavigationController.popToRootViewController(animated: true)
+                    parentNavigationController.popToRootViewController(animated: true)
             }
         }
         else {
@@ -147,7 +158,10 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                 let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
                 
                 if isFullScreen {
-                    self.goBackToPeripheralList()
+                    let shouldGoBackToMainMenu = !(self.isInMultiUartMode() && BleManager.sharedInstance.connectedPeripherals().count > 1)
+                    if shouldGoBackToMainMenu {
+                        self.goBackToPeripheralList()
+                    }
                 }
             })
             alertController.addAction(okAction)
@@ -156,6 +170,11 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         else {
             DLog("disconnection detected but cannot go to periperalList because there is a presentedViewController on screen")
         }
+    }
+    
+    // MARK: - MultiUart Mode
+    fileprivate func isInMultiUartMode() -> Bool {
+        return blePeripheral == nil && BleManager.sharedInstance.connectedPeripherals().count > 0
     }
     
     // MARK: - UI
@@ -200,7 +219,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         // Uart Modules
         let hasUart = blePeripheral.hasUart()
         if hasUart {
-            //Uart Tab
+            // Uart Tab
             let uartViewController = self.storyboard!.instantiateViewController(withIdentifier: "UartModeViewController") as! UartModeViewController
             uartViewController.blePeripheral = blePeripheral
             uartViewController.tabBarItem.title = localizationManager.localizedString("uart_tab_title")      // Tab title
@@ -222,11 +241,21 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             viewControllers.append(controllerViewController)
         }
         
-        // DFU Tab
-        setViewControllers(viewControllers, animated: false)
-        selectedIndex = 0
         let hasDFU = blePeripheral.peripheral.services?.first(where: {$0.uuid == FirmwareUpdater.kDfuServiceUUID}) != nil
-        if hasDFU {
+
+        // Neopixel Tab
+        if hasUart && hasDFU {
+            /*
+            let neopixelsViewController = self.storyboard!.instantiateViewControllerWithIdentifier("NeopixelModuleViewController") as! NeopixelModuleViewController
+            neopixelsViewController.blePeripheral = blePeripheral
+            neopixelsViewController.tabBarItem.title = localizationManager.localizedString("neopixels_tab_title")      // Tab title
+            neopixelsViewController.tabBarItem.image = UIImage(named: "tab_neopixel_icon")
+            viewControllers.append(neopixelsViewController)
+ */
+        }
+        
+        // DFU Tab
+       if hasDFU {
             let dfuViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuModeViewController") as! DfuModeViewController
             dfuViewController.blePeripheral = blePeripheral
             dfuViewController.tabBarItem.title = localizationManager.localizedString("dfu_tab_title")      // Tab title
@@ -238,95 +267,21 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         setViewControllers(viewControllers, animated: false)
         selectedIndex = 0
     }
-    /*
-    func servicesDiscovered() {
+    
+    fileprivate func setupMultiUart() {
+        let localizationManager = LocalizationManager.sharedInstance
+
+        hideTabBar(true)
+        // Uart Tab
+        let uartViewController = self.storyboard!.instantiateViewController(withIdentifier: "UartModeViewController") as! UartModeViewController
+        uartViewController.blePeripheral = nil
+        uartViewController.tabBarItem.title = localizationManager.localizedString("uart_tab_title")      // Tab title
+        uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
+
+        setViewControllers([uartViewController], animated: false)
+        selectedIndex = 0
         
-        DLog("PeripheralDetailsViewController servicesDiscovered")
-        if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
-            
-            if let services = blePeripheral.peripheral.services {
-                DispatchQueue.main.async { [unowned context] in
-                    
-                    let localizationManager = LocalizationManager.sharedInstance
-                    
-                    // Uart Modules
-                    let hasUart = blePeripheral.hasUart()
-                    var viewControllersToAppend: [UIViewController] = []
-                    if (hasUart) {
-                        // Uart Tab
-                        if Config.isUartModuleEnabled {
-                            let uartViewController = self.storyboard!.instantiateViewControllerWithIdentifier("UartModeViewController") as! UartModeViewController
-                            uartViewController.tabBarItem.title = localizationManager.localizedString("uart_tab_title")      // Tab title
-                            uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
-                            
-                            viewControllersToAppend.append(uartViewController)
-                        }
-                        
-                        // PinIO
-                        if Config.isPinIOModuleEnabled {
-                            let pinioViewController = self.storyboard!.instantiateViewControllerWithIdentifier("PinIOModeViewController") as! PinIOModeViewController
-                            
-                            pinioViewController.tabBarItem.title = localizationManager.localizedString("pinio_tab_title")      // Tab title
-                            pinioViewController.tabBarItem.image = UIImage(named: "tab_pinio_icon")
-                            
-                            viewControllersToAppend.append(pinioViewController)
-                        }
-                        
-                        // Controller Tab
-                        if Config.isControllerModuleEnabled {
-                            let controllerViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ControllerModeViewController") as! ControllerModeViewController
-                            
-                            controllerViewController.tabBarItem.title = localizationManager.localizedString("controller_tab_title")      // Tab title
-                            controllerViewController.tabBarItem.image = UIImage(named: "tab_controller_icon")
-                            
-                            viewControllersToAppend.append(controllerViewController)
-                        }
-                    }
-                    
-                    // DFU Tab
-                    let kNordicDeviceFirmwareUpdateService = "00001530-1212-EFDE-1523-785FEABCD123"    // DFU service UUID
-                    let hasDFU = services.contains({ (service : CBService) -> Bool in
-                        service.UUID.isEqual(CBUUID(string: kNordicDeviceFirmwareUpdateService))
-                    })
-                    
-                    if Config.isNeoPixelModuleEnabled && hasUart && hasDFU {        // Neopixel is not available on old boards (those without DFU)
-                        // Neopixel Tab
-                        let neopixelsViewController = self.storyboard!.instantiateViewControllerWithIdentifier("NeopixelModuleViewController") as! NeopixelModuleViewController
-                        
-                        neopixelsViewController.tabBarItem.title = localizationManager.localizedString("neopixels_tab_title")      // Tab title
-                        neopixelsViewController.tabBarItem.image = UIImage(named: "tab_neopixel_icon")
-                        
-                        viewControllersToAppend.append(neopixelsViewController)
-                    }
-                    
-                    if (hasDFU) {
-                        if Config.isDfuModuleEnabled {
-                            let dfuViewController = self.storyboard!.instantiateViewControllerWithIdentifier("DfuModuleViewController") as! DfuModuleViewController
-                            dfuViewController.tabBarItem.title = localizationManager.localizedString("dfu_tab_title")      // Tab title
-                            dfuViewController.tabBarItem.image = UIImage(named: "tab_dfu_icon")
-                            viewControllersToAppend.append(dfuViewController)
-                            self.dfuTabIndex = viewControllersToAppend.count         // don't -1 because index is always present and adds 1 to the index
-                        }
-                    }
-                    
-                    // Add tabs
-                    if self.viewControllers != nil {
-                        let numViewControllers = self.viewControllers!.count
-                        if  numViewControllers > 1 {      // if we already have viewcontrollers, remove all except info (to avoud duplicates)
-                            self.viewControllers!.removeSubrange(Range(1..<numViewControllers))
-                        }
-                        
-                        // Append viewcontrollers (do it here all together to avoid deleting/creating addchilviewcontrollers)
-                        if viewControllersToAppend.count > 0 {
-                            self.viewControllers!.append(contentsOf: viewControllersToAppend)
-                        }
-                    }
-                    
-                }
-            }
-        }
     }
-     */
 
     fileprivate func updateRssiUI() {
         /*

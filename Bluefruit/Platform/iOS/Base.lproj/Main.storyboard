@@ -771,7 +771,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="je5-oH-DJF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="985" y="-174"/>
+            <point key="canvasLocation" x="1698" y="-166"/>
         </scene>
         <!--Uart Settings View Controller-->
         <scene sceneID="iKe-YH-2db">
@@ -899,7 +899,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="REH-Bk-13i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2282" y="-177"/>
+            <point key="canvasLocation" x="2995" y="-169"/>
         </scene>
         <!--Uart Mqtt Settings View Controller-->
         <scene sceneID="k1T-mf-DQQ">
@@ -1187,7 +1187,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4g5-9d-jjP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3206" y="-179"/>
+            <point key="canvasLocation" x="3919" y="-171"/>
         </scene>
         <!--Dfu Dialog View Controller-->
         <scene sceneID="XHG-F4-i04">
@@ -1271,7 +1271,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gnD-RA-0Tp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2474" y="514"/>
+            <point key="canvasLocation" x="2726" y="537"/>
         </scene>
         <!--Dfu Files Picker Dialog View Controller-->
         <scene sceneID="MVa-5a-7Xt">
@@ -1480,7 +1480,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N19-6p-c2o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1797" y="520"/>
+            <point key="canvasLocation" x="2049" y="543"/>
         </scene>
         <!--Dfu-->
         <scene sceneID="Yvj-wv-Nd0">
@@ -1572,7 +1572,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jAZ-zk-tbP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1085" y="520"/>
+            <point key="canvasLocation" x="1337" y="543"/>
         </scene>
         <!--Controller-->
         <scene sceneID="KTW-R3-VSd">
@@ -1742,7 +1742,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7K7-H1-Agz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1085" y="1227"/>
+            <point key="canvasLocation" x="1337" y="1250"/>
         </scene>
         <!--Pin I/O-->
         <scene sceneID="gkv-DK-sWO">
@@ -1928,7 +1928,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hfz-gl-mKi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1084" y="1936"/>
+            <point key="canvasLocation" x="1337" y="1959"/>
         </scene>
         <!--NeoPixel-->
         <scene sceneID="KPI-Mt-xHk">
@@ -2225,7 +2225,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1084" y="2637"/>
+            <point key="canvasLocation" x="1337" y="2660"/>
         </scene>
         <!--Control Pad-->
         <scene sceneID="gi7-A2-U8X">
@@ -2377,7 +2377,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9EJ-Tt-yZK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1797" y="1227"/>
+            <point key="canvasLocation" x="2049" y="1250"/>
         </scene>
         <!--Color Picker-->
         <scene sceneID="Jm5-Yn-Fap">
@@ -2519,7 +2519,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZYf-x6-YQ1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2474" y="1227"/>
+            <point key="canvasLocation" x="2726" y="1250"/>
         </scene>
         <!--Color Picker-->
         <scene sceneID="6tL-cg-cmp">
@@ -2653,7 +2653,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r2W-T8-ZXW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2088" y="3576"/>
+            <point key="canvasLocation" x="2341" y="3599"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pA4-S0-V5F">
@@ -3153,18 +3153,18 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WId-Vy-NnS">
-                                        <rect key="frame" x="26" y="49" width="339" height="32"/>
+                                        <rect key="frame" x="26" y="49" width="333" height="32"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connected to X devices" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ETU-JJ-eAf">
-                                                <rect key="frame" x="0.0" y="0.0" width="269" height="32"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="256" height="32"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W25-RG-Geg" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                                <rect key="frame" x="269" y="0.0" width="70" height="32"/>
+                                                <rect key="frame" x="256" y="0.0" width="77" height="32"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="70" id="pSs-Pe-bOA"/>
+                                                    <constraint firstAttribute="width" constant="77" id="pSs-Pe-bOA"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="8" maxX="0.0" maxY="8"/>
@@ -3182,7 +3182,7 @@
                                     <constraint firstItem="WId-Vy-NnS" firstAttribute="leading" secondItem="k3p-Dk-GnP" secondAttribute="leading" id="F4T-iv-dzZ"/>
                                     <constraint firstAttribute="height" constant="90" id="V7x-gy-fOg"/>
                                     <constraint firstItem="raW-2B-d6n" firstAttribute="top" secondItem="6vD-iG-Z0B" secondAttribute="bottom" id="VWl-He-5iy"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="WId-Vy-NnS" secondAttribute="trailing" constant="2" id="XmS-iY-X2P"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="WId-Vy-NnS" secondAttribute="trailing" constant="8" id="XmS-iY-X2P"/>
                                     <constraint firstItem="6vD-iG-Z0B" firstAttribute="leading" secondItem="VRw-K6-EeU" secondAttribute="leading" id="hgf-Fn-3hK"/>
                                     <constraint firstAttribute="trailing" secondItem="raW-2B-d6n" secondAttribute="trailing" id="jAF-V5-fmH"/>
                                     <constraint firstItem="6vD-iG-Z0B" firstAttribute="top" secondItem="VRw-K6-EeU" secondAttribute="top" id="jBC-ij-ef7"/>
@@ -3217,16 +3217,16 @@
                                                                     <rect key="frame" x="0.0" y="11.5" width="24" height="21"/>
                                                                 </imageView>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ZKb-QM-bgD">
-                                                                    <rect key="frame" x="32" y="4" width="235" height="36.5"/>
+                                                                    <rect key="frame" x="32" y="4" width="228" height="36.5"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3oh-ZE-6qf">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="235" height="20.5"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="228" height="20.5"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGo-ue-Wed">
-                                                                            <rect key="frame" x="0.0" y="20.5" width="235" height="16"/>
+                                                                            <rect key="frame" x="0.0" y="20.5" width="228" height="16"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <nil key="highlightedColor"/>
@@ -3234,10 +3234,10 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="cb6-qd-laT">
-                                                                    <rect key="frame" x="275" y="6" width="70" height="32"/>
+                                                                    <rect key="frame" x="268" y="6" width="77" height="32"/>
                                                                     <subviews>
                                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AJz-ce-Oin" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="70" height="32"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="77" height="32"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="32" id="5UU-WC-3if"/>
                                                                                 <constraint firstAttribute="width" constant="44" id="Xol-ZA-O2z"/>
@@ -3259,7 +3259,7 @@
                                                                             </connections>
                                                                         </button>
                                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XVx-Pc-pIF" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="70" height="32"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="77" height="32"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                             <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="4" maxY="0.0"/>
                                                                             <state key="normal" title="Connect"/>
@@ -3273,7 +3273,7 @@
                                                                         <constraint firstAttribute="bottom" secondItem="AJz-ce-Oin" secondAttribute="bottom" id="5zL-pK-VKd"/>
                                                                         <constraint firstItem="XVx-Pc-pIF" firstAttribute="height" secondItem="AJz-ce-Oin" secondAttribute="height" id="Bng-UY-pPa"/>
                                                                         <constraint firstAttribute="trailing" secondItem="AJz-ce-Oin" secondAttribute="trailing" id="JH6-Mf-HGg"/>
-                                                                        <constraint firstAttribute="width" constant="70" id="LWf-kR-aUl"/>
+                                                                        <constraint firstAttribute="width" constant="77" id="JVc-4j-VdY"/>
                                                                         <constraint firstItem="AJz-ce-Oin" firstAttribute="top" secondItem="cb6-qd-laT" secondAttribute="top" id="PoX-iD-nJf"/>
                                                                         <constraint firstItem="XVx-Pc-pIF" firstAttribute="top" secondItem="cb6-qd-laT" secondAttribute="top" id="a5t-Kp-DMq"/>
                                                                         <constraint firstAttribute="trailing" secondItem="XVx-Pc-pIF" secondAttribute="trailing" id="iNb-7M-tY9"/>
@@ -3592,6 +3592,7 @@
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES"/>
                         </segue>
                         <segue destination="I0M-cK-a98" kind="showDetail" identifier="showUpdateSegue" id="07L-ho-Fmg"/>
+                        <segue destination="I0M-cK-a98" kind="showDetail" identifier="showMultiUartSegue" id="a39-BF-zYo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bKZ-RS-hx1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3733,7 +3734,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VuW-dL-20s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2322" y="2224"/>
+            <point key="canvasLocation" x="2574" y="2247"/>
         </scene>
         <!--Neopixel Board Selector View Controller-->
         <scene sceneID="dbl-VQ-cry">
@@ -3787,7 +3788,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bRA-Hk-NOQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2318" y="2821"/>
+            <point key="canvasLocation" x="2570" y="2844"/>
         </scene>
     </scenes>
     <resources>
@@ -3813,7 +3814,7 @@
         <image name="tab_info_icon" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="qyy-E6-KXR"/>
+        <segue reference="a39-BF-zYo"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.088944101233392275" green="0.57494231631791248" blue="0.99607843137254903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

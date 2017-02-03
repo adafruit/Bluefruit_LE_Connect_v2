@@ -66,8 +66,6 @@ class UartModeViewController: PeripheralModeViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        assert(blePeripheral != nil)
-
         // Title
         let localizationManager = LocalizationManager.sharedInstance
         let name = blePeripheral?.name ?? localizationManager.localizedString("peripherallist_unnamed")
@@ -113,15 +111,17 @@ class UartModeViewController: PeripheralModeViewController {
             inputControlsStackView.isHidden = true
         }
         
-         // Mqtt init
-         mqttBarButtonItemImageView = UIImageView(image: UIImage(named: "mqtt_disconnected")!.tintWithColor(self.view.tintColor))      // use a uiimageview as custom barbuttonitem to allow frame animations
-         mqttBarButtonItemImageView!.tintColor = self.view.tintColor
-         mqttBarButtonItemImageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(UartModeViewController.onClickMqtt)))
-        
-        let mqttManager = MqttManager.sharedInstance
-        if MqttSettings.sharedInstance.isConnected {
-            mqttManager.delegate = self
-            mqttManager.connectFromSavedSettings()
+        if !isInMultiUartMode() {
+            // Mqtt init
+            mqttBarButtonItemImageView = UIImageView(image: UIImage(named: "mqtt_disconnected")!.tintWithColor(self.view.tintColor))      // use a uiimageview as custom barbuttonitem to allow frame animations
+            mqttBarButtonItemImageView!.tintColor = self.view.tintColor
+            mqttBarButtonItemImageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(UartModeViewController.onClickMqtt)))
+            
+            let mqttManager = MqttManager.sharedInstance
+            if MqttSettings.sharedInstance.isConnected {
+                mqttManager.delegate = self
+                mqttManager.connectFromSavedSettings()
+            }
         }
         
         // Init Uarts
@@ -150,13 +150,17 @@ class UartModeViewController: PeripheralModeViewController {
                 rightButtonItems.remove(at: 0)
                 
                 // Add mqtt bar item
-                mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
-                rightButtonItems.append(mqttBarButtonItem)
+                if !isInMultiUartMode() {
+                    mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
+                    rightButtonItems.append(mqttBarButtonItem)
+                }
             }
             else {
                 // Add mqtt bar item
-                mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
-                rightButtonItems.append(mqttBarButtonItem)
+                if !isInMultiUartMode() {
+                    mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
+                    rightButtonItems.append(mqttBarButtonItem)
+                }
             }
             
              navigationController!.navigationItem.rightBarButtonItems = rightButtonItems
@@ -170,41 +174,17 @@ class UartModeViewController: PeripheralModeViewController {
         dataModeSegmentedControl.selectedSegmentIndex = Preferences.uartIsInHexMode ? 1:0
 
         // Enable Uart
-        updateUartReadyUI(isReady: false)
-        blePeripheral?.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
-            guard let context = self else {
-                return
-            }
-            
-            DispatchQueue.main.async { [unowned context] in
-                guard error == nil else {
-                    DLog("Error initializing uart")
-                    context.dismiss(animated: true, completion: { [weak self] () -> Void in
-                        if let context = self {
-                            showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
-                            
-                            if let blePeripheral = context.blePeripheral {
-                                BleManager.sharedInstance.disconnect(from: blePeripheral)
-                            }
-                        }
-                    })
-                    return
-                }
-
-                // Done
-                DLog("Uart enabled")
-                context.updateUartReadyUI(isReady: true)
-            }
-        }
+        setupUart()
         
         // MQTT
-        let mqttManager = MqttManager.sharedInstance
-        if MqttSettings.sharedInstance.isConnected {
-            mqttManager.delegate = self
+        if !isInMultiUartMode() {
+            let mqttManager = MqttManager.sharedInstance
+            if MqttSettings.sharedInstance.isConnected {
+                mqttManager.delegate = self
+            }
+            mqttUpdateStatusUI()
         }
-        mqttUpdateStatusUI()
     }
-
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -229,6 +209,10 @@ class UartModeViewController: PeripheralModeViewController {
         
         let mqttManager = MqttManager.sharedInstance
         mqttManager.disconnect()
+    }
+    
+    fileprivate func isInMultiUartMode() -> Bool {
+        return blePeripheral == nil
     }
     
     // MARK: - Navigation
@@ -268,7 +252,70 @@ class UartModeViewController: PeripheralModeViewController {
         rxColor = Preferences.uartReceveivedDataColor
         reloadDataUI()
     }
-
+    
+    // MARK: - UART
+    fileprivate func setupUart() {
+        updateUartReadyUI(isReady: false)
+        
+        if isInMultiUartMode() {
+            let blePeripherals = BleManager.sharedInstance.connectedPeripherals()
+            for blePeripheral in blePeripherals {
+                blePeripheral.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
+                    guard let context = self else {
+                        return
+                    }
+                    
+                    let peripheralName = blePeripheral.name ?? blePeripheral.identifier.uuidString
+                    DispatchQueue.main.async { [unowned context] in
+                        guard error == nil else {
+                            DLog("Error initializing uart")
+                            context.dismiss(animated: true, completion: { [weak self] () -> Void in
+                                if let context = self {
+                                    showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized for peripheral: \(peripheralName)")
+                                    
+                                    BleManager.sharedInstance.disconnect(from: blePeripheral)
+                                }
+                            })
+                            return
+                        }
+                        
+                        // Done
+                        DLog("Uart enabled for \(peripheralName)")
+                        
+                    }
+                }
+            }
+        }
+        else {
+            blePeripheral?.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
+                guard let context = self else {
+                    return
+                }
+                
+                DispatchQueue.main.async { [unowned context] in
+                    guard error == nil else {
+                        DLog("Error initializing uart")
+                        context.dismiss(animated: true, completion: { [weak self] () -> Void in
+                            if let context = self {
+                                showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
+                                
+                                if let blePeripheral = context.blePeripheral {
+                                    BleManager.sharedInstance.disconnect(from: blePeripheral)
+                                }
+                            }
+                        })
+                        return
+                    }
+                    
+                    // Done
+                    DLog("Uart enabled")
+                    context.updateUartReadyUI(isReady: true)
+                }
+            }
+        }
+    }
+    
+    
     
     // MARK: - UI Updates
     private func reloadDataUI() {
@@ -306,7 +353,7 @@ class UartModeViewController: PeripheralModeViewController {
     private func updateUartReadyUI(isReady: Bool) {
         inputTextField.isEnabled = isReady
         inputTextField.backgroundColor = isReady ? UIColor.white : UIColor.black.withAlphaComponent(0.1)
-        
+        sendInputButton.isEnabled = isReady
     }
 
     // MARK: - UI Actions

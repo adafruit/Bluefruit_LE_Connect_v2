@@ -245,6 +245,12 @@ class ScannerViewController: UIViewController {
         // Segue
         performSegue(withIdentifier: "showUpdateSegue", sender: self)
     }
+
+    fileprivate func showMultiUartMode() {
+        // Segue
+        performSegue(withIdentifier: "showMultiUartSegue", sender: self)
+    }
+
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         return selectedPeripheral != nil
@@ -258,6 +264,10 @@ class ScannerViewController: UIViewController {
         else if segue.identifier == "showUpdateSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
             peripheralDetailsViewController.blePeripheral = selectedPeripheral
             peripheralDetailsViewController.startingController = .update
+        }
+        else if segue.identifier == "showMultiUartSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
+            peripheralDetailsViewController.blePeripheral = nil
+            peripheralDetailsViewController.startingController = .multiUart
         }
         else if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController  {
             controller.delegate = self
@@ -374,7 +384,7 @@ class ScannerViewController: UIViewController {
     
     // MARK: - MultiConnect
     private func openMultiConnectPanel(isOpen: Bool, animated: Bool) {
-        Preferences.scanMultiConnectIsPanelOpen = isOpen
+        //Preferences.scanMultiConnectIsPanelOpen = isOpen
         self.multiConnectDisclosureButton.isSelected = isOpen
         
         self.multiConnectPanelViewHeightConstraint.constant = isOpen ? ScannerViewController.kMultiConnectPanelOpenHeight:ScannerViewController.kMultiConnectPanelClosedHeight
@@ -436,8 +446,20 @@ class ScannerViewController: UIViewController {
     }
     
     @IBAction func onMultiConnectEnabled(_ sender: UISwitch) {
-        isMultiConnectEnabled = sender.isOn
-        
+        enabledMulticonnect(enable: sender.isOn)
+    }
+    
+    @IBAction func onClickExpandMultiConnect(_ sender: Any) {
+        enabledMulticonnect(enable: !isMultiConnectEnabled)
+        //openMultiConnectPanel(isOpen: !Preferences.scanMultiConnectIsPanelOpen, animated: true)
+    }
+    
+    @IBAction func onMultiConnectShow(_ sender: Any) {
+        showMultiUartMode()
+    }
+    
+    fileprivate func enabledMulticonnect(enable: Bool) {
+        isMultiConnectEnabled = enable
         openMultiConnectPanel(isOpen: isMultiConnectEnabled, animated: true)
         
         // Disconnect from all devices if is set as off
@@ -446,18 +468,14 @@ class ScannerViewController: UIViewController {
         }
         else {
             let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
-            for connectedPeripheral in connectedPeripherals {
-                BleManager.sharedInstance.disconnect(from: connectedPeripheral)
+            if !connectedPeripherals.isEmpty {
+                for connectedPeripheral in connectedPeripherals {
+                    BleManager.sharedInstance.disconnect(from: connectedPeripheral)
+                }
+                BleManager.sharedInstance.refreshPeripherals()      // Force refresh because they wont reappear. Check why is this happening
             }
-            BleManager.sharedInstance.refreshPeripherals()      // Force refresh because they wont reappear. Check why is this happening
         }
-    }
-    
-    @IBAction func onClickExpandMultiConnect(_ sender: Any) {
-        //openMultiConnectPanel(isOpen: !Preferences.scanMultiConnectIsPanelOpen, animated: true)
-    }
-    
-    @IBAction func onMultiConnectShow(_ sender: Any) {
+
     }
     
     // MARK: - Connections
