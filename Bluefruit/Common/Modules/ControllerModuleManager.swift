@@ -49,7 +49,7 @@ class ControllerModuleManager : NSObject {
     private var pollTimer: MSWeakTimer?
     private var timerHandler: (()->())?
     
-    fileprivate let uartManager = UartManager(delegate: nil)
+    fileprivate let uartManager = UartDataManager(delegate: nil)
     
     private var pollInterval: TimeInterval = 1        // in seconds
     

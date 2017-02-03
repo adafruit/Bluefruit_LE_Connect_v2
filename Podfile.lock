@@ -1,4 +1,7 @@
 PODS:
+  - Charts (3.0.1):
+    - Charts/Core (= 3.0.1)
+  - Charts/Core (3.0.1)
   - CocoaAsyncSocket (7.5.1):
     - CocoaAsyncSocket/GCD (= 7.5.1)
   - CocoaAsyncSocket/GCD (7.5.1)
@@ -17,6 +20,7 @@ PODS:
   - Zip (0.6.0)
 
 DEPENDENCIES:
+  - Charts (~> 3.0.1)
   - CocoaMQTT (~> 1.0.11)
   - iOS-color-wheel
   - iOSDFULibrary
@@ -24,6 +28,7 @@ DEPENDENCIES:
   - UIColor+Hex (~> 1.0.1)
 
 SPEC CHECKSUMS:
+  Charts: 0e84f4418e87dad6a9edde221fba37ebb51d3ba7
   CocoaAsyncSocket: e0a7e93b2ffa411592ff87e58524fbbc9b95b4fa
   CocoaMQTT: 41a67eab08a8c8aa3c0be6f55ef2f4ace197f193
   iOS-color-wheel: 60d441600bd62d58250a915719b84ed89283ce95
@@ -33,6 +38,6 @@ SPEC CHECKSUMS:
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   Zip: 805fc2fa9d2f05bbb7762d982d7a42ccdcc51f42
 
-PODFILE CHECKSUM: 24cc91a971e7f2d8910e5fa9171297d335292ea6
+PODFILE CHECKSUM: 047c5d7a8fc46d93d580c7d0486bf886dae965c6
 
 COCOAPODS: 1.1.1

@@ -84,6 +84,7 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "$BUILT_PRODUCTS_DIR/Charts-iOS/Charts.framework"
   install_framework "$BUILT_PRODUCTS_DIR/CocoaAsyncSocket-iOS/CocoaAsyncSocket.framework"
   install_framework "$BUILT_PRODUCTS_DIR/CocoaMQTT-iOS/CocoaMQTT.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MSWeakTimer-iOS/MSWeakTimer.framework"
@@ -94,6 +95,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/iOSDFULibrary/iOSDFULibrary.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "$BUILT_PRODUCTS_DIR/Charts-iOS/Charts.framework"
   install_framework "$BUILT_PRODUCTS_DIR/CocoaAsyncSocket-iOS/CocoaAsyncSocket.framework"
   install_framework "$BUILT_PRODUCTS_DIR/CocoaMQTT-iOS/CocoaMQTT.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MSWeakTimer-iOS/MSWeakTimer.framework"

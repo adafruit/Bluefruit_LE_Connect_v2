@@ -1,5 +1,5 @@
 //
-//  UartManager.swift
+//  UartDataManager.swift
 //  Calibration
 //
 //  Created by Antonio García on 20/10/2016.
@@ -8,12 +8,12 @@
 
 import Foundation
 
-protocol UartDelegate: class {
+protocol UartDataManagerDelegate: class {
     func onUartRx(data: Data)
 }
 
 // Basic Uart Managemnet. Use it to cache all data received and help parsint it
-class UartManager {
+class UartDataManager {
     
     // Data
     var enabled: Bool = false  {
@@ -23,11 +23,11 @@ class UartManager {
             }
         }
     }
-    weak var delegate: UartDelegate?
+    weak var delegate: UartDataManagerDelegate?
     fileprivate var rxData = Data()
     fileprivate var rxDataSemaphore = DispatchSemaphore(value: 1)
     
-    init(delegate: UartDelegate?) {
+    init(delegate: UartDataManagerDelegate?) {
         self.delegate = delegate
         
         enabled = true

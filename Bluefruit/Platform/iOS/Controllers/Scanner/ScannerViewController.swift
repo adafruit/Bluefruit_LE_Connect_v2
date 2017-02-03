@@ -182,6 +182,7 @@ class ScannerViewController: UIViewController {
         infoAlertController = UIAlertController(title: nil, message: title, preferredStyle: .alert)
         infoAlertController!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) -> Void in
             BleManager.sharedInstance.disconnect(from: peripheral)
+            BleManager.sharedInstance.refreshPeripherals()      // Force refresh because they wont reappear. Check why is this happening
         }))
         present(infoAlertController!, animated: true, completion:nil)
     }

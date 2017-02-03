@@ -64,15 +64,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         updateStatusContent(nil)
         
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(updateStatus(_:)), name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(updateStatus(_:)), name: UartManager.UartNotifications.DidSendData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(updateStatus(_:)), name: UartDataManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(updateStatus(_:)), name: UartDataManager.UartNotifications.DidSendData.rawValue, object: nil)
         notificationCenter.addObserver(self, selector: #selector(updateStatus(_:)), name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
     }
     
     func releaseStatusButton() {
         let notificationCenter =  NotificationCenter.default
-        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
-        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidSendData.rawValue, object: nil)
+        notificationCenter.removeObserver(self, name: UartDataManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        notificationCenter.removeObserver(self, name: UartDataManager.UartNotifications.DidSendData.rawValue, object: nil)
         notificationCenter.removeObserver(self, name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
     }
     

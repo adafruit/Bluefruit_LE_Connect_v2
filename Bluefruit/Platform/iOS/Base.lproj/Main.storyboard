@@ -2521,6 +2521,48 @@
             </objects>
             <point key="canvasLocation" x="2726" y="1250"/>
         </scene>
+        <!--Plotter-->
+        <scene sceneID="HO5-sN-cZ7">
+            <objects>
+                <viewController storyboardIdentifier="PlotterModeViewController" id="v13-MP-5HC" customClass="PlotterModeViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ca9-wr-9K6"/>
+                        <viewControllerLayoutGuide type="bottom" id="nVp-hg-eet"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="s9o-3y-9B0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Hb-vE-7Mw" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="16" y="84" width="343" height="514"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.20874811460000001" green="0.20874811460000001" blue="0.20874811460000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="3Hb-vE-7Mw" firstAttribute="top" secondItem="ca9-wr-9K6" secondAttribute="bottom" constant="20" id="H1G-xE-0bh"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="3Hb-vE-7Mw" secondAttribute="trailing" id="UhL-28-yPB"/>
+                            <constraint firstItem="3Hb-vE-7Mw" firstAttribute="leading" secondItem="s9o-3y-9B0" secondAttribute="leadingMargin" id="dD4-ng-lZk"/>
+                            <constraint firstItem="nVp-hg-eet" firstAttribute="top" secondItem="3Hb-vE-7Mw" secondAttribute="bottom" constant="20" id="vv7-40-Cv6"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Plotter" id="O7D-n3-1Dh">
+                        <barButtonItem key="rightBarButtonItem" image="info_icon" id="aN0-p5-Xug">
+                            <connections>
+                                <action selector="onClickHelp:" destination="75Z-zZ-8DR" id="kzk-o3-HzY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="chartView" destination="3Hb-vE-7Mw" id="W51-ee-vlk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QXC-6l-nfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1337" y="4264"/>
+        </scene>
         <!--Color Picker-->
         <scene sceneID="6tL-cg-cmp">
             <objects>

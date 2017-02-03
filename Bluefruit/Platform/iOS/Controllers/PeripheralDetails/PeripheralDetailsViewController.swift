@@ -225,6 +225,13 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             uartViewController.tabBarItem.title = localizationManager.localizedString("uart_tab_title")      // Tab title
             uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
             viewControllers.append(uartViewController)
+
+            // Plotter Tab
+            let plotterViewController = self.storyboard!.instantiateViewController(withIdentifier: "PlotterModeViewController") as! PlotterModeViewController
+            plotterViewController.blePeripheral = blePeripheral
+            plotterViewController.tabBarItem.title = localizationManager.localizedString("plotter_tab_title")      // Tab title
+            plotterViewController.tabBarItem.image = UIImage(named: "tab_plotter_icon")
+            viewControllers.append(plotterViewController)
             
             // PinIO
             let pinioViewController = self.storyboard!.instantiateViewController(withIdentifier: "PinIOModeViewController") as! PinIOModeViewController

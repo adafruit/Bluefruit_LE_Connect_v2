@@ -70,7 +70,6 @@ class UartModeViewController: PeripheralModeViewController {
         let localizationManager = LocalizationManager.sharedInstance
         let name = blePeripheral?.name ?? localizationManager.localizedString("peripherallist_unnamed")
         let title = String(format: localizationManager.localizedString("uart_navigation_title_format"), arguments: [name])
-        //tabBarController?.navigationItem.title = title
         navigationController?.navigationItem.title = title
 
         // Init Data
@@ -330,7 +329,7 @@ class UartModeViewController: PeripheralModeViewController {
             textCachedBuffer.setAttributedString(NSAttributedString())
             let dataPackets = uartData.packetsCache()
             for dataPacket in dataPackets {
-                addPacketToUIText(dataPacket)
+                onUartPacketText(dataPacket)
             }
             baseTextView.attributedText = textCachedBuffer
             reloadData()
@@ -540,7 +539,7 @@ extension UartModeViewController: UITableViewDelegate {
 // MARK: - UartModuleDelegate
 extension UartModeViewController: UartPacketManagerDelegate {
     
-    func addPacketToUI(packet: UartPacket) {
+    func onUartPacket(_ packet: UartPacket) {
         // Check that the view has been initialized before updating UI
         guard isViewLoaded && view.window != nil &&  baseTableView != nil else {
             return
@@ -550,7 +549,7 @@ extension UartModeViewController: UartPacketManagerDelegate {
 
         switch displayMode {
         case .text:
-            addPacketToUIText(packet)
+            onUartPacketText(packet)
             self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
 
         case .table:
@@ -584,7 +583,7 @@ extension UartModeViewController: UartPacketManagerDelegate {
         }
     }
     
-    fileprivate func addPacketToUIText(_ packet: UartPacket) {
+    fileprivate func onUartPacketText(_ packet: UartPacket) {
         if (Preferences.uartIsEchoEnabled || packet.mode == .rx) {
             let color = packet.mode == .tx ? txColor : rxColor
             

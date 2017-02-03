@@ -9,8 +9,26 @@
 import Foundation
 
 protocol UartPacketManagerDelegate: class {
-    func addPacketToUI(packet: UartPacket)
+    func onUartPacket(_ packet: UartPacket)
 }
+
+
+struct UartPacket {      // A packet of data received or sent
+    var timestamp: CFAbsoluteTime
+    enum TransferMode {
+        case tx
+        case rx
+    }
+    var mode: TransferMode
+    var data: Data
+    
+    init(timestamp: CFAbsoluteTime, mode: TransferMode, data: Data) {
+        self.timestamp = timestamp
+        self.mode = mode
+        self.data = data
+    }
+}
+
 
 class UartPacketManager {
     // Data
@@ -72,7 +90,7 @@ class UartPacketManager {
             let uartPacket = UartPacket(timestamp: CFAbsoluteTimeGetCurrent(), mode: .tx, data: data)
             
             DispatchQueue.main.async { [unowned self] in
-                self.delegate?.addPacketToUI(packet: uartPacket)
+                self.delegate?.onUartPacket(uartPacket)
             }
             
             if (!wasReceivedFromMqtt || mqttSettings.subscribeBehaviour == .transmit) {
@@ -117,7 +135,7 @@ class UartPacketManager {
         
         // Send data to delegate
         DispatchQueue.main.async { [unowned self] in
-            self.delegate?.addPacketToUI(packet: uartPacket)
+            self.delegate?.onUartPacket(uartPacket)
         }
         
         //DLog("packetsData: \(packetsData.count)")

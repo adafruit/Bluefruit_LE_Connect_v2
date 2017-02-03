@@ -93,7 +93,7 @@ class PinIOModuleManager: NSObject {
     // Data
     fileprivate var uartStatus = UartStatus.inputOutput
     private var queryCapabilitiesTimer: MSWeakTimer?
-    fileprivate var uartManager: UartManager!
+    fileprivate var uartManager: UartDataManager!
     private var blePeripheral: BlePeripheral
     
     var pins = [PinData]()
@@ -113,7 +113,7 @@ class PinIOModuleManager: NSObject {
         self.delegate = delegate
         super.init()
         
-        uartManager = UartManager(delegate: self)
+        uartManager = UartDataManager(delegate: self)
     }
 
     deinit {
@@ -626,7 +626,7 @@ class PinIOModuleManager: NSObject {
 
 }
 
-extension PinIOModuleManager: UartDelegate {
+extension PinIOModuleManager: UartDataManagerDelegate {
     func onUartRx(data: Data) {
         switch uartStatus {
         case .queryCapabilities:
