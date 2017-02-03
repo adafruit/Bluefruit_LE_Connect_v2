@@ -230,9 +230,12 @@ class ScannerViewController: UIViewController {
         // Clear selected peripheral
         self.selectedPeripheral = nil
         
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async { [weak self] in
+            // Dismiss any info open dialogs
+            self?.infoAlertController?.dismiss(animated: true, completion: nil)
+            
             // Reload table
-            self.baseTableView.reloadData()
+            self?.baseTableView.reloadData()
         }
     }
     
@@ -452,6 +455,7 @@ class ScannerViewController: UIViewController {
     
     @IBAction func onClickExpandMultiConnect(_ sender: Any) {
         enabledMulticonnect(enable: !isMultiConnectEnabled)
+        multiConnectSwitch.isOn = isMultiConnectEnabled
         //openMultiConnectPanel(isOpen: !Preferences.scanMultiConnectIsPanelOpen, animated: true)
     }
     
@@ -537,10 +541,7 @@ extension ScannerViewController: UITableViewDataSource {
         let isUartCapable = peripheral.isUartAdvertised()
         peripheralCell.subtitleLabel.text = isUartCapable ? localizationManager.localizedString("peripherallist_uartavailable") : nil
         
-        // Show either a disconnect button or a disclosure indicator depending on the UISplitViewController displayMode
-        //peripheralCell.accessoryType = .disclosureIndicator
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
-
         
         let showConnect: Bool
         let showDisconnect: Bool

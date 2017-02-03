@@ -331,11 +331,13 @@ class BlePeripheral: NSObject {
     }
     
     fileprivate func finishedExecutingCommand(error: Error?) {
+        //DLog("finishedExecutingCommand")
+        
         // Result Callback
         if let command = commandQueue.first(), !command.isCancelled {
             command.endExecution(withError: error)
-            commandQueue.next()
         }
+        commandQueue.next()
     }
     
     // MARK: - Commands
