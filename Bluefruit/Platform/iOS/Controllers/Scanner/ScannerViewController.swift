@@ -17,7 +17,7 @@ class ScannerViewController: UIViewController {
     static let kFiltersPanelOpenHeight: CGFloat = 226
 
     static let kMultiConnectPanelClosedHeight: CGFloat = 44
-    static let kMultiConnectPanelOpenHeight: CGFloat = 100
+    static let kMultiConnectPanelOpenHeight: CGFloat = 90
 
     // UI
     @IBOutlet weak var baseTableView: UITableView!
@@ -37,6 +37,8 @@ class ScannerViewController: UIViewController {
     @IBOutlet weak var multiConnectDisclosureButton: UIButton!
     @IBOutlet weak var multiConnectPanelViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var multiConnectSwitch: UISwitch!
+    @IBOutlet weak var multiConnectDetailsLabel: UILabel!
+    @IBOutlet weak var multiConnectShowButton: UIButton!
 
 
     // Data
@@ -75,6 +77,9 @@ class ScannerViewController: UIViewController {
         // Setup filters
         filtersRssiSlider.minimumValue = Float(PeripheralList.kMinRssiValue)
         filtersRssiSlider.maximumValue = Float(PeripheralList.kMaxRssiValue)
+        
+        // Setup multiconnect
+        openMultiConnectPanel(isOpen: false, animated: false)
     }
 
     override func didReceiveMemoryWarning() {
@@ -187,6 +192,8 @@ class ScannerViewController: UIViewController {
     }
     
     private func didConnectToPeripheral(notification: Notification) {
+        updateMultiConnectUI()
+
         guard let selectedPeripheral = selectedPeripheral, let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, selectedPeripheral.identifier == identifier else {
             DLog("Connected to an unexpected peripheral")
             return
@@ -201,7 +208,7 @@ class ScannerViewController: UIViewController {
             if let indexPathForSelectedRow = self.baseTableView.indexPathForSelectedRow {
                 self.baseTableView.deselectRow(at: indexPathForSelectedRow, animated: true)
             }
-            
+
             // Discover services
             infoAlertController?.message = "Discovering services..."
             discoverServices(peripheral: selectedPeripheral)
@@ -209,6 +216,7 @@ class ScannerViewController: UIViewController {
     }
 
     private func didDisconnectFromPeripheral(notification: Notification) {
+        updateMultiConnectUI()
 
         guard let peripheral = BleManager.sharedInstance.peripheral(from: notification) else {
             return
@@ -288,9 +296,16 @@ class ScannerViewController: UIViewController {
                     return
                 }
                 
-                // Check updates if needed
-                context.infoAlertController?.message = "Checking updates..."
-                context.startUpdatesCheck(peripheral: peripheral)
+                if context.isMultiConnectEnabled {
+                    context.dismissInfoDialog() {
+                        
+                    }
+                }
+                else {
+                    // Check updates if needed
+                    context.infoAlertController?.message = "Checking updates..."
+                    context.startUpdatesCheck(peripheral: peripheral)
+                }
             }
         }
     }
@@ -422,12 +437,28 @@ class ScannerViewController: UIViewController {
     
     @IBAction func onMultiConnectEnabled(_ sender: UISwitch) {
         isMultiConnectEnabled = sender.isOn
+        
+        openMultiConnectPanel(isOpen: isMultiConnectEnabled, animated: true)
+        
+        // Disconnect from all devices if is set as off
+        if isMultiConnectEnabled {
+            updateMultiConnectUI()
+        }
+        else {
+            let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
+            for connectedPeripheral in connectedPeripherals {
+                BleManager.sharedInstance.disconnect(from: connectedPeripheral)
+            }
+            BleManager.sharedInstance.refreshPeripherals()      // Force refresh because they wont reappear. Check why is this happening
+        }
     }
     
     @IBAction func onClickExpandMultiConnect(_ sender: Any) {
-        openMultiConnectPanel(isOpen: !Preferences.scanMultiConnectIsPanelOpen, animated: true)
+        //openMultiConnectPanel(isOpen: !Preferences.scanMultiConnectIsPanelOpen, animated: true)
     }
     
+    @IBAction func onMultiConnectShow(_ sender: Any) {
+    }
     
     // MARK: - Connections
     fileprivate func connect(peripheral: BlePeripheral) {
@@ -459,6 +490,12 @@ class ScannerViewController: UIViewController {
             baseTableView.selectRow(at: IndexPath(row: selectedRow, section: 0), animated: false, scrollPosition: .none)
         }
     }
+    
+    private func updateMultiConnectUI() {
+        let numConnectedPeripherals = BleManager.sharedInstance.connectedPeripherals().count
+        multiConnectDetailsLabel.text = "Connected to \(numConnectedPeripherals) \(numConnectedPeripherals == 1 ? "device":"devices")"
+        multiConnectShowButton.isEnabled = numConnectedPeripherals >= 2
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -485,8 +522,19 @@ extension ScannerViewController: UITableViewDataSource {
         //peripheralCell.accessoryType = .disclosureIndicator
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
 
-        let showConnect = isFullScreen || selectedPeripheral == nil
-        let showDisconnect = !isFullScreen && peripheral.identifier == selectedPeripheral?.identifier
+        
+        let showConnect: Bool
+        let showDisconnect: Bool
+        if isMultiConnectEnabled {
+            let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
+            showDisconnect = connectedPeripherals.contains(peripheral)
+            showConnect = !showDisconnect
+        }
+        else {
+            showConnect = isFullScreen || selectedPeripheral == nil
+            showDisconnect = !isFullScreen && peripheral.identifier == selectedPeripheral?.identifier
+        }
+        
         peripheralCell.connectButton.isHidden = !showConnect
         peripheralCell.disconnectButton.isHidden = !showDisconnect
         
@@ -661,14 +709,14 @@ extension ScannerViewController: FirmwareUpdaterDelegate {
         DLog("FirmwareUpdaterDelegate isUpdateAvailable: \(isUpdateAvailable)")
         
         DispatchQueue.main.async { [weak self] in
-            self?.dismissInfoDialog(completion: {
+            self?.dismissInfoDialog() {
                 if isUpdateAvailable, let latestRelease = latestRelease {
                     self?.showUpdateAvailableForRelease(latestRelease)
                 }
                 else {
                     self?.showPeripheralDetails()
                 }
-            })
+            }
         }
     }
 }

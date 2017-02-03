@@ -97,7 +97,6 @@ class BleManager: NSObject {
     func connectingPeripherals() -> [BlePeripheral] {
         return peripherals().filter{$0.state == .connecting}
     }
-
     
     func refreshPeripherals() {
         stopScan()

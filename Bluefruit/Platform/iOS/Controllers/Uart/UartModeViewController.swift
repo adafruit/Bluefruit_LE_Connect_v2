@@ -236,6 +236,7 @@ class UartModeViewController: PeripheralModeViewController {
         if segue.identifier == "uartSettingsSegue"  {
             if let controller = segue.destination.popoverPresentationController {
                 controller.delegate = self
+                //controller.backgroundColor = UIColor.lightGray
                 
                 let uartSettingsViewController = segue.destination as! UartSettingsViewController
                 uartSettingsViewController.onClickClear = { [unowned self] in
@@ -316,6 +317,7 @@ class UartModeViewController: PeripheralModeViewController {
         {
             popovoverController.barButtonItem = mqttBarButtonItem
             popovoverController.delegate = self
+           // popovoverController.backgroundColor = UIColor.lightGray
         }
         present(viewController, animated: true, completion: nil)
     }
