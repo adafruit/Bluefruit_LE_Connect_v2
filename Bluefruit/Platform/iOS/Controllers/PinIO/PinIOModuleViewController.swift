@@ -117,7 +117,7 @@ class PinIOModeViewController: PeripheralModeViewController {
     }
     
     // MARK: - Actions
-    @IBAction func onClickQuery(sender: AnyObject) {
+    @IBAction func onClickQuery(_ sender: AnyObject) {
         setupFirmata()
     }
     

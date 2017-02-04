@@ -249,16 +249,14 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         }
         
         let hasDFU = blePeripheral.peripheral.services?.first(where: {$0.uuid == FirmwareUpdater.kDfuServiceUUID}) != nil
-
+        
         // Neopixel Tab
         if hasUart && hasDFU {
-            /*
-            let neopixelsViewController = self.storyboard!.instantiateViewControllerWithIdentifier("NeopixelModuleViewController") as! NeopixelModuleViewController
+            let neopixelsViewController = self.storyboard!.instantiateViewController(withIdentifier: "NeopixelModeViewController") as! NeopixelModeViewController
             neopixelsViewController.blePeripheral = blePeripheral
             neopixelsViewController.tabBarItem.title = localizationManager.localizedString("neopixels_tab_title")      // Tab title
             neopixelsViewController.tabBarItem.image = UIImage(named: "tab_neopixel_icon")
             viewControllers.append(neopixelsViewController)
- */
         }
         
         // DFU Tab

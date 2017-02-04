@@ -24,7 +24,7 @@ class InfoModuleManager: NSObject {
             else if let value = descriptor.value as? Data {
                 result = value
             }
-        case CBUUIDCharacteristicUserDescriptionString:         // is an NSString
+        case CBUUIDCharacteristicUserDescriptionString:         // is an String
             if let value = descriptor.value as? String {
                 result = value.data(using: .utf8)
             }

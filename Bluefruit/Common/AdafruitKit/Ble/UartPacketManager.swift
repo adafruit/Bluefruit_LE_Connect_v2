@@ -12,7 +12,6 @@ protocol UartPacketManagerDelegate: class {
     func onUartPacket(_ packet: UartPacket)
 }
 
-
 struct UartPacket {      // A packet of data received or sent
     var timestamp: CFAbsoluteTime
     enum TransferMode {
@@ -32,14 +31,18 @@ struct UartPacket {      // A packet of data received or sent
 
 class UartPacketManager {
     // Data
-    weak var delegate: UartPacketManagerDelegate?
+    fileprivate weak var delegate: UartPacketManagerDelegate?
     fileprivate var packets = [UartPacket]()
     fileprivate var packetsSemaphore = DispatchSemaphore(value: 1)
+    fileprivate var isMqttEnabled: Bool
+    fileprivate var isPacketCacheEnabled: Bool
     
     var receivedBytes: Int64 = 0
     var sentBytes: Int64 = 0
     
-    init(delegate: UartPacketManagerDelegate) {
+    init(delegate: UartPacketManagerDelegate?, isPacketCacheEnabled: Bool, isMqttEnabled: Bool) {
+        self.isPacketCacheEnabled = isPacketCacheEnabled
+        self.isMqttEnabled = isMqttEnabled
         self.delegate = delegate
         
         registerNotifications(enabled: true)
@@ -66,22 +69,25 @@ class UartPacketManager {
     }
     
     // MARK: - Send data
-    private func send(blePeripheral: BlePeripheral, data: Data?, completion: ((Error?) -> Void)? = nil) {
+    func send(blePeripheral: BlePeripheral, data: Data?, completion: ((Error?) -> Void)? = nil) {
+        sentBytes += data?.count ?? 0
         blePeripheral.uartSend(data: data, completion: completion)
     }
-
-    /*
-    private func sendAndWaitReply(blePeripheral: BlePeripheral, data: Data?, writeCompletion: ((Error?) -> Void)? = nil, readTimeout: Double? = BlePeripheral.kUartReplyDefaultTimeout, readCompletion: @escaping BlePeripheral.CapturedReadCompletionHandler) {
+    
+    func sendAndWaitReply(blePeripheral: BlePeripheral, data: Data?, writeCompletion: ((Error?) -> Void)? = nil, readTimeout: Double? = BlePeripheral.kUartReplyDefaultTimeout, readCompletion: @escaping BlePeripheral.CapturedReadCompletionHandler) {
+        sentBytes += data?.count ?? 0
         blePeripheral.uartSendWithAndWaitReply(data: data, writeCompletion: writeCompletion, readTimeout: readTimeout, readCompletion: readCompletion)
-    }*/
-
+    }
+    
     func send(blePeripheral: BlePeripheral, text: String, wasReceivedFromMqtt: Bool = false) {
-        // Mqtt publish to TX
-        let mqttSettings = MqttSettings.sharedInstance
-        if mqttSettings.isPublishEnabled {
-            if let topic = mqttSettings.getPublishTopic(index: MqttSettings.PublishFeed.tx.rawValue) {
-                let qos = mqttSettings.getPublishQos(index: MqttSettings.PublishFeed.tx.rawValue)
-                MqttManager.sharedInstance.publish(message: text, topic: topic, qos: qos)
+        if isMqttEnabled {
+            // Mqtt publish to TX
+            let mqttSettings = MqttSettings.sharedInstance
+            if mqttSettings.isPublishEnabled {
+                if let topic = mqttSettings.getPublishTopic(index: MqttSettings.PublishFeed.tx.rawValue) {
+                    let qos = mqttSettings.getPublishQos(index: MqttSettings.PublishFeed.tx.rawValue)
+                    MqttManager.sharedInstance.publish(message: text, topic: topic, qos: qos)
+                }
             }
         }
         
@@ -93,17 +99,16 @@ class UartPacketManager {
                 self.delegate?.onUartPacket(uartPacket)
             }
             
-            if (!wasReceivedFromMqtt || mqttSettings.subscribeBehaviour == .transmit) {
+            if (!wasReceivedFromMqtt || (isMqttEnabled && MqttSettings.sharedInstance.subscribeBehaviour == .transmit)) {
                 send(blePeripheral: blePeripheral, data: data)
                 
                 packetsSemaphore.wait()            // don't append more data, till the delegate has finished processing it
-                sentBytes += data.count
                 packets.append(uartPacket)
                 packetsSemaphore.signal()
             }
         }
     }
-
+    
     // MARK: - Received data
     func rxPacketReceived(data: Data?, error: Error?) {
         
@@ -119,19 +124,23 @@ class UartPacketManager {
         let uartPacket = UartPacket(timestamp: CFAbsoluteTimeGetCurrent(), mode: .rx, data: data)
         
         // Mqtt publish to RX
-        let mqttSettings = MqttSettings.sharedInstance
-        if mqttSettings.isPublishEnabled {
-            if let message = String(data: uartPacket.data, encoding: .utf8) {
-                if let topic = mqttSettings.getPublishTopic(index: MqttSettings.PublishFeed.rx.rawValue) {
-                    let qos = mqttSettings.getPublishQos(index: MqttSettings.PublishFeed.rx.rawValue)
-                    MqttManager.sharedInstance.publish(message: message, topic: topic, qos: qos)
+        if isMqttEnabled {
+            let mqttSettings = MqttSettings.sharedInstance
+            if mqttSettings.isPublishEnabled {
+                if let message = String(data: uartPacket.data, encoding: .utf8) {
+                    if let topic = mqttSettings.getPublishTopic(index: MqttSettings.PublishFeed.rx.rawValue) {
+                        let qos = mqttSettings.getPublishQos(index: MqttSettings.PublishFeed.rx.rawValue)
+                        MqttManager.sharedInstance.publish(message: message, topic: topic, qos: qos)
+                    }
                 }
             }
         }
         
         packetsSemaphore.wait()            // don't append more data, till the delegate has finished processing it
         receivedBytes += data.count
-        packets.append(uartPacket)
+        if isPacketCacheEnabled {
+            packets.append(uartPacket)
+        }
         
         // Send data to delegate
         DispatchQueue.main.async { [unowned self] in

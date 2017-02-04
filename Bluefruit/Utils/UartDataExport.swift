@@ -87,8 +87,8 @@ class UartDataExport {
             "items": jsonItemsArray
         ]
         
-        // Create Json NSData
-        var data : Data?
+        // Create Json Data
+        var data: Data?
         do {
             data = try JSONSerialization.data(withJSONObject: jsonRootDictionary, options: .prettyPrinted)
         } catch  {
@@ -96,7 +96,7 @@ class UartDataExport {
         }
         
         // Create Json String
-        var result : String?
+        var result: String?
         if let data = data {
             result = String(data: data, encoding: .utf8)
         }

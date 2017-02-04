@@ -235,12 +235,10 @@ class BlePeripheral: NSObject {
     
     func updateNotifyHandler(for characteristic: CBCharacteristic, handler: ((Error?) -> Void)? = nil) {
         let identifier = handlerIdentifier(from: characteristic)
-        if notifyHandlers[identifier] != nil {
-            notifyHandlers[identifier] = handler
-        }
-        else {
+        if notifyHandlers[identifier] == nil {
             DLog("Warning: trying to update inexistent notifyHanlder")
         }
+        notifyHandlers[identifier] = handler
     }
     
     func readCharacteristic(_ characteristic: CBCharacteristic, completion readCompletion: @escaping CapturedReadCompletionHandler) {
@@ -263,7 +261,6 @@ class BlePeripheral: NSObject {
         let command = BleCommand(type: .readDescriptor, parameters: [descriptor, readCompletion as Any], completion: nil)
         commandQueue.append(command)
     }
-
     
     // MARK: - Command Queue
     fileprivate class BleCommand: Equatable {
@@ -433,6 +430,16 @@ class BlePeripheral: NSObject {
                 // didWrite will be called. Continue processing there (didWriteValueFor)
             }
             else {
+                if !command.isCancelled, command.type == .writeCharacteristicAndWaitNofity {
+                    let readCharacteristic = command.parameters![3] as! CBCharacteristic
+                    let readCompletion = command.parameters![4] as! CapturedReadCompletionHandler
+                    let timeout = command.parameters![5] as? Double
+                    
+                    let identifier = handlerIdentifier(from: readCharacteristic)
+                    let captureReadHandler = CaptureReadHandler(identifier: identifier, result: readCompletion, timeout: timeout)
+                    captureReadHandlers.append(captureReadHandler)
+                }
+                
                 finishedExecutingCommand(error: nil)
             }
         }

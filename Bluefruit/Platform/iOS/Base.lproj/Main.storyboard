@@ -1933,7 +1933,7 @@
         <!--NeoPixel-->
         <scene sceneID="KPI-Mt-xHk">
             <objects>
-                <viewController storyboardIdentifier="NeopixelModuleViewController" id="ZDJ-Fy-DgL" customClass="NeopixelModuleViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NeopixelModeViewController" id="ZDJ-Fy-DgL" customClass="NeopixelModeViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NC9-Uu-otV"/>
                         <viewControllerLayoutGuide type="bottom" id="hB7-b6-bPf"/>
@@ -2678,7 +2678,7 @@
                     <navigationItem key="navigationItem" title="Color Picker" id="JKO-ps-he1">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="Xvn-Ke-r5Q">
                             <connections>
-                                <action selector="onClickHelp:" destination="Ttw-M6-d1l" id="Eda-o5-ckW"/>
+                                <action selector="onClickDone:" destination="Ttw-M6-d1l" id="LWZ-7d-nYA"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

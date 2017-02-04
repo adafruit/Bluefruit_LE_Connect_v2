@@ -28,8 +28,7 @@ class UartSettingTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    
+
     @IBAction func onSwitchValueChanged(_ sender: UISwitch) {
         onSwitchEnabled?(sender.isOn)
     }

@@ -28,7 +28,6 @@
 		A90C79751E40CB150076E8AD /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79731E40CB150076E8AD /* HelpViewController.swift */; };
 		A90C79781E40CBFA0076E8AD /* InfoModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */; };
 		A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D4F1E4174F800DE90C6 /* KeyboardPositionNotifier.swift */; };
-		A91E7D591E420E2400DE90C6 /* UartPacketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D581E420E2400DE90C6 /* UartPacketManager.swift */; };
 		A91E7D5C1E4216ED00DE90C6 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D5A1E4216ED00DE90C6 /* UIImage+Color.swift */; };
 		A91E7D5D1E4216ED00DE90C6 /* UIImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D5B1E4216ED00DE90C6 /* UIImage+Tint.swift */; };
 		A9286CB41E3A931E008E5F81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CAD1E3A931E008E5F81 /* AppDelegate.swift */; };
@@ -74,7 +73,6 @@
 		A98378431E42C10900170319 /* RssiUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234411E3AD81D00DC0C99 /* RssiUI.swift */; };
 		A98378441E42C10900170319 /* PeripheralList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2343F1E3AD75800DC0C99 /* PeripheralList.swift */; };
 		A98378451E42C10C00170319 /* InfoModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */; };
-		A98378471E42C10C00170319 /* UartPacketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D581E420E2400DE90C6 /* UartPacketManager.swift */; };
 		A98378491E42C11000170319 /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC11E3A9B22008E5F81 /* BleManager.swift */; };
 		A983784A1E42C11000170319 /* BlePeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC41E3A9B22008E5F81 /* BlePeripheral.swift */; };
 		A983784B1E42C11000170319 /* BlePeripheral+Uart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC31E3A9B22008E5F81 /* BlePeripheral+Uart.swift */; };
@@ -102,6 +100,28 @@
 		A98378701E43422100170319 /* MqttSettingsValueAndSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983786C1E43422100170319 /* MqttSettingsValueAndSelector.swift */; };
 		A98378721E43479400170319 /* ControllerModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378711E43479400170319 /* ControllerModuleManager.swift */; };
 		A98378741E4347DB00170319 /* DataFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378731E4347DB00170319 /* DataFormatter.swift */; };
+		A98DE4011E454FA100EEF4C8 /* NeopixelModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE4001E454FA100EEF4C8 /* NeopixelModuleManager.swift */; };
+		A98DE4021E454FAE00EEF4C8 /* NeopixelModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE4001E454FA100EEF4C8 /* NeopixelModuleManager.swift */; };
+		A98DE4041E45696700EEF4C8 /* UartPacketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE4031E45696700EEF4C8 /* UartPacketManager.swift */; };
+		A98DE4051E45696700EEF4C8 /* UartPacketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE4031E45696700EEF4C8 /* UartPacketManager.swift */; };
+		A98DE40D1E456AFC00EEF4C8 /* HelpExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE4071E456AFC00EEF4C8 /* HelpExportViewController.swift */; };
+		A98DE40F1E456AFC00EEF4C8 /* NeopixelBoardSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE4081E456AFC00EEF4C8 /* NeopixelBoardSelectorViewController.swift */; };
+		A98DE4111E456AFC00EEF4C8 /* NeopixelColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE4091E456AFC00EEF4C8 /* NeopixelColorPickerViewController.swift */; };
+		A98DE4131E456AFC00EEF4C8 /* NeopixelModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE40A1E456AFC00EEF4C8 /* NeopixelModuleViewController.swift */; };
+		A98DE4151E456AFC00EEF4C8 /* NeopixelTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE40B1E456AFC00EEF4C8 /* NeopixelTypeSelectorViewController.swift */; };
+		A98DE4171E456AFC00EEF4C8 /* NeopixelTypeValueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE40C1E456AFC00EEF4C8 /* NeopixelTypeValueTableViewCell.swift */; };
+		A98DE41D1E45E25000EEF4C8 /* Color+DarkerLighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE41C1E45E25000EEF4C8 /* Color+DarkerLighter.swift */; };
+		A98DE41E1E45E25000EEF4C8 /* Color+DarkerLighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE41C1E45E25000EEF4C8 /* Color+DarkerLighter.swift */; };
+		A98DE4271E45EB3900EEF4C8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4201E45EB3900EEF4C8 /* Localizable.strings */; };
+		A98DE4281E45EB3900EEF4C8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4201E45EB3900EEF4C8 /* Localizable.strings */; };
+		A98DE4291E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4231E45EB3900EEF4C8 /* Neopixel_Arduino.zip */; };
+		A98DE42A1E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4231E45EB3900EEF4C8 /* Neopixel_Arduino.zip */; };
+		A98DE42B1E45EB3900EEF4C8 /* NeopixelBoards.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */; };
+		A98DE42C1E45EB3900EEF4C8 /* NeopixelBoards.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */; };
+		A98DE42D1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */; };
+		A98DE42E1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */; };
+		A98DE42F1E45EB3900EEF4C8 /* NeopixelTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4261E45EB3900EEF4C8 /* NeopixelTypes.plist */; };
+		A98DE4301E45EB3900EEF4C8 /* NeopixelTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4261E45EB3900EEF4C8 /* NeopixelTypes.plist */; };
 		A99339751E3CC14B00CCA83D /* ReleasesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99339741E3CC14B00CCA83D /* ReleasesParser.swift */; };
 		A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */; };
 		A9BAD2121E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */; };
@@ -109,10 +129,6 @@
 		A9D2342C1E3AD64500DC0C99 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A9D234231E3AD64500DC0C99 /* Credits.rtf */; };
 		A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */; };
 		A9D2342E1E3AD64500DC0C99 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */; };
-		A9D2342F1E3AD64500DC0C99 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A9D234271E3AD64500DC0C99 /* Localizable.strings */; };
-		A9D234301E3AD64500DC0C99 /* NeopixelBoards.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234291E3AD64500DC0C99 /* NeopixelBoards.plist */; };
-		A9D234311E3AD64500DC0C99 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D2342A1E3AD64500DC0C99 /* NeopixelDefaultPalette.plist */; };
-		A9D234321E3AD64500DC0C99 /* NeopixelTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D2342B1E3AD64500DC0C99 /* NeopixelTypes.plist */; };
 		A9D234391E3AD70300DC0C99 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234341E3AD70300DC0C99 /* AboutViewController.swift */; };
 		A9D2343A1E3AD70300DC0C99 /* FilterTextSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234351E3AD70300DC0C99 /* FilterTextSettingsViewController.swift */; };
 		A9D2343C1E3AD70300DC0C99 /* PeripheralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234371E3AD70300DC0C99 /* PeripheralTableViewCell.swift */; };
@@ -152,7 +168,6 @@
 		A90C79731E40CB150076E8AD /* HelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModuleManager.swift; sourceTree = "<group>"; };
 		A91E7D4F1E4174F800DE90C6 /* KeyboardPositionNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardPositionNotifier.swift; sourceTree = "<group>"; };
-		A91E7D581E420E2400DE90C6 /* UartPacketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartPacketManager.swift; sourceTree = "<group>"; };
 		A91E7D5A1E4216ED00DE90C6 /* UIImage+Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		A91E7D5B1E4216ED00DE90C6 /* UIImage+Tint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tint.swift"; sourceTree = "<group>"; };
 		A9286C961E3A9216008E5F81 /* iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,6 +223,20 @@
 		A983786C1E43422100170319 /* MqttSettingsValueAndSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettingsValueAndSelector.swift; sourceTree = "<group>"; };
 		A98378711E43479400170319 /* ControllerModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerModuleManager.swift; sourceTree = "<group>"; };
 		A98378731E4347DB00170319 /* DataFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataFormatter.swift; sourceTree = "<group>"; };
+		A98DE4001E454FA100EEF4C8 /* NeopixelModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelModuleManager.swift; sourceTree = "<group>"; };
+		A98DE4031E45696700EEF4C8 /* UartPacketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartPacketManager.swift; sourceTree = "<group>"; };
+		A98DE4071E456AFC00EEF4C8 /* HelpExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpExportViewController.swift; sourceTree = "<group>"; };
+		A98DE4081E456AFC00EEF4C8 /* NeopixelBoardSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelBoardSelectorViewController.swift; sourceTree = "<group>"; };
+		A98DE4091E456AFC00EEF4C8 /* NeopixelColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelColorPickerViewController.swift; sourceTree = "<group>"; };
+		A98DE40A1E456AFC00EEF4C8 /* NeopixelModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelModuleViewController.swift; sourceTree = "<group>"; };
+		A98DE40B1E456AFC00EEF4C8 /* NeopixelTypeSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelTypeSelectorViewController.swift; sourceTree = "<group>"; };
+		A98DE40C1E456AFC00EEF4C8 /* NeopixelTypeValueTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelTypeValueTableViewCell.swift; sourceTree = "<group>"; };
+		A98DE41C1E45E25000EEF4C8 /* Color+DarkerLighter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Color+DarkerLighter.swift"; path = "../../../Bluefruit_LE_Connect_v2/bluefruitconnect/External Tools/Colors/Color+DarkerLighter.swift"; sourceTree = "<group>"; };
+		A98DE4211E45EB3900EEF4C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A98DE4231E45EB3900EEF4C8 /* Neopixel_Arduino.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Neopixel_Arduino.zip; sourceTree = "<group>"; };
+		A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelBoards.plist; sourceTree = "<group>"; };
+		A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelDefaultPalette.plist; sourceTree = "<group>"; };
+		A98DE4261E45EB3900EEF4C8 /* NeopixelTypes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelTypes.plist; sourceTree = "<group>"; };
 		A99339741E3CC14B00CCA83D /* ReleasesParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleasesParser.swift; sourceTree = "<group>"; };
 		A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoCharacteristicTableViewCell.swift; sourceTree = "<group>"; };
@@ -215,10 +244,6 @@
 		A9D234231E3AD64500DC0C99 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
 		A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GattUUIDs.plist; sourceTree = "<group>"; };
-		A9D234281E3AD64500DC0C99 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		A9D234291E3AD64500DC0C99 /* NeopixelBoards.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelBoards.plist; sourceTree = "<group>"; };
-		A9D2342A1E3AD64500DC0C99 /* NeopixelDefaultPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelDefaultPalette.plist; sourceTree = "<group>"; };
-		A9D2342B1E3AD64500DC0C99 /* NeopixelTypes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelTypes.plist; sourceTree = "<group>"; };
 		A9D234341E3AD70300DC0C99 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		A9D234351E3AD70300DC0C99 /* FilterTextSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTextSettingsViewController.swift; sourceTree = "<group>"; };
 		A9D234371E3AD70300DC0C99 /* PeripheralTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralTableViewCell.swift; sourceTree = "<group>"; };
@@ -310,10 +335,10 @@
 			isa = PBXGroup;
 			children = (
 				A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */,
-				A91E7D581E420E2400DE90C6 /* UartPacketManager.swift */,
+				A90798421E44F692005470A5 /* PlotterModuleManager.swift */,
 				A98378711E43479400170319 /* ControllerModuleManager.swift */,
 				A90798351E439DB9005470A5 /* PinIOModuleManager.swift */,
-				A90798421E44F692005470A5 /* PlotterModuleManager.swift */,
+				A98DE4001E454FA100EEF4C8 /* NeopixelModuleManager.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -388,6 +413,7 @@
 				A907983E1E44EC9C005470A5 /* Plotter */,
 				A90798231E4349D6005470A5 /* Controller */,
 				A90798391E43A4DA005470A5 /* PinIO */,
+				A98DE4061E456AFC00EEF4C8 /* NeoPixel */,
 				A98378151E42A96400170319 /* Dfu */,
 			);
 			path = Controllers;
@@ -444,6 +470,7 @@
 				A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */,
 				A9286CC61E3A9B22008E5F81 /* UartLogManager.swift */,
 				A9286CC71E3A9B22008E5F81 /* UartDataManager.swift */,
+				A98DE4031E45696700EEF4C8 /* UartPacketManager.swift */,
 			);
 			path = Ble;
 			sourceTree = "<group>";
@@ -471,6 +498,7 @@
 				A983780E1E4266CD00170319 /* UartDataExport.swift */,
 				A98378731E4347DB00170319 /* DataFormatter.swift */,
 				A90798321E439508005470A5 /* HexColorConversions.swift */,
+				A98DE41C1E45E25000EEF4C8 /* Color+DarkerLighter.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -574,6 +602,38 @@
 			path = Mqtt;
 			sourceTree = "<group>";
 		};
+		A98DE4061E456AFC00EEF4C8 /* NeoPixel */ = {
+			isa = PBXGroup;
+			children = (
+				A98DE40A1E456AFC00EEF4C8 /* NeopixelModuleViewController.swift */,
+				A98DE4081E456AFC00EEF4C8 /* NeopixelBoardSelectorViewController.swift */,
+				A98DE4091E456AFC00EEF4C8 /* NeopixelColorPickerViewController.swift */,
+				A98DE40B1E456AFC00EEF4C8 /* NeopixelTypeSelectorViewController.swift */,
+				A98DE40C1E456AFC00EEF4C8 /* NeopixelTypeValueTableViewCell.swift */,
+				A98DE4071E456AFC00EEF4C8 /* HelpExportViewController.swift */,
+			);
+			path = NeoPixel;
+			sourceTree = "<group>";
+		};
+		A98DE41F1E45EB3900EEF4C8 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				A98DE4201E45EB3900EEF4C8 /* Localizable.strings */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
+		A98DE4221E45EB3900EEF4C8 /* NeoPixel */ = {
+			isa = PBXGroup;
+			children = (
+				A98DE4231E45EB3900EEF4C8 /* Neopixel_Arduino.zip */,
+				A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */,
+				A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */,
+				A98DE4261E45EB3900EEF4C8 /* NeopixelTypes.plist */,
+			);
+			path = NeoPixel;
+			sourceTree = "<group>";
+		};
 		A9BAD20F1E3FC6CA0021DFA9 /* Info */ = {
 			isa = PBXGroup;
 			children = (
@@ -589,20 +649,10 @@
 				A9D234231E3AD64500DC0C99 /* Credits.rtf */,
 				A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */,
 				A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */,
-				A9D234261E3AD64500DC0C99 /* localization */,
-				A9D234291E3AD64500DC0C99 /* NeopixelBoards.plist */,
-				A9D2342A1E3AD64500DC0C99 /* NeopixelDefaultPalette.plist */,
-				A9D2342B1E3AD64500DC0C99 /* NeopixelTypes.plist */,
+				A98DE41F1E45EB3900EEF4C8 /* Localization */,
+				A98DE4221E45EB3900EEF4C8 /* NeoPixel */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		A9D234261E3AD64500DC0C99 /* localization */ = {
-			isa = PBXGroup;
-			children = (
-				A9D234271E3AD64500DC0C99 /* Localizable.strings */,
-			);
-			path = localization;
 			sourceTree = "<group>";
 		};
 		A9D234331E3AD70300DC0C99 /* Scanner */ = {
@@ -744,16 +794,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9286CB71E3A931E008E5F81 /* Main.storyboard in Resources */,
+				A98DE42B1E45EB3900EEF4C8 /* NeopixelBoards.plist in Resources */,
 				A9D2342E1E3AD64500DC0C99 /* GattUUIDs.plist in Resources */,
-				A9D234321E3AD64500DC0C99 /* NeopixelTypes.plist in Resources */,
 				A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */,
-				A9D2342F1E3AD64500DC0C99 /* Localizable.strings in Resources */,
 				A9286CB51E3A931E008E5F81 /* Assets.xcassets in Resources */,
-				A9D234301E3AD64500DC0C99 /* NeopixelBoards.plist in Resources */,
+				A98DE42D1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */,
+				A98DE42F1E45EB3900EEF4C8 /* NeopixelTypes.plist in Resources */,
 				A9286CB61E3A931E008E5F81 /* LaunchScreen.storyboard in Resources */,
+				A98DE4291E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */,
+				A98DE4271E45EB3900EEF4C8 /* Localizable.strings in Resources */,
 				A9D2342C1E3AD64500DC0C99 /* Credits.rtf in Resources */,
 				A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */,
-				A9D234311E3AD64500DC0C99 /* NeopixelDefaultPalette.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -762,7 +813,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				A983783B1E42BFF900170319 /* Assets.xcassets in Resources */,
+				A98DE42C1E45EB3900EEF4C8 /* NeopixelBoards.plist in Resources */,
+				A98DE42E1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */,
+				A98DE4281E45EB3900EEF4C8 /* Localizable.strings in Resources */,
+				A98DE42A1E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */,
 				A983783C1E42BFF900170319 /* Main.storyboard in Resources */,
+				A98DE4301E45EB3900EEF4C8 /* NeopixelTypes.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -900,6 +956,7 @@
 				A983786D1E43422100170319 /* MqttSettingPickerCell.swift in Sources */,
 				A98378741E4347DB00170319 /* DataFormatter.swift in Sources */,
 				A9286CD81E3A9B22008E5F81 /* Data+ScanValue.swift in Sources */,
+				A98DE4171E456AFC00EEF4C8 /* NeopixelTypeValueTableViewCell.swift in Sources */,
 				A90798401E44ECB3005470A5 /* PlotterModeViewController.swift in Sources */,
 				A96946711E3D02F300BA8DAA /* BleUUIDNames.swift in Sources */,
 				A94A21AD1E417271006A5F33 /* UartModeViewController.swift in Sources */,
@@ -918,25 +975,32 @@
 				A98378721E43479400170319 /* ControllerModuleManager.swift in Sources */,
 				A9D2345E1E3B49BA00DC0C99 /* DataDownloader.swift in Sources */,
 				A90798311E438E60005470A5 /* GradientView.swift in Sources */,
+				A98DE4111E456AFC00EEF4C8 /* NeopixelColorPickerViewController.swift in Sources */,
+				A98DE40F1E456AFC00EEF4C8 /* NeopixelBoardSelectorViewController.swift in Sources */,
 				A91E7D5C1E4216ED00DE90C6 /* UIImage+Color.swift in Sources */,
 				A90C79751E40CB150076E8AD /* HelpViewController.swift in Sources */,
 				A90C79741E40CB150076E8AD /* EmptyDetailsViewController.swift in Sources */,
+				A98DE41D1E45E25000EEF4C8 /* Color+DarkerLighter.swift in Sources */,
 				A907982A1E4349D6005470A5 /* ControllerComponentsTableViewCell.swift in Sources */,
 				A9D234401E3AD75800DC0C99 /* PeripheralList.swift in Sources */,
-				A91E7D591E420E2400DE90C6 /* UartPacketManager.swift in Sources */,
 				A9286CB41E3A931E008E5F81 /* AppDelegate.swift in Sources */,
 				A983781C1E42A96400170319 /* DfuFilesPickerTableViewCell.swift in Sources */,
 				A9286CCF1E3A9B22008E5F81 /* BleManager.swift in Sources */,
 				A983786F1E43422100170319 /* MqttSettingsStatusCell.swift in Sources */,
+				A98DE4131E456AFC00EEF4C8 /* NeopixelModuleViewController.swift in Sources */,
 				A983781F1E42ACC600170319 /* DfuUpdateProcess.swift in Sources */,
 				A9D234611E3B4D1100DC0C99 /* FirmwareUpdater.swift in Sources */,
 				A9286CDE1E3A9C98008E5F81 /* CocoaCompatibility.swift in Sources */,
 				A9D2343C1E3AD70300DC0C99 /* PeripheralTableViewCell.swift in Sources */,
 				A969466D1E3CD0CC00BA8DAA /* StyledButton.swift in Sources */,
 				A90798361E439DB9005470A5 /* PinIOModuleManager.swift in Sources */,
+				A98DE40D1E456AFC00EEF4C8 /* HelpExportViewController.swift in Sources */,
 				A983786E1E43422100170319 /* MqttSettingsHeaderCell.swift in Sources */,
 				A9BAD2131E3FC6CA0021DFA9 /* InfoModeViewController.swift in Sources */,
+				A98DE4151E456AFC00EEF4C8 /* NeopixelTypeSelectorViewController.swift in Sources */,
 				A98378091E422C4B00170319 /* NSObject+ENHThrottledReloading.m in Sources */,
+				A98DE4011E454FA100EEF4C8 /* NeopixelModuleManager.swift in Sources */,
+				A98DE4041E45696700EEF4C8 /* UartPacketManager.swift in Sources */,
 				A9D234581E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift in Sources */,
 				A907982B1E4349D6005470A5 /* ControllerModeViewController.swift in Sources */,
 				A983780F1E4266CD00170319 /* UartDataExport.swift in Sources */,
@@ -949,8 +1013,8 @@
 			files = (
 				A90798341E439583005470A5 /* HexColorConversions.swift in Sources */,
 				A98378431E42C10900170319 /* RssiUI.swift in Sources */,
+				A98DE41E1E45E25000EEF4C8 /* Color+DarkerLighter.swift in Sources */,
 				A983784E1E42C11000170319 /* UartDataManager.swift in Sources */,
-				A98378471E42C10C00170319 /* UartPacketManager.swift in Sources */,
 				A98378411E42C10600170319 /* ReleasesParser.swift in Sources */,
 				A98378501E42C11400170319 /* Data+ScanValue.swift in Sources */,
 				A983785A1E42C53100170319 /* LocalizationManager.swift in Sources */,
@@ -967,9 +1031,11 @@
 				A98378541E42C11400170319 /* LogHelper.swift in Sources */,
 				A98378581E42C52900170319 /* MqttSettings.swift in Sources */,
 				A90798371E439DBC005470A5 /* PinIOModuleManager.swift in Sources */,
+				A98DE4021E454FAE00EEF4C8 /* NeopixelModuleManager.swift in Sources */,
 				A98378641E42C79F00170319 /* SeparatorView.swift in Sources */,
 				A983784D1E42C11000170319 /* UartLogManager.swift in Sources */,
 				A98378401E42C10600170319 /* FirmwareUpdater.swift in Sources */,
+				A98DE4051E45696700EEF4C8 /* UartPacketManager.swift in Sources */,
 				A98378521E42C11400170319 /* DataDownloader.swift in Sources */,
 				A983784B1E42C11000170319 /* BlePeripheral+Uart.swift in Sources */,
 				A983785B1E42C53100170319 /* UartDataExport.swift in Sources */,
@@ -1009,10 +1075,10 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		A9D234271E3AD64500DC0C99 /* Localizable.strings */ = {
+		A98DE4201E45EB3900EEF4C8 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A9D234281E3AD64500DC0C99 /* en */,
+				A98DE4211E45EB3900EEF4C8 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

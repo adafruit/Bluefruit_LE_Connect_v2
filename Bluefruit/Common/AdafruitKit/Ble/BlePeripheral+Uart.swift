@@ -176,7 +176,13 @@ extension BlePeripheral {
         
         guard let uartTxCharacteristic = uartTxCharacteristic, let uartTxCharacteristicWriteType = uartTxCharacteristicWriteType, let uartRxCharacteristic = uartRxCharacteristic else {
             DLog("Command Error: characteristic no longer valid")
-            writeCompletion?(UartError.invalidCharacteristic)
+            if let writeCompletion = writeCompletion {
+                writeCompletion(UartError.invalidCharacteristic)
+            }
+            else {
+                // If no writeCompletion defined, move the error result to the readCompletion
+                readCompletion(nil, UartError.invalidCharacteristic)
+            }
             return
         }
         

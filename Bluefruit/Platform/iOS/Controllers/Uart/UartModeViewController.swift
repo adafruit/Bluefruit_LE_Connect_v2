@@ -123,8 +123,8 @@ class UartModeViewController: PeripheralModeViewController {
             }
         }
         
-        // Init Uarts
-        uartData = UartPacketManager(delegate: self)
+        // Init Uart
+        uartData = UartPacketManager(delegate: self, isPacketCacheEnabled: true, isMqttEnabled: true)
     }
 
     override func viewDidLayoutSubviews() {
@@ -439,7 +439,6 @@ class UartModeViewController: PeripheralModeViewController {
             activityViewController.popoverPresentationController?.sourceView = exportButton
             
             navigationController?.present(activityViewController, animated: true, completion: nil)
-            
         }
         else {
             DLog("exportString with empty text")
