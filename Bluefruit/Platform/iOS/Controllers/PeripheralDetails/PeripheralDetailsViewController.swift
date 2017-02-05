@@ -36,7 +36,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
 
         emptyViewController = storyboard!.instantiateViewController(withIdentifier: "EmptyDetailsViewController") as! EmptyDetailsViewController
 
-        //
+        // Init for iPhone
         if let _ = blePeripheral {
             setupConnectedPeripheral()
         }
@@ -73,7 +73,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     
     // MARK: - BLE Notifications
     private var willConnectToPeripheralObserver: NSObjectProtocol?
-//    private var didConnectToPeripheralObserver: NSObjectProtocol?
     private var willDisconnectFromPeripheralObserver: NSObjectProtocol?
     private var didDisconnectFromPeripheralObserver: NSObjectProtocol?
     
@@ -82,19 +81,17 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         
         if enabled {
             willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: OperationQueue.main, using: willConnectToPeripheral)
-//            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: OperationQueue.main, using: didConnectToPeripheral)
             willDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .willDisconnectFromPeripheral, object: nil, queue: OperationQueue.main, using: willDisconnectFromPeripheral)
             didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: OperationQueue.main, using: didDisconnectFromPeripheral)
         }
         else {
             if let willConnectToPeripheralObserver = willConnectToPeripheralObserver {notificationCenter.removeObserver(willConnectToPeripheralObserver)}
-//            if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
             if let willDisconnectFromPeripheralObserver = willDisconnectFromPeripheralObserver {notificationCenter.removeObserver(willDisconnectFromPeripheralObserver)}
             if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {notificationCenter.removeObserver(didDisconnectFromPeripheralObserver)}
         }
     }
     
-    func willConnectToPeripheral(notification: Notification) {
+    fileprivate func willConnectToPeripheral(notification: Notification) {
         
         if isInMultiUartMode() {
             
@@ -104,25 +101,9 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             emptyViewController.setConnecting(true)
         }
     }
-    
-    /*
-    func didConnectToPeripheral(notification: Notification) {
 
-        guard let connectedPeripheral = BleManager.sharedInstance.peripheral(from: notification) else {
-            DLog("didConnectToPeripheral with unknown id")
-            return
-        }
-        
-        didConnect(peripheral: connectedPeripheral)
-    }
     
-    func didConnect(peripheral: BlePeripheral) {
-                // UI
-        showEmpty(false)
-    }
- */
-    
-    func willDisconnectFromPeripheral(notification: Notification) {
+    fileprivate func willDisconnectFromPeripheral(notification: Notification) {
         DLog("detail: peripheral willDisconnect")
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
         if isFullScreen {       // executed when bluetooth is stopped
@@ -133,12 +114,15 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             }
         }
         else {
+            if startingController != .multiUart {
+                blePeripheral = nil
+            }
             showEmpty(true)
             emptyViewController.setConnecting(false)
         }
     }
     
-    func didDisconnectFromPeripheral(notification: Notification) {
+    fileprivate func didDisconnectFromPeripheral(notification: Notification) {
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
         
         DLog("detail: disconnection")

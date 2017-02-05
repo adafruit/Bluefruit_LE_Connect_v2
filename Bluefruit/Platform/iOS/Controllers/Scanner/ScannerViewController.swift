@@ -185,21 +185,23 @@ class ScannerViewController: UIViewController {
             DLog("Connected to an unexpected peripheral")
             return
         }
-        
+/*
         // Connection is managed here if the device is in compact mode
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
         if isFullScreen {
             DLog("list: connection on compact mode detected")
-            
+
             // Deselect current row
             if let indexPathForSelectedRow = self.baseTableView.indexPathForSelectedRow {
                 self.baseTableView.deselectRow(at: indexPathForSelectedRow, animated: true)
             }
-
+*/
             // Discover services
             infoAlertController?.message = "Discovering services..."
             discoverServices(peripheral: selectedPeripheral)
+/*
         }
+ */
     }
 
     private func didDisconnectFromPeripheral(notification: Notification) {
@@ -309,7 +311,6 @@ class ScannerViewController: UIViewController {
                 
                 if context.isMultiConnectEnabled {
                     context.dismissInfoDialog() {
-                        
                     }
                 }
                 else {
@@ -320,7 +321,7 @@ class ScannerViewController: UIViewController {
             }
         }
     }
-    
+
     // MARK: - Check Updates
     private func startUpdatesCheck(peripheral: BlePeripheral) {
         DLog("Check firmware updates")
@@ -328,7 +329,7 @@ class ScannerViewController: UIViewController {
         // Refresh updates available
         firmwareUpdater.checkUpdatesForPeripheral(peripheral, delegate: self, shouldDiscoverServices: false, shouldRecommendBetaReleases: false, versionToIgnore: Preferences.softwareUpdateIgnoredVersion)
     }
-    
+
     fileprivate func showUpdateAvailableForRelease(_ latestRelease: FirmwareInfo) {
 
         let localizationManager = LocalizationManager.sharedInstance
@@ -348,7 +349,6 @@ class ScannerViewController: UIViewController {
         }))
         self.present(alert, animated: true, completion: nil)
     }
-
     
     // MARK: - Filters
     private func openFiltersPanel(isOpen: Bool, animated: Bool) {

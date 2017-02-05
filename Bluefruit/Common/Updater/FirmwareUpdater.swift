@@ -37,7 +37,7 @@ struct DeviceInformationService {
     }
 }
 
-protocol FirmwareUpdaterDelegate: class {
+protocol FirmwareUpdaterDelegate: class {       // TODO: remove delegate and add a completion handler
     func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceInfo: DeviceInformationService?)
 }
 

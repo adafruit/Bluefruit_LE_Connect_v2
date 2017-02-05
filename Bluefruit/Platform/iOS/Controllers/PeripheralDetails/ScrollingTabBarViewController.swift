@@ -70,6 +70,7 @@ class ScrollingTabBarViewController: UIViewController {
     }
     
     func hideTabBar(_ hide: Bool) {
+        DLog("Hide Tab Bar: \(hide)")
        // tabBarContentView.transform = hide ? CGAffineTransformMakeTranslation(0, tabBarContentView.bounds.size.height):CGAffineTransformIdentity
         tabBarCollectionView.isHidden = hide
     }
