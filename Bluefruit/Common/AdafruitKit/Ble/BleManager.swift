@@ -13,7 +13,7 @@ import MSWeakTimer
 class BleManager: NSObject {
     // Configuration
     fileprivate static let kStopScanningWhenConnectingToPeripheral = false
-    fileprivate static let kAlwaysAllowDuplicateKeys = false
+    fileprivate static let kAlwaysAllowDuplicateKeys = true
 
     // Singleton
     static let sharedInstance = BleManager()
@@ -50,8 +50,17 @@ class BleManager: NSObject {
         peripheralsFound.removeAll()
     }
     
-    
     func restoreCentralManager() {
+        DLog("Restore central manager")
+        
+        isScanning = false
+        isScanningWaitingToStart = false
+        scanningServicesFilter = nil
+        
+        peripheralsFoundLock.lock()
+        peripheralsFound.removeAll()
+        peripheralsFoundLock.unlock()
+        
         // Restore central manager delegate if was changed
         centralManager?.delegate = self
     }
@@ -70,15 +79,21 @@ class BleManager: NSObject {
         scanningServicesFilter = services
         
         guard centralManager.state == .poweredOn else {
+            DLog("startScan failed because central manager is not powered on")
             return
         }
         
+        // DLog("start scan")
         isScanning = true
         NotificationCenter.default.post(name: .didStartScanning, object: nil)
-        centralManager.scanForPeripherals(withServices: services, options: BleManager.kAlwaysAllowDuplicateKeys ? [CBCentralManagerScanOptionAllowDuplicatesKey: true] : nil)
+        
+        let options = BleManager.kAlwaysAllowDuplicateKeys ? [CBCentralManagerScanOptionAllowDuplicatesKey: true] : nil
+        centralManager.scanForPeripherals(withServices: services, options: options)
+        isScanningWaitingToStart = false
     }
     
     func stopScan() {
+        // DLog("stop scan")
         centralManager?.stopScan()
         isScanning = false
         isScanningWaitingToStart = false
@@ -234,6 +249,7 @@ class BleManager: NSObject {
 extension BleManager: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         
+        DLog("centralManagerDidUpdateState: \(central.state)")
         // Unlock state lock if we have a known state
         if central.state == .poweredOn || central.state == .poweredOff || central.state == .unsupported || central.state == .unauthorized {
             centralManagerPoweredOnSemaphore.signal()
@@ -241,8 +257,7 @@ extension BleManager: CBCentralManagerDelegate {
         
         // Scanning
         if central.state == .poweredOn {
-
-            if (isScanningWaitingToStart) {
+            if isScanningWaitingToStart {
                 startScan(withServices: scanningServicesFilter)        // Continue scanning now that bluetooth is back
             }
         }
@@ -259,7 +274,7 @@ extension BleManager: CBCentralManagerDelegate {
     }*/
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-
+        // DLog("didDiscover: \(peripheral.name ?? peripheral.identifier.uuidString)")
         discovered(peripheral: peripheral, advertisementData: advertisementData, rssi: RSSI.intValue)
         
         NotificationCenter.default.post(name: .didDiscoverPeripheral, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier])

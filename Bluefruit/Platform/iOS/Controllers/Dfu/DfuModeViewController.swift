@@ -423,11 +423,11 @@ extension DfuModeViewController: DfuDialogViewControllerDelegate {
 // MARK: - DfuUpdateProcessDelegate
 extension  DfuModeViewController: DfuUpdateProcessDelegate {
     func onUpdateProcessSuccess() {
-        
+
         if let dfuDialogViewController = self.dfuDialogViewController {
             dfuDialogViewController.dismiss(animated: false, completion: nil)
         }
-        
+
         BleManager.sharedInstance.restoreCentralManager()
         
         let localizationManager = LocalizationManager.sharedInstance
@@ -439,13 +439,13 @@ extension  DfuModeViewController: DfuUpdateProcessDelegate {
         alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
     }
-    
+
     fileprivate func gotoScanController() {
         // Simulate disonnection to trigger the go back to scanning
         NotificationCenter.default.post(name: .didDisconnectFromPeripheral, object: nil)
     }
-    
-    func onUpdateProcessError(errorMessage : String, infoMessage: String?) {
+
+    func onUpdateProcessError(errorMessage: String, infoMessage: String?) {
         BleManager.sharedInstance.restoreCentralManager()
         
         if let dfuDialogViewController = self.dfuDialogViewController {
@@ -462,13 +462,12 @@ extension  DfuModeViewController: DfuUpdateProcessDelegate {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    
     func onUpdateProgressText(_ message: String) {
         DispatchQueue.main.async{ [unowned self] in
             self.dfuDialogViewController?.setProgressText(message)
         }
     }
-    
+
     func onUpdateProgressValue(_ progress: Double) {
         DispatchQueue.main.async { [unowned self] in
             self.dfuDialogViewController?.setProgress(progress)

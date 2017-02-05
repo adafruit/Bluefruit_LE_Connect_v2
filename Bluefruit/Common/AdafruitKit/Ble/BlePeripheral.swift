@@ -461,7 +461,6 @@ extension BlePeripheral: CBPeripheralDelegate {
     func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
         DLog("peripheralDidUpdateName: \(String(describing: name))")
         NotificationCenter.default.post(name: .peripheralDidUpdateName, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier, NotificationUserInfoKey.name.rawValue: name as Any])
-        
     }
     
     func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {

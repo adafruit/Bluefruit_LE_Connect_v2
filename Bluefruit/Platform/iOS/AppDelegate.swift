@@ -68,14 +68,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 // MARK: - UISplitViewControllerDelegate
 extension AppDelegate: UISplitViewControllerDelegate {
-    
-    
+
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         
         let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
         return connectedPeripherals.isEmpty
     }
-    
     
     func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
         // Hack to hide splitdivider cover

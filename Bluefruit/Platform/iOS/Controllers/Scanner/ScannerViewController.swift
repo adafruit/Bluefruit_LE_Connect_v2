@@ -98,9 +98,6 @@ class ScannerViewController: UIViewController {
         filtersUnnamedSwitch.isOn = peripheralList.isUnnamedEnabled
         filtersUartSwitch.isOn = peripheralList.isOnlyUartEnabled
         
-        // MultiConnect
-//        multiConnectSwitch.isOn = Preferences.
-        
         // Ble Notifications
         registerNotifications(enabled: true)
         
@@ -140,6 +137,7 @@ class ScannerViewController: UIViewController {
     private var willConnectToPeripheralObserver: NSObjectProtocol?
     private var didConnectToPeripheralObserver: NSObjectProtocol?
     private var didDisconnectFromPeripheralObserver: NSObjectProtocol?
+    private var peripheralDidUpdateNameObserver: NSObjectProtocol?
     
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
@@ -148,12 +146,14 @@ class ScannerViewController: UIViewController {
             willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: OperationQueue.main, using: willConnectToPeripheral)
             didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: OperationQueue.main, using: didConnectToPeripheral)
             didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: OperationQueue.main, using: didDisconnectFromPeripheral)
-        }
+            peripheralDidUpdateNameObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateName, object: nil, queue: OperationQueue.main, using: peripheralDidUpdateName)
+       }
         else {
             if let didDiscoverPeripheralObserver = didDiscoverPeripheralObserver {notificationCenter.removeObserver(didDiscoverPeripheralObserver)}
             if let willConnectToPeripheralObserver = willConnectToPeripheralObserver {notificationCenter.removeObserver(willConnectToPeripheralObserver)}
             if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
             if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {notificationCenter.removeObserver(didDisconnectFromPeripheralObserver)}
+            if let peripheralDidUpdateNameObserver = peripheralDidUpdateNameObserver {notificationCenter.removeObserver(peripheralDidUpdateNameObserver)}
         }
     }
     
@@ -176,20 +176,6 @@ class ScannerViewController: UIViewController {
         }
         
         presentInfoDialog(title: "Connecting...", peripheral: peripheral)
-    }
-    
-    fileprivate func presentInfoDialog(title: String, peripheral: BlePeripheral) {
-        infoAlertController = UIAlertController(title: nil, message: title, preferredStyle: .alert)
-        infoAlertController!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) -> Void in
-            BleManager.sharedInstance.disconnect(from: peripheral)
-            BleManager.sharedInstance.refreshPeripherals()      // Force refresh because they wont reappear. Check why is this happening
-        }))
-        present(infoAlertController!, animated: true, completion:nil)
-    }
-    
-    fileprivate func dismissInfoDialog(completion: (() -> Void)? = nil) {
-        infoAlertController?.dismiss(animated: true, completion: completion)
-        infoAlertController = nil
     }
     
     private func didConnectToPeripheral(notification: Notification) {
@@ -234,6 +220,17 @@ class ScannerViewController: UIViewController {
             // Dismiss any info open dialogs
             self?.infoAlertController?.dismiss(animated: true, completion: nil)
             
+            // Reload table
+            self?.baseTableView.reloadData()
+        }
+    }
+    
+    
+    private func peripheralDidUpdateName(notification: Notification) {
+        let name = notification.userInfo?[BlePeripheral.NotificationUserInfoKey.name.rawValue] as? String
+        DLog("centralManager peripheralDidUpdateName: \(name ?? "<unknown>")")
+        
+        DispatchQueue.main.async { [weak self] in
             // Reload table
             self?.baseTableView.reloadData()
         }
@@ -477,7 +474,7 @@ class ScannerViewController: UIViewController {
                 for connectedPeripheral in connectedPeripherals {
                     BleManager.sharedInstance.disconnect(from: connectedPeripheral)
                 }
-                BleManager.sharedInstance.refreshPeripherals()      // Force refresh because they wont reappear. Check why is this happening
+               // BleManager.sharedInstance.refreshPeripherals()      // Force refresh because they wont reappear. Check why is this happening
             }
         }
 
@@ -518,6 +515,20 @@ class ScannerViewController: UIViewController {
         let numConnectedPeripherals = BleManager.sharedInstance.connectedPeripherals().count
         multiConnectDetailsLabel.text = "Connected to \(numConnectedPeripherals) \(numConnectedPeripherals == 1 ? "device":"devices")"
         multiConnectShowButton.isEnabled = numConnectedPeripherals >= 2
+    }
+    
+    fileprivate func presentInfoDialog(title: String, peripheral: BlePeripheral) {
+        infoAlertController = UIAlertController(title: nil, message: title, preferredStyle: .alert)
+        infoAlertController!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) -> Void in
+            BleManager.sharedInstance.disconnect(from: peripheral)
+            //BleManager.sharedInstance.refreshPeripherals()      // Force refresh because they wont reappear. Check why is this happening
+        }))
+        present(infoAlertController!, animated: true, completion:nil)
+    }
+    
+    fileprivate func dismissInfoDialog(completion: (() -> Void)? = nil) {
+        infoAlertController?.dismiss(animated: true, completion: completion)
+        infoAlertController = nil
     }
 }
 

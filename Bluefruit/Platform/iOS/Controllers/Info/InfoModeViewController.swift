@@ -124,7 +124,6 @@ class InfoModeViewController: PeripheralModeViewController {
         
         let name = notification.userInfo?[BlePeripheral.NotificationUserInfoKey.name.rawValue] as? String
         DLog("centralManager peripheralDidUpdateName: \(name ?? "<unknown>")")
-        
     }
 
     private func peripheralDidModifyServices(notification: Notification) {
