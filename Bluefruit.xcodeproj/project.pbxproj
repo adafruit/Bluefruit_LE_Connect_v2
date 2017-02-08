@@ -123,6 +123,10 @@
 		A98DE42F1E45EB3900EEF4C8 /* NeopixelTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4261E45EB3900EEF4C8 /* NeopixelTypes.plist */; };
 		A98DE4301E45EB3900EEF4C8 /* NeopixelTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4261E45EB3900EEF4C8 /* NeopixelTypes.plist */; };
 		A99339751E3CC14B00CCA83D /* ReleasesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A99339741E3CC14B00CCA83D /* ReleasesParser.swift */; };
+		A9A6C2411E4B782400CEBFEC /* UartColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2401E4B782400CEBFEC /* UartColors.swift */; };
+		A9A6C2421E4B782400CEBFEC /* UartColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2401E4B782400CEBFEC /* UartColors.swift */; };
+		A9A6C2441E4B7EBF00CEBFEC /* UartSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2431E4B7EBF00CEBFEC /* UartSettings.swift */; };
+		A9A6C2451E4B7EBF00CEBFEC /* UartSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2431E4B7EBF00CEBFEC /* UartSettings.swift */; };
 		A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */; };
 		A9BAD2121E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */; };
 		A9BAD2131E3FC6CA0021DFA9 /* InfoModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2111E3FC6CA0021DFA9 /* InfoModeViewController.swift */; };
@@ -238,6 +242,8 @@
 		A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelDefaultPalette.plist; sourceTree = "<group>"; };
 		A98DE4261E45EB3900EEF4C8 /* NeopixelTypes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelTypes.plist; sourceTree = "<group>"; };
 		A99339741E3CC14B00CCA83D /* ReleasesParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleasesParser.swift; sourceTree = "<group>"; };
+		A9A6C2401E4B782400CEBFEC /* UartColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartColors.swift; sourceTree = "<group>"; };
+		A9A6C2431E4B7EBF00CEBFEC /* UartSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSettings.swift; sourceTree = "<group>"; };
 		A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoCharacteristicTableViewCell.swift; sourceTree = "<group>"; };
 		A9BAD2111E3FC6CA0021DFA9 /* InfoModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModeViewController.swift; sourceTree = "<group>"; };
@@ -339,6 +345,8 @@
 				A98378711E43479400170319 /* ControllerModuleManager.swift */,
 				A90798351E439DB9005470A5 /* PinIOModuleManager.swift */,
 				A98DE4001E454FA100EEF4C8 /* NeopixelModuleManager.swift */,
+				A9A6C2401E4B782400CEBFEC /* UartColors.swift */,
+				A9A6C2431E4B7EBF00CEBFEC /* UartSettings.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -444,6 +452,7 @@
 			isa = PBXGroup;
 			children = (
 				A9286CCE1E3A9B22008E5F81 /* Preferences.swift */,
+				A9A6C23F1E4B77E500CEBFEC /* Style */,
 				A9D2345F1E3B4D0700DC0C99 /* Updater */,
 				A9D2343E1E3AD75800DC0C99 /* Scanner */,
 				A90C79761E40CBFA0076E8AD /* Modules */,
@@ -632,6 +641,13 @@
 				A98DE4261E45EB3900EEF4C8 /* NeopixelTypes.plist */,
 			);
 			path = NeoPixel;
+			sourceTree = "<group>";
+		};
+		A9A6C23F1E4B77E500CEBFEC /* Style */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Style;
 			sourceTree = "<group>";
 		};
 		A9BAD20F1E3FC6CA0021DFA9 /* Info */ = {
@@ -924,6 +940,7 @@
 			files = (
 				A9BAD2121E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift in Sources */,
 				A9D234551E3AD9A200DC0C99 /* PeripheralModeViewController.swift in Sources */,
+				A9A6C2441E4B7EBF00CEBFEC /* UartSettings.swift in Sources */,
 				A94A21B01E417271006A5F33 /* UartSettingTableViewCell.swift in Sources */,
 				A91E7D5D1E4216ED00DE90C6 /* UIImage+Tint.swift in Sources */,
 				A983781D1E42A96400170319 /* DfuModeViewController.swift in Sources */,
@@ -933,6 +950,7 @@
 				A9286CDA1E3A9B22008E5F81 /* LogHelper.swift in Sources */,
 				A98378671E4341C600170319 /* UartMqttSettingsViewController.swift in Sources */,
 				A98378131E4270E800170319 /* MqttManager.swift in Sources */,
+				A9A6C2411E4B782400CEBFEC /* UartColors.swift in Sources */,
 				A9286CD71E3A9B22008E5F81 /* CommandQueue.swift in Sources */,
 				A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */,
 				A9D234561E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift in Sources */,
@@ -1013,6 +1031,7 @@
 			files = (
 				A90798341E439583005470A5 /* HexColorConversions.swift in Sources */,
 				A98378431E42C10900170319 /* RssiUI.swift in Sources */,
+				A9A6C2451E4B7EBF00CEBFEC /* UartSettings.swift in Sources */,
 				A98DE41E1E45E25000EEF4C8 /* Color+DarkerLighter.swift in Sources */,
 				A983784E1E42C11000170319 /* UartDataManager.swift in Sources */,
 				A98378411E42C10600170319 /* ReleasesParser.swift in Sources */,
@@ -1040,6 +1059,7 @@
 				A983784B1E42C11000170319 /* BlePeripheral+Uart.swift in Sources */,
 				A983785B1E42C53100170319 /* UartDataExport.swift in Sources */,
 				A98378421E42C10600170319 /* DfuUpdateProcess.swift in Sources */,
+				A9A6C2421E4B782400CEBFEC /* UartColors.swift in Sources */,
 				A98378451E42C10C00170319 /* InfoModuleManager.swift in Sources */,
 				A90798381E439DC2005470A5 /* ControllerModuleManager.swift in Sources */,
 				A983784C1E42C11000170319 /* BleUUIDNames.swift in Sources */,

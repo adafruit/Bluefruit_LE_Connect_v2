@@ -31,7 +31,6 @@ class BleManager: NSObject {
 
     // Connecting
     fileprivate var connectionTimeoutTimers = [UUID: MSWeakTimer]()
-   
     
     // Notifications
     enum NotificationUserInfoKey: String {
@@ -125,6 +124,7 @@ class BleManager: NSObject {
         }
         peripheralsFoundLock.unlock()
         
+        //
         NotificationCenter.default.post(name: .didUnDiscoverPeripheral, object: nil)
         startScan(withServices: scanningServicesFilter)
     }

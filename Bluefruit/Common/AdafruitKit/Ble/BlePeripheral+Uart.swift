@@ -63,7 +63,7 @@ extension BlePeripheral {
     }
     
     // MARK: - Initialization
-    func uartEnable(uartRxHandler: ((Data?, Error?) -> Void)?, completion: ((Error?) -> Void)?) {
+    func uartEnable(uartRxHandler: ((Data?, UUID, Error?) -> Void)?, completion: ((Error?) -> Void)?) {
         
         // Get uart communications characteristic
         characteristic(uuid: BlePeripheral.kUartTxCharacteristicUUID, serviceUuid: BlePeripheral.kUartServiceUUID) { [unowned self] (characteristic, error) in
@@ -84,15 +84,14 @@ extension BlePeripheral {
                 // Get characteristic info
                 self.uartRxCharacteristic = characteristic
                 
-                
                 // Prepare notification handler
-                let notifyHandler: ((Error?) -> Void)? = { error in
+                let notifyHandler: ((Error?) -> Void)? = { [unowned self] error in
                     let value = characteristic.value
                     if let value = value, BlePeripheral.kDebugLog == true, error == nil {
                         UartLogManager.log(data: value, type: .uartRx)
                     }
                     
-                    uartRxHandler?(value, error)
+                    uartRxHandler?(value, self.identifier, error)
                 }
                 
                 // Enable notifications

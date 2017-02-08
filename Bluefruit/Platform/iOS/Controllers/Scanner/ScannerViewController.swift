@@ -79,6 +79,9 @@ class ScannerViewController: UIViewController {
         filtersRssiSlider.maximumValue = Float(PeripheralList.kMaxRssiValue)
         
         // Setup multiconnect
+        multiConnectShowButton.setBackgroundImage(UIImage(color: view.tintColor), for: .normal)
+        multiConnectShowButton.setBackgroundImage(UIImage(color: UIColor.clear), for: .disabled)
+        
         openMultiConnectPanel(isOpen: false, animated: false)
     }
 
@@ -396,6 +399,7 @@ class ScannerViewController: UIViewController {
     
     // MARK: - Actions
     func onTableRefresh(_ sender: AnyObject) {
+        isRowDetailOpenForPeripheral.removeAll()
         BleManager.sharedInstance.refreshPeripherals()
         refreshControl.endRefreshing()
     }

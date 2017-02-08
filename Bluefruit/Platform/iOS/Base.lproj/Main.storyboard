@@ -2534,16 +2534,56 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Hb-vE-7Mw" customClass="LineChartView" customModule="Charts">
-                                <rect key="frame" x="16" y="84" width="343" height="514"/>
+                                <rect key="frame" x="16" y="84" width="343" height="483"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="vyN-3q-M6Y">
+                                <rect key="frame" x="16" y="577" width="119" height="31"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="AutoScroll: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fmp-ca-Jdh">
+                                        <rect key="frame" x="0.0" y="0.0" width="70" height="31"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <color key="textColor" red="0.79215686269999996" green="0.79215686269999996" blue="0.79215686269999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hng-Uq-TSB">
+                                        <rect key="frame" x="70" y="0.0" width="51" height="31"/>
+                                        <color key="onTintColor" red="0.088944101230000003" green="0.57494231630000003" blue="0.99607843139999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="onAutoScrollChanged:" destination="v13-MP-5HC" eventType="valueChanged" id="kMN-3v-pCa"/>
+                                        </connections>
+                                    </switch>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Vi-ec-Kqn">
+                                <rect key="frame" x="155" y="578" width="204" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Width: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mFw-Om-vau">
+                                        <rect key="frame" x="0.0" y="0.0" width="43.5" height="30"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <color key="textColor" red="0.79215686269999996" green="0.79215686269999996" blue="0.79215686269999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" minValue="6" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="71B-cU-1FB">
+                                        <rect key="frame" x="41.5" y="0.0" width="164.5" height="31"/>
+                                        <connections>
+                                            <action selector="onXScaleValueChanged:" destination="v13-MP-5HC" eventType="valueChanged" id="4Qn-5T-gOg"/>
+                                        </connections>
+                                    </slider>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.20874811460000001" green="0.20874811460000001" blue="0.20874811460000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="vyN-3q-M6Y" firstAttribute="leading" secondItem="s9o-3y-9B0" secondAttribute="leadingMargin" id="6S3-Lk-BBg"/>
+                            <constraint firstItem="6Vi-ec-Kqn" firstAttribute="centerY" secondItem="vyN-3q-M6Y" secondAttribute="centerY" id="CGE-Yi-3lp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6Vi-ec-Kqn" secondAttribute="trailing" id="GVg-QI-tAE"/>
                             <constraint firstItem="3Hb-vE-7Mw" firstAttribute="top" secondItem="ca9-wr-9K6" secondAttribute="bottom" constant="20" id="H1G-xE-0bh"/>
                             <constraint firstAttribute="trailingMargin" secondItem="3Hb-vE-7Mw" secondAttribute="trailing" id="UhL-28-yPB"/>
                             <constraint firstItem="3Hb-vE-7Mw" firstAttribute="leading" secondItem="s9o-3y-9B0" secondAttribute="leadingMargin" id="dD4-ng-lZk"/>
-                            <constraint firstItem="nVp-hg-eet" firstAttribute="top" secondItem="3Hb-vE-7Mw" secondAttribute="bottom" constant="20" id="vv7-40-Cv6"/>
+                            <constraint firstItem="nVp-hg-eet" firstAttribute="top" secondItem="vyN-3q-M6Y" secondAttribute="bottom" constant="10" id="fRH-Qg-lwf"/>
+                            <constraint firstItem="6Vi-ec-Kqn" firstAttribute="leading" secondItem="vyN-3q-M6Y" secondAttribute="trailing" constant="20" id="m0W-Lz-6pt"/>
+                            <constraint firstItem="vyN-3q-M6Y" firstAttribute="top" secondItem="3Hb-vE-7Mw" secondAttribute="bottom" constant="10" id="z49-X2-1et"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Plotter" id="O7D-n3-1Dh">
@@ -2556,7 +2596,9 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="autoscrollButton" destination="Hng-Uq-TSB" id="sNP-lc-9Q1"/>
                         <outlet property="chartView" destination="3Hb-vE-7Mw" id="W51-ee-vlk"/>
+                        <outlet property="xMaxEntriesSlider" destination="71B-cU-1FB" id="ZJ7-Hf-Kzk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QXC-6l-nfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3195,22 +3237,24 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WId-Vy-NnS">
-                                        <rect key="frame" x="26" y="49" width="333" height="32"/>
+                                        <rect key="frame" x="26" y="49" width="333" height="36"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connected to X devices" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ETU-JJ-eAf">
-                                                <rect key="frame" x="0.0" y="0.0" width="256" height="32"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="256" height="36"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W25-RG-Geg" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                                <rect key="frame" x="256" y="0.0" width="77" height="32"/>
+                                                <rect key="frame" x="256" y="0.0" width="77" height="36"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="77" id="pSs-Pe-bOA"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                <inset key="contentEdgeInsets" minX="0.0" minY="8" maxX="0.0" maxY="8"/>
-                                                <state key="normal" title="Start"/>
+                                                <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
+                                                <state key="normal" title="Start">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="onMultiConnectShow:" destination="DSy-Yb-eRw" eventType="touchUpInside" id="t9o-Xl-BMI"/>
                                                 </connections>
@@ -3276,12 +3320,11 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="cb6-qd-laT">
-                                                                    <rect key="frame" x="268" y="6" width="77" height="32"/>
+                                                                    <rect key="frame" x="268" y="4" width="77" height="36"/>
                                                                     <subviews>
                                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AJz-ce-Oin" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="77" height="32"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="77" height="36"/>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="height" constant="32" id="5UU-WC-3if"/>
                                                                                 <constraint firstAttribute="width" constant="44" id="Xol-ZA-O2z"/>
                                                                                 <constraint firstAttribute="width" secondItem="AJz-ce-Oin" secondAttribute="height" multiplier="1:1" id="ehi-DB-SS3"/>
                                                                             </constraints>
@@ -3301,7 +3344,7 @@
                                                                             </connections>
                                                                         </button>
                                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XVx-Pc-pIF" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="77" height="32"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="77" height="36"/>
                                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                             <inset key="contentEdgeInsets" minX="4" minY="0.0" maxX="4" maxY="0.0"/>
                                                                             <state key="normal" title="Connect"/>
@@ -3318,6 +3361,7 @@
                                                                         <constraint firstAttribute="width" constant="77" id="JVc-4j-VdY"/>
                                                                         <constraint firstItem="AJz-ce-Oin" firstAttribute="top" secondItem="cb6-qd-laT" secondAttribute="top" id="PoX-iD-nJf"/>
                                                                         <constraint firstItem="XVx-Pc-pIF" firstAttribute="top" secondItem="cb6-qd-laT" secondAttribute="top" id="a5t-Kp-DMq"/>
+                                                                        <constraint firstAttribute="height" constant="36" id="fzQ-fz-qBe"/>
                                                                         <constraint firstAttribute="trailing" secondItem="XVx-Pc-pIF" secondAttribute="trailing" id="iNb-7M-tY9"/>
                                                                         <constraint firstAttribute="bottom" secondItem="XVx-Pc-pIF" secondAttribute="bottom" id="nUx-CK-1kz"/>
                                                                         <constraint firstItem="XVx-Pc-pIF" firstAttribute="leading" secondItem="cb6-qd-laT" secondAttribute="leading" id="nk9-td-gfd"/>

@@ -112,7 +112,7 @@ class UartDataExport {
         for packet in packets {
             let date = Date(timeIntervalSinceReferenceDate: packet.timestamp)
             let unixDate = date.timeIntervalSince1970
-            let mode = dataChunk.mode == .rx ? "RX" : "TX"
+            let mode = dataPacket.mode == .rx ? "RX" : "TX"
             
             var dataString: String?
             if Preferences.uartIsInHexMode {

@@ -59,7 +59,7 @@ class UartDataManager {
     }
     
     // MARK: - Received data
-    func rxDataReceived(data: Data?, error: Error?) {
+    func rxDataReceived(data: Data?, peripheralIdentifier: UUID, error: Error?) {
         
         guard error == nil else {
             DLog("rxDataReceived error: \(error!)")

@@ -11,7 +11,8 @@ import UIColor_Hex
 
 class UartModeViewController: PeripheralModeViewController {
     // Config
-    fileprivate static var dataFont = UIFont(name: "CourierNewPSMT", size: 14)! //Font.systemFontOfSize(Font.systemFontSize())
+    fileprivate static var dataRxFont = UIFont(name: "CourierNewPSMT", size: 14)! //Font.systemFontOfSize(Font.systemFontSize())
+    fileprivate static var dataTxFont = UIFont(name: "CourierNewPS-BoldMT", size: 14)!
 
     // Export
     fileprivate static let kExportFormats: [ExportFormat] = [.txt, .csv, .json/*, .xml*/, .bin]
@@ -55,8 +56,9 @@ class UartModeViewController: PeripheralModeViewController {
     }
     
     fileprivate var uartData: UartPacketManager!
-    fileprivate var txColor = Preferences.uartSentDataColor
-    fileprivate var rxColor = Preferences.uartReceveivedDataColor
+    fileprivate var colorForPeripheral = [UUID: UIColor]()
+//    fileprivate var txColor = Preferences.uartSentDataColor
+//    fileprivate var rxColor = Preferences.uartReceveivedDataColor
     fileprivate let timestampDateFormatter = DateFormatter()
     fileprivate var tableCachedDataBuffer: [UartPacket]?
     fileprivate var textCachedBuffer = NSMutableAttributedString()
@@ -232,7 +234,7 @@ class UartModeViewController: PeripheralModeViewController {
         }
     }
     
-    
+
     // MARK: - BLE Notifications
     private var didUpdatePreferencesObserver: NSObjectProtocol?
     
@@ -247,18 +249,25 @@ class UartModeViewController: PeripheralModeViewController {
     }
 
     private func didUpdatePreferences(notification: Notification) {
-        txColor = Preferences.uartSentDataColor
-        rxColor = Preferences.uartReceveivedDataColor
+//        txColor = Preferences.uartSentDataColor
+//        rxColor = Preferences.uartReceveivedDataColor
         reloadDataUI()
     }
+ 
     
     // MARK: - UART
     fileprivate func setupUart() {
         updateUartReadyUI(isReady: false)
+
+        // Reset colors assinged to peripherals
+        let colors = UartColors.defaultColors()
+        colorForPeripheral.removeAll()
         
-        if isInMultiUartMode() {
+        // Enable uart
+        if isInMultiUartMode() {            // Multiple peripheral mode
             let blePeripherals = BleManager.sharedInstance.connectedPeripherals()
-            for blePeripheral in blePeripherals {
+            for (i, blePeripheral) in blePeripherals.enumerated() {
+                colorForPeripheral[blePeripheral.identifier] = colors[i % colors.count]
                 blePeripheral.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
                     guard let context = self else {
                         return
@@ -285,8 +294,9 @@ class UartModeViewController: PeripheralModeViewController {
                 }
             }
         }
-        else {
-            blePeripheral?.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
+        else if let blePeripheral = blePeripheral {         //  Single peripheral mode
+            colorForPeripheral[blePeripheral.identifier] = colors.first
+            blePeripheral.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
                 guard let context = self else {
                     return
                 }
@@ -325,7 +335,6 @@ class UartModeViewController: PeripheralModeViewController {
         
         switch displayMode {
         case .text:
-            
             textCachedBuffer.setAttributedString(NSAttributedString())
             let dataPackets = uartData.packetsCache()
             for dataPacket in dataPackets {
@@ -482,7 +491,19 @@ class UartModeViewController: PeripheralModeViewController {
         
         present(helpNavigationController, animated: true, completion: nil)
     }
+    
+    // MARK: - Style
+    fileprivate func colorForPacket(packet: UartPacket) -> UIColor {
+        let color = colorForPeripheral[packet.peripheralId] ?? UIColor.black
+        return color
+    }
+    
+    fileprivate func fontForPacket(packet: UartPacket) -> UIFont {
+        let font = packet.mode == .tx ? UartModeViewController.dataTxFont : UartModeViewController.dataRxFont
+        return font
+    }
 }
+
 
 // MARK: - UITableViewDataSource
 extension UartModeViewController: UITableViewDataSource {
@@ -491,8 +512,8 @@ extension UartModeViewController: UITableViewDataSource {
             tableCachedDataBuffer = uartData.packetsCache()
         }
         else {
-            tableCachedDataBuffer = uartData.packetsCache().filter({ (dataChunk: UartPacket) -> Bool in
-                dataChunk.mode == .rx
+            tableCachedDataBuffer = uartData.packetsCache().filter({ (dataPacket: UartPacket) -> Bool in
+                dataPacket.mode == .rx
             })
         }
         
@@ -505,17 +526,18 @@ extension UartModeViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for:indexPath as IndexPath)
         
         // Data binding in cellForRowAtIndexPath to avoid problems with multiple-line labels and dyanmic tableview height calculation
-        let dataChunk = tableCachedDataBuffer![indexPath.row]
-        let date = Date(timeIntervalSinceReferenceDate: dataChunk.timestamp)
+        let dataPacket = tableCachedDataBuffer![indexPath.row]
+        let date = Date(timeIntervalSinceReferenceDate: dataPacket.timestamp)
         let dateString = timestampDateFormatter.string(from: date)
-        let modeString = LocalizationManager.sharedInstance.localizedString(dataChunk.mode == .rx ? "uart_timestamp_direction_rx" : "uart_timestamp_direction_tx")
-        let color = dataChunk.mode == .tx ? txColor : rxColor
+        let modeString = LocalizationManager.sharedInstance.localizedString(dataPacket.mode == .rx ? "uart_timestamp_direction_rx" : "uart_timestamp_direction_tx")
+        let color = colorForPacket(packet: dataPacket)
+        let font = fontForPacket(packet: dataPacket)
         
         let timestampCell = cell as! UartTimetampTableViewCell
 
         timestampCell.timeStampLabel.text = String(format: "%@ %@", arguments: [dateString, modeString])
         
-        if let attributedText = attributedStringFromData(dataChunk.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: UartModeViewController.dataFont), attributedText.length > 0 {
+        if let attributedText = attributedStringFromData(dataPacket.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: font), attributedText.length > 0 {
             timestampCell.dataLabel.attributedText = attributedText
         }
         else {
@@ -584,9 +606,10 @@ extension UartModeViewController: UartPacketManagerDelegate {
     
     fileprivate func onUartPacketText(_ packet: UartPacket) {
         if (Preferences.uartIsEchoEnabled || packet.mode == .rx) {
-            let color = packet.mode == .tx ? txColor : rxColor
+            let color = colorForPacket(packet: packet)
+            let font = fontForPacket(packet: packet)
             
-            if let attributedString = attributedStringFromData(packet.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: UartModeViewController.dataFont) {
+            if let attributedString = attributedStringFromData(packet.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: font) {
                 textCachedBuffer.append(attributedString)
             }
         }

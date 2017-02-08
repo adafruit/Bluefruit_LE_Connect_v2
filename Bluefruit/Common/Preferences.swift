@@ -186,6 +186,7 @@ import Foundation
     }
     
     // MARK: - Uart
+    /*
     static var uartReceveivedDataColor: Color {
         get {
             let defaults = UserDefaults.standard
@@ -211,6 +212,7 @@ import Foundation
             NotificationCenter.default.post(name: .didUpdatePreferences, object: nil)
         }
     }
+ */
     
     static var uartShowInvisibleChars: Bool {
         get {
