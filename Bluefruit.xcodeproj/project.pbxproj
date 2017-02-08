@@ -127,6 +127,7 @@
 		A9A6C2421E4B782400CEBFEC /* UartColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2401E4B782400CEBFEC /* UartColors.swift */; };
 		A9A6C2441E4B7EBF00CEBFEC /* UartSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2431E4B7EBF00CEBFEC /* UartSettings.swift */; };
 		A9A6C2451E4B7EBF00CEBFEC /* UartSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2431E4B7EBF00CEBFEC /* UartSettings.swift */; };
+		A9A6C2471E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */; };
 		A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */; };
 		A9BAD2121E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */; };
 		A9BAD2131E3FC6CA0021DFA9 /* InfoModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2111E3FC6CA0021DFA9 /* InfoModeViewController.swift */; };
@@ -244,6 +245,7 @@
 		A99339741E3CC14B00CCA83D /* ReleasesParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleasesParser.swift; sourceTree = "<group>"; };
 		A9A6C2401E4B782400CEBFEC /* UartColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartColors.swift; sourceTree = "<group>"; };
 		A9A6C2431E4B7EBF00CEBFEC /* UartSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSettings.swift; sourceTree = "<group>"; };
+		A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSelectPeripheralViewController.swift; sourceTree = "<group>"; };
 		A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoCharacteristicTableViewCell.swift; sourceTree = "<group>"; };
 		A9BAD2111E3FC6CA0021DFA9 /* InfoModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModeViewController.swift; sourceTree = "<group>"; };
@@ -520,6 +522,7 @@
 				A94A21A71E417271006A5F33 /* UartSettingTableViewCell.swift */,
 				A94A21A81E417271006A5F33 /* UartTimetampTableViewCell.swift */,
 				A98378661E4341C600170319 /* UartMqttSettingsViewController.swift */,
+				A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */,
 				A98378681E43422100170319 /* Mqtt */,
 			);
 			path = Uart;
@@ -1003,6 +1006,7 @@
 				A9D234401E3AD75800DC0C99 /* PeripheralList.swift in Sources */,
 				A9286CB41E3A931E008E5F81 /* AppDelegate.swift in Sources */,
 				A983781C1E42A96400170319 /* DfuFilesPickerTableViewCell.swift in Sources */,
+				A9A6C2471E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift in Sources */,
 				A9286CCF1E3A9B22008E5F81 /* BleManager.swift in Sources */,
 				A983786F1E43422100170319 /* MqttSettingsStatusCell.swift in Sources */,
 				A98DE4131E456AFC00EEF4C8 /* NeopixelModuleViewController.swift in Sources */,

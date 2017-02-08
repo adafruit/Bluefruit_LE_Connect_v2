@@ -104,7 +104,6 @@ class ScannerViewController: UIViewController {
         // Ble Notifications
         registerNotifications(enabled: true)
         
-
         // If only connected to 1 peripheral and coming back to this
         let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
         if connectedPeripherals.count == 1, let peripheral = connectedPeripherals.first {

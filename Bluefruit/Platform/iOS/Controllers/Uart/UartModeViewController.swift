@@ -26,6 +26,7 @@ class UartModeViewController: PeripheralModeViewController {
 
     @IBOutlet weak var inputTextField: UITextField!
     @IBOutlet weak var sendInputButton: UIButton!
+    @IBOutlet weak var sendPeripheralButton: UIButton!
     @IBOutlet weak var keyboardSpacerHeightConstraint: NSLayoutConstraint!
     
     fileprivate var mqttBarButtonItem: UIBarButtonItem!
@@ -62,6 +63,7 @@ class UartModeViewController: PeripheralModeViewController {
     fileprivate let timestampDateFormatter = DateFormatter()
     fileprivate var tableCachedDataBuffer: [UartPacket]?
     fileprivate var textCachedBuffer = NSMutableAttributedString()
+    fileprivate var multiUartSendToPeripheralId: UUID? = nil       // nil = all peripherals
     
     private let keyboardPositionNotifier = KeyboardPositionNotifier()
     
@@ -112,6 +114,7 @@ class UartModeViewController: PeripheralModeViewController {
             inputControlsStackView.isHidden = true
         }
         
+        sendPeripheralButton.isHidden = !isInMultiUartMode()
         if !isInMultiUartMode() {
             // Mqtt init
             mqttBarButtonItemImageView = UIImageView(image: UIImage(named: "mqtt_disconnected")!.tintWithColor(self.view.tintColor))      // use a uiimageview as custom barbuttonitem to allow frame animations
@@ -195,7 +198,6 @@ class UartModeViewController: PeripheralModeViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
         
         baseTableView.enh_cancelPendingReload()
     }
@@ -290,6 +292,9 @@ class UartModeViewController: PeripheralModeViewController {
                         // Done
                         DLog("Uart enabled for \(peripheralName)")
                         
+                        if (blePeripheral == blePeripherals.last) {
+                            context.updateUartReadyUI(isReady: true)
+                        }
                     }
                 }
             }
@@ -378,7 +383,7 @@ class UartModeViewController: PeripheralModeViewController {
     }
 
     @IBAction func onClickSend(_ sender: AnyObject) {
-        guard let blePeripheral = blePeripheral else { return }
+        //guard let blePeripheral = blePeripheral else { return }
         
         var newText = inputTextField.text ?? ""
         
@@ -387,9 +392,45 @@ class UartModeViewController: PeripheralModeViewController {
             newText += "\n"
         }
         
-        uartData.send(blePeripheral: blePeripheral, text: newText)
+        if let blePeripheral = blePeripheral {      // Single peripheral mode
+            uartData.send(blePeripheral: blePeripheral, text: newText)
+        }
+        else {      // Multiple peripheral mode
+            let peripherals = BleManager.sharedInstance.connectedPeripherals()
+            
+            if let multiUartSendToPeripheralId = multiUartSendToPeripheralId {
+                // Send to single peripheral
+                if let peripheral = peripherals.first(where: {$0.identifier == multiUartSendToPeripheralId}) {
+                    uartData.send(blePeripheral: peripheral, text: newText)
+                }
+            }
+            else {
+                // Send to all peripherals
+                for peripheral in peripherals {
+                    uartData.send(blePeripheral: peripheral, text: newText)
+                }
+            }
+        }
+        
         inputTextField.text = ""
     }
+    
+    @IBAction func onClickPeripheralToSend(_ sender: UIButton) {
+        let viewController = storyboard!.instantiateViewController(withIdentifier: "UartSelectPeripheralViewController") as! UartSelectPeripheralViewController
+        viewController.delegate = self
+        viewController.colorForPeripheral = colorForPeripheral
+        
+        viewController.modalPresentationStyle = .popover
+        if let popovoverController = viewController.popoverPresentationController
+        {
+            popovoverController.sourceView = sender
+            popovoverController.delegate = self
+        
+            // popovoverController.backgroundColor = UIColor.lightGray
+        }
+        present(viewController, animated: true, completion: nil)
+    }
+    
     
     @IBAction func onInputTextFieldEdidtingDidEndOnExit(_ sender: UITextField) {
         onClickSend(sender)
@@ -716,4 +757,13 @@ extension UartModeViewController: MqttManagerDelegate {
             self.mqttError(message: message, isConnectionError: isConnectionError)
         }
     }
+}
+
+// MARK: - UartSelectPeripheralViewControllerDelegate
+extension UartModeViewController: UartSelectPeripheralViewControllerDelegate {
+    func onUartSendToChanged(uuid: UUID?, name: String) {
+        multiUartSendToPeripheralId = uuid
+        sendPeripheralButton.setTitle(name, for: .normal)
+    }
+    
 }
