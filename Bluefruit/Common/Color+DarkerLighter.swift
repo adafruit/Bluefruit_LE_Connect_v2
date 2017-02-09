@@ -11,15 +11,15 @@ import Foundation
 // based on: http://stackoverflow.com/questions/11598043/get-slightly-lighter-and-darker-color-from-uicolor
 extension Color {
     
-    func lighter(amount : CGFloat = 0.25) -> Color {
+    func lighter(_ amount: CGFloat = 0.25) -> Color {
         return hueColorWithBrightnessAmount(1 + amount)
     }
     
-    func darker(amount : CGFloat = 0.25) -> Color {
+    func darker(_ amount: CGFloat = 0.25) -> Color {
         return hueColorWithBrightnessAmount(1 - amount)
     }
     
-    private func hueColorWithBrightnessAmount(amount: CGFloat) -> Color {
+    private func hueColorWithBrightnessAmount(_ amount: CGFloat) -> Color {
         var hue         : CGFloat = 0
         var saturation  : CGFloat = 0
         var brightness  : CGFloat = 0
@@ -47,5 +47,4 @@ extension Color {
         #endif
         
     }
-    
 }
