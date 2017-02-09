@@ -124,10 +124,11 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     
     fileprivate func didDisconnectFromPeripheral(notification: Notification) {
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
+        let isLastConnectedPeripheral = BleManager.sharedInstance.connectedPeripherals().count == 0
         
         DLog("detail: disconnection")
         
-        if !isFullScreen {
+        if !isFullScreen && isLastConnectedPeripheral {
             DLog("detail: show empty")
             navigationController?.popToRootViewController(animated: false)       // pop any viewcontrollers (like ControlPad)
             showEmpty(true)
@@ -141,11 +142,8 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: { (_) -> Void in
                 let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
                 
-                if isFullScreen {
-                    let shouldGoBackToMainMenu = !(self.isInMultiUartMode() && BleManager.sharedInstance.connectedPeripherals().count > 1)
-                    if shouldGoBackToMainMenu {
-                        self.goBackToPeripheralList()
-                    }
+                if isFullScreen && isLastConnectedPeripheral {
+                    self.goBackToPeripheralList()
                 }
             })
             alertController.addAction(okAction)
@@ -260,7 +258,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     fileprivate func setupMultiUart() {
         let localizationManager = LocalizationManager.sharedInstance
 
-        hideTabBar(true)
+//        hideTabBar(false)
         // Uart Tab
         let uartViewController = self.storyboard!.instantiateViewController(withIdentifier: "UartModeViewController") as! UartModeViewController
         uartViewController.blePeripheral = nil

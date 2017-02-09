@@ -623,11 +623,10 @@ class PinIOModuleManager: NSObject {
             }
         }
     }
-
 }
 
 extension PinIOModuleManager: UartDataManagerDelegate {
-    func onUartRx(data: Data) {
+    func onUartRx(data: Data, peripheralIdentifier: UUID) {
         switch uartStatus {
         case .queryCapabilities:
             receivedQueryCapabilities(data: data)

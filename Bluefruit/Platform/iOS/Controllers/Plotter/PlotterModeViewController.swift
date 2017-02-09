@@ -21,13 +21,13 @@ class PlotterModeViewController: PeripheralModeViewController {
     fileprivate var originTimestamp: CFAbsoluteTime!
     fileprivate var isAutoScrollEnabled = true
     fileprivate var numEntriesVisible: TimeInterval = 20      // in seconds
+    fileprivate var colorForPeripheral = [UUID: UIColor]()
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Init
-        assert(blePeripheral != nil)
         uartDataManager = UartDataManager(delegate: self)
         setupChart()
         originTimestamp = CFAbsoluteTimeGetCurrent()
@@ -55,33 +55,73 @@ class PlotterModeViewController: PeripheralModeViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    
     // MARK: - UART
+    fileprivate func isInMultiUartMode() -> Bool {
+        return blePeripheral == nil
+    }
     
     fileprivate func setupUart() {
+        // Reset colors assigned to peripherals
+        let colors = UartColors.defaultColors()
+        colorForPeripheral.removeAll()
         
-        blePeripheral?.uartEnable(uartRxHandler: uartDataManager.rxDataReceived) { [weak self] error in
-            guard let context = self else {
-                return
-            }
-            
-            DispatchQueue.main.async { [unowned context] in
-                guard error == nil else {
-                    DLog("Error initializing uart")
-                    context.dismiss(animated: true, completion: { [weak self] () -> Void in
-                        if let context = self {
-                            showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
-                            
-                            if let blePeripheral = context.blePeripheral {
-                                BleManager.sharedInstance.disconnect(from: blePeripheral)
-                            }
+        // Enable uart
+        if isInMultiUartMode() {            // Multiple peripheral mode
+            let blePeripherals = BleManager.sharedInstance.connectedPeripherals()
+            for (i, blePeripheral) in blePeripherals.enumerated() {
+                colorForPeripheral[blePeripheral.identifier] = colors[i % colors.count]
+                blePeripheral.uartEnable(uartRxHandler: uartDataManager.rxDataReceived) { [weak self] error in
+                    guard let context = self else {
+                        return
+                    }
+                    
+                    let peripheralName = blePeripheral.name ?? blePeripheral.identifier.uuidString
+                    DispatchQueue.main.async { [unowned context] in
+                        guard error == nil else {
+                            DLog("Error initializing uart")
+                            context.dismiss(animated: true, completion: { [weak self] () -> Void in
+                                if let context = self {
+                                    showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized for peripheral: \(peripheralName)")
+                                    
+                                    BleManager.sharedInstance.disconnect(from: blePeripheral)
+                                }
+                            })
+                            return
                         }
-                    })
+                        
+                        // Done
+                        DLog("Uart enabled for \(peripheralName)")
+                    }
+                }
+            }
+        }
+        else if let blePeripheral = blePeripheral {         //  Single peripheral mode
+            colorForPeripheral[blePeripheral.identifier] = colors.first
+            blePeripheral.uartEnable(uartRxHandler: uartDataManager.rxDataReceived) { [weak self] error in
+                guard let context = self else {
                     return
                 }
                 
-                // Done
-                DLog("Uart enabled")
+                DispatchQueue.main.async { [unowned context] in
+                    guard error == nil else {
+                        DLog("Error initializing uart")
+                        context.dismiss(animated: true, completion: { [weak self] () -> Void in
+                            if let context = self {
+                                showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
+                                
+                                if let blePeripheral = context.blePeripheral {
+                                    BleManager.sharedInstance.disconnect(from: blePeripheral)
+                                }
+                            }
+                        })
+                        return
+                    }
+                    
+                    // Done
+                    DLog("Uart enabled")
+                }
             }
         }
     }
@@ -107,54 +147,66 @@ class PlotterModeViewController: PeripheralModeViewController {
         chartView.legend.enabled = false
     }
     
-    fileprivate func addEntry(index: Int, value: Double, timestamp: CFAbsoluteTime) {
+    fileprivate var dataSetsForPeripheral = [UUID: [LineChartDataSet]]()
+    
+    fileprivate func addEntry(peripheralIdentifier identifier: UUID, index: Int, value: Double, timestamp: CFAbsoluteTime) {
         let entry = ChartDataEntry(x: timestamp, y: value)
-        
+
         DispatchQueue.main.async { [weak self] in
-            
             guard let context = self else { return }
             
-            if let dataSets = context.chartView.data?.dataSets, index < dataSets.count {
-                // Add entry to existing dataset
-                let dataSet = dataSets[index]
-                let _ = dataSet.addEntry(entry)
-                
-            }
-            else {
-                // Create dataset
-                let dataSet = LineChartDataSet(values: [entry], label: "Values[\(index)]")
-                let _ = dataSet.addEntry(entry)
-                
-                dataSet.drawCirclesEnabled = false
-                dataSet.drawValuesEnabled = false
-                dataSet.lineWidth = 2
-//                dataSet.setColor(<#T##color: NSUIColor##NSUIColor#>)
-                
-                if let lineChartData = context.chartView.data {
-                    // Append dataset to existing data
-                    lineChartData.dataSets.append(dataSet)
-                }
-                else {
-                    // Create data and add first dataset
-                    let lineChartData = LineChartData(dataSets: [dataSet])
-                    context.chartView.data = lineChartData
+            var dataSetExists = false
+            if let dataSets = context.dataSetsForPeripheral[identifier] {
+                if index < dataSets.count {
+                    // Add entry to existing dataset
+                    let dataSet = dataSets[index]
+                    let _ = dataSet.addEntry(entry)
+                    
+                    dataSetExists = true
                 }
             }
-            
-            guard let dataSets = context.chartView.data?.dataSets, index < dataSets.count, let dataSet = context.chartView.data?.dataSets[index] else { return }
+
+            if !dataSetExists {
+                context.appendDataset(peripheralIdentifier: identifier, entry: entry, index: index)
+                
+                let allDataSets = context.dataSetsForPeripheral.flatMap { $0.1 }
+                context.chartView.data = LineChartData(dataSets: allDataSets)
+            }
+  
+            guard let dataSets = context.dataSetsForPeripheral[identifier], index < dataSets.count else { return }
             
             context.chartView.data?.notifyDataChanged()
             context.chartView.notifyDataSetChanged()
             context.chartView.setVisibleXRangeMaximum(context.numEntriesVisible)
             context.chartView.setVisibleXRangeMinimum(context.numEntriesVisible)
             if context.isAutoScrollEnabled {
+                let dataSet = dataSets[index]
                 let xOffset = Double(dataSet.entryCount) - (context.numEntriesVisible-1)
                 context.chartView.moveViewToX(xOffset)
             }
         }
     }
-
-     // MARK: - Actions
+    
+    fileprivate func appendDataset(peripheralIdentifier identifier: UUID, entry: ChartDataEntry, index: Int) {
+        let dataSet = LineChartDataSet(values: [entry], label: "Values[\(identifier.uuidString) : \(index)]")
+        let _ = dataSet.addEntry(entry)
+        
+        dataSet.drawCirclesEnabled = false
+        dataSet.drawValuesEnabled = false
+        dataSet.lineWidth = 2
+        let color = colorForPeripheral[identifier]?.withAlphaComponent(1.0 - CGFloat(index)*0.30) ?? UIColor.black
+        dataSet.setColor(color)
+        DLog("color: \(color.hexString()!)")
+        
+        if dataSetsForPeripheral[identifier] != nil {
+            dataSetsForPeripheral[identifier]!.append(dataSet)
+        }
+        else {
+            dataSetsForPeripheral[identifier] = [dataSet]
+        }
+    }
+    
+    // MARK: - Actions
     @IBAction func onAutoScrollChanged(_ sender: Any) {
         isAutoScrollEnabled = !isAutoScrollEnabled
         chartView.dragEnabled = !isAutoScrollEnabled
@@ -165,13 +217,14 @@ class PlotterModeViewController: PeripheralModeViewController {
     }
 }
 
+// MARK: - UartDataManagerDelegate
 extension PlotterModeViewController: UartDataManagerDelegate {
     private static let kLineSeparator = Data(bytes: [10])
     
-    func onUartRx(data: Data) {
-        //DLog("uart rx read (hex): \(hexDescription(data: data))")
-       // DLog("uart rx read (utf8): \(String(data: data, encoding: .utf8) ?? "<invalid>")")
-
+    func onUartRx(data: Data, peripheralIdentifier identifier: UUID) {
+        // DLog("uart rx read (hex): \(hexDescription(data: data))")
+        // DLog("uart rx read (utf8): \(String(data: data, encoding: .utf8) ?? "<invalid>")")
+        
         guard let lastSeparatorRange = data.range(of: PlotterModeViewController.kLineSeparator, options: .backwards, in: nil) else {
             return
         }
@@ -183,25 +236,29 @@ extension PlotterModeViewController: UartDataManagerDelegate {
             for lineString in linesStrings {
                 
                 let currentTimestamp = CFAbsoluteTimeGetCurrent() - originTimestamp
-             //   DLog("\tline: \(lineString)")
+                //   DLog("\tline: \(lineString)")
                 
                 let valuesStrings = lineString.components(separatedBy: CharacterSet(charactersIn: ", \t"))
                 var i = 0
+                // DLog("values: \(valuesStrings)")
                 for valueString in valuesStrings {
                     if let value = Double(valueString) {
-                        DLog("value \(i): \(value)")
-                        addEntry(index: i, value: value, timestamp: currentTimestamp)
+                        //DLog("value \(i): \(value)")
+                        addEntry(peripheralIdentifier: identifier, index: i, value: value, timestamp: currentTimestamp)
                         i = i+1
                     }
                 }
             }
         }
+
+        //let numBytesProcessed = subData.count
+        //uartDataManager.removeRxCacheFirst(n: numBytesProcessed, peripheralIdentifier: identifier)
         
-        let numBytesProcessed = subData.count
-        uartDataManager.removeRxCacheFirst(n: numBytesProcessed)
+        uartDataManager.removeRxCacheFirst(n: lastSeparatorRange.upperBound+1, peripheralIdentifier: identifier)
     }
 }
 
+// MARK: - ChartViewDelegate
 extension PlotterModeViewController: ChartViewDelegate {
     
     /*

@@ -214,10 +214,7 @@ class UartModeViewController: PeripheralModeViewController {
         mqttManager.disconnect()
     }
     
-    fileprivate func isInMultiUartMode() -> Bool {
-        return blePeripheral == nil
-    }
-    
+ 
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "uartSettingsSegue"  {
@@ -235,7 +232,6 @@ class UartModeViewController: PeripheralModeViewController {
             }
         }
     }
-    
 
     // MARK: - BLE Notifications
     private var didUpdatePreferencesObserver: NSObjectProtocol?
@@ -258,10 +254,14 @@ class UartModeViewController: PeripheralModeViewController {
  
     
     // MARK: - UART
+    fileprivate func isInMultiUartMode() -> Bool {
+        return blePeripheral == nil
+    }
+    
     fileprivate func setupUart() {
         updateUartReadyUI(isReady: false)
 
-        // Reset colors assinged to peripherals
+        // Reset colors assigned to peripherals
         let colors = UartColors.defaultColors()
         colorForPeripheral.removeAll()
         

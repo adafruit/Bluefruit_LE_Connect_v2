@@ -229,7 +229,6 @@ class ScannerViewController: UIViewController {
         }
     }
     
-    
     private func peripheralDidUpdateName(notification: Notification) {
         let name = notification.userInfo?[BlePeripheral.NotificationUserInfoKey.name.rawValue] as? String
         DLog("centralManager peripheralDidUpdateName: \(name ?? "<unknown>")")

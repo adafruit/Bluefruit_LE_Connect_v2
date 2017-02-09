@@ -822,7 +822,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vbT-Ly-qbh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2831.1999999999998" y="-793.8530734632684"/>
+            <point key="canvasLocation" x="2814" y="-801"/>
         </scene>
         <!--Uart Settings View Controller-->
         <scene sceneID="iKe-YH-2db">
@@ -3305,6 +3305,9 @@
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
                                                 <state key="normal" title="Start">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
                                                     <action selector="onMultiConnectShow:" destination="DSy-Yb-eRw" eventType="touchUpInside" id="t9o-Xl-BMI"/>
