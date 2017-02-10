@@ -8,7 +8,11 @@
 
 import Foundation
 import CoreBluetooth
-import iOSDFULibrary
+
+#if COMMANDLINE
+#else
+    import iOSDFULibrary
+#endif
 
 protocol DfuUpdateProcessDelegate: class {
     func onUpdateProcessSuccess()

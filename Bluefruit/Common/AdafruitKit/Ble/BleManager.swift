@@ -8,7 +8,11 @@
 
 import Foundation
 import CoreBluetooth
-import MSWeakTimer
+
+#if COMMANDLINE
+#else
+    import MSWeakTimer
+#endif
 
 class BleManager: NSObject {
     // Configuration

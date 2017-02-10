@@ -21,11 +21,12 @@ target 'macOS' do
 	shared_pods
 end
 
-target 'Bluefruit' do       # command line tool
-    platform :osx, "10.11"
-    shared_pods
-    
-end
+#target 'Bluefruit' do       # command line tool
+#    platform :osx, "10.11"
+    #    pod 'SwiftyXML', '~> 1.1.0'
+    #pod 'iOSDFULibrary'
+    #pod 'MSWeakTimer', '~> 1.1.0'hexStringb
+#end
 
 #target 'watchOS' do
 #	platform :watchos, '3.0'

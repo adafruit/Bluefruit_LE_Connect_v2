@@ -9,9 +9,10 @@
 #ifndef BluefruitConnect_Bridging_Header_h
 #define BluefruitConnect_Bridging_Header_h
 
-#import "FirmwareUpdater.h"
-#import "DFUOperations.h"
-#import "DataDownloader.h"
-#import "DeviceInfoData.h"
+#import "MSWeakTimer.h"
+#import "IntelHex2BinConverter.h"
+#import "zip.h"
+#import "unzip.h"
+
 
 #endif /* BluefruitConnect_Bridging_Header_h */

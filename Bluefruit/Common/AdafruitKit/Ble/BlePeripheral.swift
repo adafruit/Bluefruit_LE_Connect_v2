@@ -1,5 +1,5 @@
 //
-//  Peripheral.swift
+//  BlePeripheral.swift
 //  NewtManager
 //
 //  Created by Antonio García on 12/09/2016.
@@ -8,7 +8,10 @@
 
 import Foundation
 import CoreBluetooth
-import MSWeakTimer
+#if COMMANDLINE
+#else
+    import MSWeakTimer
+#endif
 
 class BlePeripheral: NSObject {
     // Config

@@ -7,7 +7,10 @@
 //
 
 import Foundation
-import SwiftyXML
+#if COMMANDLINE
+#else
+    import SwiftyXML
+#endif
 
 class BasicVersionInfo {
     var fileType: UInt8 // DFUFirmwareType
