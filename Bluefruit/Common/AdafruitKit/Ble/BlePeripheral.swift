@@ -45,7 +45,7 @@ class BlePeripheral: NSObject {
         var advertisementData: [String: Any]
         
         init(advertisementData: [String: Any]?) {
-            self.advertisementData = advertisementData ?? [String:Any]()
+            self.advertisementData = advertisementData ?? [String: Any]()
         }
         
         // Advertisement data formatted
@@ -121,8 +121,8 @@ class BlePeripheral: NSObject {
         
         super.init()
         self.peripheral.delegate = self
+        // DLog("create peripheral: \(peripheral.name ?? peripheral.identifier.uuidString)")
         commandQueue.executeHandler = executeCommand
-
     }
     
     deinit {
@@ -472,6 +472,7 @@ extension BlePeripheral: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        DLog("didDiscoverServices for: \(peripheral.name ?? peripheral.identifier.uuidString)")
         finishedExecutingCommand(error: error)
     }
     

@@ -34,6 +34,9 @@ func main() {
         case showBetaVersionsShort = "-b"
     }
     
+    // Disable bufffer
+    setbuf(stdout, nil)
+    
     // Data
     let group = DispatchGroup()
     let queue = DispatchQueue(label: "", attributes: DispatchQueue.Attributes.concurrent)
@@ -170,7 +173,7 @@ func main() {
             queue.async(group: group) {
                 commandLine.dfuPeripheral(uuid: peripheralIdentifier, hexUrl: hexUrl, iniUrl: iniUrl)
             }
-            group.wait(timeout: DispatchTime.distantFuture)
+            let _ = group.wait(timeout: DispatchTime.distantFuture)
             
             
         case .update:
@@ -198,7 +201,7 @@ func main() {
                 exit(EXIT_FAILURE)
             }
 
-            downloadReleasesSemaphore.wait(timeout: DispatchTime.distantFuture)      // Wait for server download
+            let _ = downloadReleasesSemaphore.wait(timeout: DispatchTime.distantFuture)      // Wait for server download
             
             guard releases != nil else {
                 print("Error downloading updates info from: \(serverUrl)")
@@ -209,7 +212,8 @@ func main() {
             queue.async(group: group) {
                 commandLine.dfuPeripheral(uuid: peripheralIdentifier, releases: releases)
             }
-            group.wait(timeout: DispatchTime.distantFuture)
+            let _ = group.wait(timeout: DispatchTime.distantFuture)
+            DLog("update finished")
             
         default:
             print("Unknown command: \(command.rawValue)")

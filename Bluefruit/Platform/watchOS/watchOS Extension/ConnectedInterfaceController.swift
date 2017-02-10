@@ -9,7 +9,6 @@
 import WatchKit
 import Foundation
 
-
 class ConnectedInterfaceController: WKInterfaceController {
 
     @IBOutlet var peripheralNameLabel: WKInterfaceLabel!
@@ -42,10 +41,7 @@ class ConnectedInterfaceController: WKInterfaceController {
         DLog("ConnectedInterfaceController didReceiveApplicationContext: \(applicationContext)")
         
         // Name
-        var peripheralName = "{No Name}"
-        if let name = applicationContext["bleConnectedPeripheralName"] as? String {
-            peripheralName = name
-        }
+        let peripheralName = applicationContext["bleConnectedPeripheralName"] as? String ?? "{No Name}"
         peripheralNameLabel.setText( peripheralName )
         
         // Uart

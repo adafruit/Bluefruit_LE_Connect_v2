@@ -59,6 +59,8 @@ class CommandQueue<Element> {
     }
  */
     
+    
+    
     fileprivate var queue = [Element]()
     
     func first() -> Element? {

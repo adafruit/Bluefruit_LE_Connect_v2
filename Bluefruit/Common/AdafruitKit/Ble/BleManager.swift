@@ -46,6 +46,7 @@ class BleManager: NSObject {
 
         centralManagerPoweredOnSemaphore.wait()
         centralManager = CBCentralManager(delegate: self, queue: DispatchQueue.global(qos: .background), options: [:])
+//        centralManager = CBCentralManager(delegate: self, queue: DispatchQueue.main, options: [:])
     }
     
     deinit {
@@ -56,16 +57,28 @@ class BleManager: NSObject {
     func restoreCentralManager() {
         DLog("Restore central manager")
         
-        isScanning = false
+        reset()
+        
+        // Restore central manager delegate if was changed
+        centralManager?.delegate = self
+    }
+    
+    func reset() {
+        
+        if isScanning {
+            stopScan()
+            isScanning = false
+        }
         isScanningWaitingToStart = false
         scanningServicesFilter = nil
         
         peripheralsFoundLock.lock()
+        
+        for (_ , blePeripheral) in peripheralsFound {
+            blePeripheral.peripheral.delegate = nil
+        }
         peripheralsFound.removeAll()
         peripheralsFoundLock.unlock()
-        
-        // Restore central manager delegate if was changed
-        centralManager?.delegate = self
     }
     
     // MARK: - Scan

@@ -116,7 +116,8 @@ class CommandLine: NSObject {
     private func stopScanning() {
         if let didDiscoverPeripheralObserver = didDiscoverPeripheralObserver {NotificationCenter.default.removeObserver(didDiscoverPeripheralObserver)}
         
-        BleManager.sharedInstance.stopScan()
+//        BleManager.sharedInstance.stopScan()
+        BleManager.sharedInstance.reset()
     }
     
     private func didDiscoverPeripheral(notification: Notification) {
@@ -191,9 +192,8 @@ class CommandLine: NSObject {
             didConnectToPeripheralObserver = NotificationCenter.default.addObserver(forName: .didConnectToPeripheral, object: nil, queue: OperationQueue.main, using: didConnectToPeripheral)
             
             // Connect to peripheral and wait
-            let blePeripheral = BlePeripheral(peripheral: peripheral, advertisementData: [:], rssi: 0)
-            BleManager.sharedInstance.connect(to: blePeripheral)
-            dfuSemaphore.wait(timeout: .distantFuture)
+            BleManager.sharedInstance.connect(to: dfuPeripheral!)
+            let _ = dfuSemaphore.wait(timeout: .distantFuture)
         }
         else {
             print("Error. No peripheral found with UUID: \(peripheralUUID.uuidString)")
