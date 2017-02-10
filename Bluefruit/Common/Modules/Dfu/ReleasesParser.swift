@@ -8,7 +8,6 @@
 
 import Foundation
 import SwiftyXML
-//import iOSDFULibrary
 
 class BasicVersionInfo {
     var fileType: UInt8 // DFUFirmwareType

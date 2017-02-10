@@ -82,6 +82,8 @@ class UartPacketManager {
     }
     
     func send(blePeripheral: BlePeripheral, text: String, wasReceivedFromMqtt: Bool = false) {
+        
+        #if os(iOS)
         if isMqttEnabled {
             // Mqtt publish to TX
             let mqttSettings = MqttSettings.sharedInstance
@@ -92,6 +94,7 @@ class UartPacketManager {
                 }
             }
         }
+        #endif
         
         // Create data and send to Uart
         if let data = text.data(using: .utf8) {
@@ -101,7 +104,13 @@ class UartPacketManager {
                 self.delegate?.onUartPacket(uartPacket)
             }
             
-            if (!wasReceivedFromMqtt || (isMqttEnabled && MqttSettings.sharedInstance.subscribeBehaviour == .transmit)) {
+            #if os(iOS)
+                let shouldBeSent = (!wasReceivedFromMqtt || (isMqttEnabled && MqttSettings.sharedInstance.subscribeBehaviour == .transmit))
+            #else
+                let shouldBeSent = true
+            #endif
+            
+            if shouldBeSent {
                 send(blePeripheral: blePeripheral, data: data)
                 
                 packetsSemaphore.wait()            // don't append more data, till the delegate has finished processing it
@@ -126,17 +135,19 @@ class UartPacketManager {
         let uartPacket = UartPacket(peripheralId: peripheralIdentifier, timestamp: CFAbsoluteTimeGetCurrent(), mode: .rx, data: data)
         
         // Mqtt publish to RX
-        if isMqttEnabled {
-            let mqttSettings = MqttSettings.sharedInstance
-            if mqttSettings.isPublishEnabled {
-                if let message = String(data: uartPacket.data, encoding: .utf8) {
-                    if let topic = mqttSettings.getPublishTopic(index: MqttSettings.PublishFeed.rx.rawValue) {
-                        let qos = mqttSettings.getPublishQos(index: MqttSettings.PublishFeed.rx.rawValue)
-                        MqttManager.sharedInstance.publish(message: message, topic: topic, qos: qos)
+        #if os(iOS)
+            if isMqttEnabled {
+                let mqttSettings = MqttSettings.sharedInstance
+                if mqttSettings.isPublishEnabled {
+                    if let message = String(data: uartPacket.data, encoding: .utf8) {
+                        if let topic = mqttSettings.getPublishTopic(index: MqttSettings.PublishFeed.rx.rawValue) {
+                            let qos = mqttSettings.getPublishQos(index: MqttSettings.PublishFeed.rx.rawValue)
+                            MqttManager.sharedInstance.publish(message: message, topic: topic, qos: qos)
+                        }
                     }
                 }
             }
-        }
+        #endif
         
         packetsSemaphore.wait()            // don't append more data, till the delegate has finished processing it
         receivedBytes += data.count

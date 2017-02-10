@@ -5,8 +5,15 @@ def shared_pods
 	pod 'CocoaMQTT', '~> 1.0.11'
 #	pod 'MSWeakTimer', '~> 1.1.0' 		// Already included in CocoaMQTT
     pod 'SwiftyXML', '~> 1.1.0'
+    pod 'iOSDFULibrary'
     pod 'Charts', '~> 3.0.1'
-    
+end
+
+target 'iOS' do
+    platform :ios, '9.0'
+    shared_pods
+    pod 'UIColor+Hex', '~> 1.0.1'
+    pod 'iOS-color-wheel'
 end
 
 target 'macOS' do
@@ -14,14 +21,12 @@ target 'macOS' do
 	shared_pods
 end
 
-target 'iOS' do
-	platform :ios, '9.0'
-	shared_pods
-	pod 'UIColor+Hex', '~> 1.0.1'
-    pod 'iOS-color-wheel'
-    pod 'iOSDFULibrary'
+target 'Bluefruit' do       # command line tool
+    platform :osx, "10.11"
+    shared_pods
+    
 end
 
 #target 'watchOS' do
-#	platform :watchos, '2.0'
+#	platform :watchos, '3.0'
 #end

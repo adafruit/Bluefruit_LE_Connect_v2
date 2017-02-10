@@ -47,14 +47,11 @@ class ControllerModeViewController: PeripheralModeViewController {
                 self.baseTableView.reloadData()
             }
             
-            /*
             // Watch
-            WatchSessionManager.sharedInstance.updateApplicationContext(.Controller)
+            WatchSessionManager.sharedInstance.updateApplicationContext(mode: .controller)
  
-            DLog("register DidReceiveWatchCommand observer")
-            let notificationCenter =  NotificationCenter.default
-            notificationCenter.addObserver(self, selector: #selector(watchCommand(_:)), name: WatchSessionManager.Notifications.DidReceiveWatchCommand.rawValue, object: nil)
-             */
+            // Notifications
+            registerNotifications(enabled: true)
         }
     }
 
@@ -64,15 +61,11 @@ class ControllerModeViewController: PeripheralModeViewController {
         if isMovingFromParentViewController {     // To keep streaming data when pushing a child view
             controllerData.stop()
             
-            /*
             // Watch
-            WatchSessionManager.sharedInstance.updateApplicationContext(.Connected)
+            WatchSessionManager.sharedInstance.updateApplicationContext(mode: .connected)
  
-            DLog("remove DidReceiveWatchCommand observer")
-            let notificationCenter =  NotificationCenter.default
-            notificationCenter.removeObserver(self, name:
-            WatchSessionManager.Notifications.DidReceiveWatchCommand.rawValue, object: nil)
-             */
+            // Notifications
+            registerNotifications(enabled: false)
         }
     }
     
@@ -108,7 +101,20 @@ class ControllerModeViewController: PeripheralModeViewController {
     }
     
     // MARK: Notifications
-    func watchCommand(notification: NSNotification) {
+    
+    private var didReceiveWatchCommandObserver: NSObjectProtocol?
+    
+    private func registerNotifications(enabled: Bool) {
+        let notificationCenter = NotificationCenter.default
+        if enabled {
+            didReceiveWatchCommandObserver = notificationCenter.addObserver(forName: .didReceiveWatchCommand, object: nil, queue: OperationQueue.main, using: didReceiveWatchCommand)
+        }
+        else {
+            if let didReceiveWatchCommandObserver = didReceiveWatchCommandObserver {notificationCenter.removeObserver(didReceiveWatchCommandObserver)}
+        }
+    }
+    
+    private func didReceiveWatchCommand(notification: Notification) {
         if let message = notification.userInfo, let command = message["command"] as? String {
             DLog("watchCommand notification: \(command)")
             switch command {
@@ -125,7 +131,6 @@ class ControllerModeViewController: PeripheralModeViewController {
                 
             default:
                 DLog("watchCommand with unknown command: \(command)")
-                break
             }
         }
     }

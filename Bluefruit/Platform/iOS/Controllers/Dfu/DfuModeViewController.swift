@@ -159,7 +159,7 @@ class DfuModeViewController: PeripheralModeViewController {
         self.present(dfuDialogViewController, animated: true, completion: { [unowned self] () -> Void in
             // Setup update process
             self.dfuUpdateProcess.delegate = self
-            self.dfuUpdateProcess.startUpdateForPeripheral(peripheral: blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfo: self.dis!)
+            self.dfuUpdateProcess.startUpdateForPeripheral(peripheral: blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl)
         })
     }
 }
@@ -485,7 +485,7 @@ extension DfuModeViewController: DfuFilesPickerDialogViewControllerDelegate {
             self.present(dfuDialogViewController, animated: true, completion: { [unowned self] () -> Void in
                 // Setup update process
                 self.dfuUpdateProcess.delegate = self
-                self.dfuUpdateProcess.startUpdateForPeripheral(peripheral: self.blePeripheral!.peripheral, hexUrl: hexUrl, iniUrl:iniUrl, deviceInfo: self.dis!)
+                self.dfuUpdateProcess.startUpdateForPeripheral(peripheral: self.blePeripheral!.peripheral, hexUrl: hexUrl, iniUrl:iniUrl)
                 })
         }
         else {

@@ -136,6 +136,55 @@
 		A9BCD5951E4D2616003D1CEA /* MqttManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5881E4D2616003D1CEA /* MqttManager.swift */; };
 		A9BCD5961E4D2616003D1CEA /* MqttSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5891E4D2616003D1CEA /* MqttSettings.swift */; };
 		A9BCD5971E4D2616003D1CEA /* MqttSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5891E4D2616003D1CEA /* MqttSettings.swift */; };
+		A9BCD5A71E4D2762003D1CEA /* watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A9BCD5A61E4D2761003D1CEA /* watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A9BCD5B81E4D2762003D1CEA /* watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A9BCD59A1E4D2761003D1CEA /* watchOS.app */; };
+		A9BCD5DB1E4D287A003D1CEA /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9BCD5D11E4D286A003D1CEA /* Interface.storyboard */; };
+		A9BCD5DC1E4D287D003D1CEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9BCD5D01E4D286A003D1CEA /* Assets.xcassets */; };
+		A9BCD5DD1E4D289E003D1CEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9BCD5D51E4D286A003D1CEA /* Assets.xcassets */; };
+		A9BCD5DE1E4D289E003D1CEA /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5D61E4D286A003D1CEA /* ExtensionDelegate.swift */; };
+		A9BCD5E11E4D289E003D1CEA /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5D91E4D286A003D1CEA /* NotificationController.swift */; };
+		A9BCD5E21E4D289E003D1CEA /* PushNotificationPayload.apns in Resources */ = {isa = PBXBuildFile; fileRef = A9BCD5DA1E4D286A003D1CEA /* PushNotificationPayload.apns */; };
+		A9BCD5FF1E4D2BE5003D1CEA /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCD1E3A9B22008E5F81 /* LogHelper.swift */; };
+		A9BCD6031E4D34D9003D1CEA /* HandoffManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD6011E4D34D9003D1CEA /* HandoffManager.swift */; };
+		A9BCD6041E4D34D9003D1CEA /* HandoffManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD6011E4D34D9003D1CEA /* HandoffManager.swift */; };
+		A9BCD6051E4D34D9003D1CEA /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD6021E4D34D9003D1CEA /* WatchSessionManager.swift */; };
+		A9BCD6061E4D34D9003D1CEA /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD6021E4D34D9003D1CEA /* WatchSessionManager.swift */; };
+		A9BCD6071E4D36DE003D1CEA /* ColorPaletteInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E41E4D2B8A003D1CEA /* ColorPaletteInterfaceController.swift */; };
+		A9BCD6081E4D36DE003D1CEA /* ColorRGBInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E51E4D2B8A003D1CEA /* ColorRGBInterfaceController.swift */; };
+		A9BCD6091E4D36DE003D1CEA /* ConnectedInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E61E4D2B8A003D1CEA /* ConnectedInterfaceController.swift */; };
+		A9BCD60A1E4D36DE003D1CEA /* ControlModeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E71E4D2B8A003D1CEA /* ControlModeInterfaceController.swift */; };
+		A9BCD60B1E4D36DE003D1CEA /* ControlPadInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E81E4D2B8A003D1CEA /* ControlPadInterfaceController.swift */; };
+		A9BCD60C1E4D36DE003D1CEA /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E91E4D2B8A003D1CEA /* MainInterfaceController.swift */; };
+		A9BCD60D1E4D36DE003D1CEA /* PickerModeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5EA1E4D2B8A003D1CEA /* PickerModeInterfaceController.swift */; };
+		A9BCD60E1E4D36DE003D1CEA /* ScanningInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5EB1E4D2B8A003D1CEA /* ScanningInterfaceController.swift */; };
+		A9BCD60F1E4D36DF003D1CEA /* ColorPaletteInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E41E4D2B8A003D1CEA /* ColorPaletteInterfaceController.swift */; };
+		A9BCD6101E4D36DF003D1CEA /* ColorRGBInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E51E4D2B8A003D1CEA /* ColorRGBInterfaceController.swift */; };
+		A9BCD6111E4D36DF003D1CEA /* ConnectedInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E61E4D2B8A003D1CEA /* ConnectedInterfaceController.swift */; };
+		A9BCD6121E4D36DF003D1CEA /* ControlModeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E71E4D2B8A003D1CEA /* ControlModeInterfaceController.swift */; };
+		A9BCD6131E4D36DF003D1CEA /* ControlPadInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E81E4D2B8A003D1CEA /* ControlPadInterfaceController.swift */; };
+		A9BCD6141E4D36DF003D1CEA /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E91E4D2B8A003D1CEA /* MainInterfaceController.swift */; };
+		A9BCD6151E4D36DF003D1CEA /* PickerModeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5EA1E4D2B8A003D1CEA /* PickerModeInterfaceController.swift */; };
+		A9BCD6161E4D36DF003D1CEA /* ScanningInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5EB1E4D2B8A003D1CEA /* ScanningInterfaceController.swift */; };
+		A9BCD6171E4D3932003D1CEA /* HexColorConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5851E4D2616003D1CEA /* HexColorConversions.swift */; };
+		A9BCD6251E4D3A9F003D1CEA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD6241E4D3A9F003D1CEA /* main.swift */; };
+		A9BCD62A1E4D3B0B003D1CEA /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD6271E4D3B0B003D1CEA /* CommandLine.swift */; };
+		A9BCD62B1E4D3B0B003D1CEA /* CommandLineColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD6281E4D3B0B003D1CEA /* CommandLineColors.swift */; };
+		A9BCD62C1E4D3B76003D1CEA /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCD1E3A9B22008E5F81 /* LogHelper.swift */; };
+		A9BCD62D1E4D3B96003D1CEA /* DfuUpdateProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD56F1E4D25B3003D1CEA /* DfuUpdateProcess.swift */; };
+		A9BCD62E1E4D3B96003D1CEA /* FirmwareUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5701E4D25B3003D1CEA /* FirmwareUpdater.swift */; };
+		A9BCD62F1E4D3B96003D1CEA /* ReleasesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5711E4D25B3003D1CEA /* ReleasesParser.swift */; };
+		A9BCD6301E4D42C2003D1CEA /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC11E3A9B22008E5F81 /* BleManager.swift */; };
+		A9BCD6311E4D42C2003D1CEA /* BlePeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC41E3A9B22008E5F81 /* BlePeripheral.swift */; };
+		A9BCD6321E4D42C2003D1CEA /* BlePeripheral+Uart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC31E3A9B22008E5F81 /* BlePeripheral+Uart.swift */; };
+		A9BCD6331E4D42C2003D1CEA /* BleUUIDNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */; };
+		A9BCD6341E4D42C2003D1CEA /* UartLogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC61E3A9B22008E5F81 /* UartLogManager.swift */; };
+		A9BCD6351E4D42C2003D1CEA /* UartDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CC71E3A9B22008E5F81 /* UartDataManager.swift */; };
+		A9BCD6361E4D42C2003D1CEA /* UartPacketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE4031E45696700EEF4C8 /* UartPacketManager.swift */; };
+		A9BCD6371E4D42C6003D1CEA /* CommandQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCA1E3A9B22008E5F81 /* CommandQueue.swift */; };
+		A9BCD6381E4D42C6003D1CEA /* Data+ScanValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCB1E3A9B22008E5F81 /* Data+ScanValue.swift */; };
+		A9BCD6391E4D42C6003D1CEA /* DataConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */; };
+		A9BCD63A1E4D42C6003D1CEA /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */; };
+		A9BCD63D1E4D4357003D1CEA /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCE1E3A9B22008E5F81 /* Preferences.swift */; };
 		A9D2342C1E3AD64500DC0C99 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A9D234231E3AD64500DC0C99 /* Credits.rtf */; };
 		A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */; };
 		A9D2342E1E3AD64500DC0C99 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */; };
@@ -150,13 +199,68 @@
 		A9D234581E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234541E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift */; };
 		A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234591E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift */; };
 		A9D2345E1E3B49BA00DC0C99 /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */; };
+		F60C954E9494E61757590502 /* Pods_Bluefruit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26A937DE0A0ACE75597E27BB /* Pods_Bluefruit.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A9BCD5A81E4D2762003D1CEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A9286C8E1E3A9216008E5F81 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A9BCD5A51E4D2761003D1CEA;
+			remoteInfo = "Bluefruit Extension";
+		};
+		A9BCD5B61E4D2762003D1CEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A9286C8E1E3A9216008E5F81 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A9BCD5991E4D2761003D1CEA;
+			remoteInfo = Bluefruit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A9BCD5BC1E4D2762003D1CEA /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A9BCD5A71E4D2762003D1CEA /* watchOS Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9BCD5C01E4D2762003D1CEA /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				A9BCD5B81E4D2762003D1CEA /* watchOS.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9BCD61A1E4D3A61003D1CEA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		26A937DE0A0ACE75597E27BB /* Pods_Bluefruit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bluefruit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28950E0836DF706F3BBCAA8A /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F9569E2A21BA0A3C063393A /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		4F47256A4CFABDB02A993A09 /* Pods-Bluefruit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bluefruit.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bluefruit/Pods-Bluefruit.release.xcconfig"; sourceTree = "<group>"; };
 		52616FB9D63C65BD58A87279 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		54F4B0C0A169FBC46959E076 /* Pods-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-macOS/Pods-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		5C7979BEEA5190ABBA09FB31 /* Pods-Bluefruit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bluefruit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bluefruit/Pods-Bluefruit.debug.xcconfig"; sourceTree = "<group>"; };
 		9FEC875F60CE881F27539E60 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		A90798241E4349D6005470A5 /* ControllerColorWheelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerColorWheelViewController.swift; sourceTree = "<group>"; };
 		A90798251E4349D6005470A5 /* ControllerComponentsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerComponentsTableViewCell.swift; sourceTree = "<group>"; };
@@ -254,6 +358,32 @@
 		A9BCD5861E4D2616003D1CEA /* LocalizationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocalizationManager.swift; path = Bluefruit/Common/LocalizationManager.swift; sourceTree = SOURCE_ROOT; };
 		A9BCD5881E4D2616003D1CEA /* MqttManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttManager.swift; sourceTree = "<group>"; };
 		A9BCD5891E4D2616003D1CEA /* MqttSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettings.swift; sourceTree = "<group>"; };
+		A9BCD59A1E4D2761003D1CEA /* watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watchOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9BCD5A61E4D2761003D1CEA /* watchOS Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "watchOS Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9BCD5D01E4D286A003D1CEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A9BCD5D21E4D286A003D1CEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		A9BCD5D31E4D286A003D1CEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A9BCD5D51E4D286A003D1CEA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A9BCD5D61E4D286A003D1CEA /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		A9BCD5D71E4D286A003D1CEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A9BCD5D91E4D286A003D1CEA /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		A9BCD5DA1E4D286A003D1CEA /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		A9BCD5E41E4D2B8A003D1CEA /* ColorPaletteInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPaletteInterfaceController.swift; sourceTree = "<group>"; };
+		A9BCD5E51E4D2B8A003D1CEA /* ColorRGBInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorRGBInterfaceController.swift; sourceTree = "<group>"; };
+		A9BCD5E61E4D2B8A003D1CEA /* ConnectedInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectedInterfaceController.swift; sourceTree = "<group>"; };
+		A9BCD5E71E4D2B8A003D1CEA /* ControlModeInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlModeInterfaceController.swift; sourceTree = "<group>"; };
+		A9BCD5E81E4D2B8A003D1CEA /* ControlPadInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlPadInterfaceController.swift; sourceTree = "<group>"; };
+		A9BCD5E91E4D2B8A003D1CEA /* MainInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainInterfaceController.swift; sourceTree = "<group>"; };
+		A9BCD5EA1E4D2B8A003D1CEA /* PickerModeInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerModeInterfaceController.swift; sourceTree = "<group>"; };
+		A9BCD5EB1E4D2B8A003D1CEA /* ScanningInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningInterfaceController.swift; sourceTree = "<group>"; };
+		A9BCD6011E4D34D9003D1CEA /* HandoffManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandoffManager.swift; sourceTree = "<group>"; };
+		A9BCD6021E4D34D9003D1CEA /* WatchSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
+		A9BCD61C1E4D3A61003D1CEA /* Bluefruit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Bluefruit; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9BCD6241E4D3A9F003D1CEA /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		A9BCD6261E4D3B0B003D1CEA /* BluefruitConnect-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BluefruitConnect-Bridging-Header.h"; sourceTree = "<group>"; };
+		A9BCD6271E4D3B0B003D1CEA /* CommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLine.swift; sourceTree = "<group>"; };
+		A9BCD6281E4D3B0B003D1CEA /* CommandLineColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineColors.swift; sourceTree = "<group>"; };
+		A9BCD6291E4D3B0B003D1CEA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9D234231E3AD64500DC0C99 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
 		A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GattUUIDs.plist; sourceTree = "<group>"; };
@@ -288,6 +418,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A9BCD5A31E4D2761003D1CEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9BCD6191E4D3A61003D1CEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F60C954E9494E61757590502 /* Pods_Bluefruit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ED31A7F150AD1148E2A223C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -298,6 +450,8 @@
 				2F9569E2A21BA0A3C063393A /* Pods-iOS.release.xcconfig */,
 				DE511F22E8F88E565DA29F57 /* Pods-macOS.debug.xcconfig */,
 				54F4B0C0A169FBC46959E076 /* Pods-macOS.release.xcconfig */,
+				5C7979BEEA5190ABBA09FB31 /* Pods-Bluefruit.debug.xcconfig */,
+				4F47256A4CFABDB02A993A09 /* Pods-Bluefruit.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -307,6 +461,7 @@
 			children = (
 				28950E0836DF706F3BBCAA8A /* Pods_iOS.framework */,
 				52616FB9D63C65BD58A87279 /* Pods_macOS.framework */,
+				26A937DE0A0ACE75597E27BB /* Pods_Bluefruit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -370,6 +525,9 @@
 			children = (
 				A9286C961E3A9216008E5F81 /* iOS.app */,
 				A98378241E42BF3100170319 /* macOS.app */,
+				A9BCD59A1E4D2761003D1CEA /* watchOS.app */,
+				A9BCD5A61E4D2761003D1CEA /* watchOS Extension.appex */,
+				A9BCD61C1E4D3A61003D1CEA /* Bluefruit */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -388,8 +546,10 @@
 		A9286CAB1E3A931E008E5F81 /* Platform */ = {
 			isa = PBXGroup;
 			children = (
-				A98378331E42BFF900170319 /* macOS */,
 				A9286CAC1E3A931E008E5F81 /* iOS */,
+				A9BCD5CE1E4D286A003D1CEA /* watchOS */,
+				A98378331E42BFF900170319 /* macOS */,
+				A9BCD6231E4D3A9F003D1CEA /* macOS_CommandLine */,
 			);
 			path = Platform;
 			sourceTree = "<group>";
@@ -454,6 +614,7 @@
 		A9286CBE1E3A9B22008E5F81 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				A9BCD6001E4D34D9003D1CEA /* Watch */,
 				A9286CCE1E3A9B22008E5F81 /* Preferences.swift */,
 				A9BCD5821E4D2616003D1CEA /* CocoaCompatibility.swift */,
 				A9BCD5831E4D2616003D1CEA /* Color+DarkerLighter.swift */,
@@ -675,6 +836,66 @@
 			path = Bluefruit/Common/Mqtt;
 			sourceTree = SOURCE_ROOT;
 		};
+		A9BCD5CE1E4D286A003D1CEA /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				A9BCD5CF1E4D286A003D1CEA /* watchOS */,
+				A9BCD5D41E4D286A003D1CEA /* watchOS Extension */,
+			);
+			path = watchOS;
+			sourceTree = "<group>";
+		};
+		A9BCD5CF1E4D286A003D1CEA /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				A9BCD5D01E4D286A003D1CEA /* Assets.xcassets */,
+				A9BCD5D11E4D286A003D1CEA /* Interface.storyboard */,
+				A9BCD5D31E4D286A003D1CEA /* Info.plist */,
+			);
+			path = watchOS;
+			sourceTree = "<group>";
+		};
+		A9BCD5D41E4D286A003D1CEA /* watchOS Extension */ = {
+			isa = PBXGroup;
+			children = (
+				A9BCD5E41E4D2B8A003D1CEA /* ColorPaletteInterfaceController.swift */,
+				A9BCD5E51E4D2B8A003D1CEA /* ColorRGBInterfaceController.swift */,
+				A9BCD5E61E4D2B8A003D1CEA /* ConnectedInterfaceController.swift */,
+				A9BCD5E71E4D2B8A003D1CEA /* ControlModeInterfaceController.swift */,
+				A9BCD5E81E4D2B8A003D1CEA /* ControlPadInterfaceController.swift */,
+				A9BCD5E91E4D2B8A003D1CEA /* MainInterfaceController.swift */,
+				A9BCD5EA1E4D2B8A003D1CEA /* PickerModeInterfaceController.swift */,
+				A9BCD5EB1E4D2B8A003D1CEA /* ScanningInterfaceController.swift */,
+				A9BCD5D51E4D286A003D1CEA /* Assets.xcassets */,
+				A9BCD5D71E4D286A003D1CEA /* Info.plist */,
+				A9BCD5DA1E4D286A003D1CEA /* PushNotificationPayload.apns */,
+				A9BCD5D91E4D286A003D1CEA /* NotificationController.swift */,
+				A9BCD5D61E4D286A003D1CEA /* ExtensionDelegate.swift */,
+			);
+			path = "watchOS Extension";
+			sourceTree = "<group>";
+		};
+		A9BCD6001E4D34D9003D1CEA /* Watch */ = {
+			isa = PBXGroup;
+			children = (
+				A9BCD6011E4D34D9003D1CEA /* HandoffManager.swift */,
+				A9BCD6021E4D34D9003D1CEA /* WatchSessionManager.swift */,
+			);
+			path = Watch;
+			sourceTree = "<group>";
+		};
+		A9BCD6231E4D3A9F003D1CEA /* macOS_CommandLine */ = {
+			isa = PBXGroup;
+			children = (
+				A9BCD6291E4D3B0B003D1CEA /* Info.plist */,
+				A9BCD6261E4D3B0B003D1CEA /* BluefruitConnect-Bridging-Header.h */,
+				A9BCD6241E4D3A9F003D1CEA /* main.swift */,
+				A9BCD6271E4D3B0B003D1CEA /* CommandLine.swift */,
+				A9BCD6281E4D3B0B003D1CEA /* CommandLineColors.swift */,
+			);
+			path = macOS_CommandLine;
+			sourceTree = "<group>";
+		};
 		A9D234221E3AD64500DC0C99 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -723,10 +944,12 @@
 				A9286C941E3A9216008E5F81 /* Resources */,
 				AEED5FC814508D3028F6DBA6 /* [CP] Embed Pods Frameworks */,
 				6ABA875B8E32980218758812 /* [CP] Copy Pods Resources */,
+				A9BCD5C01E4D2762003D1CEA /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A9BCD5B71E4D2762003D1CEA /* PBXTargetDependency */,
 			);
 			name = iOS;
 			productName = Bluefruit;
@@ -752,6 +975,60 @@
 			productName = Bluefruit;
 			productReference = A98378241E42BF3100170319 /* macOS.app */;
 			productType = "com.apple.product-type.application";
+		};
+		A9BCD5991E4D2761003D1CEA /* watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9BCD5BD1E4D2762003D1CEA /* Build configuration list for PBXNativeTarget "watchOS" */;
+			buildPhases = (
+				A9BCD5981E4D2761003D1CEA /* Resources */,
+				A9BCD5BC1E4D2762003D1CEA /* Embed App Extensions */,
+				ED31A7F150AD1148E2A223C2 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A9BCD5A91E4D2762003D1CEA /* PBXTargetDependency */,
+			);
+			name = watchOS;
+			productName = Bluefruit;
+			productReference = A9BCD59A1E4D2761003D1CEA /* watchOS.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		A9BCD5A51E4D2761003D1CEA /* watchOS Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9BCD5B91E4D2762003D1CEA /* Build configuration list for PBXNativeTarget "watchOS Extension" */;
+			buildPhases = (
+				A9BCD5A21E4D2761003D1CEA /* Sources */,
+				A9BCD5A31E4D2761003D1CEA /* Frameworks */,
+				A9BCD5A41E4D2761003D1CEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "watchOS Extension";
+			productName = "Bluefruit Extension";
+			productReference = A9BCD5A61E4D2761003D1CEA /* watchOS Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
+		A9BCD61B1E4D3A61003D1CEA /* Bluefruit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9BCD6201E4D3A61003D1CEA /* Build configuration list for PBXNativeTarget "Bluefruit" */;
+			buildPhases = (
+				EEF3CA2CE191FB483E750CF2 /* [CP] Check Pods Manifest.lock */,
+				A9BCD6181E4D3A61003D1CEA /* Sources */,
+				A9BCD6191E4D3A61003D1CEA /* Frameworks */,
+				A9BCD61A1E4D3A61003D1CEA /* CopyFiles */,
+				8DFDBAA60BF5C4B29B107BCA /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Bluefruit;
+			productName = Bluefruit;
+			productReference = A9BCD61C1E4D3A61003D1CEA /* Bluefruit */;
+			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
@@ -780,6 +1057,24 @@
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
+					A9BCD5991E4D2761003D1CEA = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 2X94RM7457;
+						LastSwiftMigration = 0820;
+						ProvisioningStyle = Automatic;
+					};
+					A9BCD5A51E4D2761003D1CEA = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 2X94RM7457;
+						LastSwiftMigration = 0820;
+						ProvisioningStyle = Automatic;
+					};
+					A9BCD61B1E4D3A61003D1CEA = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = 2X94RM7457;
+						LastSwiftMigration = 0820;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = A9286C911E3A9216008E5F81 /* Build configuration list for PBXProject "Bluefruit" */;
@@ -797,6 +1092,9 @@
 			targets = (
 				A9286C951E3A9216008E5F81 /* iOS */,
 				A98378231E42BF3100170319 /* macOS */,
+				A9BCD5991E4D2761003D1CEA /* watchOS */,
+				A9BCD5A51E4D2761003D1CEA /* watchOS Extension */,
+				A9BCD61B1E4D3A61003D1CEA /* Bluefruit */,
 			);
 		};
 /* End PBXProject section */
@@ -832,6 +1130,24 @@
 				A98DE42A1E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */,
 				A983783C1E42BFF900170319 /* Main.storyboard in Resources */,
 				A98DE4301E45EB3900EEF4C8 /* NeopixelTypes.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9BCD5981E4D2761003D1CEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9BCD5DC1E4D287D003D1CEA /* Assets.xcassets in Resources */,
+				A9BCD5DB1E4D287A003D1CEA /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9BCD5A41E4D2761003D1CEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9BCD5DD1E4D289E003D1CEA /* Assets.xcassets in Resources */,
+				A9BCD5E21E4D289E003D1CEA /* PushNotificationPayload.apns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -883,6 +1199,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8DFDBAA60BF5C4B29B107BCA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Bluefruit/Pods-Bluefruit-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		99FB74E30145B3FD50D5ABDA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -911,6 +1242,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EEF3CA2CE191FB483E750CF2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		F1359294F68DAA8B076BA899 /* [CP] Check Pods Manifest.lock */ = {
@@ -957,19 +1303,25 @@
 				A907982C1E4349D6005470A5 /* ControllerPadViewController.swift in Sources */,
 				A94A21B11E417271006A5F33 /* UartTimetampTableViewCell.swift in Sources */,
 				A9286CD51E3A9B22008E5F81 /* UartDataManager.swift in Sources */,
+				A9BCD6081E4D36DE003D1CEA /* ColorRGBInterfaceController.swift in Sources */,
 				A9286CD21E3A9B22008E5F81 /* BlePeripheral.swift in Sources */,
 				A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */,
 				A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */,
 				A9D2343A1E3AD70300DC0C99 /* FilterTextSettingsViewController.swift in Sources */,
 				A907983C1E43A4DA005470A5 /* PinIOModuleViewController.swift in Sources */,
 				A907983D1E43A4DA005470A5 /* PinIOTableViewCell.swift in Sources */,
+				A9BCD60E1E4D36DE003D1CEA /* ScanningInterfaceController.swift in Sources */,
 				A9286CD61E3A9B22008E5F81 /* AlertHelper.swift in Sources */,
+				A9BCD60C1E4D36DE003D1CEA /* MainInterfaceController.swift in Sources */,
 				A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */,
 				A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */,
 				A90798431E44F692005470A5 /* PlotterModuleManager.swift in Sources */,
 				A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */,
 				A90798291E4349D6005470A5 /* ControllerColorWheelViewController.swift in Sources */,
 				A9286CD41E3A9B22008E5F81 /* UartLogManager.swift in Sources */,
+				A9BCD6071E4D36DE003D1CEA /* ColorPaletteInterfaceController.swift in Sources */,
+				A9BCD60B1E4D36DE003D1CEA /* ControlPadInterfaceController.swift in Sources */,
+				A9BCD60A1E4D36DE003D1CEA /* ControlModeInterfaceController.swift in Sources */,
 				A983786D1E43422100170319 /* MqttSettingPickerCell.swift in Sources */,
 				A9286CD81E3A9B22008E5F81 /* Data+ScanValue.swift in Sources */,
 				A98DE4171E456AFC00EEF4C8 /* NeopixelTypeValueTableViewCell.swift in Sources */,
@@ -991,12 +1343,15 @@
 				A969466C1E3CD0CC00BA8DAA /* IntrinsicSizeWithInsetsButton.swift in Sources */,
 				A98378721E43479400170319 /* ControllerModuleManager.swift in Sources */,
 				A9D2345E1E3B49BA00DC0C99 /* DataDownloader.swift in Sources */,
+				A9BCD6031E4D34D9003D1CEA /* HandoffManager.swift in Sources */,
 				A90798311E438E60005470A5 /* GradientView.swift in Sources */,
 				A98DE4111E456AFC00EEF4C8 /* NeopixelColorPickerViewController.swift in Sources */,
 				A98DE40F1E456AFC00EEF4C8 /* NeopixelBoardSelectorViewController.swift in Sources */,
 				A91E7D5C1E4216ED00DE90C6 /* UIImage+Color.swift in Sources */,
+				A9BCD60D1E4D36DE003D1CEA /* PickerModeInterfaceController.swift in Sources */,
 				A90C79751E40CB150076E8AD /* HelpViewController.swift in Sources */,
 				A90C79741E40CB150076E8AD /* EmptyDetailsViewController.swift in Sources */,
+				A9BCD6091E4D36DE003D1CEA /* ConnectedInterfaceController.swift in Sources */,
 				A907982A1E4349D6005470A5 /* ControllerComponentsTableViewCell.swift in Sources */,
 				A9286CB41E3A931E008E5F81 /* AppDelegate.swift in Sources */,
 				A983781C1E42A96400170319 /* DfuFilesPickerTableViewCell.swift in Sources */,
@@ -1006,6 +1361,7 @@
 				A98DE4131E456AFC00EEF4C8 /* NeopixelModuleViewController.swift in Sources */,
 				A9D2343C1E3AD70300DC0C99 /* PeripheralTableViewCell.swift in Sources */,
 				A969466D1E3CD0CC00BA8DAA /* StyledButton.swift in Sources */,
+				A9BCD6051E4D34D9003D1CEA /* WatchSessionManager.swift in Sources */,
 				A90798361E439DB9005470A5 /* PinIOModuleManager.swift in Sources */,
 				A98DE40D1E456AFC00EEF4C8 /* HelpExportViewController.swift in Sources */,
 				A983786E1E43422100170319 /* MqttSettingsHeaderCell.swift in Sources */,
@@ -1067,7 +1423,67 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A9BCD5A21E4D2761003D1CEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9BCD6141E4D36DF003D1CEA /* MainInterfaceController.swift in Sources */,
+				A9BCD6171E4D3932003D1CEA /* HexColorConversions.swift in Sources */,
+				A9BCD6061E4D34D9003D1CEA /* WatchSessionManager.swift in Sources */,
+				A9BCD6111E4D36DF003D1CEA /* ConnectedInterfaceController.swift in Sources */,
+				A9BCD5E11E4D289E003D1CEA /* NotificationController.swift in Sources */,
+				A9BCD6121E4D36DF003D1CEA /* ControlModeInterfaceController.swift in Sources */,
+				A9BCD6161E4D36DF003D1CEA /* ScanningInterfaceController.swift in Sources */,
+				A9BCD6101E4D36DF003D1CEA /* ColorRGBInterfaceController.swift in Sources */,
+				A9BCD6151E4D36DF003D1CEA /* PickerModeInterfaceController.swift in Sources */,
+				A9BCD6131E4D36DF003D1CEA /* ControlPadInterfaceController.swift in Sources */,
+				A9BCD5FF1E4D2BE5003D1CEA /* LogHelper.swift in Sources */,
+				A9BCD6041E4D34D9003D1CEA /* HandoffManager.swift in Sources */,
+				A9BCD5DE1E4D289E003D1CEA /* ExtensionDelegate.swift in Sources */,
+				A9BCD60F1E4D36DF003D1CEA /* ColorPaletteInterfaceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9BCD6181E4D3A61003D1CEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9BCD62C1E4D3B76003D1CEA /* LogHelper.swift in Sources */,
+				A9BCD6331E4D42C2003D1CEA /* BleUUIDNames.swift in Sources */,
+				A9BCD6301E4D42C2003D1CEA /* BleManager.swift in Sources */,
+				A9BCD62B1E4D3B0B003D1CEA /* CommandLineColors.swift in Sources */,
+				A9BCD6341E4D42C2003D1CEA /* UartLogManager.swift in Sources */,
+				A9BCD6321E4D42C2003D1CEA /* BlePeripheral+Uart.swift in Sources */,
+				A9BCD6381E4D42C6003D1CEA /* Data+ScanValue.swift in Sources */,
+				A9BCD62E1E4D3B96003D1CEA /* FirmwareUpdater.swift in Sources */,
+				A9BCD6361E4D42C2003D1CEA /* UartPacketManager.swift in Sources */,
+				A9BCD6311E4D42C2003D1CEA /* BlePeripheral.swift in Sources */,
+				A9BCD63D1E4D4357003D1CEA /* Preferences.swift in Sources */,
+				A9BCD62F1E4D3B96003D1CEA /* ReleasesParser.swift in Sources */,
+				A9BCD6251E4D3A9F003D1CEA /* main.swift in Sources */,
+				A9BCD62A1E4D3B0B003D1CEA /* CommandLine.swift in Sources */,
+				A9BCD6351E4D42C2003D1CEA /* UartDataManager.swift in Sources */,
+				A9BCD6371E4D42C6003D1CEA /* CommandQueue.swift in Sources */,
+				A9BCD62D1E4D3B96003D1CEA /* DfuUpdateProcess.swift in Sources */,
+				A9BCD63A1E4D42C6003D1CEA /* DataDownloader.swift in Sources */,
+				A9BCD6391E4D42C6003D1CEA /* DataConversions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A9BCD5A91E4D2762003D1CEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A9BCD5A51E4D2761003D1CEA /* watchOS Extension */;
+			targetProxy = A9BCD5A81E4D2762003D1CEA /* PBXContainerItemProxy */;
+		};
+		A9BCD5B71E4D2762003D1CEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A9BCD5991E4D2761003D1CEA /* watchOS */;
+			targetProxy = A9BCD5B61E4D2762003D1CEA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A9286CAF1E3A931E008E5F81 /* LaunchScreen.storyboard */ = {
@@ -1100,6 +1516,14 @@
 				A98DE4211E45EB3900EEF4C8 /* en */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		A9BCD5D11E4D286A003D1CEA /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A9BCD5D21E4D286A003D1CEA /* Base */,
+			);
+			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1272,6 +1696,104 @@
 			};
 			name = Release;
 		};
+		A9BCD5BA1E4D2762003D1CEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				DEVELOPMENT_TEAM = 2X94RM7457;
+				INFOPLIST_FILE = "Bluefruit/Platform/watchOS/watchOS Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+			};
+			name = Debug;
+		};
+		A9BCD5BB1E4D2762003D1CEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				DEVELOPMENT_TEAM = 2X94RM7457;
+				INFOPLIST_FILE = "Bluefruit/Platform/watchOS/watchOS Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+			};
+			name = Release;
+		};
+		A9BCD5BE1E4D2762003D1CEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2X94RM7457;
+				IBSC_MODULE = Bluefruit_Extension;
+				INFOPLIST_FILE = Bluefruit/Platform/watchOS/watchOS/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+			};
+			name = Debug;
+		};
+		A9BCD5BF1E4D2762003D1CEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2X94RM7457;
+				IBSC_MODULE = Bluefruit_Extension;
+				INFOPLIST_FILE = Bluefruit/Platform/watchOS/watchOS/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+			};
+			name = Release;
+		};
+		A9BCD6211E4D3A61003D1CEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5C7979BEEA5190ABBA09FB31 /* Pods-Bluefruit.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				DEVELOPMENT_TEAM = 2X94RM7457;
+				INFOPLIST_FILE = "$(SRCROOT)/Bluefruit/Platform/macOS_CommandLine/Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		A9BCD6221E4D3A61003D1CEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4F47256A4CFABDB02A993A09 /* Pods-Bluefruit.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				DEVELOPMENT_TEAM = 2X94RM7457;
+				INFOPLIST_FILE = "$(SRCROOT)/Bluefruit/Platform/macOS_CommandLine/Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1298,6 +1820,33 @@
 			buildConfigurations = (
 				A98378311E42BF3100170319 /* Debug */,
 				A98378321E42BF3100170319 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9BCD5B91E4D2762003D1CEA /* Build configuration list for PBXNativeTarget "watchOS Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9BCD5BA1E4D2762003D1CEA /* Debug */,
+				A9BCD5BB1E4D2762003D1CEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9BCD5BD1E4D2762003D1CEA /* Build configuration list for PBXNativeTarget "watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9BCD5BE1E4D2762003D1CEA /* Debug */,
+				A9BCD5BF1E4D2762003D1CEA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9BCD6201E4D3A61003D1CEA /* Build configuration list for PBXNativeTarget "Bluefruit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9BCD6211E4D3A61003D1CEA /* Debug */,
+				A9BCD6221E4D3A61003D1CEA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

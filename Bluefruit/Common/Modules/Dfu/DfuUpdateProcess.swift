@@ -27,7 +27,7 @@ class DfuUpdateProcess: NSObject {
 
     fileprivate var dfuController: DFUServiceController?
     
-    func startUpdateForPeripheral(peripheral: CBPeripheral, hexUrl: URL, iniUrl: URL?, deviceInfo: DeviceInformationService) {
+    func startUpdateForPeripheral(peripheral: CBPeripheral, hexUrl: URL, iniUrl: URL?) {
         
         let firmware = DFUFirmware(urlToBinOrHexFile: hexUrl, urlToDatFile: iniUrl, type: .application)
         

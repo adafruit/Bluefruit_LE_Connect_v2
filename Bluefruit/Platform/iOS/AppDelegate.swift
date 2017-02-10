@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WatchConnectivity
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,6 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Preferences.resetDefaults()       // Debug Reset
         Preferences.registerDefaults()
   
+        // Watch Connectivity
+        WatchSessionManager.sharedInstance.activate(with: self)
+
         // Check if there is any update to the fimware database
         FirmwareUpdater.refreshSoftwareUpdatesDatabase(url: Preferences.updateServerUrl, completion: nil)
         
@@ -86,5 +90,58 @@ extension AppDelegate: UISplitViewControllerDelegate {
             splitDividerCover.frame = CGRect(x: masterViewWidth, y: 0, width: 1, height: svc.view.bounds.size.height)
 //            DLog("cover frame: \(splitDividerCover.frame)")
         }
+    }
+}
+
+
+// MARK: - WCSessionDelegate
+extension AppDelegate: WCSessionDelegate {
+    func sessionReachabilityDidChange(_ session: WCSession) {
+        DLog("sessionReachabilityDidChange: \(session.isReachable ? "reachable":"not reachable")")
+        
+        if session.isReachable {
+            // Update foreground status
+            let isActive = UIApplication.shared.applicationState != .inactive
+            WatchSessionManager.sharedInstance.session?.sendMessage(["isActive": isActive], replyHandler: nil, errorHandler: nil)
+            
+            NotificationCenter.default.post(name: .watchSessionDidBecomeActive, object: nil, userInfo: nil)
+        }
+    }
+    
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        if message[WatchSessionManager.kContextModeKey] != nil {
+            DLog("watchCommand notification")
+            NotificationCenter.default.post(name: .didReceiveWatchCommand, object: nil, userInfo: message)
+        }
+    }
+    
+    func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
+        var replyValues: [String: AnyObject] = [:]
+        
+        if let command = message["command"] as? String {
+            switch command {
+            case "isActive":
+                let isActive = UIApplication.shared.applicationState != .inactive
+                replyValues[command] = isActive as AnyObject
+                
+            default:
+                DLog("didReceiveMessage with unknown command: \(command)")
+            }
+        }
+        
+        replyHandler(replyValues)
+    }
+    
+    @available(iOS 9.3, *)
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        DLog("activationDidCompleteWithState: \(activationState.rawValue)")
+    }
+    
+    func sessionDidBecomeInactive(_ session: WCSession) {
+        DLog("sessionDidBecomeInactive")
+    }
+    
+    func sessionDidDeactivate(_ session: WCSession) {
+        DLog("sessionDidDeactivate")
     }
 }
