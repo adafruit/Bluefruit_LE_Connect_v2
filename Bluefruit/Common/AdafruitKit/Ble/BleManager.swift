@@ -234,6 +234,10 @@ class BleManager: NSObject {
         if let existingPeripheral = peripheralsFound[peripheral.identifier] {
             existingPeripheral.lastSeenTime = CFAbsoluteTimeGetCurrent()
             existingPeripheral.rssi = rssi
+            /*
+            if let name = peripheral.name {
+                DLog("\(name) rssi: \(rssi)")
+            }*/
             if let advertisementData = advertisementData {
                 for (key, value) in advertisementData {
                     existingPeripheral.advertisement.advertisementData.updateValue(value, forKey: key);

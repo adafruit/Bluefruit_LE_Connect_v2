@@ -22,7 +22,12 @@ UART - basic terminal, send & receive data
 
 Pin I/O - uses Bluefruit's UART to control Arduino running BLEFirmata sketch:
 https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakout/software-bluefruit-firmata
-";
+
+Controller - streams sensor data from your iOS device to Bluefruit LE over UART
+
+Plotter - can be used to plot incoming numeric data in a chart
+
+Updates - update device firmware";
 
 // Peripheral List
 "peripherallist_title" = "Peripherals";
@@ -46,7 +51,6 @@ https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakou
 "autoupdate_update" = "Go to updates";
 "autoupdate_later" = "Ask later";
 "autoupdate_ignore" = "Ignore";
-
 
 
 // Peripheral Details
@@ -135,6 +139,17 @@ https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakou
 // Plotter
 "plotter_tab_title" = "Plotter";
 "plotter_navigation_title_format" = "Plotter - %@";
+"plotter_help_title" = "Plotter";
+"plotter_help_text" = "• The 'Plotter' utility can be used to plot incoming numeric data in a chart, without having to creating a custom plotter code or applications. It behaves similarly to the Serial Plotter in recent versions of the Arduino IDE.
+
+•  To plot one or more data streams to the plotter, send your numeric data in CSV format with one of the following seperators:
+',' - Comma (0x2C)
+' ' - Space (0x20)
+';' - Semicolon (0x3B)
+Horizontal Tab (0x09), '\\t' in code
+Each unique set of data samples must be terminated by a LINE FEED character (0x10), which is usually represented as '\\n' in code.
+
+• Only numeric data should be sent over the BLE UART connection(s).";
 
 // Dfu
 "dfu_tab_title" = "Updates";
@@ -165,7 +180,7 @@ https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakou
 
 • Select one of the updates availables for the peripheral
 
-• Use specific \"hex\" and \"init\" files to udpate your device. Please take into account that this could brick the peripheral if the firmware is not compatible";
+• Use specific \"hex\" and \"init\" files to update your device. Please take into account that this could brick the peripheral if the firmware is not compatible";
 
 // PinIO
 "pinio_tab_title" = "Pin I/O";
@@ -182,7 +197,7 @@ https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakou
 "pinio_help_title" = "Pin I/O";
 "pinio_help_text" = "Instructions:
 
-• The Pin I/O mode uses works with an Arduino board running the BLEFirmata sketch.  Detailed instructions can be found here:
+• The Pin I/O mode works with an Arduino board running the BLEFirmata sketch.  Detailed instructions can be found here:
 https://learn.adafruit.com/bluefruit-le-connect-for-ios/pin-i-slash-o
 
 • Tap a row in the table corresponding to the Arduino pin you want to control.

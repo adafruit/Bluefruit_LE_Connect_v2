@@ -33,31 +33,34 @@ class PinIOModeViewController: PeripheralModeViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-       
+        
         DLog("PinIO viewWillAppear")
-        pinIO.start() { error in
-            DispatchQueue.main.async { [weak self] in
-                guard let context = self else {
-                    return
-                }
-                
-                guard error == nil else {
-                    DLog("Error initializing uart")
-                    context.dismiss(animated: true, completion: { [weak self] () -> Void in
-                        if let context = self {
-                            showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
-                            
-                            if let blePeripheral = context.blePeripheral {
-                                BleManager.sharedInstance.disconnect(from: blePeripheral)
+        if isMovingToParentViewController {       // To keep working while the help is displayed
+            
+            pinIO.start() { error in
+                DispatchQueue.main.async { [weak self] in
+                    guard let context = self else {
+                        return
+                    }
+                    
+                    guard error == nil else {
+                        DLog("Error initializing uart")
+                        context.dismiss(animated: true, completion: { [weak self] () -> Void in
+                            if let context = self {
+                                showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
+                                
+                                if let blePeripheral = context.blePeripheral {
+                                    BleManager.sharedInstance.disconnect(from: blePeripheral)
+                                }
                             }
-                        }
-                    })
-                    return
-                }
-                
-                // Uart Ready
-                if context.pinIO.pins.count == 0 && !context.pinIO.isQueryingCapabilities() {
-                    context.startQueryCapabilitiesProcess()
+                        })
+                        return
+                    }
+                    
+                    // Uart Ready
+                    if context.pinIO.pins.count == 0 && !context.pinIO.isQueryingCapabilities() {
+                        context.startQueryCapabilitiesProcess()
+                    }
                 }
             }
         }
@@ -65,14 +68,18 @@ class PinIOModeViewController: PeripheralModeViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-    
-        // if a dialog is being shown, dismiss it. For example: when querying capabilities but a didmodifyservices callback is received and pinio is removed from the tabbar
-        if let presentedViewController = presentedViewController {
-            presentedViewController.dismiss(animated: true, completion: nil)
-        }
         
-        DLog("PinIO viewWillDisappear")
-        pinIO.stop()
+        if isMovingFromParentViewController {       // To keep working while the help is displayed
+            
+            // if a dialog is being shown, dismiss it. For example: when querying capabilities but a didmodifyservices callback is received and pinio is removed from the tabbar
+            if let presentedViewController = presentedViewController {
+                presentedViewController.dismiss(animated: true, completion: nil)
+            }
+            
+            DLog("PinIO viewWillDisappear")
+            pinIO.stop()
+            
+        }
     }
     
     private func setupFirmata() {

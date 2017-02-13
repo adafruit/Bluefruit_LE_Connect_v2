@@ -20,7 +20,7 @@ func signalImage(for rssi: Int?) -> Image {
     
     let rssiValue = rssi ?? 127
     
-    var index : Int
+    var index: Int
     
     if rssiValue == 127 {     // value of 127 reserved for RSSI not available
         index = 0

@@ -20,13 +20,12 @@ class WatchSessionManager {
         case controller = "ControlModeInterfaceController"
     }
     
-    
     // Singleton
     static let sharedInstance = WatchSessionManager()
     
     // Data
     var session: WCSession?
-    
+
     //
     func activate(with delegate: WCSessionDelegate?) {
         if(WCSession.isSupported()){
