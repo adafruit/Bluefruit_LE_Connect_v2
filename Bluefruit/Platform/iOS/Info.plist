@@ -19,10 +19,16 @@
 	<key>CFBundleShortVersionString</key>
 	<string>3.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Bluefruit would like to make data available to connected bluetooth devices while the app is in background</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
+	<key>NSLocationWhenInUseUsageDescription - 2</key>
 	<string></string>
 	<key>NSUserActivityTypes</key>
 	<array>
