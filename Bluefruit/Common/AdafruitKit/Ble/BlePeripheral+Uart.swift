@@ -143,20 +143,20 @@ extension BlePeripheral {
         // Split data in kUartTxMaxBytes bytes packets
         var offset = 0
         repeat {
-            let chunkSize = min(data.count-offset, BlePeripheral.kUartTxMaxBytes)
-            let chunk = data.subdata(in: offset..<offset+chunkSize)
-            offset += chunkSize
-            write(data: chunk, for: uartTxCharacteristic, type: uartTxCharacteristicWriteType) { error in
+            let packetSize = min(data.count-offset, BlePeripheral.kUartTxMaxBytes)
+            let packet = data.subdata(in: offset..<offset+packetSize)
+            offset += packetSize
+            write(data: packet, for: uartTxCharacteristic, type: uartTxCharacteristicWriteType) { error in
                 if let error = error {
-                    DLog("write chunk at offset: \(offset) error: \(error)")
+                    DLog("write packet at offset: \(offset) error: \(error)")
                 }
                 else {
-                    DLog("uart tx write (hex): \(hexDescription(data: chunk))")
-//                    DLog("uart tx write (dec): \(decimalDescription(data: chunk))")
-//                    DLog("uart tx write (utf8): \(String(data: chunk, encoding: .utf8) ?? "<invalid>")")
+                    DLog("uart tx write (hex): \(hexDescription(data: packet))")
+//                    DLog("uart tx write (dec): \(decimalDescription(data: packet))")
+//                    DLog("uart tx write (utf8): \(String(data: packet, encoding: .utf8) ?? "<invalid>")")
                     
                     if BlePeripheral.kDebugLog {
-                        UartLogManager.log(data: chunk, type: .uartTx)
+                        UartLogManager.log(data: packet, type: .uartTx)
                     }
                 }
                 
@@ -173,7 +173,7 @@ extension BlePeripheral {
             return
         }
         
-        guard let uartTxCharacteristic = uartTxCharacteristic, let uartTxCharacteristicWriteType = uartTxCharacteristicWriteType, let uartRxCharacteristic = uartRxCharacteristic else {
+        guard let uartTxCharacteristic = uartTxCharacteristic, /*let uartTxCharacteristicWriteType = uartTxCharacteristicWriteType, */let uartRxCharacteristic = uartRxCharacteristic else {
             DLog("Command Error: characteristic no longer valid")
             if let writeCompletion = writeCompletion {
                 writeCompletion(UartError.invalidCharacteristic)
@@ -188,18 +188,18 @@ extension BlePeripheral {
         // Split data  in kUartTxMaxBytes bytes packets
         var offset = 0
         repeat {
-            let chunkSize = min(data.count-offset, BlePeripheral.kUartTxMaxBytes)
-            let chunk = data.subdata(in: offset..<offset+chunkSize)
-            offset += chunkSize
+            let packetSize = min(data.count-offset, BlePeripheral.kUartTxMaxBytes)
+            let packet = data.subdata(in: offset..<offset+packetSize)
+            offset += packetSize
             
-            writeAndCaptureNotify(data: chunk, for: uartTxCharacteristic, type: uartTxCharacteristicWriteType, writeCompletion: { (error) in
+            writeAndCaptureNotify(data: packet, for: uartTxCharacteristic, /*type: uartTxCharacteristicWriteType, */writeCompletion: { (error) in
                 if let error = error {
-                    DLog("write chunk at offset: \(offset) error: \(error)")
+                    DLog("write packet at offset: \(offset) error: \(error)")
                 }
                 else {
-                    DLog("uart tx writeAndWait (hex): \(hexDescription(data: chunk))")
-//                    DLog("uart tx writeAndWait (dec): \(decimalDescription(data: chunk))")
-//                    DLog("uart tx writeAndWait (utf8): \(String(data: chunk, encoding: .utf8) ?? "<invalid>")")
+                    DLog("uart tx writeAndWait (hex): \(hexDescription(data: packet))")
+//                    DLog("uart tx writeAndWait (dec): \(decimalDescription(data: packet))")
+//                    DLog("uart tx writeAndWait (utf8): \(String(data: packet, encoding: .utf8) ?? "<invalid>")")
                 }
                 
                 if offset >= data.count {

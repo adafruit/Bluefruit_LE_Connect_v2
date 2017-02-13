@@ -131,7 +131,7 @@ class CommandLine: NSObject {
             if !discoveredPeripheralsIdentifiers.contains(uuid) {
                 discoveredPeripheralsIdentifiers.append(uuid)
                 
-                let name = peripheral.name != nil ? peripheral.name! : "{No Name}"
+                let name = peripheral.name != nil ? peripheral.name! : "<Unknown>"
                 if scanResultsShowIndex {
                     if let index  = discoveredPeripheralsIdentifiers.index(of: uuid) {
                         print("\(index) -> \(uuid) - \(name)")

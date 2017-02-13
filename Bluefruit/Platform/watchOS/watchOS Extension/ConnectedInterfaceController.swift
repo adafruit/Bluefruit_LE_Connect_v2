@@ -41,7 +41,7 @@ class ConnectedInterfaceController: WKInterfaceController {
         DLog("ConnectedInterfaceController didReceiveApplicationContext: \(applicationContext)")
         
         // Name
-        let peripheralName = applicationContext["bleConnectedPeripheralName"] as? String ?? "{No Name}"
+        let peripheralName = applicationContext["bleConnectedPeripheralName"] as? String ?? "<Unknown>"
         peripheralNameLabel.setText( peripheralName )
         
         // Uart

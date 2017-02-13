@@ -239,7 +239,7 @@ class BlePeripheral: NSObject {
     func updateNotifyHandler(for characteristic: CBCharacteristic, handler: ((Error?) -> Void)? = nil) {
         let identifier = handlerIdentifier(from: characteristic)
         if notifyHandlers[identifier] == nil {
-            DLog("Warning: trying to update inexistent notifyHanlder")
+            DLog("Warning: trying to update inexistent notifyHandler")
         }
         notifyHandlers[identifier] = handler
     }
@@ -254,7 +254,8 @@ class BlePeripheral: NSObject {
         commandQueue.append(command)
     }
 
-    func writeAndCaptureNotify(data: Data, for characteristic: CBCharacteristic, type: CBCharacteristicWriteType, writeCompletion: ((Error?) -> Void)? = nil, readCharacteristic: CBCharacteristic, readTimeout: Double? = nil, readCompletion: CapturedReadCompletionHandler? = nil) {
+    func writeAndCaptureNotify(data: Data, for characteristic: CBCharacteristic, /*type: CBCharacteristicWriteType,*/ writeCompletion: ((Error?) -> Void)? = nil, readCharacteristic: CBCharacteristic, readTimeout: Double? = nil, readCompletion: CapturedReadCompletionHandler? = nil) {
+        let type: CBCharacteristicWriteType = .withResponse     // Force write with response
         let command = BleCommand(type: .writeCharacteristicAndWaitNofity, parameters: [characteristic, type, data, readCharacteristic, readCompletion as Any, readTimeout as Any], timeout: readTimeout, completion: writeCompletion)
         commandQueue.append(command)
     }
@@ -419,7 +420,7 @@ class BlePeripheral: NSObject {
         peripheral.readValue(for: characteristic)
     }
     
-    private static let hasWithoutResponseBug = !(ProcessInfo().operatingSystemVersion.majorVersion >= 10 &&  ProcessInfo().operatingSystemVersion.minorVersion >= 2)
+    // private static let hasWithoutResponseBug = !(ProcessInfo().operatingSystemVersion.majorVersion >= 10 &&  ProcessInfo().operatingSystemVersion.minorVersion >= 2)
     private func write(with command: BleCommand) {
         let characteristic = command.parameters![0] as! CBCharacteristic
         let writeType = command.parameters![1] as! CBCharacteristicWriteType
@@ -427,12 +428,13 @@ class BlePeripheral: NSObject {
         
         peripheral.writeValue(data, for: characteristic, type: writeType)
         
-        // Warning: iOS 9.x, 10.0 and 10.1, always call didWrite even for .wihtoutResponse. It is fixed on iOS 10.2
         if writeType == .withoutResponse {
+            /*
             if BlePeripheral.hasWithoutResponseBug {
+                // Warning: iOS 9.x, 10.0 and 10.1, always call didWrite even for .withoutResponse. It is fixed on iOS 10.2
                 // didWrite will be called. Continue processing there (didWriteValueFor)
             }
-            else {
+            else {*/
                 if !command.isCancelled, command.type == .writeCharacteristicAndWaitNofity {
                     let readCharacteristic = command.parameters![3] as! CBCharacteristic
                     let readCompletion = command.parameters![4] as! CapturedReadCompletionHandler
@@ -444,7 +446,7 @@ class BlePeripheral: NSObject {
                 }
                 
                 finishedExecutingCommand(error: nil)
-            }
+            //}
         }
     }
     

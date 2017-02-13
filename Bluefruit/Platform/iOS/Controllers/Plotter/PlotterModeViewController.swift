@@ -207,6 +207,17 @@ class PlotterModeViewController: PeripheralModeViewController {
     }
     
     // MARK: - Actions
+    @IBAction func onClickHelp(_  sender: UIBarButtonItem) {
+        let localizationManager = LocalizationManager.sharedInstance
+        let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
+        helpViewController.setHelp(localizationManager.localizedString("plotter_help_text"), title: localizationManager.localizedString("plotter_help_title"))
+        let helpNavigationController = UINavigationController(rootViewController: helpViewController)
+        helpNavigationController.modalPresentationStyle = .popover
+        helpNavigationController.popoverPresentationController?.barButtonItem = sender
+        
+        present(helpNavigationController, animated: true, completion: nil)
+    }
+    
     @IBAction func onAutoScrollChanged(_ sender: Any) {
         isAutoScrollEnabled = !isAutoScrollEnabled
         chartView.dragEnabled = !isAutoScrollEnabled

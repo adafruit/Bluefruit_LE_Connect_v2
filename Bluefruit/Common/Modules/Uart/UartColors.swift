@@ -16,6 +16,7 @@ class UartColors {
         // Based on Chart joyful and colorful colors:  https://github.com/danielgindi/Charts
         return [
             Color(red: 193/255.0, green: 37/255.0, blue: 82/255.0, alpha: 1.0),
+            Color(red: 58/255.0, green: 95/255.0, blue: 201/255.0, alpha: 1.0),     // extra blue
             Color(red: 255/255.0, green: 102/255.0, blue: 0/255.0, alpha: 1.0),
             Color(red: 245/255.0, green: 199/255.0, blue: 0/255.0, alpha: 1.0),
             Color(red: 106/255.0, green: 150/255.0, blue: 31/255.0, alpha: 1.0),

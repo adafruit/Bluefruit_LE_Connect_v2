@@ -45,7 +45,7 @@ class UartModeViewController: PeripheralModeViewController {
     // Data
     enum DisplayMode {
         case text           // Display a TextView with all uart data as a String
-        case table          // Display a table where each data chunk is a row
+        case table          // Display a table where each data packet is a row
     }
     
     enum ExportFormat: String {

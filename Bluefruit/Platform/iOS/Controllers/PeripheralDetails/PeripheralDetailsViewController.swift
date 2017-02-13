@@ -252,7 +252,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         }
         
         setViewControllers(viewControllers, animated: false)
-        selectedIndex = 0
+        selectedIndex = startingController == .update ? dfuTabIndex : 0
     }
     
     fileprivate func setupMultiUart() {

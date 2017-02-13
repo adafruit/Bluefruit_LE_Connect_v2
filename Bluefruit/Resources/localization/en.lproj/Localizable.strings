@@ -25,14 +25,29 @@ https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakou
 ";
 
 // Peripheral List
-"peripherallist_title" = "Bluefruit";
+"peripherallist_title" = "Peripherals";
 "peripherallist_backbutton" = "Disconnect";
 "peripherallist_splitmasterbutton" = "Peripheral List";
 "peripherallist_subtitle" = "Peripherals found";
 "peripherallist_uartavailable" = "Uart capable";
 "peripherallist_uartunavailable" = "No Uart detected";
 "peripherallist_peripheraldisconnected" = "Peripheral disconnected";
-"peripherallist_unnamed" = "{No Name}";
+"peripherallist_unnamed" = "<Unknown>";
+"peripherallist_connect" = "Connect";
+"peripherallist_connecting" = "Connecting...";
+"peripherallist_disconnect" = "Disconnect";
+
+"peripherallist_filter_name_matchsection" = "Match";
+"peripherallist_filter_name_casesection" = "Case sensitivity";
+
+// AutoUpdate Firmware
+"autoupdate_title" = "Update available";
+"auoupadte_description_format" = "Software version %@ is available";
+"autoupdate_update" = "Go to updates";
+"autoupdate_later" = "Ask later";
+"autoupdate_ignore" = "Ignore";
+
+
 
 // Peripheral Details
 "peripheraldetails_select" = "Connect to a peripheral from the list on the left";
@@ -115,6 +130,11 @@ https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakou
 
 • Use the Clear button to clear the console's contents.";
 
+
+
+// Plotter
+"plotter_tab_title" = "Plotter";
+"plotter_navigation_title_format" = "Plotter - %@";
 
 // Dfu
 "dfu_tab_title" = "Updates";
@@ -253,6 +273,8 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 • Adjust overall brightness as desired using the Brightness slider";
 "neopixel_sketch_tooltip" = "Neopixel support requires a custom sketch to be running on your Arduino. You can export this sketch from the app by clicking the INFO icon in the top-right corner.";
 
+// Calibration
+"calibration_tab_title" = "Calibration";
 
 // Common
 "dialog_ok" = "Ok";

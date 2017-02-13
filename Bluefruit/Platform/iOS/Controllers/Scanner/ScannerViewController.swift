@@ -352,14 +352,14 @@ class ScannerViewController: UIViewController {
                                       preferredStyle: UIAlertControllerStyle.alert)
         
         alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_update"), style: UIAlertActionStyle.default, handler: { [unowned self] _ in
-            self.showPeripheralDetails()
+            self.showPeripheralUpdate()
         }))
         alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_later"), style: UIAlertActionStyle.default, handler: { [unowned self] _ in
-            self.showPeripheralUpdate()
-            
+            self.showPeripheralDetails()
         }))
-        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_ignore"), style: UIAlertActionStyle.cancel, handler: {  _ in
+        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_ignore"), style: UIAlertActionStyle.cancel, handler: { [unowned self] _ in
             Preferences.softwareUpdateIgnoredVersion = latestRelease.version
+            self.showPeripheralDetails()
         }))
         self.present(alert, animated: true, completion: nil)
     }
