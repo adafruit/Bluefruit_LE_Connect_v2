@@ -8,7 +8,6 @@
 
 import WatchKit
 import Foundation
-//import UIColor_Hex
 
 class ColorRGBInterfaceController: WKInterfaceController {
     @IBOutlet var rgbColorSwatch: WKInterfaceGroup?
@@ -34,7 +33,7 @@ class ColorRGBInterfaceController: WKInterfaceController {
         super.didDeactivate()
     }
     
-    @IBAction func rSliderChanged(value: Float) {
+    @IBAction func rSliderChanged(_ value: Float) {
         
         //retrieve rgb color vals from swatch
         var red:CGFloat = 0.0
@@ -45,11 +44,9 @@ class ColorRGBInterfaceController: WKInterfaceController {
         
         let newColor = UIColor(red: CGFloat(value), green: green, blue: blue, alpha: 1.0)
         setRGBColor(newColor)
-        
     }
     
-    
-    @IBAction func gSliderChanged(value: Float) {
+    @IBAction func gSliderChanged(_ value: Float) {
         
         //retrieve rgb color vals from swatch
         var red:CGFloat = 0.0
@@ -63,8 +60,7 @@ class ColorRGBInterfaceController: WKInterfaceController {
         
     }
     
-    
-    @IBAction func bSliderChanged(value: Float) {
+    @IBAction func bSliderChanged(_ value: Float) {
         
         //retrieve rgb color vals from swatch
         var red:CGFloat = 0.0
@@ -75,9 +71,7 @@ class ColorRGBInterfaceController: WKInterfaceController {
         
         let newColor = UIColor(red: red, green: green, blue: CGFloat(value), alpha: 1.0)
         setRGBColor(newColor)
-        
     }
-    
     
     private func setRGBColor(_ newColor: UIColor){
         
@@ -86,13 +80,11 @@ class ColorRGBInterfaceController: WKInterfaceController {
     }
 
     @IBAction func onClickSend() {
-        if let session = WatchSessionManager.sharedInstance.session {
-            
-            let hex = colorHexInt(swatchColor)
-            session.sendMessage(["command": "color", "color": hex], replyHandler: nil) { (error) in
-                DLog("colorRGB error: \(error)")
-            }
+        guard let session = WatchSessionManager.sharedInstance.session else { return }
+        
+        let hex = colorHexInt(swatchColor)
+        session.sendMessage(["command": "color", "color": hex], replyHandler: nil) { (error) in
+            DLog("colorRGB error: \(error)")
         }
     }
-
 }

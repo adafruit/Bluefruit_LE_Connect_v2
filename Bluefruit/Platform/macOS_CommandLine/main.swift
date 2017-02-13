@@ -10,7 +10,12 @@ import Foundation
 
 // Based on http://rachid.koucha.free.fr/tech_corner/pty_pdip.htmlbc
 
+// TTY
+let isTtyEnabled = true
+
+
 func main() {
+//func main(fds: Int32, fdm: Int32) {
     
     enum Command: String {
         case version = "--version"
@@ -34,9 +39,6 @@ func main() {
         case showBetaVersionsShort = "-b"
     }
     
-    // Disable bufffer
-    setbuf(stdout, nil)
-    
     // Data
     let group = DispatchGroup()
     let queue = DispatchQueue(label: "", attributes: DispatchQueue.Attributes.concurrent)
@@ -49,6 +51,60 @@ func main() {
     var showBetaVersions = false
     
     let currentDirectoryUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+
+    /*
+    if isTtyEnabled {
+        close(fdm)
+    }
+   
+    var serialPort: ORSSerialPort?
+    
+    if isTtyEnabled {
+        serialPort = ORSSerialPort(path: "/dev/ttys005")
+        if serialPort == nil {
+            print("Error opening serial port");
+        }
+        serialPort?.open()
+    }
+ */
+    
+    /*
+    // TTY
+    if isTtyEnabled {
+        var fdm, fds: Int32
+        
+        // Disable bufffer
+        setbuf(stdout, nil)
+        
+        // Open
+        fdm = posix_openpt(O_RDWR);
+        if (fdm < 0) {
+            print(stderr, "Error \(errno) on posix_openpt()\n")
+            exit(EXIT_FAILURE)
+        }
+        
+        var rc = grantpt(fdm)
+        if rc != 0
+        {
+            print(stderr, "Error \(errno) on grantpt()\n");
+            exit(EXIT_FAILURE)
+        }
+        
+        rc = unlockpt(fdm)
+        if rc != 0
+        {
+            print(stderr, "Error \(errno) on unlockpt()\n");
+            exit(EXIT_FAILURE)
+        }
+        
+        // Open the slave side ot the PTY
+        fds = open(ptsname(fdm), O_RDWR)
+        let name = String(utf8String: UnsafePointer<CChar>(ptsname(fdm)))
+        print("The master side is named: \(name ?? "<unknown>")\n")
+        
+
+        
+    }*/
     
     // Process arguments
     var arguments = Swift.CommandLine.arguments
@@ -227,12 +283,92 @@ func main() {
     exit(EXIT_SUCCESS)
 }
 
+func master(fds: Int32, fdm: Int32) {
+    close(fds)
+
+    let input = [CChar](repeatElement(0, count: 150))
+    
+    while true {
+         // Operator's entry (standard input = terminal)
+        let message = "Master sertup\n"
+        let messageChar = UnsafePointer<CChar>(message)
+        write(1, messageChar, message.characters.count)
+
+        let input2 = UnsafeMutablePointer(mutating: input)
+        let rc = read(0, input2, 150)
+        if rc > 0 {
+            // Send the input to the child process through the PTY 
+            write(fdm, input2, rc)
+            
+            // Get the child's answer through the PTY 
+            let input3 = UnsafeMutablePointer(mutating: input)
+            let rc = read(fdm, input3, 150-1)
+            if rc > 0 {
+                // Make the answer NUL terminated to display it as a string
+                input3[rc] = CChar("\0")!
+                
+                DLog("-: input")
+            }
+        }
+    }
+}
+
+// Disable bufffer
+setbuf(stdout, nil)
+
 
 let runloop = CFRunLoopGetCurrent()
 CFRunLoopPerformBlock(runloop, CFRunLoopMode.defaultMode.rawValue) { () -> Void in
+    /*
+    var fdm: Int32 = 0
+    var fds: Int32 = 0
+
+    // TTY
+    if isTtyEnabled {
+        
+        // Disable bufffer
+        setbuf(stdout, nil)
+        
+        // Open
+        fdm = posix_openpt(O_RDWR);
+        if (fdm < 0) {
+            print(stderr, "Error \(errno) on posix_openpt()\n")
+            exit(EXIT_FAILURE)
+        }
+        
+        var rc = grantpt(fdm)
+        if rc != 0
+        {
+            print(stderr, "Error \(errno) on grantpt()\n");
+            exit(EXIT_FAILURE)
+        }
+        
+        rc = unlockpt(fdm)
+        if rc != 0
+        {
+            print(stderr, "Error \(errno) on unlockpt()\n");
+            exit(EXIT_FAILURE)
+        }
+        
+        // Open the slave side ot the PTY
+        fds = open(ptsname(fdm), O_RDWR)
+        let name = String(utf8String: UnsafePointer<CChar>(ptsname(fdm)))
+        print("The master side is named: \(name ?? "<unknown>")\n")
+    }*/
+    
     DispatchQueue(label: "main", attributes: []).async {
+        //main(fds: fds, fdm: fdm)
         main()
         CFRunLoopStop(runloop)
     }
+    /*
+    if isTtyEnabled {
+        DispatchQueue(label: "child", attributes: []).async {
+            master(fds: fds, fdm: fdm)
+            //        CFRunLoopStop(runloop)
+        }
+    }*/
+
+    
 }
 CFRunLoopRun()

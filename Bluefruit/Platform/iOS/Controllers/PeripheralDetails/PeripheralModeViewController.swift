@@ -30,8 +30,6 @@ class PeripheralModeViewController: UIViewController {
             parentNavigationItem.title = navigationItem.title
             parentNavigationItem.rightBarButtonItems = navigationItem.rightBarButtonItems
         }
-        
-
     }
     
     override func didReceiveMemoryWarning() {

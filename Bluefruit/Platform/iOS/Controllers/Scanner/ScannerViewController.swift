@@ -220,6 +220,10 @@ class ScannerViewController: UIViewController {
         // Clear selected peripheral
         self.selectedPeripheral = nil
         
+        // Watch
+        WatchSessionManager.sharedInstance.updateApplicationContext(mode: .scan)
+    
+        
         DispatchQueue.main.async { [weak self] in
             // Dismiss any info open dialogs
             self?.infoAlertController?.dismiss(animated: true, completion: nil)
@@ -241,11 +245,21 @@ class ScannerViewController: UIViewController {
     
     // MARK: - Navigation
     fileprivate func showPeripheralDetails() {
+        // Watch
+        if !isMultiConnectEnabled {
+            WatchSessionManager.sharedInstance.updateApplicationContext(mode: .connected)
+        }
+        
         // Segue
         performSegue(withIdentifier: "showDetailSegue", sender: self)
     }
     
     fileprivate func showPeripheralUpdate() {
+        // Watch
+        if !isMultiConnectEnabled {
+            WatchSessionManager.sharedInstance.updateApplicationContext(mode: .connected)
+        }
+        
         // Segue
         performSegue(withIdentifier: "showUpdateSegue", sender: self)
     }
@@ -254,7 +268,6 @@ class ScannerViewController: UIViewController {
         // Segue
         performSegue(withIdentifier: "showMultiUartSegue", sender: self)
     }
-
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         return selectedPeripheral != nil
@@ -537,6 +550,12 @@ class ScannerViewController: UIViewController {
 // MARK: - UITableViewDataSource
 extension ScannerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // Hack to update watch when the cell count changes
+        if selectedPeripheral == nil {      // Dont update while a peripheral has been selected
+            WatchSessionManager.sharedInstance.updateApplicationContext(mode: .scan)
+        }
+        
+        // Calculate num cells
         return peripheralList.filteredPeripherals(forceUpdate: true).count
     }
     
@@ -753,4 +772,3 @@ extension ScannerViewController: FirmwareUpdaterDelegate {
         }
     }
 }
-

@@ -10,7 +10,7 @@ import Foundation
 import WatchConnectivity
 
 class WatchSessionManager {
-
+    
     // Constants
     static let kContextModeKey = "mode"
     enum Mode: String {
@@ -23,7 +23,7 @@ class WatchSessionManager {
     
     // Singleton
     static let sharedInstance = WatchSessionManager()
-
+    
     // Data
     var session: WCSession?
     
@@ -38,21 +38,21 @@ class WatchSessionManager {
     }
     
     // MARK: - iOS Specific
-#if os(iOS)
+    #if os(iOS)
     func updateApplicationContext(mode: Mode) {
         guard let session = WatchSessionManager.sharedInstance.session, session.isPaired && session.isWatchAppInstalled else {
             return
         }
-    
+        
         if #available(iOS 9.3, *) {
             guard session.activationState == .activated else {
                 return
             }
         }
-    
+        
         do {
-            let connectedPeripheralsCount = BleManager.sharedInstance.connectedPeripherals().count
-            var appContext: [String: Any] = ["mode": mode.rawValue, "bleFoundPeripherals": connectedPeripheralsCount]
+            let peripheralsCount = BleManager.sharedInstance.peripherals().count
+            var appContext: [String: Any] = ["mode": mode.rawValue, "bleFoundPeripherals": peripheralsCount]
             
             if let bleConnectedPeripheral = BleManager.sharedInstance.connectedPeripherals().first {
                 appContext["bleConnectedPeripheralName"] = bleConnectedPeripheral.name
@@ -64,7 +64,7 @@ class WatchSessionManager {
             //DLog("updateApplicationContext error")
         }
     }
-#endif
+    #endif
 }
 
 // MARK: - Custom Notifications

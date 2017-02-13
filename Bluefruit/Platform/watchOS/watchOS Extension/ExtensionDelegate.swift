@@ -64,7 +64,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             if let appContext = WatchSessionManager.sharedInstance.session?.receivedApplicationContext, let modeString = appContext["mode"] as? String, let mode = WatchSessionManager.Mode(rawValue: modeString) {
                 updateMode(mode)
             }
-            
         }
         else if !isActive && currentMode != WatchSessionManager.Mode.inactive {
             updateMode(.inactive)

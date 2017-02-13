@@ -15,7 +15,7 @@ import Foundation
     import UIColor_Hex
 #endif
 
-@objc class Preferences: NSObject {                // will be used from objective-c so make it inherit from NSObject
+class Preferences {
     
     // Note: if these contanst change, update DefaultPreferences.plist
     fileprivate static let appInSystemStatusBarKey = "AppInSystemStatusBar"
@@ -301,6 +301,6 @@ import Foundation
 extension Notification.Name {
     private static let kPrefix = Bundle.main.bundleIdentifier!
     
-    static let  didUpdatePreferences = Notification.Name(kPrefix+".didUpdatePreferences")          // Note: used on some objective-c code, so when changed, update it
+    static let  didUpdatePreferences = Notification.Name(kPrefix+".didUpdatePreferences")
 }
 

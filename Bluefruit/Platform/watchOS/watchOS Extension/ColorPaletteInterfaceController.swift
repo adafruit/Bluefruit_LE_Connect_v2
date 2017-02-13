@@ -176,12 +176,12 @@ class ColorPaletteInterfaceController: WKInterfaceController {
     }
 
     private func onClickColor(_ tag: Int) {
-        if let session = WatchSessionManager.sharedInstance.session {
-            let color = ColorPaletteInterfaceController.palette[tag]
-            let hex = colorHexInt(color)
-            session.sendMessage(["command": "color", "color": hex], replyHandler: nil) { (error) in
-                DLog("colorPalette error: \(error)")
-            }
+        guard let session = WatchSessionManager.sharedInstance.session else { return }
+        
+        let color = ColorPaletteInterfaceController.palette[tag]
+        let hex = colorHexInt(color)
+        session.sendMessage(["command": "color", "color": hex], replyHandler: nil) { (error) in
+            DLog("colorPalette error: \(error)")
         }
     }
 }

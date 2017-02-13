@@ -11,7 +11,7 @@ import CoreBluetooth
 
 class CommandLine: NSObject {
     // Scanning
-    var discoveredPeripheralsIdentifiers = [UUID]()
+    fileprivate var discoveredPeripheralsIdentifiers = [UUID]()
     fileprivate var scanResultsShowIndex = false
     
     // DFU
