@@ -56,10 +56,9 @@ extension BlePeripheral {
     }
     
     // MARK: -
-    enum UartError: Error {
+    enum PeripheralUartError: Error {
         case invalidCharacteristic
         case enableNotifyFailed
-        case timeout
     }
     
     // MARK: - Initialization
@@ -68,7 +67,7 @@ extension BlePeripheral {
         // Get uart communications characteristic
         characteristic(uuid: BlePeripheral.kUartTxCharacteristicUUID, serviceUuid: BlePeripheral.kUartServiceUUID) { [unowned self] (characteristic, error) in
             guard let characteristic = characteristic, error == nil else {
-                completion?(error != nil ? error : UartError.invalidCharacteristic)
+                completion?(error != nil ? error : PeripheralUartError.invalidCharacteristic)
                 return
             }
             
@@ -77,7 +76,7 @@ extension BlePeripheral {
             
             self.characteristic(uuid: BlePeripheral.kUartRxCharacteristicUUID, serviceUuid: BlePeripheral.kUartServiceUUID) { [unowned self] (characteristic, error) in
                 guard let characteristic = characteristic, error == nil else {
-                    completion?(error != nil ? error : UartError.invalidCharacteristic)
+                    completion?(error != nil ? error : PeripheralUartError.invalidCharacteristic)
                     return
                 }
                 
@@ -97,7 +96,7 @@ extension BlePeripheral {
                 // Enable notifications
                 if !characteristic.isNotifying {
                     self.setNotify(for: characteristic, enabled: true, handler: notifyHandler, completion: { error in
-                        completion?(error != nil ? error : (characteristic.isNotifying ? nil : UartError.enableNotifyFailed))
+                        completion?(error != nil ? error : (characteristic.isNotifying ? nil : PeripheralUartError.enableNotifyFailed))
                     })
                 }
                 else {
@@ -136,7 +135,7 @@ extension BlePeripheral {
         
         guard let uartTxCharacteristic = uartTxCharacteristic, let uartTxCharacteristicWriteType = uartTxCharacteristicWriteType else {
             DLog("Command Error: characteristic no longer valid")
-            completion?(UartError.invalidCharacteristic)
+            completion?(PeripheralUartError.invalidCharacteristic)
             return
         }
         
@@ -176,11 +175,11 @@ extension BlePeripheral {
         guard let uartTxCharacteristic = uartTxCharacteristic, /*let uartTxCharacteristicWriteType = uartTxCharacteristicWriteType, */let uartRxCharacteristic = uartRxCharacteristic else {
             DLog("Command Error: characteristic no longer valid")
             if let writeCompletion = writeCompletion {
-                writeCompletion(UartError.invalidCharacteristic)
+                writeCompletion(PeripheralUartError.invalidCharacteristic)
             }
             else {
                 // If no writeCompletion defined, move the error result to the readCompletion
-                readCompletion(nil, UartError.invalidCharacteristic)
+                readCompletion(nil, PeripheralUartError.invalidCharacteristic)
             }
             return
         }

@@ -135,6 +135,7 @@ class ScannerViewController: UIViewController {
     }
     
     // MARK: - BLE Notifications
+    private var didUpdateBleStateObserver: NSObjectProtocol?
     private var didDiscoverPeripheralObserver: NSObjectProtocol?
     private var willConnectToPeripheralObserver: NSObjectProtocol?
     private var didConnectToPeripheralObserver: NSObjectProtocol?
@@ -144,6 +145,7 @@ class ScannerViewController: UIViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
+            didUpdateBleStateObserver = notificationCenter.addObserver(forName: .didUpdateBleState, object: nil, queue: OperationQueue.main, using: didUpdateBleState)
             didDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didDiscoverPeripheral, object: nil, queue: OperationQueue.main, using: didDiscoverPeripheral)
             willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: OperationQueue.main, using: willConnectToPeripheral)
             didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: OperationQueue.main, using: didConnectToPeripheral)
@@ -151,11 +153,49 @@ class ScannerViewController: UIViewController {
             peripheralDidUpdateNameObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateName, object: nil, queue: OperationQueue.main, using: peripheralDidUpdateName)
        }
         else {
+            if let didUpdateBleStateObserver = didUpdateBleStateObserver {notificationCenter.removeObserver(didUpdateBleStateObserver)}
             if let didDiscoverPeripheralObserver = didDiscoverPeripheralObserver {notificationCenter.removeObserver(didDiscoverPeripheralObserver)}
             if let willConnectToPeripheralObserver = willConnectToPeripheralObserver {notificationCenter.removeObserver(willConnectToPeripheralObserver)}
             if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
             if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {notificationCenter.removeObserver(didDisconnectFromPeripheralObserver)}
             if let peripheralDidUpdateNameObserver = peripheralDidUpdateNameObserver {notificationCenter.removeObserver(peripheralDidUpdateNameObserver)}
+        }
+    }
+    
+    private func didUpdateBleState(notification: Notification) {
+        guard let state = BleManager.sharedInstance.centralManager?.state else {
+            return
+        }
+        
+        // Check if there is any error
+        var errorMessage: String?
+        switch state {
+        case .unsupported:
+            errorMessage = "This device doesn't support Bluetooth Low Energy"
+        case .unauthorized:
+            errorMessage = "This app is not authorized to use the Bluetooth Low Energy"
+        case .poweredOff:
+            errorMessage = "Bluetooth is currently powered off"
+        default:
+            errorMessage = nil
+        }
+        
+        // Show alert if error found
+        if let errorMessage = errorMessage {
+            // Reload peripherals
+            refreshPeripherals()
+            
+            // Show error
+            let localizationManager = LocalizationManager.sharedInstance
+            let alertController = UIAlertController(title: localizationManager.localizedString("dialog_error"), message: errorMessage, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: { (_) -> Void in
+                if let navController = self.splitViewController?.viewControllers[0] as? UINavigationController {
+                    navController.popViewController(animated: true)
+                }
+            })
+            
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
@@ -182,30 +222,17 @@ class ScannerViewController: UIViewController {
     
     private func didConnectToPeripheral(notification: Notification) {
         updateMultiConnectUI()
-
+        
         guard let selectedPeripheral = selectedPeripheral, let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, selectedPeripheral.identifier == identifier else {
             DLog("Connected to an unexpected peripheral")
             return
         }
-/*
-        // Connection is managed here if the device is in compact mode
-        let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
-        if isFullScreen {
-            DLog("list: connection on compact mode detected")
-
-            // Deselect current row
-            if let indexPathForSelectedRow = self.baseTableView.indexPathForSelectedRow {
-                self.baseTableView.deselectRow(at: indexPathForSelectedRow, animated: true)
-            }
-*/
-            // Discover services
-            infoAlertController?.message = "Discovering services..."
-            discoverServices(peripheral: selectedPeripheral)
-/*
-        }
- */
+        
+        // Discover services
+        infoAlertController?.message = "Discovering services..."
+        discoverServices(peripheral: selectedPeripheral)
     }
-
+    
     private func didDisconnectFromPeripheral(notification: Notification) {
         updateMultiConnectUI()
 
@@ -410,9 +437,14 @@ class ScannerViewController: UIViewController {
     
     // MARK: - Actions
     func onTableRefresh(_ sender: AnyObject) {
+        refreshPeripherals()
+        refreshControl.endRefreshing()
+    }
+    
+    fileprivate func refreshPeripherals() {
         isRowDetailOpenForPeripheral.removeAll()
         BleManager.sharedInstance.refreshPeripherals()
-        refreshControl.endRefreshing()
+        baseTableView.reloadData()
     }
     
     @IBAction func onClickExpandFilters(_ sender: Any) {

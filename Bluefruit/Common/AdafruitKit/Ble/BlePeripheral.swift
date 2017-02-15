@@ -24,6 +24,10 @@ class BlePeripheral: NSObject {
         case invalidatedServices = "invalidatedServices"
     }
     
+    enum PeripheralError: Error {
+        case timeout
+    }
+    
     // Data
     var peripheral: CBPeripheral
     var rssi: Int?
@@ -101,7 +105,7 @@ class BlePeripheral: NSObject {
         
         @objc func timerFired() {
             timeoutTimer = nil
-            result(nil, UartError.timeout)
+            result(nil, PeripheralError.timeout)
         }
     }
     

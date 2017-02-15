@@ -25,7 +25,7 @@ end
 #    platform :osx, "10.11"
     #    pod 'SwiftyXML', '~> 1.1.0'
     #pod 'iOSDFULibrary'
-    #pod 'MSWeakTimer', '~> 1.1.0'hexStringb
+    #pod 'MSWeakTimer', '~> 1.1.0'
 #end
 
 #target 'watchOS' do

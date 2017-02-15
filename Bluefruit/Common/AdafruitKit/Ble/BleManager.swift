@@ -86,12 +86,12 @@ class BleManager: NSObject {
         centralManagerPoweredOnSemaphore.wait()
         centralManagerPoweredOnSemaphore.signal()
         
+        isScanningWaitingToStart = true
         guard let centralManager = centralManager, centralManager.state != .poweredOff && centralManager.state != .unauthorized && centralManager.state != .unsupported else {
             DLog("startScan failed because central manager is not ready")
             return
         }
         
-        isScanningWaitingToStart = true
         scanningServicesFilter = services
         
         guard centralManager.state == .poweredOn else {
@@ -283,6 +283,9 @@ extension BleManager: CBCentralManagerDelegate {
             }
         }
         else {
+            if isScanning {
+                isScanningWaitingToStart = true
+            }
             isScanning = false
         }
         
