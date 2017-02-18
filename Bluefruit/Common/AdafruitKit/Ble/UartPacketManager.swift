@@ -22,9 +22,9 @@ struct UartPacket {      // A packet of data received or sent
     var data: Data
     var peripheralId: UUID
     
-    init(peripheralId: UUID, timestamp: CFAbsoluteTime, mode: TransferMode, data: Data) {
+    init(peripheralId: UUID, timestamp: CFAbsoluteTime? = nil, mode: TransferMode, data: Data) {
         self .peripheralId = peripheralId
-        self.timestamp = timestamp
+        self.timestamp = timestamp ?? CFAbsoluteTimeGetCurrent()
         self.mode = mode
         self.data = data
     }
@@ -98,7 +98,7 @@ class UartPacketManager {
         
         // Create data and send to Uart
         if let data = text.data(using: .utf8) {
-            let uartPacket = UartPacket(peripheralId: blePeripheral.identifier, timestamp: CFAbsoluteTimeGetCurrent(), mode: .tx, data: data)
+            let uartPacket = UartPacket(peripheralId: blePeripheral.identifier, mode: .tx, data: data)
             
             DispatchQueue.main.async { [unowned self] in
                 self.delegate?.onUartPacket(uartPacket)
@@ -132,7 +132,7 @@ class UartPacketManager {
             return
         }
         
-        let uartPacket = UartPacket(peripheralId: peripheralIdentifier, timestamp: CFAbsoluteTimeGetCurrent(), mode: .rx, data: data)
+        let uartPacket = UartPacket(peripheralId: peripheralIdentifier, mode: .rx, data: data)
         
         // Mqtt publish to RX
         #if os(iOS)

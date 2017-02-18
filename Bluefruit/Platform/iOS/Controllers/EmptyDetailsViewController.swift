@@ -44,7 +44,7 @@ class EmptyDetailsViewController: PeripheralModeViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ScanningAnimationViewControllerSegue"  {
             scanningAnimationVieWController = (segue.destination as! ScanningAnimationViewController)
-            if isAnimating {            // check if startAnimating was called before preprareForSegue was executed
+            if isAnimating {            // check if startAnimating was called before prepareForSegue was executed
                 startAnimating()
             }
         }

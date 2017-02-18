@@ -353,14 +353,14 @@ class BlePeripheral: NSObject {
         // Remove services already discovered from the query
         if let services = peripheral.services, let serviceUuidsToDiscover = serviceUuids {
             for (i, serviceUuid) in serviceUuidsToDiscover.enumerated().reversed() {
-                if !services.contains(where: {$0.uuid == serviceUuid}) {
+                if services.contains(where: {$0.uuid == serviceUuid}) {
                     serviceUuids!.remove(at: i)
                 }
             }
         }
         
         // Discover remaining uuids
-        if discoverAll || serviceUuids != nil {
+        if discoverAll || (serviceUuids != nil && serviceUuids!.count > 0) {
             peripheral.discoverServices(serviceUuids)
         }
         else {
@@ -377,15 +377,15 @@ class BlePeripheral: NSObject {
         // Remove services already discovered from the query
         if let characteristics = service.characteristics, let characteristicUuidsToDiscover = characteristicUuids {
             for (i, characteristicUuid) in characteristicUuidsToDiscover.enumerated().reversed() {
-                if !characteristics.contains(where: {$0.uuid == characteristicUuid}) {
+                if characteristics.contains(where: {$0.uuid == characteristicUuid}) {
                     characteristicUuids!.remove(at: i)
                 }
             }
         }
         
         // Discover remaining uuids
-        if discoverAll || characteristicUuids != nil {
-            DLog("discover all characteristics for \(service.uuid.uuidString)")
+        if discoverAll || (characteristicUuids != nil && characteristicUuids!.count > 0) {
+            DLog("discover \(characteristicUuids == nil ? "all": String(characteristicUuids!.count)) characteristics for \(service.uuid.uuidString)")
             peripheral.discoverCharacteristics(characteristicUuids, for: service)
         }
         else {

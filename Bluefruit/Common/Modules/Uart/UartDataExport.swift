@@ -33,7 +33,7 @@ class UartDataExport {
         var text = "Timestamp,Mode,Data\r\n"        // csv Header
         
         let timestampDateFormatter = DateFormatter()
-        timestampDateFormatter.setLocalizedDateFormatFromTemplate("HH:mm:ss:SSSS")
+        timestampDateFormatter.setLocalizedDateFormatFromTemplate("HH:mm:ss:SSS")
         
         for packet in packets {
             let date = Date(timeIntervalSinceReferenceDate: packet.timestamp)

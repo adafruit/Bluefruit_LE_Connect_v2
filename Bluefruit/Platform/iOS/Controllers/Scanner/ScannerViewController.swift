@@ -11,7 +11,7 @@ import CoreBluetooth
 
 class ScannerViewController: UIViewController {
     // Config
-    private static let kServicesToScan = [BlePeripheral.kUartServiceUUID]
+    // private static let kServicesToScan = [BlePeripheral.kUartServiceUUID]
 
     static let kFiltersPanelClosedHeight: CGFloat = 44
     static let kFiltersPanelOpenHeight: CGFloat = 226
@@ -114,7 +114,7 @@ class ScannerViewController: UIViewController {
         
         // Start scannning
         BleManager.sharedInstance.startScan()
-//        BleManager.sharedInstance.startScan(withServices: [ScannerViewController.kServicesToScan])
+//        BleManager.sharedInstance.startScan(withServices: ScannerViewController.kServicesToScan)
         
         // Update UI
         updateScannedPeripherals()

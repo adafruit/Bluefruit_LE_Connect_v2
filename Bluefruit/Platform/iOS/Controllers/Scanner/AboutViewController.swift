@@ -23,6 +23,14 @@ class AboutViewController: UIViewController {
         
         // Text
         let message = LocalizationManager.sharedInstance.localizedString("about_text")
+        /*
+        let htmlData = NSString(string: message).data(using: String.Encoding.unicode.rawValue)
+        
+        let attributedString = try! NSAttributedString(data: htmlData!, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType], documentAttributes: nil)
+        
+        messageLabel.attributedText = attributedString
+        
+        */
         messageLabel.text = message
         
         messageLabel.layer.borderColor = UIColor(red: 202/255, green: 202/255, blue: 202/255, alpha: 1).cgColor
