@@ -212,7 +212,6 @@ class FirmwareUpdater {
                 }
                 else {
                     DLog("Updates: The legacy bootloader on this device is not compatible with this application")
-                    return
                 }
             }
             else {
