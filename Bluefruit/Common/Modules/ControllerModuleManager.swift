@@ -102,7 +102,7 @@ class ControllerModuleManager : NSObject {
     func sendCrcData(_ data: Data) {
         var crcData = data
         crcData.appendCrc()
-        uartManager.send(blePeripheral: blePeripheral, data: data)
+        uartManager.send(blePeripheral: blePeripheral, data: crcData)
     }
     
     // MARK: -
