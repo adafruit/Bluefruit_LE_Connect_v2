@@ -102,6 +102,7 @@ class ControllerModuleManager : NSObject {
     func sendCrcData(_ data: Data) {
         var crcData = data
         crcData.appendCrc()
+      
         uartManager.send(blePeripheral: blePeripheral, data: crcData)
     }
     
@@ -129,7 +130,7 @@ class ControllerModuleManager : NSObject {
                     
                     for value in sensorData {
                         var floatValue = Float(value)
-                        data.append(UnsafeBufferPointer(start: &floatValue, count: MemoryLayout<Float>.size))
+                        data.append(UnsafeBufferPointer(start: &floatValue, count: 1))
                     }
                     
                     sendCrcData(data)
