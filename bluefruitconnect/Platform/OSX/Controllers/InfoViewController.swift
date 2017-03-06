@@ -55,12 +55,14 @@ class InfoViewController: NSViewController {
         updateDiscoveringStatus()
         
         services = nil
-        self.baseTableView.reloadData()
+        if self.viewLoaded {
+            self.baseTableView.reloadData()
+        }
         BleManager.sharedInstance.discover(blePeripheral!, serviceUUIDs: nil)
     }
 
     func updateDiscoveringStatus() {
-        
+        guard self.viewLoaded else { return }
         //DLog("Discovering (\(elementsDiscovered)/\(elementsToDiscover)) and reading values (\(valuesRead)/\(valuesToRead))...")
         
         if !isDiscoveringAndUpdatingInitialValues() {
