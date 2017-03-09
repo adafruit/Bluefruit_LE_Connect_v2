@@ -72,12 +72,12 @@ class UartPacketManager {
     
     // MARK: - Send data
     func send(blePeripheral: BlePeripheral, data: Data?, completion: ((Error?) -> Void)? = nil) {
-        sentBytes += data?.count ?? 0
+        sentBytes += Int64(data?.count ?? 0)
         blePeripheral.uartSend(data: data, completion: completion)
     }
     
     func sendAndWaitReply(blePeripheral: BlePeripheral, data: Data?, writeCompletion: ((Error?) -> Void)? = nil, readTimeout: Double? = BlePeripheral.kUartReplyDefaultTimeout, readCompletion: @escaping BlePeripheral.CapturedReadCompletionHandler) {
-        sentBytes += data?.count ?? 0
+        sentBytes += Int64(data?.count ?? 0)
         blePeripheral.uartSendWithAndWaitReply(data: data, writeCompletion: writeCompletion, readTimeout: readTimeout, readCompletion: readCompletion)
     }
     
@@ -150,7 +150,7 @@ class UartPacketManager {
         #endif
         
         packetsSemaphore.wait()            // don't append more data, till the delegate has finished processing it
-        receivedBytes += data.count
+        receivedBytes += Int64(data.count)
         if isPacketCacheEnabled {
             packets.append(uartPacket)
         }
@@ -179,4 +179,3 @@ class UartPacketManager {
         sentBytes = 0
     }
 }
-

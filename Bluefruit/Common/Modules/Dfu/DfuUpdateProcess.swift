@@ -60,7 +60,7 @@ class DfuUpdateProcess: NSObject {
     func cancel() {
         // Cancel current operation
         let aborted = dfuController?.abort()
-        DLog("Aborted: \(aborted)")
+        DLog("Aborted: \(aborted ?? false)")
         delegate?.onUpdateProcessError(errorMessage: "Update cancelled", infoMessage: nil)
     }
 }

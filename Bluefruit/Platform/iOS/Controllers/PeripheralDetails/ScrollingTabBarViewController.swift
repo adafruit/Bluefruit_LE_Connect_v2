@@ -95,20 +95,20 @@ class ScrollingTabBarViewController: UIViewController {
         }
         
         // Add new
-        let containerView = contentView
-        let subview = viewController.view
-        subview?.translatesAutoresizingMaskIntoConstraints = false
-        self.addChildViewController(viewController)
-        
-        viewController.beginAppearanceTransition(true, animated: true)
-        containerView?.addSubview(subview!)
-        viewController.endAppearanceTransition()
-        
-        let dictionaryOfVariableBindings = ["subview" :subview]
-        containerView?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
-        containerView?.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
-        
-        viewController.didMove(toParentViewController: self)
+        if let containerView = contentView, let subview = viewController.view {
+            subview.translatesAutoresizingMaskIntoConstraints = false
+            self.addChildViewController(viewController)
+            
+            viewController.beginAppearanceTransition(true, animated: true)
+            containerView.addSubview(subview)
+            viewController.endAppearanceTransition()
+            
+            let dictionaryOfVariableBindings = ["subview": subview]
+            containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
+            containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
+            
+            viewController.didMove(toParentViewController: self)
+        }
     }
 }
 

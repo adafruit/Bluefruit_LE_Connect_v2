@@ -422,7 +422,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
     }
 
     @IBAction func onClickRotate(_ sender: AnyObject) {
-        contentRotationAngle += CGFloat(M_PI_2)
+        contentRotationAngle += CGFloat.pi/2
         rotationView.transform = CGAffineTransform(rotationAngle: contentRotationAngle)
         setDefaultPositionAndScale(animated: true)
     }
