@@ -55,30 +55,41 @@ class BleManager: NSObject {
     }
     
     func restoreCentralManager() {
-        DLog("Restore central manager")
+        DLog("Restoring central manager")
+        /*
+        guard centralManager?.delegate !== self else {
+            DLog("No need to restore it. It it still ours")
+            return
+        }*/
         
-        reset()
-        
-        // Restore central manager delegate if was changed
-        centralManager?.delegate = self
-    }
-    
-    func reset() {
-        
-        if isScanning {
-            stopScan()
-            isScanning = false
-        }
-        isScanningWaitingToStart = false
-        scanningServicesFilter = nil
-        
+        // Restore peripherals status
         peripheralsFoundLock.lock()
         
         for (_ , blePeripheral) in peripheralsFound {
             blePeripheral.peripheral.delegate = nil
         }
+        
+        let knownIdentifiers = Array(peripheralsFound.keys)
+        let knownPeripherals = centralManager?.retrievePeripherals(withIdentifiers: knownIdentifiers)
+        
         peripheralsFound.removeAll()
+        
+        if let knownPeripherals = knownPeripherals {
+            for peripheral in knownPeripherals {
+                DLog("Adding prediscovered peripheral: \(peripheral.name ?? peripheral.identifier.uuidString)")
+                discovered(peripheral: peripheral)
+            }
+        }
+        
         peripheralsFoundLock.unlock()
+        
+        // Restore central manager delegate if was changed
+        centralManager?.delegate = self
+        
+        if isScanning {
+            startScan()
+        }
+
     }
     
     // MARK: - Scan
@@ -117,7 +128,7 @@ class BleManager: NSObject {
     }
     
     func peripherals() -> [BlePeripheral] {
-        peripheralsFoundLock.lock() ; defer { peripheralsFoundLock.unlock() }
+        peripheralsFoundLock.lock(); defer { peripheralsFoundLock.unlock() }
         return Array(peripheralsFound.values)
     }
     
@@ -233,11 +244,15 @@ class BleManager: NSObject {
     fileprivate func discovered(peripheral: CBPeripheral, advertisementData: [String: Any]? = nil, rssi: Int? = nil) {
         if let existingPeripheral = peripheralsFound[peripheral.identifier] {
             existingPeripheral.lastSeenTime = CFAbsoluteTimeGetCurrent()
-            existingPeripheral.rssi = rssi
-            /*
+/*
             if let name = peripheral.name {
-                DLog("\(name) rssi: \(rssi)")
-            }*/
+                DLog("\(name) rssi: \(rssi != nil ? String(rssi!):"<unknown>")")
+            }
+*/
+            if let rssi = rssi {
+                existingPeripheral.rssi = rssi
+            }
+            
             if let advertisementData = advertisementData {
                 for (key, value) in advertisementData {
                     existingPeripheral.advertisement.advertisementData.updateValue(value, forKey: key);
@@ -299,7 +314,9 @@ extension BleManager: CBCentralManagerDelegate {
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         // DLog("didDiscover: \(peripheral.name ?? peripheral.identifier.uuidString)")
-        discovered(peripheral: peripheral, advertisementData: advertisementData, rssi: RSSI.intValue)
+        let rssi = RSSI.intValue
+        let realRssi = rssi != 127 ? rssi:nil       // 127 is a special value used by Apple to indicate that thre reading is not available
+        discovered(peripheral: peripheral, advertisementData: advertisementData, rssi: realRssi)
         
         NotificationCenter.default.post(name: .didDiscoverPeripheral, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier])
     }

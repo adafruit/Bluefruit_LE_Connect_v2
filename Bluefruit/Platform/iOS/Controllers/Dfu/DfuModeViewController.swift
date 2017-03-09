@@ -203,19 +203,13 @@ extension DfuModeViewController: FirmwareUpdaterDelegate {
         onUpdateProcessError(errorMessage: LocalizationManager.sharedInstance.localizedString("dfu_dfunotavailable"), infoMessage: nil)
     }
     
-    fileprivate func onUpdateDialogError(_ errorMessage:String, exitOnDismiss: Bool = false) {
+    fileprivate func onUpdateDialogError(_ errorMessage:String) {
         guard presentedViewController == nil else { return }
         
         let localizationManager = LocalizationManager.sharedInstance
         let alertController = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
         
-        let handler = { [unowned self] (_: UIAlertAction) -> () in
-            if exitOnDismiss {
-                DLog("dismiss dfu")
-                self.tabBarController?.navigationController?.popViewController(animated: true)
-            }
-        }
-        let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler:handler)
+        let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: nil)
         alertController.addAction(okAction)
         
         self.present(alertController, animated: true, completion: nil)
@@ -416,37 +410,53 @@ extension DfuModeViewController: DfuDialogViewControllerDelegate {
     
     func onUpdateDialogCancel() {
         dfuUpdateProcess.cancel()
-        BleManager.sharedInstance.restoreCentralManager()
+        //BleManager.sharedInstance.restoreCentralManager()
+        restoreCentralManager()
     }
 }
 
 // MARK: - DfuUpdateProcessDelegate
 extension  DfuModeViewController: DfuUpdateProcessDelegate {
     func onUpdateProcessSuccess() {
-
         if let dfuDialogViewController = self.dfuDialogViewController {
             dfuDialogViewController.dismiss(animated: false, completion: nil)
         }
-
-        BleManager.sharedInstance.restoreCentralManager()
+        //BleManager.sharedInstance.restoreCentralManager()
         
         let localizationManager = LocalizationManager.sharedInstance
         let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("dfu_udaptedcompleted_message"), preferredStyle: .alert)
         
         let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default) { [unowned self] _ in
-            self.gotoScanController()
+            //self.gotoScanController()
+            self.restoreCentralManager()
         }
         alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
     }
 
+    fileprivate func restoreCentralManager() {
+        DLog("Restoring Central Manager from DFU")
+        BleManager.sharedInstance.restoreCentralManager()
+        
+        
+        // Check if we are no longer connected
+        let currentlyConnectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
+        DLog("currentlyConnectedPeripherals: \(currentlyConnectedPeripherals.count)")
+        if currentlyConnectedPeripherals.count == 0 {
+            // Simulate disconnection to trigger the go back to scanning
+            DLog("Simulate disconnection")
+            NotificationCenter.default.post(name: .didDisconnectFromPeripheral, object: nil)
+        }
+    }
+    
+    /*
     fileprivate func gotoScanController() {
         // Simulate disonnection to trigger the go back to scanning
         NotificationCenter.default.post(name: .didDisconnectFromPeripheral, object: nil)
-    }
+    }*/
 
     func onUpdateProcessError(errorMessage: String, infoMessage: String?) {
-        BleManager.sharedInstance.restoreCentralManager()
+        //BleManager.sharedInstance.restoreCentralManager()
         
         if let dfuDialogViewController = self.dfuDialogViewController {
             dfuDialogViewController.dismiss(animated: false, completion: nil)
@@ -456,7 +466,8 @@ extension  DfuModeViewController: DfuUpdateProcessDelegate {
         let alertController = UIAlertController(title: (infoMessage != nil ? errorMessage:nil), message: (infoMessage != nil ? infoMessage : errorMessage), preferredStyle: .alert)
         
         let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default) { [weak self] _ in
-            self?.gotoScanController()
+            //self?.gotoScanController()
+            self?.restoreCentralManager()
         }
         alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
