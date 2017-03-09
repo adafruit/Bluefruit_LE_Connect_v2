@@ -468,7 +468,7 @@ class BlePeripheral: NSObject {
 
 extension BlePeripheral: CBPeripheralDelegate {
     func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
-        DLog("peripheralDidUpdateName: \(String(describing: name))")
+        DLog("peripheralDidUpdateName: \(name ?? "{ No Name }")")
         NotificationCenter.default.post(name: .peripheralDidUpdateName, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier, NotificationUserInfoKey.name.rawValue: name as Any])
     }
     

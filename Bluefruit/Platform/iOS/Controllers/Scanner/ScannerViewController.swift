@@ -100,9 +100,13 @@ class ScannerViewController: UIViewController {
         setRssiSlider(value: peripheralList.rssiFilterValue)
         filtersUnnamedSwitch.isOn = peripheralList.isUnnamedEnabled
         filtersUartSwitch.isOn = peripheralList.isOnlyUartEnabled
+
+        // Flush any pending state notifications
+        didUpdateBleState(notification: nil)
         
         // Ble Notifications
         registerNotifications(enabled: true)
+        
         
         // If only connected to 1 peripheral and coming back to this
         let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
@@ -162,7 +166,7 @@ class ScannerViewController: UIViewController {
         }
     }
     
-    private func didUpdateBleState(notification: Notification) {
+    private func didUpdateBleState(notification: Notification?) {
         guard let state = BleManager.sharedInstance.centralManager?.state else {
             return
         }
@@ -182,6 +186,8 @@ class ScannerViewController: UIViewController {
         
         // Show alert if error found
         if let errorMessage = errorMessage {
+            DLog("Error: \(errorMessage)")
+            
             // Reload peripherals
             refreshPeripherals()
             
