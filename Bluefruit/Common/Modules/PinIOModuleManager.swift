@@ -114,6 +114,7 @@ class PinIOModuleManager: NSObject {
         super.init()
         
         uartManager = UartDataManager(delegate: self)
+        uartManager.isRxCacheEnabled = false
     }
 
     deinit {
@@ -551,6 +552,9 @@ class PinIOModuleManager: NSObject {
             var isDigitalReportingMessage = (receivedPinStateDataBuffer[0] >= 0x90) && (receivedPinStateDataBuffer[0] <= 0x9F)
             var isAnalogReportingMessage = (receivedPinStateDataBuffer[0] >= 0xE0) && (receivedPinStateDataBuffer[0] <= 0xEF)
             
+            DLog("receivedPinStateDataBuffer size: \(receivedPinStateDataBuffer.count)")
+            
+            
             while receivedPinStateDataBuffer.count >= 3 && (isDigitalReportingMessage || isAnalogReportingMessage)        // Check that current message length is at least 3 bytes
             {
                 if isDigitalReportingMessage {             // Digital Reporting (per port)
@@ -605,7 +609,6 @@ class PinIOModuleManager: NSObject {
         delegate?.onPinIODidReceivePinState()
     }
     
-    
     private func updatePinsForReceivedStates(_ pinStates:Int, port:Int) {
         let offset = 8 * port
         
@@ -625,8 +628,11 @@ class PinIOModuleManager: NSObject {
     }
 }
 
+// MARK: - UartDataManagerDelegate
 extension PinIOModuleManager: UartDataManagerDelegate {
     func onUartRx(data: Data, peripheralIdentifier: UUID) {
+        DLog("uart rx read (hex): \(hexDescription(data: data))")
+        
         switch uartStatus {
         case .queryCapabilities:
             receivedQueryCapabilities(data: data)

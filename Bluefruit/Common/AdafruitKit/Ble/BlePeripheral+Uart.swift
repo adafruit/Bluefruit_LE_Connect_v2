@@ -151,8 +151,8 @@ extension BlePeripheral {
                 }
                 else {
                     DLog("uart tx write (hex): \(hexDescription(data: packet))")
-//                    DLog("uart tx write (dec): \(decimalDescription(data: packet))")
-//                    DLog("uart tx write (utf8): \(String(data: packet, encoding: .utf8) ?? "<invalid>")")
+                    // DLog("uart tx write (dec): \(decimalDescription(data: packet))")
+                    // DLog("uart tx write (utf8): \(String(data: packet, encoding: .utf8) ?? "<invalid>")")
                     
                     if BlePeripheral.kDebugLog {
                         UartLogManager.log(data: packet, type: .uartTx)

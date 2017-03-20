@@ -9,21 +9,31 @@
 import Foundation
 
 protocol UartDataManagerDelegate: class {
-    func onUartRx(data: Data, peripheralIdentifier: UUID)
+    func onUartRx(data: Data, peripheralIdentifier: UUID)           // data contents depends on the isRxCacheEnabled flag
 }
 
 // Basic Uart Management. Use it to cache all data received and help parsing it
 class UartDataManager {
     
-    // Data
-    var enabled: Bool = false  {
+    // Params
+    var isEnabled: Bool = false  {
         didSet {
-            if enabled != oldValue {
-                registerNotifications(enabled: enabled)
+            if isEnabled != oldValue {
+                registerNotifications(enabled: isEnabled)
+            }
+        }
+    }
+    var isRxCacheEnabled = true {               // If cache is enabled, onUartRx sends the cachedData. You can clear cache using removeRxCacheFirst or clearRxCache. If not enabled onUartRx sends only the latest data received
+        didSet {
+            if !isRxCacheEnabled {
+                DLog("Clearing all rx caches")
+                rxDatas.removeAll()
             }
         }
     }
     weak var delegate: UartDataManagerDelegate?
+    
+    // Data
     fileprivate var rxDatas = [UUID: Data]()
     //fileprivate var rxDataSemaphores = [UUID: DispatchSemaphore]()
     fileprivate var rxDataSemaphore = DispatchSemaphore(value: 1)
@@ -31,11 +41,11 @@ class UartDataManager {
     init(delegate: UartDataManagerDelegate?) {
         self.delegate = delegate
         
-        enabled = true
+        isEnabled = true
     }
     
     deinit {
-        enabled = false
+        isEnabled = false
     }
     
     // MARK: - BLE Notifications
@@ -92,28 +102,31 @@ class UartDataManager {
         }
         
         /*
-        // Create data and semaphore if is the first time receiving data
-        if rxDataSemaphores[identifier] == nil {
-            rxDataSemaphores[identifier] = DispatchSemaphore(value: 1)
-        }*/
+         // Create data and semaphore if is the first time receiving data
+         if rxDataSemaphores[identifier] == nil {
+         rxDataSemaphores[identifier] = DispatchSemaphore(value: 1)
+         }*/
         
-        
-        if rxDatas[identifier] == nil {
+        if isRxCacheEnabled && rxDatas[identifier] == nil {
             rxDatas[identifier] = Data()
         }
         
-       // guard /*let rxDataSemaphore = rxDataSemaphores[identifier], */var rxData = rxDatas[identifier] else { return }
-        guard rxDatas[identifier] != nil else { return }
+        // guard /*let rxDataSemaphore = rxDataSemaphores[identifier], */var rxData = rxDatas[identifier] else { return }
         
-        rxDataSemaphore.wait()            // don't append more data, till the delegate has finished processing it
-        rxDatas[identifier]!.append(data)
-        
-        // Send data to delegate
-        delegate?.onUartRx(data: rxDatas[identifier]!, peripheralIdentifier: identifier)
-        
-        //DLog("cachedRxData: \(cachedRxData.count)")
-        
-        rxDataSemaphore.signal()
+        if isRxCacheEnabled {
+            rxDataSemaphore.wait()            // don't append more data, till the delegate has finished processing it
+            rxDatas[identifier]!.append(data)
+            
+            // Send data to delegate
+            delegate?.onUartRx(data: rxDatas[identifier]!, peripheralIdentifier: identifier)
+            
+            //DLog("cachedRxData: \(cachedRxData.count)")
+            
+            rxDataSemaphore.signal()
+        }
+        else {
+            delegate?.onUartRx(data: data, peripheralIdentifier: identifier)
+        }
     }
     
     func clearRxCache(peripheralIdentifier identifier: UUID) {
@@ -136,7 +149,6 @@ class UartDataManager {
         }
 
         //DLog("post remove: \(hexDescription(data: rxDatas[identifier]!))")
-
     }
     
     func flushRxCache(peripheralIdentifier identifier: UUID) {

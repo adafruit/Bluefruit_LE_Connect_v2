@@ -17,7 +17,7 @@ PODS:
     - UIColor+Hex/NSColor (= 1.0.1)
     - UIColor+Hex/UIColor (= 1.0.1)
   - UIColor+Hex/UIColor (1.0.1)
-  - Zip (0.6.0)
+  - Zip (0.7.0)
 
 DEPENDENCIES:
   - Charts (~> 3.0.1)
@@ -36,7 +36,7 @@ SPEC CHECKSUMS:
   MSWeakTimer: 9426150f933b80ed3acf3f6d228e4b61f0e303c8
   SwiftyXML: 3054a135ca252ef97991cd264aa698a41ef854c3
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
-  Zip: 805fc2fa9d2f05bbb7762d982d7a42ccdcc51f42
+  Zip: e34513299ac38c0686d5b24504da7ce343799ab9
 
 PODFILE CHECKSUM: 0fefa7855f192a6111710aa95603416ea25e34d0
 
