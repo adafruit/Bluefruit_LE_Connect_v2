@@ -9,7 +9,7 @@
 import UIKit
 
 class StyledButton: IntrinsicSizeWithInsetsButton {
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

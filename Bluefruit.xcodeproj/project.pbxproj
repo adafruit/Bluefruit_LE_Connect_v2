@@ -155,6 +155,7 @@
 		A98DE42F1E45EB3900EEF4C8 /* NeopixelTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4261E45EB3900EEF4C8 /* NeopixelTypes.plist */; };
 		A98DE4301E45EB3900EEF4C8 /* NeopixelTypes.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4261E45EB3900EEF4C8 /* NeopixelTypes.plist */; };
 		A9A6C2471E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */; };
+		A9A89BDC1E83C5B000724F0E /* StyledConnectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A89BDB1E83C5B000724F0E /* StyledConnectButton.swift */; };
 		A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */; };
 		A9BAD2121E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */; };
 		A9BAD2131E3FC6CA0021DFA9 /* InfoModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2111E3FC6CA0021DFA9 /* InfoModeViewController.swift */; };
@@ -450,6 +451,7 @@
 		A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelDefaultPalette.plist; sourceTree = "<group>"; };
 		A98DE4261E45EB3900EEF4C8 /* NeopixelTypes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelTypes.plist; sourceTree = "<group>"; };
 		A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSelectPeripheralViewController.swift; sourceTree = "<group>"; };
+		A9A89BDB1E83C5B000724F0E /* StyledConnectButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledConnectButton.swift; sourceTree = "<group>"; };
 		A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoCharacteristicTableViewCell.swift; sourceTree = "<group>"; };
 		A9BAD2111E3FC6CA0021DFA9 /* InfoModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModeViewController.swift; sourceTree = "<group>"; };
@@ -708,6 +710,7 @@
 				A9D2344C1E3AD97600DC0C99 /* StyleConfig.swift */,
 				A969466A1E3CD0CC00BA8DAA /* IntrinsicSizeWithInsetsButton.swift */,
 				A969466B1E3CD0CC00BA8DAA /* StyledButton.swift */,
+				A9A89BDB1E83C5B000724F0E /* StyledConnectButton.swift */,
 				A969466E1E3CD0F600BA8DAA /* StyledSubview.swift */,
 				A90798301E438E60005470A5 /* GradientView.swift */,
 			);
@@ -1704,6 +1707,7 @@
 				A9BCD60D1E4D36DE003D1CEA /* PickerModeInterfaceController.swift in Sources */,
 				A90C79751E40CB150076E8AD /* HelpViewController.swift in Sources */,
 				A90C79741E40CB150076E8AD /* EmptyDetailsViewController.swift in Sources */,
+				A9A89BDC1E83C5B000724F0E /* StyledConnectButton.swift in Sources */,
 				A9BCD6091E4D36DE003D1CEA /* ConnectedInterfaceController.swift in Sources */,
 				A907982A1E4349D6005470A5 /* ControllerComponentsTableViewCell.swift in Sources */,
 				A9286CB41E3A931E008E5F81 /* AppDelegate.swift in Sources */,

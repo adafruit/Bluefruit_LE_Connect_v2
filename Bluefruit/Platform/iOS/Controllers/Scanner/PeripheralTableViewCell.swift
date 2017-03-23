@@ -10,12 +10,13 @@ import UIKit
 
 class PeripheralTableViewCell: UITableViewCell {
 
+    // UI
     @IBOutlet weak var baseStackView: UIStackView!
     @IBOutlet weak var rssiImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var connectButton: UIButton!
-    @IBOutlet weak var disconnectButton: UIButton!
+    @IBOutlet weak var connectButton: StyledConnectButton!
+    @IBOutlet weak var disconnectButton: StyledConnectButton!
     @IBOutlet weak var disconnectButtonWidthConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var detailBaseStackView: UIStackView!
@@ -27,14 +28,20 @@ class PeripheralTableViewCell: UITableViewCell {
     @IBOutlet weak var manufacturerValueLabel: UILabel!
     @IBOutlet weak var connectableValueLabel: UILabel!
     
-    
-    var onConnect : (() -> ())?
-    var onDisconnect : (() -> ())?
+    // Params
+    var onConnect: (() -> ())?
+    var onDisconnect: (() -> ())?
 
+    // MARK: - View Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
         manufacturerValueLabel.text = nil
         txPowerLevelValueLabel.text = nil
+        
+        let rightMarginInset = contentView.bounds.size.width - baseStackView.frame.maxX     // reposition button because it is outside the hierchy
+        //DLog("right margin: \(rightMarginInset)")
+        connectButton.titleEdgeInsets.right += rightMarginInset
+        disconnectButton.titleEdgeInsets.right += rightMarginInset
     }
     
     @IBAction func onClickDisconnect(_ sender: AnyObject) {
