@@ -242,11 +242,10 @@ class ScannerViewController: UIViewController {
     private func didDisconnectFromPeripheral(notification: Notification) {
         updateMultiConnectUI()
 
-        guard let peripheral = BleManager.sharedInstance.peripheral(from: notification) else {
-            return
-        }
+        let peripheral = BleManager.sharedInstance.peripheral(from: notification)
+        let currentlyConnectedPeripheralsCount = BleManager.sharedInstance.connectedPeripherals().count
         
-        guard let selectedPeripheral = selectedPeripheral, peripheral.identifier == selectedPeripheral.identifier else {
+        guard let selectedPeripheral = selectedPeripheral, selectedPeripheral.identifier == peripheral?.identifier || currentlyConnectedPeripheralsCount == 0 else {        // If selected peripheral is disconnected or if there not any peripherals connected (after a failed dfu update)
             return
         }
         
@@ -255,7 +254,6 @@ class ScannerViewController: UIViewController {
         
         // Watch
         WatchSessionManager.sharedInstance.updateApplicationContext(mode: .scan)
-    
         
         DispatchQueue.main.async { [weak self] in
             // Dismiss any info open dialogs

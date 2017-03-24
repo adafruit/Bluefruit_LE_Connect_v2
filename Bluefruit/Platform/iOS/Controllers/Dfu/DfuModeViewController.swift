@@ -171,26 +171,33 @@ extension DfuModeViewController: FirmwareUpdaterDelegate {
         DLog("onFirmwareUpdatesAvailable")
         
         self.dis = deviceInfo
+        self.allReleases = nil
+        self.boardRelease = nil
         
-        self.allReleases = firmwareUpdater.releases(showBetaVersions: Preferences.showBetaVersions)
-        if let allReleases = allReleases {
-            if let modelNumber = deviceInfo?.modelNumber {
-                boardRelease = allReleases[modelNumber]
+        if self.dis != nil {
+            self.allReleases = firmwareUpdater.releases(showBetaVersions: Preferences.showBetaVersions)
+            
+            if let allReleases = allReleases {
+                if let modelNumber = deviceInfo?.modelNumber {
+                    boardRelease = allReleases[modelNumber]
+                }
+                else {
+                    DLog("Warning: no releases found for this board")
+                    boardRelease = nil
+                }
             }
             else {
-                DLog("Warning: no releases found for this board")
-                boardRelease = nil
+                DLog("Warning: no releases found")
             }
-        }
-        else {
-            DLog("Warning: no releases found")
         }
         
         // Update UI
         DispatchQueue.main.async{ [unowned self] in
-            
-            if let dis = self.dis, dis.hasDefaultBootloaderVersion {
-                self.onUpdateDialogError("The legacy bootloader on this device is not compatible with this application")
+            if self.dis == nil {
+                showErrorAlert(from: self, title: LocalizationManager.sharedInstance.localizedString("dialog_error"), message: "Device Information Service not found. Unable to peform an OTA DFU update")
+            }
+            else if let dis = self.dis, dis.hasDefaultBootloaderVersion {
+                showErrorAlert(from: self, title: LocalizationManager.sharedInstance.localizedString("dialog_error"), message: LocalizationManager.sharedInstance.localizedString("dfu_legacybootloader"))
             }
             
             // Refresh
@@ -371,16 +378,18 @@ extension DfuModeViewController: UITableViewDataSource {
                 currentRow += numReleases
             }
         }
-        
+
         return firmwareInfo
     }
-
 }
 
 // MARK: UITableViewDelegate
 extension DfuModeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let dis = dis else { return }
+        guard let dis = dis else {
+            showErrorAlert(from: self, title: LocalizationManager.sharedInstance.localizedString("dialog_error"), message: "Device Information Service not found. Unable to peform an OTA DFU update")
+            return
+        }
         
         let selectedRow = indexPath.row
         
@@ -389,7 +398,8 @@ extension DfuModeViewController: UITableViewDelegate {
         case .firmwareReleases:
             if (selectedRow >= 0) {
                 if dis.hasDefaultBootloaderVersion {
-                    onUpdateProcessError(errorMessage: LocalizationManager.sharedInstance.localizedString("dfu_legacybootloader"), infoMessage: nil)
+                    showErrorAlert(from: self, title: LocalizationManager.sharedInstance.localizedString("dialog_error"), message: LocalizationManager.sharedInstance.localizedString("dfu_legacybootloader"))
+                    //onUpdateProcessError(errorMessage: LocalizationManager.sharedInstance.localizedString("dialog_error"), infoMessage: LocalizationManager.sharedInstance.localizedString("dfu_legacybootloader"))
                 }
                 else {
                     let firmwareInfo = firmwareInfoForRow(indexPath.row)                    
@@ -437,7 +447,6 @@ extension  DfuModeViewController: DfuUpdateProcessDelegate {
     fileprivate func restoreCentralManager() {
         DLog("Restoring Central Manager from DFU")
         BleManager.sharedInstance.restoreCentralManager()
-        
         
         // Check if we are no longer connected
         let currentlyConnectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
