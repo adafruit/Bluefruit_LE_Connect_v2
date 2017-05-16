@@ -43,7 +43,7 @@ class ScanningAnimationViewController: PeripheralModeViewController {
     
     
     // MARK: - BLE Notifications
-    private var applicationWillEnterForegroundObserver: NSObjectProtocol?
+    private weak var applicationWillEnterForegroundObserver: NSObjectProtocol?
     
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default

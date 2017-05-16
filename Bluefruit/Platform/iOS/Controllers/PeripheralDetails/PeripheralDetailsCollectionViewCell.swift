@@ -20,6 +20,4 @@ class PeripheralDetailsCollectionViewCell: UICollectionViewCell {
             iconImageView.tintColor = tintColor
         }
     }
-
-    
 }

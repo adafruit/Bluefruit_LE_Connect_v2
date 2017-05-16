@@ -55,7 +55,7 @@ class UartPacketManager {
     }
     
     // MARK: - BLE Notifications
-    var didConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var didConnectToPeripheralObserver: NSObjectProtocol?
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {

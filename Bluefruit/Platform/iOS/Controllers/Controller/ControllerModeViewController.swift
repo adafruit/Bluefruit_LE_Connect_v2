@@ -107,7 +107,7 @@ class ControllerModeViewController: PeripheralModeViewController {
     
     // MARK: Notifications
     
-    private var didReceiveWatchCommandObserver: NSObjectProtocol?
+    private weak var didReceiveWatchCommandObserver: NSObjectProtocol?
     
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default

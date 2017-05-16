@@ -72,7 +72,7 @@ class DfuModeViewController: PeripheralModeViewController {
     
     
     // MARK: - BLE Notifications
-    private var didUpdatePreferencesObserver: NSObjectProtocol?
+    private weak var didUpdatePreferencesObserver: NSObjectProtocol?
     
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default

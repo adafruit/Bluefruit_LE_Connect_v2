@@ -49,8 +49,8 @@ class UartDataManager {
     }
     
     // MARK: - BLE Notifications
-    var didConnectToPeripheralObserver: NSObjectProtocol?
-    private var didDisconnectFromPeripheralObserver: NSObjectProtocol?
+    private weak var didConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var didDisconnectFromPeripheralObserver: NSObjectProtocol?
 
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default

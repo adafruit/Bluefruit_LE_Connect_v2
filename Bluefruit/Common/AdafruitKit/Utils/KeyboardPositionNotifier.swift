@@ -26,8 +26,8 @@ class KeyboardPositionNotifier: NSObject {
     }
     
     // MARK: - BLE Notifications
-    private var keyboardWillBeShownObserver: NSObjectProtocol?
-    private var keyboardWillBeHiddenObserver: NSObjectProtocol?
+    private weak var keyboardWillBeShownObserver: NSObjectProtocol?
+    private weak var keyboardWillBeHiddenObserver: NSObjectProtocol?
     
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default

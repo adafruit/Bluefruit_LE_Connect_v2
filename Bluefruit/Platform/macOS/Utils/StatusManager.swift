@@ -41,15 +41,15 @@ class StatusManager : NSObject {
     }
     
     // MARK: - BLE Notifications
-    private var didUpdateBleStateObserver: NSObjectProtocol?
-    private var didStartScanningObserver: NSObjectProtocol?
-    private var willConnectToPeripheralObserver: NSObjectProtocol?
-    private var didConnectToPeripheralObserver: NSObjectProtocol?
-    private var willDisconnectFromPeripheralObserver: NSObjectProtocol?
-    private var didDisconnectFromPeripheralObserver: NSObjectProtocol?
-    private var didStopScanningObserver: NSObjectProtocol?
-    private var didDiscoverPeripheralObserver: NSObjectProtocol?
-    private var didUnDiscoverPeripheralObserver: NSObjectProtocol?
+    private weak var didUpdateBleStateObserver: NSObjectProtocol?
+    private weak var didStartScanningObserver: NSObjectProtocol?
+    private weak var willConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var didConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var willDisconnectFromPeripheralObserver: NSObjectProtocol?
+    private weak var didDisconnectFromPeripheralObserver: NSObjectProtocol?
+    private weak var didStopScanningObserver: NSObjectProtocol?
+    private weak var didDiscoverPeripheralObserver: NSObjectProtocol?
+    private weak var didUnDiscoverPeripheralObserver: NSObjectProtocol?
     
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default

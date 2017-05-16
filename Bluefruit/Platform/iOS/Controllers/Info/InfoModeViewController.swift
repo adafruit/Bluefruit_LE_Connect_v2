@@ -102,8 +102,8 @@ class InfoModeViewController: PeripheralModeViewController {
 
     
     // MARK: - BLE Notifications
-    private var peripheralDidUpdateNameObserver: NSObjectProtocol?
-    private var peripheralDidModifyServicesObserver: NSObjectProtocol?
+    private weak var peripheralDidUpdateNameObserver: NSObjectProtocol?
+    private weak var peripheralDidModifyServicesObserver: NSObjectProtocol?
     
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default

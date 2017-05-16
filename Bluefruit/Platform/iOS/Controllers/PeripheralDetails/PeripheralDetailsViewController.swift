@@ -22,7 +22,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     var startingController = ModuleController.info
     
     // Data
-    private var emptyViewController: EmptyDetailsViewController!
+    private var emptyViewController: EmptyDetailsViewController?
     private var dfuTabIndex = -1
     
     override func viewDidLoad() {
@@ -34,7 +34,8 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             navigationItem.leftItemsSupplementBackButton = true
         }
 
-        emptyViewController = storyboard!.instantiateViewController(withIdentifier: "EmptyDetailsViewController") as! EmptyDetailsViewController
+        
+        emptyViewController = storyboard?.instantiateViewController(withIdentifier: "EmptyDetailsViewController") as? EmptyDetailsViewController
 
         // Init for iPhone
         if let _ = blePeripheral {
@@ -47,9 +48,10 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
             if !isFullScreen {
                 showEmpty(true)
-                self.emptyViewController.setConnecting(false)
+                self.emptyViewController?.setConnecting(false)
             }
         }
+ 
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -72,9 +74,9 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     
     
     // MARK: - BLE Notifications
-    private var willConnectToPeripheralObserver: NSObjectProtocol?
-    private var willDisconnectFromPeripheralObserver: NSObjectProtocol?
-    private var didDisconnectFromPeripheralObserver: NSObjectProtocol?
+    private weak var willConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var willDisconnectFromPeripheralObserver: NSObjectProtocol?
+    private weak var didDisconnectFromPeripheralObserver: NSObjectProtocol?
     
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
@@ -98,11 +100,10 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         }
         else {
             showEmpty(true)
-            emptyViewController.setConnecting(true)
+            emptyViewController?.setConnecting(true)
         }
     }
 
-    
     fileprivate func willDisconnectFromPeripheral(notification: Notification) {
         DLog("detail: peripheral willDisconnect")
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
@@ -110,7 +111,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             
             // Back to peripheral list
             if let parentNavigationController = (self.navigationController?.parent as? UINavigationController) {
-                    parentNavigationController.popToRootViewController(animated: true)
+                parentNavigationController.popToRootViewController(animated: true)
             }
         }
         else {
@@ -118,7 +119,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                 blePeripheral = nil
             }
             showEmpty(true)
-            emptyViewController.setConnecting(false)
+            emptyViewController?.setConnecting(false)
         }
     }
     
@@ -132,7 +133,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             DLog("detail: show empty")
             navigationController?.popToRootViewController(animated: false)       // pop any viewcontrollers (like ControlPad)
             showEmpty(true)
-            emptyViewController.setConnecting(false)
+            emptyViewController?.setConnecting(false)
         }
         
         // Show disconnected alert (if no previous alert is shown)
@@ -172,17 +173,17 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         hideTabBar(showEmpty)
         if showEmpty {
             // Show empty view (if needed)
-            if viewControllers?.count != 1 || viewControllers?.first != emptyViewController {
+            if let emptyViewController = emptyViewController, viewControllers?.count != 1 || viewControllers?.first != emptyViewController {
                 viewControllers = [emptyViewController]
             }
             
-            emptyViewController.startAnimating()
+            emptyViewController?.startAnimating()
         }
         else {
-            emptyViewController.stopAnimating()
+            emptyViewController?.stopAnimating()
         }
     }
-    
+
     fileprivate func setupConnectedPeripheral() {
         // Note: Services should have been discovered previously
         guard let blePeripheral = blePeripheral else { return }

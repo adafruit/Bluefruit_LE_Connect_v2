@@ -132,7 +132,6 @@ extension ScrollingTabBarViewController: UICollectionViewDataSource {
         
         return itemCell
     }
-    
 }
 
 // MARK: - UICollectionViewDelegate
@@ -147,8 +146,8 @@ extension ScrollingTabBarViewController: UICollectionViewDelegate {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension ScrollingTabBarViewController : UICollectionViewDelegateFlowLayout {
-    
+extension ScrollingTabBarViewController: UICollectionViewDelegateFlowLayout {
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let kItemDefaultWidth: CGFloat = 60
@@ -161,7 +160,7 @@ extension ScrollingTabBarViewController : UICollectionViewDelegateFlowLayout {
         if itemsWidth < maxWidth {
             itemWidth = maxWidth / CGFloat(numItems)
         }
-        
+
         return CGSize(width: itemWidth, height: 49)
     }
 }

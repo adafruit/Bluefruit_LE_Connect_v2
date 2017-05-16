@@ -137,14 +137,14 @@ class ScannerViewController: UIViewController {
         peripheralList.clear()
         isRowDetailOpenForPeripheral.removeAll()
     }
-    
+
     // MARK: - BLE Notifications
-    private var didUpdateBleStateObserver: NSObjectProtocol?
-    private var didDiscoverPeripheralObserver: NSObjectProtocol?
-    private var willConnectToPeripheralObserver: NSObjectProtocol?
-    private var didConnectToPeripheralObserver: NSObjectProtocol?
-    private var didDisconnectFromPeripheralObserver: NSObjectProtocol?
-    private var peripheralDidUpdateNameObserver: NSObjectProtocol?
+    private weak var didUpdateBleStateObserver: NSObjectProtocol?
+    private weak var didDiscoverPeripheralObserver: NSObjectProtocol?
+    private weak var willConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var didConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var didDisconnectFromPeripheralObserver: NSObjectProtocol?
+    private weak var peripheralDidUpdateNameObserver: NSObjectProtocol?
     
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default

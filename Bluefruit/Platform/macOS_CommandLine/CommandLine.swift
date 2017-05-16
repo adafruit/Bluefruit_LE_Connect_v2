@@ -102,7 +102,7 @@ class CommandLine: NSObject {
         startScanningAndShowIndex(false)
     }
     
-    private var didDiscoverPeripheralObserver: NSObjectProtocol?
+    private weak var didDiscoverPeripheralObserver: NSObjectProtocol?
 
     private func startScanningAndShowIndex(_ scanResultsShowIndex: Bool) {
         self.scanResultsShowIndex = scanResultsShowIndex
@@ -167,7 +167,7 @@ class CommandLine: NSObject {
     }
 
     // MARK: - DFU
-    private var didConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var didConnectToPeripheralObserver: NSObjectProtocol?
 
     func dfuPeripheral(uuid peripheralUUID: UUID, hexUrl: URL? = nil, iniUrl: URL? = nil, releases: [AnyHashable: Any]? = nil) {
         
