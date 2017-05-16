@@ -34,7 +34,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             navigationItem.leftItemsSupplementBackButton = true
         }
 
-        
         emptyViewController = storyboard?.instantiateViewController(withIdentifier: "EmptyDetailsViewController") as? EmptyDetailsViewController
 
         // Init for iPhone
@@ -48,22 +47,22 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
             if !isFullScreen {
                 showEmpty(true)
-                self.emptyViewController?.setConnecting(false)
+                setConnecting(false)
             }
         }
- 
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Subscribe to Ble Notifications
+        // Notifications
         registerNotifications(enabled: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        // Notifications
         registerNotifications(enabled: false)
     }
     
@@ -72,11 +71,14 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    deinit {
+        DLog("PeripheralDetails deinit")
+        
+    }
     
     // MARK: - BLE Notifications
     private weak var willConnectToPeripheralObserver: NSObjectProtocol?
     private weak var willDisconnectFromPeripheralObserver: NSObjectProtocol?
-    private weak var didDisconnectFromPeripheralObserver: NSObjectProtocol?
     
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
@@ -84,23 +86,20 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         if enabled {
             willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: .main, using: willConnectToPeripheral)
             willDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .willDisconnectFromPeripheral, object: nil, queue: .main, using: willDisconnectFromPeripheral)
-            didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: didDisconnectFromPeripheral)
+
         }
         else {
             if let willConnectToPeripheralObserver = willConnectToPeripheralObserver {notificationCenter.removeObserver(willConnectToPeripheralObserver)}
             if let willDisconnectFromPeripheralObserver = willDisconnectFromPeripheralObserver {notificationCenter.removeObserver(willDisconnectFromPeripheralObserver)}
-            if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {notificationCenter.removeObserver(didDisconnectFromPeripheralObserver)}
         }
     }
     
     fileprivate func willConnectToPeripheral(notification: Notification) {
-        
         if isInMultiUartMode() {
-            
         }
         else {
             showEmpty(true)
-            emptyViewController?.setConnecting(true)
+            setConnecting(true)
         }
     }
 
@@ -119,41 +118,14 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
                 blePeripheral = nil
             }
             showEmpty(true)
-            emptyViewController?.setConnecting(false)
+            setConnecting(false)
         }
     }
     
-    fileprivate func didDisconnectFromPeripheral(notification: Notification) {
-        let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
-        let isLastConnectedPeripheral = BleManager.sharedInstance.connectedPeripherals().count == 0
-        
-        DLog("detail: disconnection")
-        
-        if !isFullScreen && isLastConnectedPeripheral {
-            DLog("detail: show empty")
-            navigationController?.popToRootViewController(animated: false)       // pop any viewcontrollers (like ControlPad)
-            showEmpty(true)
-            emptyViewController?.setConnecting(false)
-        }
-        
-        // Show disconnected alert (if no previous alert is shown)
-        if self.presentedViewController == nil {
-            let localizationManager = LocalizationManager.sharedInstance
-            let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("peripherallist_peripheraldisconnected"), preferredStyle: .alert)
-            let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: { (_) -> Void in
-                let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
-                
-                if isFullScreen && isLastConnectedPeripheral {
-                    self.goBackToPeripheralList()
-                }
-            })
-            alertController.addAction(okAction)
-            self.present(alertController, animated: true, completion: nil)
-        }
-        else {
-            DLog("disconnection detected but cannot go to periperalList because there is a presentedViewController on screen")
-        }
+    func setConnecting(_ isConnecting : Bool) {
+        emptyViewController?.setConnecting(isConnecting)
     }
+    
     
     // MARK: - MultiUart Mode
     fileprivate func isInMultiUartMode() -> Bool {

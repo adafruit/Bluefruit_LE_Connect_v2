@@ -94,7 +94,7 @@ class CommandQueue<Element> {
     }
     
     func removeAll() {
-        DLog("queue removeAll")
+        //DLog("queue removeAll")
         queue.removeAll()
     }
     

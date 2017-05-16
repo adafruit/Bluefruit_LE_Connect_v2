@@ -75,7 +75,7 @@ class ControllerModeViewController: PeripheralModeViewController {
     }
     
     deinit {
-        DLog("deinit")
+        DLog("ControllerModeViewController deinit")
     }
     
     override func didReceiveMemoryWarning() {

@@ -167,9 +167,7 @@ class ScannerViewController: UIViewController {
     }
     
     private func didUpdateBleState(notification: Notification?) {
-        guard let state = BleManager.sharedInstance.centralManager?.state else {
-            return
-        }
+        guard let state = BleManager.sharedInstance.centralManager?.state else { return }
         
         // Check if there is any error
         var errorMessage: String?
@@ -248,20 +246,18 @@ class ScannerViewController: UIViewController {
         guard let selectedPeripheral = selectedPeripheral, selectedPeripheral.identifier == peripheral?.identifier || currentlyConnectedPeripheralsCount == 0 else {        // If selected peripheral is disconnected or if there not any peripherals connected (after a failed dfu update)
             return
         }
-        
+
         // Clear selected peripheral
         self.selectedPeripheral = nil
         
         // Watch
         WatchSessionManager.sharedInstance.updateApplicationContext(mode: .scan)
         
-        DispatchQueue.main.async { [weak self] in
-            // Dismiss any info open dialogs
-            self?.infoAlertController?.dismiss(animated: true, completion: nil)
-            
-            // Reload table
-            self?.baseTableView.reloadData()
-        }
+        // Dismiss any info open dialogs
+        infoAlertController?.dismiss(animated: true, completion: nil)
+        
+        // Reload table
+        baseTableView.reloadData()
     }
     
     private func peripheralDidUpdateName(notification: Notification) {
