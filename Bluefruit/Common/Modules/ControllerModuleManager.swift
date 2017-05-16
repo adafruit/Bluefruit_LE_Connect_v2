@@ -18,11 +18,12 @@ import MSWeakTimer
 
 protocol ControllerModuleManagerDelegate: class {
     func onControllerUartIsReady(error: Error?)
+    func onUarRX()
 }
 
-class ControllerModuleManager : NSObject {
+class ControllerModuleManager: NSObject {
     
-    enum ControllerType : Int {
+    enum ControllerType: Int {
         case attitude = 0
         case accelerometer
         case gyroscope
@@ -33,9 +34,20 @@ class ControllerModuleManager : NSObject {
     
     static private let prefixes = ["!Q", "!A", "!G", "!M", "!L"]     // same order that ControllerType
     
-    // Data
+    // Params
     weak var delegate: ControllerModuleManagerDelegate?
+    var isUartRxCacheEnabled = false {
+        didSet {
+            if isUartRxCacheEnabled {
+                uartManager.delegate = self
+            }
+            else {
+                uartManager.delegate = nil
+            }
+        }
+    }
     
+    // Data
     fileprivate var isSensorEnabled = [Bool](repeating: false, count: ControllerModuleManager.numSensors)
 
     #if os(OSX)
@@ -45,18 +57,21 @@ class ControllerModuleManager : NSObject {
     private let locationManager = CLLocationManager()
     fileprivate var lastKnownLocation: CLLocation?
     
-    private var blePeripheral: BlePeripheral
+    fileprivate var blePeripheral: BlePeripheral
     private var pollTimer: MSWeakTimer?
     private var timerHandler: (()->())?
     
-    fileprivate let uartManager = UartDataManager(delegate: nil)
-    
+    fileprivate let uartManager: UartDataManager// = UartDataManager(delegate: self)
+    fileprivate var textCachedBuffer: String = ""
+
     private var pollInterval: TimeInterval = 1        // in seconds
-    
+
     init(blePeripheral: BlePeripheral, delegate: ControllerModuleManagerDelegate) {
         self.blePeripheral = blePeripheral
         self.delegate = delegate
-        super.init()        
+        uartManager = UartDataManager(delegate: nil)
+        super.init()
+        
         
         // Setup Location Manager
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -104,6 +119,11 @@ class ControllerModuleManager : NSObject {
         crcData.appendCrc()
       
         uartManager.send(blePeripheral: blePeripheral, data: crcData)
+    }
+    
+    // MARK: - Uart Data Cache
+    func uartTextBuffer() -> String {
+        return textCachedBuffer
     }
     
     // MARK: -
@@ -238,8 +258,14 @@ class ControllerModuleManager : NSObject {
         
         return errorString
     }
+    
+    func uartRxCacheReset() {
+        uartManager.clearRxCache(peripheralIdentifier: blePeripheral.identifier)
+        textCachedBuffer.removeAll()
+    }
 }
 
+ // MARK: - CLLocationManagerDelegate
 extension ControllerModuleManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways || status == .authorizedWhenInUse {
@@ -249,5 +275,19 @@ extension ControllerModuleManager: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         lastKnownLocation = locations.last
+    }
+}
+
+// MARK: - UartDataManagerDelegate
+extension ControllerModuleManager: UartDataManagerDelegate {
+    func onUartRx(data: Data, peripheralIdentifier: UUID) {
+        if let dataString = stringFromData(data, useHexMode: false) {
+            //DLog("rx: \(dataString)")
+            textCachedBuffer.append(dataString)
+            DispatchQueue.main.async { [unowned self] in
+                self.delegate?.onUarRX()
+            }
+        }
+        uartManager.removeRxCacheFirst(n: data.count, peripheralIdentifier: peripheralIdentifier)
     }
 }

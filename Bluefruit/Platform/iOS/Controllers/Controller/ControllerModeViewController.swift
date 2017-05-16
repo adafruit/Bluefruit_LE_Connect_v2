@@ -23,6 +23,7 @@ class ControllerModeViewController: PeripheralModeViewController {
     // Data
     fileprivate var controllerData: ControllerModuleManager!
     fileprivate var contentItems = [Int]()
+    fileprivate weak var controllerPadViewController: ControllerPadViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +53,10 @@ class ControllerModeViewController: PeripheralModeViewController {
  
             // Notifications
             registerNotifications(enabled: true)
+        }
+        else {
+            // Disable cache if coming back grom Control Pad
+            controllerData.isUartRxCacheEnabled = false
         }
     }
 
@@ -107,7 +112,7 @@ class ControllerModeViewController: PeripheralModeViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            didReceiveWatchCommandObserver = notificationCenter.addObserver(forName: .didReceiveWatchCommand, object: nil, queue: OperationQueue.main, using: didReceiveWatchCommand)
+            didReceiveWatchCommandObserver = notificationCenter.addObserver(forName: .didReceiveWatchCommand, object: nil, queue: .main, using: didReceiveWatchCommand)
         }
         else {
             if let didReceiveWatchCommandObserver = didReceiveWatchCommandObserver {notificationCenter.removeObserver(didReceiveWatchCommandObserver)}
@@ -188,7 +193,7 @@ extension ControllerModeViewController: ControllerColorWheelViewControllerDelega
 }
 
 // MARK: - ControllerPadViewControllerDelegate
-extension ControllerModeViewController : ControllerPadViewControllerDelegate {
+extension ControllerModeViewController: ControllerPadViewControllerDelegate {
     func onSendControllerPadButtonStatus(tag: Int, isPressed: Bool) {
         sendTouchEvent(tag: tag, isPressed: isPressed)
     }
@@ -340,23 +345,29 @@ extension ControllerModeViewController : UITableViewDataSource {
 }
 
 // MARK:  UITableViewDelegate
-extension ControllerModeViewController : UITableViewDelegate {
+extension ControllerModeViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         switch ControllerSection(rawValue: indexPath.section)! {
         case .module:
             if indexPath.row == 0 {
-                 let viewController = storyboard!.instantiateViewController(withIdentifier: "ControllerPadViewController") as! ControllerPadViewController
-                viewController.delegate = self
-                navigationController?.show(viewController, sender: self)
+                if let viewController = storyboard!.instantiateViewController(withIdentifier: "ControllerPadViewController") as? ControllerPadViewController {
+                    controllerPadViewController = viewController
+                    viewController.delegate = self
+                    navigationController?.show(viewController, sender: self)
+                    
+                    // Enable cache for control pad
+                    controllerData.uartRxCacheReset()
+                    controllerData.isUartRxCacheEnabled = true
+                }
             }
             else {
-                let viewController = storyboard!.instantiateViewController(withIdentifier: "ControllerColorWheelViewController") as! ControllerColorWheelViewController
-                viewController.delegate = self
-                navigationController?.show(viewController, sender: self)
+                if let viewController = storyboard!.instantiateViewController(withIdentifier: "ControllerColorWheelViewController") as? ControllerColorWheelViewController {
+                    viewController.delegate = self
+                    navigationController?.show(viewController, sender: self)
+                }
             }
-
         default:
             break
         }
@@ -386,9 +397,24 @@ extension ControllerModeViewController: ControllerModuleManagerDelegate {
                 })
                 return
             }
-            
+
             // Uart Ready
             context.baseTableView.reloadData()
         }
+    }
+
+    func onUarRX() {
+        // Uart data recevied
+        
+        // Only reloadData when controllerPadViewController is loaded
+        guard controllerPadViewController != nil else { return }
+        
+        self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
+    }
+    
+    func reloadData() {
+        // Refresh the controllerPadViewController uart text
+        self.controllerPadViewController?.setUartText(self.controllerData.uartTextBuffer())
+        
     }
 }

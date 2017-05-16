@@ -108,7 +108,7 @@ class CommandLine: NSObject {
         self.scanResultsShowIndex = scanResultsShowIndex
         
         // Subscribe to Ble Notifications
-        didDiscoverPeripheralObserver = NotificationCenter.default.addObserver(forName: .didDiscoverPeripheral, object: nil, queue: OperationQueue.main, using: didDiscoverPeripheral)
+        didDiscoverPeripheralObserver = NotificationCenter.default.addObserver(forName: .didDiscoverPeripheral, object: nil, queue: .main, using: didDiscoverPeripheral)
         
         BleManager.sharedInstance.startScan()
     }
@@ -189,7 +189,7 @@ class CommandLine: NSObject {
             // Connect to peripheral and discover characteristics. This should not be needed but the Dfu library will fail if a previous characteristics discovery has not been done
             
             // Subscribe to didConnect notifications
-            didConnectToPeripheralObserver = NotificationCenter.default.addObserver(forName: .didConnectToPeripheral, object: nil, queue: OperationQueue.main, using: didConnectToPeripheral)
+            didConnectToPeripheralObserver = NotificationCenter.default.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: didConnectToPeripheral)
             
             // Connect to peripheral and wait
             BleManager.sharedInstance.connect(to: dfuPeripheral!)

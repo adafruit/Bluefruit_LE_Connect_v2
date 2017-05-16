@@ -100,9 +100,7 @@ class PlotterModeViewController: PeripheralModeViewController {
         else if let blePeripheral = blePeripheral {         //  Single peripheral mode
             colorForPeripheral[blePeripheral.identifier] = colors.first
             blePeripheral.uartEnable(uartRxHandler: uartDataManager.rxDataReceived) { [weak self] error in
-                guard let context = self else {
-                    return
-                }
+                guard let context = self else { return }
                 
                 DispatchQueue.main.async { [unowned context] in
                     guard error == nil else {
@@ -236,9 +234,7 @@ extension PlotterModeViewController: UartDataManagerDelegate {
         // DLog("uart rx read (hex): \(hexDescription(data: data))")
         // DLog("uart rx read (utf8): \(String(data: data, encoding: .utf8) ?? "<invalid>")")
         
-        guard let lastSeparatorRange = data.range(of: PlotterModeViewController.kLineSeparator, options: .backwards, in: nil) else {
-            return
-        }
+        guard let lastSeparatorRange = data.range(of: PlotterModeViewController.kLineSeparator, options: .backwards, in: nil) else { return }
         
         let subData = data.subdata(in: 0..<lastSeparatorRange.upperBound)
         if let dataString = String(data: subData, encoding: .utf8) {

@@ -29,24 +29,10 @@ class UartSelectPeripheralViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-
 }
 
 // MARK: - UITableViewDataSource
 extension UartSelectPeripheralViewController: UITableViewDataSource {
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
@@ -63,8 +49,10 @@ extension UartSelectPeripheralViewController: UITableViewDataSource {
         
         return cell!
     }
-    
-    
+}
+
+// MARK: - UITableViewDelegate
+extension UartSelectPeripheralViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 {
@@ -79,10 +67,7 @@ extension UartSelectPeripheralViewController: UITableViewDataSource {
             cell.textLabel?.textColor = colorForPeripheral?[peripheral.identifier] ?? UIColor.black
         }
     }
-}
-
-// MARK: - UITableViewDelegate
-extension UartSelectPeripheralViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 {

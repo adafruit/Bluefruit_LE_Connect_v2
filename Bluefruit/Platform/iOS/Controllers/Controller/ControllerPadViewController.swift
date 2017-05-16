@@ -20,6 +20,8 @@ class ControllerPadViewController: UIViewController {
     // UI
     @IBOutlet weak var directionsView: UIView!
     @IBOutlet weak var numbersView: UIView!
+    @IBOutlet weak var uartTextView: UITextView!
+    @IBOutlet weak var uartView: UIView!
     
     // Data
     weak var delegate: ControllerPadViewControllerDelegate?
@@ -27,6 +29,11 @@ class ControllerPadViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // UI
+        uartView.layer.cornerRadius = 4
+        uartView.layer.masksToBounds = true
+        
+        
         // Setup buttons targets
         for subview in directionsView.subviews {
             if let button = subview as? UIButton {
@@ -78,6 +85,20 @@ class ControllerPadViewController: UIViewController {
         button.addTarget(self, action: #selector(onTouchUp(_:)), for: .touchUpInside)
         button.addTarget(self, action: #selector(onTouchUp(_:)), for: .touchDragExit)
         button.addTarget(self, action: #selector(onTouchUp(_:)), for: .touchCancel)
+    }
+    
+    func setUartText(_ text: String) {
+        uartTextView.text = text
+        
+        // Scroll to bottom
+        let bottom = max(0, uartTextView.contentSize.height - uartTextView.bounds.size.height)
+        uartTextView.setContentOffset(CGPoint(x: 0, y: bottom), animated: true)
+        /*
+        let textLength = text.characters.count
+        if textLength > 0 {
+            let range = NSMakeRange(textLength - 1, 1)
+            uartTextView.scrollRangeToVisible(range)
+        }*/
     }
     
     // MARK: - Actions

@@ -9,25 +9,22 @@
 import UIKit
 
 // MARK: - UI Utils
-func attributedStringFromData(_ data: Data, useHexMode: Bool, color: Color, font: Font) -> NSAttributedString? {
-    var attributedString : NSAttributedString?
-    
-    let textAttributes: [String: AnyObject] = [NSFontAttributeName: font, NSForegroundColorAttributeName: color]
+func stringFromData(_ data: Data, useHexMode: Bool) -> String? {
+    var result: String?
     
     if useHexMode {
         let hexValue = hexDescription(data: data)
-        attributedString = NSAttributedString(string: hexValue, attributes: textAttributes)
+        result = hexValue
     }
     else {
         if let value = String(data: data, encoding: .ascii) as String? {
-            
             var representableValue: String
             
             if Preferences.uartShowInvisibleChars {
                 representableValue = ""
                 for scalar in value.unicodeScalars {
                     let isRepresentable = scalar.value>=32 && scalar.value<127
-                    //DLog("\(scalar.value). isVis: \( isRepresentable ? "true":"false" )")                
+                    //DLog("\(scalar.value). isVis: \( isRepresentable ? "true":"false" )")
                     representableValue.append(isRepresentable ? String(scalar):"�")
                 }
             }
@@ -35,9 +32,17 @@ func attributedStringFromData(_ data: Data, useHexMode: Bool, color: Color, font
                 representableValue = value
             }
             
-            attributedString = NSAttributedString(string: representableValue, attributes: textAttributes)
+            result = representableValue
         }
     }
+    return result
+}
+
+func attributedStringFromData(_ data: Data, useHexMode: Bool, color: Color, font: Font) -> NSAttributedString? {
     
+    guard let string = stringFromData(data, useHexMode: useHexMode) else { return nil }
+
+    let textAttributes: [String: AnyObject] = [NSFontAttributeName: font, NSForegroundColorAttributeName: color]
+    let attributedString = NSAttributedString(string: string, attributes: textAttributes)
     return attributedString
 }

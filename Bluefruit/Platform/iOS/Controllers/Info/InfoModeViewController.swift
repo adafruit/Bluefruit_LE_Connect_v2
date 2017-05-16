@@ -108,8 +108,8 @@ class InfoModeViewController: PeripheralModeViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            peripheralDidUpdateNameObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateName, object: nil, queue: OperationQueue.main, using: peripheralDidUpdateName)
-            peripheralDidModifyServicesObserver = notificationCenter.addObserver(forName: .peripheralDidModifyServices, object: nil, queue: OperationQueue.main, using: peripheralDidModifyServices)
+            peripheralDidUpdateNameObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateName, object: nil, queue: .main, using: peripheralDidUpdateName)
+            peripheralDidModifyServicesObserver = notificationCenter.addObserver(forName: .peripheralDidModifyServices, object: nil, queue: .main, using: peripheralDidModifyServices)
         }
         else {
             if let peripheralDidUpdateNameObserver = peripheralDidUpdateNameObserver {notificationCenter.removeObserver(peripheralDidUpdateNameObserver)}

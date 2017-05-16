@@ -239,7 +239,7 @@ class UartModeViewController: PeripheralModeViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            didUpdatePreferencesObserver = notificationCenter.addObserver(forName: .didUpdatePreferences, object: nil, queue: OperationQueue.main, using: didUpdatePreferences)
+            didUpdatePreferencesObserver = notificationCenter.addObserver(forName: .didUpdatePreferences, object: nil, queue: .main, using: didUpdatePreferences)
         }
         else {
             if let didUpdatePreferencesObserver = didUpdatePreferencesObserver {notificationCenter.removeObserver(didUpdatePreferencesObserver)}
@@ -603,9 +603,7 @@ extension UartModeViewController: UartPacketManagerDelegate {
     
     func onUartPacket(_ packet: UartPacket) {
         // Check that the view has been initialized before updating UI
-        guard isViewLoaded && view.window != nil &&  baseTableView != nil else {
-            return
-        }
+        guard isViewLoaded && view.window != nil &&  baseTableView != nil else { return }
         
         let displayMode: UartModeViewController.DisplayMode = Preferences.uartIsDisplayModeTimestamp ? .table : .text
 
@@ -616,7 +614,6 @@ extension UartModeViewController: UartPacketManagerDelegate {
 
         case .table:
             self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
-
         }
 
         updateBytesUI()
@@ -646,13 +643,13 @@ extension UartModeViewController: UartPacketManagerDelegate {
     }
     
     fileprivate func onUartPacketText(_ packet: UartPacket) {
-        if (Preferences.uartIsEchoEnabled || packet.mode == .rx) {
-            let color = colorForPacket(packet: packet)
-            let font = fontForPacket(packet: packet)
-            
-            if let attributedString = attributedStringFromData(packet.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: font) {
-                textCachedBuffer.append(attributedString)
-            }
+        guard Preferences.uartIsEchoEnabled || packet.mode == .rx else { return }
+        
+        let color = colorForPacket(packet: packet)
+        let font = fontForPacket(packet: packet)
+        
+        if let attributedString = attributedStringFromData(packet.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: font) {
+            textCachedBuffer.append(attributedString)
         }
     }
     
@@ -724,7 +721,6 @@ extension UartModeViewController: KeyboardPositionNotifierDelegate {
         keyboardSpacerHeightConstraint.constant = max(spacerHeight, 0)
     }
 }
-
 
 // MARK: - MqttManagerDelegate
 extension UartModeViewController: MqttManagerDelegate {

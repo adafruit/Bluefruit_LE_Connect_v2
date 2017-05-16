@@ -218,7 +218,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
             textField.placeholder = "Enter Length"
             textField.keyboardType = .numberPad
             
-            NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: OperationQueue.main) { (notification) in
+            NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: .main) { (notification) in
                 okAction.isEnabled = textField.text != ""
             }
         }

@@ -252,6 +252,7 @@
 		A9D234581E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234541E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift */; };
 		A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234591E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift */; };
 		A9D2345E1E3B49BA00DC0C99 /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */; };
+		A9E1371C1ECB2F11004C64E1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E1371B1ECB2F11004C64E1 /* MainViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -510,6 +511,7 @@
 		A9D234541E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingTabBarViewController.swift; sourceTree = "<group>"; };
 		A9D234591E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningAnimationViewController.swift; sourceTree = "<group>"; };
 		A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataDownloader.swift; sourceTree = "<group>"; };
+		A9E1371B1ECB2F11004C64E1 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		DE511F22E8F88E565DA29F57 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -687,6 +689,7 @@
 		A9286CB91E3A9383008E5F81 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A9E1371B1ECB2F11004C64E1 /* MainViewController.swift */,
 				A90C79721E40CB150076E8AD /* EmptyDetailsViewController.swift */,
 				A90C79731E40CB150076E8AD /* HelpViewController.swift */,
 				A9D234331E3AD70300DC0C99 /* Scanner */,
@@ -1712,6 +1715,7 @@
 				A907982A1E4349D6005470A5 /* ControllerComponentsTableViewCell.swift in Sources */,
 				A9286CB41E3A931E008E5F81 /* AppDelegate.swift in Sources */,
 				A983781C1E42A96400170319 /* DfuFilesPickerTableViewCell.swift in Sources */,
+				A9E1371C1ECB2F11004C64E1 /* MainViewController.swift in Sources */,
 				A9A6C2471E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift in Sources */,
 				A9286CCF1E3A9B22008E5F81 /* BleManager.swift in Sources */,
 				A983786F1E43422100170319 /* MqttSettingsStatusCell.swift in Sources */,

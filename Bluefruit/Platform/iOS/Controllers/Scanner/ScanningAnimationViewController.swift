@@ -48,7 +48,7 @@ class ScanningAnimationViewController: PeripheralModeViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            applicationWillEnterForegroundObserver = notificationCenter.addObserver(forName: .UIApplicationWillEnterForeground, object: nil, queue: OperationQueue.main, using: applicationWillEnterForeground)
+            applicationWillEnterForegroundObserver = notificationCenter.addObserver(forName: .UIApplicationWillEnterForeground, object: nil, queue: .main, using: applicationWillEnterForeground)
         }
         else {
             if let applicationWillEnterForegroundObserver = applicationWillEnterForegroundObserver {notificationCenter.removeObserver(applicationWillEnterForegroundObserver)}
