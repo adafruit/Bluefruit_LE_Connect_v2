@@ -1,17 +1,18 @@
 PODS:
-  - Charts (3.0.1):
-    - Charts/Core (= 3.0.1)
-  - Charts/Core (3.0.1)
+  - Charts (3.0.2):
+    - Charts/Core (= 3.0.2)
+  - Charts/Core (3.0.2)
   - CocoaAsyncSocket (7.5.1):
     - CocoaAsyncSocket/GCD (= 7.5.1)
   - CocoaAsyncSocket/GCD (7.5.1)
-  - CocoaMQTT (1.0.11):
+  - CocoaMQTT (1.0.16):
     - CocoaAsyncSocket (~> 7.5.1)
-    - MSWeakTimer (~> 1.1.0)
+    - SwiftyTimer (~> 2.0.0)
   - iOS-color-wheel (0.1)
-  - iOSDFULibrary (3.0.6):
-    - Zip (~> 0.6)
+  - iOSDFULibrary (3.1.0):
+    - Zip (~> 0.7)
   - MSWeakTimer (1.1.0)
+  - SwiftyTimer (2.0.0)
   - SwiftyXML (1.1.0)
   - UIColor+Hex (1.0.1):
     - UIColor+Hex/NSColor (= 1.0.1)
@@ -20,24 +21,26 @@ PODS:
   - Zip (0.7.0)
 
 DEPENDENCIES:
-  - Charts (~> 3.0.1)
-  - CocoaMQTT (~> 1.0.11)
+  - Charts (~> 3.0.2)
+  - CocoaMQTT (~> 1.0.16)
   - iOS-color-wheel
-  - iOSDFULibrary
+  - iOSDFULibrary (~> 3.1.0)
+  - MSWeakTimer (~> 1.1.0)
   - SwiftyXML (~> 1.1.0)
   - UIColor+Hex (~> 1.0.1)
 
 SPEC CHECKSUMS:
-  Charts: 0e84f4418e87dad6a9edde221fba37ebb51d3ba7
+  Charts: 236d6ccdd0ce6feae151d89e829a7397381a21fd
   CocoaAsyncSocket: e0a7e93b2ffa411592ff87e58524fbbc9b95b4fa
-  CocoaMQTT: 41a67eab08a8c8aa3c0be6f55ef2f4ace197f193
+  CocoaMQTT: c6a4df11a9a660842c5c39d741e9a6caa53444f8
   iOS-color-wheel: 60d441600bd62d58250a915719b84ed89283ce95
-  iOSDFULibrary: e9f7838a54eed84228669c7739d8d7ed98d3da31
+  iOSDFULibrary: 3b8a3014e3e4d1bec99b634b2f79fa856e28e556
   MSWeakTimer: 9426150f933b80ed3acf3f6d228e4b61f0e303c8
+  SwiftyTimer: 2efd74b060d69ad4f1496baf5bbedbe132125fcf
   SwiftyXML: 3054a135ca252ef97991cd264aa698a41ef854c3
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   Zip: e34513299ac38c0686d5b24504da7ce343799ab9
 
-PODFILE CHECKSUM: 0fefa7855f192a6111710aa95603416ea25e34d0
+PODFILE CHECKSUM: e967be439d6f7234b7101eac11099f20b9a70a4a
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.2.1

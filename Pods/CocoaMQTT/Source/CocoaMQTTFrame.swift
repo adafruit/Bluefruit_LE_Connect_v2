@@ -83,7 +83,7 @@ enum CocoaMQTTFrameType: UInt8 {
 /**
  * MQTT Frame
  */
-class CocoaMQTTFrame {
+open class CocoaMQTTFrame {
     /**
      * |--------------------------------------
      * | 7 6 5 4 |     3    |  2 1  | 0      |
@@ -286,7 +286,7 @@ class CocoaMQTTFrameConnect: CocoaMQTTFrame {
 /**
  * MQTT PUBLISH Frame
  */
-class CocoaMQTTFramePublish: CocoaMQTTFrame {
+open class CocoaMQTTFramePublish: CocoaMQTTFrame {
     var msgid: UInt16?
     var topic: String?
     var data: [UInt8]?
@@ -304,19 +304,34 @@ class CocoaMQTTFramePublish: CocoaMQTTFrame {
 
     func unpack() {
         // topic
+        if data!.count < 2 {
+            printWarning("Invalid format of rescived message.")
+            return
+        }
         var msb = data![0]
         var lsb = data![1]
         let len = UInt16(msb) << 8 + UInt16(lsb)
         var pos = 2 + Int(len)
-        topic = NSString(bytes: [UInt8](data![2...(pos-1)]), length: Int(len), encoding: String.Encoding.utf8.rawValue) as? String
+        
+        if data!.count < pos {
+            printWarning("Invalid format of rescived message.")
+            return
+        }
+        
+        topic = NSString(bytes: [UInt8](data![2...(pos-1)]), length: Int(len), encoding: String.Encoding.utf8.rawValue) as String?
 
         // msgid
         if qos == 0 {
             msgid = 0
         } else {
-            msb = data![pos]; lsb = data![pos+1]
-            msgid = UInt16(msb) << 8 + UInt16(lsb)
+            if data!.count < pos + 2 {
+                printWarning("Invalid format of rescived message.")
+                return
+            }
+            msb = data![pos]
+            lsb = data![pos+1]
             pos += 2
+            msgid = UInt16(msb) << 8 + UInt16(lsb)
         }
         
         // payload
@@ -397,5 +412,91 @@ class CocoaMQTTFrameUnsubscribe: CocoaMQTTFrame {
     override func pack() {
         variableHeader += msgid!.hlBytes
         payload += topic!.bytesWithLength
+    }
+}
+
+//MARK: - Buffer
+
+public protocol CocoaMQTTFrameBufferProtocol: class {
+    func buffer(_ buffer: CocoaMQTTFrameBuffer, sendPublishFrame frame: CocoaMQTTFramePublish)
+}
+
+open class CocoaMQTTFrameBuffer: NSObject {
+    
+    open weak var delegate: CocoaMQTTFrameBufferProtocol?
+    
+    // flow control
+    fileprivate var silos = [CocoaMQTTFramePublish]()
+    fileprivate var silosMaxNumber = 10
+    fileprivate var buffer = [CocoaMQTTFramePublish]()
+    fileprivate var bufferSize = 1000
+    //TODO: bufferCapacity
+    //fileprivate var bufferCapacity = 50.MB // unit: byte
+    
+    //
+    var isBufferEmpty: Bool { get { return buffer.count == 0 }}
+    var isBufferFull : Bool { get { return buffer.count > bufferSize }}
+    var isSilosFull  : Bool { get { return silos.count >= silosMaxNumber }}
+    
+    
+    // return false means the frame is rejected because of the buffer is full
+    open func add(_ frame: CocoaMQTTFramePublish) -> Bool {
+        guard !isBufferFull else {
+            printDebug("Buffer is full, message(\(frame.msgid!)) was abandoned.")
+            return false
+        }
+        
+        buffer.append(frame)
+        tryTransport()
+        return true
+    }
+    
+    // try transport a frame from buffer to silo
+    func tryTransport() {
+        if isBufferEmpty || isSilosFull { return }
+        
+        // take out the earliest frame
+        let frame = buffer.remove(at: 0)
+        
+        send(frame)
+        
+        Timer.after(60.seconds) {
+            let msgid = frame.msgid!
+            if self.removeFrameFromSilos(withMsgid: msgid) {
+                printDebug("timeout of frame:\(msgid)")
+            }
+        }
+        
+        // keep trying after a transport
+        if frame.qos == 0 {
+            self.tryTransport()
+        } else {
+            silos.append(frame)
+            if !isSilosFull {
+                self.tryTransport()
+            }
+        }
+    }
+    
+    func send(_ frame: CocoaMQTTFramePublish) {
+        delegate?.buffer(self, sendPublishFrame: frame)
+    }
+    
+    open func sendSuccess(withMsgid msgid: UInt16) {
+        _ = removeFrameFromSilos(withMsgid: msgid)
+        printDebug("sendMessageSuccess:\(msgid)")
+    }
+    
+    func removeFrameFromSilos(withMsgid msgid: UInt16) -> Bool {
+        var success = false
+        for (index, item) in silos.enumerated() {
+            if item.msgid == msgid {
+                success = true
+                silos.remove(at: index)
+                tryTransport()
+                break
+            }
+        }
+        return success
     }
 }

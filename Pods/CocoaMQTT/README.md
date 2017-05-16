@@ -1,18 +1,22 @@
 CocoaMQTT
 =========
+![PodVersion](https://img.shields.io/cocoapods/v/CocoaMQTT.svg)
+![Platforms](https://img.shields.io/cocoapods/p/CocoaMQTT.svg)
+![License](https://img.shields.io/cocoapods/l/BadgeSwift.svg?style=flat)
+![Swift version](https://img.shields.io/badge/swift-3.1-orange.svg)
 
-MQTT v3.1.1 client library for iOS and OS X written with Swift 3
+MQTT v3.1.1 client library for iOS/macOS/tvOS  written with Swift 3.1
 
 
 Build
 =====
 
-Build with Xcode 8.0 / Swift 3
+Build with Xcode 8.3.1 / Swift 3.1
 
 
 Installation
 =====
-###CocoaPods
+### CocoaPods
 Install using [CocoaPods](http://cocoapods.org) by adding this line to your Podfile:
 
 ````ruby
@@ -25,7 +29,7 @@ Then, run the following command:
 $ pod install
 ```
 
-###Carthage
+### Carthage
 Install using [Carthage](https://github.com/Carthage/Carthage) by adding the following lines to your Cartfile:
 
 ````
@@ -66,7 +70,7 @@ let mqtt = CocoaMQTT(clientID: clientID, host: "localhost", port: 1883)
 mqtt.username = "test"
 mqtt.password = "public"
 mqtt.willMessage = CocoaMQTTWill(topic: "/will", message: "dieout")
-mqtt.keepAlive = 90
+mqtt.keepAlive = 60
 mqtt.delegate = self
 mqtt.connect()
 
@@ -78,40 +82,25 @@ CocoaMQTT
 
 ```swift
 /**
- * Blueprint of the mqtt client
- **/
+ * Blueprint of the MQTT client
+ */
 protocol CocoaMQTTClient {
-    
     var host: String { get set }
-    
     var port: UInt16 { get set }
-    
-    var clientId: String { get }
-    
+    var clientID: String { get }
     var username: String? {get set}
-    
     var password: String? {get set}
-    
-    var cleansess: Bool {get set}
-    
+    var cleanSession: Bool {get set}
     var keepAlive: UInt16 {get set}
-    
     var willMessage: CocoaMQTTWill? {get set}
-    
+
     func connect() -> Bool
-    
-    func publish(topic: String, withString string: String, qos: CocoaMQTTQOS) -> UInt16
-    
-    func publish(message: CocoaMQTTMessage) -> UInt16
-    
-    func subscribe(topic: String, qos: CocoaMQTTQOS) -> UInt16
-    
-    func unsubscribe(topic: String) -> UInt16
-    
+    func publish(_ topic: String, withString string: String, qos: CocoaMQTTQOS, retained: Bool, dup: Bool) -> UInt16
+    func publish(_ message: CocoaMQTTMessage) -> UInt16
+    func subscribe(_ topic: String, qos: CocoaMQTTQOS) -> UInt16
+    func unsubscribe(_ topic: String) -> UInt16
     func ping()
-    
     func disconnect()
-    
 }
 ```
 
@@ -120,29 +109,22 @@ CocoaMQTTDelegate
 =================
 
 ```swift
-protocol CocoaMQTTDelegate {
-    
-    /**
-     * MQTT connected with server
-     */
-    func mqtt(mqtt: CocoaMQTT, didConnect host: String, port: Int)
-    
-    func mqtt(mqtt: CocoaMQTT, didConnectAck ack: CocoaMQTTConnAck)
-    
-    func mqtt(mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16)
-    
-    func mqtt(mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16 )
-    
-    func mqtt(mqtt: CocoaMQTT, didSubscribeTopic topic: String)
-    
-    func mqtt(mqtt: CocoaMQTT, didUnsubscribeTopic topic: String)
-    
-    func mqttDidPing(mqtt: CocoaMQTT)
-    
-    func mqttDidReceivePong(mqtt: CocoaMQTT)
-    
-    func mqttDidDisconnect(mqtt: CocoaMQTT, withError err: NSError)
-
+/**
+ * MQTT Delegate
+ */
+@objc public protocol CocoaMQTTDelegate {
+    /// MQTT connected with server
+    func mqtt(_ mqtt: CocoaMQTT, didConnect host: String, port: Int)
+    func mqtt(_ mqtt: CocoaMQTT, didConnectAck ack: CocoaMQTTConnAck)
+    func mqtt(_ mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16)
+    func mqtt(_ mqtt: CocoaMQTT, didPublishAck id: UInt16)
+    func mqtt(_ mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16 )
+    func mqtt(_ mqtt: CocoaMQTT, didSubscribeTopic topic: String)
+    func mqtt(_ mqtt: CocoaMQTT, didUnsubscribeTopic topic: String)
+    func mqttDidPing(_ mqtt: CocoaMQTT)
+    func mqttDidReceivePong(_ mqtt: CocoaMQTT)
+    func mqttDidDisconnect(_ mqtt: CocoaMQTT, withError err: Error?)
+    @objc optional func mqtt(_ mqtt: CocoaMQTT, didReceive trust: SecTrust, completionHandler: @escaping (Bool) -> Void)
 }
 ```
 
@@ -152,8 +134,8 @@ AsyncSocket and Timer
 
 These third-party functions are used:
 
-* [GCDAsyncSocket.h](https://github.com/robbiehanson/CocoaAsyncSocket)
-* [MSWeakTimer.h](https://github.com/mindsnacks/MSWeakTimer)
+* [GCDAsyncSocket](https://github.com/robbiehanson/CocoaAsyncSocket)
+* [SwiftyTimer](https://github.com/radex/SwiftyTimer)
 
 
 LICENSE
@@ -170,7 +152,9 @@ MIT License (see `LICENSE`)
 Author
 ======
 
-Feng Lee <feng@emqtt.io>
+- Feng Lee <feng@emqtt.io>
+- CrazyWisdom <zh.whong@gmail.com>
+- Alex Yu" <alexyu.dc@gmail.com>
 
 
 Twitter

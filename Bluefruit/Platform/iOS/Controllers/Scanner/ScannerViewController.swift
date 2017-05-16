@@ -608,7 +608,7 @@ extension ScannerViewController: UITableViewDataSource {
 
         let isUartCapable = peripheral.isUartAdvertised()
         peripheralCell.subtitleLabel.text = isUartCapable ? localizationManager.localizedString("peripherallist_uartavailable") : nil
-        
+
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
         
         let showConnect: Bool
