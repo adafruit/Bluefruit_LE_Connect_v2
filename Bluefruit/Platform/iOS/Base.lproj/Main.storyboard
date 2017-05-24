@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -22,7 +22,7 @@
         <scene sceneID="pY4-Hu-kfo">
             <objects>
                 <navigationController id="RMx-3f-FxP" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
+                    <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" id="Pmd-2v-anx">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -39,7 +39,7 @@
             <objects>
                 <navigationController storyboardIdentifier="AboutNavigationController" id="pD6-wy-qnh" sceneMemberID="viewController">
                     <value key="contentSizeForViewInPopover" type="size" width="500" height="600"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Mhy-AN-UGA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Mhy-AN-UGA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2399,7 +2399,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I5f-Af-Tpb">
-                                <rect key="frame" x="16" y="599" width="343" height="48"/>
+                                <rect key="frame" x="16" y="84" width="343" height="48"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="003-Jl-LDe">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="48"/>
@@ -2423,16 +2423,18 @@
                         <color key="backgroundColor" red="0.20874811460000001" green="0.20874811460000001" blue="0.20874811460000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="QJP-ax-g0P" firstAttribute="width" secondItem="9OU-bu-Mnv" secondAttribute="width" id="29C-e5-1Sk"/>
-                            <constraint firstItem="9OU-bu-Mnv" firstAttribute="top" relation="greaterThanOrEqual" secondItem="C5p-u2-sYI" secondAttribute="bottom" constant="20" id="6tK-H9-S2c"/>
                             <constraint firstItem="QJP-ax-g0P" firstAttribute="height" secondItem="9OU-bu-Mnv" secondAttribute="height" id="CBk-Tv-Ocs"/>
+                            <constraint firstItem="Kte-Js-8xd" firstAttribute="top" relation="greaterThanOrEqual" secondItem="9OU-bu-Mnv" secondAttribute="bottom" constant="20" id="DRn-cT-GjM"/>
+                            <constraint firstItem="I5f-Af-Tpb" firstAttribute="leading" secondItem="CzM-bS-JGy" secondAttribute="leadingMargin" id="HfR-hk-fI1"/>
                             <constraint firstItem="QJP-ax-g0P" firstAttribute="centerY" secondItem="9OU-bu-Mnv" secondAttribute="centerY" id="LdC-Ae-mIV"/>
-                            <constraint firstItem="Kte-Js-8xd" firstAttribute="top" secondItem="I5f-Af-Tpb" secondAttribute="bottom" constant="20" id="RUJ-d6-ETA"/>
                             <constraint firstItem="9OU-bu-Mnv" firstAttribute="width" secondItem="CzM-bS-JGy" secondAttribute="width" multiplier="0.38" priority="760" id="Ufz-tv-7hb"/>
                             <constraint firstItem="9OU-bu-Mnv" firstAttribute="leading" secondItem="CzM-bS-JGy" secondAttribute="leadingMargin" constant="15" id="ZUO-wu-BaE"/>
                             <constraint firstItem="I5f-Af-Tpb" firstAttribute="leading" secondItem="CzM-bS-JGy" secondAttribute="leadingMargin" id="gMK-dg-dbm"/>
-                            <constraint firstItem="I5f-Af-Tpb" firstAttribute="top" relation="greaterThanOrEqual" secondItem="9OU-bu-Mnv" secondAttribute="bottom" constant="20" id="jY0-BO-igN"/>
+                            <constraint firstItem="QJP-ax-g0P" firstAttribute="top" relation="greaterThanOrEqual" secondItem="I5f-Af-Tpb" secondAttribute="bottom" constant="20" id="hAI-LE-ciY"/>
+                            <constraint firstItem="I5f-Af-Tpb" firstAttribute="top" secondItem="C5p-u2-sYI" secondAttribute="bottom" constant="20" id="j08-ap-oCB"/>
                             <constraint firstItem="9OU-bu-Mnv" firstAttribute="centerY" secondItem="CzM-bS-JGy" secondAttribute="centerY" priority="750" id="r5t-vZ-5Re"/>
                             <constraint firstAttribute="trailingMargin" secondItem="QJP-ax-g0P" secondAttribute="trailing" constant="15" id="sP5-v4-21F"/>
+                            <constraint firstItem="I5f-Af-Tpb" firstAttribute="trailing" secondItem="CzM-bS-JGy" secondAttribute="trailingMargin" id="tAv-rE-OgV"/>
                             <constraint firstAttribute="trailingMargin" secondItem="I5f-Af-Tpb" secondAttribute="trailing" id="wrV-WB-HZY"/>
                         </constraints>
                     </view>
@@ -2819,7 +2821,7 @@
         <scene sceneID="pA4-S0-V5F">
             <objects>
                 <navigationController id="I0M-cK-a98" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" id="PtM-vB-z0U">
+                    <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" id="PtM-vB-z0U">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

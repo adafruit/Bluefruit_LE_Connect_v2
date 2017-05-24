@@ -88,7 +88,14 @@ class ControllerPadViewController: UIViewController {
     }
     
     func setUartText(_ text: String) {
-        uartTextView.text = text
+        
+        // Remove the last character if is a newline character
+        let lastCharacter = text.characters.last
+        let shouldRemoveTrailingNewline = lastCharacter == "\n" || lastCharacter == "\r" || lastCharacter == "\r\n"
+        let formattedText = shouldRemoveTrailingNewline ? text.substring(to: text.index(before: text.endIndex)) : text
+        
+        //
+        uartTextView.text = formattedText
         
         // Scroll to bottom
         let bottom = max(0, uartTextView.contentSize.height - uartTextView.bounds.size.height)
