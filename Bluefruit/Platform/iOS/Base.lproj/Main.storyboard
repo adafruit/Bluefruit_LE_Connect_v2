@@ -3143,6 +3143,7 @@
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
                                             <action selector="onFilterNameChanged:" destination="DSy-Yb-eRw" eventType="editingChanged" id="RJ4-HP-5xb"/>
+                                            <outlet property="delegate" destination="DSy-Yb-eRw" id="SSD-s5-NAt"/>
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rUg-DE-Icb">
@@ -3970,7 +3971,7 @@
         <image name="tab_info_icon" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="TmT-VI-Hyr"/>
+        <segue reference="qyy-E6-KXR"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.088944101233392275" green="0.57494231631791248" blue="0.99607843137254903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
