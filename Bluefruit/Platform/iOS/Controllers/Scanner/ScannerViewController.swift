@@ -107,13 +107,16 @@ class ScannerViewController: UIViewController {
         // Ble Notifications
         registerNotifications(enabled: true)
         
+        let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
         
-        // If only connected to 1 peripheral and coming back to this
-        let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
-        if connectedPeripherals.count == 1, let peripheral = connectedPeripherals.first {
-            DLog("Disconnect form previously connected peripheral")
-            // Disconnect from peripheral
-            BleManager.sharedInstance.disconnect(from: peripheral)
+        if isFullScreen {
+            // If only connected to 1 peripheral and coming back to this
+            let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
+            if connectedPeripherals.count == 1, let peripheral = connectedPeripherals.first {
+                DLog("Disconnect from previously connected peripheral")
+                // Disconnect from peripheral
+                BleManager.sharedInstance.disconnect(from: peripheral)
+            }
         }
         
         // Start scannning

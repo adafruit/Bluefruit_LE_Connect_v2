@@ -41,7 +41,6 @@ class ScanningAnimationViewController: PeripheralModeViewController {
         registerNotifications(enabled: false)
     }
     
-    
     // MARK: - BLE Notifications
     private weak var applicationWillEnterForegroundObserver: NSObjectProtocol?
     

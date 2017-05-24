@@ -1,5 +1,5 @@
 //
-//  MainViewController.swift
+//  MainSplitViewController.swift
 //  Bluefruit
 //
 //  Created by Antonio García on 16/05/2017.
@@ -9,13 +9,25 @@
 import UIKit
 
 
-class MainViewController: UISplitViewController {
+class MainSplitViewController: UISplitViewController {
 
+    // Data
+    fileprivate var splitDividerCover = UIView()
     private weak var didDisconnectFromPeripheralObserver: NSObjectProtocol?
 
+    
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Set UISplitViewController delegate
+        self.delegate = self
+        
+        // Hack to hide the white split divider
+        self.view.backgroundColor = UIColor.darkGray
+        splitDividerCover.backgroundColor = UIColor.darkGray
+        self.view.addSubview(splitDividerCover)
+        
         // Disconnect detection should work even when the viewcontroller is not shown
         didDisconnectFromPeripheralObserver = NotificationCenter.default.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: didDisconnectFromPeripheral)
     }
@@ -24,11 +36,18 @@ class MainViewController: UISplitViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-       
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Update splitDividerCover
+         splitViewController(self, willChangeTo: self.displayMode)
+    }
+    
     deinit {
         if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {NotificationCenter.default.removeObserver(didDisconnectFromPeripheralObserver)}
-
     }
+    
 
     fileprivate func didDisconnectFromPeripheral(notification: Notification) {
         DLog("main: disconnection")
@@ -65,6 +84,30 @@ class MainViewController: UISplitViewController {
         }
         else {
             DLog("disconnection detected but cannot go to periperalList because there is a presentedViewController on screen")
+        }
+    }
+}
+
+// MARK: - UISplitViewControllerDelegate
+extension MainSplitViewController: UISplitViewControllerDelegate {
+    
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        
+        let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
+        return connectedPeripherals.isEmpty
+    }
+    
+    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
+        // Hack to hide splitdivider cover
+        let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
+        let isCoverHidden = isFullScreen || displayMode != .allVisible
+        splitDividerCover.isHidden = isCoverHidden
+        //        DLog("cover hidden: \(isCoverHidden)")
+        if !isCoverHidden {
+            let masterViewWidth = svc.primaryColumnWidth
+            splitDividerCover.frame = CGRect(x: masterViewWidth, y: 0, width: 1, height: svc.view.bounds.size.height)
+            
+            //            DLog("cover frame: \(splitDividerCover.frame)")
         }
     }
 }

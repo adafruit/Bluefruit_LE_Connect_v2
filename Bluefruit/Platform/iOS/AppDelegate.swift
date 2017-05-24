@@ -13,8 +13,7 @@ import WatchConnectivity
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    fileprivate var splitDividerCover = UIView()
-
+ 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
   
         // Register default preferences
@@ -27,22 +26,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Check if there is any update to the fimware database
         FirmwareUpdater.refreshSoftwareUpdatesDatabase(url: Preferences.updateServerUrl, completion: nil)
         
-        // Setup SpliView
-        let splitViewController = self.window!.rootViewController as! UISplitViewController
-        splitViewController.delegate = self
-        
         // Style
         let navigationBarAppearance = UINavigationBar.appearance()
         navigationBarAppearance.barTintColor = UIColor.black
         navigationBarAppearance.isTranslucent = true
         navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
 
-        // Hack to hide the white split divider
-        splitViewController.view.backgroundColor = UIColor.darkGray
-        splitDividerCover.backgroundColor = UIColor.darkGray
-        splitViewController.view.addSubview(splitDividerCover)
-        self.splitViewController(splitViewController, willChangeTo: splitViewController.displayMode)
-        
+              
         // Watch Session
         WatchSessionManager.sharedInstance.session?.sendMessage(["isActive": true], replyHandler: nil, errorHandler: nil)
 
@@ -76,30 +66,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
 }
-
-// MARK: - UISplitViewControllerDelegate
-extension AppDelegate: UISplitViewControllerDelegate {
-
-    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
-        
-        let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
-        return connectedPeripherals.isEmpty
-    }
-    
-    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
-        // Hack to hide splitdivider cover
-        let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
-        let isCoverHidden = isFullScreen || displayMode != .allVisible
-        splitDividerCover.isHidden = isCoverHidden
-//        DLog("cover hidden: \(isCoverHidden)")
-        if !isCoverHidden {
-            let masterViewWidth = svc.primaryColumnWidth
-            splitDividerCover.frame = CGRect(x: masterViewWidth, y: 0, width: 1, height: svc.view.bounds.size.height)
-//            DLog("cover frame: \(splitDividerCover.frame)")
-        }
-    }
-}
-
 
 // MARK: - WCSessionDelegate
 extension AppDelegate: WCSessionDelegate {

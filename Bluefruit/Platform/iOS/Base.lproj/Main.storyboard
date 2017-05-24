@@ -22,7 +22,7 @@
         <scene sceneID="pY4-Hu-kfo">
             <objects>
                 <navigationController id="RMx-3f-FxP" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" id="Pmd-2v-anx">
+                    <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -39,7 +39,7 @@
             <objects>
                 <navigationController storyboardIdentifier="AboutNavigationController" id="pD6-wy-qnh" sceneMemberID="viewController">
                     <value key="contentSizeForViewInPopover" type="size" width="500" height="600"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Mhy-AN-UGA">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Mhy-AN-UGA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2821,7 +2821,7 @@
         <scene sceneID="pA4-S0-V5F">
             <objects>
                 <navigationController id="I0M-cK-a98" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" id="PtM-vB-z0U">
+                    <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" id="PtM-vB-z0U">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3060,10 +3060,10 @@
             </objects>
             <point key="canvasLocation" x="2046" y="-1496"/>
         </scene>
-        <!--Main View Controller-->
+        <!--Main Split View Controller-->
         <scene sceneID="Nki-YV-4Qg">
             <objects>
-                <splitViewController id="H1p-Uh-vWS" customClass="MainViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <splitViewController id="H1p-Uh-vWS" customClass="MainSplitViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <connections>
                         <segue destination="RMx-3f-FxP" kind="relationship" relationship="masterViewController" id="BlO-5A-QYV"/>
@@ -3971,7 +3971,7 @@
         <image name="tab_info_icon" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="qyy-E6-KXR"/>
+        <segue reference="TmT-VI-Hyr"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.088944101233392275" green="0.57494231631791248" blue="0.99607843137254903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
