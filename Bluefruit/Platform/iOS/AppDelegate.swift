@@ -31,11 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBarAppearance.barTintColor = UIColor.black
         navigationBarAppearance.isTranslucent = true
         navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-
               
         // Watch Session
         WatchSessionManager.sharedInstance.session?.sendMessage(["isActive": true], replyHandler: nil, errorHandler: nil)
-
         
         return true
     }

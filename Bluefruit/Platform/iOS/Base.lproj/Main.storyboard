@@ -523,7 +523,7 @@
                                                 </connections>
                                             </segmentedControl>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hcy-52-jZX">
-                                                <rect key="frame" x="659" y="12" width="45" height="27"/>
+                                                <rect key="frame" x="661" y="12" width="45" height="27"/>
                                                 <inset key="contentEdgeInsets" minX="13" minY="0.0" maxX="13" maxY="0.0"/>
                                                 <state key="normal" image="action_icon"/>
                                                 <connections>
@@ -545,7 +545,7 @@
                                             <constraint firstItem="Hcy-52-jZX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ska-Q4-Rud" secondAttribute="trailing" constant="8" id="5CP-Qm-OpK"/>
                                             <constraint firstItem="s8o-9Z-gCo" firstAttribute="centerY" secondItem="Qn4-jq-Ibb" secondAttribute="centerY" id="DRk-0R-qRN"/>
                                             <constraint firstItem="s8o-9Z-gCo" firstAttribute="leading" secondItem="Qn4-jq-Ibb" secondAttribute="leading" id="EA2-qr-oly"/>
-                                            <constraint firstItem="XhR-ff-hxR" firstAttribute="leading" secondItem="Hcy-52-jZX" secondAttribute="trailing" constant="12" id="GiP-zb-bgi"/>
+                                            <constraint firstItem="XhR-ff-hxR" firstAttribute="leading" secondItem="Hcy-52-jZX" secondAttribute="trailing" constant="10" id="GiP-zb-bgi"/>
                                             <constraint firstAttribute="bottom" secondItem="rLh-Ko-VDk" secondAttribute="bottom" priority="999" constant="5" id="RJC-MD-fSu"/>
                                             <constraint firstItem="XhR-ff-hxR" firstAttribute="centerY" secondItem="Qn4-jq-Ibb" secondAttribute="centerY" id="czc-pd-X1f"/>
                                             <constraint firstAttribute="trailing" secondItem="XhR-ff-hxR" secondAttribute="trailing" id="eJG-FQ-Fd6"/>
@@ -2399,15 +2399,15 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I5f-Af-Tpb">
-                                <rect key="frame" x="16" y="84" width="343" height="48"/>
+                                <rect key="frame" x="16" y="84" width="343" height="50"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="003-Jl-LDe">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="48"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="50"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="48" id="rY5-LZ-XXL"/>
+                                            <constraint firstAttribute="height" constant="50" id="rY5-LZ-XXL"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="CourierNewPS-BoldMT" family="Courier New" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>

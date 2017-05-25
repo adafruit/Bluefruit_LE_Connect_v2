@@ -15,7 +15,6 @@ class MainSplitViewController: UISplitViewController {
     fileprivate var splitDividerCover = UIView()
     private weak var didDisconnectFromPeripheralObserver: NSObjectProtocol?
 
-    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +48,7 @@ class MainSplitViewController: UISplitViewController {
     }
 
     override var traitCollection: UITraitCollection {
-        // Force iphone plus to behave like an standard iphone (to avoid disconnection problems when rotating). If removed check that "ScannerViewController -> viewWillAppear -> autodisconnection when only 1 connected peripheral" won't force a disconnect when rotating the device
+        // Force iphone plus to behave like an standard iphone (to avoid disconnection problems when rotating). If removed check that "ScannerViewController -> viewWillAppear -> autodisconnection when only 1 connected peripheral" won't force an disconnect incorrectly
         if UI_USER_INTERFACE_IDIOM() == .pad {
             return super.traitCollection
         } else {
@@ -113,12 +112,9 @@ extension MainSplitViewController: UISplitViewControllerDelegate {
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
         let isCoverHidden = isFullScreen || displayMode != .allVisible
         splitDividerCover.isHidden = isCoverHidden
-        //        DLog("cover hidden: \(isCoverHidden)")
         if !isCoverHidden {
             let masterViewWidth = svc.primaryColumnWidth
             splitDividerCover.frame = CGRect(x: masterViewWidth, y: 0, width: 1, height: svc.view.bounds.size.height)
-            
-            //            DLog("cover frame: \(splitDividerCover.frame)")
         }
     }
 }

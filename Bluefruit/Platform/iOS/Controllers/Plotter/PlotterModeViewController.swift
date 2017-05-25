@@ -239,7 +239,7 @@ extension PlotterModeViewController: UartDataManagerDelegate {
         let subData = data.subdata(in: 0..<lastSeparatorRange.upperBound)
         if let dataString = String(data: subData, encoding: .utf8) {
             
-            let linesStrings = dataString.components(separatedBy: "\n")
+            let linesStrings = dataString.replacingOccurrences(of: "\r", with: "").components(separatedBy: "\n")
             for lineString in linesStrings {
                 
                 let currentTimestamp = CFAbsoluteTimeGetCurrent() - originTimestamp

@@ -96,7 +96,7 @@ class UartModeViewController: PeripheralModeViewController {
         dataModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_dataMode_hex"), forSegmentAt: 1)
         
         // Init options layout
-        if traitCollection.userInterfaceIdiom == .pad {            // iPad
+        if UI_USER_INTERFACE_IDIOM() == .pad { //traitCollection.userInterfaceIdiom == .pad {            // iPad
             self.view.removeConstraint(statsLabeliPhoneLeadingConstraint)
             
             // Resize input UISwitch controls
@@ -119,7 +119,7 @@ class UartModeViewController: PeripheralModeViewController {
             // Mqtt init
             mqttBarButtonItemImageView = UIImageView(image: UIImage(named: "mqtt_disconnected")!.tintWithColor(self.view.tintColor))      // use a uiimageview as custom barbuttonitem to allow frame animations
             mqttBarButtonItemImageView!.tintColor = self.view.tintColor
-            mqttBarButtonItemImageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(UartModeViewController.onClickMqtt)))
+            mqttBarButtonItemImageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onClickMqtt)))
             
             let mqttManager = MqttManager.sharedInstance
             if MqttSettings.sharedInstance.isConnected {
@@ -131,12 +131,12 @@ class UartModeViewController: PeripheralModeViewController {
         // Init Uart
         uartData = UartPacketManager(delegate: self, isPacketCacheEnabled: true, isMqttEnabled: true)
     }
-
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         // Hide top controls on iPhone
-         if traitCollection.userInterfaceIdiom == .phone {
+        if UI_USER_INTERFACE_IDIOM() == .phone {// traitCollection.userInterfaceIdiom == .phone {
             controlsView.isHidden = true
         }
     }
@@ -146,10 +146,10 @@ class UartModeViewController: PeripheralModeViewController {
         
         registerNotifications(enabled: true)
         
-        // Update the navgation bar items
-        if var rightButtonItems = navigationController?.navigationItem.rightBarButtonItems, rightButtonItems.count == 2 {
+        // Update the navigation bar items
+        if var rightButtonItems = parent?.navigationItem.rightBarButtonItems, rightButtonItems.count == 2 {
             
-            if traitCollection.userInterfaceIdiom == .pad {
+            if UI_USER_INTERFACE_IDIOM() == .pad { // traitCollection.userInterfaceIdiom == .pad {
                 // Remove more item
                 rightButtonItems.remove(at: 0)
                 
@@ -167,15 +167,12 @@ class UartModeViewController: PeripheralModeViewController {
                 }
             }
             
-             navigationController!.navigationItem.rightBarButtonItems = rightButtonItems
+             parent?.navigationItem.rightBarButtonItems = rightButtonItems
         }
         
         // UI
         reloadDataUI()
-        showEolSwitch.isOn = Preferences.uartIsAutomaticEolEnabled
-        addEolSwitch.isOn = Preferences.uartIsEchoEnabled
-        displayModeSegmentedControl.selectedSegmentIndex = Preferences.uartIsDisplayModeTimestamp ? 0:1
-        dataModeSegmentedControl.selectedSegmentIndex = Preferences.uartIsInHexMode ? 1:0
+        reloadControlsUI()
 
         // Enable Uart
         setupUart()
@@ -355,6 +352,14 @@ class UartModeViewController: PeripheralModeViewController {
         updateBytesUI()
     }
     
+    fileprivate func reloadControlsUI() {
+        showEolSwitch.isOn = Preferences.uartIsAutomaticEolEnabled
+        addEolSwitch.isOn = Preferences.uartIsEchoEnabled
+        displayModeSegmentedControl.selectedSegmentIndex = Preferences.uartIsDisplayModeTimestamp ? 0:1
+        dataModeSegmentedControl.selectedSegmentIndex = Preferences.uartIsInHexMode ? 1:0
+
+    }
+    
     fileprivate func updateBytesUI() {
         let localizationManager = LocalizationManager.sharedInstance
         let sentBytesMessage = String(format: localizationManager.localizedString("uart_sentbytes_format"), arguments: [uartData.sentBytes])
@@ -413,6 +418,7 @@ class UartModeViewController: PeripheralModeViewController {
         }
         
         inputTextField.text = ""
+        inputTextField.resignFirstResponder()
     }
     
     @IBAction func onClickPeripheralToSend(_ sender: UIButton) {
@@ -424,6 +430,7 @@ class UartModeViewController: PeripheralModeViewController {
         if let popovoverController = viewController.popoverPresentationController
         {
             popovoverController.sourceView = sender
+            popovoverController.sourceRect = sender.bounds
             popovoverController.delegate = self
         
             // popovoverController.backgroundColor = UIColor.lightGray
@@ -478,6 +485,7 @@ class UartModeViewController: PeripheralModeViewController {
         alertController.addAction(cancelAction)
         
         alertController.popoverPresentationController?.sourceView = exportButton
+        alertController.popoverPresentationController?.sourceRect = exportButton.bounds
         self.present(alertController, animated: true, completion: nil)
     }
     
@@ -487,6 +495,8 @@ class UartModeViewController: PeripheralModeViewController {
             
             let activityViewController = UIActivityViewController(activityItems: [object], applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = exportButton
+            activityViewController.popoverPresentationController?.sourceRect = exportButton.bounds
+            
             
             navigationController?.present(activityViewController, animated: true, completion: nil)
         }
@@ -701,6 +711,7 @@ extension UartModeViewController: UIPopoverPresentationControllerDelegate {
     }
     
     func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        // Note: same delegate used for MQTT popover and Export popover
         
         // MQTT
         let mqttManager = MqttManager.sharedInstance
@@ -708,6 +719,7 @@ extension UartModeViewController: UIPopoverPresentationControllerDelegate {
             mqttManager.delegate = self
         }
         mqttUpdateStatusUI()
+        
     }
 }
 
