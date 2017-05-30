@@ -219,20 +219,20 @@ extension PinIOModeViewController: PinIoTableViewCellDelegate {
 
 extension PinIOModeViewController: PinIOModuleManagerDelegate {
     func onPinIODidEndPinQuery(isDefaultConfigurationAssumed: Bool) {
-        DispatchQueue.main.async { [unowned self] in
-            self.baseTableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.baseTableView.reloadData()
             
-            self.presentedViewController?.dismiss(animated: true, completion: { () -> Void in
+            self?.presentedViewController?.dismiss(animated: true, completion: { [weak self] () -> Void in
                 if isDefaultConfigurationAssumed {
-                    self.defaultCapabilitiesAssumedDialog()
+                    self?.defaultCapabilitiesAssumedDialog()
                 }
             })
         }
     }
     
     func onPinIODidReceivePinState() {
-        DispatchQueue.main.async { [unowned self] in
-            self.baseTableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.baseTableView.reloadData()
         }
     }
     

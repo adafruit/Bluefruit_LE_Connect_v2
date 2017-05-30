@@ -39,4 +39,3 @@ class CalibrationMenuViewController: PeripheralModeViewController {
         super.viewWillAppear(animated)
     }
 }
-

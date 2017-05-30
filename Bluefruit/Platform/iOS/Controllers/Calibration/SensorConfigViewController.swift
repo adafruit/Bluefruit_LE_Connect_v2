@@ -10,10 +10,19 @@ import UIKit
 
 class SensorConfigViewController: UIViewController {
     
+    @IBOutlet weak var baseTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // Remove extra separators
+        baseTableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 0))
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        preferredContentSize = baseTableView.contentSize
     }
 
     override func didReceiveMemoryWarning() {

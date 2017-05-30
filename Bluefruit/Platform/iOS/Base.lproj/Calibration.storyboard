@@ -977,7 +977,9 @@
                         <barButtonItem key="backBarButtonItem" title="Back" id="xha-zt-Ypl"/>
                         <barButtonItem key="rightBarButtonItem" title="Sensor Selection" id="pfI-1e-bxe">
                             <connections>
-                                <segue destination="oDp-j8-zr7" kind="presentation" id="Q6z-wH-2Xv"/>
+                                <segue destination="oDp-j8-zr7" kind="popoverPresentation" popoverAnchorBarButtonItem="pfI-1e-bxe" id="Q6z-wH-2Xv">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1024,13 +1026,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qjo-Eq-nuc">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="YH0-W4-5Of">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
                                 <connections>
                                     <outlet property="dataSource" destination="fhH-J9-Ykc" id="PL7-3D-q5u"/>
                                     <outlet property="delegate" destination="fhH-J9-Ykc" id="h2s-ma-cZ5"/>
@@ -1042,7 +1039,7 @@
                             <constraint firstItem="qjo-Eq-nuc" firstAttribute="leading" secondItem="2lM-du-ziK" secondAttribute="leading" id="Lae-gt-u5p"/>
                             <constraint firstItem="qjo-Eq-nuc" firstAttribute="top" secondItem="2lM-du-ziK" secondAttribute="top" id="NoV-9P-Ylb"/>
                             <constraint firstAttribute="trailing" secondItem="qjo-Eq-nuc" secondAttribute="trailing" id="Ovt-i6-rrM"/>
-                            <constraint firstItem="gsV-uq-w1b" firstAttribute="top" secondItem="qjo-Eq-nuc" secondAttribute="bottom" id="bxJ-MF-RBM"/>
+                            <constraint firstItem="gsV-uq-w1b" firstAttribute="top" secondItem="qjo-Eq-nuc" secondAttribute="bottom" id="rYa-kT-Uyr"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -1053,7 +1050,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="baseTableView" destination="qjo-Eq-nuc" id="vWI-Jp-z6v"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O3V-15-TXp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
