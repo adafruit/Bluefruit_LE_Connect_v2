@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>LSM303DLHC</string>
+		<key>UtPerCountX</key>
+		<real>0.09090909090909099</real>
+		<key>UtPerCountY</key>
+		<real>0.09090909090909099</real>
+		<key>UtPerCountZ</key>
+		<real>0.102040816326531</real>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>FXOS8700</string>
+		<key>UtPerCountX</key>
+		<real>0.1</real>
+		<key>UtPerCountY</key>
+		<real>0.1</real>
+		<key>UtPerCountZ</key>
+		<real>0.1</real>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>LSM9DS1</string>
+		<key>UtPerCountX</key>
+		<real>0.14</real>
+		<key>UtPerCountY</key>
+		<real>0.14</real>
+		<key>UtPerCountZ</key>
+		<real>0.1</real>
+	</dict>
+</array>
+</plist>

@@ -178,6 +178,7 @@ https://github.com/Inferis/UIColor-Hex
 ' ' - Space (0x20)
 ';' - Semicolon (0x3B)
 Horizontal Tab (0x09), '\\t' in code
+
 Each unique set of data samples must be terminated by a LINE FEED character (0x0A), which is usually represented as '\\n' in code.
 
 • Only numeric data should be sent over the BLE UART connection(s).";

@@ -30,12 +30,15 @@ class Preferences {
     
   //  fileprivate static let scanMultiConnectIsPanelOpenKey = "ScanMultiConnectIsPanelOpenKey"
     
+    // Firmware Updates
     fileprivate static let updateServerUrlKey = "UpdateServerUrl"
     fileprivate static let updateShowBetaVersionsKey = "UpdateShowBetaVersions"
     fileprivate static let updateIgnoredVersionKey = "UpdateIgnoredVersion"
 
+    // Info
     fileprivate static let infoRefreshOnLoadKey = "InfoRefreshOnLoad"
 
+    // Uart
     fileprivate static let uartReceivedDataColorKey = "UartReceivedDataColor"
     fileprivate static let uartSentDataColorKey = "UartSentDataColor"
     fileprivate static let uartIsDisplayModeTimestampKey = "UartIsDisplayModeTimestamp"
@@ -44,7 +47,32 @@ class Preferences {
     fileprivate static let uartIsAutomaticEolEnabledKey = "UartIsAutomaticEolEnabled"
     fileprivate static let uartShowInvisibleCharsKey = "UartShowInvisibleChars"
     
+    // Neopixel
     fileprivate static let neopixelIsSketchTooltipEnabledKey = "NeopixelIsSketchTooltipEnabledKey"
+    
+    
+    // Calibration
+    private static let magnetometerTypeKey = "MagnetometerType"
+    private static let accelerometerTypeKey = "AccelerometerType"
+    private static let gyroscopeTypeKey = "GyroscopeType"
+    
+    private static let magnetometerGapTargetKey = "MagnetometerGapTarget"
+    private static let magnetometerWobbleTargetKey = "MagnetometerWobbleTarget"
+    private static let magnetometerVarianceTargetKey = "MagnetometerVarianceTarget"
+    private static let magnetometerFitErrorTargetKey = "MagnetometerFitErrorTarget"
+    
+    private static let gyroReadingsCountKey = "GyroReadingsCount"
+    private static let gyroNoiseLevelKey = "GyroNoiseLevel"
+    private static let gyroUnitIdKey = "GyroUnitId"
+    
+    private static let visualizationXAxisInvertedKey = "VisualizationXAxisInverted"
+    private static let visualizationYAxisInvertedKey = "VisualizationYAxisInverted"
+    private static let visualizationZAxisInvertedKey = "VisualizationZAxisInverted"
+    private static let visualizationXAxisFlippedKey = "VisualizationXAxisFlipped"
+    private static let visualizationYAxisFlippedKey = "VisualizationYAxisFlipped"
+    private static let visualizationZAxisFlippedKey = "VisualizationZAxisFlipped"
+    private static let visualizationSwitchYZKey = "VisualizationSwitchYZ"
+
     
     // MARK: - General
     static var appInSystemStatusBar: Bool {
@@ -269,6 +297,169 @@ class Preferences {
             setBoolPreference(Preferences.neopixelIsSketchTooltipEnabledKey, newValue: newValue)
         }
     }
+    
+    // MARK: - Sensor Config
+    static var magnetometerType: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: Preferences.magnetometerTypeKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Preferences.magnetometerTypeKey)
+        }
+    }
+    
+    
+    static var accelerometerType: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: Preferences.accelerometerTypeKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Preferences.accelerometerTypeKey)
+        }
+    }
+    
+    
+    static var gyroscopeType: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: Preferences.gyroscopeTypeKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Preferences.gyroscopeTypeKey)
+        }
+    }
+    
+    
+    // MARK: - Magnetometer Calibration
+    static var magnetometerGapTarget: Float {
+        get {
+            return UserDefaults.standard.float(forKey: Preferences.magnetometerGapTargetKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Preferences.magnetometerGapTargetKey)
+        }
+    }
+    
+    static var magnetometerWobbleTarget: Float {
+        get {
+            return UserDefaults.standard.float(forKey: Preferences.magnetometerWobbleTargetKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Preferences.magnetometerWobbleTargetKey)
+        }
+    }
+    
+    static var magnetometerVarianceTarget: Float {
+        get {
+            return UserDefaults.standard.float(forKey: Preferences.magnetometerVarianceTargetKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Preferences.magnetometerVarianceTargetKey)
+        }
+    }
+    
+    static var magnetometerFitErrorTarget: Float {
+        get {
+            return UserDefaults.standard.float(forKey: Preferences.magnetometerFitErrorTargetKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Preferences.magnetometerFitErrorTargetKey)
+        }
+    }
+    
+    // MARK: - Gyroscope Calibration
+    
+    static var gyroReadingsCount: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: Preferences.gyroReadingsCountKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Preferences.gyroReadingsCountKey)
+        }
+    }
+    
+    static var gyroNoiseLevel: Float {
+        get {
+            return UserDefaults.standard.float(forKey: Preferences.gyroNoiseLevelKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Preferences.gyroNoiseLevelKey)
+        }
+    }
+    
+    static var gyroUnitId: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: Preferences.gyroUnitIdKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Preferences.gyroUnitIdKey)
+        }
+    }
+    
+    // MARK: - Visualization
+    
+    static var visualizationXAxisInverted: Bool {
+        get {
+            return getBoolPreference(Preferences.visualizationXAxisInvertedKey)
+        }
+        set {
+            setBoolPreference(Preferences.visualizationXAxisInvertedKey, newValue: newValue)
+        }
+    }
+    
+    static var visualizationYAxisInverted: Bool {
+        get {
+            return getBoolPreference(Preferences.visualizationYAxisInvertedKey)
+        }
+        set {
+            setBoolPreference( Preferences.visualizationYAxisInvertedKey, newValue: newValue)
+        }
+    }
+    
+    static var visualizationZAxisInverted: Bool {
+        get {
+            return getBoolPreference(Preferences.visualizationZAxisInvertedKey)
+        }
+        set {
+            setBoolPreference(Preferences.visualizationZAxisInvertedKey, newValue: newValue)
+        }
+    }
+    
+    static var visualizationXAxisFlipped: Bool {
+        get {
+            return getBoolPreference(Preferences.visualizationXAxisFlippedKey)
+        }
+        set {
+            setBoolPreference(Preferences.visualizationXAxisFlippedKey, newValue: newValue)
+        }
+    }
+    
+    static var visualizationYAxisFlipped: Bool {
+        get {
+            return getBoolPreference(Preferences.visualizationYAxisFlippedKey)
+        }
+        set {
+            setBoolPreference(Preferences.visualizationYAxisFlippedKey, newValue: newValue)
+        }
+    }
+    
+    static var visualizationZAxisFlipped: Bool {
+        get {
+            return getBoolPreference(Preferences.visualizationZAxisFlippedKey)
+        }
+        set {
+            setBoolPreference(Preferences.visualizationZAxisFlippedKey, newValue: newValue)
+        }
+    }
+    
+    static var visualizationSwitchYZ: Bool {
+        get {
+            return getBoolPreference(Preferences.visualizationSwitchYZKey)
+        }
+        set {
+            setBoolPreference(Preferences.visualizationSwitchYZKey, newValue: newValue)
+        }
+    }
+
     
     // MARK: - Common
     static func getBoolPreference(_ key: String) -> Bool {

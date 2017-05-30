@@ -13,7 +13,7 @@ target 'iOS' do
     platform :ios, '9.0'
     shared_pods
     pod 'UIColor+Hex', '~> 1.0.1'
-    pod 'iOS-color-wheel'
+    pod 'iOS-color-wheel', :inhibit_warnings => true
 end
 
 target 'macOS' do

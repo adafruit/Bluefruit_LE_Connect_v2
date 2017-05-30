@@ -25,6 +25,27 @@
 		A90C79741E40CB150076E8AD /* EmptyDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79721E40CB150076E8AD /* EmptyDetailsViewController.swift */; };
 		A90C79751E40CB150076E8AD /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79731E40CB150076E8AD /* HelpViewController.swift */; };
 		A90C79781E40CBFA0076E8AD /* InfoModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */; };
+		A91542681EDD7BC8007A34EA /* GyroscopePageContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542541EDD7BC8007A34EA /* GyroscopePageContentViewController.swift */; };
+		A91542691EDD7BC8007A34EA /* GyroscopePageDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542551EDD7BC8007A34EA /* GyroscopePageDataViewController.swift */; };
+		A915426A1EDD7BC8007A34EA /* GyroscopeParametersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542561EDD7BC8007A34EA /* GyroscopeParametersViewController.swift */; };
+		A915426B1EDD7BC8007A34EA /* GyroscopeProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542571EDD7BC8007A34EA /* GyroscopeProgressViewController.swift */; };
+		A915426C1EDD7BC9007A34EA /* GyroscopeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542581EDD7BC8007A34EA /* GyroscopeViewController.swift */; };
+		A915426D1EDD7BC9007A34EA /* MagnetometerPageContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915425A1EDD7BC8007A34EA /* MagnetometerPageContentViewController.swift */; };
+		A915426E1EDD7BC9007A34EA /* MagnetometerPageMatrixViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915425B1EDD7BC8007A34EA /* MagnetometerPageMatrixViewController.swift */; };
+		A915426F1EDD7BC9007A34EA /* MagnetometerParametersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915425C1EDD7BC8007A34EA /* MagnetometerParametersViewController.swift */; };
+		A91542701EDD7BC9007A34EA /* MagnetometerProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915425D1EDD7BC8007A34EA /* MagnetometerProgressViewController.swift */; };
+		A91542711EDD7BC9007A34EA /* MagnetometerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915425E1EDD7BC8007A34EA /* MagnetometerViewController.swift */; };
+		A91542721EDD7BC9007A34EA /* CalibrationMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915425F1EDD7BC8007A34EA /* CalibrationMenuViewController.swift */; };
+		A91542731EDD7BC9007A34EA /* PageContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542601EDD7BC8007A34EA /* PageContentViewController.swift */; };
+		A91542741EDD7BC9007A34EA /* SensorConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542611EDD7BC8007A34EA /* SensorConfigViewController.swift */; };
+		A91542751EDD7BC9007A34EA /* UartSamplerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542621EDD7BC8007A34EA /* UartSamplerViewController.swift */; };
+		A91542761EDD7BC9007A34EA /* UartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542631EDD7BC8007A34EA /* UartViewController.swift */; };
+		A91542771EDD7BC9007A34EA /* VisualizationParametersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542651EDD7BC8007A34EA /* VisualizationParametersViewController.swift */; };
+		A91542781EDD7BC9007A34EA /* VisualizationProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542661EDD7BC8007A34EA /* VisualizationProgressViewController.swift */; };
+		A91542791EDD7BC9007A34EA /* VisualizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542671EDD7BC8007A34EA /* VisualizationViewController.swift */; };
+		A915427B1EDD7C3F007A34EA /* StyledLinkedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */; };
+		A915427D1EDD7CE8007A34EA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427C1EDD7CE8007A34EA /* Config.swift */; };
+		A915427F1EDD8041007A34EA /* StyledAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427E1EDD8041007A34EA /* StyledAnimations.swift */; };
 		A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D4F1E4174F800DE90C6 /* KeyboardPositionNotifier.swift */; };
 		A91E7D5C1E4216ED00DE90C6 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D5A1E4216ED00DE90C6 /* UIImage+Color.swift */; };
 		A91E7D5D1E4216ED00DE90C6 /* UIImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D5B1E4216ED00DE90C6 /* UIImage+Tint.swift */; };
@@ -159,6 +180,22 @@
 		A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */; };
 		A9BAD2121E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */; };
 		A9BAD2131E3FC6CA0021DFA9 /* InfoModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2111E3FC6CA0021DFA9 /* InfoModeViewController.swift */; };
+		A9BB78DC1EDCEBFB004663DE /* Calibration.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78DA1EDCEBFB004663DE /* Calibration.storyboard */; };
+		A9BB78E21EDCEC65004663DE /* Calibration+Mahony.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78DE1EDCEC65004663DE /* Calibration+Mahony.swift */; };
+		A9BB78E31EDCEC65004663DE /* Calibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78DF1EDCEC65004663DE /* Calibration.swift */; };
+		A9BB78E41EDCEC65004663DE /* SensorParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78E01EDCEC65004663DE /* SensorParameters.swift */; };
+		A9BB78E51EDCEC65004663DE /* VectorMath+Calibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78E11EDCEC65004663DE /* VectorMath+Calibration.swift */; };
+		A9BB78EA1EDCEC99004663DE /* VectorMath+Quartz.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78E71EDCEC99004663DE /* VectorMath+Quartz.swift */; };
+		A9BB78EB1EDCEC99004663DE /* VectorMath+SceneKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78E81EDCEC99004663DE /* VectorMath+SceneKit.swift */; };
+		A9BB78EC1EDCEC99004663DE /* VectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78E91EDCEC99004663DE /* VectorMath.swift */; };
+		A9BB78F51EDCECDB004663DE /* AccelerometerParameters.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78EE1EDCECDB004663DE /* AccelerometerParameters.plist */; };
+		A9BB78F61EDCECDB004663DE /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78EF1EDCECDB004663DE /* DefaultPreferences.plist */; };
+		A9BB78F71EDCECDB004663DE /* gyroscope.scn in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78F01EDCECDB004663DE /* gyroscope.scn */; };
+		A9BB78F81EDCECDB004663DE /* GyroscopeParameters.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78F11EDCECDB004663DE /* GyroscopeParameters.plist */; };
+		A9BB78F91EDCECDB004663DE /* magnetometer.scn in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78F21EDCECDB004663DE /* magnetometer.scn */; };
+		A9BB78FA1EDCECDB004663DE /* MagnetometerParameters.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78F31EDCECDB004663DE /* MagnetometerParameters.plist */; };
+		A9BB78FB1EDCECDB004663DE /* visualization.scn in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78F41EDCECDB004663DE /* visualization.scn */; };
+		A9BB78FD1EDCEDDC004663DE /* MathUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78FC1EDCEDDC004663DE /* MathUtils.swift */; };
 		A9BCD56A1E4D2549003D1CEA /* PeripheralList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5681E4D2549003D1CEA /* PeripheralList.swift */; };
 		A9BCD56B1E4D2549003D1CEA /* PeripheralList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5681E4D2549003D1CEA /* PeripheralList.swift */; };
 		A9BCD56C1E4D2549003D1CEA /* RssiUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5691E4D2549003D1CEA /* RssiUI.swift */; };
@@ -327,6 +364,27 @@
 		A90C79721E40CB150076E8AD /* EmptyDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyDetailsViewController.swift; sourceTree = "<group>"; };
 		A90C79731E40CB150076E8AD /* HelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModuleManager.swift; sourceTree = "<group>"; };
+		A91542541EDD7BC8007A34EA /* GyroscopePageContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroscopePageContentViewController.swift; sourceTree = "<group>"; };
+		A91542551EDD7BC8007A34EA /* GyroscopePageDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroscopePageDataViewController.swift; sourceTree = "<group>"; };
+		A91542561EDD7BC8007A34EA /* GyroscopeParametersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroscopeParametersViewController.swift; sourceTree = "<group>"; };
+		A91542571EDD7BC8007A34EA /* GyroscopeProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroscopeProgressViewController.swift; sourceTree = "<group>"; };
+		A91542581EDD7BC8007A34EA /* GyroscopeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroscopeViewController.swift; sourceTree = "<group>"; };
+		A915425A1EDD7BC8007A34EA /* MagnetometerPageContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetometerPageContentViewController.swift; sourceTree = "<group>"; };
+		A915425B1EDD7BC8007A34EA /* MagnetometerPageMatrixViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetometerPageMatrixViewController.swift; sourceTree = "<group>"; };
+		A915425C1EDD7BC8007A34EA /* MagnetometerParametersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetometerParametersViewController.swift; sourceTree = "<group>"; };
+		A915425D1EDD7BC8007A34EA /* MagnetometerProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetometerProgressViewController.swift; sourceTree = "<group>"; };
+		A915425E1EDD7BC8007A34EA /* MagnetometerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MagnetometerViewController.swift; sourceTree = "<group>"; };
+		A915425F1EDD7BC8007A34EA /* CalibrationMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalibrationMenuViewController.swift; sourceTree = "<group>"; };
+		A91542601EDD7BC8007A34EA /* PageContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageContentViewController.swift; sourceTree = "<group>"; };
+		A91542611EDD7BC8007A34EA /* SensorConfigViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorConfigViewController.swift; sourceTree = "<group>"; };
+		A91542621EDD7BC8007A34EA /* UartSamplerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSamplerViewController.swift; sourceTree = "<group>"; };
+		A91542631EDD7BC8007A34EA /* UartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartViewController.swift; sourceTree = "<group>"; };
+		A91542651EDD7BC8007A34EA /* VisualizationParametersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationParametersViewController.swift; sourceTree = "<group>"; };
+		A91542661EDD7BC8007A34EA /* VisualizationProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationProgressViewController.swift; sourceTree = "<group>"; };
+		A91542671EDD7BC8007A34EA /* VisualizationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationViewController.swift; sourceTree = "<group>"; };
+		A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLinkedButton.swift; sourceTree = "<group>"; };
+		A915427C1EDD7CE8007A34EA /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		A915427E1EDD8041007A34EA /* StyledAnimations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledAnimations.swift; sourceTree = "<group>"; };
 		A91E7D4F1E4174F800DE90C6 /* KeyboardPositionNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardPositionNotifier.swift; sourceTree = "<group>"; };
 		A91E7D5A1E4216ED00DE90C6 /* UIImage+Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		A91E7D5B1E4216ED00DE90C6 /* UIImage+Tint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tint.swift"; sourceTree = "<group>"; };
@@ -456,6 +514,22 @@
 		A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoCharacteristicTableViewCell.swift; sourceTree = "<group>"; };
 		A9BAD2111E3FC6CA0021DFA9 /* InfoModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModeViewController.swift; sourceTree = "<group>"; };
+		A9BB78DB1EDCEBFB004663DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Calibration.storyboard; sourceTree = "<group>"; };
+		A9BB78DE1EDCEC65004663DE /* Calibration+Mahony.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Calibration+Mahony.swift"; sourceTree = "<group>"; };
+		A9BB78DF1EDCEC65004663DE /* Calibration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calibration.swift; sourceTree = "<group>"; };
+		A9BB78E01EDCEC65004663DE /* SensorParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorParameters.swift; sourceTree = "<group>"; };
+		A9BB78E11EDCEC65004663DE /* VectorMath+Calibration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VectorMath+Calibration.swift"; sourceTree = "<group>"; };
+		A9BB78E71EDCEC99004663DE /* VectorMath+Quartz.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VectorMath+Quartz.swift"; sourceTree = "<group>"; };
+		A9BB78E81EDCEC99004663DE /* VectorMath+SceneKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VectorMath+SceneKit.swift"; sourceTree = "<group>"; };
+		A9BB78E91EDCEC99004663DE /* VectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorMath.swift; sourceTree = "<group>"; };
+		A9BB78EE1EDCECDB004663DE /* AccelerometerParameters.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AccelerometerParameters.plist; sourceTree = "<group>"; };
+		A9BB78EF1EDCECDB004663DE /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
+		A9BB78F01EDCECDB004663DE /* gyroscope.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = gyroscope.scn; sourceTree = "<group>"; };
+		A9BB78F11EDCECDB004663DE /* GyroscopeParameters.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GyroscopeParameters.plist; sourceTree = "<group>"; };
+		A9BB78F21EDCECDB004663DE /* magnetometer.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = magnetometer.scn; sourceTree = "<group>"; };
+		A9BB78F31EDCECDB004663DE /* MagnetometerParameters.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MagnetometerParameters.plist; sourceTree = "<group>"; };
+		A9BB78F41EDCECDB004663DE /* visualization.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = visualization.scn; sourceTree = "<group>"; };
+		A9BB78FC1EDCEDDC004663DE /* MathUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathUtils.swift; sourceTree = "<group>"; };
 		A9BCD5681E4D2549003D1CEA /* PeripheralList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralList.swift; sourceTree = "<group>"; };
 		A9BCD5691E4D2549003D1CEA /* RssiUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RssiUI.swift; sourceTree = "<group>"; };
 		A9BCD56F1E4D25B3003D1CEA /* DfuUpdateProcess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuUpdateProcess.swift; sourceTree = "<group>"; };
@@ -624,6 +698,55 @@
 			path = Modules;
 			sourceTree = "<group>";
 		};
+		A91542521EDD7BC8007A34EA /* Calibration */ = {
+			isa = PBXGroup;
+			children = (
+				A91542531EDD7BC8007A34EA /* Gyroscope */,
+				A91542591EDD7BC8007A34EA /* Magnetometer */,
+				A915425F1EDD7BC8007A34EA /* CalibrationMenuViewController.swift */,
+				A91542601EDD7BC8007A34EA /* PageContentViewController.swift */,
+				A91542611EDD7BC8007A34EA /* SensorConfigViewController.swift */,
+				A91542621EDD7BC8007A34EA /* UartSamplerViewController.swift */,
+				A91542631EDD7BC8007A34EA /* UartViewController.swift */,
+				A91542641EDD7BC8007A34EA /* Visualization */,
+			);
+			path = Calibration;
+			sourceTree = "<group>";
+		};
+		A91542531EDD7BC8007A34EA /* Gyroscope */ = {
+			isa = PBXGroup;
+			children = (
+				A91542541EDD7BC8007A34EA /* GyroscopePageContentViewController.swift */,
+				A91542551EDD7BC8007A34EA /* GyroscopePageDataViewController.swift */,
+				A91542561EDD7BC8007A34EA /* GyroscopeParametersViewController.swift */,
+				A91542571EDD7BC8007A34EA /* GyroscopeProgressViewController.swift */,
+				A91542581EDD7BC8007A34EA /* GyroscopeViewController.swift */,
+			);
+			path = Gyroscope;
+			sourceTree = "<group>";
+		};
+		A91542591EDD7BC8007A34EA /* Magnetometer */ = {
+			isa = PBXGroup;
+			children = (
+				A915425A1EDD7BC8007A34EA /* MagnetometerPageContentViewController.swift */,
+				A915425B1EDD7BC8007A34EA /* MagnetometerPageMatrixViewController.swift */,
+				A915425C1EDD7BC8007A34EA /* MagnetometerParametersViewController.swift */,
+				A915425D1EDD7BC8007A34EA /* MagnetometerProgressViewController.swift */,
+				A915425E1EDD7BC8007A34EA /* MagnetometerViewController.swift */,
+			);
+			path = Magnetometer;
+			sourceTree = "<group>";
+		};
+		A91542641EDD7BC8007A34EA /* Visualization */ = {
+			isa = PBXGroup;
+			children = (
+				A91542651EDD7BC8007A34EA /* VisualizationParametersViewController.swift */,
+				A91542661EDD7BC8007A34EA /* VisualizationProgressViewController.swift */,
+				A91542671EDD7BC8007A34EA /* VisualizationViewController.swift */,
+			);
+			path = Visualization;
+			sourceTree = "<group>";
+		};
 		A9286C8D1E3A9216008E5F81 = {
 			isa = PBXGroup;
 			children = (
@@ -671,11 +794,13 @@
 		A9286CAC1E3A931E008E5F81 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				A915427C1EDD7CE8007A34EA /* Config.swift */,
 				A9286CAD1E3A931E008E5F81 /* AppDelegate.swift */,
 				A983780B1E422CBC00170319 /* Bluefruit-Bridging-Header.h */,
 				A9286CAE1E3A931E008E5F81 /* Assets.xcassets */,
 				A9286CAF1E3A931E008E5F81 /* LaunchScreen.storyboard */,
 				A9286CB11E3A931E008E5F81 /* Main.storyboard */,
+				A9BB78DA1EDCEBFB004663DE /* Calibration.storyboard */,
 				A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */,
 				A9286CB31E3A931E008E5F81 /* Info.plist */,
 				A9286CBD1E3A947F008E5F81 /* Bluefruit.entitlements */,
@@ -701,6 +826,7 @@
 				A90798391E43A4DA005470A5 /* PinIO */,
 				A98DE4061E456AFC00EEF4C8 /* NeoPixel */,
 				A98378151E42A96400170319 /* Dfu */,
+				A91542521EDD7BC8007A34EA /* Calibration */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -708,6 +834,8 @@
 		A9286CBA1E3A9383008E5F81 /* Style */ = {
 			isa = PBXGroup;
 			children = (
+				A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */,
+				A915427E1EDD8041007A34EA /* StyledAnimations.swift */,
 				A91E7D5A1E4216ED00DE90C6 /* UIImage+Color.swift */,
 				A91E7D5B1E4216ED00DE90C6 /* UIImage+Tint.swift */,
 				A9D2344C1E3AD97600DC0C99 /* StyleConfig.swift */,
@@ -737,6 +865,8 @@
 				A9BCD5841E4D2616003D1CEA /* DataFormatter.swift */,
 				A9BCD5851E4D2616003D1CEA /* HexColorConversions.swift */,
 				A9BCD5861E4D2616003D1CEA /* LocalizationManager.swift */,
+				A9BB78FC1EDCEDDC004663DE /* MathUtils.swift */,
+				A9BB78DD1EDCEC65004663DE /* Calibration */,
 				A90C79761E40CBFA0076E8AD /* Modules */,
 				A9BCD5871E4D2616003D1CEA /* Mqtt */,
 				A9286CBF1E3A9B22008E5F81 /* AdafruitKit */,
@@ -1072,6 +1202,7 @@
 		A98378021E422C4B00170319 /* External Tools */ = {
 			isa = PBXGroup;
 			children = (
+				A9BB78E61EDCEC99004663DE /* VectorMath */,
 				A98378031E422C4B00170319 /* NSObject+ENHThrottledReloading */,
 			);
 			path = "External Tools";
@@ -1187,6 +1318,41 @@
 			path = Info;
 			sourceTree = "<group>";
 		};
+		A9BB78DD1EDCEC65004663DE /* Calibration */ = {
+			isa = PBXGroup;
+			children = (
+				A9BB78DE1EDCEC65004663DE /* Calibration+Mahony.swift */,
+				A9BB78DF1EDCEC65004663DE /* Calibration.swift */,
+				A9BB78E01EDCEC65004663DE /* SensorParameters.swift */,
+				A9BB78E11EDCEC65004663DE /* VectorMath+Calibration.swift */,
+			);
+			path = Calibration;
+			sourceTree = "<group>";
+		};
+		A9BB78E61EDCEC99004663DE /* VectorMath */ = {
+			isa = PBXGroup;
+			children = (
+				A9BB78E71EDCEC99004663DE /* VectorMath+Quartz.swift */,
+				A9BB78E81EDCEC99004663DE /* VectorMath+SceneKit.swift */,
+				A9BB78E91EDCEC99004663DE /* VectorMath.swift */,
+			);
+			path = VectorMath;
+			sourceTree = "<group>";
+		};
+		A9BB78ED1EDCECDB004663DE /* Calibration */ = {
+			isa = PBXGroup;
+			children = (
+				A9BB78EE1EDCECDB004663DE /* AccelerometerParameters.plist */,
+				A9BB78EF1EDCECDB004663DE /* DefaultPreferences.plist */,
+				A9BB78F01EDCECDB004663DE /* gyroscope.scn */,
+				A9BB78F11EDCECDB004663DE /* GyroscopeParameters.plist */,
+				A9BB78F21EDCECDB004663DE /* magnetometer.scn */,
+				A9BB78F31EDCECDB004663DE /* MagnetometerParameters.plist */,
+				A9BB78F41EDCECDB004663DE /* visualization.scn */,
+			);
+			path = Calibration;
+			sourceTree = "<group>";
+		};
 		A9BCD5671E4D2549003D1CEA /* Scanner */ = {
 			isa = PBXGroup;
 			children = (
@@ -1290,6 +1456,7 @@
 		A9D234221E3AD64500DC0C99 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A9BB78ED1EDCECDB004663DE /* Calibration */,
 				A9D234231E3AD64500DC0C99 /* Credits.rtf */,
 				A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */,
 				A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */,
@@ -1494,14 +1661,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9286CB71E3A931E008E5F81 /* Main.storyboard in Resources */,
+				A9BB78DC1EDCEBFB004663DE /* Calibration.storyboard in Resources */,
 				A98DE42B1E45EB3900EEF4C8 /* NeopixelBoards.plist in Resources */,
 				A9D2342E1E3AD64500DC0C99 /* GattUUIDs.plist in Resources */,
+				A9BB78FA1EDCECDB004663DE /* MagnetometerParameters.plist in Resources */,
+				A9BB78FB1EDCECDB004663DE /* visualization.scn in Resources */,
+				A9BB78F81EDCECDB004663DE /* GyroscopeParameters.plist in Resources */,
 				A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */,
 				A9286CB51E3A931E008E5F81 /* Assets.xcassets in Resources */,
 				A98DE42D1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */,
 				A98DE42F1E45EB3900EEF4C8 /* NeopixelTypes.plist in Resources */,
 				A9286CB61E3A931E008E5F81 /* LaunchScreen.storyboard in Resources */,
+				A9BB78F91EDCECDB004663DE /* magnetometer.scn in Resources */,
 				A98DE4291E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */,
+				A9BB78F71EDCECDB004663DE /* gyroscope.scn in Resources */,
+				A9BB78F51EDCECDB004663DE /* AccelerometerParameters.plist in Resources */,
+				A9BB78F61EDCECDB004663DE /* DefaultPreferences.plist in Resources */,
 				A98DE4271E45EB3900EEF4C8 /* Localizable.strings in Resources */,
 				A9D2342C1E3AD64500DC0C99 /* Credits.rtf in Resources */,
 				A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */,
@@ -1646,9 +1821,11 @@
 				A9BCD56C1E4D2549003D1CEA /* RssiUI.swift in Sources */,
 				A94A21B01E417271006A5F33 /* UartSettingTableViewCell.swift in Sources */,
 				A91E7D5D1E4216ED00DE90C6 /* UIImage+Tint.swift in Sources */,
+				A91542761EDD7BC9007A34EA /* UartViewController.swift in Sources */,
 				A9BCD5901E4D2616003D1CEA /* HexColorConversions.swift in Sources */,
 				A983781D1E42A96400170319 /* DfuModeViewController.swift in Sources */,
 				A9286CD11E3A9B22008E5F81 /* BlePeripheral+Uart.swift in Sources */,
+				A91542731EDD7BC9007A34EA /* PageContentViewController.swift in Sources */,
 				A9BCD57E1E4D25E4003D1CEA /* UartDataExport.swift in Sources */,
 				A9286CD91E3A9B22008E5F81 /* DataConversions.swift in Sources */,
 				A983781B1E42A96400170319 /* DfuFilesPickerDialogViewController.swift in Sources */,
@@ -1656,19 +1833,27 @@
 				A9286CDA1E3A9B22008E5F81 /* LogHelper.swift in Sources */,
 				A9BCD57C1E4D25E4003D1CEA /* UartColors.swift in Sources */,
 				A98378671E4341C600170319 /* UartMqttSettingsViewController.swift in Sources */,
+				A915426A1EDD7BC8007A34EA /* GyroscopeParametersViewController.swift in Sources */,
+				A9BB78EC1EDCEC99004663DE /* VectorMath.swift in Sources */,
 				A9286CD71E3A9B22008E5F81 /* CommandQueue.swift in Sources */,
 				A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */,
 				A9D234561E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift in Sources */,
 				A907982C1E4349D6005470A5 /* ControllerPadViewController.swift in Sources */,
 				A94A21B11E417271006A5F33 /* UartTimetampTableViewCell.swift in Sources */,
 				A9286CD51E3A9B22008E5F81 /* UartDataManager.swift in Sources */,
+				A91542721EDD7BC9007A34EA /* CalibrationMenuViewController.swift in Sources */,
 				A9BCD6081E4D36DE003D1CEA /* ColorRGBInterfaceController.swift in Sources */,
 				A9286CD21E3A9B22008E5F81 /* BlePeripheral.swift in Sources */,
 				A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */,
+				A9BB78EA1EDCEC99004663DE /* VectorMath+Quartz.swift in Sources */,
 				A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */,
 				A9D2343A1E3AD70300DC0C99 /* FilterTextSettingsViewController.swift in Sources */,
+				A9BB78E51EDCEC65004663DE /* VectorMath+Calibration.swift in Sources */,
+				A91542751EDD7BC9007A34EA /* UartSamplerViewController.swift in Sources */,
 				A907983C1E43A4DA005470A5 /* PinIOModuleViewController.swift in Sources */,
 				A907983D1E43A4DA005470A5 /* PinIOTableViewCell.swift in Sources */,
+				A915427D1EDD7CE8007A34EA /* Config.swift in Sources */,
+				A91542701EDD7BC9007A34EA /* MagnetometerProgressViewController.swift in Sources */,
 				A9BCD60E1E4D36DE003D1CEA /* ScanningInterfaceController.swift in Sources */,
 				A9286CD61E3A9B22008E5F81 /* AlertHelper.swift in Sources */,
 				A9BCD60C1E4D36DE003D1CEA /* MainInterfaceController.swift in Sources */,
@@ -1678,17 +1863,24 @@
 				A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */,
 				A90798291E4349D6005470A5 /* ControllerColorWheelViewController.swift in Sources */,
 				A9286CD41E3A9B22008E5F81 /* UartLogManager.swift in Sources */,
+				A915426C1EDD7BC9007A34EA /* GyroscopeViewController.swift in Sources */,
+				A915426F1EDD7BC9007A34EA /* MagnetometerParametersViewController.swift in Sources */,
+				A91542681EDD7BC8007A34EA /* GyroscopePageContentViewController.swift in Sources */,
+				A915427F1EDD8041007A34EA /* StyledAnimations.swift in Sources */,
 				A9BCD6071E4D36DE003D1CEA /* ColorPaletteInterfaceController.swift in Sources */,
 				A9BCD60B1E4D36DE003D1CEA /* ControlPadInterfaceController.swift in Sources */,
+				A915426E1EDD7BC9007A34EA /* MagnetometerPageMatrixViewController.swift in Sources */,
 				A9BCD60A1E4D36DE003D1CEA /* ControlModeInterfaceController.swift in Sources */,
 				A983786D1E43422100170319 /* MqttSettingPickerCell.swift in Sources */,
 				A9286CD81E3A9B22008E5F81 /* Data+ScanValue.swift in Sources */,
 				A98DE4171E456AFC00EEF4C8 /* NeopixelTypeValueTableViewCell.swift in Sources */,
+				A9BB78E21EDCEC65004663DE /* Calibration+Mahony.swift in Sources */,
 				A9BCD5941E4D2616003D1CEA /* MqttManager.swift in Sources */,
 				A90798401E44ECB3005470A5 /* PlotterModeViewController.swift in Sources */,
 				A96946711E3D02F300BA8DAA /* BleUUIDNames.swift in Sources */,
 				A94A21AD1E417271006A5F33 /* UartModeViewController.swift in Sources */,
 				A9BCD5721E4D25B3003D1CEA /* DfuUpdateProcess.swift in Sources */,
+				A91542791EDD7BC9007A34EA /* VisualizationViewController.swift in Sources */,
 				A90C79781E40CBFA0076E8AD /* InfoModuleManager.swift in Sources */,
 				A9BCD58E1E4D2616003D1CEA /* DataFormatter.swift in Sources */,
 				A9D234391E3AD70300DC0C99 /* AboutViewController.swift in Sources */,
@@ -1696,6 +1888,7 @@
 				A98378701E43422100170319 /* MqttSettingsValueAndSelector.swift in Sources */,
 				A9D2343D1E3AD70300DC0C99 /* ScannerViewController.swift in Sources */,
 				A9D234571E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift in Sources */,
+				A91542771EDD7BC9007A34EA /* VisualizationParametersViewController.swift in Sources */,
 				A94A21AF1E417271006A5F33 /* UartSettingsViewController.swift in Sources */,
 				A9BCD5741E4D25B3003D1CEA /* FirmwareUpdater.swift in Sources */,
 				A907982D1E4349D6005470A5 /* ControllerSensorTableViewCell.swift in Sources */,
@@ -1703,28 +1896,38 @@
 				A98378721E43479400170319 /* ControllerModuleManager.swift in Sources */,
 				A9D2345E1E3B49BA00DC0C99 /* DataDownloader.swift in Sources */,
 				A9BCD6031E4D34D9003D1CEA /* HandoffManager.swift in Sources */,
+				A91542781EDD7BC9007A34EA /* VisualizationProgressViewController.swift in Sources */,
 				A90798311E438E60005470A5 /* GradientView.swift in Sources */,
 				A98DE4111E456AFC00EEF4C8 /* NeopixelColorPickerViewController.swift in Sources */,
 				A98DE40F1E456AFC00EEF4C8 /* NeopixelBoardSelectorViewController.swift in Sources */,
+				A9BB78E31EDCEC65004663DE /* Calibration.swift in Sources */,
 				A91E7D5C1E4216ED00DE90C6 /* UIImage+Color.swift in Sources */,
 				A9BCD60D1E4D36DE003D1CEA /* PickerModeInterfaceController.swift in Sources */,
+				A915426D1EDD7BC9007A34EA /* MagnetometerPageContentViewController.swift in Sources */,
 				A90C79751E40CB150076E8AD /* HelpViewController.swift in Sources */,
 				A90C79741E40CB150076E8AD /* EmptyDetailsViewController.swift in Sources */,
 				A9A89BDC1E83C5B000724F0E /* StyledConnectButton.swift in Sources */,
 				A9BCD6091E4D36DE003D1CEA /* ConnectedInterfaceController.swift in Sources */,
 				A907982A1E4349D6005470A5 /* ControllerComponentsTableViewCell.swift in Sources */,
+				A9BB78E41EDCEC65004663DE /* SensorParameters.swift in Sources */,
+				A91542741EDD7BC9007A34EA /* SensorConfigViewController.swift in Sources */,
 				A9286CB41E3A931E008E5F81 /* AppDelegate.swift in Sources */,
 				A983781C1E42A96400170319 /* DfuFilesPickerTableViewCell.swift in Sources */,
 				A9E1371C1ECB2F11004C64E1 /* MainSplitViewController.swift in Sources */,
 				A9A6C2471E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift in Sources */,
 				A9286CCF1E3A9B22008E5F81 /* BleManager.swift in Sources */,
+				A91542711EDD7BC9007A34EA /* MagnetometerViewController.swift in Sources */,
+				A9BB78FD1EDCEDDC004663DE /* MathUtils.swift in Sources */,
 				A983786F1E43422100170319 /* MqttSettingsStatusCell.swift in Sources */,
 				A98DE4131E456AFC00EEF4C8 /* NeopixelModuleViewController.swift in Sources */,
+				A915427B1EDD7C3F007A34EA /* StyledLinkedButton.swift in Sources */,
 				A9D2343C1E3AD70300DC0C99 /* PeripheralTableViewCell.swift in Sources */,
+				A91542691EDD7BC8007A34EA /* GyroscopePageDataViewController.swift in Sources */,
 				A969466D1E3CD0CC00BA8DAA /* StyledButton.swift in Sources */,
 				A9BCD6051E4D34D9003D1CEA /* WatchSessionManager.swift in Sources */,
 				A90798361E439DB9005470A5 /* PinIOModuleManager.swift in Sources */,
 				A98DE40D1E456AFC00EEF4C8 /* HelpExportViewController.swift in Sources */,
+				A915426B1EDD7BC8007A34EA /* GyroscopeProgressViewController.swift in Sources */,
 				A983786E1E43422100170319 /* MqttSettingsHeaderCell.swift in Sources */,
 				A9BCD58C1E4D2616003D1CEA /* Color+DarkerLighter.swift in Sources */,
 				A9BAD2131E3FC6CA0021DFA9 /* InfoModeViewController.swift in Sources */,
@@ -1736,6 +1939,7 @@
 				A9BCD5921E4D2616003D1CEA /* LocalizationManager.swift in Sources */,
 				A98DE4041E45696700EEF4C8 /* UartPacketManager.swift in Sources */,
 				A9D234581E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift in Sources */,
+				A9BB78EB1EDCEC99004663DE /* VectorMath+SceneKit.swift in Sources */,
 				A907982B1E4349D6005470A5 /* ControllerModeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1928,6 +2132,14 @@
 				A98DE4211E45EB3900EEF4C8 /* en */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		A9BB78DA1EDCEBFB004663DE /* Calibration.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A9BB78DB1EDCEBFB004663DE /* Base */,
+			);
+			name = Calibration.storyboard;
 			sourceTree = "<group>";
 		};
 		A9BCD5D11E4D286A003D1CEA /* Interface.storyboard */ = {
