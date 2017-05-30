@@ -217,7 +217,6 @@
 		73C8E7E64430A89947191612C56E403F /* CandleChartDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19FE592EA31DE55753B33C2A1F0ADD29 /* CandleChartDataSet.swift */; };
 		73D3E9EB9F0C037FBAE0695B3B55703E /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F9FE09531637E8BD889250ACB468FD5 /* CoreServices.framework */; };
 		73F4825AE435993BC6F1289D71A7F0ED /* DFUServiceSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D2FBECD038A7B36330B6F9C7BDBEB5 /* DFUServiceSelector.swift */; };
-		743EF5DBFF27AD2245CD631924AEF73F /* ISColorWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B1E9E48264DC55EE9910E71C0F028E /* ISColorWheel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74AF31A82B4C8EF6A8054900F6C7D17C /* LineScatterCandleRadarRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980612EB161E24D012B0186109D0FCAB /* LineScatterCandleRadarRenderer.swift */; };
 		75149665DE543E8A95950E9640954147 /* DataApproximator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B347B33BD57E1B4479A1B86553BFDE /* DataApproximator.swift */; };
 		756440DF5D5C9564CE2FF57536A4F583 /* CocoaMQTT.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B6D124261AE2E2928242231D2CE80CF /* CocoaMQTT.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -451,6 +450,7 @@
 		E92BD1BD99A408274C50E9646840E095 /* RadarHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3296E32A75F0FB922E5FBD5520B0D8 /* RadarHighlighter.swift */; };
 		E96A22362B459AA0108D444FF5FD52AB /* ZipArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = A877519AB6662C27755D5B1B625B9FE9 /* ZipArchive.swift */; };
 		E97398D88585C138049F3835BEA297A4 /* crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 15D60B88C8B6CD7C42F6FBE7E24452F0 /* crypt.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		E9CA0E85D509FD3AAEE838A5E0BBCBBB /* ISColorWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = A2B1E9E48264DC55EE9910E71C0F028E /* ISColorWheel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		EC09AE3D30A2E2F85BC3EFF836725581 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 077707AB5C36C1378CBCB6F71C4605A6 /* CFNetwork.framework */; };
 		EC460936DD5F5DF55EABEF8CA55A8A62 /* BubbleChartRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C75D26B81EF6B2A14E0C9AC11BD1749A /* BubbleChartRenderer.swift */; };
 		ECCC26DC74F956F84916F1C84DA21659 /* DFUStarterPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618128E19AAF3F33C7CECD0EB0893FF1 /* DFUStarterPeripheral.swift */; };
@@ -2703,7 +2703,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				64741F5C184EE65EB63248C1559A8BAD /* iOS-color-wheel-dummy.m in Sources */,
-				743EF5DBFF27AD2245CD631924AEF73F /* ISColorWheel.m in Sources */,
+				E9CA0E85D509FD3AAEE838A5E0BBCBBB /* ISColorWheel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -834,11 +834,11 @@
 		A9286CBA1E3A9383008E5F81 /* Style */ = {
 			isa = PBXGroup;
 			children = (
+				A9D2344C1E3AD97600DC0C99 /* StyleConfig.swift */,
 				A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */,
 				A915427E1EDD8041007A34EA /* StyledAnimations.swift */,
 				A91E7D5A1E4216ED00DE90C6 /* UIImage+Color.swift */,
 				A91E7D5B1E4216ED00DE90C6 /* UIImage+Tint.swift */,
-				A9D2344C1E3AD97600DC0C99 /* StyleConfig.swift */,
 				A969466A1E3CD0CC00BA8DAA /* IntrinsicSizeWithInsetsButton.swift */,
 				A969466B1E3CD0CC00BA8DAA /* StyledButton.swift */,
 				A9A89BDB1E83C5B000724F0E /* StyledConnectButton.swift */,

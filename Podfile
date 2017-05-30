@@ -17,7 +17,7 @@ target 'iOS' do
 end
 
 target 'macOS' do
-	platform :osx, "10.11"
+	platform :osx, '10.11'
 	shared_pods
 end
 
