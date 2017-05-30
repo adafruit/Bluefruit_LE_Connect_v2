@@ -3060,6 +3060,14 @@
             </objects>
             <point key="canvasLocation" x="2046" y="-1496"/>
         </scene>
+        <!--CalibrationMenuViewController-->
+        <scene sceneID="Xvd-bH-IGF">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="CalibrationMenuViewController" storyboardName="Calibration" referencedIdentifier="CalibrationMenuViewController" id="cRe-Ig-48C" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2DY-gE-SjX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1634" y="-801"/>
+        </scene>
         <!--Main Split View Controller-->
         <scene sceneID="Nki-YV-4Qg">
             <objects>

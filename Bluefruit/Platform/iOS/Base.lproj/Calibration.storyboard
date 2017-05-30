@@ -878,7 +878,7 @@
         <!--Calibration-->
         <scene sceneID="U4U-0a-o03">
             <objects>
-                <viewController storyboardIdentifier="CalibrationMenuViewController" id="t6Z-sV-kAm" customClass="CalibrationMenuViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CalibrationMenuViewController" id="t6Z-sV-kAm" customClass="CalibrationMenuViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="O03-Ro-9Le"/>
                         <viewControllerLayoutGuide type="bottom" id="tMs-vb-QZz"/>

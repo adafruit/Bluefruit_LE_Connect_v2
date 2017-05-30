@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CalibrationMenuViewController: UartViewController {
+class CalibrationMenuViewController: PeripheralModeViewController {
     
     @IBOutlet weak var menuStackView: UIStackView!
     @IBOutlet weak var magnetometerButton: StyledLinkedButton!
@@ -38,18 +38,5 @@ class CalibrationMenuViewController: UartViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
-    
-    /*
-    deinit {
-        // Disconnect from peripheral on exit
-        
-        if let peripheral = blePeripheral {
-            DLog("Disconnect from current peripheral")
-            BleManager.sharedInstance.disconnect(from: peripheral)
-        }
-        else {
-            DLog("Cannot disconnect because peripheral is undefined")
-        }
-    }*/
 }
 

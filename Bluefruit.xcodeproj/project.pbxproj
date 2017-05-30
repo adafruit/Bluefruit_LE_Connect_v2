@@ -701,9 +701,9 @@
 		A91542521EDD7BC8007A34EA /* Calibration */ = {
 			isa = PBXGroup;
 			children = (
+				A915425F1EDD7BC8007A34EA /* CalibrationMenuViewController.swift */,
 				A91542531EDD7BC8007A34EA /* Gyroscope */,
 				A91542591EDD7BC8007A34EA /* Magnetometer */,
-				A915425F1EDD7BC8007A34EA /* CalibrationMenuViewController.swift */,
 				A91542601EDD7BC8007A34EA /* PageContentViewController.swift */,
 				A91542611EDD7BC8007A34EA /* SensorConfigViewController.swift */,
 				A91542621EDD7BC8007A34EA /* UartSamplerViewController.swift */,

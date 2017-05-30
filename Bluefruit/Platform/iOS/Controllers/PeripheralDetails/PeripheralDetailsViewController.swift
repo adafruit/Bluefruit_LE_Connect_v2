@@ -161,61 +161,74 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         guard let blePeripheral = blePeripheral else { return }
         
         var viewControllers = [PeripheralModeViewController]()
+        let localizationManager = LocalizationManager.sharedInstance
         
         // UI: Add Info tab
-        let infoViewController = self.storyboard!.instantiateViewController(withIdentifier: "InfoModeViewController") as! InfoModeViewController
-        infoViewController.blePeripheral = blePeripheral
-        
-        let localizationManager = LocalizationManager.sharedInstance
-        infoViewController.tabBarItem.title = localizationManager.localizedString("info_tab_title")      // Tab title
-        infoViewController.tabBarItem.image = UIImage(named: "tab_info_icon")
-        viewControllers.append(infoViewController)
+        if let infoViewController = self.storyboard?.instantiateViewController(withIdentifier: "InfoModeViewController") as? InfoModeViewController {
+            infoViewController.blePeripheral = blePeripheral
+            infoViewController.tabBarItem.title = localizationManager.localizedString("info_tab_title")      // Tab title
+            infoViewController.tabBarItem.image = UIImage(named: "tab_info_icon")
+            viewControllers.append(infoViewController)
+        }
         
         // Uart Modules
         let hasUart = blePeripheral.hasUart()
+        let hasDFU = blePeripheral.peripheral.services?.first(where: {$0.uuid == FirmwareUpdater.kDfuServiceUUID}) != nil
         if hasUart {
             // Uart Tab
-            let uartViewController = self.storyboard!.instantiateViewController(withIdentifier: "UartModeViewController") as! UartModeViewController
-            uartViewController.blePeripheral = blePeripheral
-            uartViewController.tabBarItem.title = localizationManager.localizedString("uart_tab_title")      // Tab title
-            uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
-            viewControllers.append(uartViewController)
-
+            if let uartViewController = self.storyboard?.instantiateViewController(withIdentifier: "UartModeViewController") as? UartModeViewController {
+                uartViewController.blePeripheral = blePeripheral
+                uartViewController.tabBarItem.title = localizationManager.localizedString("uart_tab_title")      // Tab title
+                uartViewController.tabBarItem.image = UIImage(named: "tab_uart_icon")
+                viewControllers.append(uartViewController)
+            }
+            
             // Plotter Tab
-            let plotterViewController = self.storyboard!.instantiateViewController(withIdentifier: "PlotterModeViewController") as! PlotterModeViewController
-            plotterViewController.blePeripheral = blePeripheral
-            plotterViewController.tabBarItem.title = localizationManager.localizedString("plotter_tab_title")      // Tab title
-            plotterViewController.tabBarItem.image = UIImage(named: "tab_plotter_icon")
-            viewControllers.append(plotterViewController)
+            if let plotterViewController = self.storyboard?.instantiateViewController(withIdentifier: "PlotterModeViewController") as? PlotterModeViewController {
+                plotterViewController.blePeripheral = blePeripheral
+                plotterViewController.tabBarItem.title = localizationManager.localizedString("plotter_tab_title")      // Tab title
+                plotterViewController.tabBarItem.image = UIImage(named: "tab_plotter_icon")
+                viewControllers.append(plotterViewController)
+            }
             
             // PinIO
-            let pinioViewController = self.storyboard!.instantiateViewController(withIdentifier: "PinIOModeViewController") as! PinIOModeViewController
-            pinioViewController.blePeripheral = blePeripheral
-            pinioViewController.tabBarItem.title = localizationManager.localizedString("pinio_tab_title")      // Tab title
-            pinioViewController.tabBarItem.image = UIImage(named: "tab_pinio_icon")
-            viewControllers.append(pinioViewController)
+            if let pinioViewController = self.storyboard?.instantiateViewController(withIdentifier: "PinIOModeViewController") as? PinIOModeViewController {
+                pinioViewController.blePeripheral = blePeripheral
+                pinioViewController.tabBarItem.title = localizationManager.localizedString("pinio_tab_title")      // Tab title
+                pinioViewController.tabBarItem.image = UIImage(named: "tab_pinio_icon")
+                viewControllers.append(pinioViewController)
+            }
             
             // Controller Tab
-            let controllerViewController = self.storyboard!.instantiateViewController(withIdentifier: "ControllerModeViewController") as! ControllerModeViewController
-            controllerViewController.blePeripheral = blePeripheral
-            controllerViewController.tabBarItem.title = localizationManager.localizedString("controller_tab_title")      // Tab title
-            controllerViewController.tabBarItem.image = UIImage(named: "tab_controller_icon")
-            viewControllers.append(controllerViewController)
-        }
-        
-        let hasDFU = blePeripheral.peripheral.services?.first(where: {$0.uuid == FirmwareUpdater.kDfuServiceUUID}) != nil
-        
-        // Neopixel Tab
-        if hasUart && hasDFU {
-            let neopixelsViewController = self.storyboard!.instantiateViewController(withIdentifier: "NeopixelModeViewController") as! NeopixelModeViewController
-            neopixelsViewController.blePeripheral = blePeripheral
-            neopixelsViewController.tabBarItem.title = localizationManager.localizedString("neopixels_tab_title")      // Tab title
-            neopixelsViewController.tabBarItem.image = UIImage(named: "tab_neopixel_icon")
-            viewControllers.append(neopixelsViewController)
+            if let controllerViewController = self.storyboard?.instantiateViewController(withIdentifier: "ControllerModeViewController") as?ControllerModeViewController
+            {
+                controllerViewController.blePeripheral = blePeripheral
+                controllerViewController.tabBarItem.title = localizationManager.localizedString("controller_tab_title")      // Tab title
+                controllerViewController.tabBarItem.image = UIImage(named: "tab_controller_icon")
+                viewControllers.append(controllerViewController)
+            }
+            
+            // Neopixel Tab
+            if hasDFU {
+                if let neopixelsViewController = self.storyboard?.instantiateViewController(withIdentifier: "NeopixelModeViewController") as? NeopixelModeViewController {
+                    neopixelsViewController.blePeripheral = blePeripheral
+                    neopixelsViewController.tabBarItem.title = localizationManager.localizedString("neopixels_tab_title")      // Tab title
+                    neopixelsViewController.tabBarItem.image = UIImage(named: "tab_neopixel_icon")
+                    viewControllers.append(neopixelsViewController)
+                }
+            }
+            
+            // Calibration Tab
+            if let calibrationViewController = self.storyboard?.instantiateViewController(withIdentifier: "CalibrationMenuViewController") as? CalibrationMenuViewController {
+                calibrationViewController.blePeripheral = blePeripheral
+                calibrationViewController.tabBarItem.title = localizationManager.localizedString("calibration_tab_title")      // Tab title
+                calibrationViewController.tabBarItem.image = UIImage(named: "tab_calibration_icon")
+                viewControllers.append(calibrationViewController)
+            }
         }
         
         // DFU Tab
-       if hasDFU {
+        if hasDFU {
             let dfuViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuModeViewController") as! DfuModeViewController
             dfuViewController.blePeripheral = blePeripheral
             dfuViewController.tabBarItem.title = localizationManager.localizedString("dfu_tab_title")      // Tab title
@@ -230,8 +243,8 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
     
     fileprivate func setupMultiUart() {
         let localizationManager = LocalizationManager.sharedInstance
-
-//        hideTabBar(false)
+        
+        //        hideTabBar(false)
         // Uart Tab
         let uartViewController = self.storyboard!.instantiateViewController(withIdentifier: "UartModeViewController") as! UartModeViewController
         uartViewController.blePeripheral = nil
