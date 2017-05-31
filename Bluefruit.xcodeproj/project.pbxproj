@@ -291,6 +291,7 @@
 		A9E1371C1ECB2F11004C64E1 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E1371B1ECB2F11004C64E1 /* MainSplitViewController.swift */; };
 		A9FA1BE51EDDF26F0086CDCC /* NeopixelComponens.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9FA1BE41EDDF26F0086CDCC /* NeopixelComponens.plist */; };
 		A9FA1BE61EDECE5C0086CDCC /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */; };
+		A9FA1BE91EDEE1C20086CDCC /* NeoPixel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9FA1BE71EDEE1C20086CDCC /* NeoPixel.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -587,6 +588,7 @@
 		A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataDownloader.swift; sourceTree = "<group>"; };
 		A9E1371B1ECB2F11004C64E1 /* MainSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		A9FA1BE41EDDF26F0086CDCC /* NeopixelComponens.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelComponens.plist; sourceTree = "<group>"; };
+		A9FA1BE81EDEE1C20086CDCC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/NeoPixel.storyboard; sourceTree = "<group>"; };
 		DE511F22E8F88E565DA29F57 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -799,15 +801,12 @@
 				A9286CAD1E3A931E008E5F81 /* AppDelegate.swift */,
 				A983780B1E422CBC00170319 /* Bluefruit-Bridging-Header.h */,
 				A9286CAE1E3A931E008E5F81 /* Assets.xcassets */,
-				A9286CAF1E3A931E008E5F81 /* LaunchScreen.storyboard */,
-				A9286CB11E3A931E008E5F81 /* Main.storyboard */,
-				A9BB78DA1EDCEBFB004663DE /* Calibration.storyboard */,
 				A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */,
 				A9286CB31E3A931E008E5F81 /* Info.plist */,
 				A9286CBD1E3A947F008E5F81 /* Bluefruit.entitlements */,
+				A9FA1BEA1EDEE2440086CDCC /* Storyboards */,
 				A9286CB91E3A9383008E5F81 /* Controllers */,
 				A9286CBA1E3A9383008E5F81 /* Style */,
-				A9286CBB1E3A9383008E5F81 /* Utils */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -847,13 +846,6 @@
 				A90798301E438E60005470A5 /* GradientView.swift */,
 			);
 			path = Style;
-			sourceTree = "<group>";
-		};
-		A9286CBB1E3A9383008E5F81 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		A9286CBE1E3A9B22008E5F81 /* Common */ = {
@@ -1490,6 +1482,17 @@
 			path = PeripheralDetails;
 			sourceTree = "<group>";
 		};
+		A9FA1BEA1EDEE2440086CDCC /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				A9286CAF1E3A931E008E5F81 /* LaunchScreen.storyboard */,
+				A9286CB11E3A931E008E5F81 /* Main.storyboard */,
+				A9FA1BE71EDEE1C20086CDCC /* NeoPixel.storyboard */,
+				A9BB78DA1EDCEBFB004663DE /* Calibration.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1673,6 +1676,7 @@
 				A98DE42D1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */,
 				A98DE42F1E45EB3900EEF4C8 /* NeopixelTypes.plist in Resources */,
 				A9286CB61E3A931E008E5F81 /* LaunchScreen.storyboard in Resources */,
+				A9FA1BE91EDEE1C20086CDCC /* NeoPixel.storyboard in Resources */,
 				A9BB78F91EDCECDB004663DE /* magnetometer.scn in Resources */,
 				A98DE4291E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */,
 				A9BB78F71EDCECDB004663DE /* gyroscope.scn in Resources */,
@@ -2150,6 +2154,14 @@
 				A9BCD5D21E4D286A003D1CEA /* Base */,
 			);
 			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+		A9FA1BE71EDEE1C20086CDCC /* NeoPixel.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A9FA1BE81EDEE1C20086CDCC /* Base */,
+			);
+			name = NeoPixel.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
