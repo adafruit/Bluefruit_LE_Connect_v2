@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>RGB</string>
+		<key>value</key>
+		<integer>6</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>RBG</string>
+		<key>value</key>
+		<integer>9</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>GRB</string>
+		<key>value</key>
+		<integer>82</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>GBR</string>
+		<key>value</key>
+		<integer>161</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>BRG</string>
+		<key>value</key>
+		<integer>88</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>BGR</string>
+		<key>value</key>
+		<integer>164</integer>
+	</dict>
+	
+	
+	<dict>
+		<key>name</key>
+		<string>WRGB</string>
+		<key>value</key>
+		<integer>27</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>WRBG</string>
+		<key>value</key>
+		<integer>30</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>WGRB</string>
+		<key>value</key>
+		<integer>39</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>WGBR</string>
+		<key>value</key>
+		<integer>54</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>WBRG</string>
+		<key>value</key>
+		<integer>45</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>WBGR</string>
+		<key>value</key>
+		<integer>57</integer>
+	</dict>	
+	
+		
+	<dict>
+		<key>name</key>
+		<string>RWGB</string>
+		<key>value</key>
+		<integer>75</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>RWBG</string>
+		<key>value</key>
+		<integer>78</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>RGWB</string>
+		<key>value</key>
+		<integer>135</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>RGBW</string>
+		<key>value</key>
+		<integer>198</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>RBWG</string>
+		<key>value</key>
+		<integer>141</integer>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>RBGW</string>
+		<key>value</key>
+		<integer>201</integer>
+	</dict>
+	
+	
+
+	
+</array>
+</plist>

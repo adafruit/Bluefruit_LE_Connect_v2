@@ -189,7 +189,6 @@
 		A9BB78EB1EDCEC99004663DE /* VectorMath+SceneKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78E81EDCEC99004663DE /* VectorMath+SceneKit.swift */; };
 		A9BB78EC1EDCEC99004663DE /* VectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78E91EDCEC99004663DE /* VectorMath.swift */; };
 		A9BB78F51EDCECDB004663DE /* AccelerometerParameters.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78EE1EDCECDB004663DE /* AccelerometerParameters.plist */; };
-		A9BB78F61EDCECDB004663DE /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78EF1EDCECDB004663DE /* DefaultPreferences.plist */; };
 		A9BB78F71EDCECDB004663DE /* gyroscope.scn in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78F01EDCECDB004663DE /* gyroscope.scn */; };
 		A9BB78F81EDCECDB004663DE /* GyroscopeParameters.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78F11EDCECDB004663DE /* GyroscopeParameters.plist */; };
 		A9BB78F91EDCECDB004663DE /* magnetometer.scn in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78F21EDCECDB004663DE /* magnetometer.scn */; };
@@ -290,6 +289,8 @@
 		A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234591E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift */; };
 		A9D2345E1E3B49BA00DC0C99 /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */; };
 		A9E1371C1ECB2F11004C64E1 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E1371B1ECB2F11004C64E1 /* MainSplitViewController.swift */; };
+		A9FA1BE51EDDF26F0086CDCC /* NeopixelComponens.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9FA1BE41EDDF26F0086CDCC /* NeopixelComponens.plist */; };
+		A9FA1BE61EDECE5C0086CDCC /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -523,7 +524,6 @@
 		A9BB78E81EDCEC99004663DE /* VectorMath+SceneKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VectorMath+SceneKit.swift"; sourceTree = "<group>"; };
 		A9BB78E91EDCEC99004663DE /* VectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorMath.swift; sourceTree = "<group>"; };
 		A9BB78EE1EDCECDB004663DE /* AccelerometerParameters.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AccelerometerParameters.plist; sourceTree = "<group>"; };
-		A9BB78EF1EDCECDB004663DE /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
 		A9BB78F01EDCECDB004663DE /* gyroscope.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = gyroscope.scn; sourceTree = "<group>"; };
 		A9BB78F11EDCECDB004663DE /* GyroscopeParameters.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GyroscopeParameters.plist; sourceTree = "<group>"; };
 		A9BB78F21EDCECDB004663DE /* magnetometer.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = magnetometer.scn; sourceTree = "<group>"; };
@@ -586,6 +586,7 @@
 		A9D234591E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningAnimationViewController.swift; sourceTree = "<group>"; };
 		A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataDownloader.swift; sourceTree = "<group>"; };
 		A9E1371B1ECB2F11004C64E1 /* MainSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
+		A9FA1BE41EDDF26F0086CDCC /* NeopixelComponens.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelComponens.plist; sourceTree = "<group>"; };
 		DE511F22E8F88E565DA29F57 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1305,6 +1306,7 @@
 				A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */,
 				A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */,
 				A98DE4261E45EB3900EEF4C8 /* NeopixelTypes.plist */,
+				A9FA1BE41EDDF26F0086CDCC /* NeopixelComponens.plist */,
 			);
 			path = NeoPixel;
 			sourceTree = "<group>";
@@ -1343,7 +1345,6 @@
 			isa = PBXGroup;
 			children = (
 				A9BB78EE1EDCECDB004663DE /* AccelerometerParameters.plist */,
-				A9BB78EF1EDCECDB004663DE /* DefaultPreferences.plist */,
 				A9BB78F01EDCECDB004663DE /* gyroscope.scn */,
 				A9BB78F11EDCECDB004663DE /* GyroscopeParameters.plist */,
 				A9BB78F21EDCECDB004663DE /* magnetometer.scn */,
@@ -1676,7 +1677,7 @@
 				A98DE4291E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */,
 				A9BB78F71EDCECDB004663DE /* gyroscope.scn in Resources */,
 				A9BB78F51EDCECDB004663DE /* AccelerometerParameters.plist in Resources */,
-				A9BB78F61EDCECDB004663DE /* DefaultPreferences.plist in Resources */,
+				A9FA1BE51EDDF26F0086CDCC /* NeopixelComponens.plist in Resources */,
 				A98DE4271E45EB3900EEF4C8 /* Localizable.strings in Resources */,
 				A9D2342C1E3AD64500DC0C99 /* Credits.rtf in Resources */,
 				A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */,
@@ -1688,6 +1689,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A983783B1E42BFF900170319 /* Assets.xcassets in Resources */,
+				A9FA1BE61EDECE5C0086CDCC /* DefaultPreferences.plist in Resources */,
 				A98DE42C1E45EB3900EEF4C8 /* NeopixelBoards.plist in Resources */,
 				A98DE42E1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */,
 				A98DE4281E45EB3900EEF4C8 /* Localizable.strings in Resources */,

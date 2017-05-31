@@ -59,7 +59,7 @@ class InfoModeViewController: PeripheralModeViewController {
         baseTableView.rowHeight = UITableViewAutomaticDimension
 
         // Setup table refresh
-        refreshControl.addTarget(self, action: #selector(onTableRefresh(_:)), for: UIControlEvents.valueChanged)
+        refreshControl.addTarget(self, action: #selector(onTableRefresh(_:)), for: .valueChanged)
         baseTableView.addSubview(refreshControl)
         baseTableView.sendSubview(toBack: refreshControl)
     }
@@ -295,7 +295,6 @@ class InfoModeViewController: PeripheralModeViewController {
     func onTableRefresh(_ sender: AnyObject) {
         refreshControl.endRefreshing()
         discoverServices()
-        
     }
 }
 

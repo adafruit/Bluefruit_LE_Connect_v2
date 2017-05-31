@@ -463,20 +463,18 @@ class Preferences {
     
     // MARK: - Common
     static func getBoolPreference(_ key: String) -> Bool {
-        let defaults = UserDefaults.standard
-        return defaults.bool(forKey: key)
+        return UserDefaults.standard.bool(forKey: key)
     }
     
     static func setBoolPreference(_ key: String, newValue: Bool) {
-        let defaults = UserDefaults.standard
-        defaults.set(newValue, forKey: key)
+        UserDefaults.standard.set(newValue, forKey: key)
         NotificationCenter.default.post(name: .didUpdatePreferences, object: nil)
     }
     
     // MARK: - Defaults
     static func registerDefaults() {
         let path = Bundle.main.path(forResource: "DefaultPreferences", ofType: "plist")!
-        let defaultPrefs = NSDictionary(contentsOfFile: path) as! [String : AnyObject]
+        let defaultPrefs = NSDictionary(contentsOfFile: path) as! [String: AnyObject]
         
         UserDefaults.standard.register(defaults: defaultPrefs)
     }
