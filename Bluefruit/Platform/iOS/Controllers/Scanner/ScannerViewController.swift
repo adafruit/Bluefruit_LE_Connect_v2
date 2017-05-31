@@ -52,6 +52,10 @@ class ScannerViewController: UIViewController {
     fileprivate let firmwareUpdater = FirmwareUpdater()
     fileprivate var infoAlertController: UIAlertController?
     
+    fileprivate var isBaseTableScrolling = false
+    fileprivate var isScannerTableWaitingForReload = false
+    fileprivate var isBaseTableAnimating = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -260,7 +264,7 @@ class ScannerViewController: UIViewController {
         infoAlertController?.dismiss(animated: true, completion: nil)
         
         // Reload table
-        baseTableView.reloadData()
+        reloadBaseTable()
     }
     
     private func peripheralDidUpdateName(notification: Notification) {
@@ -269,7 +273,7 @@ class ScannerViewController: UIViewController {
         
         DispatchQueue.main.async { [weak self] in
             // Reload table
-            self?.baseTableView.reloadData()
+            self?.reloadBaseTable()
         }
     }
     
@@ -415,7 +419,7 @@ class ScannerViewController: UIViewController {
     
     private func updateFilters() {
         updateFiltersTitle()
-        baseTableView.reloadData()
+        reloadBaseTable()
     }
     
     private func setRssiSlider(value: Int?) {
@@ -447,7 +451,7 @@ class ScannerViewController: UIViewController {
     fileprivate func refreshPeripherals() {
         isRowDetailOpenForPeripheral.removeAll()
         BleManager.sharedInstance.refreshPeripherals()
-        baseTableView.reloadData()
+        reloadBaseTable()
     }
     
     @IBAction func onClickExpandFilters(_ sender: Any) {
@@ -538,24 +542,36 @@ class ScannerViewController: UIViewController {
         // Connect to selected peripheral
         selectedPeripheral = peripheral
         BleManager.sharedInstance.connect(to: peripheral)
-        baseTableView.reloadData()
+        reloadBaseTable()
     }
     
     fileprivate func disconnect(peripheral: BlePeripheral) {
         selectedPeripheral = nil
         BleManager.sharedInstance.disconnect(from: peripheral)
-        baseTableView.reloadData()
+        reloadBaseTable()
     }
     
     // MARK: - UI
     private func updateScannedPeripherals() {
         
         // Reload table
+        if isBaseTableScrolling || isBaseTableAnimating {
+            isScannerTableWaitingForReload = true
+        }
+        else {
+            reloadBaseTable()
+        }
+    }
+    
+    fileprivate func reloadBaseTable() {
+        isBaseTableScrolling = false
+        isBaseTableAnimating = false
+        isScannerTableWaitingForReload = false
+        let peripherals = peripheralList.filteredPeripherals(forceUpdate: true)     // Refresh the peripherals
         baseTableView.reloadData()
         
         // Select the previously selected row
-        let peripherals = peripheralList.filteredPeripherals(forceUpdate: false)
-       // scanningWaitView.isHidden = peripherals.count > 0
+        // scanningWaitView.isHidden = peripherals.count > 0
         if let selectedPeripheral = selectedPeripheral, let selectedRow = peripherals.index(of: selectedPeripheral) {
             baseTableView.selectRow(at: IndexPath(row: selectedRow, section: 0), animated: false, scrollPosition: .none)
         }
@@ -580,6 +596,7 @@ class ScannerViewController: UIViewController {
         infoAlertController?.dismiss(animated: true, completion: completion)
         infoAlertController = nil
     }
+
 }
 
 // MARK: - UITableViewDataSource
@@ -591,23 +608,24 @@ extension ScannerViewController: UITableViewDataSource {
         }
         
         // Calculate num cells
-        return peripheralList.filteredPeripherals(forceUpdate: true).count
+        return peripheralList.filteredPeripherals(forceUpdate: false).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reuseIdentifier = "PeripheralCell"
         let peripheralCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! PeripheralTableViewCell
-        
+       
+        // Note: not using willDisplayCell to avoid problems with self-sizing cells
         let peripheral = peripheralList.filteredPeripherals(forceUpdate: false)[indexPath.row]
-        
+       
         // Fill data
         let localizationManager = LocalizationManager.sharedInstance
         peripheralCell.titleLabel.text = peripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")
         peripheralCell.rssiImageView.image = signalImage(for: peripheral.rssi)
-
+        
         let isUartCapable = peripheral.isUartAdvertised()
         peripheralCell.subtitleLabel.text = isUartCapable ? localizationManager.localizedString("peripherallist_uartavailable") : nil
-
+        
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
         
         let showConnect: Bool
@@ -635,130 +653,53 @@ extension ScannerViewController: UITableViewDataSource {
         
         // Detail Subview
         let isDetailViewOpen = isRowDetailOpenForPeripheral[peripheral.identifier] ?? false
-        peripheralCell.baseStackView.subviews[1].isHidden = !isDetailViewOpen
+        peripheralCell.baseStackView.arrangedSubviews[1].isHidden = !isDetailViewOpen
         if isDetailViewOpen {
-            setupPeripheralExtendedView(peripheralCell: peripheralCell, peripheral: peripheral)
+            peripheralCell.setupPeripheralExtendedView(peripheral: peripheral)
         }
         
         return peripheralCell
-    }
-    
-    private func setupPeripheralExtendedView(peripheralCell: PeripheralTableViewCell, peripheral: BlePeripheral) {
-        guard let detailBaseStackView = peripheralCell.detailBaseStackView else { return }
-        
-        var currentIndex = 0
-        
-        // Local Name
-        var isLocalNameAvailable = false
-        if let localName = peripheral.advertisement.localName {
-            peripheralCell.localNameValueLabel.text = localName
-            isLocalNameAvailable = true
-        }
-        detailBaseStackView.subviews[currentIndex].isHidden = !isLocalNameAvailable
-        currentIndex = currentIndex+1
-        
-        // Manufacturer Name
-        var isManufacturerAvailable = false
-        if let manufacturerString = peripheral.advertisement.manufacturerString {
-            peripheralCell.manufacturerValueLabel.text = manufacturerString
-            isManufacturerAvailable = true
-        }
-        else {
-            peripheralCell.manufacturerValueLabel.text = nil
-        }
-        detailBaseStackView.subviews[currentIndex].isHidden = !isManufacturerAvailable
-        currentIndex = currentIndex+1
-        
-        // Services
-        var areServicesAvailable = false
-        if let services = peripheral.advertisement.services, let stackView = peripheralCell.servicesStackView {
-            //DLog("services: \(services.count)")
-            addServiceNames(stackView: stackView, services: services)
-            areServicesAvailable = services.count > 0
-        }
-        detailBaseStackView.subviews[currentIndex].isHidden = !areServicesAvailable
-        currentIndex = currentIndex+1
-        
-        // Services Overflow
-        var areServicesOverflowAvailable = false
-        if let servicesOverflow =  peripheral.advertisement.servicesOverflow, let stackView = peripheralCell.servicesOverflowStackView {
-            addServiceNames(stackView: stackView, services: servicesOverflow)
-            areServicesOverflowAvailable = servicesOverflow.count > 0
-        }
-        detailBaseStackView.subviews[currentIndex].isHidden = !areServicesOverflowAvailable
-        currentIndex = currentIndex+1
-        
-        // Solicited Services
-        var areSolicitedServicesAvailable = false
-        if let servicesSolicited = peripheral.advertisement.servicesSolicited, let stackView = peripheralCell.servicesOverflowStackView {
-            addServiceNames(stackView: stackView, services: servicesSolicited)
-            areSolicitedServicesAvailable = servicesSolicited.count > 0
-        }
-        detailBaseStackView.subviews[currentIndex].isHidden = !areSolicitedServicesAvailable
-        currentIndex = currentIndex+1
-        
-        
-        // Tx Power
-        var isTxPowerAvailable: Bool
-        if let txpower = peripheral.advertisement.txPower {
-            peripheralCell.txPowerLevelValueLabel.text = String(txpower)
-            isTxPowerAvailable = true
-        }
-        else {
-            isTxPowerAvailable = false
-        }
-        detailBaseStackView.subviews[currentIndex].isHidden = !isTxPowerAvailable
-        currentIndex = currentIndex+1
-        
-        // Connectable
-        let isConnectable = peripheral.advertisement.isConnectable
-        peripheralCell.connectableValueLabel.text = isConnectable != nil ? "\(isConnectable! ? "true":"false")":"unknown"
-        currentIndex = currentIndex+1
-        
-    }
-    
-    private func addServiceNames(stackView: UIStackView, services: [CBUUID]) {
-        let styledLabel = stackView.arrangedSubviews.first! as! UILabel
-        styledLabel.isHidden = true     // The first view is only to define style in InterfaceBuilder. Hide it
-        
-        // Clear current subviews
-        for arrangedSubview in stackView.arrangedSubviews {
-            if arrangedSubview != stackView.arrangedSubviews.first {
-                arrangedSubview.removeFromSuperview()
-                stackView.removeArrangedSubview(arrangedSubview)
-            }
-        }
-        
-        // Add services as subviews
-        for serviceCBUUID in services {
-            let label = UILabel()
-            var identifier = serviceCBUUID.uuidString
-            if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
-                identifier = name
-            }
-            label.text = identifier
-            label.font = styledLabel.font
-            label.minimumScaleFactor = styledLabel.minimumScaleFactor
-            label.adjustsFontSizeToFitWidth = styledLabel.adjustsFontSizeToFitWidth
-            stackView.addArrangedSubview(label)
-        }
     }
 }
 
 // MARK: UITableViewDelegate
 extension ScannerViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let peripheral = peripheralList.filteredPeripherals(forceUpdate: false)[indexPath.row]
         let isDetailViewOpen = !(isRowDetailOpenForPeripheral[peripheral.identifier] ?? false)
         isRowDetailOpenForPeripheral[peripheral.identifier] = isDetailViewOpen
 
+        isBaseTableAnimating = true
+        CATransaction.begin()
+        CATransaction.setCompletionBlock { [weak self] in
+            self?.isBaseTableAnimating = false
+        }
         tableView.reloadRows(at: [indexPath], with: .fade)
+        tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+        CATransaction.commit()
         tableView.deselectRow(at: indexPath, animated: false)
-
+        
         // Animate changes
 //        tableView.beginUpdates()
 //        tableView.endUpdates()
+    }
+}
+
+// MARK: UIScrollViewDelegate
+extension ScannerViewController {
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isBaseTableScrolling = true
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        isBaseTableScrolling = false
+        
+        if isScannerTableWaitingForReload {
+            reloadBaseTable()
+        }
     }
 }
 

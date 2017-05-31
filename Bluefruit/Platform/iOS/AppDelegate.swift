@@ -102,7 +102,7 @@ extension AppDelegate: WCSessionDelegate {
         
         replyHandler(replyValues)
     }
-    
+
     @available(iOS 9.3, *)
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         DLog("activationDidCompleteWithState: \(activationState.rawValue)")

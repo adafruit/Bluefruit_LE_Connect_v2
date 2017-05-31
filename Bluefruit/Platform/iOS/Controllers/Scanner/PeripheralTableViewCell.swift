@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreBluetooth
 
 class PeripheralTableViewCell: UITableViewCell {
 
@@ -32,6 +33,9 @@ class PeripheralTableViewCell: UITableViewCell {
     var onConnect: (() -> ())?
     var onDisconnect: (() -> ())?
 
+    // Data
+    fileprivate var cachedExtendedViewPeripheralId: UUID?
+    
     // MARK: - View Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -44,6 +48,14 @@ class PeripheralTableViewCell: UITableViewCell {
         disconnectButton.titleEdgeInsets.right += rightMarginInset
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        // Remove cached data
+        cachedExtendedViewPeripheralId = nil
+    }
+    
+    // MARK: - Actions
     @IBAction func onClickDisconnect(_ sender: AnyObject) {
         onDisconnect?()
     }
@@ -52,7 +64,112 @@ class PeripheralTableViewCell: UITableViewCell {
         onConnect?()
     }
     
+    // MARK: - UI
     func showDisconnectButton(show: Bool) {
         disconnectButtonWidthConstraint.constant = show ? 24: 0
+    }
+    
+    
+    func setupPeripheralExtendedView(peripheral: BlePeripheral) {
+        guard cachedExtendedViewPeripheralId != peripheral.identifier else { return }       // If data is already filled, skip
+        
+        cachedExtendedViewPeripheralId = peripheral.identifier
+        var currentIndex = 0
+        
+        // Local Name
+        var isLocalNameAvailable = false
+        if let localName = peripheral.advertisement.localName {
+            localNameValueLabel.text = localName
+            isLocalNameAvailable = true
+        }
+        detailBaseStackView.arrangedSubviews[currentIndex].isHidden = !isLocalNameAvailable
+        currentIndex = currentIndex+1
+        
+        // Manufacturer Name
+        var isManufacturerAvailable = false
+        if let manufacturerString = peripheral.advertisement.manufacturerString {
+            manufacturerValueLabel.text = manufacturerString
+            isManufacturerAvailable = true
+        }
+        else {
+            manufacturerValueLabel.text = nil
+        }
+        detailBaseStackView.arrangedSubviews[currentIndex].isHidden = !isManufacturerAvailable
+        currentIndex = currentIndex+1
+        
+        // Services
+        var areServicesAvailable = false
+        if let services = peripheral.advertisement.services, let stackView = servicesStackView {
+            //DLog("services: \(services.count)")
+            addServiceNames(stackView: stackView, services: services)
+            areServicesAvailable = services.count > 0
+        }
+        detailBaseStackView.arrangedSubviews[currentIndex].isHidden = !areServicesAvailable
+        currentIndex = currentIndex+1
+        
+        // Services Overflow
+        var areServicesOverflowAvailable = false
+        if let servicesOverflow =  peripheral.advertisement.servicesOverflow, let stackView = servicesOverflowStackView {
+            addServiceNames(stackView: stackView, services: servicesOverflow)
+            areServicesOverflowAvailable = servicesOverflow.count > 0
+        }
+        detailBaseStackView.arrangedSubviews[currentIndex].isHidden = !areServicesOverflowAvailable
+        currentIndex = currentIndex+1
+        
+        // Solicited Services
+        var areSolicitedServicesAvailable = false
+        if let servicesSolicited = peripheral.advertisement.servicesSolicited, let stackView = servicesOverflowStackView {
+            addServiceNames(stackView: stackView, services: servicesSolicited)
+            areSolicitedServicesAvailable = servicesSolicited.count > 0
+        }
+        detailBaseStackView.arrangedSubviews[currentIndex].isHidden = !areSolicitedServicesAvailable
+        currentIndex = currentIndex+1
+        
+        
+        // Tx Power
+        var isTxPowerAvailable: Bool
+        if let txpower = peripheral.advertisement.txPower {
+            txPowerLevelValueLabel.text = String(txpower)
+            isTxPowerAvailable = true
+        }
+        else {
+            isTxPowerAvailable = false
+        }
+        detailBaseStackView.arrangedSubviews[currentIndex].isHidden = !isTxPowerAvailable
+        currentIndex = currentIndex+1
+        
+        // Connectable
+        let isConnectable = peripheral.advertisement.isConnectable
+        connectableValueLabel.text = isConnectable != nil ? "\(isConnectable! ? "true":"false")":"unknown"
+        currentIndex = currentIndex+1
+        
+        
+    }
+    
+    private func addServiceNames(stackView: UIStackView, services: [CBUUID]) {
+        let styledLabel = stackView.arrangedSubviews.first! as! UILabel
+        styledLabel.isHidden = true     // The first view is only to define style in InterfaceBuilder. Hide it
+        
+        // Clear current subviews
+        for arrangedSubview in stackView.arrangedSubviews {
+            if arrangedSubview != stackView.arrangedSubviews.first {
+                arrangedSubview.removeFromSuperview()
+                stackView.removeArrangedSubview(arrangedSubview)
+            }
+        }
+        
+        // Add services as subviews
+        for serviceCBUUID in services {
+            let label = UILabel()
+            var identifier = serviceCBUUID.uuidString
+            if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
+                identifier = name
+            }
+            label.text = identifier
+            label.font = styledLabel.font
+            label.minimumScaleFactor = styledLabel.minimumScaleFactor
+            label.adjustsFontSizeToFitWidth = styledLabel.adjustsFontSizeToFitWidth
+            stackView.addArrangedSubview(label)
+        }
     }
 }
