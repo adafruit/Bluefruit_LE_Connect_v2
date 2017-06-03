@@ -73,9 +73,7 @@ class PlotterModeViewController: PeripheralModeViewController {
             for (i, blePeripheral) in blePeripherals.enumerated() {
                 colorForPeripheral[blePeripheral.identifier] = colors[i % colors.count]
                 blePeripheral.uartEnable(uartRxHandler: uartDataManager.rxDataReceived) { [weak self] error in
-                    guard let context = self else {
-                        return
-                    }
+                    guard let context = self else { return }
                     
                     let peripheralName = blePeripheral.name ?? blePeripheral.identifier.uuidString
                     DispatchQueue.main.async { [unowned context] in

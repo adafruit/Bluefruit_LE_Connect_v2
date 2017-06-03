@@ -9,8 +9,8 @@
 		<integer>8</integer>
 		<key>height</key>
 		<integer>4</integer>
-		<key>components</key>
-		<integer>3</integer>
+		<key>componentValue</key>
+		<integer>82</integer>
 		<key>stride</key>
 		<integer>8</integer>
 	</dict>
@@ -21,8 +21,8 @@
 		<integer>8</integer>
 		<key>height</key>
 		<integer>8</integer>
-		<key>components</key>
-		<integer>3</integer>
+		<key>componentValue</key>
+		<integer>82</integer>
 		<key>stride</key>
 		<integer>8</integer>
 	</dict>
@@ -33,8 +33,8 @@
 		<integer>8</integer>
 		<key>height</key>
 		<integer>1</integer>
-		<key>components</key>
-		<integer>3</integer>
+		<key>componentValue</key>
+		<integer>82</integer>
 		<key>stride</key>
 		<integer>8</integer>
 	</dict>

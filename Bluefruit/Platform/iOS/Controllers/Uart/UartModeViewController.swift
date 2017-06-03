@@ -268,9 +268,7 @@ class UartModeViewController: PeripheralModeViewController {
             for (i, blePeripheral) in blePeripherals.enumerated() {
                 colorForPeripheral[blePeripheral.identifier] = colors[i % colors.count]
                 blePeripheral.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
-                    guard let context = self else {
-                        return
-                    }
+                    guard let context = self else { return }
                     
                     let peripheralName = blePeripheral.name ?? blePeripheral.identifier.uuidString
                     DispatchQueue.main.async { [unowned context] in
@@ -289,7 +287,7 @@ class UartModeViewController: PeripheralModeViewController {
                         // Done
                         DLog("Uart enabled for \(peripheralName)")
                         
-                        if (blePeripheral == blePeripherals.last) {
+                        if blePeripheral == blePeripherals.last {
                             context.updateUartReadyUI(isReady: true)
                         }
                     }
@@ -299,9 +297,7 @@ class UartModeViewController: PeripheralModeViewController {
         else if let blePeripheral = blePeripheral {         //  Single peripheral mode
             colorForPeripheral[blePeripheral.identifier] = colors.first
             blePeripheral.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
-                guard let context = self else {
-                    return
-                }
+                guard let context = self else { return }
                 
                 DispatchQueue.main.async { [unowned context] in
                     guard error == nil else {

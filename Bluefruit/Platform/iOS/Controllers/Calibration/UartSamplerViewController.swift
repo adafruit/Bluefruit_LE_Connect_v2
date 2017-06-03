@@ -103,6 +103,26 @@ class UartSamplerViewController: UartViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        // Uart start
+        start { [weak self] error in
+            guard let context = self else { return }
+            
+            guard error == nil else {
+                DispatchQueue.main.async { [unowned context] in
+                    DLog("Error initializing uart")
+                    showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
+                    
+                    if let blePeripheral = context.blePeripheral {
+                        BleManager.sharedInstance.disconnect(from: blePeripheral)
+                    }
+                }
+                return
+            }
+            
+            // Started
+            DLog("Uart started")
+        }
+        
         // UI
         updateUI()
         
@@ -120,6 +140,16 @@ class UartSamplerViewController: UartViewController {
             uartManager.clearRxCache(peripheralIdentifier: identifier)
         }
     }
+    
+    func start(uartReadyCompletion:@escaping ((Error?)->(Void))) {
+        DLog("calibration uart start");
+        
+        // Enable Uart
+        blePeripheral?.uartEnable(uartRxHandler: uartManager.rxDataReceived) { error in
+            uartReadyCompletion(error)
+        }
+    }
+
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

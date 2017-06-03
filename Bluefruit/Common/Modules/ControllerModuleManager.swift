@@ -94,15 +94,11 @@ class ControllerModuleManager: NSObject {
        
         // Enable Uart
         blePeripheral.uartEnable(uartRxHandler: uartManager.rxDataReceived) { [weak self] error in
-            guard let context = self else {
-                return
-            }
+            guard let context = self else {  return }
             
             context.delegate?.onControllerUartIsReady(error: error)
 
-            guard error == nil else {
-                return
-            }
+            guard error == nil else { return }
             
             // Done
             context.startUpdatingData()

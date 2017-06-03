@@ -10,15 +10,26 @@ import UIKit
 import SceneKit
 
 class VisualizationViewController: UartSamplerViewController {
+    // Config
+    fileprivate static let kIsQuatSpeedDebugEnabled = true
+    
+    // UI
+    @IBOutlet weak var dataReveivedSpeedLabel: UILabel!
 
     // PageViewController
     fileprivate static let kPageControllerIds = ["VisualizationProgressViewController"]
 
     // 3D Scene
-    var currentOrientation = Quaternion.identity
-    var geometry: SCNNode?
-    var model: SCNNode?
+    fileprivate var currentOrientation = Quaternion.identity
+    fileprivate var geometry: SCNNode?
+    fileprivate var model: SCNNode?
+    
+    
     fileprivate var originOffset = Quaternion.identity
+    
+    // Debug
+    fileprivate var numQuatsReceived = 0
+    fileprivate var quatReceivedStartingTime: TimeInterval = 0
     
     // MARK: - ViewController
     override func awakeFromNib() {
@@ -33,6 +44,9 @@ class VisualizationViewController: UartSamplerViewController {
 
         // 3D Setup
         sceneSetup()
+        
+        // UI
+        dataReveivedSpeedLabel.isHidden = !VisualizationViewController.kIsQuatSpeedDebugEnabled
         
         // Start
         reset()
@@ -76,6 +90,14 @@ class VisualizationViewController: UartSamplerViewController {
         currentOrientation = Quaternion((Preferences.visualizationXAxisInverted ? 1:-1) * x, (Preferences.visualizationYAxisInverted ? 1:-1) * y, (Preferences.visualizationZAxisInverted ? 1:-1) * z, q.w)
         
         DLog("orientation: x:\(currentOrientation.x), y:\(currentOrientation.y), z:\(currentOrientation.z), w:\(currentOrientation.w)")
+        
+        // Debug
+        if VisualizationViewController.kIsQuatSpeedDebugEnabled {
+            if numQuatsReceived == 0 {
+                quatReceivedStartingTime = CACurrentMediaTime()
+            }
+            numQuatsReceived += 1
+        }
     }
     
     // MARK: - UI
@@ -93,6 +115,12 @@ class VisualizationViewController: UartSamplerViewController {
                 progressViewController.updateUI()
             }
         }
+        
+        
+        // Update debug data
+        let currentTime = CACurrentMediaTime() - quatReceivedStartingTime
+        dataReveivedSpeedLabel.text = numQuatsReceived > 0 ? String(format: "%.1f Quat/s", Double(numQuatsReceived) / currentTime) : nil
+        
     }
     
     // MARK: - Scene3D
@@ -141,7 +169,6 @@ extension VisualizationViewController: VisualizationProgressViewControllerDelega
     func onVisualizationOriginSet() {
         originOffset = currentOrientation.inverse
         updateUI()
-        
     }
     
     func onVisualizationOriginReset() {

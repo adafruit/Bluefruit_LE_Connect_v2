@@ -65,7 +65,6 @@ extension NeopixelBoardSelectorViewController: UITableViewDataSource {
         return title
     }
     
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return boards != nil ? boards!.count: 0
@@ -77,30 +76,29 @@ extension NeopixelBoardSelectorViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reuseIdentifier = "TextCell"
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for:indexPath as IndexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         
         cell.backgroundColor = UIColor(hex: 0xe2e1e0)
         return cell
-    }
-    
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let uartCell = cell as! UartSettingTableViewCell
-        
-        let row = indexPath.row
-
-        if indexPath.section == 0 {
-            let board = boards![row]
-            uartCell.textLabel?.text = board["name"] as? String
-        }
-        else {
-            uartCell.textLabel?.text = "Line Strip"
-        }
     }
 }
 
 // MARK: - UITableViewDelegate
 extension NeopixelBoardSelectorViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let uartCell = cell as? UartSettingTableViewCell else { return }
+        
+        let row = indexPath.row
+        
+        if indexPath.section == 0 {
+            let board = boards![row]
+            uartCell.titleLabel?.text = board["name"] as? String
+        }
+        else {
+            uartCell.titleLabel?.text = "Line Strip"
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: indexPath.section == 0)
         

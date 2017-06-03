@@ -23,6 +23,11 @@ class CalibrationMenuViewController: PeripheralModeViewController {
             view.layer.masksToBounds = true
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+       
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -35,7 +40,4 @@ class CalibrationMenuViewController: PeripheralModeViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
 }

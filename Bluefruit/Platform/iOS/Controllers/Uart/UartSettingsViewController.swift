@@ -112,10 +112,10 @@ extension UartSettingsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        let localizationManager = LocalizationManager.sharedInstance
-        let uartCell = cell as! UartSettingTableViewCell
-        var titleKey: String?
+        guard let uartCell = cell as? UartSettingTableViewCell else { return }
         
+        let localizationManager = LocalizationManager.sharedInstance
+        var titleKey: String?
         let row = indexPath.row
         
         if indexPath.section == 0 {

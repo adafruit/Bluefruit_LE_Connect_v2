@@ -116,8 +116,8 @@ class CommandLine: NSObject {
     private func stopScanning() {
         if let didDiscoverPeripheralObserver = didDiscoverPeripheralObserver {NotificationCenter.default.removeObserver(didDiscoverPeripheralObserver)}
         
-//        BleManager.sharedInstance.stopScan()
-        BleManager.sharedInstance.reset()
+        BleManager.sharedInstance.stopScan()
+//        BleManager.sharedInstance.reset()
     }
     
     private func didDiscoverPeripheral(notification: Notification) {

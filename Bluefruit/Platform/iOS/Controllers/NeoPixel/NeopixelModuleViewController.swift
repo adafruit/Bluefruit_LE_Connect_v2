@@ -36,6 +36,9 @@ class NeopixelModeViewController: PeripheralModeViewController {
     // Data
     fileprivate var neopixel: NeopixelModuleManager!
     fileprivate var board: NeopixelModuleManager.Board?
+    fileprivate var components = NeopixelModuleManager.Components.grb
+    fileprivate var is400HzEnabled = false
+    fileprivate var colorW: UInt8 = 0
     private var ledViews = [UIView]()
     
     fileprivate var currentColor: UIColor = UIColor.red
@@ -136,59 +139,47 @@ class NeopixelModeViewController: PeripheralModeViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "boardSelectorSegue"  {
-            if let controller = segue.destination.popoverPresentationController {
-                controller.delegate = self
-                
-                let boardSelectorViewController = segue.destination as! NeopixelBoardSelectorViewController
-                boardSelectorViewController.onClickStandardBoard = { [unowned self] standardBoardIndex in
-                    var currentType: UInt16!
-                    if let type = self.board?.type {
-                        currentType = type
-                    }
-                    else {
-                        currentType = NeopixelModuleManager.kDefaultType
-                    }
-                    
-                    let board = NeopixelModuleManager.Board.loadStandardBoard(standardBoardIndex, type: currentType)
-                    self.changeBoard(board)
-                }
-                
-                boardSelectorViewController.onClickCustomLineStrip = { [unowned self] in
-                    self.showLineStripDialog()
-                }
+        let controller = segue.destination.popoverPresentationController
+        
+        if let boardSelectorViewController = segue.destination as? NeopixelBoardSelectorViewController {
+            controller?.delegate = self
+            
+            boardSelectorViewController.onClickStandardBoard = { [unowned self] standardBoardIndex in
+                guard let board = NeopixelModuleManager.Board.loadStandardBoard(standardBoardIndex) else { return }
+                self.changeBoard(board)
+            }
+            
+            boardSelectorViewController.onClickCustomLineStrip = { [unowned self] in
+                self.showLineStripDialog()
             }
         }
-        else if segue.identifier == "boardTypeSegue" {
-            if let controller = segue.destination.popoverPresentationController {
-                controller.delegate = self
-                
-                let typeSelectorViewController = segue.destination as! NeopixelTypeSelectorViewController
-                
-                if let type = board?.type {
-                    typeSelectorViewController.currentType = type
-                }
-                else {
-                    typeSelectorViewController.currentType = NeopixelModuleManager.kDefaultType
-                }
-                
-                typeSelectorViewController.onClickSetType = { [unowned self] type in
-                    if var board = self.board {
-                        board.type = type
-                        self.changeBoard(board)
-                    }
-                }
+            
+        else if let componentSelectorViewController = segue.destination as? NeopixelComponentSelectorViewController {
+            controller?.delegate = self
+
+            componentSelectorViewController.selectedComponent = components
+            componentSelectorViewController.onSetComponents = { [unowned self] (components: NeopixelModuleManager.Components, is400HkzEnabled: Bool) in
+                self.changeComponents(components, is400HkzEnabled: is400HkzEnabled)
             }
         }
-        else if segue.identifier == "colorPickerSegue"  {
-            if let controller = segue.destination.popoverPresentationController {
-                controller.delegate = self
-                
-                if let colorPickerViewController = segue.destination as? NeopixelColorPickerViewController {
-                    colorPickerViewController.delegate = self
-                }
-            }
+        else if let colorPickerViewController = segue.destination as? NeopixelColorPickerViewController {
+            controller?.delegate = self
+            
+            colorPickerViewController.delegate = self
         }
+        
+    }
+    
+    private func changeComponents(_ components: NeopixelModuleManager.Components, is400HkzEnabled: Bool) {
+        self.components = components
+        self.is400HzEnabled = is400HkzEnabled
+        
+        /*
+        if neopixel.isBoardConfigured() {
+            neopixel.setupNeopixel(board: self.board, components: components, is400HzEnabled: is400HkzEnabled, completion: <#T##((Bool) -> (Void))##((Bool) -> (Void))##(Bool) -> (Void)#>)
+        }*/
+        onClickConnect(self)
+
     }
     
     private func changeBoard(_ board: NeopixelModuleManager.Board) {
@@ -207,7 +198,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
             let stripLengthTextField = alertController.textFields![0] as UITextField
             
             if let text = stripLengthTextField.text, let stripLength = Int(text) {
-                let board = NeopixelModuleManager.Board(name: "1x\(stripLength)", width: UInt8(stripLength), height:UInt8(1), components: UInt8(3), stride: UInt8(stripLength), type: NeopixelModuleManager.kDefaultType)
+                let board = NeopixelModuleManager.Board(name: "1x\(stripLength)", width: UInt8(stripLength), height:UInt8(1), stride: UInt8(stripLength))
                 self.changeBoard(board)
             }
         }
@@ -218,7 +209,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
             textField.placeholder = "Enter Length"
             textField.keyboardType = .numberPad
             
-            NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: .main) { (notification) in
+            NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: .main) { notification in
                 okAction.isEnabled = textField.text != ""
             }
         }
@@ -237,7 +228,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
     }
     
     fileprivate func updateStatusUI(isWaitingResponse: Bool) {
-        connectButton.isEnabled = !isWaitingResponse && (neopixel.isSketchDetected != true || (neopixel.isReady() && neopixel.board == nil))
+        connectButton.isEnabled = !isWaitingResponse && (neopixel.isSketchDetected != true || (neopixel.isReady() && !neopixel.isBoardConfigured()))
         
         let isBoardConfigured = neopixel.isBoardConfigured()
         boardScrollView.alpha = isBoardConfigured ? 1.0:0.2
@@ -251,7 +242,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
             statusMessage = "Ready to Connect"
         }
         else if neopixel.isSketchDetected! {
-            if neopixel.board == nil {
+            if !neopixel.isBoardConfigured() {
                 if isWaitingResponse {
                     statusMessage = "Waiting for Setup"
                 }
@@ -357,7 +348,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
             DLog("led: (\(x)x\(y))")
             
             ledViews[sender.tag].backgroundColor = currentColor
-            neopixel.setPixelColor(currentColor, x: UInt8(x), y: UInt8(y))
+            neopixel.setPixelColor(currentColor, colorW: colorW, x: UInt8(x), y: UInt8(y))
         }
     }
     
@@ -369,11 +360,11 @@ class NeopixelModeViewController: PeripheralModeViewController {
             guard let context = self else { return }
             
             if isDetected, let board = context.board {
-                context.neopixel.setupNeopixel(device: board) { [weak context] (success) -> (Void) in
+                context.neopixel.setupNeopixel(board: board, components: context.components, is400HzEnabled: context.is400HzEnabled) { [weak context] success in
                     guard let context = context else { return }
                     
                     if success {
-                        context.neopixel.clearBoard(color: context.kDefaultLedColor)
+                        context.neopixel.clearBoard(color: context.currentColor/*context.kDefaultLedColor*/, colorW: context.colorW)
                     }
                     
                     DispatchQueue.main.async { [unowned context] in
@@ -397,7 +388,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
         for ledView in ledViews {
             ledView.backgroundColor = currentColor
         }
-        neopixel.clearBoard(color: currentColor)
+        neopixel.clearBoard(color: currentColor, colorW: colorW)
     }
     
     @IBAction func onChangeBrightness(_ sender: UISlider) {
