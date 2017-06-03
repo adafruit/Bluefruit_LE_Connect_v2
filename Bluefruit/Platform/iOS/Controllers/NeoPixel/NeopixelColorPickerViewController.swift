@@ -34,10 +34,10 @@ class NeopixelColorPickerViewController: UIViewController {
 
         // UI
         colorView.layer.cornerRadius = 8
-        colorView.layer.borderWidth = 2
+        colorView.layer.borderWidth = 1
         colorView.layer.borderColor = UIColor.black.cgColor
         
-        sliderGradientView.layer.borderWidth = 2
+        sliderGradientView.layer.borderWidth = 1
         sliderGradientView.layer.borderColor = UIColor.black.cgColor
         sliderGradientView.layer.cornerRadius = sliderGradientView.bounds.size.height/2
         sliderGradientView.layer.masksToBounds = true

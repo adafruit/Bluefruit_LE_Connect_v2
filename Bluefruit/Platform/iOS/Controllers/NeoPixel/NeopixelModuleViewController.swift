@@ -11,10 +11,10 @@ import UIKit
 class NeopixelModeViewController: PeripheralModeViewController {
     
     // Constants
-    fileprivate var defaultPalette: [String] = []
-    private let kLedWidth: CGFloat = 44
-    private let kLedHeight: CGFloat = 44
-    fileprivate let kDefaultLedColor = UIColor(hex: 0xffffff)!
+    private static let kLedWidth: CGFloat = 44
+    private static let kLedHeight: CGFloat = 44
+    private static let kDefaultLedColor = UIColor(hex: 0xffffff)!
+    private static let kDefaultComponent: NeopixelModuleManager.Components = Config.isDebugEnabled ? .grbw : .grb
 
     // UI
     @IBOutlet weak var statusView: UIView!
@@ -34,11 +34,12 @@ class NeopixelModeViewController: PeripheralModeViewController {
     @IBOutlet weak var rotationView: UIView!
 
     // Data
+    fileprivate var defaultPalette: [String] = []
     fileprivate var neopixel: NeopixelModuleManager!
     fileprivate var board: NeopixelModuleManager.Board?
-    fileprivate var components = NeopixelModuleManager.Components.grb
+    fileprivate var components = NeopixelModeViewController.kDefaultComponent
     fileprivate var is400HzEnabled = false
-    fileprivate var colorW: UInt8 = 0
+    fileprivate var colorW: Float = 0
     private var ledViews = [UIView]()
     
     fileprivate var currentColor: UIColor = UIColor.red
@@ -285,20 +286,20 @@ class NeopixelModeViewController: PeripheralModeViewController {
             
             for j in 0..<board.height {
                 for i in 0..<board.width {
-                    let button = UIButton(frame: CGRect(x: CGFloat(i)*kLedWidth+boardMargin.left, y: CGFloat(j)*kLedHeight+boardMargin.top, width: kLedWidth, height: kLedHeight))
+                    let button = UIButton(frame: CGRect(x: CGFloat(i)*NeopixelModeViewController.kLedWidth+boardMargin.left, y: CGFloat(j)*NeopixelModeViewController.kLedHeight+boardMargin.top, width: NeopixelModeViewController.kLedWidth, height: NeopixelModeViewController.kLedHeight))
                     button.layer.borderColor = ledBorderColor
                     button.layer.borderWidth = 1
                     button.tag = k
                     button.addTarget(self, action: #selector(ledPressed(_:)), for: [.touchDown])
                     rotationView.addSubview(button)
                     
-                    let colorView = UIView(frame: CGRect(x: ledCircleMargin, y: ledCircleMargin, width: kLedWidth-ledCircleMargin*2, height: kLedHeight-ledCircleMargin*2))
+                    let colorView = UIView(frame: CGRect(x: ledCircleMargin, y: ledCircleMargin, width: NeopixelModeViewController.kLedWidth-ledCircleMargin*2, height: NeopixelModeViewController.kLedHeight-ledCircleMargin*2))
                     colorView.isUserInteractionEnabled = false
                     colorView.layer.borderColor = ledBorderColor
                     colorView.layer.borderWidth = 2
-                    colorView.layer.cornerRadius = kLedWidth/2
+                    colorView.layer.cornerRadius = NeopixelModeViewController.kLedWidth/2
                     colorView.layer.masksToBounds = true
-                    colorView.backgroundColor = kDefaultLedColor
+                    colorView.backgroundColor = NeopixelModeViewController.kDefaultLedColor
                     ledViews.append(colorView)
                     button.addSubview(colorView)
                     
@@ -306,8 +307,8 @@ class NeopixelModeViewController: PeripheralModeViewController {
                 }
             }
 
-            contentViewWidthConstraint.constant = CGFloat(board.width) * kLedWidth + boardMargin.left + boardMargin.right
-            contentViewHeightConstrait.constant = CGFloat(board.height) * kLedHeight + boardMargin.top + boardMargin.bottom
+            contentViewWidthConstraint.constant = CGFloat(board.width) * NeopixelModeViewController.kLedWidth + boardMargin.left + boardMargin.right
+            contentViewHeightConstrait.constant = CGFloat(board.height) * NeopixelModeViewController.kLedHeight + boardMargin.top + boardMargin.bottom
             boardScrollView.minimumZoomScale = 0.1
             boardScrollView.maximumZoomScale = 10
             setDefaultPositionAndScale(animated: false)
@@ -325,8 +326,8 @@ class NeopixelModeViewController: PeripheralModeViewController {
             //boardMargin = UIEdgeInsetsMake(boardScrollView.bounds.height * marginScale, boardScrollView.bounds.width * marginScale, boardScrollView.bounds.height * marginScale, boardScrollView.bounds.width * marginScale)
             boardMargin = UIEdgeInsetsMake(2000, 2000, 2000, 2000)
             
-            let boardWidthPoints = CGFloat(board.width) * kLedWidth
-            let boardHeightPoints = CGFloat(board.height) * kLedHeight
+            let boardWidthPoints = CGFloat(board.width) * NeopixelModeViewController.kLedWidth
+            let boardHeightPoints = CGFloat(board.height) * NeopixelModeViewController.kLedHeight
             
             let horizontalMargin = max(0, (boardScrollView.bounds.width - boardWidthPoints)/2)
             let verticalMargin = max(0, (boardScrollView.bounds.height - boardHeightPoints)/2)
@@ -394,6 +395,11 @@ class NeopixelModeViewController: PeripheralModeViewController {
     @IBAction func onChangeBrightness(_ sender: UISlider) {
         neopixel.setBrighness(sender.value)
     }
+    
+    @IBAction func onChangeWColor(_ sender: UISlider) {
+        colorW = sender.value
+    }
+    
     
     @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance

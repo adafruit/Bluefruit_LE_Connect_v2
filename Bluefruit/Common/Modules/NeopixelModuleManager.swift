@@ -307,26 +307,28 @@ class NeopixelModuleManager: NSObject {
         board = nil
     }
     
-    func setPixelColor(_ color: Color, colorW: UInt8, x: UInt8, y: UInt8, completion: ((Bool)->())? = nil) {
+    func setPixelColor(_ color: Color, colorW: Float, x: UInt8, y: UInt8, completion: ((Bool)->())? = nil) {
         DLog("Command: set Pixel")
         guard components.numComponents == 3 || components.numComponents == 4 else { DLog("Error: unsupported numComponents: \(components.numComponents)"); return }
         
         let rgb = colorComponents(color)
         var command: [UInt8] = [0x50, x, y, rgb.red, rgb.green, rgb.blue ]      // Command: 'P'
         if components.numComponents == 4 {
-            command.append(colorW)
+            let colorWValue = UInt8(colorW*255)
+            command.append(colorWValue)
         }
         sendCommand(command, completion: completion)
     }
     
-    func clearBoard(color: Color, colorW: UInt8, completion: ((Bool)->())? = nil) {
+    func clearBoard(color: Color, colorW: Float, completion: ((Bool)->())? = nil) {
         DLog("Command: Clear");
         guard components.numComponents == 3 || components.numComponents == 4 else { DLog("Error: unsupported numComponents: \(components.numComponents)"); return }
         
         let rgb = colorComponents(color)
         var command: [UInt8] = [0x43, rgb.red, rgb.green, rgb.blue]                 // Command: 'C'
         if components.numComponents == 4 {
-            command.append(colorW)
+            let colorWValue = UInt8(colorW*255)
+            command.append(colorWValue)
         }
         sendCommand(command, completion: completion)
     }
@@ -338,7 +340,7 @@ class NeopixelModuleManager: NSObject {
         let command: [UInt8] = [0x42, brightnessValue ]          // Command: 'C'
         sendCommand(command, completion: completion)
     }
-    
+
     private func colorComponents(_ color: Color) -> (red: UInt8, green: UInt8, blue: UInt8) {
         let colorComponents = color.cgColor.components
         let r = UInt8((colorComponents?[0])! * 255)
