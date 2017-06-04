@@ -28,8 +28,9 @@ class NeopixelModeViewController: PeripheralModeViewController {
     @IBOutlet weak var contentViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var contentViewHeightConstrait: NSLayoutConstraint!
     
-    @IBOutlet weak var colorPickerButton: UIButton!
+    @IBOutlet weak var colorPickerContainerView: UIView!
     @IBOutlet weak var boardControlsView: UIView!
+    @IBOutlet weak var colorPickerWComponentColorView: UIView!
     
     @IBOutlet weak var rotationView: UIView!
 
@@ -39,10 +40,10 @@ class NeopixelModeViewController: PeripheralModeViewController {
     fileprivate var board: NeopixelModuleManager.Board?
     fileprivate var components = NeopixelModeViewController.kDefaultComponent
     fileprivate var is400HzEnabled = false
-    fileprivate var colorW: Float = 0
     private var ledViews = [UIView]()
     
     fileprivate var currentColor: UIColor = UIColor.red
+    fileprivate var colorW: Float = 0
     private var contentRotationAngle: CGFloat = 0
 
     private var boardMargin = UIEdgeInsets.zero
@@ -70,9 +71,11 @@ class NeopixelModeViewController: PeripheralModeViewController {
         boardScrollView.layer.borderColor = UIColor.white.cgColor
         boardScrollView.layer.borderWidth = 1
         
-        colorPickerButton.layer.cornerRadius = 4
-        colorPickerButton.layer.masksToBounds = true
+        colorPickerContainerView.layer.cornerRadius = 4
+        colorPickerContainerView.layer.masksToBounds = true
         
+        // Setup
+        changeComponents(components, is400HkzEnabled: is400HzEnabled)
         createBoardUI()
     }
     
@@ -167,6 +170,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
             controller?.delegate = self
             
             colorPickerViewController.delegate = self
+            colorPickerViewController.is4ComponentsEnabled = components.numComponents == 4
         }
         
     }
@@ -174,6 +178,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
     private func changeComponents(_ components: NeopixelModuleManager.Components, is400HkzEnabled: Bool) {
         self.components = components
         self.is400HzEnabled = is400HkzEnabled
+        colorPickerWComponentColorView.isHidden = components.numComponents != 4
         
         /*
         if neopixel.isBoardConfigured() {
@@ -364,11 +369,12 @@ class NeopixelModeViewController: PeripheralModeViewController {
                 context.neopixel.setupNeopixel(board: board, components: context.components, is400HzEnabled: context.is400HzEnabled) { [weak context] success in
                     guard let context = context else { return }
                     
-                    if success {
-                        context.neopixel.clearBoard(color: context.currentColor/*context.kDefaultLedColor*/, colorW: context.colorW)
-                    }
-                    
                     DispatchQueue.main.async { [unowned context] in
+                        if success {
+                            context.onClickClear(context)
+                            //context.neopixel.clearBoard(color: context.currentColor/*context.kDefaultLedColor*/, colorW: context.colorW)
+                        }
+
                         context.updateStatusUI(isWaitingResponse: false)
                     }
                 }
@@ -395,11 +401,6 @@ class NeopixelModeViewController: PeripheralModeViewController {
     @IBAction func onChangeBrightness(_ sender: UISlider) {
         neopixel.setBrighness(sender.value)
     }
-    
-    @IBAction func onChangeWColor(_ sender: UISlider) {
-        colorW = sender.value
-    }
-    
     
     @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
@@ -435,7 +436,7 @@ extension NeopixelModeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let reuseIdentifier = "ColorCell"
-        let colorCell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) //as! AdminMenuCollectionViewCell
+        let colorCell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) //as! AdminMenuCollectionViewCell
         
         let colorHex = defaultPalette[indexPath.row]
         if let color = UIColor(css: colorHex) {
@@ -460,6 +461,7 @@ extension NeopixelModeViewController: UICollectionViewDelegate {
         let colorHex = defaultPalette[indexPath.row]
         if let color = UIColor(css: colorHex) {
             currentColor = color
+            colorW = 0          // All palete colors have w component equal to 0
         }
         updatePickerColorButton(isSelected: false)
         
@@ -497,15 +499,18 @@ extension NeopixelModeViewController: UIPopoverPresentationControllerDelegate {
 
 // MARK: - UIPopoverPresentationControllerDelegate
 extension NeopixelModeViewController: NeopixelColorPickerViewControllerDelegate {
-    func onColorPickerChooseColor(_ color: UIColor) {
-        colorPickerButton.backgroundColor = color
+    func onColorPickerChooseColor(_ color: UIColor, wComponent: Float) {
+        colorPickerContainerView.backgroundColor = color
         updatePickerColorButton(isSelected: true)
         currentColor = color
+        colorW = wComponent
+        
+        colorPickerWComponentColorView.backgroundColor = UIColor(red: CGFloat(wComponent), green: CGFloat(wComponent), blue: CGFloat(wComponent), alpha: 1.0)
         paletteCollection.reloadData()
     }
 
     fileprivate func updatePickerColorButton(isSelected: Bool) {
-        colorPickerButton.layer.borderWidth = isSelected ? 4:2
-        colorPickerButton.layer.borderColor =  (isSelected ? UIColor.white: colorPickerButton.backgroundColor!.darker(0.5)).cgColor
+        colorPickerContainerView.layer.borderWidth = isSelected ? 4:2
+        colorPickerContainerView.layer.borderColor = (isSelected ? UIColor.white: colorPickerContainerView.backgroundColor?.darker(0.5) ?? .black ).cgColor
     }
 }

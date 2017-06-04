@@ -122,7 +122,7 @@ extension ScrollingTabBarViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let reuseIdentifier = "ItemCell"
-        let itemCell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! PeripheralDetailsCollectionViewCell
+        let itemCell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PeripheralDetailsCollectionViewCell
         
         if let tabBarItem = viewControllers?[indexPath.row].tabBarItem {
             itemCell.titleLabel.text = tabBarItem.title

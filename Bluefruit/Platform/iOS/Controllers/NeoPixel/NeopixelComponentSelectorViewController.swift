@@ -113,7 +113,7 @@ extension NeopixelComponentSelectorViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 1 {
-            tableView.deselectRow(at: indexPath as IndexPath, animated: indexPath.section == 0)
+            tableView.deselectRow(at: indexPath, animated: indexPath.section == 0)
             
             let component = components[indexPath.row]
             

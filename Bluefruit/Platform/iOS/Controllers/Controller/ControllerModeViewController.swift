@@ -247,7 +247,7 @@ extension ControllerModeViewController : UITableViewDataSource {
             if isDetailCell {
                 let sensorIndex = item - kDetailItemOffset
                 let reuseIdentifier = "ComponentsCell"
-                let componentsCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! ControllerComponentsTableViewCell
+                let componentsCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ControllerComponentsTableViewCell
              
                 let componentNameKeys : [String]
                 if sensorIndex == ControllerModuleManager.ControllerType.location.rawValue {
@@ -281,7 +281,7 @@ extension ControllerModeViewController : UITableViewDataSource {
             }
             else {
                 let reuseIdentifier = "SensorCell"
-                let sensorCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! ControllerSensorTableViewCell
+                let sensorCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ControllerSensorTableViewCell
                 sensorCell.titleLabel!.text = localizationManager.localizedString( ControllerModeViewController.kSensorTitleKeys[item])
                 
                 sensorCell.enableSwitch.isOn = controllerData.isSensorEnabled(index: item)
@@ -371,7 +371,7 @@ extension ControllerModeViewController: UITableViewDelegate {
         default:
             break
         }
-        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

@@ -154,16 +154,21 @@ extension PinIOModeViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reuseIdentifier = "PinCell"
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath as IndexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         return cell
     }
     
+  
+}
+
+// MARK:  UITableViewDelegate
+extension PinIOModeViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let pin = pinIO.pins[indexPath.row]
         let pinCell = cell as! PinIOTableViewCell
         pinCell.setPin(pin)
-
+        
         pinCell.tag = indexPath.row
         pinCell.delegate = self
     }
@@ -177,13 +182,9 @@ extension PinIOModeViewController: UITableViewDataSource {
             return 44
         }
     }
-}
-
-// MARK:  UITableViewDelegate
-extension PinIOModeViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

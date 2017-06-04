@@ -570,7 +570,7 @@ extension UartModeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let reuseIdentifier = "TimestampCell"
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for:indexPath as IndexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for:indexPath)
         
         // Data binding in cellForRowAtIndexPath to avoid problems with multiple-line labels and dyanmic tableview height calculation
         let dataPacket = tableCachedDataBuffer![indexPath.row]

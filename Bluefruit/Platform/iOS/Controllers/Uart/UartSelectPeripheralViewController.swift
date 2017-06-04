@@ -79,7 +79,7 @@ extension UartSelectPeripheralViewController: UITableViewDelegate {
             let name = peripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")
             delegate?.onUartSendToChanged(uuid: peripheral.identifier, name: name)
         }
-        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
         dismiss(animated: true, completion: nil)
     }
 }

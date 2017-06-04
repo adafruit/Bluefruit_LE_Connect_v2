@@ -100,7 +100,7 @@ extension NeopixelBoardSelectorViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath as IndexPath, animated: indexPath.section == 0)
+        tableView.deselectRow(at: indexPath, animated: indexPath.section == 0)
         
         dismiss(animated: true) {[unowned self] () -> Void in
             if indexPath.section == 0 {

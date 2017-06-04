@@ -103,7 +103,7 @@ extension UartSettingsViewController: UITableViewDataSource {
             }
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for:indexPath as IndexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for:indexPath)
 
         cell.backgroundColor = UIColor(hex: 0xe2e1e0)
         return cell
@@ -177,16 +177,16 @@ extension UartSettingsViewController: UITableViewDelegate {
         if indexPath.section == 1 {
             switch ActionsSetion(rawValue: indexPath.row)! {
             case .clear:
-                presentingViewController?.dismiss(animated: true, completion: { [unowned self] () -> Void in
+                presentingViewController?.dismiss(animated: true, completion: { [unowned self] in
                     self.onClickClear?()
                 })
             case .export:
-                presentingViewController?.dismiss(animated: true, completion: { [unowned self] () -> Void in
+                presentingViewController?.dismiss(animated: true, completion: { [unowned self] in
                     self.onClickExport?()
                 })
             }
         }
         
-        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

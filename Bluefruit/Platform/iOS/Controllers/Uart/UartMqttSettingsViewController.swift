@@ -111,7 +111,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         
         
         if indexPath == openCellIndexPath {
-            let pickerCell = tableView.dequeueReusableCell(withIdentifier: "PickerCell", for: indexPath as IndexPath) as! MqttSettingPickerCell
+            let pickerCell = tableView.dequeueReusableCell(withIdentifier: "PickerCell", for: indexPath) as! MqttSettingPickerCell
             pickerCell.pickerView.tag = indexPath.section * 100 + indexPath.row-1
             pickerCell.pickerView.dataSource = self
             pickerCell.pickerView.delegate = self
@@ -120,13 +120,14 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
             cell = pickerCell
         }
         else if section == .status {
-            let statusCell = tableView.dequeueReusableCell(withIdentifier: "StatusCell", for: indexPath as IndexPath) as! MqttSettingsStatusCell
+            let statusCell = tableView.dequeueReusableCell(withIdentifier: "StatusCell", for: indexPath) as! MqttSettingsStatusCell
             
             let status = MqttManager.sharedInstance.status
             let showWait = status == .connecting || status == .disconnecting
             if (showWait) {
                 statusCell.waitView.startAnimating()
-            }else {
+            }
+            else {
                 statusCell.waitView.stopAnimating()
             }
             statusCell.actionButton.isHidden = showWait
@@ -164,7 +165,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
             
             switch section {
             case .server:
-                editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueCell", for: indexPath as IndexPath) as! MqttSettingsValueAndSelector
+                editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueCell", for: indexPath) as! MqttSettingsValueAndSelector
                 editValueCell.reset()
                 
                 let labels = ["Address:", "Port:"]
@@ -182,7 +183,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 }
                 
             case .publish:
-                editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueAndSelectorCell", for: indexPath as IndexPath) as! MqttSettingsValueAndSelector
+                editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueAndSelectorCell", for: indexPath) as! MqttSettingsValueAndSelector
                 editValueCell.reset()
                 
                 let labels = ["Uart RX:", "Uart TX:"]
@@ -196,7 +197,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 typeButton.addTarget(self, action: #selector(UartMqttSettingsViewController.onClickTypeButton(_:)), for: .touchUpInside)
                 
             case .subscribe:
-                editValueCell = tableView.dequeueReusableCell(withIdentifier: row==0 ? "ValueAndSelectorCell":"SelectorCell", for: indexPath as IndexPath) as! MqttSettingsValueAndSelector
+                editValueCell = tableView.dequeueReusableCell(withIdentifier: row==0 ? "ValueAndSelectorCell":"SelectorCell", for: indexPath) as! MqttSettingsValueAndSelector
                 editValueCell.reset()
                 
                 let labels = ["Topic:", "Action:"]
@@ -214,7 +215,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 }
                 
             case .advanced:
-                editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueCell", for: indexPath as IndexPath) as! MqttSettingsValueAndSelector
+                editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueCell", for: indexPath) as! MqttSettingsValueAndSelector
                 editValueCell.reset()
                 
                 let labels = ["Username:", "Password:"]
@@ -229,7 +230,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 }
                 
             default:
-                editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueCell", for: indexPath as IndexPath) as! MqttSettingsValueAndSelector
+                editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueCell", for: indexPath) as! MqttSettingsValueAndSelector
                 editValueCell.reset()
             }
             
@@ -293,7 +294,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         }
         
         // always deselect the row containing the start or end date
-        baseTableView.deselectRow(at: indexPath as IndexPath, animated:true)
+        baseTableView.deselectRow(at: indexPath, animated:true)
         
         baseTableView.endUpdates()
         
