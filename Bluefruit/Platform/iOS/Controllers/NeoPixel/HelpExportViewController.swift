@@ -12,11 +12,11 @@ class HelpExportViewController: HelpViewController {
 
     // UI
     @IBOutlet weak var exportButton: UIButton!
-    
+
     // Data
     var fileTitle: String?
     var fileURL: URL?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,18 +27,17 @@ class HelpExportViewController: HelpViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     @IBAction func onCickExport(_ sender: AnyObject) {
         if let fileTitle = fileTitle, let fileURL = fileURL {
-            
+
             let activityViewController = UIActivityViewController(activityItems: [fileTitle, fileURL], applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = exportButton
-            
+
             navigationController?.present(activityViewController, animated: true, completion: nil)
-        }
-        else {
+        } else {
             DLog("HelpExportViewController: wrong parameters")
         }
     }
-    
+
 }

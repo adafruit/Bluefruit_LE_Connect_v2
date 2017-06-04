@@ -6,20 +6,19 @@
 //  Copyright © 2017 Adafruit. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 // MARK: - UI Utils
 func stringFromData(_ data: Data, useHexMode: Bool) -> String? {
     var result: String?
-    
+
     if useHexMode {
         let hexValue = hexDescription(data: data)
         result = hexValue
-    }
-    else {
+    } else {
         if let value = String(data: data, encoding: .ascii) as String? {
             var representableValue: String
-            
+
             if Preferences.uartShowInvisibleChars {
                 representableValue = ""
                 for scalar in value.unicodeScalars {
@@ -27,11 +26,10 @@ func stringFromData(_ data: Data, useHexMode: Bool) -> String? {
                     //DLog("\(scalar.value). isVis: \( isRepresentable ? "true":"false" )")
                     representableValue.append(isRepresentable ? String(scalar):"�")
                 }
-            }
-            else {
+            } else {
                 representableValue = value
             }
-            
+
             result = representableValue
         }
     }
@@ -39,7 +37,7 @@ func stringFromData(_ data: Data, useHexMode: Bool) -> String? {
 }
 
 func attributedStringFromData(_ data: Data, useHexMode: Bool, color: Color, font: Font) -> NSAttributedString? {
-    
+
     guard let string = stringFromData(data, useHexMode: useHexMode) else { return nil }
 
     let textAttributes: [String: AnyObject] = [NSFontAttributeName: font, NSForegroundColorAttributeName: color]

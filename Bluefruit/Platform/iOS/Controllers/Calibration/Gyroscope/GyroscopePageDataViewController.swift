@@ -13,7 +13,7 @@ class GyroscopePageDataViewController: GyroscopePageContentViewController {
     // UI
     @IBOutlet weak var gyroscopeOffsetLabel: UILabel!
     @IBOutlet weak var unitsSegmentedControl: UISegmentedControl!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,7 +24,7 @@ class GyroscopePageDataViewController: GyroscopePageContentViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     override func updateUI() {
         super.updateUI()
 
@@ -46,15 +46,15 @@ class GyroscopePageDataViewController: GyroscopePageContentViewController {
             value = gyroVector
             unitFormat = "%.0f"
         }
-        
+
         // Average Readings
         gyroscopeOffsetLabel.text = String(format: "( \(unitFormat)  \(unitFormat)  \(unitFormat)) ", value.x, value.y, value.z)
     }
-    
+
     @IBAction func onUnitsChanged(_ sender: UISegmentedControl) {
         Preferences.gyroUnitId = sender.selectedSegmentIndex
-        
+
         updateUI()
     }
-    
+
 }

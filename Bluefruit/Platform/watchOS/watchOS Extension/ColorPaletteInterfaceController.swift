@@ -9,51 +9,50 @@
 import WatchKit
 import Foundation
 
-
 class ColorPaletteInterfaceController: WKInterfaceController {
 
     // Constants
-    private static let palette:[UIColor] = [
+    private static let palette: [UIColor] = [
         UIColor(red:0.969, green:0.400, blue:0.427, alpha:1.000),
         UIColor(red:0.992, green:0.694, blue:0.427, alpha:1.000),
         UIColor(red:1.000, green:1.000, blue:0.694, alpha:1.000),
-        
+
         UIColor(red:1.000, green:0.000, blue:0.000, alpha:1.000),
         UIColor(red:1.000, green:0.502, blue:0.000, alpha:1.000),
         UIColor(red:1.000, green:1.000, blue:0.004, alpha:1.000),
-        
+
         UIColor(red:0.686, green:0.000, blue:0.051, alpha:1.000),
         UIColor(red:0.686, green:0.184, blue:0.039, alpha:1.000),
         UIColor(red:0.667, green:0.714, blue:0.047, alpha:1.000),
-        
+
         UIColor(red:0.706, green:1.000, blue:0.698, alpha:1.000),
         UIColor(red:0.706, green:1.000, blue:1.000, alpha:1.000),
         UIColor(red:0.500, green:0.500, blue:1.000, alpha:1.000),
-        
+
         UIColor(red:0.000, green:1.000, blue:0.000, alpha:1.000),
         UIColor(red:0.004, green:1.000, blue:1.000, alpha:1.000),
         UIColor(red:0.000, green:0.000, blue:1.000, alpha:1.000),
-        
+
         UIColor(red:0.137, green:0.718, blue:0.024, alpha:1.000),
         UIColor(red:0.122, green:0.702, blue:0.671, alpha:1.000),
         UIColor(red:0.000, green:0.000, blue:0.694, alpha:1.000),
-        
+
         UIColor(red:0.847, green:0.682, blue:0.996, alpha:1.000),
         UIColor(red:0.992, green:0.678, blue:1.000, alpha:1.000),
         UIColor(red:1.000, green:1.000, blue:1.000, alpha:1.000),
-        
+
         UIColor(red:0.518, green:0.000, blue:0.996, alpha:1.000),
         UIColor(red:0.984, green:0.000, blue:1.000, alpha:1.000),
         UIColor(red:0.502, green:0.502, blue:0.502, alpha:1.000),
-        
+
         UIColor(red:0.271, green:0.000, blue:0.698, alpha:1.000),
         UIColor(red:0.682, green:0.000, blue:0.690, alpha:1.000),
         UIColor(red:0.000, green:0.000, blue:0.000, alpha:1.000)
     ]
-    
+
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        
+
         // Configure interface objects here.
     }
 
@@ -66,7 +65,7 @@ class ColorPaletteInterfaceController: WKInterfaceController {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
     }
-    
+
     @IBAction func onClickColor0() {
         onClickColor(0)
     }
@@ -177,7 +176,7 @@ class ColorPaletteInterfaceController: WKInterfaceController {
 
     private func onClickColor(_ tag: Int) {
         guard let session = WatchSessionManager.sharedInstance.session else { return }
-        
+
         let color = ColorPaletteInterfaceController.palette[tag]
         let hex = colorHexInt(color)
         session.sendMessage(["command": "color", "color": hex], replyHandler: nil) { (error) in

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 class UartSettings {
     static let kMaxMultiUartConnectedPeripherals = 5
 }

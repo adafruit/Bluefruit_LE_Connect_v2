@@ -14,14 +14,14 @@ class PageContentViewController: UIViewController {
     var isCalibrating = false {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                self?.updateUI()                
+                self?.updateUI()
             }
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         contentView?.layer.cornerRadius = 8
         contentView?.layer.masksToBounds = true
         contentView?.layer.borderColor = UIColor(colorLiteralRed: 8/255, green: 155/255, blue: 40/255, alpha: 1).cgColor
@@ -31,10 +31,10 @@ class PageContentViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     func updateUI() {
         contentView?.layer.borderWidth = isCalibrating ? 0:4
-        
+
         // Override if needed on subclasses
     }
 }

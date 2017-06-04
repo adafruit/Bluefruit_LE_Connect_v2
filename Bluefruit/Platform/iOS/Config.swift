@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 struct Config {
 
     #if DEBUG

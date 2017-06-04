@@ -24,11 +24,11 @@ class PinIOTableViewCell: UITableViewCell {
     @IBOutlet weak var modeSegmentedControl: UISegmentedControl!
     @IBOutlet weak var digitalSegmentedControl: UISegmentedControl!
     @IBOutlet weak var valueSlider: UISlider!
-    
+
     // Data
     weak var delegate: PinIoTableViewCellDelegate?
-    private var modesInSegmentedControl : [PinIOModuleManager.PinData.Mode] = []
-    
+    private var modesInSegmentedControl: [PinIOModuleManager.PinData.Mode] = []
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -36,21 +36,21 @@ class PinIOTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
+
         // Configure the view for the selected state
     }
-    
+
     // MARK: - Setup
     func setPin(_ pin: PinIOModuleManager.PinData) {
         setupModeSegmentedControl(pin: pin)
         digitalSegmentedControl.selectedSegmentIndex = pin.digitalValue.rawValue
         valueSlider.value = Float(pin.analogValue)
-        
+
         let analogName = pin.isAnalog ?", Analog \(pin.analogPinId)":""
         let fullName = "Pin \(pin.digitalPinId)\(analogName)"
         nameLabel.text = fullName
         modeLabel.text = pin.mode.description
-        
+
         var valueText: String?
         switch pin.mode {
         case .input:
@@ -61,17 +61,17 @@ class PinIOTableViewCell: UITableViewCell {
             valueText = String(pin.analogValue)
         case .pwm:
             valueText = String(pin.analogValue)
-            
+
         default:
             valueText = ""
         }
         valueLabel.text = valueText
-        
+
         valueSlider.isHidden = pin.mode != .pwm
         digitalSegmentedControl.isHidden = pin.mode != .output
     }
-    
-    private func setupModeSegmentedControl(pin : PinIOModuleManager.PinData) {
+
+    private func setupModeSegmentedControl(pin: PinIOModuleManager.PinData) {
         modesInSegmentedControl.removeAll()
         if pin.isDigital == true {
             modesInSegmentedControl.append(.input)
@@ -94,25 +94,23 @@ class PinIOTableViewCell: UITableViewCell {
         }
     }
 
-    
     // MARK: - Actions
     @IBAction func onClickSelectButton(_ sender: UIButton) {
         delegate?.onPinToggleCell(pinIndex: tag)
     }
-    
+
     @IBAction func onModeChanged(_ sender: UISegmentedControl) {
         delegate?.onPinModeChanged(modesInSegmentedControl[sender.selectedSegmentIndex], pinIndex: tag)
     }
-    
+
     @IBAction func onDigitalChanged(_ sender: UISegmentedControl) {
         if let selectedDigital = PinIOModuleManager.PinData.DigitalValue(rawValue: sender.selectedSegmentIndex) {
             delegate?.onPinDigitalValueChanged(selectedDigital, pinIndex: tag)
-        }
-        else {
+        } else {
             DLog("Error onDigitalChanged with invalid value")
         }
     }
-    
+
     @IBAction func onValueSliderChanged(_ sender: UISlider) {
         delegate?.onPinAnalogValueChanged(sender.value, pinIndex: tag)
     }

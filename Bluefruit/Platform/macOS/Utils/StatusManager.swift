@@ -8,9 +8,9 @@
 
 import Foundation
 
-class StatusManager : NSObject {
+class StatusManager: NSObject {
     static let sharedInstance = StatusManager()
-  
+
     enum Status {
         case Updating
         case Connected
@@ -21,25 +21,25 @@ class StatusManager : NSObject {
         case Unsupported
         case Unauthorized
         case PoweredOff
-        case Ready        
+        case Ready
     }
-    
+
     var status = Status.Unknown
-    
+
     // Links to controllers needed to determine status
     weak var peripheralListViewController: PeripheralListViewController?
     weak var updateDialogViewController: UpdateDialogViewController?
-    
+
     override init() {
         super.init()
-        
+
         registerNotifications(enabled: true)
     }
-    
+
     deinit {
         registerNotifications(enabled: false)
     }
-    
+
     // MARK: - BLE Notifications
     private weak var didUpdateBleStateObserver: NSObjectProtocol?
     private weak var didStartScanningObserver: NSObjectProtocol?
@@ -50,7 +50,7 @@ class StatusManager : NSObject {
     private weak var didStopScanningObserver: NSObjectProtocol?
     private weak var didDiscoverPeripheralObserver: NSObjectProtocol?
     private weak var didUnDiscoverPeripheralObserver: NSObjectProtocol?
-    
+
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
@@ -63,8 +63,7 @@ class StatusManager : NSObject {
             didStopScanningObserver = notificationCenter.addObserver(forName: .didStopScanning, object: nil, queue: .main, using: updateStatus)
             didDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didDiscoverPeripheral, object: nil, queue: .main, using: updateStatus)
             didUnDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didUnDiscoverPeripheral, object: nil, queue: .main, using: updateStatus)
-        }
-        else {
+        } else {
             if let didUpdateBleStateObserver = didUpdateBleStateObserver {notificationCenter.removeObserver(didUpdateBleStateObserver)}
             if let didStartScanningObserver = didStartScanningObserver {notificationCenter.removeObserver(didStartScanningObserver)}
             if let willConnectToPeripheralObserver = willConnectToPeripheralObserver {notificationCenter.removeObserver(willConnectToPeripheralObserver)}
@@ -77,30 +76,25 @@ class StatusManager : NSObject {
         }
     }
 
-    
     func updateStatus(notification: Notification) {
         let bleManager = BleManager.sharedInstance
         let isUpdating = updateDialogViewController != nil
         let isConnected = bleManager.blePeripheralConnected != nil
         let isConnecting = bleManager.blePeripheralConnecting != nil
         let isScanning = bleManager.isScanning
-        
+
         if isUpdating {
             status = .Updating
-        }
-        else if isConnected {
+        } else if isConnected {
             status = .Connected
-        }
-        else if isConnecting {
+        } else if isConnecting {
             status = .Connecting
-        }
-        else if isScanning {
+        } else if isScanning {
            status = .Scanning
-        }
-        else {
+        } else {
             if let state = bleManager.centralManager?.state {
-                
-                switch(state) {
+
+                switch state {
                 case .unknown:
                     status = .Unknown
                 case .resetting:
@@ -116,28 +110,27 @@ class StatusManager : NSObject {
                 }
             }
         }
-        
-        NotificationCenter.default.post(name: .didUpdateStatus, object: nil);
+
+        NotificationCenter.default.post(name: .didUpdateStatus, object: nil)
     }
-    
+
     private func listNames(peripherals: [BlePeripheral]) -> String {
         let name = peripherals.reduce("") {
             if $0 == "" {
                 return $1.name ?? "<unknown>"
-            }
-            else {
+            } else {
                 return $0 + ", " + ($1.name ?? "<unknown>")
             }
             //                $0 == "" ? $1.name : $0 + ", " + ($1.name ?? "<unknown>")
         }
         return name
     }
-    
+
     func statusDescription() -> String {
-        
+
         var message = ""
         let bleManager = BleManager.sharedInstance
-        
+
         switch status {
         case .Updating:
             message = "Updating Firmware"
@@ -167,20 +160,20 @@ class StatusManager : NSObject {
             message = "Bluetooth Low Energy unsupported"
         case .Unauthorized:
             message = "Unathorized to use Bluetooth Low Energy"
-            
+
         case .PoweredOff:
             message = "Bluetooth is currently powered off"
         case .Ready:
             message = "Status: Ready"
-            
+
         }
-        
+
         return message
     }
-    
+
     func errorDescription() -> String? {
         var errorMessage: String?
-        
+
         switch status {
         case .Unsupported:
             errorMessage = "This computer doesn't support Bluetooth Low Energy"
@@ -191,15 +184,14 @@ class StatusManager : NSObject {
         default:
             errorMessage = nil
         }
-        
+
         return errorMessage
     }
-    
+
     func startConnectionToPeripheral(identifier: String?) {
         peripheralListViewController?.selectRowForPeripheralIdentifier(identifier)
     }
 }
-
 
 // MARK: - Custom Notifications
 extension Notification.Name {

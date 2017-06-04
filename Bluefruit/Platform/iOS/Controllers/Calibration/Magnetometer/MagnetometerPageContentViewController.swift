@@ -17,7 +17,7 @@ class MagnetometerPageContentViewController: PageContentViewController {
 
     var calibration: Calibration!
     weak var delegate: MagnetometerPageContentViewControllerDelegate?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,6 +27,5 @@ class MagnetometerPageContentViewController: PageContentViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
 }

@@ -14,10 +14,10 @@ class UartSettingTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var switchControl: UISwitch!
-    
-    var onSwitchEnabled: ((_ isEnabled: Bool) -> ())?
-    var onSegmentedControlIndexChanged: ((_ selectedIndex: Int) -> ())?
-    
+
+    var onSwitchEnabled: ((_ isEnabled: Bool) -> Void)?
+    var onSegmentedControlIndexChanged: ((_ selectedIndex: Int) -> Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

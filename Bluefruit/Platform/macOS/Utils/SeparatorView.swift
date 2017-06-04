@@ -9,20 +9,20 @@
 import Cocoa
 
 class SeparatorView: NSView {
-    
+
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         commonSetup()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         commonSetup()
     }
-    
+
     private func commonSetup() {
         wantsLayer = true
         layer?.backgroundColor = NSColor.black.withAlphaComponent(0.2).cgColor
     }
-    
+
 }

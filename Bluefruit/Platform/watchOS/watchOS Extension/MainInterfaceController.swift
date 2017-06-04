@@ -9,12 +9,11 @@
 import WatchKit
 import Foundation
 
-
 class MainInterfaceController: WKInterfaceController {
-    
+
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        
+
         // Configure interface objects here.
     }
 
@@ -27,11 +26,10 @@ class MainInterfaceController: WKInterfaceController {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
     }
-    
+
     @IBAction func onClickLaunch() {
         DLog("updateUserActivity")
         updateUserActivity(HandoffManager.kUserActivityType, userInfo: [HandoffManager.kIdentifierKey: "watch"], webpageURL: nil)
     }
-    
 
 }

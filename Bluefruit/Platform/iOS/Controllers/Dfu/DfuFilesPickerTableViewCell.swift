@@ -10,8 +10,8 @@ import UIKit
 
 class DfuFilesPickerTableViewCell: UITableViewCell {
 
-    var onPickFiles: (()->())?
-    
+    var onPickFiles: (()->Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

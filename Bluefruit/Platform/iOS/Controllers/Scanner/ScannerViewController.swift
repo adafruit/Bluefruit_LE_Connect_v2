@@ -40,28 +40,27 @@ class ScannerViewController: UIViewController {
     @IBOutlet weak var multiConnectDetailsLabel: UILabel!
     @IBOutlet weak var multiConnectShowButton: UIButton!
 
-
     // Data
     fileprivate let refreshControl = UIRefreshControl()
     fileprivate var peripheralList: PeripheralList!
     fileprivate var isRowDetailOpenForPeripheral = [UUID: Bool]()          // Is the detailed info row open [PeripheralIdentifier: Bool]
 
     fileprivate var selectedPeripheral: BlePeripheral?
-    
+
     fileprivate var isMultiConnectEnabled = false
     fileprivate let firmwareUpdater = FirmwareUpdater()
     fileprivate var infoAlertController: UIAlertController?
-    
+
     fileprivate var isBaseTableScrolling = false
     fileprivate var isScannerTableWaitingForReload = false
     fileprivate var isBaseTableAnimating = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Init
         peripheralList = PeripheralList()                  // Initialize here to wait for Preferences.registerDefaults to be executed
-        
+
         // Setup filters
         filtersNameTextField.leftViewMode = .always
         let searchImageView = UIImageView(image: UIImage(named: "ic_search_18pt"))
@@ -72,20 +71,20 @@ class ScannerViewController: UIViewController {
         // Setup table view
         baseTableView.estimatedRowHeight = 66
         baseTableView.rowHeight = UITableViewAutomaticDimension
-        
+
         // Setup table refresh
         refreshControl.addTarget(self, action: #selector(onTableRefresh(_:)), for: UIControlEvents.valueChanged)
         baseTableView.addSubview(refreshControl)
         baseTableView.sendSubview(toBack: refreshControl)
-        
+
         // Setup filters
         filtersRssiSlider.minimumValue = Float(PeripheralList.kMinRssiValue)
         filtersRssiSlider.maximumValue = Float(PeripheralList.kMaxRssiValue)
-        
+
         // Setup multiconnect
         multiConnectShowButton.setBackgroundImage(UIImage(color: view.tintColor), for: .normal)
         multiConnectShowButton.setBackgroundImage(UIImage(color: UIColor.clear), for: .disabled)
-        
+
         openMultiConnectPanel(isOpen: false, animated: false)
     }
 
@@ -93,7 +92,7 @@ class ScannerViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -107,12 +106,12 @@ class ScannerViewController: UIViewController {
 
         // Flush any pending state notifications
         didUpdateBleState(notification: nil)
-        
+
         // Ble Notifications
         registerNotifications(enabled: true)
-        
+
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
-        
+
         if isFullScreen {
             // If only connected to 1 peripheral and coming back to this
             let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
@@ -122,24 +121,24 @@ class ScannerViewController: UIViewController {
                 BleManager.sharedInstance.disconnect(from: peripheral)
             }
         }
-        
+
         // Start scannning
         BleManager.sharedInstance.startScan()
 //        BleManager.sharedInstance.startScan(withServices: ScannerViewController.kServicesToScan)
-        
+
         // Update UI
         updateScannedPeripherals()
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
         // Stop scanning
         BleManager.sharedInstance.stopScan()
-        
+
         // Ble Notifications
         registerNotifications(enabled: false)
-        
+
         // Clear peripherals
         peripheralList.clear()
         isRowDetailOpenForPeripheral.removeAll()
@@ -152,7 +151,7 @@ class ScannerViewController: UIViewController {
     private weak var didConnectToPeripheralObserver: NSObjectProtocol?
     private weak var didDisconnectFromPeripheralObserver: NSObjectProtocol?
     private weak var peripheralDidUpdateNameObserver: NSObjectProtocol?
-    
+
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
@@ -162,8 +161,7 @@ class ScannerViewController: UIViewController {
             didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: didConnectToPeripheral)
             didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: didDisconnectFromPeripheral)
             peripheralDidUpdateNameObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateName, object: nil, queue: .main, using: peripheralDidUpdateName)
-       }
-        else {
+       } else {
             if let didUpdateBleStateObserver = didUpdateBleStateObserver {notificationCenter.removeObserver(didUpdateBleStateObserver)}
             if let didDiscoverPeripheralObserver = didDiscoverPeripheralObserver {notificationCenter.removeObserver(didDiscoverPeripheralObserver)}
             if let willConnectToPeripheralObserver = willConnectToPeripheralObserver {notificationCenter.removeObserver(willConnectToPeripheralObserver)}
@@ -172,10 +170,10 @@ class ScannerViewController: UIViewController {
             if let peripheralDidUpdateNameObserver = peripheralDidUpdateNameObserver {notificationCenter.removeObserver(peripheralDidUpdateNameObserver)}
         }
     }
-    
+
     private func didUpdateBleState(notification: Notification?) {
         guard let state = BleManager.sharedInstance.centralManager?.state else { return }
-        
+
         // Check if there is any error
         var errorMessage: String?
         switch state {
@@ -188,14 +186,14 @@ class ScannerViewController: UIViewController {
         default:
             errorMessage = nil
         }
-        
+
         // Show alert if error found
         if let errorMessage = errorMessage {
             DLog("Error: \(errorMessage)")
-            
+
             // Reload peripherals
             refreshPeripherals()
-            
+
             // Show error
             let localizationManager = LocalizationManager.sharedInstance
             let alertController = UIAlertController(title: localizationManager.localizedString("dialog_error"), message: errorMessage, preferredStyle: .alert)
@@ -204,12 +202,12 @@ class ScannerViewController: UIViewController {
                     navController.popViewController(animated: true)
                 }
             })
-            
+
             alertController.addAction(okAction)
             self.present(alertController, animated: true, completion: nil)
         }
     }
-    
+
     private func didDiscoverPeripheral(notification: Notification) {
         /*
         #if DEBUG
@@ -218,82 +216,82 @@ class ScannerViewController: UIViewController {
             DLog("didDiscoverPeripheral: \(peripheral?.name ?? "")")
         #endif
           */
-        
+
         // Update current scanning state
         updateScannedPeripherals()
     }
-    
+
     private func willConnectToPeripheral(notification: Notification) {
         guard let peripheral = BleManager.sharedInstance.peripheral(from: notification) else {
             return
         }
-        
+
         presentInfoDialog(title: "Connecting...", peripheral: peripheral)
     }
-    
+
     private func didConnectToPeripheral(notification: Notification) {
         updateMultiConnectUI()
-        
+
         guard let selectedPeripheral = selectedPeripheral, let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, selectedPeripheral.identifier == identifier else {
             DLog("Connected to an unexpected peripheral")
             return
         }
-        
+
         // Discover services
         infoAlertController?.message = "Discovering services..."
         discoverServices(peripheral: selectedPeripheral)
     }
-    
+
     private func didDisconnectFromPeripheral(notification: Notification) {
         updateMultiConnectUI()
 
         let peripheral = BleManager.sharedInstance.peripheral(from: notification)
         let currentlyConnectedPeripheralsCount = BleManager.sharedInstance.connectedPeripherals().count
-        
+
         guard let selectedPeripheral = selectedPeripheral, selectedPeripheral.identifier == peripheral?.identifier || currentlyConnectedPeripheralsCount == 0 else {        // If selected peripheral is disconnected or if there not any peripherals connected (after a failed dfu update)
             return
         }
 
         // Clear selected peripheral
         self.selectedPeripheral = nil
-        
+
         // Watch
         WatchSessionManager.sharedInstance.updateApplicationContext(mode: .scan)
-        
+
         // Dismiss any info open dialogs
         infoAlertController?.dismiss(animated: true, completion: nil)
-        
+
         // Reload table
         reloadBaseTable()
     }
-    
+
     private func peripheralDidUpdateName(notification: Notification) {
         let name = notification.userInfo?[BlePeripheral.NotificationUserInfoKey.name.rawValue] as? String
         DLog("centralManager peripheralDidUpdateName: \(name ?? "<unknown>")")
-        
+
         DispatchQueue.main.async { [weak self] in
             // Reload table
             self?.reloadBaseTable()
         }
     }
-    
+
     // MARK: - Navigation
     fileprivate func showPeripheralDetails() {
         // Watch
         if !isMultiConnectEnabled {
             WatchSessionManager.sharedInstance.updateApplicationContext(mode: .connected)
         }
-        
+
         // Segue
         performSegue(withIdentifier: "showDetailSegue", sender: self)
     }
-    
+
     fileprivate func showPeripheralUpdate() {
         // Watch
         if !isMultiConnectEnabled {
             WatchSessionManager.sharedInstance.updateApplicationContext(mode: .connected)
         }
-        
+
         // Segue
         performSegue(withIdentifier: "showUpdateSegue", sender: self)
     }
@@ -302,25 +300,22 @@ class ScannerViewController: UIViewController {
         // Segue
         performSegue(withIdentifier: "showMultiUartSegue", sender: self)
     }
-    
+
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         return selectedPeripheral != nil
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+
         if segue.identifier == "showDetailSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
             peripheralDetailsViewController.blePeripheral = selectedPeripheral
-        }
-        else if segue.identifier == "showUpdateSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
+        } else if segue.identifier == "showUpdateSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
             peripheralDetailsViewController.blePeripheral = selectedPeripheral
             peripheralDetailsViewController.startingController = .update
-        }
-        else if segue.identifier == "showMultiUartSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
+        } else if segue.identifier == "showMultiUartSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
             peripheralDetailsViewController.blePeripheral = nil
             peripheralDetailsViewController.startingController = .multiUart
-        }
-        else if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController  {
+        } else if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController {
             controller.delegate = self
 
             if let sourceView = sender as? UIView {
@@ -335,16 +330,16 @@ class ScannerViewController: UIViewController {
             }
         }
     }
-    
+
     // MARK: - Device setup
     private func discoverServices(peripheral: BlePeripheral) {
         DLog("Discovering services")
-        
+
         peripheral.discover(serviceUuids: nil) { [weak self] error in
             guard let context = self else {
                 return
             }
-        
+
             DispatchQueue.main.async { [unowned context] in
                 guard error == nil else {
                     DLog("Error initializing peripheral")
@@ -356,12 +351,11 @@ class ScannerViewController: UIViewController {
                     })
                     return
                 }
-                
+
                 if context.isMultiConnectEnabled {
-                    context.dismissInfoDialog() {
+                    context.dismissInfoDialog {
                     }
-                }
-                else {
+                } else {
                     // Check updates if needed
                     context.infoAlertController?.message = "Checking updates..."
                     context.startUpdatesCheck(peripheral: peripheral)
@@ -384,7 +378,7 @@ class ScannerViewController: UIViewController {
         let alert = UIAlertController(title: localizationManager.localizedString("autoupdate_title"),
                                       message: String(format: localizationManager.localizedString("auoupadte_description_format"), latestRelease.version),
                                       preferredStyle: UIAlertControllerStyle.alert)
-        
+
         alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_update"), style: UIAlertActionStyle.default, handler: { [unowned self] _ in
             self.showPeripheralUpdate()
         }))
@@ -397,90 +391,90 @@ class ScannerViewController: UIViewController {
         }))
         self.present(alert, animated: true, completion: nil)
     }
-    
+
     // MARK: - Filters
     private func openFiltersPanel(isOpen: Bool, animated: Bool) {
-        
+
         Preferences.scanFilterIsPanelOpen = isOpen
         self.filtersDisclosureButton.isSelected = isOpen
-        
+
         self.filtersPanelViewHeightConstraint.constant = isOpen ? ScannerViewController.kFiltersPanelOpenHeight:ScannerViewController.kFiltersPanelClosedHeight
         UIView.animate(withDuration: animated ? 0.3:0) { [unowned self] in
             self.view.layoutIfNeeded()
         }
     }
-    
+
     private func updateFiltersTitle() {
         let filtersTitle = peripheralList.filtersDescription()
         filtersTitleLabel.text = filtersTitle != nil ? "Filter: \(filtersTitle!)" : "No filter selected"
-        
+
         filtersClearButton.isHidden = !peripheralList.isAnyFilterEnabled()
     }
-    
+
     private func updateFilters() {
         updateFiltersTitle()
         reloadBaseTable()
     }
-    
+
     private func setRssiSlider(value: Int?) {
         filtersRssiSlider.value = value != nil ? Float(-value!) : Float(PeripheralList.kDefaultRssiValue)
         updateRssiValueLabel()
     }
-    
+
     private func updateRssiValueLabel() {
         filterRssiValueLabel.text = "\(Int(-filtersRssiSlider.value)) dBM"
     }
-    
+
     // MARK: - MultiConnect
     private func openMultiConnectPanel(isOpen: Bool, animated: Bool) {
         //Preferences.scanMultiConnectIsPanelOpen = isOpen
         self.multiConnectDisclosureButton.isSelected = isOpen
-        
+
         self.multiConnectPanelViewHeightConstraint.constant = isOpen ? ScannerViewController.kMultiConnectPanelOpenHeight:ScannerViewController.kMultiConnectPanelClosedHeight
         UIView.animate(withDuration: animated ? 0.3:0) { [unowned self] in
             self.view.layoutIfNeeded()
         }
     }
-    
+
     // MARK: - Actions
     func onTableRefresh(_ sender: AnyObject) {
         refreshPeripherals()
         refreshControl.endRefreshing()
     }
-    
+
     fileprivate func refreshPeripherals() {
         isRowDetailOpenForPeripheral.removeAll()
         BleManager.sharedInstance.refreshPeripherals()
         reloadBaseTable()
     }
-    
+
     @IBAction func onClickExpandFilters(_ sender: Any) {
         openFiltersPanel(isOpen: !Preferences.scanFilterIsPanelOpen, animated: true)
     }
-    
+
     @IBAction func onFilterNameChanged(_ sender: UITextField) {
         let isEmpty = sender.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty ?? true
         peripheralList.filterName = isEmpty ? nil:sender.text
         updateFilters()
     }
-    
+
     @IBAction func onRssiSliderChanged(_ sender: UISlider) {
         let rssiValue = Int(-sender.value)
         peripheralList.rssiFilterValue = rssiValue
         updateRssiValueLabel()
         updateFilters()
     }
-    
+
     @IBAction func onFilterSettingsUnnamedChanged(_ sender: UISwitch) {
         peripheralList.isUnnamedEnabled = sender.isOn
         updateFilters()
     }
-    
+
     @IBAction func onFilterSettingsUartChanged(_ sender: UISwitch) {
         peripheralList.isOnlyUartEnabled = sender.isOn
         updateFilters()
     }
-    
+
     @IBAction func onClickRemoveFilters(_ sender: AnyObject) {
         peripheralList.setDefaultFilters()
         filtersNameTextField.text = peripheralList.filterName ?? ""
@@ -489,40 +483,39 @@ class ScannerViewController: UIViewController {
         filtersUartSwitch.isOn = peripheralList.isOnlyUartEnabled
         updateFilters()
     }
-    
+
     @IBAction func onClickFilterNameSettings(_ sender: Any) {
         performSegue(withIdentifier: "filterNameSettingsSegue", sender: sender)
     }
-    
+
     @IBAction func onClickInfo(_ sender: Any) {
         if let infoViewController = storyboard?.instantiateViewController(withIdentifier: "AboutNavigationController") {
             present(infoViewController, animated: true, completion: nil)
         }
     }
-    
+
     @IBAction func onMultiConnectEnabled(_ sender: UISwitch) {
         enabledMulticonnect(enable: sender.isOn)
     }
-    
+
     @IBAction func onClickExpandMultiConnect(_ sender: Any) {
         enabledMulticonnect(enable: !isMultiConnectEnabled)
         multiConnectSwitch.isOn = isMultiConnectEnabled
         //openMultiConnectPanel(isOpen: !Preferences.scanMultiConnectIsPanelOpen, animated: true)
     }
-    
+
     @IBAction func onMultiConnectShow(_ sender: Any) {
         showMultiUartMode()
     }
-    
+
     fileprivate func enabledMulticonnect(enable: Bool) {
         isMultiConnectEnabled = enable
         openMultiConnectPanel(isOpen: isMultiConnectEnabled, animated: true)
-        
+
         // Disconnect from all devices if is set as off
         if isMultiConnectEnabled {
             updateMultiConnectUI()
-        }
-        else {
+        } else {
             let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
             if !connectedPeripherals.isEmpty {
                 for connectedPeripheral in connectedPeripherals {
@@ -533,56 +526,55 @@ class ScannerViewController: UIViewController {
         }
 
     }
-    
+
     // MARK: - Connections
     fileprivate func connect(peripheral: BlePeripheral) {
         // Dismiss keyboard
         filtersNameTextField.resignFirstResponder()
-        
+
         // Connect to selected peripheral
         selectedPeripheral = peripheral
         BleManager.sharedInstance.connect(to: peripheral)
         reloadBaseTable()
     }
-    
+
     fileprivate func disconnect(peripheral: BlePeripheral) {
         selectedPeripheral = nil
         BleManager.sharedInstance.disconnect(from: peripheral)
         reloadBaseTable()
     }
-    
+
     // MARK: - UI
     private func updateScannedPeripherals() {
-        
+
         // Reload table
         if isBaseTableScrolling || isBaseTableAnimating {
             isScannerTableWaitingForReload = true
-        }
-        else {
+        } else {
             reloadBaseTable()
         }
     }
-    
+
     fileprivate func reloadBaseTable() {
         isBaseTableScrolling = false
         isBaseTableAnimating = false
         isScannerTableWaitingForReload = false
         let peripherals = peripheralList.filteredPeripherals(forceUpdate: true)     // Refresh the peripherals
         baseTableView.reloadData()
-        
+
         // Select the previously selected row
         // scanningWaitView.isHidden = peripherals.count > 0
         if let selectedPeripheral = selectedPeripheral, let selectedRow = peripherals.index(of: selectedPeripheral) {
             baseTableView.selectRow(at: IndexPath(row: selectedRow, section: 0), animated: false, scrollPosition: .none)
         }
     }
-    
+
     private func updateMultiConnectUI() {
         let numConnectedPeripherals = BleManager.sharedInstance.connectedPeripherals().count
         multiConnectDetailsLabel.text = "Connected to \(numConnectedPeripherals) \(numConnectedPeripherals == 1 ? "device":"devices")"
         multiConnectShowButton.isEnabled = numConnectedPeripherals >= 2
     }
-    
+
     fileprivate func presentInfoDialog(title: String, peripheral: BlePeripheral) {
         infoAlertController = UIAlertController(title: nil, message: title, preferredStyle: .alert)
         infoAlertController!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) -> Void in
@@ -591,7 +583,7 @@ class ScannerViewController: UIViewController {
         }))
         present(infoAlertController!, animated: true, completion:nil)
     }
-    
+
     fileprivate func dismissInfoDialog(completion: (() -> Void)? = nil) {
         infoAlertController?.dismiss(animated: true, completion: completion)
         infoAlertController = nil
@@ -606,43 +598,42 @@ extension ScannerViewController: UITableViewDataSource {
         if selectedPeripheral == nil {      // Dont update while a peripheral has been selected
             WatchSessionManager.sharedInstance.updateApplicationContext(mode: .scan)
         }
-        
+
         // Calculate num cells
         return peripheralList.filteredPeripherals(forceUpdate: false).count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reuseIdentifier = "PeripheralCell"
         let peripheralCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! PeripheralTableViewCell
-       
+
         // Note: not using willDisplayCell to avoid problems with self-sizing cells
         let peripheral = peripheralList.filteredPeripherals(forceUpdate: false)[indexPath.row]
-       
+
         // Fill data
         let localizationManager = LocalizationManager.sharedInstance
         peripheralCell.titleLabel.text = peripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")
         peripheralCell.rssiImageView.image = signalImage(for: peripheral.rssi)
-        
+
         let isUartCapable = peripheral.isUartAdvertised()
         peripheralCell.subtitleLabel.text = isUartCapable ? localizationManager.localizedString("peripherallist_uartavailable") : nil
-        
+
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
-        
+
         let showConnect: Bool
         let showDisconnect: Bool
         if isMultiConnectEnabled {
             let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
             showDisconnect = connectedPeripherals.contains(peripheral)
             showConnect = !showDisconnect
-        }
-        else {
+        } else {
             showConnect = isFullScreen || selectedPeripheral == nil
             showDisconnect = !isFullScreen && peripheral.identifier == selectedPeripheral?.identifier
         }
-        
+
         peripheralCell.connectButton.isHidden = !showConnect
         peripheralCell.disconnectButton.isHidden = !showDisconnect
-        
+
         peripheralCell.onConnect = { [unowned self] in
             self.connect(peripheral: peripheral)
         }
@@ -650,23 +641,23 @@ extension ScannerViewController: UITableViewDataSource {
             tableView.deselectRow(at: indexPath, animated: true)
             self.disconnect(peripheral: peripheral)
         }
-        
+
         // Detail Subview
         let isDetailViewOpen = isRowDetailOpenForPeripheral[peripheral.identifier] ?? false
         peripheralCell.baseStackView.arrangedSubviews[1].isHidden = !isDetailViewOpen
         if isDetailViewOpen {
             peripheralCell.setupPeripheralExtendedView(peripheral: peripheral)
         }
-        
+
         return peripheralCell
     }
 }
 
 // MARK: UITableViewDelegate
 extension ScannerViewController: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+
         let peripheral = peripheralList.filteredPeripherals(forceUpdate: false)[indexPath.row]
         let isDetailViewOpen = !(isRowDetailOpenForPeripheral[peripheral.identifier] ?? false)
         isRowDetailOpenForPeripheral[peripheral.identifier] = isDetailViewOpen
@@ -680,7 +671,7 @@ extension ScannerViewController: UITableViewDelegate {
         tableView.scrollToRow(at: indexPath, at: .none, animated: true)
         CATransaction.commit()
         tableView.deselectRow(at: indexPath, animated: false)
-        
+
         // Animate changes
 //        tableView.beginUpdates()
 //        tableView.endUpdates()
@@ -689,14 +680,14 @@ extension ScannerViewController: UITableViewDelegate {
 
 // MARK: UIScrollViewDelegate
 extension ScannerViewController {
-    
+
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         isBaseTableScrolling = true
     }
-    
+
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         isBaseTableScrolling = false
-        
+
         if isScannerTableWaitingForReload {
             reloadBaseTable()
         }
@@ -705,17 +696,16 @@ extension ScannerViewController {
 
 // MARK: - UIPopoverPresentationControllerDelegate
 extension ScannerViewController: UIPopoverPresentationControllerDelegate {
-    
+
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         // This forces a popover to be displayed on the iPhone
         if traitCollection.verticalSizeClass != .compact {
             return .none
-        }
-        else {
+        } else {
             return .fullScreen
         }
     }
-    
+
     func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
         DLog("selector dismissed")
     }
@@ -731,17 +721,16 @@ extension ScannerViewController: UITextFieldDelegate {
 
 // MARK: - FirmwareUpdaterDelegate
 extension ScannerViewController: FirmwareUpdaterDelegate {
-    
+
     func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceInfo: DeviceInformationService?) {
-        
+
         DLog("FirmwareUpdaterDelegate isUpdateAvailable: \(isUpdateAvailable)")
-        
+
         DispatchQueue.main.async { [weak self] in
-            self?.dismissInfoDialog() {
+            self?.dismissInfoDialog {
                 if isUpdateAvailable, let latestRelease = latestRelease {
                     self?.showUpdateAvailableForRelease(latestRelease)
-                }
-                else {
+                } else {
                     self?.showPeripheralDetails()
                 }
             }

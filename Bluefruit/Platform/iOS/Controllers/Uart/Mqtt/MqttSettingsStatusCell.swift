@@ -14,10 +14,10 @@ class MqttSettingsStatusCell: UITableViewCell {
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var waitView: UIActivityIndicatorView!
-    
+
     // Data
-    var onClickAction : (() -> ())?
-    
+    var onClickAction : (() -> Void)?
+
     @IBAction func onClickButton(_ sender: AnyObject) {
         self.onClickAction?()
     }

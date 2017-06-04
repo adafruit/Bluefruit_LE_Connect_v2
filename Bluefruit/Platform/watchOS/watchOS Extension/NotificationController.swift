@@ -9,13 +9,12 @@
 import WatchKit
 import Foundation
 
-
 class NotificationController: WKUserNotificationInterfaceController {
 
     override init() {
         // Initialize variables here.
         super.init()
-        
+
         // Configure interface objects here.
     }
 
@@ -39,7 +38,7 @@ class NotificationController: WKUserNotificationInterfaceController {
         completionHandler(.Custom)
     }
     */
-    
+
     /*
     override func didReceiveRemoteNotification(remoteNotification: [NSObject : AnyObject], withCompletion completionHandler: ((WKUserNotificationInterfaceType) -> Void)) {
         // This method is called when a remote notification needs to be presented.

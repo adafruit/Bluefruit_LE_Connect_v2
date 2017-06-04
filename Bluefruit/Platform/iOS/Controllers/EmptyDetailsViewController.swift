@@ -18,7 +18,7 @@ class EmptyDetailsViewController: PeripheralModeViewController {
     fileprivate var isAnimating = false
 
     fileprivate var scanningAnimationVieWController: ScanningAnimationViewController?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -27,34 +27,34 @@ class EmptyDetailsViewController: PeripheralModeViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         setConnecting(isConnnecting)
     }
-    
-    func setConnecting(_ isConnecting : Bool) {
+
+    func setConnecting(_ isConnecting: Bool) {
         self.isConnnecting = isConnecting
-        
+
         let localizationManager = LocalizationManager.sharedInstance
         emptyLabel?.text = localizationManager.localizedString(isConnecting ? "peripheraldetails_connecting" : "peripheraldetails_select")
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ScanningAnimationViewControllerSegue"  {
+        if segue.identifier == "ScanningAnimationViewControllerSegue" {
             scanningAnimationVieWController = (segue.destination as! ScanningAnimationViewController)
             if isAnimating {            // check if startAnimating was called before prepareForSegue was executed
                 startAnimating()
             }
         }
     }
-    
+
     func startAnimating() {
         isAnimating = true
         scanningAnimationVieWController?.startAnimating()
     }
-    
+
     func stopAnimating() {
         isAnimating = false
         scanningAnimationVieWController?.stopAnimating()

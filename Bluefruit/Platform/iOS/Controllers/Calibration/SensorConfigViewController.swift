@@ -9,19 +9,19 @@
 import UIKit
 
 class SensorConfigViewController: UIViewController {
-    
+
     @IBOutlet weak var baseTableView: UITableView!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Remove extra separators
         baseTableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 0))
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+
         preferredContentSize = baseTableView.contentSize
     }
 
@@ -29,12 +29,11 @@ class SensorConfigViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     @IBAction func onClickDone(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
 }
-
 
 // MARK: - UITableViewDataSource
 
@@ -43,7 +42,7 @@ extension SensorConfigViewController: UITableViewDataSource {
         case magnetometer = 0
         case accelerometer = 1
         case gyroscope = 2
-        
+
         var name: String {
             switch self {
             case .magnetometer: return "Magnetometer"
@@ -52,22 +51,22 @@ extension SensorConfigViewController: UITableViewDataSource {
             }
         }
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return TableSections.gyroscope.rawValue+1
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
+
         guard let tableSection = TableSections(rawValue: section) else {return nil}
-        
+
         return tableSection.name
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+
         guard let tableSection = TableSections(rawValue: section) else {return 0}
-        
+
         var count: Int
         switch tableSection {
         case .magnetometer:
@@ -79,9 +78,9 @@ extension SensorConfigViewController: UITableViewDataSource {
         }
         return count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         /*
         let tableSection = TableSections(rawValue: indexPath.section) ?? .gyroscope
         
@@ -104,23 +103,23 @@ extension SensorConfigViewController: UITableViewDataSource {
             }
         }
  */
-        
+
         let reuseIdentifier = "Cell"
         var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: reuseIdentifier)
         }
-        
+
         return cell!
     }
-    
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
+
         guard let tableSection = TableSections(rawValue: indexPath.section) else {return}
-        
+
         let row = indexPath.row
         switch tableSection {
-            
+
         case .magnetometer:
             cell.textLabel?.text = SensorParameters.sharedInstance.magnetometerSensors[row].name
             cell.accessoryType =  Preferences.magnetometerType == row ? .checkmark:.none
@@ -142,7 +141,7 @@ extension SensorConfigViewController: UITableViewDelegate {
         defer {
             tableView.deselectRow(at: indexPath, animated: true)
         }
-        
+
         let row = indexPath.row
         guard let tableSection = TableSections(rawValue: indexPath.section) else {return}
 
@@ -154,7 +153,7 @@ extension SensorConfigViewController: UITableViewDelegate {
         case .gyroscope:
             Preferences.gyroscopeType = row
         }
-        
+
         tableView.reloadData()
     }
 }

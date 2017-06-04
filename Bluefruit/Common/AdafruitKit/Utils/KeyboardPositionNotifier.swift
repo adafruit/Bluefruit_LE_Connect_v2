@@ -13,45 +13,44 @@ protocol KeyboardPositionNotifierDelegate: class {
 }
 
 class KeyboardPositionNotifier: NSObject {
-    
+
     weak var delegate: KeyboardPositionNotifierDelegate?
 
     override init() {
         super.init()
         registerNotifications(enabled: true)
     }
-    
+
     deinit {
         registerNotifications(enabled: false)
     }
-    
+
     // MARK: - BLE Notifications
     private weak var keyboardWillBeShownObserver: NSObjectProtocol?
     private weak var keyboardWillBeHiddenObserver: NSObjectProtocol?
-    
+
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
             keyboardWillBeShownObserver = notificationCenter.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: nil, queue: .main, using: keyboardWillBeShown)
             keyboardWillBeHiddenObserver = notificationCenter.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: .main, using: keyboardWillBeHidden)
-        }
-        else {
+        } else {
             if let keyboardWillBeShownObserver = keyboardWillBeShownObserver {notificationCenter.removeObserver(keyboardWillBeShownObserver)}
             if let keyboardWillBeHiddenObserver = keyboardWillBeHiddenObserver {notificationCenter.removeObserver(keyboardWillBeHiddenObserver)}
         }
     }
-    
+
     private func keyboardWillBeShown(notification: Notification) {
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-        
+
         keyboardPositionChanged(keyboardFrame: keyboardFrame, keyboardShown: true)
     }
-    
+
     private func keyboardWillBeHidden(notification: Notification) {
         keyboardPositionChanged(keyboardFrame: CGRect(), keyboardShown: false)
     }
-    
+
     private func keyboardPositionChanged(keyboardFrame: CGRect, keyboardShown: Bool) {
         delegate?.onKeyboardPositionChanged(keyboardFrame: keyboardFrame, keyboardShown: keyboardShown)
     }

@@ -22,30 +22,30 @@ protocol DfuUpdateProcessDelegate: class {
 }
 
 class DfuUpdateProcess: NSObject {
-    
+
     private static let kApplicationHexFilename = "application.hex"
     private static let kApplicationIniFilename = "application.bin"     // don't change extensions. dfuOperations will look for these specific extensions
-    
+
     // Parameters
     weak var delegate: DfuUpdateProcessDelegate?
 
     fileprivate var dfuController: DFUServiceController?
-    
+
     func startUpdateForPeripheral(peripheral: CBPeripheral, hexUrl: URL, iniUrl: URL?) {
-        
+
         let firmware = DFUFirmware(urlToBinOrHexFile: hexUrl, urlToDatFile: iniUrl, type: .application)
-        
+
         guard let selectedFirmware = firmware, selectedFirmware.valid else {
             delegate?.onUpdateProcessError(errorMessage: "Firmware files not valid", infoMessage: nil)
             return
         }
-        
+
         guard let centralManager = BleManager.sharedInstance.centralManager else {
             delegate?.onUpdateProcessError(errorMessage: "Bluetooth not ready", infoMessage: nil)
             return
         }
         let initiator = DFUServiceInitiator(centralManager: centralManager, target: peripheral).with(firmware: selectedFirmware)
-        
+
         // Optional:
         // initiator.forceDfu = true/false; // default false
         // initiator.packetReceiptNotificationParameter = N; // default is 12
@@ -53,10 +53,10 @@ class DfuUpdateProcess: NSObject {
         initiator.delegate = self; // - to be informed about current state and errors
         initiator.progressDelegate = self; // - to show progress bar
         // initiator.peripheralSelector = ... // the default selector is used
-        
+
         dfuController = initiator.start()
     }
-   
+
     func cancel() {
         // Cancel current operation
         let aborted = dfuController?.abort()
@@ -75,17 +75,16 @@ extension DfuUpdateProcess: DFUServiceDelegate {
     func dfuStateDidChange(to state: DFUState) {
         let message = state.description()
         delegate?.onUpdateProgressText(message)
-        
+
         if state == .completed {
             DLog("Dfu completed")
             delegate?.onUpdateProcessSuccess()
-        }
-        else if state == .aborted {
+        } else if state == .aborted {
             DLog("Dfu aborted")
             delegate?.onUpdateProcessError(errorMessage: "Update aborted", infoMessage: nil)
         }
     }
-    
+
     func dfuError(_ error: DFUError, didOccurWithMessage message: String) {
         delegate?.onUpdateProcessError(errorMessage: message, infoMessage: nil)
     }

@@ -16,10 +16,10 @@ class ColorRGBInterfaceController: WKInterfaceController {
     @IBOutlet var bSlider: WKInterfaceSlider?
 
     var swatchColor = UIColor.gray
-    
+
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        
+
         // Configure interface objects here.
     }
 
@@ -32,56 +32,56 @@ class ColorRGBInterfaceController: WKInterfaceController {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
     }
-    
+
     @IBAction func rSliderChanged(_ value: Float) {
-        
+
         //retrieve rgb color vals from swatch
-        var red:CGFloat = 0.0
-        var green:CGFloat = 0.0
-        var blue:CGFloat = 0.0
-        var alpha:CGFloat = 0.0
+        var red: CGFloat = 0.0
+        var green: CGFloat = 0.0
+        var blue: CGFloat = 0.0
+        var alpha: CGFloat = 0.0
         swatchColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        
+
         let newColor = UIColor(red: CGFloat(value), green: green, blue: blue, alpha: 1.0)
         setRGBColor(newColor)
     }
-    
+
     @IBAction func gSliderChanged(_ value: Float) {
-        
+
         //retrieve rgb color vals from swatch
-        var red:CGFloat = 0.0
-        var green:CGFloat = 0.0
-        var blue:CGFloat = 0.0
-        var alpha:CGFloat = 0.0
+        var red: CGFloat = 0.0
+        var green: CGFloat = 0.0
+        var blue: CGFloat = 0.0
+        var alpha: CGFloat = 0.0
         swatchColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        
+
         let newColor = UIColor(red: red, green: CGFloat(value), blue: blue, alpha: 1.0)
         setRGBColor(newColor)
-        
+
     }
-    
+
     @IBAction func bSliderChanged(_ value: Float) {
-        
+
         //retrieve rgb color vals from swatch
-        var red:CGFloat = 0.0
-        var green:CGFloat = 0.0
-        var blue:CGFloat = 0.0
-        var alpha:CGFloat = 0.0
+        var red: CGFloat = 0.0
+        var green: CGFloat = 0.0
+        var blue: CGFloat = 0.0
+        var alpha: CGFloat = 0.0
         swatchColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        
+
         let newColor = UIColor(red: red, green: green, blue: CGFloat(value), alpha: 1.0)
         setRGBColor(newColor)
     }
-    
-    private func setRGBColor(_ newColor: UIColor){
-        
+
+    private func setRGBColor(_ newColor: UIColor) {
+
         swatchColor = newColor
         rgbColorSwatch?.setBackgroundColor(swatchColor)
     }
 
     @IBAction func onClickSend() {
         guard let session = WatchSessionManager.sharedInstance.session else { return }
-        
+
         let hex = colorHexInt(swatchColor)
         session.sendMessage(["command": "color", "color": hex], replyHandler: nil) { (error) in
             DLog("colorRGB error: \(error)")

@@ -12,9 +12,9 @@ class ControllerSensorTableViewCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var enableSwitch: UISwitch!
-    
-    var onSensorEnabled : ((Bool)->())?
-    
+
+    var onSensorEnabled: ((Bool)->Void)?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

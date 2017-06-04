@@ -14,10 +14,10 @@ class MqttSettingsValueAndSelector: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var valueTextField: UITextField?
     @IBOutlet weak var typeButton: UIButton?
-    
+
     // Data
     var indexPath: NSIndexPath?
-    
+
     func reset() {
         valueTextField?.text = nil
         valueTextField?.placeholder = nil

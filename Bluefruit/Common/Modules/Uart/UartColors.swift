@@ -8,11 +8,9 @@
 
 import Foundation
 
-
 class UartColors {
-    
-    static func defaultColors () -> [Color]
-    {
+
+    static func defaultColors () -> [Color] {
         // Based on Chart joyful and colorful colors:  https://github.com/danielgindi/Charts
         return [
             Color(red: 193/255.0, green: 37/255.0, blue: 82/255.0, alpha: 1.0),
@@ -21,7 +19,7 @@ class UartColors {
             Color(red: 245/255.0, green: 199/255.0, blue: 0/255.0, alpha: 1.0),
             Color(red: 106/255.0, green: 150/255.0, blue: 31/255.0, alpha: 1.0),
             Color(red: 179/255.0, green: 100/255.0, blue: 53/255.0, alpha: 1.0),
-            
+
             Color(red: 217/255.0, green: 80/255.0, blue: 138/255.0, alpha: 1.0),
             Color(red: 254/255.0, green: 149/255.0, blue: 7/255.0, alpha: 1.0),
             Color(red: 254/255.0, green: 247/255.0, blue: 120/255.0, alpha: 1.0),

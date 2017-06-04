@@ -12,10 +12,10 @@ class ControllerModeViewController: PeripheralModeViewController {
 
     // Constants
     fileprivate static let kPollInterval = 0.25
-    
+
     fileprivate static let kSensorTitleKeys: [String] = ["controller_sensor_quaternion", "controller_sensor_accelerometer", "controller_sensor_gyro", "controller_sensor_magnetometer", "controller_sensor_location"]
     fileprivate static let kModuleTitleKeys: [String] = ["controller_module_pad", "controller_module_colorpicker"]
-    
+
     // UI
     @IBOutlet weak var baseTableView: UITableView!
     @IBOutlet weak var uartWaitingLabel: UILabel!
@@ -24,37 +24,36 @@ class ControllerModeViewController: PeripheralModeViewController {
     fileprivate var controllerData: ControllerModuleManager!
     fileprivate var contentItems = [Int]()
     fileprivate weak var controllerPadViewController: ControllerPadViewController?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Init
         assert(blePeripheral != nil)
         controllerData = ControllerModuleManager(blePeripheral: blePeripheral!, delegate: self)
-        
+
         // Setup table
         baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
         updateUartUI(isReady: false)
-        
+
         //
         updateContentItemsFromSensorsEnabled()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         if isMovingToParentViewController {       // To keep streaming data when pushing a child view
             controllerData.start(pollInterval: ControllerModeViewController.kPollInterval) { [unowned self] in
                 self.baseTableView.reloadData()
             }
-            
+
             // Watch
             WatchSessionManager.sharedInstance.updateApplicationContext(mode: .controller)
- 
+
             // Notifications
             registerNotifications(enabled: true)
-        }
-        else {
+        } else {
             // Disable cache if coming back grom Control Pad
             controllerData.isUartRxCacheEnabled = false
         }
@@ -62,33 +61,33 @@ class ControllerModeViewController: PeripheralModeViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+
         if isMovingFromParentViewController {     // To keep streaming data when pushing a child view
             controllerData.stop()
-            
+
             // Watch
             WatchSessionManager.sharedInstance.updateApplicationContext(mode: .connected)
- 
+
             // Notifications
             registerNotifications(enabled: false)
         }
     }
-    
+
     deinit {
         DLog("ControllerModeViewController deinit")
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     fileprivate func updateUartUI(isReady: Bool) {
         // Setup UI
         uartWaitingLabel.isHidden = isReady
         baseTableView.isHidden = !isReady
     }
-    
+
     fileprivate let kDetailItemOffset = 100
     fileprivate func updateContentItemsFromSensorsEnabled() {
         var items = [Int]()
@@ -101,24 +100,23 @@ class ControllerModeViewController: PeripheralModeViewController {
             }
             i += 1
         }
-        
+
         contentItems = items
     }
-    
+
     // MARK: Notifications
-    
+
     private weak var didReceiveWatchCommandObserver: NSObjectProtocol?
-    
+
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
             didReceiveWatchCommandObserver = notificationCenter.addObserver(forName: .didReceiveWatchCommand, object: nil, queue: .main, using: didReceiveWatchCommand)
-        }
-        else {
+        } else {
             if let didReceiveWatchCommandObserver = didReceiveWatchCommandObserver {notificationCenter.removeObserver(didReceiveWatchCommandObserver)}
         }
     }
-    
+
     private func didReceiveWatchCommand(notification: Notification) {
         if let message = notification.userInfo, let command = message["command"] as? String {
             DLog("watchCommand notification: \(command)")
@@ -128,12 +126,12 @@ class ControllerModeViewController: PeripheralModeViewController {
                     sendTouchEvent(tag: tag, isPressed: true)
                     sendTouchEvent(tag: tag, isPressed: false)
                 }
-                
+
             case "color":
                 if  let colorUInt = message["color"] as? UInt, let color = colorFrom(hex: colorUInt) {
                     sendColor(color)
                 }
-                
+
             default:
                 DLog("watchCommand with unknown command: \(command)")
             }
@@ -148,10 +146,10 @@ class ControllerModeViewController: PeripheralModeViewController {
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
         helpNavigationController.modalPresentationStyle = .popover
         helpNavigationController.popoverPresentationController?.barButtonItem = sender
-        
+
         present(helpNavigationController, animated: true, completion: nil)
     }
-    
+
     // MARK: - Send Data
     fileprivate func sendColor(_ color: UIColor) {
         let brightness: CGFloat = 1
@@ -160,12 +158,12 @@ class ControllerModeViewController: PeripheralModeViewController {
         red = red*brightness
         green = green*brightness
         blue = blue*brightness
-        
+
         let selectedColorComponents = [UInt8(255.0 * Float(red)), UInt8(255.0 * Float(green)), UInt8(255.0 * Float(blue))]
-        
+
         sendColorComponents(selectedColorComponents)
     }
-    
+
     fileprivate func sendColorComponents(_ selectedColorComponents: [UInt8]) {
         var data = Data()
         let prefixData = ControllerColorWheelViewController.prefix.data(using: String.Encoding.utf8)!
@@ -173,10 +171,10 @@ class ControllerModeViewController: PeripheralModeViewController {
         for var component in selectedColorComponents {
             data.append(&component, count: MemoryLayout<UInt8>.size)
         }
-        
+
         controllerData.sendCrcData(data)
     }
-    
+
     func sendTouchEvent(tag: Int, isPressed: Bool) {
         let message = "!B\(tag)\(isPressed ? "1" : "0")"
         if let data = message.data(using: String.Encoding.utf8) {
@@ -201,8 +199,8 @@ extension ControllerModeViewController: ControllerPadViewControllerDelegate {
 
 // MARK: - UITableViewDataSource
 extension ControllerModeViewController : UITableViewDataSource {
-    
-    enum ControllerSection : Int  {
+
+    enum ControllerSection: Int {
         case sensorData = 0
         case module = 1
     }
@@ -210,7 +208,7 @@ extension ControllerModeViewController : UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch ControllerSection(rawValue: section)! {
         case .sensorData:
@@ -221,39 +219,38 @@ extension ControllerModeViewController : UITableViewDataSource {
             return ControllerModeViewController.kModuleTitleKeys.count
         }
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var localizationKey: String!
-        
+
         switch ControllerSection(rawValue: section)! {
         case .sensorData:
             localizationKey = "controller_sensor_title"
         case .module:
             localizationKey = "controller_module_title"
         }
-        
+
         return LocalizationManager.sharedInstance.localizedString(localizationKey)
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let localizationManager = LocalizationManager.sharedInstance
         var cell: UITableViewCell!
         switch ControllerSection(rawValue: indexPath.section)! {
-            
+
         case .sensorData:
             let item = contentItems[indexPath.row]
             let isDetailCell = item>=kDetailItemOffset
-            
+
             if isDetailCell {
                 let sensorIndex = item - kDetailItemOffset
                 let reuseIdentifier = "ComponentsCell"
                 let componentsCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ControllerComponentsTableViewCell
-             
-                let componentNameKeys : [String]
+
+                let componentNameKeys: [String]
                 if sensorIndex == ControllerModuleManager.ControllerType.location.rawValue {
                     componentNameKeys = ["lat", "long", "alt"]
-                }
-                else {
+                } else {
                     componentNameKeys = ["x", "y", "z", "w"]
                 }
                 if let sensorData = controllerData.getSensorData(index: sensorIndex) {
@@ -267,39 +264,37 @@ extension ControllerModeViewController : UITableViewDataSource {
                             attributedText.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium), range: NSMakeRange(0, titleLength))
                             label.attributedText = attributedText
                         }
-                   
+
                         i += 1
                     }
-                }
-                else {
+                } else {
                     for subview in componentsCell.componentsStackView.subviews {
                         subview.isHidden = true
                     }
                 }
-                
+
                 cell = componentsCell
-            }
-            else {
+            } else {
                 let reuseIdentifier = "SensorCell"
                 let sensorCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ControllerSensorTableViewCell
                 sensorCell.titleLabel!.text = localizationManager.localizedString( ControllerModeViewController.kSensorTitleKeys[item])
-                
+
                 sensorCell.enableSwitch.isOn = controllerData.isSensorEnabled(index: item)
                 sensorCell.onSensorEnabled = { [unowned self] (enabled) in
-                    
+
                     if self.controllerData.isSensorEnabled(index: item) != enabled {       // if changed
                         let errorMessage = self.controllerData.setSensorEnabled(enabled, index:item)
 
                         if let errorMessage = errorMessage {
                             let alertController = UIAlertController(title: localizationManager.localizedString("dialog_error"), message: errorMessage, preferredStyle: .alert)
-                            
+
                             let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler:nil)
                             alertController.addAction(okAction)
                             self.present(alertController, animated: true, completion: nil)
                         }
-                        
+
                         self.updateContentItemsFromSensorsEnabled()
-                        
+
                         /* Not used because the animation for the section title looks weird. Used a reloadData instead
                         if let currentRow = self.contentItems.indexOf(item) {
                             let detailIndexPath = NSIndexPath(forRow: currentRow+1, inSection: indexPath.section)
@@ -311,14 +306,14 @@ extension ControllerModeViewController : UITableViewDataSource {
                             }
                         }
                         */
-                        
+
                     }
- 
+
                     self.baseTableView.reloadData()
                 }
                 cell = sensorCell
             }
-            
+
         case .module:
             let reuseIdentifier = "ModuleCell"
             cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
@@ -328,10 +323,10 @@ extension ControllerModeViewController : UITableViewDataSource {
             cell.accessoryType = .disclosureIndicator
             cell.textLabel!.text = localizationManager.localizedString(ControllerModeViewController.kModuleTitleKeys[indexPath.row])
         }
-        
+
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch ControllerSection(rawValue: indexPath.section)! {
         case .sensorData:
@@ -344,11 +339,11 @@ extension ControllerModeViewController : UITableViewDataSource {
     }
 }
 
-// MARK:  UITableViewDelegate
+// MARK: UITableViewDelegate
 extension ControllerModeViewController: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+
         switch ControllerSection(rawValue: indexPath.section)! {
         case .module:
             if indexPath.row == 0 {
@@ -356,13 +351,12 @@ extension ControllerModeViewController: UITableViewDelegate {
                     controllerPadViewController = viewController
                     viewController.delegate = self
                     navigationController?.show(viewController, sender: self)
-                    
+
                     // Enable cache for control pad
                     controllerData.uartRxCacheReset()
                     controllerData.isUartRxCacheEnabled = true
                 }
-            }
-            else {
+            } else {
                 if let viewController = storyboard!.instantiateViewController(withIdentifier: "ControllerColorWheelViewController") as? ControllerColorWheelViewController {
                     viewController.delegate = self
                     navigationController?.show(viewController, sender: self)
@@ -382,14 +376,14 @@ extension ControllerModeViewController: ControllerModuleManagerDelegate {
             guard let context = self else {
                 return
             }
-            
+
             context.updateUartUI(isReady: error == nil)
             guard error == nil else {
                 DLog("Error initializing uart")
                 context.dismiss(animated: true, completion: { [weak self] () -> Void in
                     if let context = self {
                         showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
-                        
+
                         if let blePeripheral = context.blePeripheral {
                             BleManager.sharedInstance.disconnect(from: blePeripheral)
                         }
@@ -405,16 +399,16 @@ extension ControllerModeViewController: ControllerModuleManagerDelegate {
 
     func onUarRX() {
         // Uart data recevied
-        
+
         // Only reloadData when controllerPadViewController is loaded
         guard controllerPadViewController != nil else { return }
-        
+
         self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
     }
-    
+
     func reloadData() {
         // Refresh the controllerPadViewController uart text
         self.controllerPadViewController?.setUartText(self.controllerData.uartTextBuffer())
-        
+
     }
 }

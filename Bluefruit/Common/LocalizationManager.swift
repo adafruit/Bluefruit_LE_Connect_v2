@@ -11,12 +11,12 @@ import Foundation
 class LocalizationManager {
     // Config
     static fileprivate let kDebugShowDummyCharacters = false
-    
+
     //
     static let sharedInstance = LocalizationManager()
 
     fileprivate var localizationBundle: Bundle?
-    
+
     var languageCode: String {
         didSet {
           updateBundle()
@@ -30,42 +30,41 @@ class LocalizationManager {
 
     fileprivate func updateBundle() {
         localizationBundle = nil
-        
+
         if let path = Bundle.main.path(forResource: languageCode, ofType: "lproj") {
             localizationBundle = Bundle(path:path)
-        }
-        else {
+        } else {
             if let range = languageCode.range(of: "-") {
-                
+
                 let baseCode = languageCode.substring(to: range.lowerBound)
                 if let path =  Bundle.main.path(forResource: baseCode, ofType: "lproj") {
                     localizationBundle = Bundle(path:path)
                 }
             }
 
-            if (localizationBundle == nil) {
+            if localizationBundle == nil {
                 DLog("Error setting languageCode: \(languageCode). Bundle does not exist")
             }
         }
     }
-    
+
     func localizedString(_ key: String) -> String {
         return localizedString(key, description: nil)
     }
-    
-    func localizedString(_ key: String, description : String?) -> String {
-        var result : String!
-        
+
+    func localizedString(_ key: String, description: String?) -> String {
+        var result: String!
+
         if let string = localizationBundle?.localizedString(forKey: key, value: description, table: nil) {
             result = string
         } else {
             result = key
         }
-        
+
         if LocalizationManager.kDebugShowDummyCharacters {
             result = String(repeating: "x", count: result.characters.count)
         }
-        
+
         return result
     }
 }

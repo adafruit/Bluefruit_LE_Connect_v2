@@ -19,7 +19,7 @@ class GyroscopePageContentViewController: PageContentViewController {
     var gyroVector: Vector3!
 //    var calibration: Calibration!
     weak var delegate: GyroscopePageContentViewControllerDelegate?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -28,6 +28,5 @@ class GyroscopePageContentViewController: PageContentViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
 }

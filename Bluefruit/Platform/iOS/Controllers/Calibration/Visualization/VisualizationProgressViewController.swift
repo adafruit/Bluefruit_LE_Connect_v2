@@ -27,7 +27,7 @@ class VisualizationProgressViewController: PageContentViewController {
     weak var delegate: VisualizationProgressViewControllerDelegate?
     var originOffset = Quaternion.identity
     var orientation = Quaternion.identity
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -41,18 +41,18 @@ class VisualizationProgressViewController: PageContentViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let visualizationParametersViewController = segue.destination as? VisualizationParametersViewController {
             visualizationParametersViewController.parametersDelegate = self
         }
     }
-    
+
     fileprivate func flipViews() {
         let isFrontVisible = !dataView.isHidden
-        
+
         if let frontView = isFrontVisible ? dataView : parametersView, let backView = isFrontVisible ? parametersView : dataView {
-            
+
             UIView.transition(from: frontView, to: backView, duration: 0.8, options: [.transitionFlipFromRight, .showHideTransitionViews]) { (isFinished) in
             }
         }
@@ -74,7 +74,7 @@ class VisualizationProgressViewController: PageContentViewController {
                 label.text = String(format: "%0.4f", value)
             }
         }
-        
+
         // Update Euler values
         for (i, subview) in eulerValuesStackView.arrangedSubviews.enumerated() {
             if let label = subview as? UILabel {
@@ -97,7 +97,7 @@ class VisualizationProgressViewController: PageContentViewController {
                 case 1: value = originOffset.yaw.radiansToDegrees
                 default: value = originOffset.roll.radiansToDegrees
                 }
-                
+
                 if value == -0 {        // Avoid showing -0. Show 0 instead
                     value = 0
                 }
@@ -106,11 +106,11 @@ class VisualizationProgressViewController: PageContentViewController {
         }
 
     }
-    
+
     @IBAction func onClickSettings(_ sender: Any) {
         flipViews()
     }
-    
+
     @IBAction func onClickSetOrigin(_ sender: Any) {
         delegate?.onVisualizationOriginSet()
     }
@@ -122,9 +122,9 @@ class VisualizationProgressViewController: PageContentViewController {
 
 extension VisualizationProgressViewController: VisualizationParametersViewControllerDelegate {
     func onVisualizationParametersChanged() {
-        delegate?.onVisualizationParametersChanged();
+        delegate?.onVisualizationParametersChanged()
     }
-    
+
     func onParametersDone() {
         flipViews()
     }

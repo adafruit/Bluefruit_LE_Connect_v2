@@ -9,10 +9,10 @@
 import UIKit
 
 class StyledButton: IntrinsicSizeWithInsetsButton {
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         layer.borderColor = tintColor.cgColor
         layer.borderWidth = 1
         layer.cornerRadius = 8

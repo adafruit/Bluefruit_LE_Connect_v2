@@ -9,7 +9,7 @@
 import UIKit
 
 class CalibrationMenuViewController: PeripheralModeViewController {
-    
+
     @IBOutlet weak var menuStackView: UIStackView!
     @IBOutlet weak var magnetometerButton: StyledLinkedButton!
     @IBOutlet weak var gyroscopeButton: StyledLinkedButton!
@@ -23,17 +23,17 @@ class CalibrationMenuViewController: PeripheralModeViewController {
             view.layer.masksToBounds = true
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-       
+
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let viewController = segue.destination as? UartViewController {
             viewController.blePeripheral = blePeripheral

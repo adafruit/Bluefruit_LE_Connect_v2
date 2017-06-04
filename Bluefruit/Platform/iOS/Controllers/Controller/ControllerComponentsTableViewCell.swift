@@ -11,7 +11,7 @@ import UIKit
 class ControllerComponentsTableViewCell: UITableViewCell {
 
     @IBOutlet weak var componentsStackView: UIStackView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

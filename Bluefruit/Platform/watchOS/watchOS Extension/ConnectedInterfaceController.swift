@@ -14,17 +14,17 @@ class ConnectedInterfaceController: WKInterfaceController {
     @IBOutlet var peripheralNameLabel: WKInterfaceLabel!
     @IBOutlet var uartAvailableLabel: WKInterfaceLabel!
     @IBOutlet var uartUnavailableLabel: WKInterfaceLabel!
-    
+
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        
+
         // Configure interface objects here.
     }
 
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        
+
         // Update values
         if let appContext = WatchSessionManager.sharedInstance.session?.receivedApplicationContext {
             didReceiveApplicationContext(appContext)
@@ -39,11 +39,11 @@ class ConnectedInterfaceController: WKInterfaceController {
     // MARK: - Session
     func didReceiveApplicationContext(_ applicationContext: [String : Any]) {
         DLog("ConnectedInterfaceController didReceiveApplicationContext: \(applicationContext)")
-        
+
         // Name
         let peripheralName = applicationContext["bleConnectedPeripheralName"] as? String ?? "<Unknown>"
         peripheralNameLabel.setText( peripheralName )
-        
+
         // Uart
         let hasUart = (applicationContext["bleHasUart"] as AnyObject).boolValue == true
         uartAvailableLabel.setHidden(!hasUart)

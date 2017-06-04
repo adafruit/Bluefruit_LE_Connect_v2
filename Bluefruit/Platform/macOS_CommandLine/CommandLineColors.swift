@@ -21,11 +21,11 @@ enum CommandLineColors: String {
     case white = "\u{001B}[0;37m"
  */
     case reset =        "\u{001B}[0m"
-    
+
     case normal =       "\u{001B}[0;37m"
     case bold =         "\u{001B}[1;37m"
     case dim =          "\u{001B}[2;37m"
-    
+
     case italic =       "\u{001B}[3;37m"
     case underline =    "\u{001B}[4;37m"
 }
@@ -33,5 +33,3 @@ enum CommandLineColors: String {
 func + (left: CommandLineColors, right: String) -> String {
     return left.rawValue + right
 }
-
-

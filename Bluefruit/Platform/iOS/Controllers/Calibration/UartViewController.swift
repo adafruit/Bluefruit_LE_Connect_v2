@@ -11,7 +11,7 @@ import UIKit
 class UartViewController: UIViewController {
 
     weak var blePeripheral: BlePeripheral?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,8 +24,7 @@ class UartViewController: UIViewController {
     }
 }
 
-
-// MARK:  - String first character to ascii
+// MARK: - String first character to ascii
 extension String {
     // Use only for known strings
     var asciiValue: UInt8 {

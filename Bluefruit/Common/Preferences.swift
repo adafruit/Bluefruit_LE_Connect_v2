@@ -16,10 +16,10 @@ import Foundation
 #endif
 
 class Preferences {
-    
+
     // Note: if these contanst change, update DefaultPreferences.plist
     fileprivate static let appInSystemStatusBarKey = "AppInSystemStatusBar"
-    
+
     fileprivate static let scanFilterIsPanelOpenKey = "ScanFilterIsPanelOpen"
     fileprivate static let scanFilterNameKey = "ScanFilterName"
     fileprivate static let scanFilterIsNameExactKey = "ScanFilterIsNameExact"
@@ -27,9 +27,9 @@ class Preferences {
     fileprivate static let scanFilterRssiValueKey = "ScanFilterRssiValue"
     fileprivate static let scanFilterIsUnnamedEnabledKey = "ScanFilterIsUnnamedEnabled"
     fileprivate static let scanFilterIsOnlyWithUartEnabledKey = "ScanFilterIsOnlyWithUartEnabled"
-    
+
   //  fileprivate static let scanMultiConnectIsPanelOpenKey = "ScanMultiConnectIsPanelOpenKey"
-    
+
     // Firmware Updates
     fileprivate static let updateServerUrlKey = "UpdateServerUrl"
     fileprivate static let updateShowBetaVersionsKey = "UpdateShowBetaVersions"
@@ -46,25 +46,24 @@ class Preferences {
     fileprivate static let uartIsEchoEnabledKey = "UartIsEchoEnabled"
     fileprivate static let uartIsAutomaticEolEnabledKey = "UartIsAutomaticEolEnabled"
     fileprivate static let uartShowInvisibleCharsKey = "UartShowInvisibleChars"
-    
+
     // Neopixel
     fileprivate static let neopixelIsSketchTooltipEnabledKey = "NeopixelIsSketchTooltipEnabledKey"
-    
-    
+
     // Calibration
     private static let magnetometerTypeKey = "MagnetometerType"
     private static let accelerometerTypeKey = "AccelerometerType"
     private static let gyroscopeTypeKey = "GyroscopeType"
-    
+
     private static let magnetometerGapTargetKey = "MagnetometerGapTarget"
     private static let magnetometerWobbleTargetKey = "MagnetometerWobbleTarget"
     private static let magnetometerVarianceTargetKey = "MagnetometerVarianceTarget"
     private static let magnetometerFitErrorTargetKey = "MagnetometerFitErrorTarget"
-    
+
     private static let gyroReadingsCountKey = "GyroReadingsCount"
     private static let gyroNoiseLevelKey = "GyroNoiseLevel"
     private static let gyroUnitIdKey = "GyroUnitId"
-    
+
     private static let visualizationXAxisInvertedKey = "VisualizationXAxisInverted"
     private static let visualizationYAxisInvertedKey = "VisualizationYAxisInverted"
     private static let visualizationZAxisInvertedKey = "VisualizationZAxisInverted"
@@ -73,7 +72,6 @@ class Preferences {
     private static let visualizationZAxisFlippedKey = "VisualizationZAxisFlipped"
     private static let visualizationSwitchYZKey = "VisualizationSwitchYZ"
 
-    
     // MARK: - General
     static var appInSystemStatusBar: Bool {
         get {
@@ -83,7 +81,7 @@ class Preferences {
             setBoolPreference(Preferences.appInSystemStatusBarKey, newValue: newValue)
         }
     }
-    
+
     // MARK: - Scanning Filters
     static var scanFilterIsPanelOpen: Bool {
         get {
@@ -104,7 +102,7 @@ class Preferences {
             defaults.set(newValue, forKey: Preferences.scanFilterNameKey)
         }
     }
-    
+
     static var scanFilterIsNameExact: Bool {
         get {
             return getBoolPreference(Preferences.scanFilterIsNameExactKey)
@@ -134,7 +132,7 @@ class Preferences {
             defaults.set(newValue ?? -1, forKey: Preferences.scanFilterRssiValueKey)
         }
     }
-    
+
     static var scanFilterIsUnnamedEnabled: Bool {
         get {
             return getBoolPreference(Preferences.scanFilterIsUnnamedEnabledKey)
@@ -143,7 +141,7 @@ class Preferences {
             setBoolPreference(Preferences.scanFilterIsUnnamedEnabledKey, newValue: newValue)
         }
     }
-    
+
     static var scanFilterIsOnlyWithUartEnabled: Bool {
         get {
             return getBoolPreference(Preferences.scanFilterIsOnlyWithUartEnabledKey)
@@ -163,7 +161,7 @@ class Preferences {
         }
     }
     */
-    
+
     // MARK: - Firmware Updates
     static var updateServerUrl: URL? {
         get {
@@ -171,8 +169,7 @@ class Preferences {
             let urlString = defaults.string(forKey: Preferences.updateServerUrlKey)
             if let urlString = urlString {
                 return URL(string: urlString)
-            }
-            else {
+            } else {
                 return nil
             }
         }
@@ -182,7 +179,7 @@ class Preferences {
             NotificationCenter.default.post(name: .didUpdatePreferences, object: nil)
         }
     }
-    
+
     static var showBetaVersions: Bool {
         get {
             return getBoolPreference(Preferences.updateShowBetaVersionsKey)
@@ -191,7 +188,7 @@ class Preferences {
             setBoolPreference(Preferences.updateShowBetaVersionsKey, newValue: newValue)
         }
     }
-    
+
     static var softwareUpdateIgnoredVersion: String? {
         get {
             let defaults = UserDefaults.standard
@@ -202,7 +199,7 @@ class Preferences {
             defaults.set(newValue, forKey: Preferences.updateIgnoredVersionKey)
         }
     }
-    
+
     // MARK: - Info
     static var infoIsRefreshOnLoadEnabled: Bool {
         get {
@@ -212,7 +209,7 @@ class Preferences {
             setBoolPreference(Preferences.infoRefreshOnLoadKey, newValue: newValue)
         }
     }
-    
+
     // MARK: - Uart
     /*
     static var uartReceveivedDataColor: Color {
@@ -241,7 +238,7 @@ class Preferences {
         }
     }
  */
-    
+
     static var uartShowInvisibleChars: Bool {
         get {
             return getBoolPreference(Preferences.uartShowInvisibleCharsKey)
@@ -250,8 +247,7 @@ class Preferences {
             setBoolPreference(Preferences.uartShowInvisibleCharsKey, newValue: newValue)
         }
     }
-    
-    
+
     static var uartIsDisplayModeTimestamp: Bool {
         get {
             return getBoolPreference(Preferences.uartIsDisplayModeTimestampKey)
@@ -260,7 +256,7 @@ class Preferences {
             setBoolPreference(Preferences.uartIsDisplayModeTimestampKey, newValue: newValue)
         }
     }
-    
+
     static var uartIsInHexMode: Bool {
         get {
             return getBoolPreference(Preferences.uartIsInHexModeKey)
@@ -269,7 +265,7 @@ class Preferences {
             setBoolPreference(Preferences.uartIsInHexModeKey, newValue: newValue)
         }
     }
-    
+
     static var uartIsEchoEnabled: Bool {
         get {
             return getBoolPreference(Preferences.uartIsEchoEnabledKey)
@@ -278,7 +274,7 @@ class Preferences {
             setBoolPreference(Preferences.uartIsEchoEnabledKey, newValue: newValue)
         }
     }
-    
+
     static var uartIsAutomaticEolEnabled: Bool {
         get {
             return getBoolPreference(Preferences.uartIsAutomaticEolEnabledKey)
@@ -287,7 +283,7 @@ class Preferences {
             setBoolPreference(Preferences.uartIsAutomaticEolEnabledKey, newValue: newValue)
         }
     }
-    
+
     // MARK: - Neopixels
     static var neopixelIsSketchTooltipEnabled: Bool {
         get {
@@ -297,7 +293,7 @@ class Preferences {
             setBoolPreference(Preferences.neopixelIsSketchTooltipEnabledKey, newValue: newValue)
         }
     }
-    
+
     // MARK: - Sensor Config
     static var magnetometerType: Int {
         get {
@@ -307,8 +303,7 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: Preferences.magnetometerTypeKey)
         }
     }
-    
-    
+
     static var accelerometerType: Int {
         get {
             return UserDefaults.standard.integer(forKey: Preferences.accelerometerTypeKey)
@@ -317,8 +312,7 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: Preferences.accelerometerTypeKey)
         }
     }
-    
-    
+
     static var gyroscopeType: Int {
         get {
             return UserDefaults.standard.integer(forKey: Preferences.gyroscopeTypeKey)
@@ -327,8 +321,7 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: Preferences.gyroscopeTypeKey)
         }
     }
-    
-    
+
     // MARK: - Magnetometer Calibration
     static var magnetometerGapTarget: Float {
         get {
@@ -338,7 +331,7 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: Preferences.magnetometerGapTargetKey)
         }
     }
-    
+
     static var magnetometerWobbleTarget: Float {
         get {
             return UserDefaults.standard.float(forKey: Preferences.magnetometerWobbleTargetKey)
@@ -347,7 +340,7 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: Preferences.magnetometerWobbleTargetKey)
         }
     }
-    
+
     static var magnetometerVarianceTarget: Float {
         get {
             return UserDefaults.standard.float(forKey: Preferences.magnetometerVarianceTargetKey)
@@ -356,7 +349,7 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: Preferences.magnetometerVarianceTargetKey)
         }
     }
-    
+
     static var magnetometerFitErrorTarget: Float {
         get {
             return UserDefaults.standard.float(forKey: Preferences.magnetometerFitErrorTargetKey)
@@ -365,9 +358,9 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: Preferences.magnetometerFitErrorTargetKey)
         }
     }
-    
+
     // MARK: - Gyroscope Calibration
-    
+
     static var gyroReadingsCount: Int {
         get {
             return UserDefaults.standard.integer(forKey: Preferences.gyroReadingsCountKey)
@@ -376,7 +369,7 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: Preferences.gyroReadingsCountKey)
         }
     }
-    
+
     static var gyroNoiseLevel: Float {
         get {
             return UserDefaults.standard.float(forKey: Preferences.gyroNoiseLevelKey)
@@ -385,7 +378,7 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: Preferences.gyroNoiseLevelKey)
         }
     }
-    
+
     static var gyroUnitId: Int {
         get {
             return UserDefaults.standard.integer(forKey: Preferences.gyroUnitIdKey)
@@ -394,9 +387,9 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: Preferences.gyroUnitIdKey)
         }
     }
-    
+
     // MARK: - Visualization
-    
+
     static var visualizationXAxisInverted: Bool {
         get {
             return getBoolPreference(Preferences.visualizationXAxisInvertedKey)
@@ -405,7 +398,7 @@ class Preferences {
             setBoolPreference(Preferences.visualizationXAxisInvertedKey, newValue: newValue)
         }
     }
-    
+
     static var visualizationYAxisInverted: Bool {
         get {
             return getBoolPreference(Preferences.visualizationYAxisInvertedKey)
@@ -414,7 +407,7 @@ class Preferences {
             setBoolPreference( Preferences.visualizationYAxisInvertedKey, newValue: newValue)
         }
     }
-    
+
     static var visualizationZAxisInverted: Bool {
         get {
             return getBoolPreference(Preferences.visualizationZAxisInvertedKey)
@@ -423,7 +416,7 @@ class Preferences {
             setBoolPreference(Preferences.visualizationZAxisInvertedKey, newValue: newValue)
         }
     }
-    
+
     static var visualizationXAxisFlipped: Bool {
         get {
             return getBoolPreference(Preferences.visualizationXAxisFlippedKey)
@@ -432,7 +425,7 @@ class Preferences {
             setBoolPreference(Preferences.visualizationXAxisFlippedKey, newValue: newValue)
         }
     }
-    
+
     static var visualizationYAxisFlipped: Bool {
         get {
             return getBoolPreference(Preferences.visualizationYAxisFlippedKey)
@@ -441,7 +434,7 @@ class Preferences {
             setBoolPreference(Preferences.visualizationYAxisFlippedKey, newValue: newValue)
         }
     }
-    
+
     static var visualizationZAxisFlipped: Bool {
         get {
             return getBoolPreference(Preferences.visualizationZAxisFlippedKey)
@@ -450,7 +443,7 @@ class Preferences {
             setBoolPreference(Preferences.visualizationZAxisFlippedKey, newValue: newValue)
         }
     }
-    
+
     static var visualizationSwitchYZ: Bool {
         get {
             return getBoolPreference(Preferences.visualizationSwitchYZKey)
@@ -460,25 +453,24 @@ class Preferences {
         }
     }
 
-    
     // MARK: - Common
     static func getBoolPreference(_ key: String) -> Bool {
         return UserDefaults.standard.bool(forKey: key)
     }
-    
+
     static func setBoolPreference(_ key: String, newValue: Bool) {
         UserDefaults.standard.set(newValue, forKey: key)
         NotificationCenter.default.post(name: .didUpdatePreferences, object: nil)
     }
-    
+
     // MARK: - Defaults
     static func registerDefaults() {
         let path = Bundle.main.path(forResource: "DefaultPreferences", ofType: "plist")!
         let defaultPrefs = NSDictionary(contentsOfFile: path) as! [String: AnyObject]
-        
+
         UserDefaults.standard.register(defaults: defaultPrefs)
     }
-    
+
     static func resetDefaults() {
         let appDomain = Bundle.main.bundleIdentifier!
         let defaults = UserDefaults.standard
@@ -489,7 +481,6 @@ class Preferences {
 // MARK: - Custom Notifications
 extension Notification.Name {
     private static let kPrefix = Bundle.main.bundleIdentifier!
-    
+
     static let  didUpdatePreferences = Notification.Name(kPrefix+".didUpdatePreferences")
 }
-

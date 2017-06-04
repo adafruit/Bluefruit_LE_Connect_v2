@@ -9,9 +9,9 @@
 import UIKit
 
 class MqttSettingPickerCell: UITableViewCell {
-    
+
     @IBOutlet weak var pickerView: UIPickerView!
-    
+
 /*
     override func awakeFromNib() {
         super.awakeFromNib()

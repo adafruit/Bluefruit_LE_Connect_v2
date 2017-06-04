@@ -14,7 +14,7 @@ class MagnetometerPageMatrixViewController: MagnetometerPageContentViewControlle
     @IBOutlet weak var valuesStackView: UIStackView!
     @IBOutlet weak var magneticFieldLabel: UILabel!
     @IBOutlet weak var magneticOffsetLabel: UILabel!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,19 +25,19 @@ class MagnetometerPageMatrixViewController: MagnetometerPageContentViewControlle
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     override func updateUI() {
         super.updateUI()
-        
+
         guard let calibration = calibration else {
             return
         }
-        
+
         // Offset
         let magneticOffset = calibration.magneticOffset()
-        
+
         magneticOffsetLabel.text = String(format: "( %.2f  %.2f  %.2f) ", magneticOffset.x, magneticOffset.y, magneticOffset.z)
-        
+
         // Mapping
         let magneticMapping = calibration.magneticMapping()
         for (j, rowView) in valuesStackView.arrangedSubviews.enumerated() {
@@ -46,7 +46,7 @@ class MagnetometerPageMatrixViewController: MagnetometerPageContentViewControlle
                 valueLabel.text = String(format: "%+.3f", magneticMapping[i, j])
             }
         }
-        
+
         // Field
         let magneticField = calibration.magneticField()
         magneticFieldLabel.text = String(format: "%.2f", magneticField)

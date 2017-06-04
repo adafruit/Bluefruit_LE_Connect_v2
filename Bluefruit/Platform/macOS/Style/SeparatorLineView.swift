@@ -12,9 +12,9 @@ class SeparatorLineView: NSView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         wantsLayer = true
         layer?.backgroundColor = Color.lightGray.cgColor
     }
-    
+
 }

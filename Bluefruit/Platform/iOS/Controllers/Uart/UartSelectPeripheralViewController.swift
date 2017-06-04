@@ -16,9 +16,9 @@ class UartSelectPeripheralViewController: UIViewController {
 
     weak var delegate: UartSelectPeripheralViewControllerDelegate?
     var colorForPeripheral: [UUID: Color]?
-    
+
     fileprivate var connectedPeripherals = [BlePeripheral]()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,20 +33,20 @@ class UartSelectPeripheralViewController: UIViewController {
 
 // MARK: - UITableViewDataSource
 extension UartSelectPeripheralViewController: UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
         return connectedPeripherals.count + 1   // +1 All
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let reuseIdentifier = "PeripheralCell"
         var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: reuseIdentifier)
         }
-        
+
         return cell!
     }
 }
@@ -54,26 +54,24 @@ extension UartSelectPeripheralViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension UartSelectPeripheralViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
+
         if indexPath.row == 0 {
             cell.textLabel?.text = "All Connected Peripherals"
             cell.textLabel?.textColor = UIColor.black
-        }
-        else {
+        } else {
             let peripheral = connectedPeripherals[indexPath.row-1]
-            
+
             let localizationManager = LocalizationManager.sharedInstance
             cell.textLabel?.text = peripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")
             cell.textLabel?.textColor = colorForPeripheral?[peripheral.identifier] ?? UIColor.black
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+
         if indexPath.row == 0 {
             delegate?.onUartSendToChanged(uuid: nil, name: "To All")
-        }
-        else {
+        } else {
             let localizationManager = LocalizationManager.sharedInstance
             let peripheral = connectedPeripherals[indexPath.row-1]
             let name = peripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")

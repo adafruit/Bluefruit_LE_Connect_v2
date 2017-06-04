@@ -17,7 +17,7 @@ extension Vector3 {
             case 2: return z
             default: assert(false, "Index out of range")
             }
-            
+
             return Scalar.nan
         }
         set {
@@ -39,7 +39,7 @@ extension Matrix3 {
             v, v, v
         )
     }
-    
+
     subscript(_ row: Int, _ column: Int) -> Scalar {
         get {
             switch row {
@@ -66,7 +66,7 @@ extension Matrix3 {
                 }
             default: assert(false, "Row out of range")
             }
-            
+
             return Scalar.nan
         }
         set {
@@ -97,7 +97,7 @@ extension Matrix3 {
 
         }
     }
-    
+
     public static prefix func -(m: Matrix3) -> Matrix3 {
         return Matrix3(
             -m.m11, -m.m12, -m.m13,
@@ -105,8 +105,7 @@ extension Matrix3 {
             -m.m31, -m.m32, -m.m33
         )
     }
-    
-    
+
     public var symmetricInverse: Matrix3 {
         // calculate useful products
         let fB11B22mB12B12 = m22 * m33 - m23 * m23
@@ -114,12 +113,12 @@ extension Matrix3 {
         let fB01B12mB11B02 = m12 * m23 - m22 * m13
 
         // set ftmp to the determinant of the input matrix
-        var ftmp = m11 * fB11B22mB12B12 + m12 * fB12B02mB01B22 + m13 * fB01B12mB11B02;
+        var ftmp = m11 * fB11B22mB12B12 + m12 * fB12B02mB01B22 + m13 * fB01B12mB11B02
 
         // set A to the inverse of B for any determinant except zero
         if ftmp != 0.0 {
             ftmp = 1.0 / ftmp
-            
+
             let am11 = fB11B22mB12B12 * ftmp
             let am12 = fB12B02mB01B22 * ftmp
             let am21 = am12
@@ -129,13 +128,13 @@ extension Matrix3 {
             let am23 = (m13 * m12 - m11 * m23) * ftmp
             let am32 = am23
             let am33 = (m11 * m22 - m12 * m12) * ftmp
-            
+
             return Matrix3(am11, am12, am13, am21, am22, am23, am31, am32, am33)
-            
+
         } else {
             // provide the identity matrix if the determinant is zero
             return Matrix3.identity
         }
-        
+
     }
 }

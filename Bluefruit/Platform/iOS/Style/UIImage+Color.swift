@@ -8,9 +8,7 @@
 
 import UIKit
 
-
-extension UIImage
-{
+extension UIImage {
     // from: http://stackoverflow.com/questions/26542035/create-uiimage-with-solid-color-in-swift
     convenience init(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
         let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)

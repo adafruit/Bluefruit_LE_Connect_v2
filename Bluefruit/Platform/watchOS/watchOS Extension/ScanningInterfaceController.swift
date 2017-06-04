@@ -9,21 +9,20 @@
 import WatchKit
 import Foundation
 
-
 class ScanningInterfaceController: WKInterfaceController {
 
     @IBOutlet var foundPeripheralsLabel: WKInterfaceLabel!
-        
+
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        
+
         // Configure interface objects here.
     }
 
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        
+
         // Update values
         if let appContext = WatchSessionManager.sharedInstance.session?.receivedApplicationContext {
             didReceiveApplicationContext(appContext)
@@ -38,12 +37,12 @@ class ScanningInterfaceController: WKInterfaceController {
     // MARK: - Session
     func didReceiveApplicationContext(_ applicationContext: [String : Any]) {
         DLog("ScanningInterfaceController didReceiveApplicationContext: \(applicationContext)")
-        
+
         var peripheralsCount = 0
         if let peripheralsFound = (applicationContext["bleFoundPeripherals"] as AnyObject).integerValue {
             peripheralsCount = peripheralsFound
         }
-        
+
         foundPeripheralsLabel.setText( String(peripheralsCount) )
     }
 }
