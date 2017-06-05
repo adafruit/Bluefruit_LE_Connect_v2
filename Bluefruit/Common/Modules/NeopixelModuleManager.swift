@@ -195,7 +195,7 @@ class NeopixelModuleManager: NSObject {
 
     // MARK: - Start / Stop
 
-    func start(uartReadyCompletion:@escaping ((Error?)->Void)) {
+    func start(uartReadyCompletion:@escaping ((Error?) -> Void)) {
         DLog("neopixel start")
 
         // Enable Uart
@@ -218,7 +218,7 @@ class NeopixelModuleManager: NSObject {
         return board != nil
     }
 
-    func connectNeopixel(completion: @escaping ((Bool)->Void)) {
+    func connectNeopixel(completion: @escaping ((Bool) -> Void)) {
         self.checkNeopixelSketch(completion: completion)
     }
 
@@ -250,7 +250,7 @@ class NeopixelModuleManager: NSObject {
         }
     }
 
-    func setupNeopixel(board device: Board, components: Components, is400HzEnabled: Bool, completion: @escaping ((Bool)->Void)) {
+    func setupNeopixel(board device: Board, components: Components, is400HzEnabled: Bool, completion: @escaping ((Bool) -> Void)) {
         DLog("Command: Setup")
 //        let pinNumber: UInt8 = 6       // TODO: ask user
 
@@ -280,7 +280,7 @@ class NeopixelModuleManager: NSObject {
         board = nil
     }
 
-    func setPixelColor(_ color: Color, colorW: Float, x: UInt8, y: UInt8, completion: ((Bool)->Void)? = nil) {
+    func setPixelColor(_ color: Color, colorW: Float, x: UInt8, y: UInt8, completion: ((Bool) -> Void)? = nil) {
         DLog("Command: set Pixel")
         guard components.numComponents == 3 || components.numComponents == 4 else { DLog("Error: unsupported numComponents: \(components.numComponents)"); return }
 
@@ -293,7 +293,7 @@ class NeopixelModuleManager: NSObject {
         sendCommand(command, completion: completion)
     }
 
-    func clearBoard(color: Color, colorW: Float, completion: ((Bool)->Void)? = nil) {
+    func clearBoard(color: Color, colorW: Float, completion: ((Bool) -> Void)? = nil) {
         DLog("Command: Clear")
         guard components.numComponents == 3 || components.numComponents == 4 else { DLog("Error: unsupported numComponents: \(components.numComponents)"); return }
 
@@ -306,7 +306,7 @@ class NeopixelModuleManager: NSObject {
         sendCommand(command, completion: completion)
     }
 
-    func setBrighness(_ brightness: Float, completion: ((Bool)->Void)? = nil) {
+    func setBrighness(_ brightness: Float, completion: ((Bool) -> Void)? = nil) {
         DLog("Command: set Brightness: \(brightness)")
 
         let brightnessValue = UInt8(brightness*255)
@@ -323,7 +323,7 @@ class NeopixelModuleManager: NSObject {
         return (r, g, b)
     }
 
-    func setImage(completion: ((Bool)->Void)?) {
+    func setImage(completion: ((Bool) -> Void)?) {
         DLog("Command: set Image")
 
         // TODO: implement
@@ -344,12 +344,12 @@ class NeopixelModuleManager: NSObject {
         sendCommand(command, completion: completion)
     }
 
-    private func sendCommand(_ command: [UInt8], completion: ((Bool)->Void)? = nil) {
+    private func sendCommand(_ command: [UInt8], completion: ((Bool) -> Void)? = nil) {
         let data = Data(bytes: command, count: command.count)
         sendCommand(data: data, completion: completion)
     }
 
-    private func sendCommand(data: Data, completion: ((Bool)->Void)? = nil) {
+    private func sendCommand(data: Data, completion: ((Bool) -> Void)? = nil) {
         guard board != nil else {
             DLog("setImage: unknown board")
             completion?(false)

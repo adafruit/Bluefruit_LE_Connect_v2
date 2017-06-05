@@ -13,7 +13,7 @@ class FilterTextSettingsViewController: UIViewController {
     @IBOutlet weak var baseTableView: UITableView!
 
     weak var peripheralList: PeripheralList?
-    var onSettingsChanged: (()->Void)?
+    var onSettingsChanged: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()

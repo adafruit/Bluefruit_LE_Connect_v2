@@ -14,8 +14,8 @@ class UartSettingsViewController: UIViewController {
     @IBOutlet weak var baseTableView: UITableView!
 
     // Data
-    var onClickClear: (()->Void)?
-    var onClickExport: (()->Void)?
+    var onClickClear: (() -> Void)?
+    var onClickExport: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()

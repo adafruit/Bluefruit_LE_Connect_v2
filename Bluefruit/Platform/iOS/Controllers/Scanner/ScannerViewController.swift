@@ -307,14 +307,29 @@ class ScannerViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        if segue.identifier == "showDetailSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
+        if segue.identifier == "showDetailSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {     // Note: Not used anymore. Remove when the change is permanent
             peripheralDetailsViewController.blePeripheral = selectedPeripheral
-        } else if segue.identifier == "showUpdateSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
+        } else if segue.identifier == "showDetailSegue", let peripheralModulesViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralModulesViewController {
+            peripheralModulesViewController.blePeripheral = selectedPeripheral
+        } else if segue.identifier == "showUpdateSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {       // Note: Not used anymore. Remove when the change is permanent
             peripheralDetailsViewController.blePeripheral = selectedPeripheral
             peripheralDetailsViewController.startingController = .update
-        } else if segue.identifier == "showMultiUartSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {
+        } else if segue.identifier == "showUpdateSegue", let detailsNavigationController = segue.destination as? UINavigationController, let peripheralModulesViewController = detailsNavigationController.topViewController as? PeripheralModulesViewController {
+            peripheralModulesViewController.blePeripheral = selectedPeripheral
+            //peripheralModulesViewController.startingController = .update
+
+            if let dfuViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuModeViewController") as? DfuModeViewController {
+                dfuViewController.blePeripheral = selectedPeripheral
+                detailsNavigationController.viewControllers = [peripheralModulesViewController, dfuViewController]
+
+            }
+        } else if segue.identifier == "showMultiUartSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {   // Note: Not used anymore. Remove when the change is permanent
             peripheralDetailsViewController.blePeripheral = nil
             peripheralDetailsViewController.startingController = .multiUart
+        } else if segue.identifier == "showMultiUartSegue", let peripheralModulesViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralModulesViewController {
+            peripheralModulesViewController.blePeripheral = nil
+            peripheralModulesViewController.startingController = .multiUart
+
         } else if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController {
             controller.delegate = self
 

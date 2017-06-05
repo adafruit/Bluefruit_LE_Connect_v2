@@ -13,8 +13,8 @@ class NeopixelBoardSelectorViewController: UIViewController {
     // Data
     fileprivate var boards: [[String: AnyObject]]?
 
-    var onClickStandardBoard: ((Int)->Void)?
-    var onClickCustomLineStrip : (()->Void)?
+    var onClickStandardBoard: ((Int) -> Void)?
+    var onClickCustomLineStrip : (() -> Void)?
 
     // UI
     @IBOutlet weak var baseTableView: UITableView!

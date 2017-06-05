@@ -23,8 +23,10 @@ class PinIOModeViewController: PeripheralModeViewController {
         assert(blePeripheral != nil)
         pinIO = PinIOModuleManager(blePeripheral: blePeripheral!, delegate: self)
 
-        // Setup table
-        baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
+        if Config.useTabController {
+            // Setup table
+            baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
+        }
     }
 
     override func didReceiveMemoryWarning() {

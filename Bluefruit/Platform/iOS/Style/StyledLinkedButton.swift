@@ -23,7 +23,7 @@ class StyledLinkedButton: IntrinsicSizeWithInsetsButton {
 
     /*@IBInspectable */var linkedView: UIView?
 
-    var onTouchUpInside: (()->Void)?
+    var onTouchUpInside: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()

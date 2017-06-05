@@ -25,6 +25,7 @@
 		A90C79741E40CB150076E8AD /* EmptyDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79721E40CB150076E8AD /* EmptyDetailsViewController.swift */; };
 		A90C79751E40CB150076E8AD /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79731E40CB150076E8AD /* HelpViewController.swift */; };
 		A90C79781E40CBFA0076E8AD /* InfoModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */; };
+		A91502741EE4DAA800298005 /* PeripheralModulesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91502731EE4DAA800298005 /* PeripheralModulesTableViewCell.swift */; };
 		A91542681EDD7BC8007A34EA /* GyroscopePageContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542541EDD7BC8007A34EA /* GyroscopePageContentViewController.swift */; };
 		A91542691EDD7BC8007A34EA /* GyroscopePageDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542551EDD7BC8007A34EA /* GyroscopePageDataViewController.swift */; };
 		A915426A1EDD7BC8007A34EA /* GyroscopeParametersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542561EDD7BC8007A34EA /* GyroscopeParametersViewController.swift */; };
@@ -46,6 +47,7 @@
 		A915427B1EDD7C3F007A34EA /* StyledLinkedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */; };
 		A915427D1EDD7CE8007A34EA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427C1EDD7CE8007A34EA /* Config.swift */; };
 		A915427F1EDD8041007A34EA /* StyledAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427E1EDD8041007A34EA /* StyledAnimations.swift */; };
+		A91DE4601EE4D61700297D9B /* PeripheralModulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91DE45F1EE4D61700297D9B /* PeripheralModulesViewController.swift */; };
 		A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D4F1E4174F800DE90C6 /* KeyboardPositionNotifier.swift */; };
 		A91E7D5C1E4216ED00DE90C6 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D5A1E4216ED00DE90C6 /* UIImage+Color.swift */; };
 		A91E7D5D1E4216ED00DE90C6 /* UIImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D5B1E4216ED00DE90C6 /* UIImage+Tint.swift */; };
@@ -362,6 +364,7 @@
 		A90C79721E40CB150076E8AD /* EmptyDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyDetailsViewController.swift; sourceTree = "<group>"; };
 		A90C79731E40CB150076E8AD /* HelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModuleManager.swift; sourceTree = "<group>"; };
+		A91502731EE4DAA800298005 /* PeripheralModulesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralModulesTableViewCell.swift; sourceTree = "<group>"; };
 		A91542541EDD7BC8007A34EA /* GyroscopePageContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroscopePageContentViewController.swift; sourceTree = "<group>"; };
 		A91542551EDD7BC8007A34EA /* GyroscopePageDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroscopePageDataViewController.swift; sourceTree = "<group>"; };
 		A91542561EDD7BC8007A34EA /* GyroscopeParametersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroscopeParametersViewController.swift; sourceTree = "<group>"; };
@@ -383,6 +386,7 @@
 		A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLinkedButton.swift; sourceTree = "<group>"; };
 		A915427C1EDD7CE8007A34EA /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		A915427E1EDD8041007A34EA /* StyledAnimations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledAnimations.swift; sourceTree = "<group>"; };
+		A91DE45F1EE4D61700297D9B /* PeripheralModulesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralModulesViewController.swift; sourceTree = "<group>"; };
 		A91E7D4F1E4174F800DE90C6 /* KeyboardPositionNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardPositionNotifier.swift; sourceTree = "<group>"; };
 		A91E7D5A1E4216ED00DE90C6 /* UIImage+Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		A91E7D5B1E4216ED00DE90C6 /* UIImage+Tint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tint.swift"; sourceTree = "<group>"; };
@@ -743,6 +747,15 @@
 			path = Visualization;
 			sourceTree = "<group>";
 		};
+		A91DE45E1EE4D5F900297D9B /* PeripheralModules */ = {
+			isa = PBXGroup;
+			children = (
+				A91DE45F1EE4D61700297D9B /* PeripheralModulesViewController.swift */,
+				A91502731EE4DAA800298005 /* PeripheralModulesTableViewCell.swift */,
+			);
+			path = PeripheralModules;
+			sourceTree = "<group>";
+		};
 		A9286C8D1E3A9216008E5F81 = {
 			isa = PBXGroup;
 			children = (
@@ -811,6 +824,7 @@
 				A90C79721E40CB150076E8AD /* EmptyDetailsViewController.swift */,
 				A90C79731E40CB150076E8AD /* HelpViewController.swift */,
 				A9D234331E3AD70300DC0C99 /* Scanner */,
+				A91DE45E1EE4D5F900297D9B /* PeripheralModules */,
 				A9D234501E3AD9A200DC0C99 /* PeripheralDetails */,
 				A9BAD20F1E3FC6CA0021DFA9 /* Info */,
 				A94A219E1E417271006A5F33 /* Uart */,
@@ -1849,6 +1863,7 @@
 				A91542701EDD7BC9007A34EA /* MagnetometerProgressViewController.swift in Sources */,
 				A9BCD60E1E4D36DE003D1CEA /* ScanningInterfaceController.swift in Sources */,
 				A9286CD61E3A9B22008E5F81 /* AlertHelper.swift in Sources */,
+				A91502741EE4DAA800298005 /* PeripheralModulesTableViewCell.swift in Sources */,
 				A9BCD60C1E4D36DE003D1CEA /* MainInterfaceController.swift in Sources */,
 				A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */,
 				A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */,
@@ -1880,6 +1895,7 @@
 				A9BCD58A1E4D2616003D1CEA /* CocoaCompatibility.swift in Sources */,
 				A98378701E43422100170319 /* MqttSettingsValueAndSelector.swift in Sources */,
 				A9D2343D1E3AD70300DC0C99 /* ScannerViewController.swift in Sources */,
+				A91DE4601EE4D61700297D9B /* PeripheralModulesViewController.swift in Sources */,
 				A9D234571E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift in Sources */,
 				A91542771EDD7BC9007A34EA /* VisualizationParametersViewController.swift in Sources */,
 				A94A21AF1E417271006A5F33 /* UartSettingsViewController.swift in Sources */,

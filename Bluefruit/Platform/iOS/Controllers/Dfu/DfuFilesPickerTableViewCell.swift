@@ -10,7 +10,7 @@ import UIKit
 
 class DfuFilesPickerTableViewCell: UITableViewCell {
 
-    var onPickFiles: (()->Void)?
+    var onPickFiles: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()

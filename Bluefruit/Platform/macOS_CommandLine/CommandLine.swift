@@ -219,7 +219,7 @@ class CommandLine: NSObject {
         dfuSemaphore.signal()
     }
 
-    func downloadFirmwareUpdatesDatabase(url dataUrl: URL, showBetaVersions: Bool, completionHandler: (([AnyHashable: Any]?)->Void)?) {
+    func downloadFirmwareUpdatesDatabase(url dataUrl: URL, showBetaVersions: Bool, completionHandler: (([AnyHashable: Any]?) -> Void)?) {
 
         FirmwareUpdater.refreshSoftwareUpdatesDatabase(url: dataUrl) { [unowned self] success in
             let boardsInfo = self.firmwareUpdater.releases(showBetaVersions: showBetaVersions)

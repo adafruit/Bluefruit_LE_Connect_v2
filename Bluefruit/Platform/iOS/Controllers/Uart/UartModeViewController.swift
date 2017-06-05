@@ -146,26 +146,51 @@ class UartModeViewController: PeripheralModeViewController {
         registerNotifications(enabled: true)
 
         // Update the navigation bar items
-        if var rightButtonItems = parent?.navigationItem.rightBarButtonItems, rightButtonItems.count == 2 {
+        if Config.useTabController {        // Note: remove once usingTabController is deprecated permanently
+            if var rightButtonItems = parent?.navigationItem.rightBarButtonItems, rightButtonItems.count == 2 {
 
-            if UI_USER_INTERFACE_IDIOM() == .pad { // traitCollection.userInterfaceIdiom == .pad {
-                // Remove more item
-                rightButtonItems.remove(at: 0)
+                if UI_USER_INTERFACE_IDIOM() == .pad { // traitCollection.userInterfaceIdiom == .pad {
+                    // Remove more item
+                    rightButtonItems.remove(at: 0)
 
-                // Add mqtt bar item
-                if !isInMultiUartMode() {
-                    mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
-                    rightButtonItems.append(mqttBarButtonItem)
+                    // Add mqtt bar item
+                    if !isInMultiUartMode() {
+                        mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
+                        rightButtonItems.append(mqttBarButtonItem)
+                    }
+                } else {
+                    // Add mqtt bar item
+                    if !isInMultiUartMode() {
+                        mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
+                        rightButtonItems.append(mqttBarButtonItem)
+                    }
                 }
-            } else {
-                // Add mqtt bar item
-                if !isInMultiUartMode() {
-                    mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
-                    rightButtonItems.append(mqttBarButtonItem)
+
+                parent?.navigationItem.rightBarButtonItems = rightButtonItems
+            }
+        } else {
+            if var rightButtonItems = navigationItem.rightBarButtonItems, rightButtonItems.count == 2 {
+
+                if UI_USER_INTERFACE_IDIOM() == .pad { // traitCollection.userInterfaceIdiom == .pad {
+                    // Remove more item
+                    rightButtonItems.remove(at: 0)
+
+                    // Add mqtt bar item
+                    if !isInMultiUartMode() {
+                        mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
+                        rightButtonItems.append(mqttBarButtonItem)
+                    }
+                } else {
+                    // Add mqtt bar item
+                    if !isInMultiUartMode() {
+                        mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
+                        rightButtonItems.append(mqttBarButtonItem)
+                    }
                 }
+
+                navigationItem.rightBarButtonItems = rightButtonItems
             }
 
-             parent?.navigationItem.rightBarButtonItems = rightButtonItems
         }
 
         // UI

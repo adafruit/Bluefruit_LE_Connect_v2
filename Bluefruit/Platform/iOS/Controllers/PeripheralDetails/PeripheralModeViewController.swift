@@ -13,7 +13,7 @@ class PeripheralModeViewController: UIViewController {
     // Parameters
     weak var blePeripheral: BlePeripheral?
 
-    //
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,12 +23,14 @@ class PeripheralModeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Setup navigation item
-        if let parentNavigationItem = parent?.navigationItem {
+        if Config.useTabController {
+            // Setup navigation item
+            if let parentNavigationItem = parent?.navigationItem {
 
-            // Setup navigation item title and buttons
-            parentNavigationItem.title = navigationItem.title
-            parentNavigationItem.rightBarButtonItems = navigationItem.rightBarButtonItems
+                // Setup navigation item title and buttons
+                parentNavigationItem.title = navigationItem.title
+                parentNavigationItem.rightBarButtonItems = navigationItem.rightBarButtonItems
+            }
         }
     }
 

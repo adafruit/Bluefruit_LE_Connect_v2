@@ -16,7 +16,7 @@ class NeopixelComponentSelectorViewController: UIViewController {
     // Params
     var selectedComponent: NeopixelModuleManager.Components?
     var is400HkzEnabled = false
-    var onSetComponents: ((_ components: NeopixelModuleManager.Components, _ is400HkzEnabled: Bool)->Void)?
+    var onSetComponents: ((_ components: NeopixelModuleManager.Components, _ is400HkzEnabled: Bool) -> Void)?
 
     // Data
     fileprivate var components = NeopixelModuleManager.Components.all

@@ -10,7 +10,7 @@ import Foundation
 
 // Command array, executed sequencially
 class CommandQueue<Element> {
-    var executeHandler: ((_ command: Element)->Void)?
+    var executeHandler: ((_ command: Element) -> Void)?
 
     fileprivate var queueLock = NSLock()
 

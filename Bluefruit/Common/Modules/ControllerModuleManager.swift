@@ -58,7 +58,7 @@ class ControllerModuleManager: NSObject {
 
     fileprivate var blePeripheral: BlePeripheral
     private var pollTimer: MSWeakTimer?
-    private var timerHandler: (()->Void)?
+    private var timerHandler: (() -> Void)?
 
     fileprivate let uartManager: UartDataManager// = UartDataManager(delegate: self)
     fileprivate var textCachedBuffer: String = ""
@@ -86,7 +86,7 @@ class ControllerModuleManager: NSObject {
     }
 
     // MARK: - Start / Stop
-    func start(pollInterval: TimeInterval, handler:(()->Void)?) {
+    func start(pollInterval: TimeInterval, handler:(() -> Void)?) {
         self.pollInterval = pollInterval
         self.timerHandler = handler
 
