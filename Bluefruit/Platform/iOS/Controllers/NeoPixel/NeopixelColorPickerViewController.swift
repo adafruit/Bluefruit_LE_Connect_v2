@@ -136,7 +136,7 @@ extension NeopixelColorPickerViewController : ISColorWheelDelegate {
 
         if is4ComponentsEnabled {
             let wByte = UInt8(255.0 * Float(wComponent))
-            let wHex = String(format:"%2X", wByte)
+            let wHex = String(format:"%02X", wByte)
             valueLabel.text = "RGBW: \(redByte)-\(greendByte)-\(blueByte)-\(wByte)"
             hexValueLabel.text = "Hex: \(rgbHexString)\(wHex)"
         } else {
