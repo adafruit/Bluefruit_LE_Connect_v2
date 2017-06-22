@@ -95,7 +95,7 @@ extension BlePeripheral {
 
                 // Enable notifications
                 if !characteristic.isNotifying {
-                    self.setNotify(for: characteristic, enabled: true, handler: notifyHandler, completion: { error in
+                    self.enableNotify(for: characteristic, handler: notifyHandler, completion: { error in
                         completion?(error != nil ? error : (characteristic.isNotifying ? nil : PeripheralUartError.enableNotifyFailed))
                     })
                 } else {
@@ -119,11 +119,9 @@ extension BlePeripheral {
         }
 
         // Disable notify
-        guard let characteristic = uartRxCharacteristic, characteristic.isNotifying else {
-            return
-        }
+        guard let characteristic = uartRxCharacteristic, characteristic.isNotifying else {  return }
 
-        setNotify(for: characteristic, enabled: false)
+        disableNotify(for: characteristic)
     }
 
     // MARK: - Send

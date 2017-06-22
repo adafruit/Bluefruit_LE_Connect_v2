@@ -297,10 +297,13 @@ extension DfuModeViewController: UITableViewDataSource {
 
         return cell
     }
+}
 
+// MARK: UITableViewDelegate
+extension DfuModeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let localizationManager = LocalizationManager.sharedInstance
-
+        
         switch DfuSection(rawValue: indexPath.section)! {
         case .currentVersion:
             var firmwareString: String?
@@ -311,10 +314,10 @@ extension DfuModeViewController: UITableViewDataSource {
             cell.textLabel!.backgroundColor = UIColor.clear
             cell.detailTextLabel!.text = firmwareString
             cell.detailTextLabel!.backgroundColor = UIColor.clear
-
+            
             cell.contentView.backgroundColor = UIColor(hex: 0xeeeeee)
             cell.selectionStyle = .none
-
+            
         default:
             let isLastRow = indexPath.row == tableView.numberOfRows(inSection: indexPath.section)-1
             if isLastRow {  // User files
@@ -324,41 +327,41 @@ extension DfuModeViewController: UITableViewDataSource {
                     viewController.delegate = self
                     self.present(viewController, animated: true, completion: nil)
                 }
-                 cell.selectionStyle = .none
+                cell.selectionStyle = .none
             } else {
                 let firmwareInfo = firmwareInfoForRow(indexPath.row)
                 let versionFormat = localizationManager.localizedString(firmwareInfo.isBeta ? "dfu_betaversion_format" : "dfu_version_format")
                 cell.textLabel!.text = String(format: versionFormat, arguments: [firmwareInfo.version])
                 cell.detailTextLabel!.text = firmwareInfo.boardName
             }
-
+            
             cell.contentView.backgroundColor = UIColor.white
             cell.selectionStyle = isLastRow ? .none:.blue
-
+            
         }
     }
-
-    fileprivate func firmwareInfoForRow(_ row: Int) -> FirmwareInfo {
+    
+    private func firmwareInfoForRow(_ row: Int) -> FirmwareInfo {
         var firmwareInfo: FirmwareInfo!
-
+        
         if let firmwareReleases = boardRelease?.firmwareReleases {     // If showing releases for a specific board
             firmwareInfo = firmwareReleases[row]
         } else {      // If showing all available releases
             var currentRow = 0
             var currentBoardIndex = 0
             while currentRow <= row {
-
+                
                 let sortedKeys = allReleases!.keys.sorted(by: <)        // Order alphabetically
                 let currentKey = sortedKeys[currentBoardIndex]
                 let boardRelease = allReleases![currentKey]
-
+                
                 // order versions numerically
                 let firmwareReleases = boardRelease!.firmwareReleases.sorted(by: { (firmwareA, firmwareB) -> Bool in
                     let versionA = (firmwareA ).version
                     let versionB = (firmwareB ).version
                     return versionA.compare(versionB, options: .numeric) == .orderedAscending
                 })
-
+                
                 let numReleases = firmwareReleases.count
                 let remaining = row - currentRow
                 if remaining < numReleases {
@@ -369,13 +372,10 @@ extension DfuModeViewController: UITableViewDataSource {
                 currentRow += numReleases
             }
         }
-
+        
         return firmwareInfo
     }
-}
-
-// MARK: UITableViewDelegate
-extension DfuModeViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let dis = dis else {
             showErrorAlert(from: self, title: LocalizationManager.sharedInstance.localizedString("dialog_error"), message: "Device Information Service not found. Unable to peform an OTA DFU update")
@@ -447,12 +447,6 @@ extension  DfuModeViewController: DfuUpdateProcessDelegate {
             NotificationCenter.default.post(name: .didDisconnectFromPeripheral, object: nil)
         }
     }
-
-    /*
-    fileprivate func gotoScanController() {
-        // Simulate disonnection to trigger the go back to scanning
-        NotificationCenter.default.post(name: .didDisconnectFromPeripheral, object: nil)
-    }*/
 
     func onUpdateProcessError(errorMessage: String, infoMessage: String?) {
         //BleManager.sharedInstance.restoreCentralManager()

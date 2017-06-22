@@ -628,10 +628,16 @@ extension ScannerViewController: UITableViewDataSource {
         // Fill data
         let localizationManager = LocalizationManager.sharedInstance
         peripheralCell.titleLabel.text = peripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")
-        peripheralCell.rssiImageView.image = signalImage(for: peripheral.rssi)
+        peripheralCell.rssiImageView.image = RssiUI.signalImage(for: peripheral.rssi)
 
-        let isUartCapable = peripheral.isUartAdvertised()
-        peripheralCell.subtitleLabel.text = isUartCapable ? localizationManager.localizedString("peripherallist_uartavailable") : nil
+        var subtitle: String? = nil
+        if peripheral.advertisement.isConnectable == false {
+            subtitle = localizationManager.localizedString("peripherallist_notconnectable")
+        }
+        else if peripheral.isUartAdvertised() {
+            subtitle = localizationManager.localizedString("peripherallist_uartavailable")
+        }
+        peripheralCell.subtitleLabel.text = subtitle
 
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
 

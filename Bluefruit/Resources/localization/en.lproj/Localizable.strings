@@ -67,6 +67,7 @@ https://github.com/Inferis/UIColor-Hex
 "peripherallist_subtitle" = "Peripherals found";
 "peripherallist_uartavailable" = "Uart capable";
 "peripherallist_uartunavailable" = "No Uart detected";
+"peripherallist_notconnectable" = "Not Connectable";
 "peripherallist_peripheraldisconnected" = "Peripheral disconnected";
 "peripherallist_unnamed" = "<Unknown>";
 "peripherallist_connect" = "Connect";
@@ -75,6 +76,7 @@ https://github.com/Inferis/UIColor-Hex
 
 "peripherallist_filter_name_matchsection" = "Match";
 "peripherallist_filter_name_casesection" = "Case sensitivity";
+
 
 // AutoUpdate Firmware
 "autoupdate_title" = "Update available";
@@ -87,7 +89,13 @@ https://github.com/Inferis/UIColor-Hex
 // Peripheral Details
 "peripheraldetails_select" = "Connect to a peripheral from the list on the left";
 "peripheraldetails_connecting" = "Connecting...";
-"peripheraldetails_rssi_format" = "%ld dBm";
+
+// Peripheral Modules
+"peripheralmodules_sectiontitle_device" = "Device";
+"peripheralmodules_sectiontitle_modules" = "Modules";
+"peripheralmodules_rssi_format" = "%ld dBm";
+"peripheralmodules_rssi_unavailable" = "not available";
+
 
 // Info
 "info_tab_title" = "Info";

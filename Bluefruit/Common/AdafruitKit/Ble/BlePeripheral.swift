@@ -30,7 +30,7 @@ class BlePeripheral: NSObject {
 
     // Data
     var peripheral: CBPeripheral
-    var rssi: Int?
+    var rssi: Int?      // rssi only is updated when a non undefined value is received from CoreBluetooth. Note: this is slighty different to the CoreBluetooth implementation, because it will not be updated with undefined values
     var lastSeenTime: CFAbsoluteTime
 
     var identifier: UUID {
@@ -220,19 +220,24 @@ class BlePeripheral: NSObject {
     func characteristic(uuid: CBUUID, serviceUuid: CBUUID, completion: ((CBCharacteristic?, Error?) -> Void)?) {
         if let discoveredService = discoveredService(uuid: uuid) {                                              // Service was already discovered
             characteristic(uuid: uuid, service: discoveredService, completion: completion)
-        } else {                                                                                                  // Discover service
+        } else {                                                                                                // Discover service
             service(uuid: serviceUuid) { (service, error) in
                 if let service = service, error == nil {                                                        // Discover characteristic
                     self.characteristic(uuid: uuid, service: service, completion: completion)
                 } else {
-                    completion?(nil, error != nil ? error:BleCommand.CommandError.invalidService)
+                    completion?(nil, error != nil ? error: BleCommand.CommandError.invalidService)
                 }
             }
         }
     }
 
-    func setNotify(for characteristic: CBCharacteristic, enabled: Bool, handler: ((Error?) -> Void)? = nil, completion: ((Error?) -> Void)? = nil) {
-        let command = BleCommand(type: .setNotify, parameters: [characteristic, enabled, handler as Any], completion: completion)
+    func enableNotify(for characteristic: CBCharacteristic, handler: ((Error?) -> Void)?, completion: ((Error?) -> Void)? = nil) {
+        let command = BleCommand(type: .setNotify, parameters: [characteristic, true, handler as Any], completion: completion)
+        commandQueue.append(command)
+    }
+    
+    func disableNotify(for characteristic: CBCharacteristic, completion: ((Error?) -> Void)? = nil) {
+        let command = BleCommand(type: .setNotify, parameters: [characteristic, false], completion: completion)
         commandQueue.append(command)
     }
 
@@ -264,6 +269,11 @@ class BlePeripheral: NSObject {
     func readDescriptor(_ descriptor: CBDescriptor, completion readCompletion: @escaping CapturedReadCompletionHandler) {
         let command = BleCommand(type: .readDescriptor, parameters: [descriptor, readCompletion as Any], completion: nil)
         commandQueue.append(command)
+    }
+    
+    // MARK: - Rssi
+    func readRssi() {
+        peripheral.readRSSI()
     }
 
     // MARK: - Command Queue
@@ -569,6 +579,17 @@ extension BlePeripheral: CBPeripheralDelegate {
             finishedExecutingCommand(error: error)
         }
     }
+    
+    func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
+        guard error == nil else { DLog("didReadRSSI error: \(error!.localizedDescription)"); return }
+        
+        let rssi = RSSI.intValue
+        if rssi != 127 {  // only update rssi value if is defined ( 127 means undefined )
+            self.rssi = rssi
+        }
+        
+        NotificationCenter.default.post(name: .peripheralDidUpdateRssi, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier])
+    }
 }
 
 // MARK: - Custom Notifications
@@ -576,4 +597,5 @@ extension Notification.Name {
     private static let kPrefix = Bundle.main.bundleIdentifier!
     static let peripheralDidUpdateName = Notification.Name(kPrefix+".peripheralDidUpdateName")
     static let peripheralDidModifyServices = Notification.Name(kPrefix+".peripheralDidModifyServices")
+    static let peripheralDidUpdateRssi = Notification.Name(kPrefix+".peripheralDidUpdateRssi")
 }

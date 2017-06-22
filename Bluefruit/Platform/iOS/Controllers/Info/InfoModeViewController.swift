@@ -82,7 +82,12 @@ class InfoModeViewController: PeripheralModeViewController {
         let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
 
         let title = String(format: localizationManager.localizedString("info_navigation_title_format"), arguments: [name])
-        navigationController?.navigationItem.title = title
+        if Config.useTabController {    // Note: remove once usingTabController is deprecated permanently
+            navigationController?.navigationItem.title = title
+        }
+        else {
+            self.title = title
+        }
 
         // Refresh data
         baseTableView.reloadData()
@@ -407,7 +412,7 @@ extension InfoModeViewController: UITableViewDataSource {
 
             identifier = currentItem.uuid.uuidString
 
-            let displayModeIdentifier = "\(currentCharacteristicIndex)_\(identifier)"       // Descriptors in different characteristics could have the same CBUUID
+            let displayModeIdentifier = "\(service.uuid.uuidString)\(currentCharacteristicIndex)_\(identifier)"       // Descriptors in different characteristics or different services could have the same CBUUID
             var currentDisplayMode = DisplayMode.auto
             if let displayMode = itemDisplayMode[displayModeIdentifier] {
                 currentDisplayMode = displayMode
@@ -483,7 +488,7 @@ extension InfoModeViewController: UITableViewDelegate {
         if let characteristic = service.characteristics?[currentCharacteristicIndex] {
 
             let identifier = currentItem.uuid.uuidString
-            let displayModeIdentifier = "\(currentCharacteristicIndex)_\(identifier)"       // Descriptors in different characteristics could have the same CBUUID
+            let displayModeIdentifier = "\(service.uuid.uuidString)\(currentCharacteristicIndex)_\(identifier)"       // Descriptors in different characteristics or different services could have the same CBUUID
             if let displayMode =  itemDisplayMode[displayModeIdentifier] {
                 switch displayMode {
                 case .text:
@@ -491,7 +496,6 @@ extension InfoModeViewController: UITableViewDelegate {
                 case .hex:
                     itemDisplayMode[displayModeIdentifier] = .text
                 default:
-
                     // Check if is printable
                     var isPrintable = false
                     var valueData: Data?

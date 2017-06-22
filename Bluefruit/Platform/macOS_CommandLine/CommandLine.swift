@@ -122,9 +122,7 @@ class CommandLine: NSObject {
 
     private func didDiscoverPeripheral(notification: Notification) {
 
-        guard let uuid = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID else {
-            return
-        }
+        guard let uuid = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID else { return }
 
         if let peripheral = BleManager.sharedInstance.peripheral(with: uuid) {
 
@@ -172,10 +170,7 @@ class CommandLine: NSObject {
 
         // If hexUrl is nil, then uses releases to auto-update to the lastest release available
 
-        guard let centralManager = BleManager.sharedInstance.centralManager else {
-            DLog("centralManager is nil")
-            return
-        }
+        guard let centralManager = BleManager.sharedInstance.centralManager else { DLog("centralManager is nil"); return }
 
         if let peripheral = centralManager.retrievePeripherals(withIdentifiers: [peripheralUUID]).first {
 

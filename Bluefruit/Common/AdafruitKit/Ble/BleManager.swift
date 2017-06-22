@@ -242,12 +242,8 @@ class BleManager: NSObject {
     fileprivate func discovered(peripheral: CBPeripheral, advertisementData: [String: Any]? = nil, rssi: Int? = nil) {
         if let existingPeripheral = peripheralsFound[peripheral.identifier] {
             existingPeripheral.lastSeenTime = CFAbsoluteTimeGetCurrent()
-/*
-            if let name = peripheral.name {
-                DLog("\(name) rssi: \(rssi != nil ? String(rssi!):"<unknown>")")
-            }
-*/
-            if let rssi = rssi {
+
+            if let rssi = rssi, rssi != 127 {     // only update rssi value if is defined ( 127 means undefined )
                 existingPeripheral.rssi = rssi
             }
 
@@ -311,8 +307,7 @@ extension BleManager: CBCentralManagerDelegate {
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         // DLog("didDiscover: \(peripheral.name ?? peripheral.identifier.uuidString)")
         let rssi = RSSI.intValue
-        let realRssi = rssi != 127 ? rssi:nil       // 127 is a special value used by Apple to indicate that thre reading is not available
-        discovered(peripheral: peripheral, advertisementData: advertisementData, rssi: realRssi)
+        discovered(peripheral: peripheral, advertisementData: advertisementData, rssi: rssi)
 
         NotificationCenter.default.post(name: .didDiscoverPeripheral, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier])
     }

@@ -253,13 +253,4 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         selectedIndex = 0
 
     }
-
-    fileprivate func updateRssiUI() {
-        /*
-        if let rssi = peripheral?.rssi {
-            //DLog("rssi: \(rssi)")
-            infoRssiLabel.stringValue = String.format(LocalizationManager.sharedInstance.localizedString("peripheraldetails_rssi_format"), rssi) // "\(rssi) dBm"
-            infoRssiImageView.image = signalImageForRssi(rssi)
-        }*/
-    }
 }

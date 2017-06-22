@@ -47,6 +47,9 @@
 		A915427B1EDD7C3F007A34EA /* StyledLinkedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */; };
 		A915427D1EDD7CE8007A34EA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427C1EDD7CE8007A34EA /* Config.swift */; };
 		A915427F1EDD8041007A34EA /* StyledAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427E1EDD8041007A34EA /* StyledAnimations.swift */; };
+		A91D65A11EFC07740097C8B6 /* BlePeripheral+Battery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91D659F1EFC06CA0097C8B6 /* BlePeripheral+Battery.swift */; };
+		A91D65A21EFC077B0097C8B6 /* PeripheralModulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91DE45F1EE4D61700297D9B /* PeripheralModulesViewController.swift */; };
+		A91D65A41EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91D65A31EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift */; };
 		A91DE4601EE4D61700297D9B /* PeripheralModulesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91DE45F1EE4D61700297D9B /* PeripheralModulesViewController.swift */; };
 		A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D4F1E4174F800DE90C6 /* KeyboardPositionNotifier.swift */; };
 		A91E7D5C1E4216ED00DE90C6 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D5A1E4216ED00DE90C6 /* UIImage+Color.swift */; };
@@ -386,6 +389,8 @@
 		A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLinkedButton.swift; sourceTree = "<group>"; };
 		A915427C1EDD7CE8007A34EA /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		A915427E1EDD8041007A34EA /* StyledAnimations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledAnimations.swift; sourceTree = "<group>"; };
+		A91D659F1EFC06CA0097C8B6 /* BlePeripheral+Battery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlePeripheral+Battery.swift"; sourceTree = "<group>"; };
+		A91D65A31EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralModulesDeviceTableViewCell.swift; sourceTree = "<group>"; };
 		A91DE45F1EE4D61700297D9B /* PeripheralModulesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralModulesViewController.swift; sourceTree = "<group>"; };
 		A91E7D4F1E4174F800DE90C6 /* KeyboardPositionNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardPositionNotifier.swift; sourceTree = "<group>"; };
 		A91E7D5A1E4216ED00DE90C6 /* UIImage+Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
@@ -752,6 +757,7 @@
 			children = (
 				A91DE45F1EE4D61700297D9B /* PeripheralModulesViewController.swift */,
 				A91502731EE4DAA800298005 /* PeripheralModulesTableViewCell.swift */,
+				A91D65A31EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift */,
 			);
 			path = PeripheralModules;
 			sourceTree = "<group>";
@@ -893,6 +899,7 @@
 				A9286CC61E3A9B22008E5F81 /* UartLogManager.swift */,
 				A9286CC71E3A9B22008E5F81 /* UartDataManager.swift */,
 				A98DE4031E45696700EEF4C8 /* UartPacketManager.swift */,
+				A91D659F1EFC06CA0097C8B6 /* BlePeripheral+Battery.swift */,
 			);
 			path = Ble;
 			sourceTree = "<group>";
@@ -1846,9 +1853,11 @@
 				A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */,
 				A9D234561E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift in Sources */,
 				A907982C1E4349D6005470A5 /* ControllerPadViewController.swift in Sources */,
+				A91D65A41EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift in Sources */,
 				A94A21B11E417271006A5F33 /* UartTimetampTableViewCell.swift in Sources */,
 				A9286CD51E3A9B22008E5F81 /* UartDataManager.swift in Sources */,
 				A91542721EDD7BC9007A34EA /* CalibrationMenuViewController.swift in Sources */,
+				A91D65A11EFC07740097C8B6 /* BlePeripheral+Battery.swift in Sources */,
 				A9BCD6081E4D36DE003D1CEA /* ColorRGBInterfaceController.swift in Sources */,
 				A9286CD21E3A9B22008E5F81 /* BlePeripheral.swift in Sources */,
 				A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */,
@@ -1988,6 +1997,7 @@
 				A98378451E42C10C00170319 /* InfoModuleManager.swift in Sources */,
 				A9BCD5971E4D2616003D1CEA /* MqttSettings.swift in Sources */,
 				A9BCD5911E4D2616003D1CEA /* HexColorConversions.swift in Sources */,
+				A91D65A21EFC077B0097C8B6 /* PeripheralModulesViewController.swift in Sources */,
 				A9BCD5931E4D2616003D1CEA /* LocalizationManager.swift in Sources */,
 				A90798381E439DC2005470A5 /* ControllerModuleManager.swift in Sources */,
 				A983784C1E42C11000170319 /* BleUUIDNames.swift in Sources */,

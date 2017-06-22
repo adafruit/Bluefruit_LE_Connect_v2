@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import MSWeakTimer
 
 class PeripheralModulesViewController: UIViewController {
-
+    // Config
+    fileprivate static let kRssiRefreshInterval: TimeInterval = 0.3
+    
     // UI
     @IBOutlet weak var baseTableView: UITableView!
 
@@ -37,7 +40,11 @@ class PeripheralModulesViewController: UIViewController {
     private var emptyViewController: EmptyDetailsViewController?
     fileprivate var hasUart = false
     fileprivate var hasDFU = false
-
+    fileprivate var hasBattery = false
+    fileprivate var rssiRefreshTimer: MSWeakTimer?
+    
+    fileprivate var batteryLevel: Int?
+    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +76,9 @@ class PeripheralModulesViewController: UIViewController {
 
         // Notifications
         registerNotifications(enabled: true)
+        
+        // Schedule Rssi timer
+        rssiRefreshTimer = MSWeakTimer.scheduledTimer(withTimeInterval: PeripheralModulesViewController.kRssiRefreshInterval, target: self, selector: #selector(rssiRefreshFired), userInfo: nil, repeats: true, dispatchQueue: DispatchQueue.global(qos: .background))
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -76,6 +86,10 @@ class PeripheralModulesViewController: UIViewController {
 
         // Notifications
         registerNotifications(enabled: false)
+        
+        // Disable Rssi timer
+        rssiRefreshTimer?.invalidate()
+        rssiRefreshTimer = nil
     }
 
     override func didReceiveMemoryWarning() {
@@ -85,27 +99,35 @@ class PeripheralModulesViewController: UIViewController {
 
     deinit {
         DLog("PeripheralModulesViewController deinit")
-
     }
 
+    
     // MARK: - BLE Notifications
     private weak var willConnectToPeripheralObserver: NSObjectProtocol?
     private weak var willDisconnectFromPeripheralObserver: NSObjectProtocol?
-
+    private weak var peripheralDidUpdateRssiObserver: NSObjectProtocol?
+    private weak var didDisconnectFromPeripheralObserver: NSObjectProtocol?
+    
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
 
         if enabled {
             willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: .main, using: willConnectToPeripheral)
             willDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .willDisconnectFromPeripheral, object: nil, queue: .main, using: willDisconnectFromPeripheral)
-
+            peripheralDidUpdateRssiObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateRssi, object: nil, queue: .main, using: peripheralDidUpdateRssi)
+            didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: didDisconnectFromPeripheral)
+            
         } else {
             if let willConnectToPeripheralObserver = willConnectToPeripheralObserver {notificationCenter.removeObserver(willConnectToPeripheralObserver)}
             if let willDisconnectFromPeripheralObserver = willDisconnectFromPeripheralObserver {notificationCenter.removeObserver(willDisconnectFromPeripheralObserver)}
+            if let peripheralDidUpdateRssiObserver = peripheralDidUpdateRssiObserver {notificationCenter.removeObserver(peripheralDidUpdateRssiObserver)}
+            if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {notificationCenter.removeObserver(didDisconnectFromPeripheralObserver)}
         }
     }
 
     fileprivate func willConnectToPeripheral(notification: Notification) {
+        guard let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, identifier == blePeripheral?.identifier else { return }
+        
         if isInMultiUartMode() {
         } else {
             showEmpty(true)
@@ -114,6 +136,8 @@ class PeripheralModulesViewController: UIViewController {
     }
 
     fileprivate func willDisconnectFromPeripheral(notification: Notification) {
+        guard let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, identifier == blePeripheral?.identifier else { return }
+
         DLog("detail: peripheral willDisconnect")
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
         if isFullScreen {       // executed when bluetooth is stopped
@@ -128,6 +152,23 @@ class PeripheralModulesViewController: UIViewController {
             setConnecting(false)
         }
     }
+    
+    
+    fileprivate func peripheralDidUpdateRssi(notification: Notification) {
+        guard let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, identifier == blePeripheral?.identifier else { return }
+
+        // Update section
+        baseTableView.reloadSections([TableSection.device.rawValue], with: .none)
+
+    }
+    
+    private func didDisconnectFromPeripheral(notification: Notification) {
+        guard let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, identifier == blePeripheral?.identifier else { return }
+
+        // Disable Rssi timer
+        rssiRefreshTimer?.invalidate()
+        rssiRefreshTimer = nil
+    }
 
     func setConnecting(_ isConnecting: Bool) {
         emptyViewController?.setConnecting(isConnecting)
@@ -139,6 +180,12 @@ class PeripheralModulesViewController: UIViewController {
     }
 
     // MARK: - UI
+    @objc private func rssiRefreshFired() {
+        blePeripheral?.readRssi()
+    }
+    
+   
+    
     private func goBackToPeripheralList() {
         // Back to peripheral list
         if Config.useTabController {
@@ -190,6 +237,21 @@ class PeripheralModulesViewController: UIViewController {
 
         hasUart = blePeripheral.hasUart()
         hasDFU = blePeripheral.peripheral.services?.first(where: {$0.uuid == FirmwareUpdater.kDfuServiceUUID}) != nil
+        hasBattery = blePeripheral.hasBattery()
+        
+        if hasBattery {
+            blePeripheral.startReadingBatteryLevel(handler: { [weak self] batteryLevel in
+                guard let context = self else { return }
+
+                context.batteryLevel = batteryLevel
+                
+                DispatchQueue.main.async { [unowned context] in
+                    // Update section
+                    context.baseTableView.reloadSections([TableSection.device.rawValue], with: .none)
+
+                }
+            })
+        }
 
         baseTableView.reloadData()
     }
@@ -220,12 +282,48 @@ class PeripheralModulesViewController: UIViewController {
 // MARK: - UITableViewDataSource
 extension PeripheralModulesViewController: UITableViewDataSource {
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       return menuItems().count
+    enum TableSection: Int {
+        case device = 0
+        case modules = 1
     }
-
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch TableSection(rawValue: section)! {
+        case .device:
+            return 1
+        case .modules:
+            return menuItems().count
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        var localizationKey: String!
+        
+        switch TableSection(rawValue: section)! {
+        case .device:
+            localizationKey = "peripheralmodules_sectiontitle_device"
+        case .modules:
+            localizationKey = "peripheralmodules_sectiontitle_modules"
+        }
+        
+        return LocalizationManager.sharedInstance.localizedString(localizationKey)
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reuseIdentifier = "ModuleCell"
+        
+        var reuseIdentifier: String
+        switch TableSection(rawValue: indexPath.section)! {
+        case .device:
+            reuseIdentifier = "DeviceCell"
+        case .modules:
+            reuseIdentifier = "ModuleCell"
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         return cell
     }
@@ -235,91 +333,124 @@ extension PeripheralModulesViewController: UITableViewDataSource {
 extension PeripheralModulesViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-
-        guard let moduleCell = cell as? PeripheralModulesTableViewCell else { return }
+        
         let localizationManager = LocalizationManager.sharedInstance
+        
+        switch TableSection(rawValue: indexPath.section)! {
+        case .device:
+            guard let deviceCell = cell as? PeripheralModulesDeviceTableViewCell, let peripheral = blePeripheral else { return }
 
-        var titleId: String?
-        var iconName: String?
-        let items = menuItems()
+            deviceCell.titleLabel.text = peripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")
+            deviceCell.rssiImageView.image = RssiUI.signalImage(for: peripheral.rssi)
+            deviceCell.rssiLabel.text = peripheral.rssi != nil ? String(format: localizationManager.localizedString("peripheralmodules_rssi_format"), peripheral.rssi!) : localizationManager.localizedString("peripheralmodules_rssi_unavailable")
+            
+            deviceCell.batteryStackView.isHidden = batteryLevel == nil
+            if let batteryLevel = batteryLevel {
+                deviceCell.batteryLabel.text = "\(batteryLevel)%"
+            }
+            
+        case .modules:
+            guard let moduleCell = cell as? PeripheralModulesTableViewCell else { return }
 
-        switch items[indexPath.row] {
-        case .info:
-            iconName = "tab_info_icon"
-            titleId = "info_tab_title"
-        case .uart:
-            iconName = "tab_uart_icon"
-            titleId = "uart_tab_title"
-        case .plotter:
-            iconName = "tab_plotter_icon"
-            titleId = "plotter_tab_title"
-        case .pinIO:
-            iconName = "tab_pinio_icon"
-            titleId = "pinio_tab_title"
-        case .controller:
-            iconName = "tab_controller_icon"
-            titleId = "controller_tab_title"
-        case .neopixel:
-            iconName = "tab_neopixel_icon"
-            titleId = "neopixels_tab_title"
-        case .calibration:
-            iconName = "tab_calibration_icon"
-            titleId = "calibration_tab_title"
-        case .dfu:
-            iconName = "tab_dfu_icon"
-            titleId = "dfu_tab_title"
+            var titleId: String?
+            var iconName: String?
+            let items = menuItems()
+            
+            switch items[indexPath.row] {
+            case .info:
+                iconName = "tab_info_icon"
+                titleId = "info_tab_title"
+            case .uart:
+                iconName = "tab_uart_icon"
+                titleId = "uart_tab_title"
+            case .plotter:
+                iconName = "tab_plotter_icon"
+                titleId = "plotter_tab_title"
+            case .pinIO:
+                iconName = "tab_pinio_icon"
+                titleId = "pinio_tab_title"
+            case .controller:
+                iconName = "tab_controller_icon"
+                titleId = "controller_tab_title"
+            case .neopixel:
+                iconName = "tab_neopixel_icon"
+                titleId = "neopixels_tab_title"
+            case .calibration:
+                iconName = "tab_calibration_icon"
+                titleId = "calibration_tab_title"
+            case .dfu:
+                iconName = "tab_dfu_icon"
+                titleId = "dfu_tab_title"
+            }
+            
+            moduleCell.iconImageView.tintColor = UIColor.darkGray
+            moduleCell.iconImageView.image = iconName != nil ? UIImage(named: iconName!) : nil
+            moduleCell.titleLabel.text = titleId != nil ? localizationManager.localizedString(titleId!) : nil
         }
-
-        moduleCell.iconImageView.tintColor = UIColor.darkGray
-        moduleCell.iconImageView.image = iconName != nil ? UIImage(named: iconName!) : nil
-        moduleCell.titleLabel.text = titleId != nil ? localizationManager.localizedString(titleId!) : nil
     }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let items = menuItems()
-
-        switch items[indexPath.row] {
-        case .info:
-            if let infoViewController = self.storyboard?.instantiateViewController(withIdentifier: "InfoModeViewController") as? InfoModeViewController {
-                infoViewController.blePeripheral = blePeripheral
-                show(infoViewController, sender: self)
-            }
-        case .uart:
-            if let uartViewController = self.storyboard?.instantiateViewController(withIdentifier: "UartModeViewController") as? UartModeViewController {
-                uartViewController.blePeripheral = blePeripheral
-                show(uartViewController, sender: self)
-            }
-        case .plotter:
-            if let plotterViewController = self.storyboard?.instantiateViewController(withIdentifier: "PlotterModeViewController") as? PlotterModeViewController {
-                plotterViewController.blePeripheral = blePeripheral
-                show(plotterViewController, sender: self)
-
-            }
-        case .pinIO:
-            if let pinioViewController = self.storyboard?.instantiateViewController(withIdentifier: "PinIOModeViewController") as? PinIOModeViewController {
-                pinioViewController.blePeripheral = blePeripheral
-                show(pinioViewController, sender: self)
-
-            }
-        case .controller:
-            if let controllerViewController = self.storyboard?.instantiateViewController(withIdentifier: "ControllerModeViewController") as? ControllerModeViewController {
-                controllerViewController.blePeripheral = blePeripheral
-                show(controllerViewController, sender: self)
-            }
-        case .neopixel:
-            if let neopixelsViewController = self.storyboard?.instantiateViewController(withIdentifier: "NeopixelModeViewController") as? NeopixelModeViewController {
-                neopixelsViewController.blePeripheral = blePeripheral
-                show(neopixelsViewController, sender: self)
-            }
-        case .calibration:
-            if let calibrationViewController = self.storyboard?.instantiateViewController(withIdentifier: "CalibrationMenuViewController") as? CalibrationMenuViewController {
-                calibrationViewController.blePeripheral = blePeripheral
-                show(calibrationViewController, sender: self)
-            }
-        case .dfu:
-            showDfu()
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch TableSection(rawValue: indexPath.section)! {
+        case .device:
+            return 80
+        case .modules:
+            return traitCollection.userInterfaceIdiom == .pad ? 66 : 44
         }
-
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        switch TableSection(rawValue: indexPath.section)! {
+        case .device:
+            // Not selectable
+            break
+            
+        case .modules:
+            let items = menuItems()
+            
+            switch items[indexPath.row] {
+            case .info:
+                if let infoViewController = self.storyboard?.instantiateViewController(withIdentifier: "InfoModeViewController") as? InfoModeViewController {
+                    infoViewController.blePeripheral = blePeripheral
+                    show(infoViewController, sender: self)
+                }
+            case .uart:
+                if let uartViewController = self.storyboard?.instantiateViewController(withIdentifier: "UartModeViewController") as? UartModeViewController {
+                    uartViewController.blePeripheral = blePeripheral
+                    show(uartViewController, sender: self)
+                }
+            case .plotter:
+                if let plotterViewController = self.storyboard?.instantiateViewController(withIdentifier: "PlotterModeViewController") as? PlotterModeViewController {
+                    plotterViewController.blePeripheral = blePeripheral
+                    show(plotterViewController, sender: self)
+                    
+                }
+            case .pinIO:
+                if let pinioViewController = self.storyboard?.instantiateViewController(withIdentifier: "PinIOModeViewController") as? PinIOModeViewController {
+                    pinioViewController.blePeripheral = blePeripheral
+                    show(pinioViewController, sender: self)
+                    
+                }
+            case .controller:
+                if let controllerViewController = self.storyboard?.instantiateViewController(withIdentifier: "ControllerModeViewController") as? ControllerModeViewController {
+                    controllerViewController.blePeripheral = blePeripheral
+                    show(controllerViewController, sender: self)
+                }
+            case .neopixel:
+                if let neopixelsViewController = self.storyboard?.instantiateViewController(withIdentifier: "NeopixelModeViewController") as? NeopixelModeViewController {
+                    neopixelsViewController.blePeripheral = blePeripheral
+                    show(neopixelsViewController, sender: self)
+                }
+            case .calibration:
+                if let calibrationViewController = self.storyboard?.instantiateViewController(withIdentifier: "CalibrationMenuViewController") as? CalibrationMenuViewController {
+                    calibrationViewController.blePeripheral = blePeripheral
+                    show(calibrationViewController, sender: self)
+                }
+            case .dfu:
+                showDfu()
+            }
+            
+        }
         tableView.deselectRow(at: indexPath, animated: indexPath.section == 0)
     }
 }

@@ -23,7 +23,7 @@ class PeripheralModeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if Config.useTabController {
+        if Config.useTabController { // Note: remove once usingTabController is deprecated permanently
             // Setup navigation item
             if let parentNavigationItem = parent?.navigationItem {
 
