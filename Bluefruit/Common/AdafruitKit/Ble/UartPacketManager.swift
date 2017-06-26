@@ -103,7 +103,7 @@ class UartPacketManager {
             }
 
             #if os(iOS)
-                let shouldBeSent = (!wasReceivedFromMqtt || (isMqttEnabled && MqttSettings.sharedInstance.subscribeBehaviour == .transmit))
+                let shouldBeSent = !wasReceivedFromMqtt || (isMqttEnabled && MqttSettings.sharedInstance.subscribeBehaviour == .transmit)
             #else
                 let shouldBeSent = true
             #endif
@@ -121,14 +121,8 @@ class UartPacketManager {
     // MARK: - Received data
     func rxPacketReceived(data: Data?, peripheralIdentifier: UUID, error: Error?) {
 
-        guard error == nil else {
-            DLog("uartRxPacketReceived error: \(error!)")
-            return
-        }
-
-        guard let data = data else {
-            return
-        }
+        guard error == nil else { DLog("uartRxPacketReceived error: \(error!)"); return }
+        guard let data = data else { return }
 
         let uartPacket = UartPacket(peripheralId: peripheralIdentifier, mode: .rx, data: data)
 

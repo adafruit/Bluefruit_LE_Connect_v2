@@ -222,10 +222,7 @@ class ScannerViewController: UIViewController {
     }
 
     private func willConnectToPeripheral(notification: Notification) {
-        guard let peripheral = BleManager.sharedInstance.peripheral(from: notification) else {
-            return
-        }
-
+        guard let peripheral = BleManager.sharedInstance.peripheral(from: notification) else { return }
         presentInfoDialog(title: "Connecting...", peripheral: peripheral)
     }
 

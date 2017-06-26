@@ -97,7 +97,7 @@ class PeripheralTableViewCell: UITableViewCell {
 
         // Services
         var areServicesAvailable = false
-        if let services = peripheral.advertisement.services, let stackView = servicesStackView {
+        if let services = peripheral.advertisement.services, !services.isEmpty, let stackView = servicesStackView {
             //DLog("services: \(services.count)")
             addServiceNames(stackView: stackView, services: services)
             areServicesAvailable = services.count > 0
@@ -107,7 +107,7 @@ class PeripheralTableViewCell: UITableViewCell {
 
         // Services Overflow
         var areServicesOverflowAvailable = false
-        if let servicesOverflow =  peripheral.advertisement.servicesOverflow, let stackView = servicesOverflowStackView {
+        if let servicesOverflow =  peripheral.advertisement.servicesOverflow, !servicesOverflow.isEmpty, let stackView = servicesOverflowStackView {
             addServiceNames(stackView: stackView, services: servicesOverflow)
             areServicesOverflowAvailable = servicesOverflow.count > 0
         }
@@ -116,7 +116,7 @@ class PeripheralTableViewCell: UITableViewCell {
 
         // Solicited Services
         var areSolicitedServicesAvailable = false
-        if let servicesSolicited = peripheral.advertisement.servicesSolicited, let stackView = servicesOverflowStackView {
+        if let servicesSolicited = peripheral.advertisement.servicesSolicited, !servicesSolicited.isEmpty, let stackView = servicesOverflowStackView {
             addServiceNames(stackView: stackView, services: servicesSolicited)
             areSolicitedServicesAvailable = servicesSolicited.count > 0
         }
@@ -125,8 +125,8 @@ class PeripheralTableViewCell: UITableViewCell {
 
         // Tx Power
         var isTxPowerAvailable: Bool
-        if let txpower = peripheral.advertisement.txPower {
-            txPowerLevelValueLabel.text = String(txpower)
+        if let txPower = peripheral.advertisement.txPower {
+            txPowerLevelValueLabel.text = String(txPower)
             isTxPowerAvailable = true
         } else {
             isTxPowerAvailable = false

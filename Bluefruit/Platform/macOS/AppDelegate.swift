@@ -62,17 +62,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         statusItem.menu = statusMenu
         updateStatusContent(nil)
 
+        /* TODO: restore
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(updateStatus(_:)), name: UartDataManager.UartNotifications.DidReceiveData.rawValue, object: nil)
         notificationCenter.addObserver(self, selector: #selector(updateStatus(_:)), name: UartDataManager.UartNotifications.DidSendData.rawValue, object: nil)
         notificationCenter.addObserver(self, selector: #selector(updateStatus(_:)), name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
+ */
     }
 
     func releaseStatusButton() {
+        /* TODO: restore
         let notificationCenter =  NotificationCenter.default
         notificationCenter.removeObserver(self, name: UartDataManager.UartNotifications.DidReceiveData.rawValue, object: nil)
         notificationCenter.removeObserver(self, name: UartDataManager.UartNotifications.DidSendData.rawValue, object: nil)
         notificationCenter.removeObserver(self, name: StatusManager.StatusNotifications.DidUpdateStatus.rawValue, object: nil)
+ */
     }
 
     func statusGeneralAction(_ sender: AnyObject?) {
@@ -87,10 +91,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     func updateStatusTitle() {
+        /*TODO: restore
         var title: String?
 
         let bleManager = BleManager.sharedInstance
-        if let featuredPeripheral = bleManager.blePeripheralConnected {
+        if let featuredPeripheral = bleManager.connectedPeripherals().first {
             if featuredPeripheral.isUartAdvertised() {
                 let receivedBytes = featuredPeripheral.uartData.receivedBytes
                 let sentBytes = featuredPeripheral.uartData.sentBytes
@@ -100,6 +105,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
 
         statusItem.title = title
+ */
     }
 
     func updateStatusContent(_ notification: Notification?) {
@@ -115,28 +121,32 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             let descriptionItem = NSMenuItem(title: statusText, action: nil, keyEquivalent: "")
             descriptionItem.isEnabled = false
             self.statusMenu.addItem(descriptionItem)
-            //        statusMenu.addItem(NSMenuItem(title: isScanning ?"Stop Scanning":"Start Scanning", action: "statusGeneralAction:", keyEquivalent: ""))
             self.statusMenu.addItem(NSMenuItem.separator())
 
             // Connecting/Connected Peripheral
-            var featuredPeripheral = bleManager.blePeripheralConnected
-            if featuredPeripheral == nil {
-                featuredPeripheral = bleManager.blePeripheralConnecting
-            }
-            if let featuredPeripheral = featuredPeripheral {
-                let menuItem = self.addPeripheralToSystemMenu(featuredPeripheral)
+            var featuredPeripheralIds = [UUID]()
+            for connectedPeripheral in bleManager.connectedPeripherals() {
+                let menuItem = self.addPeripheralToSystemMenu(connectedPeripheral)
                 menuItem.offStateImage = NSImage(named: "NSMenuOnStateTemplate")
+                featuredPeripheralIds.append(connectedPeripheral.identifier)
             }
-
+            for connectingPeripheral in bleManager.connectingPeripherals() {
+                if !featuredPeripheralIds.contains(connectingPeripheral.identifier) {
+                    let menuItem = self.addPeripheralToSystemMenu(connectingPeripheral)
+                    menuItem.offStateImage = NSImage(named: "NSMenuOnStateTemplate")
+                    featuredPeripheralIds.append(connectingPeripheral.identifier)
+                }
+            }
+            
             // Discovered Peripherals
-            let blePeripheralsFound = bleManager.blePeripherals()
-            for identifier in bleManager.blePeripheralFoundAlphabeticKeys() {
-                if identifier != featuredPeripheral?.peripheral.identifier.UUIDString {
-                    let blePeripheral = blePeripheralsFound[identifier]!
+            let blePeripheralsFound = bleManager.peripherals().sorted(by: {$0.name ?? "" <= $1.name ?? ""})     // Alphabetical order
+            for blePeripheral in blePeripheralsFound {
+                if !featuredPeripheralIds.contains(blePeripheral.identifier) {
                     self.addPeripheralToSystemMenu(blePeripheral)
                 }
             }
 
+            /*TODO: restore
             // Uart data
             if let featuredPeripheral = featuredPeripheral {
                 // Separator
@@ -162,13 +172,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 self.statusMenu.addItem(uartSentMenuItem)
                 self.statusMenu.addItem(uartReceivedMenuItem)
             }
+ */
         })
     }
 
+    @discardableResult
     func addPeripheralToSystemMenu(_ blePeripheral: BlePeripheral) -> NSMenuItem {
         let name = blePeripheral.name != nil ? blePeripheral.name! : LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
         let menuItem = NSMenuItem(title: name, action: #selector(onClickPeripheralMenuItem(_:)), keyEquivalent: "")
-        let identifier = blePeripheral.peripheral.identifier.uuidString
+        let identifier = blePeripheral.peripheral.identifier
         menuItem.representedObject = identifier
         statusMenu.addItem(menuItem)
 
@@ -176,7 +188,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     func onClickPeripheralMenuItem(_ sender: NSMenuItem) {
-        let identifier = sender.representedObject as! String
+        let identifier = sender.representedObject as! UUID
         StatusManager.sharedInstance.startConnectionToPeripheral(identifier)
 
     }
@@ -188,8 +200,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             updateStatusContent(nil)
         } else if menu == peripheralsMenu {
             let isScanning = BleManager.sharedInstance.isScanning
-            startScanningMenuItem.enabled = !isScanning
-            stopScanningMenuItem.enabled = isScanning
+            startScanningMenuItem.isEnabled = !isScanning
+            stopScanningMenuItem.isEnabled = isScanning
         }
     }
 

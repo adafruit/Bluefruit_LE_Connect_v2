@@ -109,7 +109,7 @@ class UartDataExport {
         for packet in packets {
             let date = Date(timeIntervalSinceReferenceDate: packet.timestamp)
             let unixDate = date.timeIntervalSince1970
-            let mode = dataPacket.mode == .rx ? "RX" : "TX"
+            let mode = packet.mode == .rx ? "RX" : "TX"
 
             var dataString: String?
             if Preferences.uartIsInHexMode {
@@ -123,7 +123,7 @@ class UartDataExport {
                 let xmlItemElement = XMLElement(name: "item")
                 xmlItemElement.addChild(XMLElement(name: "timestamp", stringValue:"\(unixDate)"))
                 xmlItemElement.addChild(XMLElement(name: "mode", stringValue:mode))
-                let dataNode = XMLElement(kind: .TextKind, options: XMLNode.Options.NodeIsCDATA)
+                let dataNode = XMLElement(kind: .text, options: XMLNode.Options.nodeIsCDATA)
                 dataNode.name = "data"
                 dataNode.stringValue = dataString
                 xmlItemElement.addChild(dataNode)

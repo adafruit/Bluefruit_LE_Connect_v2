@@ -15,16 +15,7 @@ extension BlePeripheral {
     static let kBatteryServiceUUID =        CBUUID(string: "180F")
     static let kBatteryCharacteristicUUID = CBUUID(string: "2A19")
 
-    
-    // MARK: - Utils
-    func isBatteryAdvertised() -> Bool {
-        return advertisement.services?.contains(BlePeripheral.kBatteryServiceUUID) ?? false
-    }
-    
-    func hasBattery() -> Bool {
-        return peripheral.services?.first(where: {$0.uuid == BlePeripheral.kBatteryServiceUUID}) != nil
-    }
-    
+    // MARK: - Actions
     func readBatteryLevel(handler: @escaping ((Int, Error?) -> Void)) {
         self.characteristic(uuid: BlePeripheral.kBatteryCharacteristicUUID, serviceUuid: BlePeripheral.kBatteryServiceUUID) { (characteristic, error) in
             guard error == nil, let characteristic = characteristic else { DLog("Error reading battery characteristic: \(error?.localizedDescription ?? "")"); return }
@@ -42,12 +33,12 @@ extension BlePeripheral {
         }
     }
     
-    
     func startReadingBatteryLevel(handler: @escaping ((Int) -> Void)) {
         
         self.characteristic(uuid: BlePeripheral.kBatteryCharacteristicUUID, serviceUuid: BlePeripheral.kBatteryServiceUUID) { (characteristic, error) in
             guard error == nil, let characteristic = characteristic else { DLog("Error starting read for battery characteristic: \(error?.localizedDescription ?? "")"); return }
             
+            // Read actual value
             self.readCharacteristic(characteristic) { (result, error) in
                 guard error == nil, let data = result as? Data, data.count >= 1 else {  DLog("Error reading battery level: \(error?.localizedDescription ?? "")"); return }
                 
@@ -55,6 +46,7 @@ extension BlePeripheral {
                 handler(level)
             }
             
+            // Enable notifications to receive value changes
             self.enableNotify(for: characteristic, handler: { error in
                 guard error == nil else { DLog("Error receiving notify for battery level"); return }
                 guard let data = characteristic.value, data.count >= 1 else { DLog("Invalid data receiving notify for battery level"); return }
@@ -72,5 +64,14 @@ extension BlePeripheral {
             
             self.disableNotify(for: characteristic)
         }
+    }
+    
+    // MARK: - Utils
+    func isBatteryAdvertised() -> Bool {
+        return advertisement.services?.contains(BlePeripheral.kBatteryServiceUUID) ?? false
+    }
+    
+    func hasBattery() -> Bool {
+        return peripheral.services?.first(where: {$0.uuid == BlePeripheral.kBatteryServiceUUID}) != nil
     }
 }

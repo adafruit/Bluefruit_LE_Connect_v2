@@ -34,15 +34,13 @@ func colorHexInt(_ color: UIColor) -> Int {
     return rgb
 }
 
-#if os(iOS)
-func colorFrom(hex: UInt) -> UIColor? {
-    var result: UIColor?
-//    if let hex = UInt(hexString, radix: 16) {
-//        result = UIColor.colorWithHex(hex)
+#if os(iOS)    
+    func colorFrom(hex: UInt) -> UIColor? {
+        var result: UIColor?
+        //    if let hex = UInt(hexString, radix: 16) {
+        //        result = UIColor.colorWithHex(hex)
         result = UIColor(hex: hex)
-//    }
-    return result
-
-}
-
+        //    }
+        return result
+    }
 #endif

@@ -58,7 +58,8 @@ class BlePeripheral: NSObject {
         }
         var manufacturerString: String? {
             guard let manufacturerData = advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data else { return nil }
-            return String(data: manufacturerData, encoding: .utf8)
+            return hexDescription(data: manufacturerData)
+//            return String(data: manufacturerData, encoding: .utf8)
         }
 
         var services: [CBUUID]? {
@@ -71,6 +72,10 @@ class BlePeripheral: NSObject {
 
         var servicesSolicited: [CBUUID]? {
             return advertisementData[CBAdvertisementDataSolicitedServiceUUIDsKey] as? [CBUUID]
+        }
+        
+        var serviceData: [CBUUID: Data]? {
+            return advertisementData[CBAdvertisementDataServiceDataKey] as? [CBUUID: Data]
         }
 
         var txPower: Int? {

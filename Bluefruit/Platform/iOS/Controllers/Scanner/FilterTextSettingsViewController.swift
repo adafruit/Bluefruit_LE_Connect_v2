@@ -10,11 +10,14 @@ import UIKit
 
 class FilterTextSettingsViewController: UIViewController {
 
+    // UI
     @IBOutlet weak var baseTableView: UITableView!
 
+    // Params
     weak var peripheralList: PeripheralList?
     var onSettingsChanged: (() -> Void)?
 
+    // MARK: - View Lifecyclwe
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -73,7 +76,7 @@ extension FilterTextSettingsViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - UITableViewDelegate
+// MARK: UITableViewDelegate
 extension FilterTextSettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let peripheralList = peripheralList else { return }
