@@ -29,6 +29,7 @@ class VisualizationViewController: UartSamplerViewController {
     // Debug
     fileprivate var numQuatsReceived = 0
     fileprivate var quatReceivedStartingTime: TimeInterval = 0
+    fileprivate var lastQuatPerSecondValue: Double?
 
     // MARK: - ViewController
     override func awakeFromNib() {
@@ -117,7 +118,12 @@ class VisualizationViewController: UartSamplerViewController {
 
         // Update debug data
         let currentTime = CACurrentMediaTime() - quatReceivedStartingTime
-        dataReveivedSpeedLabel.text = numQuatsReceived > 0 ? String(format: "%.1f Quat/s", Double(numQuatsReceived) / currentTime) : nil
+        if currentTime > 1 {        // Reset counters after 1 second
+            lastQuatPerSecondValue = Double(numQuatsReceived) / currentTime
+            numQuatsReceived = 0
+        }
+        
+        dataReveivedSpeedLabel.text = lastQuatPerSecondValue != nil ? String(format: "%.1f Quat/s", lastQuatPerSecondValue!) : nil
 
     }
 
