@@ -291,6 +291,8 @@
 		A9D2345E1E3B49BA00DC0C99 /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */; };
 		A9E1371C1ECB2F11004C64E1 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E1371B1ECB2F11004C64E1 /* MainSplitViewController.swift */; };
 		A9F4E1B51F012DD500BF8A70 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F4E1B41F012DD500BF8A70 /* DetailsViewController.swift */; };
+		A9F4E1B61F014B9900BF8A70 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */; };
+		A9F4E1BD1F04467200BF8A70 /* ISColorWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = A9F4E1BB1F04467200BF8A70 /* ISColorWheel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A9FA1BE61EDECE5C0086CDCC /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */; };
 		A9FA1BE91EDEE1C20086CDCC /* NeoPixel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9FA1BE71EDEE1C20086CDCC /* NeoPixel.storyboard */; };
 		A9FA1BF01EE308830086CDCC /* NeopixelComponentSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9FA1BEF1EE308830086CDCC /* NeopixelComponentSelectorViewController.swift */; };
@@ -596,6 +598,8 @@
 		A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataDownloader.swift; sourceTree = "<group>"; };
 		A9E1371B1ECB2F11004C64E1 /* MainSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		A9F4E1B41F012DD500BF8A70 /* DetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
+		A9F4E1BA1F04467200BF8A70 /* ISColorWheel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISColorWheel.h; sourceTree = "<group>"; };
+		A9F4E1BB1F04467200BF8A70 /* ISColorWheel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISColorWheel.m; sourceTree = "<group>"; };
 		A9FA1BE81EDEE1C20086CDCC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/NeoPixel.storyboard; sourceTree = "<group>"; };
 		A9FA1BEF1EE308830086CDCC /* NeopixelComponentSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelComponentSelectorViewController.swift; sourceTree = "<group>"; };
 		DE511F22E8F88E565DA29F57 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1229,6 +1233,7 @@
 		A98378021E422C4B00170319 /* External Tools */ = {
 			isa = PBXGroup;
 			children = (
+				A9F4E1B71F04467200BF8A70 /* iOS-color-wheel */,
 				A9BB78E61EDCEC99004663DE /* VectorMath */,
 				A98378031E422C4B00170319 /* NSObject+ENHThrottledReloading */,
 			);
@@ -1506,6 +1511,23 @@
 			path = PeripheralDetails;
 			sourceTree = "<group>";
 		};
+		A9F4E1B71F04467200BF8A70 /* iOS-color-wheel */ = {
+			isa = PBXGroup;
+			children = (
+				A9F4E1B91F04467200BF8A70 /* Source */,
+			);
+			path = "iOS-color-wheel";
+			sourceTree = "<group>";
+		};
+		A9F4E1B91F04467200BF8A70 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				A9F4E1BA1F04467200BF8A70 /* ISColorWheel.h */,
+				A9F4E1BB1F04467200BF8A70 /* ISColorWheel.m */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 		A9FA1BEA1EDEE2440086CDCC /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
@@ -1717,6 +1739,7 @@
 				A983783B1E42BFF900170319 /* Assets.xcassets in Resources */,
 				A9FA1BE61EDECE5C0086CDCC /* DefaultPreferences.plist in Resources */,
 				A98DE42C1E45EB3900EEF4C8 /* NeopixelBoards.plist in Resources */,
+				A9F4E1B61F014B9900BF8A70 /* GattUUIDs.plist in Resources */,
 				A98DE42E1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */,
 				A98DE4281E45EB3900EEF4C8 /* Localizable.strings in Resources */,
 				A98DE42A1E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */,
@@ -1873,6 +1896,7 @@
 				A91D65A11EFC07740097C8B6 /* BlePeripheral+Battery.swift in Sources */,
 				A9BCD6081E4D36DE003D1CEA /* ColorRGBInterfaceController.swift in Sources */,
 				A9286CD21E3A9B22008E5F81 /* BlePeripheral.swift in Sources */,
+				A9F4E1BD1F04467200BF8A70 /* ISColorWheel.m in Sources */,
 				A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */,
 				A9BB78EA1EDCEC99004663DE /* VectorMath+Quartz.swift in Sources */,
 				A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */,

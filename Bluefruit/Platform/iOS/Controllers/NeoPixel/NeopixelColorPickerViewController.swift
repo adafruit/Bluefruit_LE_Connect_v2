@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import iOS_color_wheel
+//import iOS_color_wheel
 
 protocol NeopixelColorPickerViewControllerDelegate: class {
     func onColorPickerChooseColor(_ color: UIColor, wComponent: Float)
@@ -29,6 +29,7 @@ class NeopixelColorPickerViewController: UIViewController {
 
     // Params
     var is4ComponentsEnabled = false
+    var initialColor: UIColor?
 
     // Data
     fileprivate var selectedColorComponents: [UInt8]?
@@ -77,7 +78,21 @@ class NeopixelColorPickerViewController: UIViewController {
         wComponentColorView.isHidden = !is4ComponentsEnabled
 
         // Refresh
-        colorWheelDidChangeColor(wheelView)
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let currentColor = initialColor {
+            wheelView.frame = wheelContainerView.bounds
+            wheelView.layoutIfNeeded()
+            DispatchQueue.main.async { [weak self] in
+                guard let context = self else  { return }
+                context.wheelView.setCurrentColor(currentColor)
+                context.colorWheelDidChangeColor(context.wheelView)
+            }
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -111,7 +126,7 @@ class NeopixelColorPickerViewController: UIViewController {
 }
 
 // MARK: - ISColorWheelDelegate
-extension NeopixelColorPickerViewController : ISColorWheelDelegate {
+extension NeopixelColorPickerViewController: ISColorWheelDelegate {
     func colorWheelDidChangeColor(_ colorWheel: ISColorWheel) {
 
         let colorWheelColor = colorWheel.currentColor

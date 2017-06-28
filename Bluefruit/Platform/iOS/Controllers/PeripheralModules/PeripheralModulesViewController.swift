@@ -423,13 +423,11 @@ extension PeripheralModulesViewController: UITableViewDelegate {
                 if let plotterViewController = self.storyboard?.instantiateViewController(withIdentifier: "PlotterModeViewController") as? PlotterModeViewController {
                     plotterViewController.blePeripheral = blePeripheral
                     show(plotterViewController, sender: self)
-                    
                 }
             case .pinIO:
                 if let pinioViewController = self.storyboard?.instantiateViewController(withIdentifier: "PinIOModeViewController") as? PinIOModeViewController {
                     pinioViewController.blePeripheral = blePeripheral
                     show(pinioViewController, sender: self)
-                    
                 }
             case .controller:
                 if let controllerViewController = self.storyboard?.instantiateViewController(withIdentifier: "ControllerModeViewController") as? ControllerModeViewController {

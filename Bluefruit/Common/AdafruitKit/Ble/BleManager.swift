@@ -278,7 +278,7 @@ class BleManager: NSObject {
 extension BleManager: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
 
-        DLog("centralManagerDidUpdateState: \(central.state)")
+        DLog("centralManagerDidUpdateState: \(central.state.rawValue)")
         // Unlock state lock if we have a known state
         if central.state == .poweredOn || central.state == .poweredOff || central.state == .unsupported || central.state == .unauthorized {
             centralManagerPoweredOnSemaphore.signal()

@@ -352,14 +352,6 @@ SOFTWARE.
 
 
 
-## iOS-color-wheel
-
- 	By: Justin Meiners
-	Copyright (c) 2013 Inline Studios
-Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
-		
-
-
 ## iOSDFULibrary
 
 BSD 3-Clause License

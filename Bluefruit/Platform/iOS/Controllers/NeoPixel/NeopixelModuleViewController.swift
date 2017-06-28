@@ -77,11 +77,13 @@ class NeopixelModeViewController: PeripheralModeViewController {
         // Setup
         changeComponents(components, is400HkzEnabled: is400HzEnabled)
         createBoardUI()
+        updatePickerColorButton(isSelected: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        
         // Start
         updateStatusUI(isWaitingResponse: true)
         neopixel.start { error in
@@ -167,6 +169,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
             controller?.delegate = self
 
             colorPickerViewController.delegate = self
+            colorPickerViewController.initialColor = currentColor
             colorPickerViewController.is4ComponentsEnabled = components.numComponents == 4
         }
 
@@ -453,6 +456,7 @@ extension NeopixelModeViewController: UICollectionViewDelegate {
             currentColor = color
             colorW = 0          // All palete colors have w component equal to 0
         }
+        
         updatePickerColorButton(isSelected: false)
 
         collectionView.reloadData()
@@ -489,16 +493,16 @@ extension NeopixelModeViewController: UIPopoverPresentationControllerDelegate {
 // MARK: - UIPopoverPresentationControllerDelegate
 extension NeopixelModeViewController: NeopixelColorPickerViewControllerDelegate {
     func onColorPickerChooseColor(_ color: UIColor, wComponent: Float) {
-        colorPickerContainerView.backgroundColor = color
-        updatePickerColorButton(isSelected: true)
         currentColor = color
         colorW = wComponent
+        updatePickerColorButton(isSelected: true)
 
-        colorPickerWComponentColorView.backgroundColor = UIColor(red: CGFloat(wComponent), green: CGFloat(wComponent), blue: CGFloat(wComponent), alpha: 1.0)
         paletteCollection.reloadData()
     }
 
-    fileprivate func updatePickerColorButton(isSelected: Bool) {
+    fileprivate func updatePickerColorButton(isSelected: Bool) {        // Note: colorW and currentColor should have been set previously
+        colorPickerWComponentColorView.backgroundColor = UIColor(red: CGFloat(colorW), green: CGFloat(colorW), blue: CGFloat(colorW), alpha: 1.0)
+        colorPickerContainerView.backgroundColor = currentColor
         colorPickerContainerView.layer.borderWidth = isSelected ? 4:2
         colorPickerContainerView.layer.borderColor = (isSelected ? UIColor.white: colorPickerContainerView.backgroundColor?.darker(0.5) ?? .black ).cgColor
     }

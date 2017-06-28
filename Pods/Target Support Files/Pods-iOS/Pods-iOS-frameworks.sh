@@ -97,7 +97,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyXML-iOS/SwiftyXML.framework"
   install_framework "$BUILT_PRODUCTS_DIR/UIColor+Hex/UIColor_Hex.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Zip-iOS/Zip.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/iOS-color-wheel/iOS_color_wheel.framework"
   install_framework "$BUILT_PRODUCTS_DIR/iOSDFULibrary-iOS/iOSDFULibrary.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -109,7 +108,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/SwiftyXML-iOS/SwiftyXML.framework"
   install_framework "$BUILT_PRODUCTS_DIR/UIColor+Hex/UIColor_Hex.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Zip-iOS/Zip.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/iOS-color-wheel/iOS_color_wheel.framework"
   install_framework "$BUILT_PRODUCTS_DIR/iOSDFULibrary-iOS/iOSDFULibrary.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

@@ -67,7 +67,6 @@ class PeripheralListViewController: NSViewController {
         filtersShowUnnamed.state = peripheralList.isUnnamedEnabled ? NSOnState:NSOffState
         filtersOnlyWithUartButton.state = peripheralList.isOnlyUartEnabled ? NSOnState:NSOffState
     }
-    
 
     // MARK: - BLE Notifications
     private weak var didDiscoverPeripheralObserver: NSObjectProtocol?
@@ -253,7 +252,7 @@ class PeripheralListViewController: NSViewController {
             advertisementString += "TX Power Level: \(txPower)\n"
         }
         let isConnectable = blePeripheral.advertisement.isConnectable
-        advertisementString += "Connectable: \(isConnectable != nil ? "\(isConnectable! ? "true":"false")":"unknown"))\n"
+        advertisementString += "Connectable: \(isConnectable != nil ? (isConnectable! ? "true":"false") : "unknown")\n"
         
         let alert = NSAlert()
         alert.messageText = "Advertising packet data"
@@ -276,6 +275,23 @@ class PeripheralListViewController: NSViewController {
         
         return result
     }
+    
+    // MARK: - Connections
+    fileprivate func connect(peripheral: BlePeripheral) {
+        DLog("connect")
+        // Connect to selected peripheral
+        selectedPeripheral = peripheral
+        BleManager.sharedInstance.connect(to: peripheral)
+       // reloadBaseTable()
+    }
+    
+    fileprivate func disconnect(peripheral: BlePeripheral) {
+        DLog("disconnect")
+        selectedPeripheral = nil
+        BleManager.sharedInstance.disconnect(from: peripheral)
+        //reloadBaseTable()
+    }
+
     
     // MARK: - Actions
     @IBAction func onClickRefresh(_ sender: AnyObject) {
@@ -366,31 +382,49 @@ extension PeripheralListViewController: NSTableViewDelegate {
         cell.rssiImageView.image = RssiUI.signalImage(for: blePeripheral.rssi)
         
         cell.onDisconnect = {
-            tableView.deselectAll(nil)
+            self.disconnect(peripheral: blePeripheral)
+            tableView.deselectRow(row)
         }
         
         cell.onClickAdvertising = { [unowned self] in
             self.showAdverisingPacketData(for: blePeripheral)
         }
-        
+
         cell.showDisconnectButton(blePeripheral.identifier == selectedPeripheral?.identifier)
+        
         
         return cell;
     }
     
     func tableViewSelectionIsChanging(_ notification: Notification) {  // Note: used tableViewSelectionIsChanging instead of tableViewSelectionDidChange because if a didDiscoverPeripheral notification arrives when the user is changing the row but before the user releases the mouse button, then it would be cancelled (and the user would notice that something weird happened)
         
+        DLog("tableViewSelectionIsChanging")
         peripheralSelectedChanged()
     }
 
     func tableViewSelectionDidChange(_ notification: Notification) {
+        DLog("tableViewSelectionDidChange")
         peripheralSelectedChanged()
     }
-    
+
     private func peripheralSelectedChanged() {
+        DLog("\t peripheralSelectedChanged. selected: \(baseTableView.selectedRow)")
+        
+        var blePeripheral: BlePeripheral?
         let peripherals = peripheralList.filteredPeripherals(forceUpdate: false)
         if baseTableView.selectedRow >= 0 && baseTableView.selectedRow < peripherals.count {
-            selectedPeripheral = peripherals[baseTableView.selectedRow]
+            blePeripheral = peripherals[baseTableView.selectedRow]
         }
+
+        /*
+        // Disconnect previous
+        if let selectedPeripheral = selectedPeripheral, selectedPeripheral.identifier != blePeripheral?.identifier {
+            self.disconnect(peripheral: selectedPeripheral)
+        }
+
+        // Connect new
+        if let blePeripheral = blePeripheral {
+            self.connect(peripheral: blePeripheral)
+        }*/
     }
 }

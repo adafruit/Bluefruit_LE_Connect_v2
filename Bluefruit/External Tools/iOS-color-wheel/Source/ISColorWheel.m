@@ -76,6 +76,7 @@ static PixelRGB ISColorWheel_HSBToRGB (float h, float s, float v)
     return pixel;
 }
 
+
 @interface ISColorKnob : UIView
 
 @end
@@ -189,6 +190,7 @@ static PixelRGB ISColorWheel_HSBToRGB (float h, float s, float v)
     return ISColorWheel_HSBToRGB(hue, sat, _brightness);
 }
 
+
 - (CGPoint)viewToImageSpace:(CGPoint)point
 {    
     float width = self.bounds.size.width;
@@ -221,6 +223,8 @@ static PixelRGB ISColorWheel_HSBToRGB (float h, float s, float v)
     {
         return;
     }
+    
+    //NSLog(@"updateImage boounds: %.1f %.1f radius: %.1f", self.bounds.size.width, self.bounds.size.height, _radius);
     
     if (_radialImage)
     {
@@ -284,19 +288,54 @@ static PixelRGB ISColorWheel_HSBToRGB (float h, float s, float v)
 
 - (void)setCurrentColor:(UIColor*)color
 {
-    float h = 0.0;
-    float s = 0.0;
-    float b = 1.0;
-    float a = 1.0;
+    CGFloat alpha = 1.0;
     
-    [color getHue:&h saturation:&s brightness:&b alpha:&a];
+    CGFloat red = 0.0;
+    CGFloat green = 0.0;
+    CGFloat blue = 1.0;
     
-    self.brightness = b;
+    [color getRed:&red green:&green blue:&blue alpha:&alpha];
+ //   UIColor *rgbColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+    
+    // https://stackoverflow.com/questions/10071756/is-there-function-to-convert-uicolor-to-hue-saturation-brightness/10072294
+    CGFloat hue = 0.0;
+    CGFloat saturation = 0.0;
+    CGFloat brightness = 1.0;
+    
+    CGFloat minRGB = MIN(red, MIN(green,blue));
+    CGFloat maxRGB = MAX(red, MAX(green,blue));
+    
+    if (minRGB==maxRGB) {
+        hue = 0;
+        saturation = 0;
+        brightness = minRGB;
+    } else {
+        CGFloat d = (red==minRGB) ? green-blue : ((blue==minRGB) ? red-green : blue-red);
+        CGFloat h = (red==minRGB) ? 3 : ((blue==minRGB) ? 1 : 5);
+        hue = (h - d/(maxRGB - minRGB)) / 6.0;
+        saturation = (maxRGB - minRGB)/maxRGB;
+        brightness = maxRGB;
+    }
+    
+    
+    /*
+    BOOL converted = [color getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
+    
+    if (!converted) {
+        NSLog(@"error converting color");
+    }
+    else {
+//        fmod(hue, 1.0);
+//        fmod(saturation, 1.0);
+        NSLog(@"hue: %.1f sat: %.1f", hue, saturation);
+    }
+*/
+    self.brightness = brightness;
     
     CGPoint center = CGPointMake(_radius, _radius);
     
-    float angle = (h * (M_PI * 2.0)) + M_PI / 2;
-    float dist = s * _radius;
+    float angle = (hue * (M_PI * 2.0)) + M_PI / 2;
+    float dist = saturation * _radius;
         
     CGPoint point;
     point.x = center.x + (cosf(angle) * dist);
@@ -304,7 +343,7 @@ static PixelRGB ISColorWheel_HSBToRGB (float h, float s, float v)
 
     
     [self setTouchPoint: point];
-    [self updateImage];
+//    [self updateImage];      OpenRoad
 }
 
 - (void)setKnobView:(UIView *)knobView
@@ -405,6 +444,9 @@ static PixelRGB ISColorWheel_HSBToRGB (float h, float s, float v)
         
         _touchPoint = CGPointMake(center.x + vec.x * _radius, center.y + vec.y * _radius);
     }
+    
+    NSLog(@"point: %.1f, %.1f", point.x, point.y);
+    NSLog(@"_touchPoint: %.1f, %.1f", _touchPoint.x, _touchPoint.y);
     
     [self updateKnob];
     

@@ -413,20 +413,6 @@ SOFTWARE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string> 	By: Justin Meiners
-	Copyright (c) 2013 Inline Studios
-Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
-		
-</string>
-			<key>License</key>
-			<string>MIT</string>
-			<key>Title</key>
-			<string>iOS-color-wheel</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>FooterText</key>
 			<string>BSD 3-Clause License
 
 Copyright (c) 2016, Nordic Semiconductor

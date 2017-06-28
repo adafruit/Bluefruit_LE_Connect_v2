@@ -329,7 +329,7 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "neopixel_sketch_tooltip" = "Neopixel support requires a custom sketch to be running on your Arduino. You can export this sketch from the app by clicking the INFO icon in the top-right corner.";
 
 // Calibration
-"calibration_tab_title" = "Calibration";
+"calibration_tab_title" = "AHRS/Calibration";
 
 // Common
 "dialog_ok" = "Ok";

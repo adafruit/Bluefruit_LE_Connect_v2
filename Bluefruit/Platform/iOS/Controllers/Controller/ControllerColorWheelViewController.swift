@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import iOS_color_wheel
+//import iOS_color_wheel
 
 protocol ControllerColorWheelViewControllerDelegate: class {
     func onSendColorComponents(_ colorComponents: [UInt8])

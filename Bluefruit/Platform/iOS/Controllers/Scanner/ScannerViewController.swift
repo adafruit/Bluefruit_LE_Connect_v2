@@ -233,7 +233,7 @@ class ScannerViewController: UIViewController {
             DLog("Connected to an unexpected peripheral")
             return
         }
-
+  
         // Discover services
         infoAlertController?.message = "Discovering services..."
         discoverServices(peripheral: selectedPeripheral)

@@ -39,10 +39,12 @@ class DetailsViewController: NSViewController {
     @IBOutlet weak var infoDfuImageView: NSImageView!
     @IBOutlet weak var infoDfuLabel: NSTextField!
     
+    /* TODO: restore
     // Modules
     private var pinIOViewController: PinIOViewController?
     private var updateViewController: FirmwareUpdateViewController?
-    
+    */
+//    
     // Rssi
     private static let kRssiUpdateInterval = 2.0       // in seconds
     private var rssiTimer : MSWeakTimer?
@@ -65,68 +67,95 @@ class DetailsViewController: NSViewController {
         super.viewWillAppear()
         
         // Subscribe to Ble Notifications
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(willConnectToPeripheral(_:)), name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(didConnectToPeripheral(_:)), name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(willDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
+        registerNotifications(enabled: true)
     }
     
     override func viewDidDisappear() {
         super.viewDidDisappear()
         
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.removeObserver(self, name: BleManager.BleNotifications.WillConnectToPeripheral.rawValue, object: nil)
-        notificationCenter.removeObserver(self, name: BleManager.BleNotifications.DidConnectToPeripheral.rawValue, object: nil)
-        notificationCenter.removeObserver(self, name: BleManager.BleNotifications.WillDisconnectFromPeripheral.rawValue, object: nil)
+        registerNotifications(enabled: false)
     }
     
     deinit {
         cancelRssiTimer()
     }
     
-    func willConnectToPeripheral(notification : NSNotification) {
-        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            self.showEmpty(true)
-            self.emptyLabel.stringValue = LocalizationManager.sharedInstance.localizedString("peripheraldetails_connecting")
-            })
-    }
-    
-    func didConnectToPeripheral(notification : NSNotification) {
+    // MARK: - BLE Notifications
+    private weak var willConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var didConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var willDisconnectFromPeripheralObserver: NSObjectProtocol?
 
-        guard BleManager.sharedInstance.blePeripheralConnected != nil else {
-            DLog("Warning: didConnectToPeripheral with empty blePeripheralConnected");
-            return;
+    private func registerNotifications(enabled: Bool) {
+        let notificationCenter = NotificationCenter.default
+        if enabled {
+            willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: .main, using: willConnectToPeripheral)
+            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: didConnectToPeripheral)
+            willDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .willDisconnectFromPeripheral, object: nil, queue: .main, using: willDisconnectFromPeripheral)
+        } else {
+          if let willConnectToPeripheralObserver = willConnectToPeripheralObserver {notificationCenter.removeObserver(willConnectToPeripheralObserver)}
+            if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
+            if let willDisconnectFromPeripheralObserver = willDisconnectFromPeripheralObserver {notificationCenter.removeObserver(willDisconnectFromPeripheralObserver)}
         }
-
-        let blePeripheral = BleManager.sharedInstance.blePeripheralConnected!
-        blePeripheral.peripheral.delegate = self
-
-        // UI
-        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            self.showEmpty(false)
-            
-            for tabViewItem in self.modeTabView.tabViewItems {
-                self.modeTabView.removeTabViewItem(tabViewItem)
-            }
-            
-            self.startUpdatesCheck()
-        })
     }
     
-    private func startUpdatesCheck() {
+    func willConnectToPeripheral(notification: Notification) {
+        showEmpty(true)
+        emptyLabel.stringValue = LocalizationManager.sharedInstance.localizedString("peripheraldetails_connecting")
+    }
+    
+    func didConnectToPeripheral(notification: Notification) {
+        guard let blePeripheral = BleManager.sharedInstance.connectedPeripherals().first else {
+            DLog("Warning: didConnectToPeripheral with empty blePeripheralConnected")
+            return
+        }
         
+/* TODO: restore
+        blePeripheral.peripheral.delegate = self
+*/
+        // UI
+        showEmpty(false)
+        
+        for tabViewItem in modeTabView.tabViewItems {
+            modeTabView.removeTabViewItem(tabViewItem)
+        }
+/* TODO: restore
+ 
+        startUpdatesCheck()
+ */
+    }
+    
+    func willDisconnectFromPeripheral(notification: Notification) {
+        showEmpty(true)
+        cancelRssiTimer()
+        
+        for tabViewItem in modeTabView.tabViewItems {
+            modeTabView.removeTabViewItem(tabViewItem)
+        }
+/* TODO: restore
+ 
+        let blePeripheral = BleManager.sharedInstance.blePeripheralConnected
+        blePeripheral?.peripheral.delegate = nil
+ */
+    }
+    
+    // MARK: -
+    private func startUpdatesCheck() {
+/* TODO: restore
+
         // Refresh updates available
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
             
             let releases = FirmwareUpdater.releasesWithBetaVersions(Preferences.showBetaVersions)
             firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, shouldDiscoverServices: true, releases: releases, shouldRecommendBetaReleases: false)
         }
+ */
     }
 
     private func setupConnectedPeripheral() {
-        guard let blePeripheral = BleManager.sharedInstance.blePeripheralConnected else {
-            return
-        }
+/* TODO: restore
+
+ 
+        guard let blePeripheral = BleManager.sharedInstance.blePeripheralConnected else { return }
         
         // UI: Info
         let name = blePeripheral.name != nil ? blePeripheral.name! : LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
@@ -156,27 +185,16 @@ class DetailsViewController: NSViewController {
         infoViewController.tabReset()
         
         self.modeTabView.selectFirstTabViewItem(nil)
+ */
     }
     
     func requestUpdateRssi() {
+        /* TODO: restore
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
             //DLog("request rssi for \(blePeripheral.name)")
             blePeripheral.peripheral.readRSSI()
         }
-    }
-    
-    func willDisconnectFromPeripheral(notification : NSNotification) {
-        dispatch_async(dispatch_get_main_queue(),{ [unowned self] in
-            self.showEmpty(true)
-            self.cancelRssiTimer()
-            
-            for tabViewItem in self.modeTabView.tabViewItems {
-                self.modeTabView.removeTabViewItem(tabViewItem)
-            }
-            })
-        
-        let blePeripheral = BleManager.sharedInstance.blePeripheralConnected
-        blePeripheral?.peripheral.delegate = nil
+ */
     }
     
     func cancelRssiTimer() {
@@ -188,12 +206,12 @@ class DetailsViewController: NSViewController {
         infoView.isHidden = isEmpty
         modeTabView.isHidden = isEmpty
         emptyView.isHidden = !isEmpty
-        if (isEmpty) {
+        if isEmpty {
             emptyLabel.stringValue = LocalizationManager.sharedInstance.localizedString("peripheraldetails_select")
         }
     }
     
-    
+     /* TODO: restore
     func servicesDiscovered() {
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
             if let services = blePeripheral.peripheral.services {
@@ -296,11 +314,12 @@ class DetailsViewController: NSViewController {
             }
         }
     }
+    */
     
-    private func indexForTabWithClass(tabClassName : String) -> Int {
+    private func indexForTabWithClass(tabClassName: String) -> Int {
         var index = -1
         for i in 0..<modeTabView.tabViewItems.count {
-            let className = String(modeTabView.tabViewItems[i].viewController!.dynamicType)
+            let className = String(describing: type(of: modeTabView.tabViewItems[i].viewController!))
             if className == tabClassName {
                 index = i
                 break
@@ -311,12 +330,14 @@ class DetailsViewController: NSViewController {
     }
     
     func updateRssiUI() {
+        /* TODO: restore
         if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
             let rssi = blePeripheral.rssi
             //DLog("rssi: \(rssi)")
             infoRssiLabel.stringValue = String(format:LocalizationManager.sharedInstance.localizedString("peripheraldetails_rssi_format"), arguments:[rssi]) // "\(rssi) dBm"
-            infoRssiImageView.image = signalImageForRssi(rssi)
+            infoRssiImageView.image = RssiUI.signalImage(for: rssi)
         }
+ */
     }
     
     private func showUpdateAvailableForRelease(latestRelease: FirmwareInfo!) {
@@ -324,11 +345,11 @@ class DetailsViewController: NSViewController {
             let alert = NSAlert()
             alert.messageText = "Update available"
             alert.informativeText = "Software version \(latestRelease.version) is available"
-            alert.addButtonWithTitle("Go to updates")
-            alert.addButtonWithTitle("Ask later")
-            alert.addButtonWithTitle("Ignore")
-            alert.alertStyle = .Warning
-            alert.beginSheetModalForWindow(window, completionHandler: { modalResponse in
+            alert.addButton(withTitle: "Go to updates")
+            alert.addButton(withTitle: "Ask later")
+            alert.addButton(withTitle: "Ignore")
+            alert.alertStyle = .warning
+            alert.beginSheetModal(for: window, completionHandler: { modalResponse in
                 if modalResponse == NSAlertFirstButtonReturn {
                     self.modeTabView.selectLastTabViewItem(nil)
                 }
@@ -344,9 +365,9 @@ class DetailsViewController: NSViewController {
     }
 
 }
-
+/* TODO: restore
 // MARK: - CBPeripheralDelegate
-extension DetailsViewController : CBPeripheralDelegate {
+extension DetailsViewController: CBPeripheralDelegate {
     
     // Send peripheral delegate methods to tab active (each tab will handle these methods)
     func peripheralDidUpdateName(peripheral: CBPeripheral) {
@@ -441,18 +462,10 @@ extension DetailsViewController: NSTabViewDelegate {
         detailTabViewController.tabWillAppear()
     }
     
-    /*
-    func tabView(tabView: NSTabView, shouldSelectTabViewItem tabViewItem: NSTabViewItem?) -> Bool {
-        if tabViewItem?.viewController is PinIOViewController {
-            return false
-        }
-        else {
-            return true
-        }
-    }
-*/
 }
+*/
 
+/* TODO: restore
 // MARK: - FirmwareUpdaterDelegate
 extension DetailsViewController: FirmwareUpdaterDelegate {
     func onFirmwareUpdatesAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo!, deviceInfoData: DeviceInfoData?, allReleases: [NSObject : AnyObject]?) {
@@ -482,4 +495,6 @@ extension DetailsViewController: FirmwareUpdaterDelegate {
         DLog("FirmwareUpdaterDelegate: onUpdateDialogError")
     }
 }
+ 
+ */
 
