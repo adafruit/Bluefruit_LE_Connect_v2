@@ -22,7 +22,7 @@ extension BlePeripheral {
             
             self.readCharacteristic(characteristic) { (result, error) in
                 guard error == nil, let data = result as? Data, data.count >= 1 else {
-                    DLog("Error reading battery level: \(error?.localizedDescription ?? "")");
+                    DLog("Error reading battery level: \(error?.localizedDescription ?? "")")
                     handler(-1, error)
                     return
                 }
