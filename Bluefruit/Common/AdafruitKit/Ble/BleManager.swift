@@ -139,6 +139,10 @@ class BleManager: NSObject {
     func connectingPeripherals() -> [BlePeripheral] {
         return peripherals().filter {$0.state == .connecting}
     }
+    
+    func connectedOrConnectingPeripherals() -> [BlePeripheral] {
+        return peripherals().filter {$0.state == .connected || $0.state == .connecting}
+    }
 
     func refreshPeripherals() {
         stopScan()
@@ -313,7 +317,7 @@ extension BleManager: CBCentralManagerDelegate {
     }
 
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        DLog("didConnect")
+        DLog("didConnect: \(peripheral.identifier)")
 
         // Remove connection timeout if exists
         if let timer = connectionTimeoutTimers[peripheral.identifier] {

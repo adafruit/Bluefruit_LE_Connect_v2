@@ -38,6 +38,16 @@ class DetailsViewController: NSViewController {
     @IBOutlet weak var infoDsiLabel: NSTextField!
     @IBOutlet weak var infoDfuImageView: NSImageView!
     @IBOutlet weak var infoDfuLabel: NSTextField!
+
+    // Parameters
+    enum ModuleController {
+        case info
+        case update
+        case multiUart
+    }
+    
+    var startingController = ModuleController.info
+    weak var blePeripheral: BlePeripheral?
     
     /* TODO: restore
     // Modules
@@ -47,7 +57,7 @@ class DetailsViewController: NSViewController {
 //    
     // Rssi
     private static let kRssiUpdateInterval = 2.0       // in seconds
-    private var rssiTimer : MSWeakTimer?
+    private var rssiTimer: MSWeakTimer?
     
     // Software upate autocheck
     private let firmwareUpdater = FirmwareUpdater()
@@ -104,53 +114,47 @@ class DetailsViewController: NSViewController {
     }
     
     func didConnectToPeripheral(notification: Notification) {
-        guard let blePeripheral = BleManager.sharedInstance.connectedPeripherals().first else {
-            DLog("Warning: didConnectToPeripheral with empty blePeripheralConnected")
-            return
-        }
+        guard let peripheral = BleManager.sharedInstance.peripheral(from: notification) else { return }
+        self.blePeripheral = peripheral
+
+        emptyLabel.stringValue = LocalizationManager.sharedInstance.localizedString("periperhaldetails_discoveringservices")
         
-/* TODO: restore
-        blePeripheral.peripheral.delegate = self
-*/
+        /* TODO: restore
         // UI
         showEmpty(false)
         
         for tabViewItem in modeTabView.tabViewItems {
             modeTabView.removeTabViewItem(tabViewItem)
         }
-/* TODO: restore
  
         startUpdatesCheck()
  */
     }
     
     func willDisconnectFromPeripheral(notification: Notification) {
+        guard let selectedPeripheral = blePeripheral, let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, selectedPeripheral.identifier == identifier else {
+            DLog("Disconnected from an unexpected peripheral")
+            return
+        }
+        
         showEmpty(true)
         cancelRssiTimer()
         
         for tabViewItem in modeTabView.tabViewItems {
             modeTabView.removeTabViewItem(tabViewItem)
         }
-/* TODO: restore
- 
-        let blePeripheral = BleManager.sharedInstance.blePeripheralConnected
-        blePeripheral?.peripheral.delegate = nil
- */
     }
     
+/*  TODO: restore
+    
     // MARK: -
-    private func startUpdatesCheck() {
-/* TODO: restore
-
+    private func startUpdatesCheck(peripheral: BlePeripheral) {
+        DLog("Check firmware updates")
+        
         // Refresh updates available
-        if let blePeripheral = BleManager.sharedInstance.blePeripheralConnected {
-            
-            let releases = FirmwareUpdater.releasesWithBetaVersions(Preferences.showBetaVersions)
-            firmwareUpdater.checkUpdatesForPeripheral(blePeripheral.peripheral, delegate: self, shouldDiscoverServices: true, releases: releases, shouldRecommendBetaReleases: false)
-        }
- */
+        firmwareUpdater.checkUpdatesForPeripheral(peripheral, delegate: self, shouldDiscoverServices: false, shouldRecommendBetaReleases: false, versionToIgnore: Preferences.softwareUpdateIgnoredVersion)
     }
-
+*/
     private func setupConnectedPeripheral() {
 /* TODO: restore
 
@@ -468,33 +472,19 @@ extension DetailsViewController: NSTabViewDelegate {
 /* TODO: restore
 // MARK: - FirmwareUpdaterDelegate
 extension DetailsViewController: FirmwareUpdaterDelegate {
-    func onFirmwareUpdatesAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo!, deviceInfoData: DeviceInfoData?, allReleases: [NSObject : AnyObject]?) {
+    func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceInfo: DeviceInformationService?) {
         DLog("FirmwareUpdaterDelegate isUpdateAvailable: \(isUpdateAvailable)")
         
-        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
+        DispatchQueue.main.async { [weak self] in
+            guard let context = self else { return }
             
-            if let context = self {
-                
-                context.setupConnectedPeripheral()
-                if isUpdateAvailable {
-                    self?.showUpdateAvailableForRelease(latestRelease)
-                }
+            context.setupConnectedPeripheral()
+            if isUpdateAvailable {
+                self?.showUpdateAvailableForRelease(latestRelease)
             }
-            })
-    }
-    
-    func onDfuServiceNotFound() {
-        DLog("FirmwareUpdaterDelegate: onDfuServiceNotFound")
-        
-        dispatch_async(dispatch_get_main_queue(),{ [weak self] in
-            self?.setupConnectedPeripheral()
-            })
-    }
-    
-    private func onUpdateDialogError(errorMessage:String, exitOnDismiss: Bool = false) {
-        DLog("FirmwareUpdaterDelegate: onUpdateDialogError")
+        }
     }
 }
  
- */
+*/
 

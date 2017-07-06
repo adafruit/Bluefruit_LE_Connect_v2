@@ -72,7 +72,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
 
     deinit {
         DLog("PeripheralDetails deinit")
-
     }
 
     // MARK: - BLE Notifications
@@ -104,7 +103,6 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         DLog("detail: peripheral willDisconnect")
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
         if isFullScreen {       // executed when bluetooth is stopped
-
             // Back to peripheral list
             goBackToPeripheralList()
         } else {

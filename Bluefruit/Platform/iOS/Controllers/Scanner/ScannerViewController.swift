@@ -223,7 +223,7 @@ class ScannerViewController: UIViewController {
 
     private func willConnectToPeripheral(notification: Notification) {
         guard let peripheral = BleManager.sharedInstance.peripheral(from: notification) else { return }
-        presentInfoDialog(title: "Connecting...", peripheral: peripheral)
+        presentInfoDialog(title: LocalizationManager.sharedInstance.localizedString("peripherallist_connecting"), peripheral: peripheral)
     }
 
     private func didConnectToPeripheral(notification: Notification) {
@@ -235,7 +235,7 @@ class ScannerViewController: UIViewController {
         }
   
         // Discover services
-        infoAlertController?.message = "Discovering services..."
+        infoAlertController?.message = LocalizationManager.sharedInstance.localizedString("periperhallist_discoveringservices")
         discoverServices(peripheral: selectedPeripheral)
     }
 
@@ -348,9 +348,7 @@ class ScannerViewController: UIViewController {
         DLog("Discovering services")
 
         peripheral.discover(serviceUuids: nil) { [weak self] error in
-            guard let context = self else {
-                return
-            }
+            guard let context = self else { return }
 
             DispatchQueue.main.async { [unowned context] in
                 guard error == nil else {

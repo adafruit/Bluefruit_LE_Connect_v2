@@ -30,7 +30,8 @@ class PeripheralListViewController: NSViewController {
 
     // Data
     fileprivate var peripheralList: PeripheralList! = nil
-    fileprivate var selectedPeripheral: BlePeripheral?
+ //   fileprivate var selectedPeripheral: BlePeripheral?
+    fileprivate var isUserInteractingWithTableView = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,6 +97,7 @@ class PeripheralListViewController: NSViewController {
     }
     
     private func didDisconnectFromPeripheral(notification: Notification) {
+        /*
         let peripheral = BleManager.sharedInstance.peripheral(from: notification)
         let currentlyConnectedPeripheralsCount = BleManager.sharedInstance.connectedPeripherals().count
 
@@ -105,9 +107,14 @@ class PeripheralListViewController: NSViewController {
         
         // Clear selected peripheral
         self.selectedPeripheral = nil
-
-        // Reload table
-        reloadBaseTable()
+*/
+        
+        
+        // Reload after dispatch (because at this point the peripheral has not been removed from BleManager)
+        DispatchQueue.main.async { [weak self] in
+            // Reload table
+            self?.reloadBaseTable()
+        }
         
         /*
         if BleManager.sharedInstance.blePeripheralConnected == nil && self.baseTableView.selectedRow >= 0 {
@@ -131,23 +138,29 @@ class PeripheralListViewController: NSViewController {
         let name = notification.userInfo?[BlePeripheral.NotificationUserInfoKey.name.rawValue] as? String
         DLog("centralManager peripheralDidUpdateName: \(name ?? "<unknown>")")
         
-        DispatchQueue.main.async { [weak self] in
-            // Reload table
-            self?.reloadBaseTable()
-        }
+        // Reload table
+        reloadBaseTable()
     }
     
     
     // MARK: - UI
     fileprivate func reloadBaseTable() {
+        guard !isUserInteractingWithTableView else { DLog("User interacting with tableview. Postpone reload..."); return }
+        
         let peripherals = peripheralList.filteredPeripherals(forceUpdate: true)     // Refresh the peripherals
         baseTableView.reloadData()
         
         // Select the previously selected row
         // scanningWaitView.isHidden = peripherals.count > 0
+        /*
         if let selectedPeripheral = selectedPeripheral, let selectedRow = peripherals.index(of: selectedPeripheral) {
             baseTableView.selectRowIndexes([selectedRow], byExtendingSelection: false)
-        }
+        }*/
+        
+        let selectedPeripherals = BleManager.sharedInstance.connectedOrConnectingPeripherals()
+        let selectedIndexes = selectedPeripherals.map({peripherals.index(of: $0)})
+        let selectedNotNilIndexes = selectedIndexes.filter{ $0 != nil }.map { $0! }
+        baseTableView.selectRowIndexes(IndexSet(selectedNotNilIndexes), byExtendingSelection: false)
     }
     
     // MARK: -
@@ -280,14 +293,14 @@ class PeripheralListViewController: NSViewController {
     fileprivate func connect(peripheral: BlePeripheral) {
         DLog("connect")
         // Connect to selected peripheral
-        selectedPeripheral = peripheral
+        //selectedPeripheral = peripheral
         BleManager.sharedInstance.connect(to: peripheral)
        // reloadBaseTable()
     }
     
     fileprivate func disconnect(peripheral: BlePeripheral) {
         DLog("disconnect")
-        selectedPeripheral = nil
+        //selectedPeripheral = nil
         BleManager.sharedInstance.disconnect(from: peripheral)
         //reloadBaseTable()
     }
@@ -390,20 +403,33 @@ extension PeripheralListViewController: NSTableViewDelegate {
             self.showAdverisingPacketData(for: blePeripheral)
         }
 
-        cell.showDisconnectButton(blePeripheral.identifier == selectedPeripheral?.identifier)
-        
+        let isDisconnectable = isPeripheralConnected(identifier: blePeripheral.identifier, includeConnecting: false)
+        cell.showDisconnectButton(isDisconnectable)
         
         return cell;
     }
     
-    func tableViewSelectionIsChanging(_ notification: Notification) {  // Note: used tableViewSelectionIsChanging instead of tableViewSelectionDidChange because if a didDiscoverPeripheral notification arrives when the user is changing the row but before the user releases the mouse button, then it would be cancelled (and the user would notice that something weird happened)
+    private func isPeripheralConnected(identifier: UUID, includeConnecting: Bool) -> Bool {
+        var peripherals: [BlePeripheral]
+        if includeConnecting {
+            peripherals = BleManager.sharedInstance.connectedOrConnectingPeripherals()
+        }
+        else {
+            peripherals = BleManager.sharedInstance.connectedPeripherals()
+        }
+        return peripherals.map{$0.identifier}.contains(identifier)
+    }
+    
+    func tableViewSelectionIsChanging(_ notification: Notification) {  // Note: used tableViewSelectionIsChanging instead of tableViewSelectionDidChange because if a didDiscoverPeripheral notification arrives while the user is changing the row but before the user releases the mouse button, then it would be cancelled (and the user would notice that something weird happened)
         
         DLog("tableViewSelectionIsChanging")
-        peripheralSelectedChanged()
+        isUserInteractingWithTableView = true
+//        peripheralSelectedChanged()
     }
 
     func tableViewSelectionDidChange(_ notification: Notification) {
         DLog("tableViewSelectionDidChange")
+        isUserInteractingWithTableView = false
         peripheralSelectedChanged()
     }
 
@@ -415,16 +441,18 @@ extension PeripheralListViewController: NSTableViewDelegate {
         if baseTableView.selectedRow >= 0 && baseTableView.selectedRow < peripherals.count {
             blePeripheral = peripherals[baseTableView.selectedRow]
         }
-
-        /*
+        
         // Disconnect previous
-        if let selectedPeripheral = selectedPeripheral, selectedPeripheral.identifier != blePeripheral?.identifier {
-            self.disconnect(peripheral: selectedPeripheral)
+        let connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
+        for peripheral in connectedPeripherals {
+            if peripheral.identifier != blePeripheral?.identifier {
+                disconnect(peripheral: peripheral)
+            }
         }
-
+        
         // Connect new
-        if let blePeripheral = blePeripheral {
-            self.connect(peripheral: blePeripheral)
-        }*/
+        if blePeripheral != nil, !isPeripheralConnected(identifier: blePeripheral!.identifier, includeConnecting: true) {
+            self.connect(peripheral: blePeripheral!)
+        }
     }
 }

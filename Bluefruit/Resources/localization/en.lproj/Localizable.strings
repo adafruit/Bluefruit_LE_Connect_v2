@@ -73,6 +73,7 @@ https://github.com/Inferis/UIColor-Hex
 "peripherallist_connect" = "Connect";
 "peripherallist_connecting" = "Connecting...";
 "peripherallist_disconnect" = "Disconnect";
+"periperhallist_discoveringservices" = "Discovering services...";
 
 "peripherallist_filter_name_matchsection" = "Match";
 "peripherallist_filter_name_casesection" = "Case sensitivity";
@@ -89,6 +90,7 @@ https://github.com/Inferis/UIColor-Hex
 // Peripheral Details
 "peripheraldetails_select" = "Connect to a peripheral from the list on the left";
 "peripheraldetails_connecting" = "Connecting...";
+"periperhaldetails_discoveringservices" = "Discovering services...";
 
 // Peripheral Modules
 "peripheralmodules_sectiontitle_device" = "Device";

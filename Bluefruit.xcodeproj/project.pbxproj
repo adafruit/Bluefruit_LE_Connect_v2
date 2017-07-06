@@ -275,6 +275,8 @@
 		A9BCD6391E4D42C6003D1CEA /* DataConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */; };
 		A9BCD63A1E4D42C6003D1CEA /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */; };
 		A9BCD63D1E4D4357003D1CEA /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCE1E3A9B22008E5F81 /* Preferences.swift */; };
+		A9C6E7421F0EA7CE00E13CC6 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6E7411F0EA7CE00E13CC6 /* PreferencesViewController.swift */; };
+		A9C6E7431F0EA7CE00E13CC6 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6E7411F0EA7CE00E13CC6 /* PreferencesViewController.swift */; };
 		A9D2342C1E3AD64500DC0C99 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A9D234231E3AD64500DC0C99 /* Credits.rtf */; };
 		A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */; };
 		A9D2342E1E3AD64500DC0C99 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */; };
@@ -582,6 +584,7 @@
 		A9BCD6271E4D3B0B003D1CEA /* CommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLine.swift; sourceTree = "<group>"; };
 		A9BCD6281E4D3B0B003D1CEA /* CommandLineColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineColors.swift; sourceTree = "<group>"; };
 		A9BCD6291E4D3B0B003D1CEA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A9C6E7411F0EA7CE00E13CC6 /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		A9D234231E3AD64500DC0C99 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
 		A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GattUUIDs.plist; sourceTree = "<group>"; };
@@ -768,6 +771,7 @@
 			children = (
 				A91D65A91EFD69190097C8B6 /* MainWindowController.swift */,
 				A91D65AB1EFD6A6D0097C8B6 /* StatusViewController.swift */,
+				A9C6E7411F0EA7CE00E13CC6 /* PreferencesViewController.swift */,
 				A91D65AD1EFD85100097C8B6 /* MainSplitViewController.swift */,
 				A91D65AF1EFD85AE0097C8B6 /* PeripheralListViewController.swift */,
 				A91D65B11EFED6D60097C8B6 /* PeripheralTableCellView.swift */,
@@ -2037,6 +2041,7 @@
 				A9BCD5751E4D25B3003D1CEA /* FirmwareUpdater.swift in Sources */,
 				A98378451E42C10C00170319 /* InfoModuleManager.swift in Sources */,
 				A9BCD5971E4D2616003D1CEA /* MqttSettings.swift in Sources */,
+				A9C6E7421F0EA7CE00E13CC6 /* PreferencesViewController.swift in Sources */,
 				A9BCD5931E4D2616003D1CEA /* LocalizationManager.swift in Sources */,
 				A983784C1E42C11000170319 /* BleUUIDNames.swift in Sources */,
 				A9BCD57D1E4D25E4003D1CEA /* UartColors.swift in Sources */,
@@ -2111,6 +2116,7 @@
 				A945EA681E4DF1FA00737BB0 /* Zip.swift in Sources */,
 				A945EA421E4DEF0100737BB0 /* SecureDFUServiceInitiator.swift in Sources */,
 				A945EA381E4DEF0100737BB0 /* DFUVersion.swift in Sources */,
+				A9C6E7431F0EA7CE00E13CC6 /* PreferencesViewController.swift in Sources */,
 				A945EA471E4DEF0100737BB0 /* Data.swift in Sources */,
 				A945EA4D1E4DEF0100737BB0 /* LoggerDelegate.swift in Sources */,
 				A945EA321E4DEF0100737BB0 /* DFUExecutor.swift in Sources */,
