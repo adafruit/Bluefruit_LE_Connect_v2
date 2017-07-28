@@ -83,7 +83,6 @@ class NeopixelModeViewController: PeripheralModeViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        
         // Start
         updateStatusUI(isWaitingResponse: true)
         neopixel.start { error in

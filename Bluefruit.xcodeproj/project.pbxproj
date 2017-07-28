@@ -1701,9 +1701,9 @@
 			projectRoot = "";
 			targets = (
 				A9286C951E3A9216008E5F81 /* iOS */,
-				A98378231E42BF3100170319 /* macOS */,
 				A9BCD5991E4D2761003D1CEA /* watchOS */,
 				A9BCD5A51E4D2761003D1CEA /* watchOS Extension */,
+				A98378231E42BF3100170319 /* macOS */,
 				A9BCD61B1E4D3A61003D1CEA /* Bluefruit */,
 			);
 		};

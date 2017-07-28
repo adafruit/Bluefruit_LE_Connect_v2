@@ -5,7 +5,7 @@
 "about_text" = "A detailed guide to using this app can be found here:
 https://learn.adafruit.com/bluefruit-le-connect-for-ios
 
-Configure your Bluefruit LE hardware using instructions found here: 
+Configure your Bluefruit LE hardware using instructions found here:
 http://www.adafruit.com/bluefruitle
 
 Drag the table down and release to clear the list of found peripherals and begin scanning
@@ -78,7 +78,6 @@ https://github.com/Inferis/UIColor-Hex
 "peripherallist_filter_name_matchsection" = "Match";
 "peripherallist_filter_name_casesection" = "Case sensitivity";
 
-
 // AutoUpdate Firmware
 "autoupdate_title" = "Update available";
 "auoupadte_description_format" = "Software version %@ is available";
@@ -91,6 +90,7 @@ https://github.com/Inferis/UIColor-Hex
 "peripheraldetails_select" = "Connect to a peripheral from the list on the left";
 "peripheraldetails_connecting" = "Connecting...";
 "periperhaldetails_discoveringservices" = "Discovering services...";
+
 
 // Peripheral Modules
 "peripheralmodules_sectiontitle_device" = "Device";
@@ -332,6 +332,9 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 
 // Calibration
 "calibration_tab_title" = "AHRS/Calibration";
+
+
+
 
 // Common
 "dialog_ok" = "Ok";

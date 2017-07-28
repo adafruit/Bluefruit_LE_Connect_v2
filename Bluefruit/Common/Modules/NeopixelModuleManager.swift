@@ -102,12 +102,12 @@ class NeopixelModuleManager: NSObject {
 
         var name: String {
             switch self {
-            case .rgb: return  "RGB"
-            case .rbg: return "RGB"
-            case .grb: return  "GRB"
-            case .gbr: return  "BGR"
-            case .brg: return  "BRG"
-            case .bgr: return  "BGR"
+            case .rgb: return "RGB"
+            case .rbg: return "RBG"
+            case .grb: return "GRB"
+            case .gbr: return "GBR"
+            case .brg: return "BRG"
+            case .bgr: return "BGR"
 
             case .wrgb: return "WRGB"
             case .wrbg: return "WRBG"
