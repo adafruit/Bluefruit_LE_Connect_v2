@@ -351,7 +351,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
 }
 
 // MARK: UITableViewDelegate
-extension UartMqttSettingsViewController : UITableViewDelegate {
+extension UartMqttSettingsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell") as! MqttSettingsHeaderCell

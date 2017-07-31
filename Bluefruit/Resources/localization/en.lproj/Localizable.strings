@@ -119,8 +119,8 @@ https://github.com/Inferis/UIColor-Hex
 
 
 // Uart
-"uart_tab_title" = "Uart";
-"uart_navigation_title_format" = "Uart - %@";
+"uart_tab_title" = "UART";
+"uart_navigation_title_format" = "UART - %@";
 
 "uart_sentbytes_format" = "Sent: %ld bytes";
 "uart_recievedbytes_format" = "Received: %ld bytes";
@@ -160,7 +160,7 @@ https://github.com/Inferis/UIColor-Hex
 "uart_settings_clear_title" = "Clear";
 "uart_settings_export_title" = "Export...";
 
-"uart_help_title" = "Uart";
+"uart_help_title" = "UART";
 "uart_help_text" = "Instructions:
 
 • Tap the input field at the bottom of the screen.
