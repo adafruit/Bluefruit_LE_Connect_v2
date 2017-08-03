@@ -133,6 +133,11 @@
 		A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969466E1E3CD0F600BA8DAA /* StyledSubview.swift */; };
 		A96946711E3D02F300BA8DAA /* BleUUIDNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */; };
 		A96AB43C1F32BFDC0085115C /* Uart.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A96AB43A1F32BFDC0085115C /* Uart.storyboard */; };
+		A96AB43E1F32C0CF0085115C /* ModeTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96AB43D1F32C0CF0085115C /* ModeTabsViewController.swift */; };
+		A96AB4431F32CAF80085115C /* PeripheralModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96AB4421F32CAF80085115C /* PeripheralModeViewController.swift */; };
+		A96AB4461F32CB480085115C /* GattServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96AB4451F32CB480085115C /* GattServerViewController.swift */; };
+		A96AB4491F32CF780085115C /* Dfu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A96AB4471F32CF780085115C /* Dfu.storyboard */; };
+		A96AB44C1F32D0930085115C /* GattServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96AB44B1F32D0930085115C /* GattServer.swift */; };
 		A98378091E422C4B00170319 /* NSObject+ENHThrottledReloading.m in Sources */ = {isa = PBXBuildFile; fileRef = A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */; };
 		A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378161E42A96400170319 /* DfuDialogViewController.swift */; };
 		A983781B1E42A96400170319 /* DfuFilesPickerDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378171E42A96400170319 /* DfuFilesPickerDialogViewController.swift */; };
@@ -286,7 +291,6 @@
 		A9D2343C1E3AD70300DC0C99 /* PeripheralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234371E3AD70300DC0C99 /* PeripheralTableViewCell.swift */; };
 		A9D2343D1E3AD70300DC0C99 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234381E3AD70300DC0C99 /* ScannerViewController.swift */; };
 		A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2344C1E3AD97600DC0C99 /* StyleConfig.swift */; };
-		A9D234551E3AD9A200DC0C99 /* PeripheralModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234511E3AD9A200DC0C99 /* PeripheralModeViewController.swift */; };
 		A9D234561E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234521E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift */; };
 		A9D234571E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234531E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift */; };
 		A9D234581E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234541E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift */; };
@@ -494,6 +498,11 @@
 		A969466E1E3CD0F600BA8DAA /* StyledSubview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledSubview.swift; sourceTree = "<group>"; };
 		A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleUUIDNames.swift; sourceTree = "<group>"; };
 		A96AB43B1F32BFDC0085115C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Uart.storyboard; sourceTree = "<group>"; };
+		A96AB43D1F32C0CF0085115C /* ModeTabsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeTabsViewController.swift; sourceTree = "<group>"; };
+		A96AB4421F32CAF80085115C /* PeripheralModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PeripheralModeViewController.swift; path = Bluefruit/Platform/iOS/Controllers/PeripheralDetails/PeripheralModeViewController.swift; sourceTree = SOURCE_ROOT; };
+		A96AB4451F32CB480085115C /* GattServerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GattServerViewController.swift; sourceTree = "<group>"; };
+		A96AB4481F32CF780085115C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Dfu.storyboard; sourceTree = "<group>"; };
+		A96AB44B1F32D0930085115C /* GattServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GattServer.swift; sourceTree = "<group>"; };
 		A98378051E422C4B00170319 /* NSObject+ENHThrottledReloading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ENHThrottledReloading.h"; sourceTree = "<group>"; };
 		A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ENHThrottledReloading.m"; sourceTree = "<group>"; };
 		A983780B1E422CBC00170319 /* Bluefruit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bluefruit-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -595,7 +604,6 @@
 		A9D234371E3AD70300DC0C99 /* PeripheralTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralTableViewCell.swift; sourceTree = "<group>"; };
 		A9D234381E3AD70300DC0C99 /* ScannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
 		A9D2344C1E3AD97600DC0C99 /* StyleConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleConfig.swift; sourceTree = "<group>"; };
-		A9D234511E3AD9A200DC0C99 /* PeripheralModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralModeViewController.swift; sourceTree = "<group>"; };
 		A9D234521E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralDetailsCollectionViewCell.swift; sourceTree = "<group>"; };
 		A9D234531E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralDetailsViewController.swift; sourceTree = "<group>"; };
 		A9D234541E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingTabBarViewController.swift; sourceTree = "<group>"; };
@@ -707,6 +715,7 @@
 		A90C79761E40CBFA0076E8AD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				A96AB44A1F32D0830085115C /* GattServer */,
 				A9BCD5781E4D25E4003D1CEA /* Uart */,
 				A9BCD56E1E4D25B3003D1CEA /* Dfu */,
 				A9BCD5671E4D2549003D1CEA /* Scanner */,
@@ -785,6 +794,7 @@
 		A91DE45E1EE4D5F900297D9B /* PeripheralModules */ = {
 			isa = PBXGroup;
 			children = (
+				A96AB4421F32CAF80085115C /* PeripheralModeViewController.swift */,
 				A91DE45F1EE4D61700297D9B /* PeripheralModulesViewController.swift */,
 				A91502731EE4DAA800298005 /* PeripheralModulesTableViewCell.swift */,
 				A91D65A31EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift */,
@@ -859,6 +869,8 @@
 				A9E1371B1ECB2F11004C64E1 /* MainSplitViewController.swift */,
 				A90C79721E40CB150076E8AD /* EmptyDetailsViewController.swift */,
 				A90C79731E40CB150076E8AD /* HelpViewController.swift */,
+				A96AB43D1F32C0CF0085115C /* ModeTabsViewController.swift */,
+				A96AB4441F32CB480085115C /* GattServer */,
 				A9D234331E3AD70300DC0C99 /* Scanner */,
 				A91DE45E1EE4D5F900297D9B /* PeripheralModules */,
 				A9D234501E3AD9A200DC0C99 /* PeripheralDetails */,
@@ -1236,6 +1248,22 @@
 			path = Uart;
 			sourceTree = "<group>";
 		};
+		A96AB4441F32CB480085115C /* GattServer */ = {
+			isa = PBXGroup;
+			children = (
+				A96AB4451F32CB480085115C /* GattServerViewController.swift */,
+			);
+			path = GattServer;
+			sourceTree = "<group>";
+		};
+		A96AB44A1F32D0830085115C /* GattServer */ = {
+			isa = PBXGroup;
+			children = (
+				A96AB44B1F32D0930085115C /* GattServer.swift */,
+			);
+			path = GattServer;
+			sourceTree = "<group>";
+		};
 		A98378021E422C4B00170319 /* External Tools */ = {
 			isa = PBXGroup;
 			children = (
@@ -1509,7 +1537,6 @@
 		A9D234501E3AD9A200DC0C99 /* PeripheralDetails */ = {
 			isa = PBXGroup;
 			children = (
-				A9D234511E3AD9A200DC0C99 /* PeripheralModeViewController.swift */,
 				A9D234531E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift */,
 				A9D234521E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift */,
 				A9D234541E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift */,
@@ -1539,6 +1566,7 @@
 			children = (
 				A9286CAF1E3A931E008E5F81 /* LaunchScreen.storyboard */,
 				A9286CB11E3A931E008E5F81 /* Main.storyboard */,
+				A96AB4471F32CF780085115C /* Dfu.storyboard */,
 				A96AB43A1F32BFDC0085115C /* Uart.storyboard */,
 				A9FA1BE71EDEE1C20086CDCC /* NeoPixel.storyboard */,
 				A9BB78DA1EDCEBFB004663DE /* Calibration.storyboard */,
@@ -1724,6 +1752,7 @@
 				A9BB78FA1EDCECDB004663DE /* MagnetometerParameters.plist in Resources */,
 				A9BB78FB1EDCECDB004663DE /* visualization.scn in Resources */,
 				A9BB78F81EDCECDB004663DE /* GyroscopeParameters.plist in Resources */,
+				A96AB4491F32CF780085115C /* Dfu.storyboard in Resources */,
 				A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */,
 				A9286CB51E3A931E008E5F81 /* Assets.xcassets in Resources */,
 				A98DE42D1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */,
@@ -1874,7 +1903,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9BAD2121E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift in Sources */,
-				A9D234551E3AD9A200DC0C99 /* PeripheralModeViewController.swift in Sources */,
 				A9BCD5961E4D2616003D1CEA /* MqttSettings.swift in Sources */,
 				A9BCD56C1E4D2549003D1CEA /* RssiUI.swift in Sources */,
 				A94A21B01E417271006A5F33 /* UartSettingTableViewCell.swift in Sources */,
@@ -1897,8 +1925,10 @@
 				A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */,
 				A9D234561E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift in Sources */,
 				A907982C1E4349D6005470A5 /* ControllerPadViewController.swift in Sources */,
+				A96AB4461F32CB480085115C /* GattServerViewController.swift in Sources */,
 				A91D65A41EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift in Sources */,
 				A94A21B11E417271006A5F33 /* UartTimetampTableViewCell.swift in Sources */,
+				A96AB4431F32CAF80085115C /* PeripheralModeViewController.swift in Sources */,
 				A9286CD51E3A9B22008E5F81 /* UartDataManager.swift in Sources */,
 				A91542721EDD7BC9007A34EA /* CalibrationMenuViewController.swift in Sources */,
 				A91D65A11EFC07740097C8B6 /* BlePeripheral+Battery.swift in Sources */,
@@ -1921,6 +1951,7 @@
 				A9BCD60C1E4D36DE003D1CEA /* MainInterfaceController.swift in Sources */,
 				A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */,
 				A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */,
+				A96AB43E1F32C0CF0085115C /* ModeTabsViewController.swift in Sources */,
 				A90798431E44F692005470A5 /* PlotterModuleManager.swift in Sources */,
 				A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */,
 				A90798291E4349D6005470A5 /* ControllerColorWheelViewController.swift in Sources */,
@@ -1940,6 +1971,7 @@
 				A9BCD5941E4D2616003D1CEA /* MqttManager.swift in Sources */,
 				A90798401E44ECB3005470A5 /* PlotterModeViewController.swift in Sources */,
 				A96946711E3D02F300BA8DAA /* BleUUIDNames.swift in Sources */,
+				A96AB44C1F32D0930085115C /* GattServer.swift in Sources */,
 				A94A21AD1E417271006A5F33 /* UartModeViewController.swift in Sources */,
 				A9BCD5721E4D25B3003D1CEA /* DfuUpdateProcess.swift in Sources */,
 				A91542791EDD7BC9007A34EA /* VisualizationViewController.swift in Sources */,
@@ -2190,6 +2222,14 @@
 				A96AB43B1F32BFDC0085115C /* Base */,
 			);
 			name = Uart.storyboard;
+			sourceTree = "<group>";
+		};
+		A96AB4471F32CF780085115C /* Dfu.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A96AB4481F32CF780085115C /* Base */,
+			);
+			name = Dfu.storyboard;
 			sourceTree = "<group>";
 		};
 		A98378361E42BFF900170319 /* Main.storyboard */ = {

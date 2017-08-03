@@ -109,6 +109,7 @@ class ScannerViewController: UIViewController {
 
         // Ble Notifications
         registerNotifications(enabled: true)
+        DLog("Scanner: Register notifications")
 
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
 
@@ -257,6 +258,7 @@ class ScannerViewController: UIViewController {
 
         // Dismiss any info open dialogs
         infoAlertController?.dismiss(animated: true, completion: nil)
+        infoAlertController = nil
 
         // Reload table
         reloadBaseTable()
@@ -586,6 +588,10 @@ class ScannerViewController: UIViewController {
     }
 
     fileprivate func presentInfoDialog(title: String, peripheral: BlePeripheral) {
+        if infoAlertController != nil {
+            infoAlertController?.dismiss(animated: true, completion: nil)
+        }
+        
         infoAlertController = UIAlertController(title: nil, message: title, preferredStyle: .alert)
         infoAlertController!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) -> Void in
             BleManager.sharedInstance.disconnect(from: peripheral)
@@ -595,6 +601,11 @@ class ScannerViewController: UIViewController {
     }
 
     fileprivate func dismissInfoDialog(completion: (() -> Void)? = nil) {
+        guard infoAlertController != nil else {
+            completion?()
+            return
+        }
+        
         infoAlertController?.dismiss(animated: true, completion: completion)
         infoAlertController = nil
     }

@@ -89,18 +89,13 @@ class ScrollingTabBarViewController: UIViewController {
 
     func changeSelectedViewController(_ viewController: UIViewController?) {
         // DLog("changeSelectedViewController \(viewController)")
-        guard let viewController = viewController else {
-            return
-        }
+        guard let viewController = viewController else { return }
 
         // Add new
         if let containerView = contentView, let subview = viewController.view {
             subview.translatesAutoresizingMaskIntoConstraints = false
-            self.addChildViewController(viewController)
-
-            viewController.beginAppearanceTransition(true, animated: true)
             containerView.addSubview(subview)
-            viewController.endAppearanceTransition()
+            self.addChildViewController(viewController)
 
             let dictionaryOfVariableBindings = ["subview": subview]
             containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
