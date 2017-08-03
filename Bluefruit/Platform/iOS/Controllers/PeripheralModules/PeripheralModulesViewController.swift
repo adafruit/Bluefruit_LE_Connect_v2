@@ -184,8 +184,6 @@ class PeripheralModulesViewController: UIViewController {
         blePeripheral?.readRssi()
     }
     
-   
-    
     private func goBackToPeripheralList() {
         // Back to peripheral list
         if Config.useTabController {

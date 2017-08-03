@@ -132,6 +132,7 @@
 		A969466D1E3CD0CC00BA8DAA /* StyledButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969466B1E3CD0CC00BA8DAA /* StyledButton.swift */; };
 		A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969466E1E3CD0F600BA8DAA /* StyledSubview.swift */; };
 		A96946711E3D02F300BA8DAA /* BleUUIDNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */; };
+		A96AB43C1F32BFDC0085115C /* Uart.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A96AB43A1F32BFDC0085115C /* Uart.storyboard */; };
 		A98378091E422C4B00170319 /* NSObject+ENHThrottledReloading.m in Sources */ = {isa = PBXBuildFile; fileRef = A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */; };
 		A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378161E42A96400170319 /* DfuDialogViewController.swift */; };
 		A983781B1E42A96400170319 /* DfuFilesPickerDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378171E42A96400170319 /* DfuFilesPickerDialogViewController.swift */; };
@@ -492,6 +493,7 @@
 		A969466B1E3CD0CC00BA8DAA /* StyledButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledButton.swift; sourceTree = "<group>"; };
 		A969466E1E3CD0F600BA8DAA /* StyledSubview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledSubview.swift; sourceTree = "<group>"; };
 		A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleUUIDNames.swift; sourceTree = "<group>"; };
+		A96AB43B1F32BFDC0085115C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Uart.storyboard; sourceTree = "<group>"; };
 		A98378051E422C4B00170319 /* NSObject+ENHThrottledReloading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ENHThrottledReloading.h"; sourceTree = "<group>"; };
 		A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ENHThrottledReloading.m"; sourceTree = "<group>"; };
 		A983780B1E422CBC00170319 /* Bluefruit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bluefruit-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -1537,6 +1539,7 @@
 			children = (
 				A9286CAF1E3A931E008E5F81 /* LaunchScreen.storyboard */,
 				A9286CB11E3A931E008E5F81 /* Main.storyboard */,
+				A96AB43A1F32BFDC0085115C /* Uart.storyboard */,
 				A9FA1BE71EDEE1C20086CDCC /* NeoPixel.storyboard */,
 				A9BB78DA1EDCEBFB004663DE /* Calibration.storyboard */,
 			);
@@ -1724,6 +1727,7 @@
 				A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */,
 				A9286CB51E3A931E008E5F81 /* Assets.xcassets in Resources */,
 				A98DE42D1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */,
+				A96AB43C1F32BFDC0085115C /* Uart.storyboard in Resources */,
 				A9286CB61E3A931E008E5F81 /* LaunchScreen.storyboard in Resources */,
 				A9FA1BE91EDEE1C20086CDCC /* NeoPixel.storyboard in Resources */,
 				A9BB78F91EDCECDB004663DE /* magnetometer.scn in Resources */,
@@ -2178,6 +2182,14 @@
 				A9286CB21E3A931E008E5F81 /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A96AB43A1F32BFDC0085115C /* Uart.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A96AB43B1F32BFDC0085115C /* Base */,
+			);
+			name = Uart.storyboard;
 			sourceTree = "<group>";
 		};
 		A98378361E42BFF900170319 /* Main.storyboard */ = {

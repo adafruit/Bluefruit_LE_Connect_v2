@@ -9,11 +9,7 @@
 import UIKit
 
 class HelpViewController: UIViewController {
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UITextView!
-
-    fileprivate var helpTitle: String?
-    fileprivate var helpMessage: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,24 +23,14 @@ class HelpViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        updateUI()
     }
 
     func setHelp(_ message: String, title: String) {
-        helpTitle = title
-        helpMessage = message
-
-        if isViewLoaded {
-            updateUI()
-        }
-    }
-
-    fileprivate func updateUI() {
-        // Title
-        titleLabel.text = helpTitle
-
+        
+        loadViewIfNeeded()
+        
         // Text
-        messageLabel.text = helpMessage
+        messageLabel.text = message
     }
 
     override func viewDidLayoutSubviews() {
