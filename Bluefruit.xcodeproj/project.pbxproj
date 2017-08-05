@@ -195,6 +195,8 @@
 		A983786F1E43422100170319 /* MqttSettingsStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983786B1E43422100170319 /* MqttSettingsStatusCell.swift */; };
 		A98378701E43422100170319 /* MqttSettingsValueAndSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983786C1E43422100170319 /* MqttSettingsValueAndSelector.swift */; };
 		A98378721E43479400170319 /* ControllerModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378711E43479400170319 /* ControllerModuleManager.swift */; };
+		A98D3A5E1F36879F005081EA /* UartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D3A5D1F36879F005081EA /* UartStyle.swift */; };
+		A98D3A5F1F3687AA005081EA /* UartStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D3A5D1F36879F005081EA /* UartStyle.swift */; };
 		A98DE4011E454FA100EEF4C8 /* NeopixelModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE4001E454FA100EEF4C8 /* NeopixelModuleManager.swift */; };
 		A98DE4021E454FAE00EEF4C8 /* NeopixelModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE4001E454FA100EEF4C8 /* NeopixelModuleManager.swift */; };
 		A98DE40D1E456AFC00EEF4C8 /* HelpExportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE4071E456AFC00EEF4C8 /* HelpExportViewController.swift */; };
@@ -239,8 +241,6 @@
 		A9BCD5751E4D25B3003D1CEA /* FirmwareUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5701E4D25B3003D1CEA /* FirmwareUpdater.swift */; };
 		A9BCD5761E4D25B3003D1CEA /* ReleasesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5711E4D25B3003D1CEA /* ReleasesParser.swift */; };
 		A9BCD5771E4D25B3003D1CEA /* ReleasesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5711E4D25B3003D1CEA /* ReleasesParser.swift */; };
-		A9BCD57C1E4D25E4003D1CEA /* UartColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5791E4D25E4003D1CEA /* UartColors.swift */; };
-		A9BCD57D1E4D25E4003D1CEA /* UartColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5791E4D25E4003D1CEA /* UartColors.swift */; };
 		A9BCD57E1E4D25E4003D1CEA /* UartDataExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD57A1E4D25E4003D1CEA /* UartDataExport.swift */; };
 		A9BCD57F1E4D25E4003D1CEA /* UartDataExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD57A1E4D25E4003D1CEA /* UartDataExport.swift */; };
 		A9BCD5801E4D25E4003D1CEA /* UartSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD57B1E4D25E4003D1CEA /* UartSettings.swift */; };
@@ -554,6 +554,7 @@
 		A983786B1E43422100170319 /* MqttSettingsStatusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettingsStatusCell.swift; sourceTree = "<group>"; };
 		A983786C1E43422100170319 /* MqttSettingsValueAndSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettingsValueAndSelector.swift; sourceTree = "<group>"; };
 		A98378711E43479400170319 /* ControllerModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerModuleManager.swift; sourceTree = "<group>"; };
+		A98D3A5D1F36879F005081EA /* UartStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartStyle.swift; sourceTree = "<group>"; };
 		A98DE4001E454FA100EEF4C8 /* NeopixelModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelModuleManager.swift; sourceTree = "<group>"; };
 		A98DE4071E456AFC00EEF4C8 /* HelpExportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpExportViewController.swift; sourceTree = "<group>"; };
 		A98DE4081E456AFC00EEF4C8 /* NeopixelBoardSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelBoardSelectorViewController.swift; sourceTree = "<group>"; };
@@ -588,7 +589,6 @@
 		A9BCD56F1E4D25B3003D1CEA /* DfuUpdateProcess.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuUpdateProcess.swift; sourceTree = "<group>"; };
 		A9BCD5701E4D25B3003D1CEA /* FirmwareUpdater.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirmwareUpdater.swift; sourceTree = "<group>"; };
 		A9BCD5711E4D25B3003D1CEA /* ReleasesParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReleasesParser.swift; sourceTree = "<group>"; };
-		A9BCD5791E4D25E4003D1CEA /* UartColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartColors.swift; sourceTree = "<group>"; };
 		A9BCD57A1E4D25E4003D1CEA /* UartDataExport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartDataExport.swift; sourceTree = "<group>"; };
 		A9BCD57B1E4D25E4003D1CEA /* UartSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSettings.swift; sourceTree = "<group>"; };
 		A9BCD5821E4D2616003D1CEA /* CocoaCompatibility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CocoaCompatibility.swift; path = Bluefruit/Common/CocoaCompatibility.swift; sourceTree = SOURCE_ROOT; };
@@ -1484,7 +1484,7 @@
 		A9BCD5781E4D25E4003D1CEA /* Uart */ = {
 			isa = PBXGroup;
 			children = (
-				A9BCD5791E4D25E4003D1CEA /* UartColors.swift */,
+				A98D3A5D1F36879F005081EA /* UartStyle.swift */,
 				A9BCD57A1E4D25E4003D1CEA /* UartDataExport.swift */,
 				A9BCD57B1E4D25E4003D1CEA /* UartSettings.swift */,
 			);
@@ -2014,7 +2014,6 @@
 				A983781B1E42A96400170319 /* DfuFilesPickerDialogViewController.swift in Sources */,
 				A9BCD5761E4D25B3003D1CEA /* ReleasesParser.swift in Sources */,
 				A9286CDA1E3A9B22008E5F81 /* LogHelper.swift in Sources */,
-				A9BCD57C1E4D25E4003D1CEA /* UartColors.swift in Sources */,
 				A98378671E4341C600170319 /* UartMqttSettingsViewController.swift in Sources */,
 				A915426A1EDD7BC8007A34EA /* GyroscopeParametersViewController.swift in Sources */,
 				A9BB78EC1EDCEC99004663DE /* VectorMath.swift in Sources */,
@@ -2119,6 +2118,7 @@
 				A9D7848B1F35588D009D98A8 /* PeripheralServiceViewController.swift in Sources */,
 				A93DE7631F36195900B2EB5D /* BleManager.swift in Sources */,
 				A91542711EDD7BC9007A34EA /* MagnetometerViewController.swift in Sources */,
+				A98D3A5E1F36879F005081EA /* UartStyle.swift in Sources */,
 				A9BB78FD1EDCEDDC004663DE /* MathUtils.swift in Sources */,
 				A983786F1E43422100170319 /* MqttSettingsStatusCell.swift in Sources */,
 				A98DE4131E456AFC00EEF4C8 /* NeopixelModuleViewController.swift in Sources */,
@@ -2173,6 +2173,7 @@
 				A98378541E42C11400170319 /* LogHelper.swift in Sources */,
 				A9BCD56D1E4D2549003D1CEA /* RssiUI.swift in Sources */,
 				A90798371E439DBC005470A5 /* PinIOModuleManager.swift in Sources */,
+				A98D3A5F1F3687AA005081EA /* UartStyle.swift in Sources */,
 				A91D65B21EFED6D60097C8B6 /* PeripheralTableCellView.swift in Sources */,
 				A9BCD5771E4D25B3003D1CEA /* ReleasesParser.swift in Sources */,
 				A98DE4021E454FAE00EEF4C8 /* NeopixelModuleManager.swift in Sources */,
@@ -2195,7 +2196,6 @@
 				A9BCD5931E4D2616003D1CEA /* LocalizationManager.swift in Sources */,
 				A93DE7741F36195900B2EB5D /* DeviceInformationPeripheralService.swift in Sources */,
 				A93DE7681F36195900B2EB5D /* BlePeripheral+Uart.swift in Sources */,
-				A9BCD57D1E4D25E4003D1CEA /* UartColors.swift in Sources */,
 				A98378511E42C11400170319 /* DataConversions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

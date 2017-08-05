@@ -21,7 +21,8 @@ class PlotterModeViewController: PeripheralModeViewController {
     fileprivate var originTimestamp: CFAbsoluteTime!
     fileprivate var isAutoScrollEnabled = true
     fileprivate var numEntriesVisible: TimeInterval = 20      // in seconds
-    fileprivate var colorForPeripheral = [UUID: UIColor]()
+    //fileprivate var colorForPeripheral = [UUID: UIColor]()
+    fileprivate var lineDashForPeripheral = [UUID: [CGFloat]?]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,14 +62,15 @@ class PlotterModeViewController: PeripheralModeViewController {
 
     fileprivate func setupUart() {
         // Reset colors assigned to peripherals
-        let colors = UartColors.defaultColors()
-        colorForPeripheral.removeAll()
+        //let colors = UartStyle.defaultColors()
+        let lineDashes = UartStyle.defaultLineDashes()
+        lineDashForPeripheral.removeAll()
 
         // Enable uart
         if isInMultiUartMode() {            // Multiple peripheral mode
             let blePeripherals = BleManager.sharedInstance.connectedPeripherals()
             for (i, blePeripheral) in blePeripherals.enumerated() {
-                colorForPeripheral[blePeripheral.identifier] = colors[i % colors.count]
+                lineDashForPeripheral[blePeripheral.identifier] = lineDashes[i % lineDashes.count]
                 blePeripheral.uartEnable(uartRxHandler: uartDataManager.rxDataReceived) { [weak self] error in
                     guard let context = self else { return }
 
@@ -92,7 +94,7 @@ class PlotterModeViewController: PeripheralModeViewController {
                 }
             }
         } else if let blePeripheral = blePeripheral {         //  Single peripheral mode
-            colorForPeripheral[blePeripheral.identifier] = colors.first
+            lineDashForPeripheral[blePeripheral.identifier] = lineDashes.first!
             blePeripheral.uartEnable(uartRxHandler: uartDataManager.rxDataReceived) { [weak self] error in
                 guard let context = self else { return }
 
@@ -185,9 +187,10 @@ class PlotterModeViewController: PeripheralModeViewController {
         dataSet.drawCirclesEnabled = false
         dataSet.drawValuesEnabled = false
         dataSet.lineWidth = 2
-        let color = colorForPeripheral[identifier]?.withAlphaComponent(1.0 - CGFloat(index)*0.30) ?? UIColor.black
+        let colors = UartStyle.defaultColors()
+        let color = colors[index % colors.count] //colorForPeripheral[identifier]?.withAlphaComponent(1.0 - CGFloat(index)*0.30) ?? UIColor.black
         dataSet.setColor(color)
-        //dataSet.lineDashLengths = [2, 2]
+        dataSet.lineDashLengths = lineDashForPeripheral[identifier]!
         DLog("color: \(color.hexString()!)")
 
         if dataSetsForPeripheral[identifier] != nil {

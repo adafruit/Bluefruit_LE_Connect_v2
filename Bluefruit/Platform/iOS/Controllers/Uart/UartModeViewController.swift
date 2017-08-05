@@ -38,7 +38,7 @@ class UartModeViewController: UartBaseViewController {
         updateUartReadyUI(isReady: false)
         
         // Reset colors assigned to peripherals
-        let colors = UartColors.defaultColors()
+        let colors = UartStyle.defaultColors()
         colorForPeripheral.removeAll()
         
         // Enable uart

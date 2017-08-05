@@ -29,12 +29,8 @@ class GattServerViewController: ModeTabViewController {
                 gattServer.addService(peripheralService)
             }
         }
-
-
-
     }
-    
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -42,17 +38,12 @@ class GattServerViewController: ModeTabViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-       
     }
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-    
 
     // MARK: - Tab Management
     override func tabShown() {
@@ -127,6 +118,7 @@ extension GattServerViewController: UITableViewDelegate {
             guard let editValueCell = cell as? MqttSettingsValueAndSelector else { return }
             editValueCell.reset()
             let valueTextField = editValueCell.valueTextField!
+            valueTextField.placeholder = UIDevice.current.name
             valueTextField.text = gattServer.advertisementLocalName
             
             if let valueTextField = editValueCell.valueTextField {
@@ -179,7 +171,6 @@ extension GattServerViewController: UITableViewDelegate {
 
 // MARK: - UITextFieldDelegate
 extension GattServerViewController: UITextFieldDelegate {
-    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         

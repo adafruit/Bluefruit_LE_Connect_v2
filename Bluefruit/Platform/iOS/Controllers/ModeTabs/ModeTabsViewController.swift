@@ -53,10 +53,12 @@ class ModeTabsViewController: ScrollingTabBarViewController {
             navigationItem.rightBarButtonItems = viewController.navigationItem.rightBarButtonItems
             
             // Change the detail viewcontroller if in regular horizontal class
-            if traitCollection.horizontalSizeClass == .regular {
-                if let modeTabViewController = viewController as? ModeTabViewController {
-                    if let detailViewController = modeTabViewController.detailViewController() {
-                        showDetailViewController(detailViewController, sender: self)
+            if let horizontalSizeClass = splitViewController?.traitCollection.horizontalSizeClass {
+                if horizontalSizeClass == .regular {
+                    if let modeTabViewController = viewController as? ModeTabViewController {
+                        if let detailViewController = modeTabViewController.detailViewController() {
+                            showDetailViewController(detailViewController, sender: self)
+                        }
                     }
                 }
             }

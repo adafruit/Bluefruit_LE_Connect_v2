@@ -323,11 +323,11 @@ class ScannerViewController: ModeTabViewController {
 
     fileprivate func showMultiUartMode() {
         // Segue
-        performSegue(withIdentifier: "showMultiUartSegue", sender: self)
+        //performSegue(withIdentifier: "showMultiUartSegue", sender: self)
         
         detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralModulesNavigationController")
         if let peripheralModulesNavigationController = detailRootController as? UINavigationController, let peripheralModulesViewController = peripheralModulesNavigationController.topViewController as? PeripheralModulesViewController {
-            peripheralModulesViewController.blePeripheral = selectedPeripheral
+            peripheralModulesViewController.blePeripheral = nil
             peripheralModulesViewController.startingController = .multiUart
             showDetailViewController(peripheralModulesNavigationController, sender: self)
         }

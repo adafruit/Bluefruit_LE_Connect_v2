@@ -46,7 +46,8 @@ class EmptyDetailsViewController: PeripheralModeViewController {
     
     func setAdvertising(numServices: Int) {
         loadViewIfNeeded()
-        emptyLabel.text = String(format: "Advertising %ld custom services", numServices)
+        //emptyLabel.text = String(format: "Advertising %ld custom services", numServices)
+        emptyLabel.text = "Advertising..."
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
