@@ -21,6 +21,8 @@ class EmptyDetailsViewController: PeripheralModeViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        setConnecting(isConnnecting)
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,14 +33,20 @@ class EmptyDetailsViewController: PeripheralModeViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        setConnecting(isConnnecting)
+
     }
 
     func setConnecting(_ isConnecting: Bool) {
         self.isConnnecting = isConnecting
 
+        loadViewIfNeeded()
         let localizationManager = LocalizationManager.sharedInstance
-        emptyLabel?.text = localizationManager.localizedString(isConnecting ? "peripheraldetails_connecting" : "peripheraldetails_select")
+        emptyLabel.text = localizationManager.localizedString(isConnecting ? "peripheraldetails_connecting" : "peripheraldetails_select")
+    }
+    
+    func setAdvertising(numServices: Int) {
+        loadViewIfNeeded()
+        emptyLabel.text = String(format: "Advertising %ld custom services", numServices)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

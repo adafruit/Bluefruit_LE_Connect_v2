@@ -11,11 +11,13 @@ import CoreBluetooth
 
 class GattServer: NSObject {
     
-    var autostartAdvertising = true
     var advertisementLocalName: String? = "Bluefruit"
     
+    fileprivate var isStartAdvertisingAsSoonIsPoweredOnEnabled = false
     fileprivate var peripheralManager: CBPeripheralManager!
     fileprivate var isAdvertisingService = false
+    
+    fileprivate var peripheralServices = [PeripheralService]()
     
     /*
     public var state: CBManagerState {
@@ -32,24 +34,38 @@ class GattServer: NSObject {
     deinit {
     }
     
+    public func addService(_ service: PeripheralService) {
+        peripheralServices.append(service)
+    }
+    
+    public func removeService(_ service: PeripheralService) {
+        if let index = peripheralServices.index(where: {$0.service.uuid.isEqual($0.service.uuid)}) {
+            peripheralServices.remove(at: index)
+        }
+    }
+    
+    public func removeAllServices() {
+        peripheralServices.removeAll()
+    }
+    
     public func startAdvertising() {
-        guard !isAdvertisingService, peripheralManager.state == .poweredOn else { return }
+        guard peripheralManager.state == .poweredOn else {
+            isStartAdvertisingAsSoonIsPoweredOnEnabled = true
+            return
+        }
         
         DLog("Enabling Advertising")
         
         // Clean / Setup
         stopAdvertising()
         
-/*
         // Add services / chars
-        viaMobileService.characteristics = [tokenCharacteristic, ticketCharacteristic, resultCharacteristic, testCharacteristic]
-        peripheralManager.add(viaMobileService)
-  */
+        for peripheralService in peripheralServices {
+            peripheralManager.add(peripheralService.service)
+        }
         
         // Start advertising
-        let manufacturerBytes: [UInt8] = [0x00, 0x03, 0x48, 0x65, 0x6c, 0x6c, 0x6f]
-        let manufacturerData = Data(bytes: manufacturerBytes)
-        var advertisementData: [String : Any] = [CBAdvertisementDataManufacturerDataKey: manufacturerData]
+        var advertisementData: [String : Any] = [:]
         if let advertisementLocalName = advertisementLocalName {
             advertisementData[CBAdvertisementDataLocalNameKey] = advertisementLocalName
         }
@@ -59,6 +75,7 @@ class GattServer: NSObject {
     }
     
     public func stopAdvertising() {
+        isStartAdvertisingAsSoonIsPoweredOnEnabled = false
         guard isAdvertisingService else { return }
         
         DLog("Stop Advertising")
@@ -72,6 +89,36 @@ class GattServer: NSObject {
     public func isAdvertising() -> Bool {
         return isAdvertisingService
     }
+    
+    
+    // MARK: - Request Processing
+    fileprivate func processReadRequest(_ request: CBATTRequest, value: Data?) {
+        
+        guard let value = value else {
+            request.value = nil
+            peripheralManager.respond(to: request, withResult: .success)
+            DLog("read response: nil")
+            return
+        }
+        
+        guard request.offset < value.count else {
+            DLog("Read request received with invalid offset")
+            peripheralManager.respond(to: request, withResult: .invalidOffset)
+            return
+        }
+        
+        if request.offset == 0 {
+            request.value = value
+        }
+        else {
+            request.value = value.subdata(in: Range(request.offset..<value.count))
+        }
+        
+        peripheralManager.respond(to: request, withResult: .success)
+        
+        DLog("read response: \(String(data: value, encoding: .utf8) ?? "<not utf8>")")
+    }
+
 }
 
 // MARK: - CBPeripheralManagerDelegate
@@ -82,12 +129,10 @@ extension GattServer: CBPeripheralManagerDelegate {
         DLog("peripheralManagerDidUpdateState: \(manager.state.rawValue)")
         
         if manager.state == .poweredOn {
-            if autostartAdvertising && !isAdvertisingService {
+            if isStartAdvertisingAsSoonIsPoweredOnEnabled && !isAdvertisingService {
                 startAdvertising()
             }
         }
-        
-//        NotificationCenter.default.post(name: .didUpdatePeripheralState, object: nil)
     }
     
     /*
@@ -119,6 +164,16 @@ extension GattServer: CBPeripheralManagerDelegate {
     // MARK: Receiving Read and Write Requests
     public func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest) {
         DLog("didReceiveRead for characteristic: \(request.characteristic.uuid.uuidString)")
+        
+        let serviceUuid = request.characteristic.service.uuid
+        for peripheralService in peripheralServices {
+            if serviceUuid == peripheralService.service.uuid {
+                let characteristicUuid = request.characteristic.uuid
+                if let characteristic = peripheralService.characteristic(uuid: characteristicUuid) {
+                    processReadRequest(request, value: characteristic.value)
+                }
+            }
+        }
     }
     
     public func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveWrite requests: [CBATTRequest]) {

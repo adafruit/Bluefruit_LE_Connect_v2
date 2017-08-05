@@ -64,9 +64,7 @@ class ScanningAnimationViewController: PeripheralModeViewController {
     func startAnimating() {
         isAnimating = true
 
-        guard isViewLoaded else {
-            return
-        }
+        guard isViewLoaded else { return }
 
         // Scanning animation
         let duration: Double = 15

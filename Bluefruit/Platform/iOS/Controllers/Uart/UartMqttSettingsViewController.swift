@@ -35,6 +35,7 @@ class UartMqttSettingsViewController: UIViewController {
     // Data
     private var previousSubscriptionTopic: String?
 
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 

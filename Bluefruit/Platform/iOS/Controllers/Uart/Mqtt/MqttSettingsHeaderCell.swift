@@ -14,9 +14,10 @@ class MqttSettingsHeaderCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var isOnSwitch: UISwitch!
 
-    // Data
+    // Params
     var isOnChanged: ((Bool) -> Void)?
 
+    // MARK: - Actions
     @IBAction func isOnValueChanged(_ sender: UISwitch) {
         self.isOnChanged?(sender.isOn)
     }

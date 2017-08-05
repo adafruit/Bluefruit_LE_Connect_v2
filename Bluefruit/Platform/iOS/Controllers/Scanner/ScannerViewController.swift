@@ -9,7 +9,7 @@
 import UIKit
 import CoreBluetooth
 
-class ScannerViewController: UIViewController {
+class ScannerViewController: ModeTabViewController {
     // Config
     // private static let kServicesToScan = [BlePeripheral.kUartServiceUUID]
 
@@ -40,6 +40,7 @@ class ScannerViewController: UIViewController {
     @IBOutlet weak var multiConnectDetailsLabel: UILabel!
     @IBOutlet weak var multiConnectShowButton: UIButton!
 
+    
     // Data
     fileprivate let refreshControl = UIRefreshControl()
     fileprivate var peripheralList: PeripheralList!
@@ -55,6 +56,10 @@ class ScannerViewController: UIViewController {
     fileprivate var isScannerTableWaitingForReload = false
     fileprivate var isBaseTableAnimating = false
 
+    
+
+    
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -275,6 +280,10 @@ class ScannerViewController: UIViewController {
     }
 
     // MARK: - Navigation
+    override func loadDetailRootController() {
+        detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralModulesNavigationController")
+    }
+    
     fileprivate func showPeripheralDetails() {
         // Watch
         if !isMultiConnectEnabled {
@@ -282,7 +291,13 @@ class ScannerViewController: UIViewController {
         }
 
         // Segue
-        performSegue(withIdentifier: "showDetailSegue", sender: self)
+        //performSegue(withIdentifier: "showDetailSegue", sender: self)
+
+        detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralModulesNavigationController")
+        if let peripheralModulesNavigationController = detailRootController as? UINavigationController, let peripheralModulesViewController = peripheralModulesNavigationController.topViewController as? PeripheralModulesViewController {
+            peripheralModulesViewController.blePeripheral = selectedPeripheral
+            showDetailViewController(peripheralModulesNavigationController, sender: self)
+        }
     }
 
     fileprivate func showPeripheralUpdate() {
@@ -292,12 +307,30 @@ class ScannerViewController: UIViewController {
         }
 
         // Segue
-        performSegue(withIdentifier: "showUpdateSegue", sender: self)
+        //performSegue(withIdentifier: "showUpdateSegue", sender: self)
+        
+        detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralModulesNavigationController")
+        if let peripheralModulesNavigationController = detailRootController as? UINavigationController, let peripheralModulesViewController = peripheralModulesNavigationController.topViewController as? PeripheralModulesViewController {
+            peripheralModulesViewController.blePeripheral = selectedPeripheral
+            
+            if let dfuViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuModeViewController") as? DfuModeViewController {
+                dfuViewController.blePeripheral = selectedPeripheral
+                peripheralModulesNavigationController.viewControllers = [peripheralModulesViewController, dfuViewController]
+            }
+            showDetailViewController(peripheralModulesNavigationController, sender: self)
+        }
     }
 
     fileprivate func showMultiUartMode() {
         // Segue
         performSegue(withIdentifier: "showMultiUartSegue", sender: self)
+        
+        detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralModulesNavigationController")
+        if let peripheralModulesNavigationController = detailRootController as? UINavigationController, let peripheralModulesViewController = peripheralModulesNavigationController.topViewController as? PeripheralModulesViewController {
+            peripheralModulesViewController.blePeripheral = selectedPeripheral
+            peripheralModulesViewController.startingController = .multiUart
+            showDetailViewController(peripheralModulesNavigationController, sender: self)
+        }
     }
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
@@ -306,6 +339,7 @@ class ScannerViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
+        /*
         if segue.identifier == "showDetailSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {     // Note: Not used anymore. Remove when the change is permanent
             peripheralDetailsViewController.blePeripheral = selectedPeripheral
         } else if segue.identifier == "showDetailSegue", let peripheralModulesViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralModulesViewController {
@@ -329,7 +363,7 @@ class ScannerViewController: UIViewController {
             peripheralModulesViewController.blePeripheral = nil
             peripheralModulesViewController.startingController = .multiUart
 
-        } else if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController {
+        } else */if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController {
             controller.delegate = self
 
             if let sourceView = sender as? UIView {

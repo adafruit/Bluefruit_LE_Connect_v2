@@ -37,6 +37,7 @@ class ScrollingTabBarViewController: UIViewController {
         didSet {
             if let viewControllers = viewControllers, selectedIndex != oldValue && selectedIndex >= 0 {
                 changeSelectedViewController(viewControllers[selectedIndex])
+                selectedIndexDidChange()
             }
         }
     }
@@ -49,6 +50,7 @@ class ScrollingTabBarViewController: UIViewController {
         }
     }
 
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -64,10 +66,15 @@ class ScrollingTabBarViewController: UIViewController {
         selectedIndex = -1
     }
 
+    // MARK: - Controllers managament
     func setViewControllers(_ viewControllers: [UIViewController]?, animated: Bool) {
         self.viewControllers = viewControllers
     }
 
+    func selectedIndexDidChange() {
+        // override to customize behaviour
+    }
+    
     func hideTabBar(_ hide: Bool) {
         DLog("Hide Tab Bar: \(hide)")
        // tabBarContentView.transform = hide ? CGAffineTransformMakeTranslation(0, tabBarContentView.bounds.size.height):CGAffineTransformIdentity
@@ -87,7 +94,7 @@ class ScrollingTabBarViewController: UIViewController {
         currentViewController.removeFromParentViewController()
     }
 
-    func changeSelectedViewController(_ viewController: UIViewController?) {
+    internal func changeSelectedViewController(_ viewController: UIViewController?) {
         // DLog("changeSelectedViewController \(viewController)")
         guard let viewController = viewController else { return }
 
