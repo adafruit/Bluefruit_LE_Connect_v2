@@ -38,8 +38,8 @@
 		A91542721EDD7BC9007A34EA /* CalibrationMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915425F1EDD7BC8007A34EA /* CalibrationMenuViewController.swift */; };
 		A91542731EDD7BC9007A34EA /* PageContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542601EDD7BC8007A34EA /* PageContentViewController.swift */; };
 		A91542741EDD7BC9007A34EA /* SensorConfigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542611EDD7BC8007A34EA /* SensorConfigViewController.swift */; };
-		A91542751EDD7BC9007A34EA /* UartSamplerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542621EDD7BC8007A34EA /* UartSamplerViewController.swift */; };
-		A91542761EDD7BC9007A34EA /* UartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542631EDD7BC8007A34EA /* UartViewController.swift */; };
+		A91542751EDD7BC9007A34EA /* CalibrationUartSamplerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542621EDD7BC8007A34EA /* CalibrationUartSamplerViewController.swift */; };
+		A91542761EDD7BC9007A34EA /* CalibrationUartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542631EDD7BC8007A34EA /* CalibrationUartViewController.swift */; };
 		A91542771EDD7BC9007A34EA /* VisualizationParametersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542651EDD7BC8007A34EA /* VisualizationParametersViewController.swift */; };
 		A91542781EDD7BC9007A34EA /* VisualizationProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542661EDD7BC8007A34EA /* VisualizationProgressViewController.swift */; };
 		A91542791EDD7BC9007A34EA /* VisualizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91542671EDD7BC8007A34EA /* VisualizationViewController.swift */; };
@@ -402,8 +402,8 @@
 		A915425F1EDD7BC8007A34EA /* CalibrationMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalibrationMenuViewController.swift; sourceTree = "<group>"; };
 		A91542601EDD7BC8007A34EA /* PageContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageContentViewController.swift; sourceTree = "<group>"; };
 		A91542611EDD7BC8007A34EA /* SensorConfigViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorConfigViewController.swift; sourceTree = "<group>"; };
-		A91542621EDD7BC8007A34EA /* UartSamplerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSamplerViewController.swift; sourceTree = "<group>"; };
-		A91542631EDD7BC8007A34EA /* UartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartViewController.swift; sourceTree = "<group>"; };
+		A91542621EDD7BC8007A34EA /* CalibrationUartSamplerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalibrationUartSamplerViewController.swift; sourceTree = "<group>"; };
+		A91542631EDD7BC8007A34EA /* CalibrationUartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalibrationUartViewController.swift; sourceTree = "<group>"; };
 		A91542651EDD7BC8007A34EA /* VisualizationParametersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationParametersViewController.swift; sourceTree = "<group>"; };
 		A91542661EDD7BC8007A34EA /* VisualizationProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationProgressViewController.swift; sourceTree = "<group>"; };
 		A91542671EDD7BC8007A34EA /* VisualizationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisualizationViewController.swift; sourceTree = "<group>"; };
@@ -749,8 +749,8 @@
 		A91542521EDD7BC8007A34EA /* Calibration */ = {
 			isa = PBXGroup;
 			children = (
-				A91542631EDD7BC8007A34EA /* UartViewController.swift */,
-				A91542621EDD7BC8007A34EA /* UartSamplerViewController.swift */,
+				A91542631EDD7BC8007A34EA /* CalibrationUartViewController.swift */,
+				A91542621EDD7BC8007A34EA /* CalibrationUartSamplerViewController.swift */,
 				A91542611EDD7BC8007A34EA /* SensorConfigViewController.swift */,
 				A915425F1EDD7BC8007A34EA /* CalibrationMenuViewController.swift */,
 				A91542531EDD7BC8007A34EA /* Gyroscope */,
@@ -1935,7 +1935,7 @@
 				A9BCD56C1E4D2549003D1CEA /* RssiUI.swift in Sources */,
 				A94A21B01E417271006A5F33 /* UartSettingTableViewCell.swift in Sources */,
 				A91E7D5D1E4216ED00DE90C6 /* UIImage+Tint.swift in Sources */,
-				A91542761EDD7BC9007A34EA /* UartViewController.swift in Sources */,
+				A91542761EDD7BC9007A34EA /* CalibrationUartViewController.swift in Sources */,
 				A9BCD5901E4D2616003D1CEA /* HexColorConversions.swift in Sources */,
 				A983781D1E42A96400170319 /* DfuModeViewController.swift in Sources */,
 				A9286CD11E3A9B22008E5F81 /* BlePeripheral+Uart.swift in Sources */,
@@ -1969,7 +1969,7 @@
 				A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */,
 				A9D2343A1E3AD70300DC0C99 /* FilterTextSettingsViewController.swift in Sources */,
 				A9BB78E51EDCEC65004663DE /* VectorMath+Calibration.swift in Sources */,
-				A91542751EDD7BC9007A34EA /* UartSamplerViewController.swift in Sources */,
+				A91542751EDD7BC9007A34EA /* CalibrationUartSamplerViewController.swift in Sources */,
 				A907983C1E43A4DA005470A5 /* PinIOModuleViewController.swift in Sources */,
 				A907983D1E43A4DA005470A5 /* PinIOTableViewCell.swift in Sources */,
 				A915427D1EDD7CE8007A34EA /* Config.swift in Sources */,

@@ -9,7 +9,7 @@
 import UIKit
 import SceneKit
 
-class MagnetometerViewController: UartSamplerViewController {
+class MagnetometerViewController: CalibrationUartSamplerViewController {
 
     // Debug
     fileprivate static let kSimulateReads =  Config.isDebugEnabled && false // true

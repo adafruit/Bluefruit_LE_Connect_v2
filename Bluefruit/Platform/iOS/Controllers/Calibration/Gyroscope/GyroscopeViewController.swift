@@ -9,7 +9,7 @@
 import UIKit
 import SceneKit
 
-class GyroscopeViewController: UartSamplerViewController {
+class GyroscopeViewController: CalibrationUartSamplerViewController {
 
     // Config
     static let kReadingsMaxDifferenceToBeStable: Float = 60

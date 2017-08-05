@@ -9,7 +9,7 @@
 import UIKit
 import SceneKit
 
-class VisualizationViewController: UartSamplerViewController {
+class VisualizationViewController: CalibrationUartSamplerViewController {
     // Config
     fileprivate static let kIsQuatSpeedDebugEnabled = true
 

@@ -1,5 +1,5 @@
 //
-//  UartViewController.swift
+//  CalibrationUartViewController.swift
 //  Calibration
 //
 //  Created by Antonio García on 15/11/2016.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UartViewController: UIViewController {
+class CalibrationUartViewController: UIViewController {
 
     weak var blePeripheral: BlePeripheral?
 

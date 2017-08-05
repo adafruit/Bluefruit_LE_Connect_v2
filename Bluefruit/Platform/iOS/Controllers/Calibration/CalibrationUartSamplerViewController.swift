@@ -1,5 +1,5 @@
 //
-//  UartSamplerViewController.swift
+//  CalibrationUartSamplerViewController.swift
 //  Calibration
 //
 //  Created by Antonio on 11/01/2017.
@@ -9,7 +9,7 @@
 import UIKit
 import SceneKit
 
-class UartSamplerViewController: UartViewController {
+class CalibrationUartSamplerViewController: CalibrationUartViewController {
     // Config
     static let kUseUpdateTimer = true
     fileprivate static let kPreferredFramesPerSecond: Int = 20 //0       // Default hardware value
@@ -91,7 +91,7 @@ class UartSamplerViewController: UartViewController {
         }
 
         // Timer setup
-        if !UartSamplerViewController.kUseUpdateTimer {
+        if !CalibrationUartSamplerViewController.kUseUpdateTimer {
             updateEventSource = DispatchSource.makeUserDataOrSource(queue: .main)
             updateEventSource!.setEventHandler { [weak self] in
                 self?.updateUI()
@@ -125,7 +125,7 @@ class UartSamplerViewController: UartViewController {
         // UI
         updateUI()
 
-        if !UartSamplerViewController.kUseUpdateTimer {
+        if !CalibrationUartSamplerViewController.kUseUpdateTimer {
             updateEventSource!.resume()
         } else {
             if isCalibrating {
@@ -283,7 +283,7 @@ class UartSamplerViewController: UartViewController {
 }
 
 // MARK: - UIPageViewControllerDataSource
-extension UartSamplerViewController: UIPageViewControllerDataSource {
+extension CalibrationUartSamplerViewController: UIPageViewControllerDataSource {
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let index = viewController.view.tag
@@ -314,7 +314,7 @@ extension UartSamplerViewController: UIPageViewControllerDataSource {
 }
 
 // MARK: UIPageViewControllerDelegate
-extension UartSamplerViewController: UIPageViewControllerDelegate {
+extension CalibrationUartSamplerViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard completed else { return }
 
@@ -324,7 +324,7 @@ extension UartSamplerViewController: UIPageViewControllerDelegate {
 }
 
 // MARK: - UartDelegate
-extension UartSamplerViewController: UartDataManagerDelegate {
+extension CalibrationUartSamplerViewController: UartDataManagerDelegate {
     func onUartRx(data: Data, peripheralIdentifier: UUID) {
         // DLog("uart rx read (hex): \(hexDescription(data: data))")
         //DLog("uart rx read (utf8): \(String(data: data, encoding: .utf8) ?? "<invalid>")")
