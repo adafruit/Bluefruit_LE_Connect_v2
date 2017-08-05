@@ -36,6 +36,11 @@ class UartServiceViewController: UartBaseViewController {
     }
 
     override func setupUart() {
+        
+        uartPeripheralService?.uartEnable(uartRxHandler: { [weak self] data in
+            self?.uartData.rxPacketReceived(data: data, peripheralIdentifier: nil, error: nil)
+        })
+        
         updateUartReadyUI(isReady: true)
     }
     

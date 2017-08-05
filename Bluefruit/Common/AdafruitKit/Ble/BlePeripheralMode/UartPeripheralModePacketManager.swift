@@ -10,15 +10,10 @@ import Foundation
 
 class UartPeripheralModePacketManager: UartPacketManagerBase {
 
- 
-
-    deinit {
-    }
-    
     // MARK: - Send data
     func send(uartPeripheralService: UartPeripheralService, data: Data?, completion: ((Error?) -> Void)? = nil) {
         sentBytes += Int64(data?.count ?? 0)
-        uartPeripheralService.tx = data
+        uartPeripheralService.rx = data
     }
 
     func send(uartPeripheralService: UartPeripheralService, text: String, wasReceivedFromMqtt: Bool = false) {
@@ -38,7 +33,7 @@ class UartPeripheralModePacketManager: UartPacketManagerBase {
 
         // Create data and send to Uart
         if let data = text.data(using: .utf8) {
-            let uartPacket = UartPacket(peripheralId: nil, mode: .tx, data: data)
+            let uartPacket = UartPacket(peripheralId: nil, mode: .rx, data: data)
 
             DispatchQueue.main.async { [unowned self] in
                 self.delegate?.onUartPacket(uartPacket)
@@ -59,5 +54,4 @@ class UartPeripheralModePacketManager: UartPacketManagerBase {
             }
         }
     }
-
 }

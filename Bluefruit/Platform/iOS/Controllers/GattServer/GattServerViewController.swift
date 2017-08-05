@@ -29,19 +29,21 @@ class GattServerViewController: ModeTabViewController {
                 gattServer.addService(peripheralService)
             }
         }
+
+
+
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        gattServer.startAdvertising()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        gattServer.stopAdvertising()
+       
     }
     
 
@@ -49,8 +51,18 @@ class GattServerViewController: ModeTabViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
     
 
+    // MARK: - Tab Management
+    override func tabShown() {
+        gattServer.startAdvertising()
+    }
+
+    override func tabHidden() {
+        gattServer.stopAdvertising()
+    }
+    
     // MARK: - Navigation
     override func loadDetailRootController() {
         detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralServiceViewController")

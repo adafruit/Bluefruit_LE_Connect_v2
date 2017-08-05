@@ -37,7 +37,7 @@ class ScrollingTabBarViewController: UIViewController {
         didSet {
             if let viewControllers = viewControllers, selectedIndex != oldValue && selectedIndex >= 0 {
                 changeSelectedViewController(viewControllers[selectedIndex])
-                selectedIndexDidChange()
+                selectedIndexDidChange(from: oldValue, to: selectedIndex)
             }
         }
     }
@@ -71,7 +71,7 @@ class ScrollingTabBarViewController: UIViewController {
         self.viewControllers = viewControllers
     }
 
-    func selectedIndexDidChange() {
+    func selectedIndexDidChange(from: Int, to:Int) {
         // override to customize behaviour
     }
     
@@ -82,9 +82,7 @@ class ScrollingTabBarViewController: UIViewController {
     }
 
     fileprivate func removeSelectedViewController() {
-        guard let currentViewController = selectedViewController else {
-            return
-        }
+        guard let currentViewController = selectedViewController else { return }
 
         // Remove previous
         currentViewController.willMove(toParentViewController: nil)

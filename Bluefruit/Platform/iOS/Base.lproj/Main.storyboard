@@ -1710,7 +1710,7 @@
             </objects>
             <point key="canvasLocation" x="-2162" y="-459"/>
         </scene>
-        <!--Devices-->
+        <!--Central Mode-->
         <scene sceneID="fQt-IA-HaY">
             <objects>
                 <viewController storyboardIdentifier="ScannerViewController" automaticallyAdjustsScrollViewInsets="NO" id="DSy-Yb-eRw" customClass="ScannerViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
@@ -2352,7 +2352,7 @@
                             <constraint firstAttribute="trailing" secondItem="xDO-MZ-4ce" secondAttribute="trailing" id="p4b-b2-X6Z"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Devices" id="qMW-AH-yIG">
+                    <navigationItem key="navigationItem" title="Central Mode" id="qMW-AH-yIG">
                         <barButtonItem key="backBarButtonItem" title="Disconnect" id="Uhk-EF-ls1"/>
                         <barButtonItem key="rightBarButtonItem" image="info_icon" id="hlq-Ac-NuC">
                             <connections>
@@ -2491,7 +2491,7 @@
         <!--UartServiceNavigationController-->
         <scene sceneID="Vrd-EK-OiB">
             <objects>
-                <viewControllerPlaceholder storyboardIdentifier="UartServiceNavigationController" storyboardName="PeripheralServices" referencedIdentifier="UartServiceNavigationController" id="Osq-uL-dHQ" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardIdentifier="UartServiceNavigationController" storyboardName="Uart" referencedIdentifier="UartServiceNavigationController" id="Osq-uL-dHQ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hPt-Da-cSh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="701" y="831"/>

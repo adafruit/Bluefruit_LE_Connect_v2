@@ -10,22 +10,12 @@ import UIKit
 
 class ModeTabsViewController: ScrollingTabBarViewController {
 
-    /*
-    // Parameters
-    enum ModuleController {
-        case central
-        case peripheral
-    }
-    
-    // Data
-    */
-    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Add Tab ViewControllers
-        var viewControllers = [UIViewController]()
+        var viewControllers = [ModeTabViewController]()
         
         
         if let scannerViewController = self.storyboard?.instantiateViewController(withIdentifier: "ScannerViewController") as? ScannerViewController  {
@@ -73,11 +63,15 @@ class ModeTabsViewController: ScrollingTabBarViewController {
         }
     }
     
-    /*
-    override func selectedIndexDidChange() {
-        guard selectedIndex >= 0 && selectedIndex < viewControllers.count else { DLog("Wrong index"); return }
+    override func selectedIndexDidChange(from: Int, to:Int) {
+        guard let viewControllers = viewControllers else { return }
         
-        let navigationController = detailViewControllers[selectedIndex]
-        showDetailViewController(navigationController, sender: self)
-    }*/
+        if to >= 0 && to < viewControllers.count {
+            (viewControllers[to] as? ModeTabViewController)?.tabShown()
+        }
+
+        if from >= 0 && from < viewControllers.count {
+            (viewControllers[from] as? ModeTabViewController)?.tabHidden()
+        }
+    }
 }

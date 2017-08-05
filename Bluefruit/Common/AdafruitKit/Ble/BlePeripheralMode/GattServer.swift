@@ -28,6 +28,7 @@ class GattServer: NSObject {
     fileprivate var isAdvertisingService = false
     
     fileprivate var peripheralServices = [PeripheralService]()
+
     
     /*
     public var state: CBManagerState {
@@ -45,12 +46,14 @@ class GattServer: NSObject {
     }
     
     public func addService(_ service: PeripheralService) {
+        service.delegate = self
         peripheralServices.append(service)
     }
     
     public func removeService(_ service: PeripheralService) {
         if let index = peripheralServices.index(where: {$0.service.uuid.isEqual($0.service.uuid)}) {
             peripheralServices.remove(at: index)
+            service.delegate = nil
         }
     }
     
@@ -128,6 +131,24 @@ class GattServer: NSObject {
         
         DLog("read response: \(String(data: value, encoding: .utf8) ?? "<not utf8>")")
     }
+    
+    fileprivate func processWriteRequest(_ request: CBATTRequest, peripheralService: PeripheralService) {
+        guard let newValue = request.value, let characteristic = peripheralService.characteristic(uuid: request.characteristic.uuid) else { return }
+        
+        var value = characteristic.value
+        let size = request.offset + newValue.count
+        if value == nil {
+            value = newValue
+        }
+        else {
+            if value!.count < size {        // If smaller than the size needed, expand the capacity
+                value!.append(contentsOf: [UInt8](repeatElement(0x00, count: size - value!.count)))
+            }
+            value!.replaceSubrange(request.offset..<request.offset+newValue.count, with: newValue)
+        }
+        
+        peripheralService.setCharacteristic(uuid: request.characteristic.uuid, value: value!)
+    }
 
 }
 
@@ -165,10 +186,24 @@ extension GattServer: CBPeripheralManagerDelegate {
     // MARK: Monitoring Subscriptions to Characteristic Values
     public func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
         DLog("didSubscribeTo: \(characteristic.uuid.uuidString)")
+        
+        let serviceUuid = characteristic.service.uuid
+        for peripheralService in peripheralServices {
+            if serviceUuid == peripheralService.service.uuid {
+                peripheralService.subscribe(characteristicUuid: characteristic.uuid, central: central)
+            }
+        }
     }
     
     public func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFrom characteristic: CBCharacteristic) {
         DLog("didUnsubscribeFrom: \(characteristic.uuid.uuidString)")
+   
+        let serviceUuid = characteristic.service.uuid
+        for peripheralService in peripheralServices {
+            if serviceUuid == peripheralService.service.uuid {
+                peripheralService.unsubscribe(characteristicUuid: characteristic.uuid, central: central)
+            }
+        }
     }
     
     // MARK: Receiving Read and Write Requests
@@ -187,9 +222,53 @@ extension GattServer: CBPeripheralManagerDelegate {
     }
     
     public func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveWrite requests: [CBATTRequest]) {
+    
+        // Check for pre-conditions (all requests MUST be valid)
+        for request in requests {
+            let serviceUuid = request.characteristic.service.uuid
+            
+            var isCharacteristicValid = false
+            for peripheralService in peripheralServices {
+                if serviceUuid == peripheralService.service.uuid {
+                    let characteristicUuid = request.characteristic.uuid
+                    
+                    if peripheralService.characteristic(uuid: characteristicUuid) != nil {
+                        isCharacteristicValid = true
+                    }
+                }
+            }
+            
+            guard isCharacteristicValid else {
+                DLog("didReceiveWrite error. Aborting \(requests.count) write requests")
+                peripheralManager.respond(to: request, withResult: .writeNotPermitted)
+                return
+            }
+        }
+        
+        // Write
+        for request in requests {
+            DLog("didReceiveWrite for characteristic: \(request.characteristic.uuid.uuidString)")
+            let serviceUuid = request.characteristic.service.uuid
+            for peripheralService in peripheralServices {
+                if serviceUuid == peripheralService.service.uuid {
+                    processWriteRequest(request, peripheralService: peripheralService)
+                }
+            }
+        }
+    
+        peripheralManager.respond(to: requests.first!, withResult: .success)
     }
     
     public func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager) {
         DLog("peripheralManagerIsReady")
+    }
+
+}
+
+// MARK: - v
+extension GattServer: PeripheralServiceDelegate {
+    func updateValue(_ value: Data, for characteristic: CBMutableCharacteristic, onSubscribedCentrals: [CBCentral]?) {
+        
+        peripheralManager.updateValue(value, for: characteristic, onSubscribedCentrals: onSubscribedCentrals)
     }
 }

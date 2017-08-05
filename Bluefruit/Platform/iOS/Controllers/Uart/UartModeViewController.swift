@@ -29,8 +29,6 @@ class UartModeViewController: UartBaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
- 
-
     // MARK: - UART
     override func isInMultiUartMode() -> Bool {
         return blePeripheral == nil
@@ -82,7 +80,7 @@ class UartModeViewController: UartBaseViewController {
                 DispatchQueue.main.async { [unowned context] in
                     guard error == nil else {
                         DLog("Error initializing uart")
-                        context.dismiss(animated: true, completion: { [weak self] () -> Void in
+                        context.dismiss(animated: true, completion: { [weak self] in
                             if let context = self {
                                 showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
                                 

@@ -41,6 +41,12 @@ class ModeTabViewController: UIViewController {
         // Should load the first viewController that will be shown by this tab
         assert(false, "should be implemented by subclasses")
     }
+    
+    // MARK: - Tab Management
+    func tabShown() {
+    }
 
+    func tabHidden() {
+    }
 
 }
