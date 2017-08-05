@@ -73,8 +73,7 @@ class UartModeViewController: PeripheralModeViewController {
         // Title
         let localizationManager = LocalizationManager.sharedInstance
         let name = blePeripheral?.name ?? localizationManager.localizedString("peripherallist_unnamed")
-        let title = String(format: localizationManager.localizedString("uart_navigation_title_format"), arguments: [name])
-        navigationController?.navigationItem.title = title
+        self.title = String(format: localizationManager.localizedString("uart_navigation_title_format"), arguments: [name])
 
         // Init Data
         keyboardPositionNotifier.delegate = self

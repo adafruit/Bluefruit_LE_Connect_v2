@@ -72,7 +72,7 @@ extension DeviceInformationServiceViewController: UITableViewDataSource {
             valueTextField.tag = row
         }
         
-        editValueCell.backgroundColor = UIColor(hex: 0xe2e1e0)
+        //editValueCell.backgroundColor = UIColor(hex: 0xe2e1e0)
         return editValueCell
     }
     

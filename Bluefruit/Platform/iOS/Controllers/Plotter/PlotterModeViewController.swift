@@ -34,8 +34,7 @@ class PlotterModeViewController: PeripheralModeViewController {
         // Title
         let localizationManager = LocalizationManager.sharedInstance
         let name = blePeripheral?.name ?? localizationManager.localizedString("peripherallist_unnamed")
-        let title = String(format: localizationManager.localizedString("plotter_navigation_title_format"), arguments: [name])
-        navigationController?.navigationItem.title = title
+        self.title = String(format: localizationManager.localizedString("plotter_navigation_title_format"), arguments: [name])
 
         // UI
         autoscrollButton.isOn = isAutoScrollEnabled

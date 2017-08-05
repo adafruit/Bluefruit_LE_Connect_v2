@@ -282,6 +282,8 @@
 		A9BCD63D1E4D4357003D1CEA /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCE1E3A9B22008E5F81 /* Preferences.swift */; };
 		A9C6E7421F0EA7CE00E13CC6 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6E7411F0EA7CE00E13CC6 /* PreferencesViewController.swift */; };
 		A9C6E7431F0EA7CE00E13CC6 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6E7411F0EA7CE00E13CC6 /* PreferencesViewController.swift */; };
+		A9CA08481F35E04200A0C621 /* PeripheralServices.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9CA08461F35E04200A0C621 /* PeripheralServices.storyboard */; };
+		A9CA084C1F35E7F700A0C621 /* UartPeripheralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA084B1F35E7F700A0C621 /* UartPeripheralService.swift */; };
 		A9D2342C1E3AD64500DC0C99 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A9D234231E3AD64500DC0C99 /* Credits.rtf */; };
 		A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */; };
 		A9D2342E1E3AD64500DC0C99 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */; };
@@ -604,6 +606,8 @@
 		A9BCD6281E4D3B0B003D1CEA /* CommandLineColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLineColors.swift; sourceTree = "<group>"; };
 		A9BCD6291E4D3B0B003D1CEA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9C6E7411F0EA7CE00E13CC6 /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
+		A9CA08471F35E04200A0C621 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/PeripheralServices.storyboard; sourceTree = "<group>"; };
+		A9CA084B1F35E7F700A0C621 /* UartPeripheralService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartPeripheralService.swift; sourceTree = "<group>"; };
 		A9D234231E3AD64500DC0C99 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
 		A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GattUUIDs.plist; sourceTree = "<group>"; };
@@ -1559,8 +1563,9 @@
 			isa = PBXGroup;
 			children = (
 				A9D7847C1F350B34009D98A8 /* GattServer.swift */,
-				A9D7847B1F350B34009D98A8 /* DeviceInformationPeripheralService.swift */,
 				A9D7847D1F350B34009D98A8 /* PeripheralService.swift */,
+				A9D7847B1F350B34009D98A8 /* DeviceInformationPeripheralService.swift */,
+				A9CA084B1F35E7F700A0C621 /* UartPeripheralService.swift */,
 			);
 			path = BlePeripheralMode;
 			sourceTree = "<group>";
@@ -1587,6 +1592,7 @@
 			children = (
 				A9286CAF1E3A931E008E5F81 /* LaunchScreen.storyboard */,
 				A9286CB11E3A931E008E5F81 /* Main.storyboard */,
+				A9CA08461F35E04200A0C621 /* PeripheralServices.storyboard */,
 				A96AB4471F32CF780085115C /* Dfu.storyboard */,
 				A96AB43A1F32BFDC0085115C /* Uart.storyboard */,
 				A9FA1BE71EDEE1C20086CDCC /* NeoPixel.storyboard */,
@@ -1780,6 +1786,7 @@
 				A96AB43C1F32BFDC0085115C /* Uart.storyboard in Resources */,
 				A9286CB61E3A931E008E5F81 /* LaunchScreen.storyboard in Resources */,
 				A9FA1BE91EDEE1C20086CDCC /* NeoPixel.storyboard in Resources */,
+				A9CA08481F35E04200A0C621 /* PeripheralServices.storyboard in Resources */,
 				A9BB78F91EDCECDB004663DE /* magnetometer.scn in Resources */,
 				A98DE4291E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */,
 				A9BB78F71EDCECDB004663DE /* gyroscope.scn in Resources */,
@@ -1946,6 +1953,7 @@
 				A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */,
 				A9D234561E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift in Sources */,
 				A907982C1E4349D6005470A5 /* ControllerPadViewController.swift in Sources */,
+				A9CA084C1F35E7F700A0C621 /* UartPeripheralService.swift in Sources */,
 				A96AB4461F32CB480085115C /* GattServerViewController.swift in Sources */,
 				A91D65A41EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift in Sources */,
 				A94A21B11E417271006A5F33 /* UartTimetampTableViewCell.swift in Sources */,
@@ -2292,6 +2300,14 @@
 				A9BCD5D21E4D286A003D1CEA /* Base */,
 			);
 			name = Interface.storyboard;
+			sourceTree = "<group>";
+		};
+		A9CA08461F35E04200A0C621 /* PeripheralServices.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A9CA08471F35E04200A0C621 /* Base */,
+			);
+			name = PeripheralServices.storyboard;
 			sourceTree = "<group>";
 		};
 		A9FA1BE71EDEE1C20086CDCC /* NeoPixel.storyboard */ = {

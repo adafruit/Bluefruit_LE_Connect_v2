@@ -11,7 +11,17 @@ import CoreBluetooth
 
 class GattServer: NSObject {
     
-    var advertisementLocalName: String? = "Bluefruit"
+    var advertisementLocalName: String?  {
+        get {
+            return UserDefaults.standard.value(forKey: "advertisementLocalName") as? String
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: "advertisementLocalName")
+            UserDefaults.standard.synchronize()
+            startAdvertising()
+        }
+    }
     
     fileprivate var isStartAdvertisingAsSoonIsPoweredOnEnabled = false
     fileprivate var peripheralManager: CBPeripheralManager!
