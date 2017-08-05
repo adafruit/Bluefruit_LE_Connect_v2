@@ -28,6 +28,11 @@ class ControllerModeViewController: PeripheralModeViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Title
+        let localizationManager = LocalizationManager.sharedInstance
+        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
+        self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("controller_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("controller_tab_title")
+        
         // Init
         assert(blePeripheral != nil)
         controllerData = ControllerModuleManager(blePeripheral: blePeripheral!, delegate: self)

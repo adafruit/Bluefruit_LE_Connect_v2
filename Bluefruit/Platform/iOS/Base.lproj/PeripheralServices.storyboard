@@ -246,7 +246,7 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7O-8g-2kc">
-                                                                    <rect key="frame" x="44" y="11" width="69" height="14"/>
+                                                                    <rect key="frame" x="15" y="11" width="69" height="14"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="69" id="go7-Qx-59c"/>
                                                                     </constraints>
@@ -255,7 +255,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="yPB-ro-3UA">
-                                                                    <rect key="frame" x="121" y="11" width="595" height="16"/>
+                                                                    <rect key="frame" x="92" y="11" width="653" height="16"/>
                                                                     <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="14"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -354,7 +354,7 @@
                                 <rect key="frame" x="20" y="501" width="760" height="6"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rt6-u3-JP2">
-                                        <rect key="frame" x="0.0" y="0.0" width="630" height="6"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="696" height="6"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="send" enablesReturnKeyAutomatically="YES"/>
                                         <connections>
@@ -362,22 +362,11 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ABo-gH-bMW" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                        <rect key="frame" x="638" y="0.0" width="56" height="6"/>
+                                        <rect key="frame" x="704" y="0.0" width="56" height="6"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                         <state key="normal" title="Send"/>
                                         <connections>
                                             <action selector="onClickSend:" destination="0yQ-7h-DRi" eventType="touchUpInside" id="ubK-IS-wmR"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zFG-fF-4nm" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                        <rect key="frame" x="702" y="0.0" width="58" height="6"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="140" id="TzR-Mh-QGe"/>
-                                        </constraints>
-                                        <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
-                                        <state key="normal" title="To All"/>
-                                        <connections>
-                                            <action selector="onClickPeripheralToSend:" destination="0yQ-7h-DRi" eventType="touchUpInside" id="F68-uV-CLs"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -435,7 +424,6 @@
                         <outlet property="mainStackView" destination="kD3-I4-3ef" id="WY6-Lm-lQU"/>
                         <outlet property="moreOptionsNavigationItem" destination="g8n-yl-SlN" id="i5Y-X9-efX"/>
                         <outlet property="sendInputButton" destination="ABo-gH-bMW" id="UGe-5N-m1w"/>
-                        <outlet property="sendPeripheralButton" destination="zFG-fF-4nm" id="dz6-mN-Idm"/>
                         <outlet property="showEolSwitch" destination="Yg6-dC-ZkR" id="l63-DD-KUY"/>
                         <outlet property="statsLabel" destination="3rL-CH-W8H" id="mwW-K5-Cf7"/>
                         <outlet property="statsLabeliPadLeadingConstraint" destination="3Ne-hS-kEl" id="XJB-sy-2ca"/>

@@ -19,6 +19,11 @@ class PinIOModeViewController: PeripheralModeViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Title
+        let localizationManager = LocalizationManager.sharedInstance
+        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
+        self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("pinio_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("pinio_tab_title")
+
         // Init
         assert(blePeripheral != nil)
         pinIO = PinIOModuleManager(blePeripheral: blePeripheral!, delegate: self)

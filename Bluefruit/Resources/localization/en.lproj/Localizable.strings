@@ -336,7 +336,7 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 
 // Calibration
 "calibration_tab_title" = "AHRS/Calibration";
-
+"calibration_navigation_title_format" = "AHRS/Calibration - %@";
 
 
 

@@ -81,7 +81,7 @@ class InfoModeViewController: PeripheralModeViewController {
         let localizationManager = LocalizationManager.sharedInstance
         let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
 
-        self.title = String(format: localizationManager.localizedString("info_navigation_title_format"), arguments: [name])
+        self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("info_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("info_tab_title")
 
         // Refresh data
         baseTableView.reloadData()

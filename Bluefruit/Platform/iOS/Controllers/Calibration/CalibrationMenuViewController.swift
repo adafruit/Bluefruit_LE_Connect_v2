@@ -17,6 +17,11 @@ class CalibrationMenuViewController: PeripheralModeViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Title
+        let localizationManager = LocalizationManager.sharedInstance
+        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
+        self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("calibration_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("calibration_tab_title")
+        
         // UI
         for view in menuStackView.arrangedSubviews {
             view.layer.cornerRadius = 8

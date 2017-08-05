@@ -33,9 +33,8 @@ class DfuModeViewController: PeripheralModeViewController {
         // Title
         let localizationManager = LocalizationManager.sharedInstance
         let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
-        let title = String(format: localizationManager.localizedString("dfu_navigation_title_format"), arguments: [name])
-        navigationController?.navigationItem.title = title
-
+        self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("dfu_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("dfu_tab_title")
+    
         // Init Data
         isCheckingUpdates = false
         boardRelease = nil
