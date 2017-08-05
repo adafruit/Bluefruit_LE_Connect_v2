@@ -16,7 +16,4 @@ struct Config {
     static let isDebugEnabled = false
     #endif
 
-    // Config
-    static let useTabController = false         // Note: remove when the change from tabs to tableview is permanent
-
 }

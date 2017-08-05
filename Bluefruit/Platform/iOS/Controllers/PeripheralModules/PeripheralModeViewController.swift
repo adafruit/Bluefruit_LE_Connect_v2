@@ -23,15 +23,6 @@ class PeripheralModeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if Config.useTabController { // Note: remove once usingTabController is deprecated permanently
-            // Setup navigation item
-            if let parentNavigationItem = parent?.navigationItem {
-
-                // Setup navigation item title and buttons
-                parentNavigationItem.title = navigationItem.title
-                parentNavigationItem.rightBarButtonItems = navigationItem.rightBarButtonItems
-            }
-        }
     }
 
     override func didReceiveMemoryWarning() {

@@ -81,13 +81,7 @@ class InfoModeViewController: PeripheralModeViewController {
         let localizationManager = LocalizationManager.sharedInstance
         let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
 
-        let title = String(format: localizationManager.localizedString("info_navigation_title_format"), arguments: [name])
-        if Config.useTabController {    // Note: remove once usingTabController is deprecated permanently
-            navigationController?.navigationItem.title = title
-        }
-        else {
-            self.title = title
-        }
+        self.title = String(format: localizationManager.localizedString("info_navigation_title_format"), arguments: [name])
 
         // Refresh data
         baseTableView.reloadData()

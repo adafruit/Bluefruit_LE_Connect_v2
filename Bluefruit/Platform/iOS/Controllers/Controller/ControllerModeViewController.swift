@@ -32,10 +32,6 @@ class ControllerModeViewController: PeripheralModeViewController {
         assert(blePeripheral != nil)
         controllerData = ControllerModuleManager(blePeripheral: blePeripheral!, delegate: self)
 
-        // Setup table
-        if Config.useTabController {
-            baseTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
-        }
         updateUartUI(isReady: false)
 
         //

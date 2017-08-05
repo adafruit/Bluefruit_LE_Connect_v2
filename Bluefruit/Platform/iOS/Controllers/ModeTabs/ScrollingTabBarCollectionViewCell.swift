@@ -1,5 +1,5 @@
 //
-//  PeripheralDetailsCollectionViewCell.swift
+//  ScrollingTabBarCollectionViewCell.swift
 //  Bluefruit Connect
 //
 //  Created by Antonio García on 01/03/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PeripheralDetailsCollectionViewCell: UICollectionViewCell {
+class ScrollingTabBarCollectionViewCell: UICollectionViewCell {
     // UI
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!

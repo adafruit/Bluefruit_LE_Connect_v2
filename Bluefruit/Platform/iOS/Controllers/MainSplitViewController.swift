@@ -89,19 +89,12 @@ class MainSplitViewController: UISplitViewController {
 
                     if let navigationController = detailViewController as? UINavigationController {
                         navigationController.popToRootViewController(animated: false)       // pop any viewcontrollers (like ControlPad)
-
-                        if Config.useTabController {
-                            if let peripheralDetailsViewController = navigationController.viewControllers.first as? PeripheralDetailsViewController {
-                                peripheralDetailsViewController.showEmpty(true)
-                                peripheralDetailsViewController.setConnecting(false)
-                            }
-
-                        } else {
-                            if let peripheralModulesViewController = navigationController.viewControllers.first as? PeripheralModulesViewController {
-                                peripheralModulesViewController.showEmpty(true)
-                                peripheralModulesViewController.setConnecting(false)
-                            }
+                                                
+                        if let peripheralModulesViewController = navigationController.viewControllers.first as? PeripheralModulesViewController {
+                            peripheralModulesViewController.showEmpty(true)
+                            peripheralModulesViewController.setConnecting(false)
                         }
+                        
                     }
                 }
             }

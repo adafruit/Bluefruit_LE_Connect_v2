@@ -186,13 +186,7 @@ class PeripheralModulesViewController: UIViewController {
     
     private func goBackToPeripheralList() {
         // Back to peripheral list
-        if Config.useTabController {
-            if let parentNavigationController = (self.navigationController?.parent as? UINavigationController) {
-                parentNavigationController.popToRootViewController(animated: true)
-            }
-        } else {
-            navigationController?.popToRootViewController(animated: true)
-        }
+        navigationController?.popToRootViewController(animated: true)
     }
 
     func showEmpty(_ showEmpty: Bool) {

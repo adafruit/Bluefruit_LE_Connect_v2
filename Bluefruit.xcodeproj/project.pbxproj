@@ -133,8 +133,6 @@
 		A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A969466E1E3CD0F600BA8DAA /* StyledSubview.swift */; };
 		A96946711E3D02F300BA8DAA /* BleUUIDNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */; };
 		A96AB43C1F32BFDC0085115C /* Uart.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A96AB43A1F32BFDC0085115C /* Uart.storyboard */; };
-		A96AB43E1F32C0CF0085115C /* ModeTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96AB43D1F32C0CF0085115C /* ModeTabsViewController.swift */; };
-		A96AB4431F32CAF80085115C /* PeripheralModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96AB4421F32CAF80085115C /* PeripheralModeViewController.swift */; };
 		A96AB4461F32CB480085115C /* GattServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96AB4451F32CB480085115C /* GattServerViewController.swift */; };
 		A96AB4491F32CF780085115C /* Dfu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A96AB4471F32CF780085115C /* Dfu.storyboard */; };
 		A98378091E422C4B00170319 /* NSObject+ENHThrottledReloading.m in Sources */ = {isa = PBXBuildFile; fileRef = A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */; };
@@ -285,6 +283,11 @@
 		A9CA08481F35E04200A0C621 /* PeripheralServices.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9CA08461F35E04200A0C621 /* PeripheralServices.storyboard */; };
 		A9CA084C1F35E7F700A0C621 /* UartPeripheralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA084B1F35E7F700A0C621 /* UartPeripheralService.swift */; };
 		A9CA084E1F35EF6900A0C621 /* UartServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA084D1F35EF6900A0C621 /* UartServiceViewController.swift */; };
+		A9CA08551F35F49200A0C621 /* ScrollingTabBarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA08521F35F49200A0C621 /* ScrollingTabBarCollectionViewCell.swift */; };
+		A9CA08571F35F49200A0C621 /* ScrollingTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA08541F35F49200A0C621 /* ScrollingTabBarViewController.swift */; };
+		A9CA085A1F35F4B600A0C621 /* ModeTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA08581F35F4B600A0C621 /* ModeTabsViewController.swift */; };
+		A9CA085B1F35F4B600A0C621 /* ModeTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA08591F35F4B600A0C621 /* ModeTabViewController.swift */; };
+		A9CA085D1F35F84500A0C621 /* PeripheralModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA085C1F35F84500A0C621 /* PeripheralModeViewController.swift */; };
 		A9D2342C1E3AD64500DC0C99 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A9D234231E3AD64500DC0C99 /* Credits.rtf */; };
 		A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */; };
 		A9D2342E1E3AD64500DC0C99 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */; };
@@ -293,9 +296,6 @@
 		A9D2343C1E3AD70300DC0C99 /* PeripheralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234371E3AD70300DC0C99 /* PeripheralTableViewCell.swift */; };
 		A9D2343D1E3AD70300DC0C99 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234381E3AD70300DC0C99 /* ScannerViewController.swift */; };
 		A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2344C1E3AD97600DC0C99 /* StyleConfig.swift */; };
-		A9D234561E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234521E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift */; };
-		A9D234571E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234531E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift */; };
-		A9D234581E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234541E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift */; };
 		A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234591E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift */; };
 		A9D2345E1E3B49BA00DC0C99 /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */; };
 		A9D7847E1F350B34009D98A8 /* DeviceInformationPeripheralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D7847B1F350B34009D98A8 /* DeviceInformationPeripheralService.swift */; };
@@ -306,7 +306,6 @@
 		A9D784831F350B34009D98A8 /* PeripheralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D7847D1F350B34009D98A8 /* PeripheralService.swift */; };
 		A9D784851F350FD4009D98A8 /* ServiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D784841F350FD4009D98A8 /* ServiceTableViewCell.swift */; };
 		A9D784871F353D1A009D98A8 /* DeviceInformationServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D784861F353D1A009D98A8 /* DeviceInformationServiceViewController.swift */; };
-		A9D784891F355255009D98A8 /* ModeTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D784881F355255009D98A8 /* ModeTabViewController.swift */; };
 		A9D7848B1F35588D009D98A8 /* PeripheralServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D7848A1F35588D009D98A8 /* PeripheralServiceViewController.swift */; };
 		A9E1371C1ECB2F11004C64E1 /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E1371B1ECB2F11004C64E1 /* MainSplitViewController.swift */; };
 		A9F4E1B51F012DD500BF8A70 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F4E1B41F012DD500BF8A70 /* DetailsViewController.swift */; };
@@ -510,8 +509,6 @@
 		A969466E1E3CD0F600BA8DAA /* StyledSubview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledSubview.swift; sourceTree = "<group>"; };
 		A96946701E3D02F300BA8DAA /* BleUUIDNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleUUIDNames.swift; sourceTree = "<group>"; };
 		A96AB43B1F32BFDC0085115C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Uart.storyboard; sourceTree = "<group>"; };
-		A96AB43D1F32C0CF0085115C /* ModeTabsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeTabsViewController.swift; sourceTree = "<group>"; };
-		A96AB4421F32CAF80085115C /* PeripheralModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PeripheralModeViewController.swift; path = Bluefruit/Platform/iOS/Controllers/PeripheralDetails/PeripheralModeViewController.swift; sourceTree = SOURCE_ROOT; };
 		A96AB4451F32CB480085115C /* GattServerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GattServerViewController.swift; sourceTree = "<group>"; };
 		A96AB4481F32CF780085115C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Dfu.storyboard; sourceTree = "<group>"; };
 		A98378051E422C4B00170319 /* NSObject+ENHThrottledReloading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ENHThrottledReloading.h"; sourceTree = "<group>"; };
@@ -610,6 +607,11 @@
 		A9CA08471F35E04200A0C621 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/PeripheralServices.storyboard; sourceTree = "<group>"; };
 		A9CA084B1F35E7F700A0C621 /* UartPeripheralService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartPeripheralService.swift; sourceTree = "<group>"; };
 		A9CA084D1F35EF6900A0C621 /* UartServiceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartServiceViewController.swift; sourceTree = "<group>"; };
+		A9CA08521F35F49200A0C621 /* ScrollingTabBarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingTabBarCollectionViewCell.swift; sourceTree = "<group>"; };
+		A9CA08541F35F49200A0C621 /* ScrollingTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingTabBarViewController.swift; sourceTree = "<group>"; };
+		A9CA08581F35F4B600A0C621 /* ModeTabsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeTabsViewController.swift; sourceTree = "<group>"; };
+		A9CA08591F35F4B600A0C621 /* ModeTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeTabViewController.swift; sourceTree = "<group>"; };
+		A9CA085C1F35F84500A0C621 /* PeripheralModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralModeViewController.swift; sourceTree = "<group>"; };
 		A9D234231E3AD64500DC0C99 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
 		A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GattUUIDs.plist; sourceTree = "<group>"; };
@@ -618,9 +620,6 @@
 		A9D234371E3AD70300DC0C99 /* PeripheralTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralTableViewCell.swift; sourceTree = "<group>"; };
 		A9D234381E3AD70300DC0C99 /* ScannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
 		A9D2344C1E3AD97600DC0C99 /* StyleConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleConfig.swift; sourceTree = "<group>"; };
-		A9D234521E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralDetailsCollectionViewCell.swift; sourceTree = "<group>"; };
-		A9D234531E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralDetailsViewController.swift; sourceTree = "<group>"; };
-		A9D234541E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollingTabBarViewController.swift; sourceTree = "<group>"; };
 		A9D234591E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningAnimationViewController.swift; sourceTree = "<group>"; };
 		A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataDownloader.swift; sourceTree = "<group>"; };
 		A9D7847B1F350B34009D98A8 /* DeviceInformationPeripheralService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInformationPeripheralService.swift; sourceTree = "<group>"; };
@@ -628,7 +627,6 @@
 		A9D7847D1F350B34009D98A8 /* PeripheralService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralService.swift; sourceTree = "<group>"; };
 		A9D784841F350FD4009D98A8 /* ServiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTableViewCell.swift; sourceTree = "<group>"; };
 		A9D784861F353D1A009D98A8 /* DeviceInformationServiceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInformationServiceViewController.swift; sourceTree = "<group>"; };
-		A9D784881F355255009D98A8 /* ModeTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeTabViewController.swift; sourceTree = "<group>"; };
 		A9D7848A1F35588D009D98A8 /* PeripheralServiceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralServiceViewController.swift; sourceTree = "<group>"; };
 		A9E1371B1ECB2F11004C64E1 /* MainSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		A9F4E1B41F012DD500BF8A70 /* DetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
@@ -814,7 +812,7 @@
 		A91DE45E1EE4D5F900297D9B /* PeripheralModules */ = {
 			isa = PBXGroup;
 			children = (
-				A96AB4421F32CAF80085115C /* PeripheralModeViewController.swift */,
+				A9CA085C1F35F84500A0C621 /* PeripheralModeViewController.swift */,
 				A91DE45F1EE4D61700297D9B /* PeripheralModulesViewController.swift */,
 				A91502731EE4DAA800298005 /* PeripheralModulesTableViewCell.swift */,
 				A91D65A31EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift */,
@@ -889,12 +887,10 @@
 				A9E1371B1ECB2F11004C64E1 /* MainSplitViewController.swift */,
 				A90C79721E40CB150076E8AD /* EmptyDetailsViewController.swift */,
 				A90C79731E40CB150076E8AD /* HelpViewController.swift */,
-				A96AB43D1F32C0CF0085115C /* ModeTabsViewController.swift */,
-				A9D784881F355255009D98A8 /* ModeTabViewController.swift */,
+				A9CA08511F35F49200A0C621 /* ModeTabs */,
 				A96AB4441F32CB480085115C /* GattServer */,
 				A9D234331E3AD70300DC0C99 /* Scanner */,
 				A91DE45E1EE4D5F900297D9B /* PeripheralModules */,
-				A9D234501E3AD9A200DC0C99 /* PeripheralDetails */,
 				A9BAD20F1E3FC6CA0021DFA9 /* Info */,
 				A94A219E1E417271006A5F33 /* Uart */,
 				A907983E1E44EC9C005470A5 /* Plotter */,
@@ -1527,6 +1523,17 @@
 			path = macOS_CommandLine;
 			sourceTree = "<group>";
 		};
+		A9CA08511F35F49200A0C621 /* ModeTabs */ = {
+			isa = PBXGroup;
+			children = (
+				A9CA08581F35F4B600A0C621 /* ModeTabsViewController.swift */,
+				A9CA08591F35F4B600A0C621 /* ModeTabViewController.swift */,
+				A9CA08521F35F49200A0C621 /* ScrollingTabBarCollectionViewCell.swift */,
+				A9CA08541F35F49200A0C621 /* ScrollingTabBarViewController.swift */,
+			);
+			path = ModeTabs;
+			sourceTree = "<group>";
+		};
 		A9D234221E3AD64500DC0C99 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1550,16 +1557,6 @@
 				A9D234591E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift */,
 			);
 			path = Scanner;
-			sourceTree = "<group>";
-		};
-		A9D234501E3AD9A200DC0C99 /* PeripheralDetails */ = {
-			isa = PBXGroup;
-			children = (
-				A9D234531E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift */,
-				A9D234521E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift */,
-				A9D234541E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift */,
-			);
-			path = PeripheralDetails;
 			sourceTree = "<group>";
 		};
 		A9D7847A1F350B34009D98A8 /* BlePeripheralMode */ = {
@@ -1954,13 +1951,11 @@
 				A9BB78EC1EDCEC99004663DE /* VectorMath.swift in Sources */,
 				A9286CD71E3A9B22008E5F81 /* CommandQueue.swift in Sources */,
 				A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */,
-				A9D234561E3AD9A200DC0C99 /* PeripheralDetailsCollectionViewCell.swift in Sources */,
 				A907982C1E4349D6005470A5 /* ControllerPadViewController.swift in Sources */,
 				A9CA084C1F35E7F700A0C621 /* UartPeripheralService.swift in Sources */,
 				A96AB4461F32CB480085115C /* GattServerViewController.swift in Sources */,
 				A91D65A41EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift in Sources */,
 				A94A21B11E417271006A5F33 /* UartTimetampTableViewCell.swift in Sources */,
-				A96AB4431F32CAF80085115C /* PeripheralModeViewController.swift in Sources */,
 				A9D784821F350B34009D98A8 /* PeripheralService.swift in Sources */,
 				A9286CD51E3A9B22008E5F81 /* UartDataManager.swift in Sources */,
 				A91542721EDD7BC9007A34EA /* CalibrationMenuViewController.swift in Sources */,
@@ -1985,7 +1980,6 @@
 				A9BCD60C1E4D36DE003D1CEA /* MainInterfaceController.swift in Sources */,
 				A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */,
 				A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */,
-				A96AB43E1F32C0CF0085115C /* ModeTabsViewController.swift in Sources */,
 				A90798431E44F692005470A5 /* PlotterModuleManager.swift in Sources */,
 				A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */,
 				A90798291E4349D6005470A5 /* ControllerColorWheelViewController.swift in Sources */,
@@ -2004,10 +1998,12 @@
 				A9BB78E21EDCEC65004663DE /* Calibration+Mahony.swift in Sources */,
 				A9FA1BF01EE308830086CDCC /* NeopixelComponentSelectorViewController.swift in Sources */,
 				A9BCD5941E4D2616003D1CEA /* MqttManager.swift in Sources */,
+				A9CA08551F35F49200A0C621 /* ScrollingTabBarCollectionViewCell.swift in Sources */,
 				A90798401E44ECB3005470A5 /* PlotterModeViewController.swift in Sources */,
 				A96946711E3D02F300BA8DAA /* BleUUIDNames.swift in Sources */,
 				A94A21AD1E417271006A5F33 /* UartModeViewController.swift in Sources */,
 				A9BCD5721E4D25B3003D1CEA /* DfuUpdateProcess.swift in Sources */,
+				A9CA085B1F35F4B600A0C621 /* ModeTabViewController.swift in Sources */,
 				A91542791EDD7BC9007A34EA /* VisualizationViewController.swift in Sources */,
 				A90C79781E40CBFA0076E8AD /* InfoModuleManager.swift in Sources */,
 				A9BCD58E1E4D2616003D1CEA /* DataFormatter.swift in Sources */,
@@ -2018,23 +2014,25 @@
 				A9D2343D1E3AD70300DC0C99 /* ScannerViewController.swift in Sources */,
 				A91DE4601EE4D61700297D9B /* PeripheralModulesViewController.swift in Sources */,
 				A9D784851F350FD4009D98A8 /* ServiceTableViewCell.swift in Sources */,
-				A9D234571E3AD9A200DC0C99 /* PeripheralDetailsViewController.swift in Sources */,
 				A91542771EDD7BC9007A34EA /* VisualizationParametersViewController.swift in Sources */,
 				A94A21AF1E417271006A5F33 /* UartSettingsViewController.swift in Sources */,
 				A9BCD5741E4D25B3003D1CEA /* FirmwareUpdater.swift in Sources */,
 				A907982D1E4349D6005470A5 /* ControllerSensorTableViewCell.swift in Sources */,
 				A969466C1E3CD0CC00BA8DAA /* IntrinsicSizeWithInsetsButton.swift in Sources */,
 				A98378721E43479400170319 /* ControllerModuleManager.swift in Sources */,
+				A9CA08571F35F49200A0C621 /* ScrollingTabBarViewController.swift in Sources */,
 				A9D2345E1E3B49BA00DC0C99 /* DataDownloader.swift in Sources */,
 				A9BCD6031E4D34D9003D1CEA /* HandoffManager.swift in Sources */,
 				A91542781EDD7BC9007A34EA /* VisualizationProgressViewController.swift in Sources */,
 				A90798311E438E60005470A5 /* GradientView.swift in Sources */,
 				A98DE4111E456AFC00EEF4C8 /* NeopixelColorPickerViewController.swift in Sources */,
 				A98DE40F1E456AFC00EEF4C8 /* NeopixelBoardSelectorViewController.swift in Sources */,
+				A9CA085D1F35F84500A0C621 /* PeripheralModeViewController.swift in Sources */,
 				A9BB78E31EDCEC65004663DE /* Calibration.swift in Sources */,
 				A91E7D5C1E4216ED00DE90C6 /* UIImage+Color.swift in Sources */,
 				A9BCD60D1E4D36DE003D1CEA /* PickerModeInterfaceController.swift in Sources */,
 				A915426D1EDD7BC9007A34EA /* MagnetometerPageContentViewController.swift in Sources */,
+				A9CA085A1F35F4B600A0C621 /* ModeTabsViewController.swift in Sources */,
 				A90C79751E40CB150076E8AD /* HelpViewController.swift in Sources */,
 				A90C79741E40CB150076E8AD /* EmptyDetailsViewController.swift in Sources */,
 				A9A89BDC1E83C5B000724F0E /* StyledConnectButton.swift in Sources */,
@@ -2065,13 +2063,11 @@
 				A9BAD2131E3FC6CA0021DFA9 /* InfoModeViewController.swift in Sources */,
 				A98378091E422C4B00170319 /* NSObject+ENHThrottledReloading.m in Sources */,
 				A9D784801F350B34009D98A8 /* GattServer.swift in Sources */,
-				A9D784891F355255009D98A8 /* ModeTabViewController.swift in Sources */,
 				A98DE4011E454FA100EEF4C8 /* NeopixelModuleManager.swift in Sources */,
 				A9BCD56A1E4D2549003D1CEA /* PeripheralList.swift in Sources */,
 				A9BCD5801E4D25E4003D1CEA /* UartSettings.swift in Sources */,
 				A9BCD5921E4D2616003D1CEA /* LocalizationManager.swift in Sources */,
 				A98DE4041E45696700EEF4C8 /* UartPacketManager.swift in Sources */,
-				A9D234581E3AD9A200DC0C99 /* ScrollingTabBarViewController.swift in Sources */,
 				A9BB78EB1EDCEC99004663DE /* VectorMath+SceneKit.swift in Sources */,
 				A907982B1E4349D6005470A5 /* ControllerModeViewController.swift in Sources */,
 			);

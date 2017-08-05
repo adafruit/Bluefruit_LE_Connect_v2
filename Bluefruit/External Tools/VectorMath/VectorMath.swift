@@ -106,7 +106,7 @@ public extension Scalar {
     public static let epsilon: Scalar = 0.0001
     
     public static func ~=(lhs: Scalar, rhs: Scalar) -> Bool {
-        return abs(lhs - rhs) < .epsilon
+        return Swift.abs(lhs - rhs) < .epsilon
     }
 }
 

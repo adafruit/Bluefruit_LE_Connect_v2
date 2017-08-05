@@ -30,11 +30,6 @@ class DfuModeViewController: PeripheralModeViewController {
 
         assert(blePeripheral != nil)
 
-        if Config.useTabController {
-            // Setup table
-            firmwareTableView.contentInset = UIEdgeInsetsMake(44, 0, 0, 0)      // extend below navigation inset fix
-        }
-
         // Title
         let localizationManager = LocalizationManager.sharedInstance
         let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
