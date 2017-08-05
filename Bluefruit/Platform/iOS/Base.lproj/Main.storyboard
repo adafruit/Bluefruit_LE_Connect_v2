@@ -2584,7 +2584,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Manufacturer:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tEa-L8-l83">
                                                     <rect key="frame" x="15" y="21.5" width="120" height="18"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="180" id="mPT-Zq-rfa">
+                                                        <constraint firstAttribute="width" constant="160" id="mPT-Zq-rfa">
                                                             <variation key="widthClass=compact" constant="120"/>
                                                         </constraint>
                                                     </constraints>

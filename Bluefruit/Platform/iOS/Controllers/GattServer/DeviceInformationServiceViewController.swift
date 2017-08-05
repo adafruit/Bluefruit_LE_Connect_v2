@@ -23,6 +23,12 @@ class DeviceInformationServiceViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        disPeripheralService?.saveValues()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -31,10 +37,10 @@ class DeviceInformationServiceViewController: UIViewController {
 
 // MARK: UITableViewDataSource
 extension DeviceInformationServiceViewController: UITableViewDataSource {
-    
+    private static let labels = ["Manufacturer", "Model Number", "Serial Number", "Hardware Number", "Firmware Revision", "Software Revision"]
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return DeviceInformationServiceViewController.labels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -43,14 +49,21 @@ extension DeviceInformationServiceViewController: UITableViewDataSource {
         let editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueCell", for: indexPath) as! MqttSettingsValueAndSelector
         editValueCell.reset()
         
-        let labels = ["Manufacturer:", "Password:"]
-        editValueCell.nameLabel.text = labels[row]
+        editValueCell.nameLabel.text = DeviceInformationServiceViewController.labels[row]
         
         let valueTextField = editValueCell.valueTextField!
         if row == 0 {
             valueTextField.text = disPeripheralService?.manufacturer
         } else if row == 1 {
-            valueTextField.text = nil
+            valueTextField.text = disPeripheralService?.modelNumber
+        } else if row == 2 {
+            valueTextField.text = disPeripheralService?.serialNumber
+        } else if row == 3 {
+            valueTextField.text = disPeripheralService?.hardwareNumber
+        } else if row == 4 {
+            valueTextField.text = disPeripheralService?.firmwareRevision
+        } else if row == 5 {
+            valueTextField.text = disPeripheralService?.softwareRevision
         }
         
         if let valueTextField = editValueCell.valueTextField {
@@ -72,14 +85,10 @@ extension DeviceInformationServiceViewController: UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension DeviceInformationServiceViewController: UITableViewDelegate {
     
-    
-    
 }
 
 // MARK: - UITextFieldDelegate
 extension DeviceInformationServiceViewController: UITextFieldDelegate {
-    
-    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
@@ -107,8 +116,19 @@ extension DeviceInformationServiceViewController: UITextFieldDelegate {
         let indexPath = IndexPath(row: textField.tag, section: 0)
         let row = indexPath.row
         
+        let text = textField.text
         if row == 0 {
-            disPeripheralService?.manufacturer = textField.text
+            disPeripheralService?.manufacturer = text
+        } else if row == 1 {
+            disPeripheralService?.modelNumber = text
+        } else if row == 2 {
+            disPeripheralService?.serialNumber = text
+        } else if row == 3 {
+            disPeripheralService?.hardwareNumber = text
+        } else if row == 4 {
+            disPeripheralService?.firmwareRevision = text
+        } else if row == 5 {
+            disPeripheralService?.softwareRevision = text
         }
         
     }

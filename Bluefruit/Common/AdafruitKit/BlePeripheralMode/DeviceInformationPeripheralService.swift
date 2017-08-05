@@ -33,13 +33,60 @@ class DeviceInformationPeripheralService: PeripheralService {
     
     var manufacturer: String? {
         get {
-            guard let manufacturerData = manufacturerNameCharacteristic.value else { return nil }
-            return String(data: manufacturerData, encoding: .utf8)
+            return characteristicText(characteristic: manufacturerNameCharacteristic)
         }
         set {
-            manufacturerNameCharacteristic.value = manufacturer?.data(using: .utf8)
+            setCharacteristicText(newValue, characteristic: manufacturerNameCharacteristic)
         }
     }
+
+    var modelNumber: String? {
+        get {
+            return characteristicText(characteristic: modelNumberCharacteristic)
+        }
+        set {
+            setCharacteristicText(newValue, characteristic: modelNumberCharacteristic)
+        }
+    }
+    
+    
+    var serialNumber: String? {
+        get {
+            return characteristicText(characteristic: serialNumberCharacteristic)
+        }
+        set {
+            setCharacteristicText(newValue, characteristic: serialNumberCharacteristic)
+        }
+    }
+    
+    var hardwareNumber: String? {
+        get {
+            return characteristicText(characteristic: hardwareNumberCharacteristic)
+        }
+        set {
+            setCharacteristicText(newValue, characteristic: hardwareNumberCharacteristic)
+        }
+    }
+
+    var firmwareRevision: String? {
+        get {
+            return characteristicText(characteristic: firmwareRevisionCharacteristic)
+        }
+        set {
+            setCharacteristicText(newValue, characteristic: firmwareRevisionCharacteristic)
+        }
+    }
+
+    
+    var softwareRevision: String? {
+        get {
+            return characteristicText(characteristic: softwareRevisionCharacteristic)
+        }
+        set {
+            setCharacteristicText(newValue, characteristic: softwareRevisionCharacteristic)
+        }
+    }
+
     
     // MARK: - View Lifecycle
     override init() {
@@ -54,7 +101,17 @@ class DeviceInformationPeripheralService: PeripheralService {
         loadValues()
     }
     
+    
     // MARK: -
+    private func characteristicText(characteristic: CBCharacteristic) -> String? {
+        guard let data = characteristic.value else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+    
+    private func setCharacteristicText(_ text: String?, characteristic: CBMutableCharacteristic) {
+        characteristic.value = text?.data(using: .utf8)
+    }
+    
     func saveValues() {
         guard let characteristics = service.characteristics else { return }
         UserDefaults.standard.set(isEnabled, forKey: service.uuid.uuidString+"_isEnabled")
@@ -62,9 +119,11 @@ class DeviceInformationPeripheralService: PeripheralService {
             let value = characteristic.value
             UserDefaults.standard.set(value, forKey: characteristic.uuid.uuidString)
         }
+        
+        UserDefaults.standard.synchronize()
     }
     
-    func loadValues() {
+    private func loadValues() {
         isEnabled = (UserDefaults.standard.value(forKey: service.uuid.uuidString+"_isEnabled") as? Bool) ?? true
         for characteristic in characteristics {
             if let value = UserDefaults.standard.value(forKey: characteristic.uuid.uuidString) as? Data? {
