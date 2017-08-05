@@ -115,7 +115,7 @@
         <!--Uart-->
         <scene sceneID="E1o-lE-yQ1">
             <objects>
-                <viewController storyboardIdentifier="UartModeViewController" automaticallyAdjustsScrollViewInsets="NO" id="0yQ-7h-DRi" customClass="UartModeViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UartServiceViewController" automaticallyAdjustsScrollViewInsets="NO" id="0yQ-7h-DRi" customClass="UartServiceViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="i3K-Cb-L7t"/>
                         <viewControllerLayoutGuide type="bottom" id="1pQ-gJ-kxJ"/>

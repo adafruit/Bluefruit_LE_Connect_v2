@@ -284,6 +284,7 @@
 		A9C6E7431F0EA7CE00E13CC6 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6E7411F0EA7CE00E13CC6 /* PreferencesViewController.swift */; };
 		A9CA08481F35E04200A0C621 /* PeripheralServices.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9CA08461F35E04200A0C621 /* PeripheralServices.storyboard */; };
 		A9CA084C1F35E7F700A0C621 /* UartPeripheralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA084B1F35E7F700A0C621 /* UartPeripheralService.swift */; };
+		A9CA084E1F35EF6900A0C621 /* UartServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA084D1F35EF6900A0C621 /* UartServiceViewController.swift */; };
 		A9D2342C1E3AD64500DC0C99 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = A9D234231E3AD64500DC0C99 /* Credits.rtf */; };
 		A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */; };
 		A9D2342E1E3AD64500DC0C99 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */; };
@@ -608,6 +609,7 @@
 		A9C6E7411F0EA7CE00E13CC6 /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		A9CA08471F35E04200A0C621 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/PeripheralServices.storyboard; sourceTree = "<group>"; };
 		A9CA084B1F35E7F700A0C621 /* UartPeripheralService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartPeripheralService.swift; sourceTree = "<group>"; };
+		A9CA084D1F35EF6900A0C621 /* UartServiceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartServiceViewController.swift; sourceTree = "<group>"; };
 		A9D234231E3AD64500DC0C99 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
 		A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GattUUIDs.plist; sourceTree = "<group>"; };
@@ -1273,8 +1275,9 @@
 			children = (
 				A96AB4451F32CB480085115C /* GattServerViewController.swift */,
 				A9D784841F350FD4009D98A8 /* ServiceTableViewCell.swift */,
-				A9D784861F353D1A009D98A8 /* DeviceInformationServiceViewController.swift */,
 				A9D7848A1F35588D009D98A8 /* PeripheralServiceViewController.swift */,
+				A9D784861F353D1A009D98A8 /* DeviceInformationServiceViewController.swift */,
+				A9CA084D1F35EF6900A0C621 /* UartServiceViewController.swift */,
 			);
 			path = GattServer;
 			sourceTree = "<group>";
@@ -1965,6 +1968,7 @@
 				A9BCD6081E4D36DE003D1CEA /* ColorRGBInterfaceController.swift in Sources */,
 				A9286CD21E3A9B22008E5F81 /* BlePeripheral.swift in Sources */,
 				A9F4E1BD1F04467200BF8A70 /* ISColorWheel.m in Sources */,
+				A9CA084E1F35EF6900A0C621 /* UartServiceViewController.swift in Sources */,
 				A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */,
 				A9BB78EA1EDCEC99004663DE /* VectorMath+Quartz.swift in Sources */,
 				A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */,

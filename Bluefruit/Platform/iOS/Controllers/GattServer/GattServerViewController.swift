@@ -20,7 +20,8 @@ class GattServerViewController: ModeTabViewController {
 
         // Define services
         let deviceInformationPeripheralService = DeviceInformationPeripheralService()
-        peripheralServices = [deviceInformationPeripheralService]
+        let uartPeripheralService = UartPeripheralService()
+        peripheralServices = [deviceInformationPeripheralService, uartPeripheralService]
         
         // Add services
         for peripheralService in peripheralServices {
@@ -60,6 +61,14 @@ class GattServerViewController: ModeTabViewController {
         detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "DeviceInformationServiceNavigationController")
         if let detailRootController = detailRootController as? UINavigationController, let deviceInfomationServiceViewController = detailRootController.topViewController as? DeviceInformationServiceViewController {
             deviceInfomationServiceViewController.disPeripheralService = peripheralService
+            showDetailViewController(detailRootController, sender: self)
+        }
+    }
+    
+    fileprivate func showUartDetail(with peripheralService: UartPeripheralService) {
+        detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "UartServiceNavigationController")
+        if let detailRootController = detailRootController as? UINavigationController, let uartServiceViewController = detailRootController.topViewController as? UartServiceViewController {
+            uartServiceViewController.uartPeripheralService = peripheralService
             showDetailViewController(detailRootController, sender: self)
         }
     }
@@ -146,6 +155,9 @@ extension GattServerViewController: UITableViewDelegate {
             
             if let deviceInformationPeripheralService = peripheralService as? DeviceInformationPeripheralService {
                 showDisDetail(with: deviceInformationPeripheralService)
+            }
+            else if let uartPeripheralService = peripheralService as? UartPeripheralService {
+                showUartDetail(with: uartPeripheralService)
             }
         }
         

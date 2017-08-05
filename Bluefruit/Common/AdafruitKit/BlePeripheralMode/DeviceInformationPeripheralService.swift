@@ -88,7 +88,7 @@ class DeviceInformationPeripheralService: PeripheralService {
     }
 
     
-    // MARK: - View Lifecycle
+    // MARK: - Lifecycle
     override init() {
         super.init()
         
