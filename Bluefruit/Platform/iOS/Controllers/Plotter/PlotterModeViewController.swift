@@ -187,6 +187,7 @@ class PlotterModeViewController: PeripheralModeViewController {
         dataSet.lineWidth = 2
         let color = colorForPeripheral[identifier]?.withAlphaComponent(1.0 - CGFloat(index)*0.30) ?? UIColor.black
         dataSet.setColor(color)
+        //dataSet.lineDashLengths = [2, 2]
         DLog("color: \(color.hexString()!)")
 
         if dataSetsForPeripheral[identifier] != nil {

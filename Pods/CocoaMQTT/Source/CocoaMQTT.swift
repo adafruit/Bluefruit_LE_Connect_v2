@@ -57,7 +57,8 @@ fileprivate enum CocoaMQTTReadTag: Int {
  */
 @objc public protocol CocoaMQTTDelegate {
     /// MQTT connected with server
-    func mqtt(_ mqtt: CocoaMQTT, didConnect host: String, port: Int)
+    // deprecated: use mqtt(_ mqtt: CocoaMQTT, didConnectAck ack: CocoaMQTTConnAck) to tell if connect to the server successfully
+    // func mqtt(_ mqtt: CocoaMQTT, didConnect host: String, port: Int)
     func mqtt(_ mqtt: CocoaMQTT, didConnectAck ack: CocoaMQTTConnAck)
     func mqtt(_ mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16)
     func mqtt(_ mqtt: CocoaMQTT, didPublishAck id: UInt16)
@@ -136,7 +137,15 @@ open class CocoaMQTT: NSObject, CocoaMQTTClient, CocoaMQTTFrameBufferProtocol {
     open var dispatchQueue = DispatchQueue.main
     
     // flow control
-    var buffer = CocoaMQTTFrameBuffer()
+    fileprivate var buffer = CocoaMQTTFrameBuffer()
+    open var bufferSilosTimeout: Double {
+        get { return buffer.timeout }
+        set { buffer.timeout = newValue }
+    }
+    open var bufferSilosMaxNumber: UInt {
+        get { return buffer.silosMaxNumber }
+        set { buffer.silosMaxNumber = newValue }
+    }
     
     
     // heart beat
@@ -192,6 +201,7 @@ open class CocoaMQTT: NSObject, CocoaMQTTClient, CocoaMQTTFrameBufferProtocol {
         socket.disconnect()
     }
     
+    // MARK: CocoaMQTTFrameBufferProtocol
     public func buffer(_ buffer: CocoaMQTTFrameBuffer, sendPublishFrame frame: CocoaMQTTFramePublish) {
         send(frame, tag: Int(frame.msgid!))
     }
@@ -205,7 +215,6 @@ open class CocoaMQTT: NSObject, CocoaMQTTClient, CocoaMQTTFrameBufferProtocol {
         let frame = CocoaMQTTFrameConnect(client: self)
         send(frame)
         reader!.start()
-        delegate?.mqtt(self, didConnect: host, port: Int(port))
     }
 
     fileprivate func nextMessageID() -> UInt16 {
@@ -379,12 +388,14 @@ extension CocoaMQTT: GCDAsyncSocketDelegate {
         connState = .disconnected
         delegate?.mqttDidDisconnect(self, withError: err)
 
-        autoReconnTimer?.invalidate()
-        if !disconnectExpectedly && autoReconnect && autoReconnectTimeInterval > 0 {
-            autoReconnTimer = Timer.every(Double(autoReconnectTimeInterval).seconds, { [weak self] (timer: Timer) in
-                printDebug("try reconnect")
-                self?.connect()
-            })
+        DispatchQueue.main.async {
+            self.autoReconnTimer?.invalidate()
+            if !self.disconnectExpectedly && self.autoReconnect && self.autoReconnectTimeInterval > 0 {
+                self.autoReconnTimer = Timer.every(Double(self.autoReconnectTimeInterval).seconds, { [weak self] (timer: Timer) in
+                    printDebug("try reconnect")
+                    self?.connect()
+                })
+            }
         }
     }
 }
@@ -420,12 +431,14 @@ extension CocoaMQTT: CocoaMQTTReaderDelegate {
 
         // keep alive
         if ack == CocoaMQTTConnAck.accept && keepAlive > 0 {
-            aliveTimer?.invalidate()
-            aliveTimer = Timer.every(Double(keepAlive).seconds) { [weak self] (timer: Timer) in
-                if self?.connState == .connected {
-                    self?.ping()
-                } else {
-                    timer.invalidate()
+            DispatchQueue.main.async {
+                self.aliveTimer?.invalidate()
+                self.aliveTimer = Timer.every(Double(self.keepAlive / 2 + 1).seconds) { [weak self] (timer: Timer) in
+                    if self?.connState == .connected {
+                        self?.ping()
+                    } else {
+                        timer.invalidate()
+                    }
                 }
             }
         }
