@@ -72,6 +72,7 @@
 		A9286CD91E3A9B22008E5F81 /* DataConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */; };
 		A9286CDA1E3A9B22008E5F81 /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCD1E3A9B22008E5F81 /* LogHelper.swift */; };
 		A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCE1E3A9B22008E5F81 /* Preferences.swift */; };
+		A93DE7511F36176F00B2EB5D /* UartBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7501F36176F00B2EB5D /* UartBaseViewController.swift */; };
 		A945EA291E4DEF0100737BB0 /* DFUPeripheralSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A945E9E51E4DEF0100737BB0 /* DFUPeripheralSelector.swift */; };
 		A945EA2A1E4DEF0100737BB0 /* DFUPeripheralSelectorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A945E9E61E4DEF0100737BB0 /* DFUPeripheralSelectorDelegate.swift */; };
 		A945EA2B1E4DEF0100737BB0 /* DFUServiceSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A945E9E81E4DEF0100737BB0 /* DFUServiceSelector.swift */; };
@@ -181,7 +182,6 @@
 		A98DE42C1E45EB3900EEF4C8 /* NeopixelBoards.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */; };
 		A98DE42D1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */; };
 		A98DE42E1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */; };
-		A9A485301F35FC5100C521D9 /* UartBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A4852F1F35FC5100C521D9 /* UartBaseViewController.swift */; };
 		A9A485321F360FD100C521D9 /* UartPeripheralModePacketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A485311F360FD100C521D9 /* UartPeripheralModePacketManager.swift */; };
 		A9A485341F3611B200C521D9 /* UartPacketManagerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A485331F3611B200C521D9 /* UartPacketManagerBase.swift */; };
 		A9A6C2471E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */; };
@@ -443,6 +443,7 @@
 		A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataConversions.swift; sourceTree = "<group>"; };
 		A9286CCD1E3A9B22008E5F81 /* LogHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
 		A9286CCE1E3A9B22008E5F81 /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		A93DE7501F36176F00B2EB5D /* UartBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartBaseViewController.swift; sourceTree = "<group>"; };
 		A945E9E51E4DEF0100737BB0 /* DFUPeripheralSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFUPeripheralSelector.swift; sourceTree = "<group>"; };
 		A945E9E61E4DEF0100737BB0 /* DFUPeripheralSelectorDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFUPeripheralSelectorDelegate.swift; sourceTree = "<group>"; };
 		A945E9E81E4DEF0100737BB0 /* DFUServiceSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DFUServiceSelector.swift; sourceTree = "<group>"; };
@@ -545,7 +546,6 @@
 		A98DE4231E45EB3900EEF4C8 /* Neopixel_Arduino.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Neopixel_Arduino.zip; sourceTree = "<group>"; };
 		A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelBoards.plist; sourceTree = "<group>"; };
 		A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelDefaultPalette.plist; sourceTree = "<group>"; };
-		A9A4852F1F35FC5100C521D9 /* UartBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartBaseViewController.swift; sourceTree = "<group>"; };
 		A9A485311F360FD100C521D9 /* UartPeripheralModePacketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartPeripheralModePacketManager.swift; sourceTree = "<group>"; };
 		A9A485331F3611B200C521D9 /* UartPacketManagerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartPacketManagerBase.swift; sourceTree = "<group>"; };
 		A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSelectPeripheralViewController.swift; sourceTree = "<group>"; };
@@ -1262,6 +1262,7 @@
 		A94A219E1E417271006A5F33 /* Uart */ = {
 			isa = PBXGroup;
 			children = (
+				A93DE7501F36176F00B2EB5D /* UartBaseViewController.swift */,
 				A94A21A41E417271006A5F33 /* UartModeViewController.swift */,
 				A94A21A61E417271006A5F33 /* UartSettingsViewController.swift */,
 				A94A21A71E417271006A5F33 /* UartSettingTableViewCell.swift */,
@@ -1281,7 +1282,6 @@
 				A9D7848A1F35588D009D98A8 /* PeripheralServiceViewController.swift */,
 				A9D784861F353D1A009D98A8 /* DeviceInformationServiceViewController.swift */,
 				A9CA084D1F35EF6900A0C621 /* UartServiceViewController.swift */,
-				A9A4852F1F35FC5100C521D9 /* UartBaseViewController.swift */,
 			);
 			path = GattServer;
 			sourceTree = "<group>";
@@ -2016,6 +2016,7 @@
 				A9CA085B1F35F4B600A0C621 /* ModeTabViewController.swift in Sources */,
 				A91542791EDD7BC9007A34EA /* VisualizationViewController.swift in Sources */,
 				A90C79781E40CBFA0076E8AD /* InfoModuleManager.swift in Sources */,
+				A93DE7511F36176F00B2EB5D /* UartBaseViewController.swift in Sources */,
 				A9BCD58E1E4D2616003D1CEA /* DataFormatter.swift in Sources */,
 				A9D234391E3AD70300DC0C99 /* AboutViewController.swift in Sources */,
 				A9BCD58A1E4D2616003D1CEA /* CocoaCompatibility.swift in Sources */,
@@ -2081,7 +2082,6 @@
 				A98DE4041E45696700EEF4C8 /* UartPacketManager.swift in Sources */,
 				A9BB78EB1EDCEC99004663DE /* VectorMath+SceneKit.swift in Sources */,
 				A907982B1E4349D6005470A5 /* ControllerModeViewController.swift in Sources */,
-				A9A485301F35FC5100C521D9 /* UartBaseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

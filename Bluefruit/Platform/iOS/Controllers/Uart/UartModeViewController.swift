@@ -10,6 +10,7 @@ import UIKit
 
 class UartModeViewController: UartBaseViewController {
 
+
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +19,9 @@ class UartModeViewController: UartBaseViewController {
         let localizationManager = LocalizationManager.sharedInstance
         let name = blePeripheral?.name ?? localizationManager.localizedString("peripherallist_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("uart_navigation_title_format"), arguments: [name])  : localizationManager.localizedString("uart_tab_title")
-
+        
+        // Init Uart
+        uartData = UartPacketManager(delegate: self, isPacketCacheEnabled: true, isMqttEnabled: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -26,7 +29,8 @@ class UartModeViewController: UartBaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
+ 
+
     // MARK: - UART
     override func isInMultiUartMode() -> Bool {
         return blePeripheral == nil
@@ -99,6 +103,8 @@ class UartModeViewController: UartBaseViewController {
     }
 
     override func send(message: String) {
+        guard let uartData = self.uartData as? UartPacketManager else { DLog("Error send with invalid uartData class"); return }
+        
         if let blePeripheral = blePeripheral {      // Single peripheral mode
             uartData.send(blePeripheral: blePeripheral, text: message)
         } else {      // Multiple peripheral mode
@@ -144,4 +150,14 @@ class UartModeViewController: UartBaseViewController {
         return color ?? UIColor.black
     }
     
+    
+    // MARK: - MqttManagerDelegate
+    override func onMqttMessageReceived(message: String, topic: String) {
+        guard let blePeripheral = blePeripheral else { return }
+        
+        DispatchQueue.main.async { [unowned self] in
+            guard let uartData = self.uartData as? UartPacketManager else { DLog("Error send with invalid uartData class"); return }
+            uartData.send(blePeripheral: blePeripheral, text: message, wasReceivedFromMqtt: true)
+        }
+    }
 }

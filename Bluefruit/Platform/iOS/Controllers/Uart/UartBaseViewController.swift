@@ -58,7 +58,7 @@ class UartBaseViewController: PeripheralModeViewController {
         case bin = "bin"
     }
     
-    internal var uartData: UartPacketManager!
+    internal var uartData: UartPacketManagerBase!
     internal var colorForPeripheral = [UUID: UIColor]()
     fileprivate let timestampDateFormatter = DateFormatter()
     fileprivate var tableCachedDataBuffer: [UartPacket]?
@@ -70,7 +70,6 @@ class UartBaseViewController: PeripheralModeViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-         
         // Init Data
         keyboardPositionNotifier.delegate = self
         timestampDateFormatter.setLocalizedDateFormatFromTemplate("HH:mm:ss")
@@ -123,8 +122,9 @@ class UartBaseViewController: PeripheralModeViewController {
             }
         }
         
-        // Init Uart
-        uartData = UartPacketManager(delegate: self, isPacketCacheEnabled: true, isMqttEnabled: true)
+        // Note: uartData should be initialized on the subclasses
+        
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -630,11 +630,7 @@ extension UartBaseViewController: MqttManagerDelegate {
     }
     
     func onMqttMessageReceived(message: String, topic: String) {
-        guard let blePeripheral = blePeripheral else { return }
-        
-        DispatchQueue.main.async { [unowned self] in
-            self.uartData.send(blePeripheral: blePeripheral, text: message, wasReceivedFromMqtt: true)
-        }
+        assert(false, "should be overrided by subclasses")
     }
     
     func onMqttError(message: String) {
