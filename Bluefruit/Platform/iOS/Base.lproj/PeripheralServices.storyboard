@@ -112,6 +112,14 @@
             </objects>
             <point key="canvasLocation" x="1632.8" y="2840.3298350824589"/>
         </scene>
+        <!--HelpViewController-->
+        <scene sceneID="Srt-EY-4Gs">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="HelpViewController" storyboardName="Main" referencedIdentifier="HelpViewController" id="voG-OI-9vE" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dPH-VY-759" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1453" y="2443"/>
+        </scene>
         <!--Uart-->
         <scene sceneID="E1o-lE-yQ1">
             <objects>

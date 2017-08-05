@@ -40,6 +40,8 @@ class UartServiceViewController: UartBaseViewController {
     
     override func send(message: String) {
         DLog("send: \(message)")
+        
+        uartPeripheralService?.tx = message.data(using: .utf8)
     }
     
      // MARK: - Style

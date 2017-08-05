@@ -137,8 +137,11 @@ class UartModeViewController: UartBaseViewController {
     
     // MARK: - Style
     override func colorForPacket(packet: UartPacket) -> UIColor {
-        let color = colorForPeripheral[packet.peripheralId] ?? UIColor.black
-        return color
+        var color: UIColor?
+        if let peripheralId = packet.peripheralId {
+            color = colorForPeripheral[peripheralId]
+        }
+        return color ?? UIColor.black
     }
     
 }
