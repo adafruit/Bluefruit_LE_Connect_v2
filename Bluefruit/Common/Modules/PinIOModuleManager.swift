@@ -7,6 +7,7 @@
 //
 
 // http://www.firmata.org/wiki/V2.3ProtocolDetails#Capability_Query
+// TODO: update to the lastest specification 2.5.1: https://github.com/firmata/protocol/blob/master/protocol.md
 
 import Foundation
 import MSWeakTimer
@@ -286,24 +287,27 @@ class PinIOModuleManager: NSObject {
                     switch byte {
                     case 0x00:
                         isInput = true
-                        i += 1     // skip resolution byte
+                        i += 1      // skip resolution byte
                     case 0x01:
                         isOutput = true
-                        i += 1     // skip resolution byte
+                        i += 1      // skip resolution byte
                     case 0x02:
                         isAnalog = true
-                        i += 1     // skip resolution byte
+                        i += 1      // skip resolution byte
                     case 0x03:
                         isPWM = true
-                        i += 1     // skip resolution byte
+                        i += 1      // skip resolution byte
                     case 0x04:
                         // Servo
-                        i += 1 //skip resolution byte
+                        i += 1      // skip resolution byte
                     case 0x06:
                         // I2C
-                        i += 1     // skip resolution byte
+                        i += 1      // skip resolution byte
+                    case 0x0b:      // INPUT_PULLUP
+                        isInput = true
+                        i += 1      // skip resolution byte
                     default:
-                        break
+                        i += 1      // skip byte for unknown commands
                     }
                     i += 1
                 }
@@ -462,16 +466,28 @@ class PinIOModuleManager: NSObject {
             return false
         }
         lastSentAnalogValueTime = currentTime
-
+        
         // Store
         pin.analogValue = value
-
+        
         // Send
-        let data0 = 0xe0 + UInt8(pin.digitalPinId)
-        let data1 = UInt8(value & 0x7f)         //only 7 bottom bits
-        let data2 = UInt8(value >> 7)           //top bit in second byte
-
-        let bytes: [UInt8] = [data0, data1, data2]
+        var bytes: [UInt8]
+        if pin.analogPinId > 15 {
+            // Extended Analog
+            let data0 = UInt8(pin.digitalPinId)
+            let data1 = UInt8(value & 0xff)                 // least significant byte
+            let data2 = UInt8((value >> 8) & 0xff)          // next byte
+            
+            bytes = [SYSEX_START, 0x6f, data0, data1, data2, SYSEX_END]
+        }
+        else {
+            let data0 = 0xe0 + UInt8(pin.digitalPinId)
+            let data1 = UInt8(value & 0x7f)                 // only 7 bottom bits
+            let data2 = UInt8(value >> 7)                   // top bit in second byte
+            
+            bytes = [data0, data1, data2]
+        }
+        
         let data = Data(bytes: bytes)
         uartManager.send(blePeripheral: blePeripheral, data: data)
 

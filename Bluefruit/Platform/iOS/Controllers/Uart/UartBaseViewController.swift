@@ -244,6 +244,7 @@ class UartBaseViewController: PeripheralModeViewController {
     // MARK: - UART
     internal func isInMultiUartMode() -> Bool {
         assert(false, "Should be implemented by subclasses")
+        return false
     }
     
     internal func setupUart() {
