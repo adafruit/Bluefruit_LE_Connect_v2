@@ -74,13 +74,21 @@ class GattServer: NSObject {
         
         // Add services / chars
         for peripheralService in peripheralServices {
-            peripheralManager.add(peripheralService.service)
+            if peripheralService.isEnabled {
+                peripheralManager.add(peripheralService.service)
+            }
         }
         
         // Start advertising
         var advertisementData: [String : Any] = [:]
         if let advertisementLocalName = advertisementLocalName {
             advertisementData[CBAdvertisementDataLocalNameKey] = advertisementLocalName
+        }
+        
+        let isUartServiceEnabled = peripheralServices.contains(where: { $0.service.uuid == UartPeripheralService.kUartServiceUUID && $0.isEnabled })
+        if isUartServiceEnabled {
+            // If UART is enabled, add the UUID to the advertisement packet
+            advertisementData[CBAdvertisementDataServiceUUIDsKey] = [UartPeripheralService.kUartServiceUUID]
         }
         
         peripheralManager.startAdvertising(advertisementData)
@@ -149,7 +157,6 @@ class GattServer: NSObject {
         
         peripheralService.setCharacteristic(uuid: request.characteristic.uuid, value: value!)
     }
-
 }
 
 // MARK: - CBPeripheralManagerDelegate

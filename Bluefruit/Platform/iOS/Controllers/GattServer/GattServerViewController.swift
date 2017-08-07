@@ -140,14 +140,6 @@ extension GattServerViewController: UITableViewDelegate {
                 peripheralService.isEnabled = isEnabled
                 
                 // Update advertising
-                context.gattServer.stopAdvertising()
-                if (isEnabled) {
-                    context.gattServer.addService(peripheralService)
-                }
-                else {
-                    context.gattServer.removeService(peripheralService)
-                }
-                
                 context.gattServer.startAdvertising()
             }
         }
