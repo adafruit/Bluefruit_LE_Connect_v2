@@ -21,6 +21,7 @@ class CommandLine: NSObject {
     fileprivate var dfuPeripheral: BlePeripheral?
     fileprivate var hexUrl: URL?
     fileprivate var iniUrl: URL?
+    fileprivate var zipUrl: URL?
     fileprivate var releases: [AnyHashable: Any]?
 
     // MARK: - Bluetooth Status
@@ -53,6 +54,7 @@ class CommandLine: NSObject {
         print("\tScan peripherals:   scan")
         print("\tAutomatic update:   update [--enable-beta] [--uuid <uuid>]")
         print("\tCustom firmware:    dfu --hex <filename> [--init <filename>] [--uuid <uuid>]")
+        print("\tCustom firmware:    dfu --zip <filename> [--uuid <uuid>]")
         print("\tShow this screen:   --help")
         print("\tShow version:       --version")
         print("")
@@ -168,35 +170,43 @@ class CommandLine: NSObject {
 
     func dfuPeripheral(uuid peripheralUUID: UUID, hexUrl: URL? = nil, iniUrl: URL? = nil, releases: [AnyHashable: Any]? = nil) {
 
-        // If hexUrl is nil, then uses releases to auto-update to the lastest release available
+        self.hexUrl = hexUrl
+        self.iniUrl = iniUrl
 
+        startDfuPeripheral(uuid: peripheralUUID, releases: releases)
+    }
+    
+    func dfuPeripheral(uuid peripheralUUID: UUID, zipUrl: URL, releases: [AnyHashable: Any]? = nil) {
+        self.zipUrl = zipUrl
+        
+        startDfuPeripheral(uuid: peripheralUUID, releases: releases)
+    }
+    
+    private func startDfuPeripheral(uuid peripheralUUID: UUID, releases: [AnyHashable: Any]? = nil) {
         guard let centralManager = BleManager.sharedInstance.centralManager else { DLog("centralManager is nil"); return }
-
         if let peripheral = centralManager.retrievePeripherals(withIdentifiers: [peripheralUUID]).first {
-
             dfuPeripheral = BlePeripheral(peripheral: peripheral, advertisementData: nil, rssi: nil)
-            self.hexUrl = hexUrl
-            self.iniUrl = iniUrl
             self.releases = releases
             print("Connecting...")
-
+            
             // Connect to peripheral and discover characteristics. This should not be needed but the Dfu library will fail if a previous characteristics discovery has not been done
-
+            
             // Subscribe to didConnect notifications
             didConnectToPeripheralObserver = NotificationCenter.default.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: didConnectToPeripheral)
-
+            
             // Connect to peripheral and wait
             BleManager.sharedInstance.connect(to: dfuPeripheral!)
             let _ = dfuSemaphore.wait(timeout: .distantFuture)
+            
         } else {
             print("Error. No peripheral found with UUID: \(peripheralUUID.uuidString)")
             dfuPeripheral = nil
         }
     }
-
+    
     private func didConnectToPeripheral(notification: Notification) {
         // Unsubscribe from didConnect notifications
-        if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {NotificationCenter.default.removeObserver(didConnectToPeripheralObserver)}
+        if let didConnectToPeripheralObserver = didConnectToPeripheralObserver { NotificationCenter.default.removeObserver(didConnectToPeripheralObserver) }
 
         // Check connected
         guard let dfuPeripheral = dfuPeripheral  else {
@@ -263,14 +273,16 @@ extension CommandLine: FirmwareUpdaterDelegate {
 
         // Info received
         DLog("onFirmwareUpdatesAvailable: \(isUpdateAvailable)")
-
-        print("Peripheral info:")
-        print("\tManufacturer: \(deviceInfo?.manufacturer ?? "{unknown}")")
-        print("\tModel:        \(deviceInfo?.modelNumber ?? "{unknown}")")
-        print("\tSoftware:     \(deviceInfo?.softwareRevision ?? "{unknown}")")
-        print("\tFirmware:     \(deviceInfo?.firmwareRevision ?? "{unknown}")")
-        print("\tBootlader:    \(deviceInfo?.bootloaderVersion ?? "{unknown}")")
-
+        
+        if let deviceInfo = deviceInfo {
+            print("Peripheral info:")
+            print("\tManufacturer: \(deviceInfo.manufacturer ?? "{unknown}")")
+            print("\tModel:        \(deviceInfo.modelNumber ?? "{unknown}")")
+            print("\tSoftware:     \(deviceInfo.softwareRevision ?? "{unknown}")")
+            print("\tFirmware:     \(deviceInfo.firmwareRevision ?? "{unknown}")")
+            print("\tBootlader:    \(deviceInfo.bootloaderVersion ?? "{unknown}")")
+        }
+        
         guard deviceInfo?.hasDefaultBootloaderVersion == false else {
             print("The legacy bootloader on this device is not compatible with this application")
             dfuFinished()

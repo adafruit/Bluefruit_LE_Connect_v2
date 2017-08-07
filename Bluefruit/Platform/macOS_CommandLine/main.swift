@@ -34,6 +34,8 @@ func main() {
         case hexFileShort = "-h"
         case iniFile = "--init"
         case iniFileShort = "-i"
+        case zipFile = "--zip"
+        case zipFileShort = "-z"
         case showBetaVersions = "--enable-beta"
         case showBetaVersionsShort = "-b"
     }
@@ -47,6 +49,7 @@ func main() {
     var peripheralIdentifier: UUID?
     var hexUrl: URL?
     var iniUrl: URL?
+    var zipUrl: URL?
     var showBetaVersions = false
 
     let currentDirectoryUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
@@ -155,6 +158,7 @@ func main() {
                     print("\(Parameter.hexFile.rawValue) needs a valid file name")
                 }
 
+                
             case Parameter.iniFile.rawValue, Parameter.iniFileShort.rawValue:
                 iniUrl = nil
                 if arguments.count >= index+1 {
@@ -165,6 +169,18 @@ func main() {
 
                 if iniUrl == nil {
                     print("\(Parameter.iniFile.rawValue) needs a valid file name")
+                }
+
+            case Parameter.zipFile.rawValue, Parameter.zipFileShort.rawValue:
+                zipUrl = nil
+                if arguments.count >= index+1 {
+                    let zipFileName = arguments[index+1]
+                    zipUrl = currentDirectoryUrl.appendingPathComponent(zipFileName)
+                    skipNextArgument = true
+                }
+                
+                if zipUrl == nil {
+                    print("\(Parameter.zipFile.rawValue) needs a valid file name")
                 }
 
             case Parameter.showBetaVersions.rawValue, Parameter.showBetaVersionsShort.rawValue:
@@ -203,11 +219,11 @@ func main() {
             print("DFU Update")
 
             // Check input parameters
-            guard let hexUrl = hexUrl else {
-                print(".hex file not defined")
+            if zipUrl == nil && hexUrl == nil {
+               print (".zip or .hex files needed to perform update")
                 exit(EXIT_FAILURE)
             }
-
+            
             if peripheralIdentifier == nil {
                 peripheralIdentifier = commandLine.askUserForPeripheral()
             }
@@ -218,15 +234,31 @@ func main() {
             }
 
             print("\tUUID: \(peripheralIdentifier)")
-            print("\tHex:  \(hexUrl)")
-            if let iniUrl = iniUrl {
-                print("\tInit: \(iniUrl)")
-            }
 
-            // Launch dfu
-            queue.async(group: group) {
-                commandLine.dfuPeripheral(uuid: peripheralIdentifier, hexUrl: hexUrl, iniUrl: iniUrl)
+            
+            if let hexUrl = hexUrl {
+                print("\tHex:  \(hexUrl)")
+                if let iniUrl = iniUrl {
+                    print("\tInit: \(iniUrl)")
+                }
+                
+                // Launch dfu
+                queue.async(group: group) {
+                    commandLine.dfuPeripheral(uuid: peripheralIdentifier, hexUrl: hexUrl, iniUrl: iniUrl)
+                }
             }
+            else if let zipUrl = zipUrl {
+                print("\tZip:  \(zipUrl)")
+                // Launch dfu
+                queue.async(group: group) {
+                    commandLine.dfuPeripheral(uuid: peripheralIdentifier, zipUrl: zipUrl)
+                }
+            }
+            else {
+                print("Argument validation error");
+                exit(EXIT_FAILURE)
+            }
+            
             let _ = group.wait(timeout: DispatchTime.distantFuture)
 
         case .update:

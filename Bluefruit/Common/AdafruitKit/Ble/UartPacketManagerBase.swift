@@ -38,7 +38,7 @@ class UartPacketManagerBase {
     internal var packets = [UartPacket]()
     internal var packetsSemaphore = DispatchSemaphore(value: 1)
     internal var isMqttEnabled: Bool
-    internal var isPacketCacheEnabled: Bool
+    internal var isPacketCacheEnabled: Bool 
     
     var receivedBytes: Int64 = 0
     var sentBytes: Int64 = 0
