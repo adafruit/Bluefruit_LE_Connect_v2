@@ -103,11 +103,6 @@
 		A93DE7841F36196B00B2EB5D /* UartDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7591F36195900B2EB5D /* UartDataManager.swift */; };
 		A93DE7851F36196B00B2EB5D /* UartLogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE75A1F36195900B2EB5D /* UartLogManager.swift */; };
 		A93DE7861F36196B00B2EB5D /* UartPacketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE75B1F36195900B2EB5D /* UartPacketManager.swift */; };
-		A93DE7871F36196B00B2EB5D /* DeviceInformationPeripheralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE75D1F36195900B2EB5D /* DeviceInformationPeripheralService.swift */; };
-		A93DE7881F36196B00B2EB5D /* GattServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE75E1F36195900B2EB5D /* GattServer.swift */; };
-		A93DE7891F36196B00B2EB5D /* PeripheralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE75F1F36195900B2EB5D /* PeripheralService.swift */; };
-		A93DE78A1F36196B00B2EB5D /* UartPeripheralModePacketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7601F36195900B2EB5D /* UartPeripheralModePacketManager.swift */; };
-		A93DE78B1F36196B00B2EB5D /* UartPeripheralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7611F36195900B2EB5D /* UartPeripheralService.swift */; };
 		A93DE78C1F36196B00B2EB5D /* UartPacketManagerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7621F36195900B2EB5D /* UartPacketManagerBase.swift */; };
 		A945EA291E4DEF0100737BB0 /* DFUPeripheralSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A945E9E51E4DEF0100737BB0 /* DFUPeripheralSelector.swift */; };
 		A945EA2A1E4DEF0100737BB0 /* DFUPeripheralSelectorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A945E9E61E4DEF0100737BB0 /* DFUPeripheralSelectorDelegate.swift */; };
@@ -300,7 +295,6 @@
 		A9BCD63A1E4D42C6003D1CEA /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */; };
 		A9BCD63D1E4D4357003D1CEA /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCE1E3A9B22008E5F81 /* Preferences.swift */; };
 		A9C6E7421F0EA7CE00E13CC6 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6E7411F0EA7CE00E13CC6 /* PreferencesViewController.swift */; };
-		A9C6E7431F0EA7CE00E13CC6 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6E7411F0EA7CE00E13CC6 /* PreferencesViewController.swift */; };
 		A9CA08481F35E04200A0C621 /* PeripheralServices.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9CA08461F35E04200A0C621 /* PeripheralServices.storyboard */; };
 		A9CA084E1F35EF6900A0C621 /* UartServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA084D1F35EF6900A0C621 /* UartServiceViewController.swift */; };
 		A9CA08551F35F49200A0C621 /* ScrollingTabBarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA08521F35F49200A0C621 /* ScrollingTabBarCollectionViewCell.swift */; };
@@ -2241,7 +2235,6 @@
 				A945EA4A1E4DEF0100737BB0 /* SoftdeviceBootloaderInfo.swift in Sources */,
 				A945EA641E4DF1FA00737BB0 /* ioapi.c in Sources */,
 				A9BCD6381E4D42C6003D1CEA /* Data+ScanValue.swift in Sources */,
-				A93DE78A1F36196B00B2EB5D /* UartPeripheralModePacketManager.swift in Sources */,
 				A945EA3C1E4DEF0100737BB0 /* LegacyDFUPeripheralDelegate.swift in Sources */,
 				A945EA2F1E4DEF0100737BB0 /* DFUServiceInitiator.swift in Sources */,
 				A945EA2E1E4DEF0100737BB0 /* DFUServiceDelegate.swift in Sources */,
@@ -2265,7 +2258,6 @@
 				A945EA421E4DEF0100737BB0 /* SecureDFUServiceInitiator.swift in Sources */,
 				A945EA381E4DEF0100737BB0 /* DFUVersion.swift in Sources */,
 				A93DE7811F36196B00B2EB5D /* BlePeripheral+Uart.swift in Sources */,
-				A9C6E7431F0EA7CE00E13CC6 /* PreferencesViewController.swift in Sources */,
 				A945EA471E4DEF0100737BB0 /* Data.swift in Sources */,
 				A93DE7861F36196B00B2EB5D /* UartPacketManager.swift in Sources */,
 				A945EA4D1E4DEF0100737BB0 /* LoggerDelegate.swift in Sources */,
@@ -2273,10 +2265,7 @@
 				A945EA4B1E4DEF0100737BB0 /* Double.swift in Sources */,
 				A9BCD63D1E4D4357003D1CEA /* Preferences.swift in Sources */,
 				A93DE77F1F36196B00B2EB5D /* BleManager.swift in Sources */,
-				A93DE7871F36196B00B2EB5D /* DeviceInformationPeripheralService.swift in Sources */,
-				A93DE7881F36196B00B2EB5D /* GattServer.swift in Sources */,
 				A945EA4E1E4DEF0100737BB0 /* LoggerHelper.swift in Sources */,
-				A93DE78B1F36196B00B2EB5D /* UartPeripheralService.swift in Sources */,
 				A945EA361E4DEF0100737BB0 /* DFUControlPoint.swift in Sources */,
 				A9BCD62F1E4D3B96003D1CEA /* ReleasesParser.swift in Sources */,
 				A9BCD6251E4D3A9F003D1CEA /* main.swift in Sources */,
@@ -2284,7 +2273,6 @@
 				A9BCD62A1E4D3B0B003D1CEA /* CommandLine.swift in Sources */,
 				A945EA2C1E4DEF0100737BB0 /* DFUStarterPeripheral.swift in Sources */,
 				A945EA3F1E4DEF0100737BB0 /* SecureDFUControlPoint.swift in Sources */,
-				A93DE7891F36196B00B2EB5D /* PeripheralService.swift in Sources */,
 				A93DE7801F36196B00B2EB5D /* BlePeripheral+Battery.swift in Sources */,
 				A93DE7821F36196B00B2EB5D /* BlePeripheral.swift in Sources */,
 				A9BCD6371E4D42C6003D1CEA /* CommandQueue.swift in Sources */,

@@ -74,7 +74,7 @@ class PreferencesViewController: NSViewController {
         }
         
         // Mqtt Publish
-        mqttPublishEnabledButton.state =  mqttSetting/*s.isPublishEnabled ? NSOnState : NSOffState
+        mqttPublishEnabledButton.state =  mqttSettings.isPublishEnabled ? NSOnState : NSOffState
         let rxSettingsIndex = 0
         if let publishRxTopic = mqttSettings.getPublishTopic(index: rxSettingsIndex) {
             mqttPublishRXTextField.stringValue = publishRxTopic
@@ -217,4 +217,5 @@ class PreferencesViewController: NSViewController {
             MqttSettings.sharedInstance.subscribeBehaviour = behaviour
         }
     }
+ 
 }

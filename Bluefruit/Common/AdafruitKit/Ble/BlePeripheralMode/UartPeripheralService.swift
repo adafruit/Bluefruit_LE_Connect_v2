@@ -6,7 +6,6 @@
 //  Copyright © 2017 Adafruit. All rights reserved.
 //
 
-import UIKit
 import CoreBluetooth
 
 class UartPeripheralService: PeripheralService {
