@@ -20,10 +20,7 @@
 * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#if COMMANDLINE
-#else
-    import Zip
-#endif
+//import Zip
 
 internal class ZipArchive {
     

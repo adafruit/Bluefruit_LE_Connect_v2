@@ -36,7 +36,7 @@ public enum XMLError : Error {
 }
 
 public enum XMLSubscriptResult {
-
+    
     case null(String)           // means: null(error: String)
     case xml(XML, String)       // means: xml(xml: XML, path: String)
     case array([XML], String)   // means: xml(xmls: [XML], path: String)
@@ -236,10 +236,12 @@ open class XML {
     
     internal weak var parent:XML?
     
-    public init(name:String, attributes:[String:Any] = [:], value: String? = nil) {
+    public init(name:String, attributes:[String:Any] = [:], value: Any? = nil) {
         self.name = name
         self.addAttributes(attributes)
-        self.value = value
+        if let value = value {
+            self.value = String(describing: value)
+        }
     }
     
     private convenience init(xml: XML) {
@@ -619,18 +621,22 @@ public extension XML {
         var attr = self.getAttributeString()
         attr = attr.isEmpty ? "" : attr + " "
         let tabs = String(repeating: "\t", count: numTabs)
+        var valueString: String = ""
+        if let v = self.value {
+            valueString = v.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
         if attr.isEmpty {
             switch (closed, self.value) {
-            case (true,  .some(_)): return tabs + "<\(name)>\(self.value!)</\(name)>\n"
+            case (true,  .some(_)): return tabs + "<\(name)>\(valueString)</\(name)>\n"
             case (true,  .none):    return tabs + "<\(name) />\n"
-            case (false, .some(_)): return tabs + "<\(name)>\(self.value!)\n"
+            case (false, .some(_)): return tabs + "<\(name)>\(valueString)\n"
             case (false, .none):    return tabs + "<\(name)>\n"
             }
         } else {
             switch (closed, self.value) {
-            case (true,  .some(_)): return tabs + "<\(name)" + attr + ">\(self.value!)</\(name)>\n"
+            case (true,  .some(_)): return tabs + "<\(name)" + attr + ">\(valueString)</\(name)>\n"
             case (true,  .none):    return tabs + "<\(name)" + attr + "/>\n"
-            case (false, .some(_)): return tabs + "<\(name)" + attr + ">\(self.value!)\n"
+            case (false, .some(_)): return tabs + "<\(name)" + attr + ">\(valueString)\n"
             case (false, .none):    return tabs + "<\(name)" + attr + ">\n"
             }
         }
@@ -642,9 +648,14 @@ public class SimpleXMLParser: NSObject, XMLParserDelegate {
     public var root:XML?
     public let data:Data
     
-    var currentParent:XML?
-    var currentElement:XML?
+    weak var currentElement:XML?
     var parseError:Swift.Error?
+    
+    deinit {
+        self.root = nil
+        self.currentElement = nil
+        self.parseError = nil
+    }
     
     public init(data: Data) {
         self.data = data
@@ -657,9 +668,8 @@ public class SimpleXMLParser: NSObject, XMLParserDelegate {
         parser.shouldProcessNamespaces = false
         parser.shouldReportNamespacePrefixes = false
         parser.shouldResolveExternalEntities = false
-        
-        guard parser.parse() else {
-            guard let error = parseError else { fatalError("XML parsing exception !") }
+        parser.parse()
+        if let error = parseError {
             throw error
         }
     }
@@ -671,19 +681,24 @@ public class SimpleXMLParser: NSObject, XMLParserDelegate {
                              qualifiedName qName: String?,
                              attributes attributeDict: [String : String])
     {
+        let element = XML(name: elementName, attributes: attributeDict)
+        
         if self.root == nil {
-            self.root = XML(name: elementName, attributes: attributeDict)
-            self.currentParent = self.root
+            self.root = element
+            self.currentElement = element
         } else {
-            self.currentElement = XML(name: elementName, attributes: attributeDict)
-            self.currentParent?.addChild(self.currentElement!)
-            self.currentParent = currentElement
+            self.currentElement?.addChild(element)
+            self.currentElement = element
         }
     }
     
     @objc public func parser(_ parser: XMLParser, foundCharacters string: String) {
-        let newValue = string.trimmingCharacters(in: .whitespacesAndNewlines)
-        self.currentElement?.value = newValue.isEmpty ? nil : newValue
+        
+        if let currentValue = self.currentElement?.value {
+            self.currentElement?.value = currentValue + string
+        } else {
+            self.currentElement?.value = string
+        }
     }
     
     @objc public func parser(_ parser: XMLParser,
@@ -691,8 +706,7 @@ public class SimpleXMLParser: NSObject, XMLParserDelegate {
                              namespaceURI: String?,
                              qualifiedName qName: String?)
     {
-        currentParent = currentParent?.parent
-        currentElement = nil
+        currentElement = currentElement?.parent
     }
     
     @objc public func parser(_ parser: XMLParser, parseErrorOccurred parseError: Swift.Error) {

@@ -27,8 +27,6 @@ The type of the BIN or HEX file.
 - Bootloader:           Firmware file will be sent as a new Bootloader
 - Application:          Firmware file will be sent as a new application
 */
-import Foundation
-
 @objc public enum DFUFirmwareType : UInt8 {
     case softdevice = 1
     case bootloader = 2
