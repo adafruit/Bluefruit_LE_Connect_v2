@@ -303,11 +303,12 @@ class PinIOModuleManager: NSObject {
                     case 0x06:
                         // I2C
                         i += 1      // skip resolution byte
-                    case 0x0b:      // INPUT_PULLUP
+                    case 0x0b:
+                        // INPUT_PULLUP
                         isInput = true
                         i += 1      // skip resolution byte
                     default:
-                        i += 1      // skip byte for unknown commands
+                        i += 1      // skip resolution byte for unknown commands
                     }
                     i += 1
                 }
@@ -472,11 +473,11 @@ class PinIOModuleManager: NSObject {
         
         // Send
         var bytes: [UInt8]
-        if pin.analogPinId > 15 {
+        if pin.digitalPinId > 15 {
             // Extended Analog
             let data0 = UInt8(pin.digitalPinId)
-            let data1 = UInt8(value & 0xff)                 // least significant byte
-            let data2 = UInt8((value >> 8) & 0xff)          // next byte
+            let data1 = UInt8(value & 0x7f)                 // only 7 bottom bits
+            let data2 = UInt8(value >> 7)                   // top bit in second byte
             
             bytes = [SYSEX_START, 0x6f, data0, data1, data2, SYSEX_END]
         }
