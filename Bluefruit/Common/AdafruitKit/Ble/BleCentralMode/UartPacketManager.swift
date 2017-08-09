@@ -11,7 +11,6 @@ import Foundation
 
 class UartPacketManager: UartPacketManagerBase {
 
-
     override init(delegate: UartPacketManagerDelegate?, isPacketCacheEnabled: Bool, isMqttEnabled: Bool) {
         super.init(delegate: delegate, isPacketCacheEnabled: isPacketCacheEnabled, isMqttEnabled: isMqttEnabled)
 
@@ -86,7 +85,4 @@ class UartPacketManager: UartPacketManagerBase {
             }
         }
     }
-
-  
-
-   }
+}

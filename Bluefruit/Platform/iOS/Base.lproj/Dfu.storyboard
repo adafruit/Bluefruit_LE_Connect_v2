@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -15,7 +18,7 @@
                         <viewControllerLayoutGuide type="bottom" id="0FG-pz-BED"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Met-nX-FHc">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z9O-lj-KbF">
@@ -78,7 +81,6 @@
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4_7.fullscreen"/>
                     <connections>
                         <outlet property="backgroundView" destination="Z9O-lj-KbF" id="yxz-4f-atD"/>
                         <outlet property="cancelButton" destination="F0U-EU-etI" id="2wH-Lu-qeu"/>
@@ -100,7 +102,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Tx9-j5-zds"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="lRk-gn-fbf">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Znu-qZ-xjw">
@@ -286,7 +288,6 @@
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4_7.fullscreen"/>
                     <connections>
                         <outlet property="backgroundView" destination="Znu-qZ-xjw" id="e6W-TU-yLI"/>
                         <outlet property="cancelButton" destination="d5a-Hq-fLf" id="JTR-FB-Eoq"/>
@@ -310,7 +311,7 @@
                         <viewControllerLayoutGuide type="bottom" id="NUd-3c-fjX"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="76I-cs-gdl">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="50" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ybV-FE-sFr">
@@ -385,7 +386,6 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4_7.fullscreen"/>
                     <connections>
                         <outlet property="firmwareTableView" destination="ybV-FE-sFr" id="WgF-81-xLy"/>
                     </connections>
@@ -393,6 +393,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jAZ-zk-tbP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1337" y="543"/>
+        </scene>
+        <!--HelpViewController-->
+        <scene sceneID="C9T-5l-Wj3">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="HelpViewController" storyboardName="Main" referencedIdentifier="HelpViewController" id="I7s-yO-5Z8" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MgT-la-WaU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1336" y="129"/>
         </scene>
     </scenes>
     <resources>

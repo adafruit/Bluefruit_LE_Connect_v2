@@ -92,9 +92,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
         updateStatusUI(isWaitingResponse: true)
         neopixel.start { error in
             DispatchQueue.main.async { [weak self] in
-                guard let context = self else {
-                    return
-                }
+                guard let context = self else { return  }
 
                 guard error == nil else {
                     DLog("Error initializing uart")
@@ -259,7 +257,12 @@ class NeopixelModeViewController: PeripheralModeViewController {
                 statusMessage = "Connected"
             }
         } else {
-            statusMessage = "Not detected"
+            if isWaitingResponse {
+                statusMessage = "Checking Sketch..."
+            }
+            else {
+                statusMessage = "Not detected"
+            }
         }
         statusLabel.text = statusMessage
     }
@@ -401,6 +404,11 @@ class NeopixelModeViewController: PeripheralModeViewController {
 
     @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
+
+        let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
+        helpViewController.setHelp(localizationManager.localizedString("neopixel_help_text"), title: localizationManager.localizedString("neopixel_help_title"))
+
+/*
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpExportViewController") as! HelpExportViewController
         helpViewController.setHelp(localizationManager.localizedString("neopixel_help_text"), title: localizationManager.localizedString("neopixel_help_title"))
         helpViewController.fileTitle = "Neopixel Sketch"
@@ -408,7 +416,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
         // Setup file download
         let sketchUrl = Bundle.main.url(forResource: "Neopixel_Arduino", withExtension: "zip")!
         helpViewController.fileURL = sketchUrl
-
+*/
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
         helpNavigationController.modalPresentationStyle = .popover
         helpNavigationController.popoverPresentationController?.barButtonItem = sender

@@ -126,9 +126,7 @@ extension BlePeripheral {
 
     // MARK: - Send
     func uartSend(data: Data?, completion: ((Error?) -> Void)? = nil) {
-        guard let data = data else {
-            return
-        }
+        guard let data = data else { completion?(nil); return }
 
         guard let uartTxCharacteristic = uartTxCharacteristic, let uartTxCharacteristicWriteType = uartTxCharacteristicWriteType else {
             DLog("Command Error: characteristic no longer valid")
@@ -164,7 +162,15 @@ extension BlePeripheral {
     }
 
     func uartSendWithAndWaitReply(data: Data?, writeCompletion: ((Error?) -> Void)? = nil, readTimeout: Double? = BlePeripheral.kUartReplyDefaultTimeout, readCompletion: @escaping CapturedReadCompletionHandler) {
+        
         guard let data = data else {
+            if let writeCompletion = writeCompletion {
+                writeCompletion(nil)
+            } else {
+                // If no writeCompletion defined, move the error result to the readCompletion
+                readCompletion(nil, nil)
+            }
+        
             return
         }
 
@@ -186,7 +192,7 @@ extension BlePeripheral {
             let packet = data.subdata(in: offset..<offset+packetSize)
             offset += packetSize
 
-            writeAndCaptureNotify(data: packet, for: uartTxCharacteristic, /*type: uartTxCharacteristicWriteType, */writeCompletion: { (error) in
+            writeAndCaptureNotify(data: packet, for: uartTxCharacteristic, writeCompletion: { error in
                 if let error = error {
                     DLog("write packet at offset: \(offset) error: \(error)")
                 } else {

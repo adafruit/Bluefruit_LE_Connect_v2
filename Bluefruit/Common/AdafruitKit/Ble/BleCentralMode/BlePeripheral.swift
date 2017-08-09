@@ -96,24 +96,43 @@ class BlePeripheral: NSObject {
         var identifier: String
         var result: CapturedReadCompletionHandler
         var timeoutTimer: MSWeakTimer?
+        var timeoutAction: ((String)->())?
         var isNotifyOmitted: Bool
 
-        init(identifier: String, result: @escaping CapturedReadCompletionHandler, timeout: Double?, isNotifyOmitted: Bool = false) {
+        init(identifier: String, result: @escaping CapturedReadCompletionHandler, timeout: Double?, timeoutAction:((String)->())?,  isNotifyOmitted: Bool = false) {
             self.identifier = identifier
             self.result = result
             self.isNotifyOmitted = isNotifyOmitted
 
             if let timeout = timeout {
                 timeoutTimer = MSWeakTimer.scheduledTimer(withTimeInterval: timeout, target: self, selector: #selector(timerFired), userInfo: nil, repeats: false, dispatchQueue: DispatchQueue.global(qos: .background))
+                self.timeoutAction = timeoutAction
             }
         }
 
         @objc func timerFired() {
+            timeoutTimer?.invalidate()
             timeoutTimer = nil
             result(nil, PeripheralError.timeout)
+            timeoutAction?(identifier)
         }
     }
 
+    fileprivate func timeOutRemoveCaptureHandler(identifier: String) {
+        var hasCaptureHandler = false
+        if captureReadHandlers.count > 0, let index = captureReadHandlers.index(where: {$0.identifier == identifier}) {
+            hasCaptureHandler = true
+            // DLog("captureReadHandlers index: \(index) / \(captureReadHandlers.count)")
+            
+            // Remove capture handler
+            captureReadHandlers.remove(at: index)
+        }
+        
+        if hasCaptureHandler {
+            finishedExecutingCommand(error: PeripheralError.timeout)
+        }
+    }
+    
     // Internal data
     fileprivate var notifyHandlers = [String: ((Error?) -> Void)]()                 // Nofify handlers for each service-characteristic
     fileprivate var captureReadHandlers = [CaptureReadHandler]()
@@ -264,7 +283,7 @@ class BlePeripheral: NSObject {
         commandQueue.append(command)
     }
 
-    func writeAndCaptureNotify(data: Data, for characteristic: CBCharacteristic, /*type: CBCharacteristicWriteType,*/ writeCompletion: ((Error?) -> Void)? = nil, readCharacteristic: CBCharacteristic, readTimeout: Double? = nil, readCompletion: CapturedReadCompletionHandler? = nil) {
+    func writeAndCaptureNotify(data: Data, for characteristic: CBCharacteristic, writeCompletion: ((Error?) -> Void)? = nil, readCharacteristic: CBCharacteristic, readTimeout: Double? = nil, readCompletion: CapturedReadCompletionHandler? = nil) {
         let type: CBCharacteristicWriteType = .withResponse     // Force write with response
         let command = BleCommand(type: .writeCharacteristicAndWaitNofity, parameters: [characteristic, type, data, readCharacteristic, readCompletion as Any, readTimeout as Any], timeout: readTimeout, completion: writeCompletion)
         commandQueue.append(command)
@@ -426,39 +445,31 @@ class BlePeripheral: NSObject {
         let completion = command.parameters![1] as! CapturedReadCompletionHandler
 
         let identifier = handlerIdentifier(from: characteristic)
-        let captureReadHandler = CaptureReadHandler(identifier: identifier, result: completion, timeout: nil)
+        let captureReadHandler = CaptureReadHandler(identifier: identifier, result: completion, timeout: nil, timeoutAction: timeOutRemoveCaptureHandler)
         captureReadHandlers.append(captureReadHandler)
 
         peripheral.readValue(for: characteristic)
     }
 
-    // private static let hasWithoutResponseBug = !(ProcessInfo().operatingSystemVersion.majorVersion >= 10 &&  ProcessInfo().operatingSystemVersion.minorVersion >= 2)
     private func write(with command: BleCommand) {
         let characteristic = command.parameters![0] as! CBCharacteristic
         let writeType = command.parameters![1] as! CBCharacteristicWriteType
         let data = command.parameters![2] as! Data
 
         peripheral.writeValue(data, for: characteristic, type: writeType)
-
+        
         if writeType == .withoutResponse {
-            /*
-            if BlePeripheral.hasWithoutResponseBug {
-                // Warning: iOS 9.x, 10.0 and 10.1, always call didWrite even for .withoutResponse. It is fixed on iOS 10.2
-                // didWrite will be called. Continue processing there (didWriteValueFor)
+            if !command.isCancelled, command.type == .writeCharacteristicAndWaitNofity {
+                let readCharacteristic = command.parameters![3] as! CBCharacteristic
+                let readCompletion = command.parameters![4] as! CapturedReadCompletionHandler
+                let timeout = command.parameters![5] as? Double
+                
+                let identifier = handlerIdentifier(from: readCharacteristic)
+                let captureReadHandler = CaptureReadHandler(identifier: identifier, result: readCompletion, timeout: timeout, timeoutAction: timeOutRemoveCaptureHandler)
+                captureReadHandlers.append(captureReadHandler)
             }
-            else {*/
-                if !command.isCancelled, command.type == .writeCharacteristicAndWaitNofity {
-                    let readCharacteristic = command.parameters![3] as! CBCharacteristic
-                    let readCompletion = command.parameters![4] as! CapturedReadCompletionHandler
-                    let timeout = command.parameters![5] as? Double
-
-                    let identifier = handlerIdentifier(from: readCharacteristic)
-                    let captureReadHandler = CaptureReadHandler(identifier: identifier, result: readCompletion, timeout: timeout)
-                    captureReadHandlers.append(captureReadHandler)
-                }
-
-                finishedExecutingCommand(error: nil)
-            //}
+            
+            finishedExecutingCommand(error: nil)
         }
     }
 
@@ -467,7 +478,7 @@ class BlePeripheral: NSObject {
         let completion = command.parameters![1] as! CapturedReadCompletionHandler
 
         let identifier = handlerIdentifier(from: descriptor)
-        let captureReadHandler = CaptureReadHandler(identifier: identifier, result: completion, timeout: nil)
+        let captureReadHandler = CaptureReadHandler(identifier: identifier, result: completion, timeout: nil, timeoutAction: timeOutRemoveCaptureHandler)
         captureReadHandlers.append(captureReadHandler)
 
         peripheral.readValue(for: descriptor)
@@ -533,7 +544,6 @@ extension BlePeripheral: CBPeripheralDelegate {
             captureReadHandler.result(value, error)
 
             isNotifyOmmited = captureReadHandler.isNotifyOmitted
-
         }
 
         // Notify
@@ -550,7 +560,7 @@ extension BlePeripheral: CBPeripheralDelegate {
             finishedExecutingCommand(error: error)
         }
     }
-
+    
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         if let command = commandQueue.first(), !command.isCancelled, command.type == .writeCharacteristicAndWaitNofity {
             let characteristic = command.parameters![3] as! CBCharacteristic
@@ -559,7 +569,7 @@ extension BlePeripheral: CBPeripheralDelegate {
             let identifier = handlerIdentifier(from: characteristic)
 
             //DLog("read timeout started")
-            let captureReadHandler = CaptureReadHandler(identifier: identifier, result: readCompletion, timeout: timeout)
+            let captureReadHandler = CaptureReadHandler(identifier: identifier, result: readCompletion, timeout: timeout, timeoutAction: timeOutRemoveCaptureHandler)
             captureReadHandlers.append(captureReadHandler)
         } else {
             finishedExecutingCommand(error: error)

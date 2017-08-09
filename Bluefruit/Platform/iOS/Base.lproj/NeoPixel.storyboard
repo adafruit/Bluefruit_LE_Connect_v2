@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -736,77 +736,13 @@
             </objects>
             <point key="canvasLocation" x="2573" y="2929"/>
         </scene>
-        <!--Help-->
-        <scene sceneID="AzO-eZ-y2O">
+        <!--HelpViewController-->
+        <scene sceneID="dL7-jv-Ec9">
             <objects>
-                <viewController storyboardIdentifier="HelpExportViewController" automaticallyAdjustsScrollViewInsets="NO" id="EIa-LX-bgO" customClass="HelpExportViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="9dh-oz-9Km"/>
-                        <viewControllerLayoutGuide type="bottom" id="BLP-z8-bgW"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="xen-ly-5Pe">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6pW-1M-wuc">
-                                <rect key="frame" x="16" y="137.5" width="343" height="469.5"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                            </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Help Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ynj-VN-3da">
-                                <rect key="frame" x="16" y="84" width="343" height="33.5"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="57G-EC-U2K">
-                                <rect key="frame" x="133" y="617" width="109" height="30"/>
-                                <state key="normal" title="Export Sketch..."/>
-                                <connections>
-                                    <action selector="onCickExport:" destination="EIa-LX-bgO" eventType="touchUpInside" id="sVc-Lf-YUb"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="0.14901960780000001" green="0.14901960780000001" blue="0.14901960780000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="57G-EC-U2K" firstAttribute="centerX" secondItem="xen-ly-5Pe" secondAttribute="centerX" id="F2N-Sq-NWp"/>
-                            <constraint firstItem="6pW-1M-wuc" firstAttribute="top" secondItem="ynj-VN-3da" secondAttribute="bottom" constant="20" id="We4-vP-Svz"/>
-                            <constraint firstItem="57G-EC-U2K" firstAttribute="top" secondItem="6pW-1M-wuc" secondAttribute="bottom" constant="10" id="Zfx-gp-OzT"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="ynj-VN-3da" secondAttribute="trailing" id="ceo-6i-FBr"/>
-                            <constraint firstItem="BLP-z8-bgW" firstAttribute="top" secondItem="57G-EC-U2K" secondAttribute="bottom" constant="20" id="ckc-NS-TJb"/>
-                            <constraint firstItem="ynj-VN-3da" firstAttribute="leading" secondItem="xen-ly-5Pe" secondAttribute="leadingMargin" id="d9D-xw-s9g"/>
-                            <constraint firstItem="6pW-1M-wuc" firstAttribute="leading" secondItem="xen-ly-5Pe" secondAttribute="leadingMargin" id="dP5-NY-o0u"/>
-                            <constraint firstItem="6pW-1M-wuc" firstAttribute="top" secondItem="9dh-oz-9Km" secondAttribute="bottom" constant="20" id="gHL-1p-lvM"/>
-                            <constraint firstItem="ynj-VN-3da" firstAttribute="top" secondItem="9dh-oz-9Km" secondAttribute="bottom" constant="20" id="rk9-Kc-7kD"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="6pW-1M-wuc" secondAttribute="trailing" id="tdA-8N-ncn"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="gHL-1p-lvM"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <navigationItem key="navigationItem" title="Help" id="Gq0-xu-7Wf">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="f3l-fw-j5k">
-                            <connections>
-                                <action selector="onClickDone:" destination="EIa-LX-bgO" id="dgD-qD-cvh"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <connections>
-                        <outlet property="exportButton" destination="57G-EC-U2K" id="E7N-9j-04u"/>
-                        <outlet property="messageLabel" destination="6pW-1M-wuc" id="t86-zh-7JL"/>
-                        <outlet property="titleLabel" destination="ynj-VN-3da" id="0ET-OF-MdH"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="GBH-TM-NbY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardIdentifier="HelpViewController" storyboardName="Main" referencedIdentifier="HelpViewController" id="7ak-O4-Jxn" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6ce-IO-tl0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1337" y="1657"/>
+            <point key="canvasLocation" x="1307" y="2262"/>
         </scene>
     </scenes>
     <resources>

@@ -231,6 +231,7 @@ class NeopixelModuleManager: NSObject {
         let command: [UInt8] = [0x56]      // V
         let data = Data(bytes: command, count: command.count)
 
+        isSketchDetected = nil      // Reset status
         uartManager.sendAndWaitReply(blePeripheral: blePeripheral, data: data) { (data, error) in
             var isSketchDetected = false
             if let data = data as? Data, error == nil, let result = String(data: data, encoding: .utf8) {

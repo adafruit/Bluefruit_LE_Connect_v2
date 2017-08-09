@@ -116,6 +116,8 @@ extension NeopixelComponentSelectorViewController: UITableViewDelegate {
             selectedComponent = component
             baseTableView.reloadData()
             onSetComponents?(component, is400HkzEnabled)
+            
+            dismiss(animated: true, completion: nil)
         }
     }
 }
