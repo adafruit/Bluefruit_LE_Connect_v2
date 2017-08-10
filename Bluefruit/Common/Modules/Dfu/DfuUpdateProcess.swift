@@ -56,6 +56,32 @@ class DfuUpdateProcess: NSObject {
 
         dfuController = initiator.start()
     }
+    
+    
+    func startUpdateForPeripheral(peripheral: CBPeripheral, zipUrl: URL) {
+        let firmware = DFUFirmware(urlToZipFile: zipUrl)
+        
+        guard let selectedFirmware = firmware, selectedFirmware.valid else {
+            delegate?.onUpdateProcessError(errorMessage: "Firmware files not valid", infoMessage: nil)
+            return
+        }
+        
+        guard let centralManager = BleManager.sharedInstance.centralManager else {
+            delegate?.onUpdateProcessError(errorMessage: "Bluetooth not ready", infoMessage: nil)
+            return
+        }
+        let initiator = DFUServiceInitiator(centralManager: centralManager, target: peripheral).with(firmware: selectedFirmware)
+
+        // Optional:
+        // initiator.forceDfu = true/false; // default false
+        // initiator.packet1ReceiptNotificationParameter = N; // default is 12
+        initiator.logger = self; // - to get log info
+        initiator.delegate = self; // - to be informed about current state and errors
+        initiator.progressDelegate = self; // - to show progress bar
+        // initiator.peripheralSelector = ... // the default selector is used
+        
+        dfuController = initiator.start()
+    }
 
     func cancel() {
         // Cancel current operation

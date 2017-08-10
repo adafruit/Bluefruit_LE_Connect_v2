@@ -23,7 +23,8 @@ class CommandLine: NSObject {
     fileprivate var iniUrl: URL?
     fileprivate var zipUrl: URL?
     fileprivate var releases: [AnyHashable: Any]?
-
+    fileprivate var dFUIgnorePrechecks = false
+    
     // MARK: - Bluetooth Status
     func checkBluetoothErrors() -> String? {
         var errorMessage: String?
@@ -59,8 +60,10 @@ class CommandLine: NSObject {
         print("\tShow version:       --version")
         print("")
         print("Options:")
-        print("\t--uuid <uuid>    If present the peripheral with that uuid is used. If not present a list of peripherals is displayed")
-        print("\t--enable-beta    If not present only stable versions are used")
+        print("\t--uuid <uuid>      If present the peripheral with that uuid is used. If not present a list of peripherals is displayed")
+        print("\t--enable-beta      If not present only stable versions are used")
+        print("\t--ignore-warnings  Ignore any warnings and continue the update process")
+
         print("")
         print("Short syntax:")
         print("\t-u = --uuid, -b = --enable-beta, -h = --hex, -i = --init, -v = --version, -? = --help")
@@ -168,16 +171,18 @@ class CommandLine: NSObject {
     // MARK: - DFU
     private weak var didConnectToPeripheralObserver: NSObjectProtocol?
 
-    func dfuPeripheral(uuid peripheralUUID: UUID, hexUrl: URL? = nil, iniUrl: URL? = nil, releases: [AnyHashable: Any]? = nil) {
+    func dfuPeripheral(uuid peripheralUUID: UUID, hexUrl: URL? = nil, iniUrl: URL? = nil, releases: [AnyHashable: Any]? = nil, ignorePreChecks: Bool) {
 
         self.hexUrl = hexUrl
         self.iniUrl = iniUrl
+        self.dFUIgnorePrechecks = ignorePreChecks
 
         startDfuPeripheral(uuid: peripheralUUID, releases: releases)
     }
     
-    func dfuPeripheral(uuid peripheralUUID: UUID, zipUrl: URL, releases: [AnyHashable: Any]? = nil) {
+    func dfuPeripheral(uuid peripheralUUID: UUID, zipUrl: URL, releases: [AnyHashable: Any]? = nil, ignorePreChecks: Bool) {
         self.zipUrl = zipUrl
+        self.dFUIgnorePrechecks = ignorePreChecks
         
         startDfuPeripheral(uuid: peripheralUUID, releases: releases)
     }
@@ -283,15 +288,24 @@ extension CommandLine: FirmwareUpdaterDelegate {
             print("\tBootlader:    \(deviceInfo.bootloaderVersion ?? "{unknown}")")
         }
         
-        guard deviceInfo?.hasDefaultBootloaderVersion == false else {
-            print("The legacy bootloader on this device is not compatible with this application")
-            dfuFinished()
-            return
+        if !dFUIgnorePrechecks {
+            guard deviceInfo != nil else {
+                print("DIS characteristic not found")
+                dfuFinished()
+                return
+            }
+            
+            guard deviceInfo?.hasDefaultBootloaderVersion == false else {
+                print("The legacy bootloader on this device is not compatible with this application")
+                dfuFinished()
+                return
+            }
         }
 
         // Determine final hex and init (depending if is a custom firmware selected by the user, or an automatic update comparing the peripheral version with the update server xml)
         var hexUrl: URL?
         var iniUrl: URL?
+        var zipUrl: URL?
 
         if self.releases != nil {  // Use automatic-update
 
@@ -307,14 +321,16 @@ extension CommandLine: FirmwareUpdaterDelegate {
                 dfuFinished()
                 return
             }
-
+            
             print("Auto-update to version: \(latestRelease.version)")
             hexUrl = latestRelease.hexFileUrl
-            iniUrl =  latestRelease.iniFileUrl
-
+            iniUrl = latestRelease.iniFileUrl
+            zipUrl = latestRelease.zipFileUrl
+            
         } else {      // is a custom update selected by the user
             hexUrl = self.hexUrl
             iniUrl = self.iniUrl
+            zipUrl = self.zipUrl
         }
 
         // Check update parameters
@@ -324,8 +340,8 @@ extension CommandLine: FirmwareUpdaterDelegate {
             return
         }
 
-        guard hexUrl != nil else {
-            DLog("dfuDidConnectToPeripheral hexPath is nil")
+        guard hexUrl != nil || zipUrl != nil else {
+            DLog("dfuDidConnectToPeripheral no update file defined")
             dfuFinished()
             return
         }
@@ -333,7 +349,13 @@ extension CommandLine: FirmwareUpdaterDelegate {
         // Start update
         print("Start Update")
         dfuUpdateProcess.delegate = self
-        dfuUpdateProcess.startUpdateForPeripheral(peripheral: dfuPeripheral.peripheral, hexUrl: hexUrl!, iniUrl: iniUrl)
+        
+        if let zipUrl = zipUrl {
+            dfuUpdateProcess.startUpdateForPeripheral(peripheral: dfuPeripheral.peripheral, zipUrl: zipUrl)
+        }
+        else {
+            dfuUpdateProcess.startUpdateForPeripheral(peripheral: dfuPeripheral.peripheral, hexUrl: hexUrl!, iniUrl: iniUrl)
+        }
     }
 
     func onDfuServiceNotFound() {

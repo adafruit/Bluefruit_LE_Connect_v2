@@ -17,9 +17,11 @@ class BasicVersionInfo {
     var version: String
     var hexFileUrl: URL?
     var iniFileUrl: URL?
+    var zipFileUrl: URL?
     var boardName: String
     var isBeta: Bool
 
+    // TODO: add zip files
     init(fileType: UInt8/*DFUFirmwareType*/, version: String, hexFileUrl: URL?, iniFileUrl: URL?, boardName: String, isBeta: Bool) {
         self.fileType = fileType
         self.version = version
@@ -28,6 +30,7 @@ class BasicVersionInfo {
         self.boardName = boardName
         self.isBeta = isBeta
     }
+    
 }
 
 class FirmwareInfo: BasicVersionInfo {

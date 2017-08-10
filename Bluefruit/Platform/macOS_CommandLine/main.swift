@@ -11,7 +11,7 @@ import Foundation
 // Based on http://rachid.koucha.free.fr/tech_corner/pty_pdip.htmlbc
 
 // TTY
-let isTtyEnabled = true
+//let isTtyEnabled = true
 
 func main() {
 //func main(fds: Int32, fdm: Int32) {
@@ -38,6 +38,7 @@ func main() {
         case zipFileShort = "-z"
         case showBetaVersions = "--enable-beta"
         case showBetaVersionsShort = "-b"
+        case ignoreDFUChecks = "--ignore-warnings"
     }
 
     // Data
@@ -51,8 +52,8 @@ func main() {
     var iniUrl: URL?
     var zipUrl: URL?
     var showBetaVersions = false
+    var ignoreDFUChecks = false
 
-    let currentDirectoryUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
 
     /*
     if isTtyEnabled {
@@ -143,12 +144,15 @@ func main() {
                 if peripheralIdentifier == nil {
                     print("\(Parameter.peripheralUuid.rawValue) needs a valid peripheral identifier")
                 }
+                
+            case Parameter.ignoreDFUChecks.rawValue:
+                ignoreDFUChecks = true
 
             case Parameter.hexFile.rawValue, Parameter.hexFileShort.rawValue:
                 hexUrl = nil
                 if arguments.count >= index+1 {
                     let hexFileName = arguments[index+1]
-                    hexUrl = currentDirectoryUrl.appendingPathComponent(hexFileName)
+                    hexUrl = createAbsoluteUrlWith(hexFileName)
 
                     //                DLog("hex: \(hexFileName!)")
                     skipNextArgument = true
@@ -163,7 +167,7 @@ func main() {
                 iniUrl = nil
                 if arguments.count >= index+1 {
                     let iniFileName = arguments[index+1]
-                    iniUrl = currentDirectoryUrl.appendingPathComponent(iniFileName)
+                    iniUrl = createAbsoluteUrlWith(iniFileName)
                     skipNextArgument = true
                 }
 
@@ -175,7 +179,7 @@ func main() {
                 zipUrl = nil
                 if arguments.count >= index+1 {
                     let zipFileName = arguments[index+1]
-                    zipUrl = currentDirectoryUrl.appendingPathComponent(zipFileName)
+                    zipUrl = createAbsoluteUrlWith(zipFileName)
                     skipNextArgument = true
                 }
                 
@@ -233,8 +237,11 @@ func main() {
                 exit(EXIT_FAILURE)
             }
 
+            if ignoreDFUChecks {
+                print("\tIgnore DFU warnings")
+            }
+            
             print("\tUUID: \(peripheralIdentifier)")
-
             
             if let hexUrl = hexUrl {
                 print("\tHex:  \(hexUrl)")
@@ -244,14 +251,14 @@ func main() {
                 
                 // Launch dfu
                 queue.async(group: group) {
-                    commandLine.dfuPeripheral(uuid: peripheralIdentifier, hexUrl: hexUrl, iniUrl: iniUrl)
+                    commandLine.dfuPeripheral(uuid: peripheralIdentifier, hexUrl: hexUrl, iniUrl: iniUrl, ignorePreChecks: ignoreDFUChecks)
                 }
             }
             else if let zipUrl = zipUrl {
                 print("\tZip:  \(zipUrl)")
                 // Launch dfu
                 queue.async(group: group) {
-                    commandLine.dfuPeripheral(uuid: peripheralIdentifier, zipUrl: zipUrl)
+                    commandLine.dfuPeripheral(uuid: peripheralIdentifier, zipUrl: zipUrl, ignorePreChecks: ignoreDFUChecks)
                 }
             }
             else {
@@ -295,7 +302,7 @@ func main() {
 
             // Launch dfu
             queue.async(group: group) {
-                commandLine.dfuPeripheral(uuid: peripheralIdentifier, releases: releases)
+                commandLine.dfuPeripheral(uuid: peripheralIdentifier, releases: releases, ignorePreChecks: ignoreDFUChecks)
             }
             let _ = group.wait(timeout: DispatchTime.distantFuture)
             DLog("update finished")
@@ -311,6 +318,22 @@ func main() {
     exit(EXIT_SUCCESS)
 }
 
+func createAbsoluteUrlWith(_ pathComponent: String) -> URL? {
+    var result: URL?
+    
+    let isAbsolute = pathComponent.hasPrefix(".") || pathComponent.hasPrefix("/")
+    if isAbsolute {
+        result = NSURL.fileURL(withPath: pathComponent) 
+    }
+    else {
+        let currentDirectoryUrl = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        result = currentDirectoryUrl.appendingPathComponent(pathComponent)
+    }
+    
+    return result
+}
+
+/*
 func master(fds: Int32, fdm: Int32) {
     close(fds)
 
@@ -340,6 +363,7 @@ func master(fds: Int32, fdm: Int32) {
         }
     }
 }
+ */
 
 // Disable bufffer
 setbuf(stdout, nil)
