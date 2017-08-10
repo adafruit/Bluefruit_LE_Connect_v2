@@ -213,7 +213,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueCell", for: indexPath) as! MqttSettingsValueAndSelector
                 editValueCell.reset()
 
-                let labels = ["Username:", "Key:" /*"Password:"*/]
+                let labels = ["Username:", "Pass/Key:" /*"Password:"*/]
                 editValueCell.nameLabel.text = labels[row]
 
                 let valueTextField = editValueCell.valueTextField!
