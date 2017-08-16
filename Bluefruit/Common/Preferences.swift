@@ -39,8 +39,6 @@ class Preferences {
     fileprivate static let infoRefreshOnLoadKey = "InfoRefreshOnLoad"
 
     // Uart
-    fileprivate static let uartReceivedDataColorKey = "UartReceivedDataColor"
-    fileprivate static let uartSentDataColorKey = "UartSentDataColor"
     fileprivate static let uartIsDisplayModeTimestampKey = "UartIsDisplayModeTimestamp"
     fileprivate static let uartIsInHexModeKey = "UartIsInHexMode"
     fileprivate static let uartIsEchoEnabledKey = "UartIsEchoEnabled"
@@ -211,34 +209,6 @@ class Preferences {
     }
 
     // MARK: - Uart
-    /*
-    static var uartReceveivedDataColor: Color {
-        get {
-            let defaults = UserDefaults.standard
-            let hexColorString = defaults.string(forKey: Preferences.uartReceivedDataColorKey)
-            return Color(css: hexColorString)
-        }
-        set {
-            let defaults = UserDefaults.standard
-            defaults.set(newValue.hexString(), forKey: Preferences.uartReceivedDataColorKey)
-            NotificationCenter.default.post(name: .didUpdatePreferences, object: nil)
-        }
-    }
-    
-    static var uartSentDataColor: Color {
-        get {
-            let defaults = UserDefaults.standard
-            let hexColorString = defaults.string(forKey: Preferences.uartSentDataColorKey)
-            return Color(css: hexColorString)
-        }
-        set {
-            let defaults = UserDefaults.standard
-            defaults.set(newValue.hexString(), forKey: Preferences.uartSentDataColorKey)
-            NotificationCenter.default.post(name: .didUpdatePreferences, object: nil)
-        }
-    }
- */
-
     static var uartShowInvisibleChars: Bool {
         get {
             return getBoolPreference(Preferences.uartShowInvisibleCharsKey)
