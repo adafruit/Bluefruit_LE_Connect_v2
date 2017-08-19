@@ -14,9 +14,6 @@ protocol ControllerPadViewControllerDelegate: class {
 
 class ControllerPadViewController: UIViewController {
 
-    //  Constants
-    static let prefix = "!B"
-
     // UI
     @IBOutlet weak var directionsView: UIView!
     @IBOutlet weak var numbersView: UIView!

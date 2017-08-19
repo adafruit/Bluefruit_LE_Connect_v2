@@ -2332,24 +2332,28 @@
                                     <outlet property="delegate" destination="DSy-Yb-eRw" id="bK1-FK-XDa"/>
                                 </connections>
                             </tableView>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="HFO-NZ-2Xd">
-                                <rect key="frame" x="169" y="420" width="37" height="37"/>
-                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 peripherals filtered out" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x84-z7-Nvm">
+                                <rect key="frame" x="16" y="430" width="343" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.14901960780000001" green="0.14901960780000001" blue="0.14901960780000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="UrF-25-uzR" firstAttribute="top" secondItem="VRw-K6-EeU" secondAttribute="bottom" constant="8" id="3eb-hr-hNv"/>
-                            <constraint firstItem="HFO-NZ-2Xd" firstAttribute="top" secondItem="UrF-25-uzR" secondAttribute="top" constant="20" id="BeQ-Xa-bMF"/>
-                            <constraint firstItem="HFO-NZ-2Xd" firstAttribute="centerX" secondItem="UrF-25-uzR" secondAttribute="centerX" id="CSl-mR-vUr"/>
+                            <constraint firstItem="x84-z7-Nvm" firstAttribute="trailing" secondItem="uCW-vQ-Jnq" secondAttribute="trailingMargin" id="HYk-gC-hrg"/>
                             <constraint firstItem="VRw-K6-EeU" firstAttribute="leading" secondItem="uCW-vQ-Jnq" secondAttribute="leading" id="MQn-GE-ED3"/>
                             <constraint firstItem="VRw-K6-EeU" firstAttribute="top" secondItem="xDO-MZ-4ce" secondAttribute="bottom" constant="8" id="NAB-Fv-Unf"/>
                             <constraint firstItem="UrF-25-uzR" firstAttribute="leading" secondItem="uCW-vQ-Jnq" secondAttribute="leading" id="OI4-0w-k7d"/>
                             <constraint firstItem="xDO-MZ-4ce" firstAttribute="leading" secondItem="uCW-vQ-Jnq" secondAttribute="leading" id="QHO-zB-KnZ"/>
                             <constraint firstItem="sQ4-8a-1Sd" firstAttribute="top" secondItem="UrF-25-uzR" secondAttribute="bottom" id="Sih-Hb-qmU"/>
                             <constraint firstAttribute="trailing" secondItem="VRw-K6-EeU" secondAttribute="trailing" id="am2-Ep-tw9"/>
+                            <constraint firstItem="x84-z7-Nvm" firstAttribute="leading" secondItem="uCW-vQ-Jnq" secondAttribute="leadingMargin" id="hTX-bN-Zng"/>
                             <constraint firstAttribute="trailing" secondItem="UrF-25-uzR" secondAttribute="trailing" id="kKc-7r-oJC"/>
                             <constraint firstItem="xDO-MZ-4ce" firstAttribute="top" secondItem="SNu-k9-lel" secondAttribute="bottom" id="o4l-FO-3bO"/>
                             <constraint firstAttribute="trailing" secondItem="xDO-MZ-4ce" secondAttribute="trailing" id="p4b-b2-X6Z"/>
+                            <constraint firstItem="x84-z7-Nvm" firstAttribute="top" secondItem="UrF-25-uzR" secondAttribute="top" constant="30" id="q8V-c3-RND"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Central Mode" id="qMW-AH-yIG">
@@ -2366,6 +2370,7 @@
                     <connections>
                         <outlet property="baseTableView" destination="UrF-25-uzR" id="b0e-we-009"/>
                         <outlet property="filterRssiValueLabel" destination="EXC-Yj-cx4" id="qy7-hn-osd"/>
+                        <outlet property="filteredPeripheralsCountLabel" destination="x84-z7-Nvm" id="mXG-HB-6KP"/>
                         <outlet property="filtersClearButton" destination="3VN-ud-Csn" id="eQ7-dq-qFx"/>
                         <outlet property="filtersDisclosureButton" destination="t8V-bn-MBu" id="5bs-yp-BJt"/>
                         <outlet property="filtersNameTextField" destination="PiD-9p-UD4" id="7PC-mC-3ft"/>
@@ -2381,7 +2386,6 @@
                         <outlet property="multiConnectPanelViewHeightConstraint" destination="V7x-gy-fOg" id="YD6-gv-cJi"/>
                         <outlet property="multiConnectShowButton" destination="W25-RG-Geg" id="O8M-Nc-Ozl"/>
                         <outlet property="multiConnectSwitch" destination="idx-m1-E0e" id="oiP-7d-aC6"/>
-                        <outlet property="scanningWaitView" destination="HFO-NZ-2Xd" id="K6E-bh-qDc"/>
                         <segue destination="VKN-Ps-Xdm" kind="popoverPresentation" identifier="filterNameSettingsSegue" popoverAnchorView="rUg-DE-Icb" id="TnE-RL-nmT">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES"/>
                         </segue>

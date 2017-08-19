@@ -70,6 +70,11 @@ class PeripheralList {
         return (filterName != nil && !filterName!.isEmpty) || rssiFilterValue != nil || isOnlyUartEnabled || !isUnnamedEnabled
     }
 
+    func numPeriprehalsFiltered() -> Int {
+        let filteredCount = filteredPeripherals(forceUpdate: false).count
+        return BleManager.sharedInstance.peripherals().count - filteredCount
+    }
+    
     func filteredPeripherals(forceUpdate: Bool) -> [BlePeripheral] {
         if isFilterDirty || forceUpdate {
             cachedFilteredPeripherals = calculateFilteredPeripherals()

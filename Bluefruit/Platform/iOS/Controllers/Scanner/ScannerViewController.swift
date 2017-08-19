@@ -31,7 +31,6 @@ class ScannerViewController: ModeTabViewController {
     @IBOutlet weak var filterRssiValueLabel: UILabel!
     @IBOutlet weak var filtersUnnamedSwitch: UISwitch!
     @IBOutlet weak var filtersUartSwitch: UISwitch!
-    @IBOutlet weak var scanningWaitView: UIView!
 
     @IBOutlet weak var multiConnectPanelView: UIView!
     @IBOutlet weak var multiConnectDisclosureButton: UIButton!
@@ -39,6 +38,8 @@ class ScannerViewController: ModeTabViewController {
     @IBOutlet weak var multiConnectSwitch: UISwitch!
     @IBOutlet weak var multiConnectDetailsLabel: UILabel!
     @IBOutlet weak var multiConnectShowButton: UIButton!
+
+    @IBOutlet weak var filteredPeripheralsCountLabel: UILabel!
 
     
     // Data
@@ -605,12 +606,27 @@ class ScannerViewController: ModeTabViewController {
         isBaseTableScrolling = false
         isBaseTableAnimating = false
         isScannerTableWaitingForReload = false
-        let peripherals = peripheralList.filteredPeripherals(forceUpdate: true)     // Refresh the peripherals
+        let filteredPeripherals = peripheralList.filteredPeripherals(forceUpdate: true)     // Refresh the peripherals
         baseTableView.reloadData()
 
+        // Filtered out label
+        let numPeripheralsFilteredOut = peripheralList.numPeriprehalsFiltered()
+        
+        let isFilteredPeripheralCountLabelHidden = filteredPeripherals.count > 0 || numPeripheralsFilteredOut == 0
+        if filteredPeripheralsCountLabel.isHidden && !isFilteredPeripheralCountLabelHidden {
+            // If becoming visible, animate the change but wait a bit to avoid unnecesary blinking if a device is about to be discovered
+            filteredPeripheralsCountLabel.alpha = 0
+            UIView.animate(withDuration: 0.25, delay: 0.2, options: [], animations: { [weak self] in
+                self?.filteredPeripheralsCountLabel.alpha = 1
+            }, completion: nil)
+        }
+
+        filteredPeripheralsCountLabel.isHidden = isFilteredPeripheralCountLabelHidden
+        
+        filteredPeripheralsCountLabel.text = String(format: numPeripheralsFilteredOut == 1 ? "%ld peripheral filtered out":"%ld peripherals filtered out", numPeripheralsFilteredOut)
+        
         // Select the previously selected row
-        // scanningWaitView.isHidden = peripherals.count > 0
-        if let selectedPeripheral = selectedPeripheral, let selectedRow = peripherals.index(of: selectedPeripheral) {
+        if let selectedPeripheral = selectedPeripheral, let selectedRow = filteredPeripherals.index(of: selectedPeripheral) {
             baseTableView.selectRow(at: IndexPath(row: selectedRow, section: 0), animated: false, scrollPosition: .none)
         }
     }
