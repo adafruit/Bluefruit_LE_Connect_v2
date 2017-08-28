@@ -721,8 +721,13 @@
                                                     <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sLe-d6-nXc">
+                                                    <rect key="frame" x="15" y="46" width="360" height="103.5"/>
+                                                    <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
+                                                </view>
                                                 <segmentedControl opaque="NO" tag="104" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ggq-zo-dHF" userLabel="Segmented Control - Mode">
-                                                    <rect key="frame" x="75" y="55" width="225" height="29"/>
+                                                    <rect key="frame" x="75" y="59" width="225" height="29"/>
+                                                    <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
                                                     <segments>
                                                         <segment title="Input"/>
                                                         <segment title="Output"/>
@@ -732,7 +737,8 @@
                                                     </connections>
                                                 </segmentedControl>
                                                 <segmentedControl opaque="NO" tag="105" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="rQ6-Pm-QZr" userLabel="Segmented Control - Value">
-                                                    <rect key="frame" x="75" y="105" width="225" height="29"/>
+                                                    <rect key="frame" x="75" y="109" width="225" height="29"/>
+                                                    <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
                                                     <segments>
                                                         <segment title="Low"/>
                                                         <segment title="High"/>
@@ -742,7 +748,7 @@
                                                     </connections>
                                                 </segmentedControl>
                                                 <slider hidden="YES" opaque="NO" tag="106" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="255" translatesAutoresizingMaskIntoConstraints="NO" id="vu1-Ws-Z4P" userLabel="Slider - Value">
-                                                    <rect key="frame" x="73" y="104" width="229" height="31"/>
+                                                    <rect key="frame" x="73" y="108" width="229" height="31"/>
                                                     <color key="minimumTrackTintColor" red="0.098798230290412903" green="0.49231177568435669" blue="0.9738011360168457" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="maximumTrackTintColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <color key="thumbTintColor" red="0.098798230290412903" green="0.49231177568435669" blue="0.9738011360168457" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -754,7 +760,9 @@
                                             <constraints>
                                                 <constraint firstItem="14C-U9-H6N" firstAttribute="leading" secondItem="3Xr-Ev-69Y" secondAttribute="leadingMargin" id="1kp-xV-IVc"/>
                                                 <constraint firstItem="rQ6-Pm-QZr" firstAttribute="width" secondItem="ggq-zo-dHF" secondAttribute="width" id="3fh-te-OL6"/>
-                                                <constraint firstItem="ggq-zo-dHF" firstAttribute="top" secondItem="aR8-wG-clU" secondAttribute="bottom" constant="11" id="9dp-NY-Dyw"/>
+                                                <constraint firstAttribute="trailing" secondItem="sLe-d6-nXc" secondAttribute="trailing" id="5XV-by-bUh"/>
+                                                <constraint firstItem="sLe-d6-nXc" firstAttribute="top" secondItem="SOe-8z-pWS" secondAttribute="bottom" constant="5" id="8ep-G3-AQv"/>
+                                                <constraint firstItem="ggq-zo-dHF" firstAttribute="top" secondItem="aR8-wG-clU" secondAttribute="bottom" constant="15" id="9dp-NY-Dyw"/>
                                                 <constraint firstItem="14C-U9-H6N" firstAttribute="top" secondItem="aR8-wG-clU" secondAttribute="top" constant="3" id="AEH-LG-mhE"/>
                                                 <constraint firstItem="Tuu-G3-pVQ" firstAttribute="leading" secondItem="SOe-8z-pWS" secondAttribute="trailing" constant="8" id="Cik-jM-Ytd"/>
                                                 <constraint firstItem="vu1-Ws-Z4P" firstAttribute="trailing" secondItem="ggq-zo-dHF" secondAttribute="trailing" id="ElF-7b-e01"/>
@@ -768,11 +776,13 @@
                                                 <constraint firstItem="rQ6-Pm-QZr" firstAttribute="centerX" secondItem="3Xr-Ev-69Y" secondAttribute="centerX" id="fF3-FV-NmV"/>
                                                 <constraint firstItem="aR8-wG-clU" firstAttribute="top" secondItem="3Xr-Ev-69Y" secondAttribute="top" id="hV7-RN-YfS"/>
                                                 <constraint firstItem="Tuu-G3-pVQ" firstAttribute="centerY" secondItem="aR8-wG-clU" secondAttribute="centerY" id="jg4-lg-xTu"/>
+                                                <constraint firstAttribute="bottom" secondItem="sLe-d6-nXc" secondAttribute="bottom" id="rnU-iw-7eg"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Tuu-G3-pVQ" secondAttribute="trailing" id="sI7-aN-GQd"/>
                                                 <constraint firstItem="Tuu-G3-pVQ" firstAttribute="leading" secondItem="14C-U9-H6N" secondAttribute="trailing" constant="8" id="tr7-ZM-xdr"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="vu1-Ws-Z4P" secondAttribute="trailing" constant="20" id="trh-QQ-lBj"/>
                                                 <constraint firstItem="ggq-zo-dHF" firstAttribute="width" secondItem="3Xr-Ev-69Y" secondAttribute="width" multiplier="0.6" id="w8U-Uf-dBB"/>
                                                 <constraint firstItem="aR8-wG-clU" firstAttribute="bottom" secondItem="SOe-8z-pWS" secondAttribute="bottom" constant="3" id="xx4-Sg-Ww3"/>
+                                                <constraint firstItem="sLe-d6-nXc" firstAttribute="leading" secondItem="3Xr-Ev-69Y" secondAttribute="leadingMargin" id="zGD-PN-5a9"/>
                                                 <constraint firstItem="SOe-8z-pWS" firstAttribute="leading" secondItem="3Xr-Ev-69Y" secondAttribute="leadingMargin" id="zQw-gt-bm5"/>
                                             </constraints>
                                             <variation key="default">
@@ -847,7 +857,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hfz-gl-mKi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3556" y="1015"/>
+            <point key="canvasLocation" x="3556" y="1014.2428785607198"/>
         </scene>
         <!--Control Pad-->
         <scene sceneID="gi7-A2-U8X">
@@ -1254,6 +1264,128 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QXC-6l-nfq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3556" y="1800"/>
+        </scene>
+        <!--Thermal Camera-->
+        <scene sceneID="x8s-1Q-Sz4">
+            <objects>
+                <viewController storyboardIdentifier="ThermalCameraModuleViewController" id="Fql-Dv-7xU" customClass="ThermalCameraModuleViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Zcb-vV-Mih"/>
+                        <viewControllerLayoutGuide type="bottom" id="CpI-4l-FSf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Mcs-Fj-pSm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EHp-eN-4oM">
+                                <rect key="frame" x="16" y="132" width="343" height="426"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for Uart..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f6X-wP-OOt">
+                                <rect key="frame" x="120" y="335" width="135" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n1C-fy-3k3">
+                                <rect key="frame" x="16" y="578" width="343" height="20"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="btY-PX-V4d">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="20"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="33.40" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L42-M9-FpW">
+                                                <rect key="frame" x="0.0" y="0.0" width="40" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="40" id="0hi-go-np8"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lbc-QC-yzd" customClass="ThermalGradientView" customModule="iOS" customModuleProvider="target">
+                                                <rect key="frame" x="48" y="0.0" width="247" height="20"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="33.4" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P70-ac-WRJ">
+                                                <rect key="frame" x="303" y="0.0" width="40" height="20"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="P70-ac-WRJ" firstAttribute="width" secondItem="L42-M9-FpW" secondAttribute="width" id="Bad-6C-hC5"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="btY-PX-V4d" firstAttribute="top" secondItem="n1C-fy-3k3" secondAttribute="top" id="08F-Gu-T2s"/>
+                                    <constraint firstItem="btY-PX-V4d" firstAttribute="leading" secondItem="n1C-fy-3k3" secondAttribute="leading" id="ASA-b4-UEY"/>
+                                    <constraint firstAttribute="bottom" secondItem="btY-PX-V4d" secondAttribute="bottom" id="w7f-hZ-llQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="btY-PX-V4d" secondAttribute="trailing" id="wTH-9d-mEy"/>
+                                    <constraint firstAttribute="height" constant="20" id="zgF-2u-t3S"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uVZ-Bc-PdJ">
+                                <rect key="frame" x="16" y="84" width="343" height="28"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="YDk-7c-Vrr">
+                                        <rect key="frame" x="77" y="0.0" width="189" height="29"/>
+                                        <segments>
+                                            <segment title="Color"/>
+                                            <segment title="Monochrome"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="onColorModeChanged:" destination="Fql-Dv-7xU" eventType="valueChanged" id="HyJ-gu-mDR"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="YDk-7c-Vrr" firstAttribute="top" secondItem="uVZ-Bc-PdJ" secondAttribute="top" id="Sgj-cu-iHi"/>
+                                    <constraint firstItem="YDk-7c-Vrr" firstAttribute="centerX" secondItem="uVZ-Bc-PdJ" secondAttribute="centerX" id="rXe-16-Y7E"/>
+                                    <constraint firstAttribute="bottom" secondItem="YDk-7c-Vrr" secondAttribute="bottom" id="tct-NY-Qn9"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.20874811460000001" green="0.20874811460000001" blue="0.20874811460000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="CpI-4l-FSf" firstAttribute="top" secondItem="n1C-fy-3k3" secondAttribute="bottom" constant="20" id="5CN-0S-blN"/>
+                            <constraint firstItem="EHp-eN-4oM" firstAttribute="leading" secondItem="Mcs-Fj-pSm" secondAttribute="leadingMargin" id="5t9-Ng-bYK"/>
+                            <constraint firstItem="f6X-wP-OOt" firstAttribute="centerX" secondItem="EHp-eN-4oM" secondAttribute="centerX" id="9pl-gX-zOB"/>
+                            <constraint firstItem="uVZ-Bc-PdJ" firstAttribute="leading" secondItem="Mcs-Fj-pSm" secondAttribute="leadingMargin" id="BeT-a6-Spx"/>
+                            <constraint firstItem="EHp-eN-4oM" firstAttribute="top" secondItem="uVZ-Bc-PdJ" secondAttribute="bottom" constant="20" id="SMJ-9F-tdY"/>
+                            <constraint firstItem="uVZ-Bc-PdJ" firstAttribute="top" secondItem="Zcb-vV-Mih" secondAttribute="bottom" constant="20" id="Uol-Sh-kc5"/>
+                            <constraint firstItem="n1C-fy-3k3" firstAttribute="top" secondItem="EHp-eN-4oM" secondAttribute="bottom" constant="20" id="eMY-el-V0e"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="uVZ-Bc-PdJ" secondAttribute="trailing" id="kDh-kL-5Rh"/>
+                            <constraint firstItem="n1C-fy-3k3" firstAttribute="leading" secondItem="Mcs-Fj-pSm" secondAttribute="leadingMargin" id="lTT-J8-KJE"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="n1C-fy-3k3" secondAttribute="trailing" id="pnL-XO-vjr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="EHp-eN-4oM" secondAttribute="trailing" id="slT-tl-1W6"/>
+                            <constraint firstItem="f6X-wP-OOt" firstAttribute="centerY" secondItem="EHp-eN-4oM" secondAttribute="centerY" id="y2u-HL-4ah"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Thermal Camera" id="eAD-oe-d9Y">
+                        <barButtonItem key="rightBarButtonItem" image="info_icon" id="gsp-fG-lKj">
+                            <connections>
+                                <action selector="onClickHelp:" destination="v13-MP-5HC" id="pyg-l4-Heg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="cameraImageView" destination="EHp-eN-4oM" id="xgY-uP-Npm"/>
+                        <outlet property="lowerTempLabel" destination="L42-M9-FpW" id="x8Q-d5-qXE"/>
+                        <outlet property="temperatureScaleContainerView" destination="n1C-fy-3k3" id="n2b-nW-dxi"/>
+                        <outlet property="temperatureScaleView" destination="Lbc-QC-yzd" id="GcL-EK-Kfy"/>
+                        <outlet property="thermalScaleView" destination="Lbc-QC-yzd" id="gNw-9M-6Bk"/>
+                        <outlet property="uartWaitingLabel" destination="f6X-wP-OOt" id="WVr-kp-SLn"/>
+                        <outlet property="upperTempLabel" destination="P70-ac-WRJ" id="K8U-fH-VHY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GnX-Lf-E01" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3556" y="2518.2908545727137"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pA4-S0-V5F">

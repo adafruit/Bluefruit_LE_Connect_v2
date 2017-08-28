@@ -21,7 +21,6 @@ class PlotterModeViewController: PeripheralModeViewController {
     fileprivate var originTimestamp: CFAbsoluteTime!
     fileprivate var isAutoScrollEnabled = true
     fileprivate var numEntriesVisible: TimeInterval = 20      // in seconds
-    //fileprivate var colorForPeripheral = [UUID: UIColor]()
     fileprivate var lineDashForPeripheral = [UUID: [CGFloat]?]()
 
     override func viewDidLoad() {
@@ -62,7 +61,6 @@ class PlotterModeViewController: PeripheralModeViewController {
 
     fileprivate func setupUart() {
         // Reset colors assigned to peripherals
-        //let colors = UartStyle.defaultColors()
         let lineDashes = UartStyle.defaultLineDashes()
         lineDashForPeripheral.removeAll()
 
@@ -188,7 +186,7 @@ class PlotterModeViewController: PeripheralModeViewController {
         dataSet.drawValuesEnabled = false
         dataSet.lineWidth = 2
         let colors = UartStyle.defaultColors()
-        let color = colors[index % colors.count] //colorForPeripheral[identifier]?.withAlphaComponent(1.0 - CGFloat(index)*0.30) ?? UIColor.black
+        let color = colors[index % colors.count]
         dataSet.setColor(color)
         dataSet.lineDashLengths = lineDashForPeripheral[identifier]!
         DLog("color: \(color.hexString()!)")

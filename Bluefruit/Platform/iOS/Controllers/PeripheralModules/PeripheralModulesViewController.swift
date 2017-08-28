@@ -34,6 +34,7 @@ class PeripheralModulesViewController: UIViewController {
         case controller
         case neopixel
         case calibration
+        case thermalcamera
         case dfu
     }
 
@@ -260,9 +261,9 @@ class PeripheralModulesViewController: UIViewController {
         if startingController == .multiUart {
             return [.uart, .plotter]
         } else if hasUart && hasDFU {
-            return [.info, .uart, .plotter, .pinIO, .controller, .neopixel, .calibration, .dfu]
+            return [.info, .uart, .plotter, .pinIO, .controller, .neopixel, .calibration, .thermalcamera, .dfu]
         } else if hasUart {
-            return [.info, .uart, .plotter, .pinIO, .controller, .calibration]
+            return [.info, .uart, .plotter, .pinIO, .controller, .calibration, .thermalcamera]
         } else if hasDFU {
             return [.info, .dfu]
         } else {
@@ -370,6 +371,9 @@ extension PeripheralModulesViewController: UITableViewDelegate {
             case .calibration:
                 iconName = "tab_calibration_icon"
                 titleId = "calibration_tab_title"
+            case .thermalcamera:
+                iconName = "tab_thermalcamera_icon"
+                titleId = "thermalcamera_tab_title"
             case .dfu:
                 iconName = "tab_dfu_icon"
                 titleId = "dfu_tab_title"
@@ -436,6 +440,12 @@ extension PeripheralModulesViewController: UITableViewDelegate {
                     calibrationViewController.blePeripheral = blePeripheral
                     show(calibrationViewController, sender: self)
                 }
+            case .thermalcamera:
+                if let thermalCameraViewController = self.storyboard?.instantiateViewController(withIdentifier: "ThermalCameraModuleViewController") as? ThermalCameraModuleViewController {
+                    thermalCameraViewController.blePeripheral = blePeripheral
+                    show(thermalCameraViewController, sender: self)
+                }
+                
             case .dfu:
                 showDfu()
             }

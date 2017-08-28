@@ -25,6 +25,7 @@ class ControllerModeViewController: PeripheralModeViewController {
     fileprivate var contentItems = [Int]()
     fileprivate weak var controllerPadViewController: ControllerPadViewController?
 
+    // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -76,15 +77,16 @@ class ControllerModeViewController: PeripheralModeViewController {
         }
     }
 
-    deinit {
-        DLog("ControllerModeViewController deinit")
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    deinit {
+        DLog("ControllerModeViewController deinit")
+    }
 
+    // MARK: - UI
     fileprivate func updateUartUI(isReady: Bool) {
         // Setup UI
         uartWaitingLabel.isHidden = isReady
@@ -108,7 +110,6 @@ class ControllerModeViewController: PeripheralModeViewController {
     }
 
     // MARK: Notifications
-
     private weak var didReceiveWatchCommandObserver: NSObjectProtocol?
 
     private func registerNotifications(enabled: Bool) {
@@ -376,14 +377,12 @@ extension ControllerModeViewController: UITableViewDelegate {
 extension ControllerModeViewController: ControllerModuleManagerDelegate {
     func onControllerUartIsReady(error: Error?) {
         DispatchQueue.main.async { [weak self] in
-            guard let context = self else {
-                return
-            }
+            guard let context = self else { return }
 
             context.updateUartUI(isReady: error == nil)
             guard error == nil else {
                 DLog("Error initializing uart")
-                context.dismiss(animated: true, completion: { [weak self] () -> Void in
+                context.dismiss(animated: true, completion: { [weak self] in
                     if let context = self {
                         showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
 

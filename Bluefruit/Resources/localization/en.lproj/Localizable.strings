@@ -336,7 +336,9 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "calibration_tab_title" = "AHRS/Calibration";
 "calibration_navigation_title_format" = "AHRS/Calibration - %@";
 
-
+// Thermal Camera
+"thermalcamera_tab_title" = "Thermal Camera";
+"thermalcamera_navigation_title_format" = "Thermal Camera - %@";
 
 // Common
 "dialog_ok" = "Ok";

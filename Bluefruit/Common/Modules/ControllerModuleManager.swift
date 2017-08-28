@@ -119,6 +119,11 @@ class ControllerModuleManager: NSObject {
     func uartTextBuffer() -> String {
         return textCachedBuffer
     }
+    
+    func uartRxCacheReset() {
+        uartManager.clearRxCache(peripheralIdentifier: blePeripheral.identifier)
+        textCachedBuffer.removeAll()
+    }
 
     // MARK: -
     private func startUpdatingData() {
@@ -245,11 +250,6 @@ class ControllerModuleManager: NSObject {
         }
 
         return errorString
-    }
-
-    func uartRxCacheReset() {
-        uartManager.clearRxCache(peripheralIdentifier: blePeripheral.identifier)
-        textCachedBuffer.removeAll()
     }
 }
 

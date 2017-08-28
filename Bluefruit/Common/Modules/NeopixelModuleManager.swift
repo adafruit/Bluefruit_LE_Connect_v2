@@ -147,22 +147,16 @@ class NeopixelModuleManager: NSObject {
     struct Board {
         var name = "<No name>"
         var width: UInt8 = 0, height: UInt8 = 0
-//        var components: UInt8 = 3
         var stride: UInt8 = 0
-//        var type: UInt16 = kDefaultType
 
         static func loadStandardBoard(_ standardIndex: Int) -> Board? {
             let path = Bundle.main.path(forResource: "NeopixelBoards", ofType: "plist")!
-            guard let boards = NSArray(contentsOfFile: path) as? [[String: AnyObject]] else {
-                DLog("Error: cannot load boards")
-                return nil
-            }
+            guard let boards = NSArray(contentsOfFile: path) as? [[String: AnyObject]] else { DLog("Error: cannot load boards"); return nil }
 
             let boardData = boards[standardIndex]
             let name = boardData["name"] as! String
             let width = UInt8((boardData["width"] as! NSNumber).intValue)
             let height = UInt8((boardData["height"] as! NSNumber).intValue)
-            //let components = UInt8((boardData["componentValue"] as! NSNumber).intValue)
             let stride = UInt8((boardData["stride"] as! NSNumber).intValue)
 
             let board = NeopixelModuleManager.Board(name: name, width: width, height: height, stride: stride)
@@ -194,7 +188,6 @@ class NeopixelModuleManager: NSObject {
     }
 
     // MARK: - Start / Stop
-
     func start(uartReadyCompletion:@escaping ((Error?) -> Void)) {
         DLog("neopixel start")
 

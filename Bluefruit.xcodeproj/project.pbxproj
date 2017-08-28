@@ -56,6 +56,7 @@
 		A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D4F1E4174F800DE90C6 /* KeyboardPositionNotifier.swift */; };
 		A91E7D5C1E4216ED00DE90C6 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D5A1E4216ED00DE90C6 /* UIImage+Color.swift */; };
 		A91E7D5D1E4216ED00DE90C6 /* UIImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91E7D5B1E4216ED00DE90C6 /* UIImage+Tint.swift */; };
+		A92485021F54043F004251DF /* ThermalGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92485011F54043F004251DF /* ThermalGradientView.swift */; };
 		A9286CB41E3A931E008E5F81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CAD1E3A931E008E5F81 /* AppDelegate.swift */; };
 		A9286CB51E3A931E008E5F81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9286CAE1E3A931E008E5F81 /* Assets.xcassets */; };
 		A9286CB61E3A931E008E5F81 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9286CAF1E3A931E008E5F81 /* LaunchScreen.storyboard */; };
@@ -66,6 +67,8 @@
 		A9286CD91E3A9B22008E5F81 /* DataConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */; };
 		A9286CDA1E3A9B22008E5F81 /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCD1E3A9B22008E5F81 /* LogHelper.swift */; };
 		A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCE1E3A9B22008E5F81 /* Preferences.swift */; };
+		A9335EDA1F526E3C009EB5B5 /* ThermalCameraModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9335ED91F526E3C009EB5B5 /* ThermalCameraModuleViewController.swift */; };
+		A9335EDC1F526EE2009EB5B5 /* ThermalCameraModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9335EDB1F526EE2009EB5B5 /* ThermalCameraModuleManager.swift */; };
 		A93DE7511F36176F00B2EB5D /* UartBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7501F36176F00B2EB5D /* UartBaseViewController.swift */; };
 		A93DE7631F36195900B2EB5D /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7541F36195900B2EB5D /* BleManager.swift */; };
 		A93DE7641F36195900B2EB5D /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7541F36195900B2EB5D /* BleManager.swift */; };
@@ -423,6 +426,7 @@
 		A91E7D4F1E4174F800DE90C6 /* KeyboardPositionNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardPositionNotifier.swift; sourceTree = "<group>"; };
 		A91E7D5A1E4216ED00DE90C6 /* UIImage+Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
 		A91E7D5B1E4216ED00DE90C6 /* UIImage+Tint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tint.swift"; sourceTree = "<group>"; };
+		A92485011F54043F004251DF /* ThermalGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThermalGradientView.swift; sourceTree = "<group>"; };
 		A9276D341E4DE293005CD286 /* MSWeakTimer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MSWeakTimer.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Bluefruit-dmkhqsvflzefijclzyzxtgovigqc/Build/Products/Debug/MSWeakTimer-OSX/MSWeakTimer.framework"; sourceTree = "<group>"; };
 		A9286C961E3A9216008E5F81 /* iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9286CAD1E3A931E008E5F81 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -437,6 +441,8 @@
 		A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataConversions.swift; sourceTree = "<group>"; };
 		A9286CCD1E3A9B22008E5F81 /* LogHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
 		A9286CCE1E3A9B22008E5F81 /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		A9335ED91F526E3C009EB5B5 /* ThermalCameraModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThermalCameraModuleViewController.swift; sourceTree = "<group>"; };
+		A9335EDB1F526EE2009EB5B5 /* ThermalCameraModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThermalCameraModuleManager.swift; sourceTree = "<group>"; };
 		A93DE7501F36176F00B2EB5D /* UartBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartBaseViewController.swift; sourceTree = "<group>"; };
 		A93DE7541F36195900B2EB5D /* BleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleManager.swift; sourceTree = "<group>"; };
 		A93DE7551F36195900B2EB5D /* BlePeripheral+Battery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlePeripheral+Battery.swift"; sourceTree = "<group>"; };
@@ -749,6 +755,7 @@
 				A98378711E43479400170319 /* ControllerModuleManager.swift */,
 				A90798351E439DB9005470A5 /* PinIOModuleManager.swift */,
 				A98DE4001E454FA100EEF4C8 /* NeopixelModuleManager.swift */,
+				A9335EDB1F526EE2009EB5B5 /* ThermalCameraModuleManager.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -904,6 +911,7 @@
 				A90798231E4349D6005470A5 /* Controller */,
 				A90798391E43A4DA005470A5 /* PinIO */,
 				A98DE4061E456AFC00EEF4C8 /* NeoPixel */,
+				A9335ED81F526E0F009EB5B5 /* ThermalCamera */,
 				A98378151E42A96400170319 /* Dfu */,
 				A91542521EDD7BC8007A34EA /* Calibration */,
 			);
@@ -967,6 +975,15 @@
 				A91E7D4F1E4174F800DE90C6 /* KeyboardPositionNotifier.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		A9335ED81F526E0F009EB5B5 /* ThermalCamera */ = {
+			isa = PBXGroup;
+			children = (
+				A9335ED91F526E3C009EB5B5 /* ThermalCameraModuleViewController.swift */,
+				A92485011F54043F004251DF /* ThermalGradientView.swift */,
+			);
+			path = ThermalCamera;
 			sourceTree = "<group>";
 		};
 		A93DE7521F36195900B2EB5D /* Ble */ = {
@@ -2037,6 +2054,7 @@
 				A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */,
 				A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */,
 				A93DE7651F36195900B2EB5D /* BlePeripheral+Battery.swift in Sources */,
+				A9335EDA1F526E3C009EB5B5 /* ThermalCameraModuleViewController.swift in Sources */,
 				A90798431E44F692005470A5 /* PlotterModuleManager.swift in Sources */,
 				A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */,
 				A90798291E4349D6005470A5 /* ControllerColorWheelViewController.swift in Sources */,
@@ -2067,11 +2085,13 @@
 				A93DE77B1F36195900B2EB5D /* UartPeripheralService.swift in Sources */,
 				A9BCD58E1E4D2616003D1CEA /* DataFormatter.swift in Sources */,
 				A9D234391E3AD70300DC0C99 /* AboutViewController.swift in Sources */,
+				A9335EDC1F526EE2009EB5B5 /* ThermalCameraModuleManager.swift in Sources */,
 				A9BCD58A1E4D2616003D1CEA /* CocoaCompatibility.swift in Sources */,
 				A9D784871F353D1A009D98A8 /* DeviceInformationServiceViewController.swift in Sources */,
 				A98378701E43422100170319 /* MqttSettingsValueAndSelector.swift in Sources */,
 				A9D2343D1E3AD70300DC0C99 /* ScannerViewController.swift in Sources */,
 				A91DE4601EE4D61700297D9B /* PeripheralModulesViewController.swift in Sources */,
+				A92485021F54043F004251DF /* ThermalGradientView.swift in Sources */,
 				A9D784851F350FD4009D98A8 /* ServiceTableViewCell.swift in Sources */,
 				A91542771EDD7BC9007A34EA /* VisualizationParametersViewController.swift in Sources */,
 				A94A21AF1E417271006A5F33 /* UartSettingsViewController.swift in Sources */,
