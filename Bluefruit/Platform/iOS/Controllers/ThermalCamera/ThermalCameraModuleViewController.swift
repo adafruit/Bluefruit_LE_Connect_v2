@@ -76,6 +76,11 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
     }
     
     // MARK: - Actions
+    @IBAction func onFilterModeChanged(_ sender: UISegmentedControl) {
+        let isFilterEnabled = sender.selectedSegmentIndex == 0
+        cameraImageView.layer.magnificationFilter = isFilterEnabled ? kCAFilterLinear:kCAFilterNearest
+    }
+    
     @IBAction func onColorModeChanged(_ sender: UISegmentedControl) {
         let isColorEnabled = sender.selectedSegmentIndex == 0
         thermalCameraData.isColorEnabled = isColorEnabled

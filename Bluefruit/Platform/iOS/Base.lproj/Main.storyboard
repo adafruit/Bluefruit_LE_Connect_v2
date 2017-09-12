@@ -1277,11 +1277,91 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EHp-eN-4oM">
-                                <rect key="frame" x="16" y="132" width="343" height="426"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for Uart..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f6X-wP-OOt">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uVZ-Bc-PdJ">
+                                <rect key="frame" x="16" y="84" width="343" height="76"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="5E5-ZS-2pX">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="76"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="csB-HP-WJ3">
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="28"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Color Mode:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bM1-mN-BwJ">
+                                                        <rect key="frame" x="0.0" y="0.0" width="91.5" height="28"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="YDk-7c-Vrr">
+                                                        <rect key="frame" x="111.5" y="0.0" width="231.5" height="29"/>
+                                                        <segments>
+                                                            <segment title="Color"/>
+                                                            <segment title="Monochrome"/>
+                                                        </segments>
+                                                        <connections>
+                                                            <action selector="onColorModeChanged:" destination="Fql-Dv-7xU" eventType="valueChanged" id="HyJ-gu-mDR"/>
+                                                        </connections>
+                                                    </segmentedControl>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="GYV-aT-PS5">
+                                                <rect key="frame" x="0.0" y="48" width="343" height="28"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Magnification:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lv0-cm-Fp7">
+                                                        <rect key="frame" x="0.0" y="0.0" width="91.5" height="28"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="eVC-QI-Tpx">
+                                                        <rect key="frame" x="111.5" y="0.0" width="231.5" height="29"/>
+                                                        <segments>
+                                                            <segment title="Filtered"/>
+                                                            <segment title="Pixelated"/>
+                                                        </segments>
+                                                        <connections>
+                                                            <action selector="onFilterModeChanged:" destination="Fql-Dv-7xU" eventType="valueChanged" id="pTf-BJ-BGQ"/>
+                                                        </connections>
+                                                    </segmentedControl>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="bM1-mN-BwJ" firstAttribute="width" secondItem="Lv0-cm-Fp7" secondAttribute="width" id="xnO-yo-R9C"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="5E5-ZS-2pX" firstAttribute="leading" secondItem="uVZ-Bc-PdJ" secondAttribute="leading" id="8Fq-t3-QfF"/>
+                                    <constraint firstAttribute="bottom" secondItem="5E5-ZS-2pX" secondAttribute="bottom" id="Trv-mW-xw6"/>
+                                    <constraint firstAttribute="trailing" secondItem="5E5-ZS-2pX" secondAttribute="trailing" id="kc9-bx-jGd"/>
+                                    <constraint firstItem="5E5-ZS-2pX" firstAttribute="top" secondItem="uVZ-Bc-PdJ" secondAttribute="top" id="voo-XY-0uo"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sXd-uK-tNX">
+                                <rect key="frame" x="16" y="180" width="343" height="378"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="EHp-eN-4oM">
+                                        <rect key="frame" x="8" y="25.5" width="327" height="327"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="EHp-eN-4oM" secondAttribute="height" multiplier="1:1" id="8Fq-vL-0K8"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailingMargin" secondItem="EHp-eN-4oM" secondAttribute="trailing" priority="999" id="7XK-ck-ve2"/>
+                                    <constraint firstItem="EHp-eN-4oM" firstAttribute="top" relation="greaterThanOrEqual" secondItem="sXd-uK-tNX" secondAttribute="top" id="QEH-52-4Eg"/>
+                                    <constraint firstItem="EHp-eN-4oM" firstAttribute="centerX" secondItem="sXd-uK-tNX" secondAttribute="centerX" id="Rhp-GR-dTE"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="EHp-eN-4oM" secondAttribute="bottom" id="TKZ-WC-UUK"/>
+                                    <constraint firstItem="EHp-eN-4oM" firstAttribute="centerY" secondItem="sXd-uK-tNX" secondAttribute="centerY" id="h8x-aZ-zWx"/>
+                                    <constraint firstItem="EHp-eN-4oM" firstAttribute="leading" secondItem="sXd-uK-tNX" secondAttribute="leadingMargin" priority="999" id="psP-6D-2XP"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Waiting for Uart..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f6X-wP-OOt">
                                 <rect key="frame" x="120" y="335" width="135" height="20.5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1298,7 +1378,7 @@
                                                     <constraint firstAttribute="width" constant="40" id="0hi-go-np8"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lbc-QC-yzd" customClass="ThermalGradientView" customModule="iOS" customModuleProvider="target">
@@ -1308,7 +1388,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="33.4" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P70-ac-WRJ">
                                                 <rect key="frame" x="303" y="0.0" width="40" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -1326,42 +1406,19 @@
                                     <constraint firstAttribute="height" constant="20" id="zgF-2u-t3S"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uVZ-Bc-PdJ">
-                                <rect key="frame" x="16" y="84" width="343" height="28"/>
-                                <subviews>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="YDk-7c-Vrr">
-                                        <rect key="frame" x="77" y="0.0" width="189" height="29"/>
-                                        <segments>
-                                            <segment title="Color"/>
-                                            <segment title="Monochrome"/>
-                                        </segments>
-                                        <connections>
-                                            <action selector="onColorModeChanged:" destination="Fql-Dv-7xU" eventType="valueChanged" id="HyJ-gu-mDR"/>
-                                        </connections>
-                                    </segmentedControl>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="YDk-7c-Vrr" firstAttribute="top" secondItem="uVZ-Bc-PdJ" secondAttribute="top" id="Sgj-cu-iHi"/>
-                                    <constraint firstItem="YDk-7c-Vrr" firstAttribute="centerX" secondItem="uVZ-Bc-PdJ" secondAttribute="centerX" id="rXe-16-Y7E"/>
-                                    <constraint firstAttribute="bottom" secondItem="YDk-7c-Vrr" secondAttribute="bottom" id="tct-NY-Qn9"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.20874811460000001" green="0.20874811460000001" blue="0.20874811460000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="CpI-4l-FSf" firstAttribute="top" secondItem="n1C-fy-3k3" secondAttribute="bottom" constant="20" id="5CN-0S-blN"/>
-                            <constraint firstItem="EHp-eN-4oM" firstAttribute="leading" secondItem="Mcs-Fj-pSm" secondAttribute="leadingMargin" id="5t9-Ng-bYK"/>
-                            <constraint firstItem="f6X-wP-OOt" firstAttribute="centerX" secondItem="EHp-eN-4oM" secondAttribute="centerX" id="9pl-gX-zOB"/>
                             <constraint firstItem="uVZ-Bc-PdJ" firstAttribute="leading" secondItem="Mcs-Fj-pSm" secondAttribute="leadingMargin" id="BeT-a6-Spx"/>
-                            <constraint firstItem="EHp-eN-4oM" firstAttribute="top" secondItem="uVZ-Bc-PdJ" secondAttribute="bottom" constant="20" id="SMJ-9F-tdY"/>
+                            <constraint firstItem="n1C-fy-3k3" firstAttribute="top" secondItem="sXd-uK-tNX" secondAttribute="bottom" constant="20" id="Fxt-gu-Gao"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="sXd-uK-tNX" secondAttribute="trailing" id="N1A-vc-1Eh"/>
                             <constraint firstItem="uVZ-Bc-PdJ" firstAttribute="top" secondItem="Zcb-vV-Mih" secondAttribute="bottom" constant="20" id="Uol-Sh-kc5"/>
-                            <constraint firstItem="n1C-fy-3k3" firstAttribute="top" secondItem="EHp-eN-4oM" secondAttribute="bottom" constant="20" id="eMY-el-V0e"/>
+                            <constraint firstItem="sXd-uK-tNX" firstAttribute="leading" secondItem="Mcs-Fj-pSm" secondAttribute="leadingMargin" id="cHK-Fv-EZT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="uVZ-Bc-PdJ" secondAttribute="trailing" id="kDh-kL-5Rh"/>
                             <constraint firstItem="n1C-fy-3k3" firstAttribute="leading" secondItem="Mcs-Fj-pSm" secondAttribute="leadingMargin" id="lTT-J8-KJE"/>
                             <constraint firstAttribute="trailingMargin" secondItem="n1C-fy-3k3" secondAttribute="trailing" id="pnL-XO-vjr"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="EHp-eN-4oM" secondAttribute="trailing" id="slT-tl-1W6"/>
-                            <constraint firstItem="f6X-wP-OOt" firstAttribute="centerY" secondItem="EHp-eN-4oM" secondAttribute="centerY" id="y2u-HL-4ah"/>
+                            <constraint firstItem="sXd-uK-tNX" firstAttribute="top" secondItem="uVZ-Bc-PdJ" secondAttribute="bottom" constant="20" id="zqz-gI-hW7"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Thermal Camera" id="eAD-oe-d9Y">
