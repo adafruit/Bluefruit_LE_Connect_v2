@@ -18,6 +18,7 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
     @IBOutlet weak var upperTempLabel: UILabel!
     @IBOutlet weak var temperatureScaleView: UIView!
     @IBOutlet weak var temperatureScaleContainerView: UIView!
+    @IBOutlet weak var filterSegmentedControl: UISegmentedControl!
     
     // Data
     fileprivate var thermalCameraData: ThermalCameraModuleManager!
@@ -45,6 +46,7 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
         thermalScaleView.thermalCameraData = thermalCameraData
 
         temperatureScaleContainerView.alpha = 0
+        onFilterModeChanged(filterSegmentedControl)
         updateThermalUI(isReady: false)
     }
 
@@ -77,7 +79,7 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
     
     // MARK: - Actions
     @IBAction func onFilterModeChanged(_ sender: UISegmentedControl) {
-        let isFilterEnabled = sender.selectedSegmentIndex == 0
+        let isFilterEnabled = sender.selectedSegmentIndex == 1
         cameraImageView.layer.magnificationFilter = isFilterEnabled ? kCAFilterLinear:kCAFilterNearest
     }
     

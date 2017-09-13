@@ -1316,8 +1316,8 @@
                                                     <segmentedControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="eVC-QI-Tpx">
                                                         <rect key="frame" x="111.5" y="0.0" width="231.5" height="29"/>
                                                         <segments>
-                                                            <segment title="Filtered"/>
                                                             <segment title="Pixelated"/>
+                                                            <segment title="Filtered"/>
                                                         </segments>
                                                         <connections>
                                                             <action selector="onFilterModeChanged:" destination="Fql-Dv-7xU" eventType="valueChanged" id="pTf-BJ-BGQ"/>
@@ -1340,10 +1340,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sXd-uK-tNX">
-                                <rect key="frame" x="16" y="180" width="343" height="378"/>
+                                <rect key="frame" x="16" y="170" width="343" height="371"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="EHp-eN-4oM">
-                                        <rect key="frame" x="8" y="25.5" width="327" height="327"/>
+                                        <rect key="frame" x="8" y="22" width="327" height="327"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="EHp-eN-4oM" secondAttribute="height" multiplier="1:1" id="8Fq-vL-0K8"/>
                                         </constraints>
@@ -1359,6 +1359,12 @@
                                     <constraint firstItem="EHp-eN-4oM" firstAttribute="leading" secondItem="sXd-uK-tNX" secondAttribute="leadingMargin" priority="999" id="psP-6D-2XP"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Temperature Range:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YKw-hk-Umd">
+                                <rect key="frame" x="122" y="551" width="131" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Waiting for Uart..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f6X-wP-OOt">
                                 <rect key="frame" x="120" y="335" width="135" height="20.5"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1409,29 +1415,26 @@
                         </subviews>
                         <color key="backgroundColor" red="0.20874811460000001" green="0.20874811460000001" blue="0.20874811460000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="YKw-hk-Umd" firstAttribute="top" secondItem="sXd-uK-tNX" secondAttribute="bottom" constant="10" id="15O-ac-dbj"/>
                             <constraint firstItem="CpI-4l-FSf" firstAttribute="top" secondItem="n1C-fy-3k3" secondAttribute="bottom" constant="20" id="5CN-0S-blN"/>
                             <constraint firstItem="uVZ-Bc-PdJ" firstAttribute="leading" secondItem="Mcs-Fj-pSm" secondAttribute="leadingMargin" id="BeT-a6-Spx"/>
-                            <constraint firstItem="n1C-fy-3k3" firstAttribute="top" secondItem="sXd-uK-tNX" secondAttribute="bottom" constant="20" id="Fxt-gu-Gao"/>
+                            <constraint firstItem="n1C-fy-3k3" firstAttribute="top" secondItem="YKw-hk-Umd" secondAttribute="bottom" constant="10" id="IzW-sg-OLO"/>
                             <constraint firstAttribute="trailingMargin" secondItem="sXd-uK-tNX" secondAttribute="trailing" id="N1A-vc-1Eh"/>
                             <constraint firstItem="uVZ-Bc-PdJ" firstAttribute="top" secondItem="Zcb-vV-Mih" secondAttribute="bottom" constant="20" id="Uol-Sh-kc5"/>
+                            <constraint firstItem="YKw-hk-Umd" firstAttribute="centerX" secondItem="n1C-fy-3k3" secondAttribute="centerX" id="VNB-PY-Iee"/>
                             <constraint firstItem="sXd-uK-tNX" firstAttribute="leading" secondItem="Mcs-Fj-pSm" secondAttribute="leadingMargin" id="cHK-Fv-EZT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="uVZ-Bc-PdJ" secondAttribute="trailing" id="kDh-kL-5Rh"/>
                             <constraint firstItem="n1C-fy-3k3" firstAttribute="leading" secondItem="Mcs-Fj-pSm" secondAttribute="leadingMargin" id="lTT-J8-KJE"/>
                             <constraint firstAttribute="trailingMargin" secondItem="n1C-fy-3k3" secondAttribute="trailing" id="pnL-XO-vjr"/>
-                            <constraint firstItem="sXd-uK-tNX" firstAttribute="top" secondItem="uVZ-Bc-PdJ" secondAttribute="bottom" constant="20" id="zqz-gI-hW7"/>
+                            <constraint firstItem="sXd-uK-tNX" firstAttribute="top" secondItem="uVZ-Bc-PdJ" secondAttribute="bottom" constant="10" id="zqz-gI-hW7"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Thermal Camera" id="eAD-oe-d9Y">
-                        <barButtonItem key="rightBarButtonItem" image="info_icon" id="gsp-fG-lKj">
-                            <connections>
-                                <action selector="onClickHelp:" destination="v13-MP-5HC" id="pyg-l4-Heg"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Thermal Camera" id="eAD-oe-d9Y"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="cameraImageView" destination="EHp-eN-4oM" id="xgY-uP-Npm"/>
+                        <outlet property="filterSegmentedControl" destination="eVC-QI-Tpx" id="ego-l3-xet"/>
                         <outlet property="lowerTempLabel" destination="L42-M9-FpW" id="x8Q-d5-qXE"/>
                         <outlet property="temperatureScaleContainerView" destination="n1C-fy-3k3" id="n2b-nW-dxi"/>
                         <outlet property="temperatureScaleView" destination="Lbc-QC-yzd" id="GcL-EK-Kfy"/>
