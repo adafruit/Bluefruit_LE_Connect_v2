@@ -1224,7 +1224,7 @@
                                         <color key="textColor" red="0.79215686269999996" green="0.79215686269999996" blue="0.79215686269999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" minValue="6" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="71B-cU-1FB">
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="20" minValue="6" maxValue="100" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="71B-cU-1FB">
                                         <rect key="frame" x="41.5" y="0.0" width="164.5" height="31"/>
                                         <connections>
                                             <action selector="onXScaleValueChanged:" destination="v13-MP-5HC" eventType="valueChanged" id="4Qn-5T-gOg"/>

@@ -20,7 +20,7 @@ class PlotterModeViewController: PeripheralModeViewController {
     fileprivate var uartDataManager: UartDataManager!
     fileprivate var originTimestamp: CFAbsoluteTime!
     fileprivate var isAutoScrollEnabled = true
-    fileprivate var numEntriesVisible: TimeInterval = 20      // in seconds
+    fileprivate var visibleInterval: TimeInterval = 20      // in seconds
     fileprivate var lineDashForPeripheral = [UUID: [CGFloat]?]()
 
     override func viewDidLoad() {
@@ -39,7 +39,7 @@ class PlotterModeViewController: PeripheralModeViewController {
         // UI
         autoscrollButton.isOn = isAutoScrollEnabled
         chartView.dragEnabled = !isAutoScrollEnabled
-        xMaxEntriesSlider.value = Float(numEntriesVisible)
+        xMaxEntriesSlider.value = Float(visibleInterval)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -123,6 +123,9 @@ class PlotterModeViewController: PeripheralModeViewController {
 
         chartView.delegate = self
 
+        
+        chartView.backgroundColor = .white      // Fix for Charts 3.0.3 (overrides the default backgorund color)
+        
         chartView.chartDescription?.enabled = false
         //chartView.scaleXEnabled = false
 //        chartView.xAxis.setLabelCount(5, force: true)
@@ -139,42 +142,45 @@ class PlotterModeViewController: PeripheralModeViewController {
     }
 
     fileprivate var dataSetsForPeripheral = [UUID: [LineChartDataSet]]()
+    fileprivate var lastDataSetModified: LineChartDataSet?
 
     fileprivate func addEntry(peripheralIdentifier identifier: UUID, index: Int, value: Double, timestamp: CFAbsoluteTime) {
         let entry = ChartDataEntry(x: timestamp, y: value)
-
-        DispatchQueue.main.async { [weak self] in
-            guard let context = self else { return }
-
-            var dataSetExists = false
-            if let dataSets = context.dataSetsForPeripheral[identifier] {
-                if index < dataSets.count {
-                    // Add entry to existing dataset
-                    let dataSet = dataSets[index]
-                    let _ = dataSet.addEntry(entry)
-
-                    dataSetExists = true
-                }
-            }
-
-            if !dataSetExists {
-                context.appendDataset(peripheralIdentifier: identifier, entry: entry, index: index)
-
-                let allDataSets = context.dataSetsForPeripheral.flatMap { $0.1 }
-                context.chartView.data = LineChartData(dataSets: allDataSets)
-            }
-
-            guard let dataSets = context.dataSetsForPeripheral[identifier], index < dataSets.count else { return }
-
-            context.chartView.data?.notifyDataChanged()
-            context.chartView.notifyDataSetChanged()
-            context.chartView.setVisibleXRangeMaximum(context.numEntriesVisible)
-            context.chartView.setVisibleXRangeMinimum(context.numEntriesVisible)
-            if context.isAutoScrollEnabled {
+        
+        var dataSetExists = false
+        if let dataSets = dataSetsForPeripheral[identifier] {
+            if index < dataSets.count {
+                // Add entry to existing dataset
                 let dataSet = dataSets[index]
-                let xOffset = Double(dataSet.entryCount) - (context.numEntriesVisible-1)
-                context.chartView.moveViewToX(xOffset)
+                let _ = dataSet.addEntry(entry)
+                
+                dataSetExists = true
             }
+        }
+        
+        if !dataSetExists {
+            appendDataset(peripheralIdentifier: identifier, entry: entry, index: index)
+            
+            let allDataSets = dataSetsForPeripheral.flatMap { $0.1 }
+            chartView.data = LineChartData(dataSets: allDataSets)
+        }
+        
+        guard let dataSets = dataSetsForPeripheral[identifier], index < dataSets.count else { return }
+        lastDataSetModified = dataSets[index]
+    }
+    
+    fileprivate func notifyDataSetChanged() {
+        chartView.data?.notifyDataChanged()
+        chartView.notifyDataSetChanged()
+        chartView.setVisibleXRangeMaximum(visibleInterval)
+        chartView.setVisibleXRangeMinimum(visibleInterval)
+
+        guard let dataSet = lastDataSetModified else { return }
+
+        if isAutoScrollEnabled {
+            //let xOffset = Double(dataSet.entryCount) - (context.numEntriesVisible-1)
+            let xOffset = (dataSet.values.last?.x ?? 0) - (visibleInterval-1)
+            chartView.moveViewToX(xOffset)
         }
     }
 
@@ -213,10 +219,12 @@ class PlotterModeViewController: PeripheralModeViewController {
     @IBAction func onAutoScrollChanged(_ sender: Any) {
         isAutoScrollEnabled = !isAutoScrollEnabled
         chartView.dragEnabled = !isAutoScrollEnabled
+        notifyDataSetChanged()
     }
 
     @IBAction func onXScaleValueChanged(_ sender: UISlider) {
-        numEntriesVisible = TimeInterval(sender.value)
+        visibleInterval = TimeInterval(sender.value)
+        notifyDataSetChanged()
     }
 }
 
@@ -248,6 +256,10 @@ extension PlotterModeViewController: UartDataManagerDelegate {
                         addEntry(peripheralIdentifier: identifier, index: i, value: value, timestamp: currentTimestamp)
                         i = i+1
                     }
+                }
+                
+                DispatchQueue.main.async { [weak self] in
+                    self?.notifyDataSetChanged()
                 }
             }
         }
