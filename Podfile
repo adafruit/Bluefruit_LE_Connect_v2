@@ -5,7 +5,7 @@ def shared_pods
 	pod 'CocoaMQTT', '~> 1.0.19'
 	pod 'MSWeakTimer', '~> 1.1.0'
     pod 'SwiftyXML', '~> 1.4.0'
-    pod 'iOSDFULibrary', '~> 3.1.0'
+    pod 'iOSDFULibrary', '~> 3.2.1'
     pod 'Charts', '~> 3.0.3'
 end
 

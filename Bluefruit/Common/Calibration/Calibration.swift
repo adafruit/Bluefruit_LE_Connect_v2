@@ -871,12 +871,20 @@ class Calibration {
             }
 
             // compute the trial geomagnetic field strength B in bit counts times FMATRIXSCALING
-            trB = sqrtf(fabs(a[0, 0] * trV[X] * trV[X] +
-                2.0 * a[0, 1] * trV[X] * trV[Y] +
-                2.0 * a[0, 2] * trV[X] * trV[Z] +
-                a[1, 1] * trV[Y] * trV[Y] +
-                2.0 * a[1, 2] * trV[Y] * trV[Z] +
-                a[2, 2] * trV[Z] * trV[Z] - matB[9][j]))
+            let component00 = a[0, 0] * trV[X] * trV[X]
+            let component01 = a[0, 1] * trV[X] * trV[Y]
+            let component02 = a[0, 2] * trV[X] * trV[Z]
+            let component11 = a[1, 1] * trV[Y] * trV[Y]
+            let component12 = a[1, 2] * trV[Y] * trV[Z]
+            let component22 = a[2, 2] * trV[Z] * trV[Z]
+
+            trB = sqrtf(fabs(component00 +
+                2.0 * component01 +
+                2.0 * component02 +
+                component11 +
+                2.0 * component12 +
+                component22
+                - matB[9][j]))
 
             // calculate the trial normalized fit error as a percentage
             trFitErrorpc = 50.0 * sqrtf( fabs(vecA[j]) / Scalar(magBufferCount) ) /  (trB * trB)

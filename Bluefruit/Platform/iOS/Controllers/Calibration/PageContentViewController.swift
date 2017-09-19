@@ -24,7 +24,7 @@ class PageContentViewController: UIViewController {
 
         contentView?.layer.cornerRadius = 8
         contentView?.layer.masksToBounds = true
-        contentView?.layer.borderColor = UIColor(colorLiteralRed: 8/255, green: 155/255, blue: 40/255, alpha: 1).cgColor
+        contentView?.layer.borderColor = UIColor(red: 8/255, green: 155/255, blue: 40/255, alpha: 1).cgColor
     }
 
     override func didReceiveMemoryWarning() {
