@@ -1,29 +1,29 @@
 PODS:
-  - CocoaAsyncSocket (7.5.0):
-    - CocoaAsyncSocket/GCD (= 7.5.0)
-  - CocoaAsyncSocket/GCD (7.5.0)
-  - CocoaMQTT (1.0.9):
-    - CocoaAsyncSocket (~> 7.5.0)
-    - MSWeakTimer (~> 1.1.0)
-  - MSWeakTimer (1.1.0)
-  - SSZipArchive (1.5)
+  - CocoaAsyncSocket (7.5.1):
+    - CocoaAsyncSocket/GCD (= 7.5.1)
+  - CocoaAsyncSocket/GCD (7.5.1)
+  - CocoaMQTT (1.0.19):
+    - CocoaAsyncSocket (~> 7.5.1)
+    - SwiftyTimer (~> 2.0.0)
+  - SSZipArchive (2.1.1)
+  - SwiftyTimer (2.0.0)
   - UIColor+Hex (1.0.1):
     - UIColor+Hex/NSColor (= 1.0.1)
     - UIColor+Hex/UIColor (= 1.0.1)
   - UIColor+Hex/UIColor (1.0.1)
 
 DEPENDENCIES:
-  - CocoaMQTT (~> 1.0.9)
-  - SSZipArchive (~> 1.5)
-  - UIColor+Hex (~> 1.0.1)
+  - CocoaMQTT
+  - SSZipArchive
+  - UIColor+Hex
 
 SPEC CHECKSUMS:
-  CocoaAsyncSocket: 3baeb1ddd969f81cf9fca81053ae49ef2d1cbbfa
-  CocoaMQTT: 15585c953de917ec4357dfb57ad48519f74bc348
-  MSWeakTimer: 9426150f933b80ed3acf3f6d228e4b61f0e303c8
-  SSZipArchive: 29daace2bccb90a47de2837744da397728ff9207
+  CocoaAsyncSocket: e0a7e93b2ffa411592ff87e58524fbbc9b95b4fa
+  CocoaMQTT: 014fd1f0793d376b207073ebb5b92a0c8bf8eb2e
+  SSZipArchive: 14401ade5f8e82aba1ff03e9f88e9de60937ae60
+  SwiftyTimer: 2efd74b060d69ad4f1496baf5bbedbe132125fcf
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 61130a0be726f5173e1d07dcb914125b96079493
+PODFILE CHECKSUM: e482be3a6b165d511df9f92e54dd788b75344a1e
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.3.1

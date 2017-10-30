@@ -90,15 +90,15 @@ class PeripheralList {
             peripherals = peripherals.filter({blePeripheralsFound[$0]?.name != nil})
         }
         
-        if let filterName = filterName where !filterName.isEmpty {
+      if let filterName = filterName, !filterName.isEmpty {
             peripherals = peripherals.filter({ identifier -> Bool in
                 if let name = blePeripheralsFound[identifier]?.name {
-                    let compareOptions = isFilterNameCaseInsensitive ? NSStringCompareOptions.CaseInsensitiveSearch: NSStringCompareOptions()
+                    let compareOptions = isFilterNameCaseInsensitive ? NSString.CompareOptions.caseInsensitive: NSString.CompareOptions()
                     if isFilterNameExact {
-                        return name.compare(filterName, options: compareOptions, range: nil, locale: nil) == .OrderedSame
+                        return name.compare(filterName, options: compareOptions, range: nil, locale: nil) == .orderedSame
                     }
                     else {
-                        return name.rangeOfString(filterName, options: compareOptions, range: nil, locale: nil) != nil
+                        return name.range(of: filterName, options: compareOptions, range: nil, locale: nil) != nil
                     }
                 }
                 else {
@@ -124,14 +124,14 @@ class PeripheralList {
     
     func filtersDescription() -> String? {
         var filtersTitle: String?
-        if let filterName = filterName where !filterName.isEmpty {
+      if let filterName = filterName, !filterName.isEmpty {
             filtersTitle = filterName
         }
         
         if let rssiFilterValue = rssiFilterValue {
             let rssiString = "Rssi >= \(rssiFilterValue)"
             if filtersTitle != nil && !filtersTitle!.isEmpty {
-                filtersTitle!.appendContentsOf(", \(rssiString)")
+                filtersTitle!.append(", \(rssiString)")
             }
             else {
                 filtersTitle = rssiString
@@ -141,7 +141,7 @@ class PeripheralList {
         if !isUnnamedEnabled {
             let namedString = "with name"
             if filtersTitle != nil && !filtersTitle!.isEmpty {
-                filtersTitle!.appendContentsOf(", \(namedString)")
+                filtersTitle!.append(", \(namedString)")
             }
             else {
                 filtersTitle = namedString
@@ -151,7 +151,7 @@ class PeripheralList {
         if isOnlyUartEnabled {
             let uartString = "with UART"
             if filtersTitle != nil && !filtersTitle!.isEmpty {
-                filtersTitle!.appendContentsOf(", \(uartString)")
+                filtersTitle!.append(", \(uartString)")
             }
             else {
                 filtersTitle = uartString
@@ -163,7 +163,7 @@ class PeripheralList {
     
     
     var selectedPeripheralRow: Int? {
-        return indexOfPeripheralIdentifier(selectedPeripheralIdentifier)
+        return indexOfPeripheralIdentifier(identifier: selectedPeripheralIdentifier)
     }
     
     var elapsedTimeSinceSelection: CFAbsoluteTime {
@@ -173,7 +173,7 @@ class PeripheralList {
     func indexOfPeripheralIdentifier(identifier: String?) -> Int? {
         var result : Int?
         if let identifier = identifier {
-            result = cachedFilteredPeripherals.indexOf(identifier)
+            result = cachedFilteredPeripherals.index(of: identifier)
         }
         
         return result
@@ -191,7 +191,7 @@ class PeripheralList {
     func connectToPeripheral(identifier: String?) {
         let bleManager = BleManager.sharedInstance
         
-        if (identifier != bleManager.blePeripheralConnected?.peripheral.identifier.UUIDString || identifier == nil) {
+        if (identifier != bleManager.blePeripheralConnected?.peripheral.identifier.uuidString || identifier == nil) {
             
             //
             let blePeripheralsFound = bleManager.blePeripherals()
@@ -204,7 +204,7 @@ class PeripheralList {
                     let selectedBlePeripheralIdentifier = peripherals[selectedRow];
                     let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
                     
-                    BleManager.sharedInstance.disconnect(blePeripheral)
+                    BleManager.sharedInstance.disconnect(blePeripheral: blePeripheral)
                 }
                 //DLog("Peripheral selected row: -1")
                 selectedPeripheralIdentifier = nil
@@ -214,10 +214,10 @@ class PeripheralList {
             if let selectedBlePeripheralIdentifier = identifier {
                 
                 let blePeripheral = blePeripheralsFound[selectedBlePeripheralIdentifier]!
-                if (BleManager.sharedInstance.blePeripheralConnected?.peripheral.identifier != selectedBlePeripheralIdentifier) {
+                if (BleManager.sharedInstance.blePeripheralConnected?.peripheral.identifier.uuidString != selectedBlePeripheralIdentifier) {
                     // DLog("connect to new peripheral: \(selectedPeripheralIdentifier)")
                     
-                    BleManager.sharedInstance.connect(blePeripheral)
+                    BleManager.sharedInstance.connect(blePeripheral: blePeripheral)
                     
                     selectedPeripheralIdentifier = selectedBlePeripheralIdentifier
                 }
@@ -232,7 +232,7 @@ class PeripheralList {
     func selectRow(row: Int) {
         if (row != selectedPeripheralRow) {
             //DLog("Peripheral selected row: \(row)")
-            connectToPeripheral(row >= 0 ? cachedFilteredPeripherals[row] : nil)
+            connectToPeripheral(identifier: row >= 0 ? cachedFilteredPeripherals[row] : nil)
         }
     }
 }

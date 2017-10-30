@@ -16,16 +16,16 @@ extension UIImage
         let context = UIGraphicsGetCurrentContext()
         
         // flip the image
-        CGContextScaleCTM(context!, 1.0, -1.0)
-        CGContextTranslateCTM(context!, 0.0, -self.size.height)
+        context!.scaleBy(x: 1.0, y: -1.0)
+        context!.translateBy(x: 0.0, y: -self.size.height)
         
         // multiply blend mode
-        CGContextSetBlendMode(context!, CGBlendMode.Multiply)
+        context!.setBlendMode(CGBlendMode.multiply)
         
-        let rect = CGRectMake(0, 0, self.size.width, self.size.height)
-        CGContextClipToMask(context!, rect, self.CGImage!)
+        let rect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
+        context!.clip(to: rect, mask: self.cgImage!)
         color.setFill()
-        CGContextFillRect(context!, rect)
+        context!.fill(rect)
         
         // create uiimage
         let newImage = UIGraphicsGetImageFromCurrentImageContext()

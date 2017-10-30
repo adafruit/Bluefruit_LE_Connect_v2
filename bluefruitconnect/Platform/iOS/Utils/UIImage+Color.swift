@@ -12,13 +12,13 @@ import Foundation
 extension UIImage
 {
     // from: http://stackoverflow.com/questions/26542035/create-uiimage-with-solid-color-in-swift
-    convenience init(color: UIColor, size: CGSize = CGSizeMake(1, 1)) {
-        let rect = CGRectMake(0, 0, size.width, size.height)
+    convenience init(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+        let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
         color.setFill()
         UIRectFill(rect)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        self.init(CGImage: image!.CGImage!)
+        self.init(cgImage: image!.cgImage!)
     }
 }

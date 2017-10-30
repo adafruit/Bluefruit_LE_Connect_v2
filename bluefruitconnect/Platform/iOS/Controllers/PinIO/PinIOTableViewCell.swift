@@ -34,7 +34,7 @@ class PinIOTableViewCell: UITableViewCell {
         // Initialization code
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+  override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
@@ -42,21 +42,21 @@ class PinIOTableViewCell: UITableViewCell {
     
     // MARK: - Setup
     func setPin(pin : PinIOModuleManager.PinData) {
-        setupModeSegmentedControl(pin)
+      setupModeSegmentedControl(pin: pin)
         digitalSegmentedControl.selectedSegmentIndex = pin.digitalValue.rawValue
         valueSlider.value = Float(pin.analogValue)
         
         let analogName = pin.isAnalog ?", Analog \(pin.analogPinId)":""
         let fullName = "Pin \(pin.digitalPinId)\(analogName)"
         nameLabel.text = fullName
-        modeLabel.text = PinIOModuleManager.stringForPinMode(pin.mode)
+      modeLabel.text = PinIOModuleManager.stringForPinMode(mode: pin.mode)
         
         var valueText: String?
         switch pin.mode {
         case .Input:
-            valueText = PinIOModuleManager.stringForPinDigitalValue(pin.digitalValue)
+          valueText = PinIOModuleManager.stringForPinDigitalValue(digitalValue: pin.digitalValue)
         case .Output:
-            valueText = PinIOModuleManager.stringForPinDigitalValue(pin.digitalValue)
+          valueText = PinIOModuleManager.stringForPinDigitalValue(digitalValue: pin.digitalValue)
         case .Analog:
             valueText = String(pin.analogValue)
         case .PWM:
@@ -67,8 +67,8 @@ class PinIOTableViewCell: UITableViewCell {
         }
         valueLabel.text = valueText
         
-        valueSlider.hidden = pin.mode != .PWM
-        digitalSegmentedControl.hidden = pin.mode != .Output
+      valueSlider.isHidden = pin.mode != .PWM
+      digitalSegmentedControl.isHidden = pin.mode != .Output
     }
     
     private func setupModeSegmentedControl(pin : PinIOModuleManager.PinData) {
@@ -86,8 +86,8 @@ class PinIOTableViewCell: UITableViewCell {
 
         modeSegmentedControl.removeAllSegments()
         for mode in modesInSegmentedControl {
-            let modeName = PinIOModuleManager.stringForPinMode(mode)
-            modeSegmentedControl.insertSegmentWithTitle(modeName, atIndex: modeSegmentedControl.numberOfSegments, animated: false)
+          let modeName = PinIOModuleManager.stringForPinMode(mode: mode)
+          modeSegmentedControl.insertSegment(withTitle: modeName, at: modeSegmentedControl.numberOfSegments, animated: false)
             if pin.mode == mode {
                 modeSegmentedControl.selectedSegmentIndex = modeSegmentedControl.numberOfSegments-1    // Select the mode we just added
             }
@@ -97,23 +97,23 @@ class PinIOTableViewCell: UITableViewCell {
     
     // MARK: - Actions
     @IBAction func onClickSelectButton(sender: UIButton) {
-        delegate?.onPinToggleCell(tag)
+      delegate?.onPinToggleCell(pinIndex: tag)
     }
     
     @IBAction func onModeChanged(sender: UISegmentedControl) {
-        delegate?.onPinModeChanged(modesInSegmentedControl[sender.selectedSegmentIndex], pinIndex: tag)
+      delegate?.onPinModeChanged(mode: modesInSegmentedControl[sender.selectedSegmentIndex], pinIndex: tag)
     }
     
     @IBAction func onDigitalChanged(sender: UISegmentedControl) {
         if let selectedDigital = PinIOModuleManager.PinData.DigitalValue(rawValue: sender.selectedSegmentIndex) {
-            delegate?.onPinDigitalValueChanged(selectedDigital, pinIndex: tag)
+          delegate?.onPinDigitalValueChanged(value: selectedDigital, pinIndex: tag)
         }
         else {
-            DLog("Error onDigitalChanged with invalid value")
+          DLog(message: "Error onDigitalChanged with invalid value")
         }
     }
     
     @IBAction func onValueSliderChanged(sender: UISlider) {
-        delegate?.onPinAnalogValueChanged(sender.value, pinIndex: tag)
+      delegate?.onPinAnalogValueChanged(value: sender.value, pinIndex: tag)
     }
 }

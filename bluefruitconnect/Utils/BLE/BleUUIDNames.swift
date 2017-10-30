@@ -19,7 +19,7 @@ class BleUUIDNames {
 
     init() {
         // Read known UUIDs
-        let path = NSBundle.mainBundle().pathForResource("GattUUIDs", ofType: "plist")!
+      let path = Bundle.main.path(forResource: "GattUUIDs", ofType: "plist")!
         gattUUIds = NSDictionary(contentsOfFile: path) as? [String : String]
 
     }

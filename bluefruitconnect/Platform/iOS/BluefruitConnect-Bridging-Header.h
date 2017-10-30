@@ -11,7 +11,6 @@
 
 #import "FirmwareUpdater.h"
 #import "DFUOperations.h"
-#import "MSWeakTimer/MSWeakTimer.h"
 #import "ISColorWheel.h"
 #import "NSObject+ENHThrottledReloading.h"
 #import "DataDownloader.h"

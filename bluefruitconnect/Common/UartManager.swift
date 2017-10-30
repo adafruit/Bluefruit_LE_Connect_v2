@@ -10,11 +10,13 @@ import Foundation
 
 
 class UartManager: NSObject {
-    enum UartNotifications : String {
-        case DidSendData = "didSendData"
-        case DidReceiveData = "didReceiveData"
-        case DidBecomeReady = "didBecomeReady"
-    }
+    
+// Use extension Notification.Name instead
+//    enum UartNotifications : String {
+//        case DidSendData = "didSendData"
+//        case DidReceiveData = "didReceiveData"
+//        case DidBecomeReady = "didBecomeReady"
+//    }
     
     // Constants
     private static let UartServiceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"       // UART service UUID
@@ -29,7 +31,7 @@ class UartManager: NSObject {
     private var uartService: CBService?
     private var rxCharacteristic: CBCharacteristic?
     private var txCharacteristic: CBCharacteristic?
-    private var txWriteType = CBCharacteristicWriteType.WithResponse
+    private var txWriteType = CBCharacteristicWriteType.withResponse
     
     var blePeripheral: BlePeripheral? {
         didSet {
@@ -37,7 +39,7 @@ class UartManager: NSObject {
                 // Discover UART
                 resetService()
                 if let blePeripheral = blePeripheral {
-                    DLog("Uart: discover services")
+                    DLog(message: "Uart: discover services")
                     blePeripheral.peripheral.discoverServices([CBUUID(string: UartManager.UartServiceUUID)])
                 }
             }
@@ -51,16 +53,16 @@ class UartManager: NSObject {
     override init() {
         super.init()
 
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: #selector(didDisconnectFromPeripheral(_:)), name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(didDisconnectFromPeripheral), name: .bleDidDisconnectFromPeripheral, object: nil)
     }
 
     deinit {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.removeObserver(self, name: BleManager.BleNotifications.DidDisconnectFromPeripheral.rawValue, object: nil)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.removeObserver(self, name: .bleDidDisconnectFromPeripheral, object: nil)
     }
     
-    func didDisconnectFromPeripheral(notification: NSNotification) {
+    @objc func didDisconnectFromPeripheral(notification: NSNotification) {
         clearData()
         blePeripheral = nil
         resetService()
@@ -75,7 +77,7 @@ class UartManager: NSObject {
     func sendDataWithCrc(data : NSData) {
         
         let len = data.length
-        var dataBytes = [UInt8](count: len, repeatedValue: 0)
+        var dataBytes = [UInt8](repeating: 0, count: len)
         var crc: UInt8 = 0
         data.getBytes(&dataBytes, length: len)
         
@@ -84,65 +86,71 @@ class UartManager: NSObject {
         }
         crc = ~crc  //invert
         
-        let dataWithChecksum = NSMutableData(data: data)
-        dataWithChecksum.appendBytes(&crc, length: 1)
+        let dataWithChecksum = NSMutableData(data: data as Data)
+        dataWithChecksum.append(&crc, length: 1)
         
-        sendData(dataWithChecksum)
+        sendData(data: dataWithChecksum)
     }
 
     func sendData(data: NSData) {
         let dataChunk = UartDataChunk(timestamp: CFAbsoluteTimeGetCurrent(), mode: .TX, data: data)
-        sendChunk(dataChunk)
+        sendChunk(dataChunk: dataChunk)
     }
 
     func sendChunk(dataChunk: UartDataChunk) {
         
-        if let txCharacteristic = txCharacteristic, blePeripheral = blePeripheral {
+      if let txCharacteristic = txCharacteristic, let blePeripheral = blePeripheral {
             let data = dataChunk.data
-            
+        
             if dataBufferEnabled {
-                blePeripheral.uartData.sentBytes += data.length
-                dataBuffer.append(dataChunk)
+                let bytesWithData = blePeripheral.uartData.sentBytes.addingReportingOverflow(Int64(data.length)) // += data.length
+                if !bytesWithData.overflow {
+                    blePeripheral.uartData.sentBytes = bytesWithData.partialValue
+                    dataBuffer.append(dataChunk)
+                }
             }
                 
             // Split data  in txmaxcharacters bytes packets
             var offset = 0
             repeat {
                 let chunkSize = min(data.length-offset, UartManager.TxMaxCharacters)
-                let chunk = NSData(bytesNoCopy: UnsafeMutablePointer<UInt8>(data.bytes)+offset, length: chunkSize, freeWhenDone:false)
-                
+                // let chunk = NSData(bytesNoCopy: UnsafeMutablePointer<UInt8>(data.bytes) + offset, length: chunkSize, freeWhenDone:false)
+                let chunk = NSData(bytesNoCopy: UnsafeMutableRawPointer(mutating: data.bytes) + offset, length: chunkSize, freeWhenDone: false)
                 if Config.uartLogSend {
-                    DLog("send: \(hexString(chunk))")
+                    DLog(message: "send: \(hexString(data: chunk))")
                 }
                 
-                blePeripheral.peripheral.writeValue(chunk, forCharacteristic: txCharacteristic, type: txWriteType)
+                blePeripheral.peripheral.writeValue(chunk as Data, for: txCharacteristic, type: txWriteType)
                 offset+=chunkSize
             }while(offset<data.length)
             
-            NSNotificationCenter.defaultCenter().postNotificationName(UartNotifications.DidSendData.rawValue, object: nil, userInfo:["dataChunk" : dataChunk]);
+        NotificationCenter.default.post(name: .uartDidSendData, object: nil, userInfo:["dataChunk" : dataChunk])
         }
         else {
-            DLog("Error: sendChunk with uart not ready")
+        DLog(message: "Error: sendChunk with uart not ready")
         }
     }
     
     private func receivedData(data: NSData) {
         
         let dataChunk = UartDataChunk(timestamp: CFAbsoluteTimeGetCurrent(), mode: .RX, data: data)
-        receivedChunk(dataChunk)
+        receivedChunk(dataChunk: dataChunk)
     }
     
     private func receivedChunk(dataChunk: UartDataChunk) {
         if Config.uartLogReceive {
-            DLog("received: \(hexString(dataChunk.data))")
+            DLog(message: "received: \(hexString(data: dataChunk.data))")
         }
         
-        if dataBufferEnabled {
-            blePeripheral?.uartData.receivedBytes += dataChunk.data.length
+        if dataBufferEnabled,
+            let bytesWithData = blePeripheral?.uartData.receivedBytes.addingReportingOverflow(Int64(dataChunk.data.length)),
+            !bytesWithData.overflow {
+            
+            blePeripheral?.uartData.receivedBytes = bytesWithData.partialValue
             dataBuffer.append(dataChunk)
         }
         
-        NSNotificationCenter.defaultCenter().postNotificationName(UartNotifications.DidReceiveData.rawValue, object: nil, userInfo:["dataChunk" : dataChunk]);
+        NotificationCenter.default.post(name: .uartDidReceiveData, object: nil, userInfo:["dataChunk" : dataChunk]);
     }
     
     func isReady() -> Bool {
@@ -159,12 +167,12 @@ class UartManager: NSObject {
 // MARK: - CBPeripheralDelegate
 extension UartManager: CBPeripheralDelegate {
     
-    func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
-        DLog("UartManager: resetService because didModifyServices")
+    func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        DLog(message: "UartManager: resetService because didModifyServices")
         resetService()
     }
     
-    func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         
         guard blePeripheral != nil else {
             return
@@ -176,11 +184,11 @@ extension UartManager: CBPeripheralDelegate {
                 var i = 0
                 while (!found && i < services.count) {
                     let service = services[i]
-                    if (service.UUID.UUIDString .caseInsensitiveCompare(UartManager.UartServiceUUID) == .OrderedSame) {
+                    if (service.uuid.uuidString .caseInsensitiveCompare(UartManager.UartServiceUUID) == .orderedSame) {
                         found = true
                         uartService = service
                         
-                        peripheral.discoverCharacteristics([CBUUID(string: UartManager.RxCharacteristicUUID), CBUUID(string: UartManager.TxCharacteristicUUID)], forService: service)
+                        peripheral.discoverCharacteristics([CBUUID(string: UartManager.RxCharacteristicUUID), CBUUID(string: UartManager.TxCharacteristicUUID)], for: service)
                     }
                     i += 1
                 }
@@ -188,27 +196,27 @@ extension UartManager: CBPeripheralDelegate {
         }
     }
     
-    func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         
         guard blePeripheral != nil else {
             return
         }
 
         //DLog("uart didDiscoverCharacteristicsForService")
-        if let uartService = uartService where rxCharacteristic == nil || txCharacteristic == nil {
+      if let uartService = uartService, rxCharacteristic == nil || txCharacteristic == nil {
             if rxCharacteristic == nil || txCharacteristic == nil {
                 if let characteristics = uartService.characteristics {
                     var found = false
                     var i = 0
                     while !found && i < characteristics.count {
                         let characteristic = characteristics[i]
-                        if characteristic.UUID.UUIDString .caseInsensitiveCompare(UartManager.RxCharacteristicUUID) == .OrderedSame {
+                        if characteristic.uuid.uuidString .caseInsensitiveCompare(UartManager.RxCharacteristicUUID) == .orderedSame {
                             rxCharacteristic = characteristic
                         }
-                        else if characteristic.UUID.UUIDString .caseInsensitiveCompare(UartManager.TxCharacteristicUUID) == .OrderedSame {
+                        else if characteristic.uuid.uuidString .caseInsensitiveCompare(UartManager.TxCharacteristicUUID) == .orderedSame {
                             txCharacteristic = characteristic
-                            txWriteType = characteristic.properties.contains(.WriteWithoutResponse) ? .WithoutResponse:.WithResponse
-                            DLog("Uart: detected txWriteType: \(txWriteType.rawValue)")
+                            txWriteType = characteristic.properties.contains(.writeWithoutResponse) ? .withoutResponse:.withResponse
+                            DLog(message: "Uart: detected txWriteType: \(txWriteType.rawValue)")
                         }
                         found = rxCharacteristic != nil && txCharacteristic != nil
                         i += 1
@@ -219,24 +227,24 @@ extension UartManager: CBPeripheralDelegate {
             // Check if characteristics are ready
             if (rxCharacteristic != nil && txCharacteristic != nil) {
                 // Set rx enabled
-                peripheral.setNotifyValue(true, forCharacteristic: rxCharacteristic!)
+                peripheral.setNotifyValue(true, for: rxCharacteristic!)
                 
                 // Send notification that uart is ready
-                NSNotificationCenter.defaultCenter().postNotificationName(UartNotifications.DidBecomeReady.rawValue, object: nil, userInfo:nil)
+                NotificationCenter.default.post(name: .uartDidBecomeReady, object: nil, userInfo:nil)
                 
-                DLog("Uart: did become ready")
+                DLog(message: "Uart: did become ready")
 
             }
         }
     }
 
-    func peripheral(peripheral: CBPeripheral, didUpdateNotificationStateForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
+    func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
         
         guard blePeripheral != nil else {
             return
         }
 
-        DLog("didUpdateNotificationStateForCharacteristic")
+        DLog(message: "didUpdateNotificationStateForCharacteristic")
         /*
         if characteristic == rxCharacteristic {
             if error != nil {
@@ -257,7 +265,7 @@ extension UartManager: CBPeripheralDelegate {
 */
     }
 
-    func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         
         guard blePeripheral != nil else {
             return
@@ -267,8 +275,15 @@ extension UartManager: CBPeripheralDelegate {
         if characteristic == rxCharacteristic && characteristic.service == uartService {
             
             if let characteristicDataValue = characteristic.value {
-                receivedData(characteristicDataValue)
+                receivedData(data: characteristicDataValue as NSData)
             }
         }
     }
+}
+
+// MARK: - extension Notification.Name
+extension Notification.Name {
+    static let uartDidSendData = Notification.Name("uartDidSendData")
+    static let uartDidReceiveData = Notification.Name("uartDidReceiveData")
+    static let uartDidBecomeReady = Notification.Name("uartDidBecomeReady")
 }

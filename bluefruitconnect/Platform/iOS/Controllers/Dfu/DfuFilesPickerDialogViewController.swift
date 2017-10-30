@@ -41,12 +41,12 @@ class DfuFilesPickerDialogViewController: UIViewController {
 
     }
 
-    override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Fade-in background
         backgroundView.alpha = 0
-        UIView.animateWithDuration(0.5, animations: { [unowned self] () -> Void in
+    UIView.animate(withDuration: 0.5, animations: { [unowned self] () -> Void in
             self.backgroundView.alpha = 1
             })
     }
@@ -65,20 +65,20 @@ class DfuFilesPickerDialogViewController: UIViewController {
     @IBAction func onClickPickFile(sender: UIButton) {
         isPickingHexFile = sender.tag == 0
         
-        let importMenu = UIDocumentMenuViewController(documentTypes: ["public.data", "public.content"], inMode: .Import)
+      let importMenu = UIDocumentMenuViewController(documentTypes: ["public.data", "public.content"], in: .import)
         importMenu.delegate = self
         importMenu.popoverPresentationController?.sourceView = sender
-        presentViewController(importMenu, animated: true, completion: nil)
+      present(importMenu, animated: true, completion: nil)
     }
     
     @IBAction func onClickStartUpdate(sender: AnyObject) {
-        dismissViewControllerAnimated(true) { [unowned self] () -> Void in
-            self.delegate?.onFilesPickerStartUpdate(self.hexFileUrl, iniUrl: self.iniFileUrl)
+      dismiss(animated: true) { [unowned self] () -> Void in
+          self.delegate?.onFilesPickerStartUpdate(hexUrl: self.hexFileUrl, iniUrl: self.iniFileUrl)
         }
     }
 
     @IBAction func onClickCancel(sender: AnyObject) {
-        dismissViewControllerAnimated(true) { [unowned self] () -> Void in
+      dismiss(animated: true) { [unowned self] () -> Void in
             self.delegate?.onFilesPickerCancel()
         }
     }
@@ -87,24 +87,36 @@ class DfuFilesPickerDialogViewController: UIViewController {
 // MARK: - UIDocumentMenuDelegate
 extension DfuFilesPickerDialogViewController: UIDocumentMenuDelegate {
    
-    func documentMenu(documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+  func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         documentPicker.delegate = self
-        presentViewController(documentPicker, animated: true, completion: nil)
+    present(documentPicker, animated: true, completion: nil)
     }
 }
 
 // MARK: - UIDocumentPickerDelegate
 extension DfuFilesPickerDialogViewController: UIDocumentPickerDelegate {
-    func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL url: NSURL) {
-        DLog("picked: \(url.absoluteString)")
+  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+      DLog(message: "picked: \(url.absoluteString)")
         
         if (isPickingHexFile) {
-            hexFileUrl = url;
+          hexFileUrl = url as NSURL;
         }
         else {
-            iniFileUrl = url;
+          iniFileUrl = url as NSURL;
         }
         
         updateFileNames()
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

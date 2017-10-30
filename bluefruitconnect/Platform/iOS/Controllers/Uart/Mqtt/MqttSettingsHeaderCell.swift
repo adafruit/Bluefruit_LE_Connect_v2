@@ -20,14 +20,14 @@ class MqttSettingsHeaderCell: UITableViewCell {
     var isOnChanged : ((Bool) -> ())?
     
     @IBAction func isOnValueChanged(sender: UISwitch) {
-        self.isOnChanged?(sender.on)
+        self.isOnChanged?(sender.isOn)
     }
  
     override func awakeFromNib() {
         super.awakeFromNib()
   
         // Make switch smaller
-        isOnSwitch.transform = CGAffineTransformMakeScale(0.6, 0.6)
+        isOnSwitch.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
     }
 }
 

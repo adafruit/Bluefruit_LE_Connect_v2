@@ -28,7 +28,7 @@ class NeopixelTypeValueTableViewCell: UITableViewCell {
 //        valueTextField.delegate = self
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+  override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
@@ -36,14 +36,14 @@ class NeopixelTypeValueTableViewCell: UITableViewCell {
 
     @IBAction func onClickSet(sender: AnyObject) {
         
-        if let type = typeFromInput(valueTextField.text) {
-            self.delegate?.onSetValue(type)
+      if let type = typeFromInput(originalText: valueTextField.text) {
+        self.delegate?.onSetValue(value: type)
         }
     }
     
     func typeFromInput(originalText: String?) -> UInt16? {
         var result: UInt16?
-        if let text = originalText, type = UInt16(text) where !text.isEmpty && Int(text)>=0 && Int(text)  < 65535 {
+      if let text = originalText, let type = UInt16(text), !text.isEmpty && Int(text)! >= 0 && Int(text)! < 65535 {
                 result = type
         }
         
@@ -51,7 +51,7 @@ class NeopixelTypeValueTableViewCell: UITableViewCell {
     }
     
     func isInputValid(text: String?) -> Bool {
-        return typeFromInput(text) != nil
+      return typeFromInput(originalText: text) != nil
     }
 }
 

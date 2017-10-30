@@ -15,16 +15,16 @@ class StyledButton: UIButton {
         super.awakeFromNib()
         
         layer.borderWidth = 1
-        layer.borderColor =  titleColorForState(.Normal)?.CGColor //tintColor.CGColor
+        layer.borderColor =  titleColor(for: .normal)?.cgColor //tintColor.CGColor
         layer.cornerRadius = 8
         layer.masksToBounds = true
     }
     
     
-    override func setTitleColor(color: UIColor?, forState state: UIControlState) {
-        super.setTitleColor(color, forState: state)
+    override func setTitleColor(_ color: UIColor?, for state: UIControlState) {
+        super.setTitleColor(color, for: state)
         if let color = color {
-            layer.borderColor = color.CGColor
+            layer.borderColor = color.cgColor
         }
     }
 }

@@ -28,8 +28,8 @@ class FilterTextSettingsViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        preferredContentSize = CGSizeMake(preferredContentSize.width, baseTableView.contentSize.height)
+        preferredContentSize = CGSize(width: preferredContentSize.width, height: baseTableView.contentSize.height)
+        //preferredContentSize = CGSizeMake(preferredContentSize.width, baseTableView.contentSize.height)
     }
 }
 
@@ -54,15 +54,15 @@ extension FilterTextSettingsViewController: UITableViewDataSource {
      }*/
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reuseIdentifier = "MatchCell"
-        var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
+        var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
         if cell == nil {
-            cell = UITableViewCell(style: .Default, reuseIdentifier: reuseIdentifier)
+            cell = UITableViewCell(style: .default, reuseIdentifier: reuseIdentifier)
         }
         
         let row = indexPath.row
@@ -72,10 +72,10 @@ extension FilterTextSettingsViewController: UITableViewDataSource {
         switch indexPath.section {
         case 0:
             title = row == 0 ? "Name contains" : "Name equals"
-            accesoryType = (row == 0 && !peripheralList.isFilterNameExact) || (row == 1 && peripheralList.isFilterNameExact) ? .Checkmark : .None
+            accesoryType = (row == 0 && !peripheralList.isFilterNameExact) || (row == 1 && peripheralList.isFilterNameExact) ? .checkmark : .none
         default:
             title = row == 0 ? "Matching case" : "Ignoring case"
-            accesoryType = (row == 0 && !peripheralList.isFilterNameCaseInsensitive) || (row == 1 && peripheralList.isFilterNameCaseInsensitive) ? .Checkmark : .None
+            accesoryType = (row == 0 && !peripheralList.isFilterNameCaseInsensitive) || (row == 1 && peripheralList.isFilterNameCaseInsensitive) ? .checkmark : .none
         }
         
         cell!.textLabel?.text = title
@@ -87,7 +87,7 @@ extension FilterTextSettingsViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension FilterTextSettingsViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let row = indexPath.row
         switch indexPath.section {

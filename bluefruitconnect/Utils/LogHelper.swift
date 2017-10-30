@@ -10,7 +10,7 @@ import Foundation
 //   dLog("Log this!")
 
 #if DEBUG
-    func DLog(@autoclosure message:  () -> String, filename: NSString = #file, function: String = #function, line: Int = #line) {
+  func DLog( message:  @autoclosure () -> String, filename: NSString = #file, function: String = #function, line: Int = #line) {
         NSLog("[\(filename.lastPathComponent):\(line)] \(function) - %@", message())
     }
     #else

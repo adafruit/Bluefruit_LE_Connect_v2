@@ -41,7 +41,7 @@ func hexString(text:String)->String{
 
 // MARK: - Strings
 func hexString(data: NSData) -> String {
-    var bytes = [UInt8](count: data.length, repeatedValue: 0)
+    var bytes = [UInt8](repeating: 0, count: data.length)
     data.getBytes(&bytes, length: data.length)
     
     let hexString = NSMutableString()

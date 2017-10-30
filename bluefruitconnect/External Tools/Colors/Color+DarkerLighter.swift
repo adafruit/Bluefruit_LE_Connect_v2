@@ -12,11 +12,11 @@ import Foundation
 extension Color {
     
     func lighter(amount : CGFloat = 0.25) -> Color {
-        return hueColorWithBrightnessAmount(1 + amount)
+        return hueColorWithBrightnessAmount(amount: 1 + amount)
     }
     
     func darker(amount : CGFloat = 0.25) -> Color {
-        return hueColorWithBrightnessAmount(1 - amount)
+        return hueColorWithBrightnessAmount(amount: 1 - amount)
     }
     
     private func hueColorWithBrightnessAmount(amount: CGFloat) -> Color {

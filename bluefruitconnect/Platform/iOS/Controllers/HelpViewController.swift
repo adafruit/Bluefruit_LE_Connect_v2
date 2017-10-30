@@ -18,13 +18,13 @@ class HelpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        messageLabel.layer.borderColor = UIColor(hex: 0xcacaca).CGColor
+        messageLabel.layer.borderColor = UIColor(hex: 0xcacaca).cgColor
         messageLabel.layer.borderWidth = 1
         
         messageLabel.contentInset = UIEdgeInsetsMake(10, 0, 10, 0);
     }
     
-    override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         updateUI()
@@ -34,7 +34,7 @@ class HelpViewController: UIViewController {
         helpTitle = title
         helpMessage = message
         
-        if isViewLoaded() {
+        if isViewLoaded {
             updateUI()
         }
     }
@@ -51,7 +51,7 @@ class HelpViewController: UIViewController {
         super.viewDidLayoutSubviews()
         
         // Hack to make the textview start at the top: http://stackoverflow.com/questions/26835944/uitextview-text-content-doesnt-start-from-the-top
-        messageLabel.contentOffset = CGPointZero
+        messageLabel.contentOffset = CGPoint.zero
     }
     
     override func didReceiveMemoryWarning() {
@@ -60,7 +60,7 @@ class HelpViewController: UIViewController {
     }
     
     @IBAction func onClickDone(sender: AnyObject) {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
 }

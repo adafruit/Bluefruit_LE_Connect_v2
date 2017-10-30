@@ -23,7 +23,7 @@ class NeopixelTypeSelectorViewController: UIViewController {
         super.viewDidLoad()
 
         // Read types from resources
-        let path = NSBundle.mainBundle().pathForResource("NeopixelTypes", ofType: "plist")!
+      let path = Bundle.main.path(forResource: "NeopixelTypes", ofType: "plist")!
         types = NSArray(contentsOfFile: path) as? [Dictionary]
     }
 
@@ -35,7 +35,7 @@ class NeopixelTypeSelectorViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        preferredContentSize = CGSizeMake(preferredContentSize.width, baseTableView.contentSize.height)
+      preferredContentSize = CGSize(width: preferredContentSize.width, height: baseTableView.contentSize.height)
     }
 }
 
@@ -46,7 +46,7 @@ extension NeopixelTypeSelectorViewController : UITableViewDataSource {
         return 2
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var title: String?
         switch section {
         case 0:
@@ -60,7 +60,7 @@ extension NeopixelTypeSelectorViewController : UITableViewDataSource {
     }
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return types != nil ? types!.count: 0
         }
@@ -69,7 +69,7 @@ extension NeopixelTypeSelectorViewController : UITableViewDataSource {
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         var reuseIdentifier: String
         if indexPath.section == 0 {
@@ -79,12 +79,12 @@ extension NeopixelTypeSelectorViewController : UITableViewDataSource {
             reuseIdentifier = "TypeValueCell"
         }
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath:indexPath)
+    let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         return cell
     }
     
     
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: IndexPath) {
         
         
         let row = indexPath.row
@@ -94,8 +94,8 @@ extension NeopixelTypeSelectorViewController : UITableViewDataSource {
             let type = types![row]
             uartCell.textLabel?.text = type["name"] as? String
             
-            let isCurrentType = currentType == UInt16((type["value"] as! NSNumber).integerValue)
-            uartCell.accessoryType = isCurrentType ? .Checkmark:.None
+          let isCurrentType = currentType == UInt16((type["value"] as! NSNumber).intValue)
+          uartCell.accessoryType = isCurrentType ? .checkmark: .none
         }
         else {
             let typeValueCell = cell as! NeopixelTypeValueTableViewCell
@@ -108,7 +108,7 @@ extension NeopixelTypeSelectorViewController : UITableViewDataSource {
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             return 44
         }
@@ -120,13 +120,13 @@ extension NeopixelTypeSelectorViewController : UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension NeopixelTypeSelectorViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 0 {
-            tableView.deselectRowAtIndexPath(indexPath, animated: indexPath.section == 0)
+          tableView.deselectRow(at: indexPath, animated: indexPath.section == 0)
             
             let type = types![indexPath.row]
-            currentType =  UInt16((type["value"] as! NSNumber).integerValue)
+          currentType =  UInt16((type["value"] as! NSNumber).intValue)
             baseTableView.reloadData()
         }
        
@@ -136,7 +136,7 @@ extension NeopixelTypeSelectorViewController: UITableViewDelegate {
 // MARK: - NeopixelTypeValueTableViewCellDelegate
 extension NeopixelTypeSelectorViewController: NeopixelTypeValueTableViewCellDelegate {
     func onSetValue(value: UInt16) {
-         dismissViewControllerAnimated(true) {[unowned self] () -> Void in
+      dismiss(animated: true) {[unowned self] () -> Void in
             self.onClickSetType?(value)
          }
         

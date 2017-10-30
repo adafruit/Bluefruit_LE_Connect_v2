@@ -39,7 +39,7 @@ class UartModuleViewController: ModuleViewController {
     private let uartData = UartModuleManager()
     private var txColor = Preferences.uartSentDataColor
     private var rxColor = Preferences.uartReceveivedDataColor
-    private let timestampDateFormatter = NSDateFormatter()
+    private let timestampDateFormatter = DateFormatter()
     private var tableCachedDataBuffer: [UartDataChunk]?
     private var textCachedBuffer = NSMutableAttributedString()
     
@@ -52,14 +52,14 @@ class UartModuleViewController: ModuleViewController {
         uartData.delegate = self
         uartData.blePeripheral = BleManager.sharedInstance.blePeripheralConnected       // Note: this will start the service discovery
         guard uartData.blePeripheral != nil else {
-            DLog("Error: Uart: blePeripheral is nil")
+            DLog(message: "Error: Uart: blePeripheral is nil")
             return
         }
         
         // Title
         let localizationManager = LocalizationManager.sharedInstance
-        let name = uartData.blePeripheral!.name != nil ? uartData.blePeripheral!.name! : localizationManager.localizedString("peripherallist_unnamed")
-        let title = String(format: localizationManager.localizedString("uart_navigation_title_format"), arguments: [name])
+        let name = uartData.blePeripheral!.name != nil ? uartData.blePeripheral!.name! : localizationManager.localizedString(key: "peripherallist_unnamed")
+        let title = String(format: localizationManager.localizedString(key: "uart_navigation_title_format"), arguments: [name])
         //tabBarController?.navigationItem.title = title
         navigationController?.navigationItem.title = title
 
@@ -70,20 +70,20 @@ class UartModuleViewController: ModuleViewController {
         // Setup tableView
         // Note: Don't use automatic height because its to slow with a large amount of rows
         baseTableView.layer.borderWidth = 1
-        baseTableView.layer.borderColor = UIColor.lightGrayColor().CGColor
+        baseTableView.layer.borderColor = UIColor.lightGray.cgColor
 
         // Setup textview
         baseTextView.layer.borderWidth = 1
-        baseTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
+        baseTextView.layer.borderColor = UIColor.lightGray.cgColor
         
         // Setup controls
-        displayModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_displayMode_timestamp"), forSegmentAtIndex: 0)
-        displayModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_displayMode_text"), forSegmentAtIndex: 1)
-        dataModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_dataMode_ascii"), forSegmentAtIndex: 0)
-        dataModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_dataMode_hex"), forSegmentAtIndex: 1)
+        displayModeSegmentedControl.setTitle(localizationManager.localizedString(key: "uart_settings_displayMode_timestamp"), forSegmentAt: 0)
+        displayModeSegmentedControl.setTitle(localizationManager.localizedString(key: "uart_settings_displayMode_text"), forSegmentAt: 1)
+        dataModeSegmentedControl.setTitle(localizationManager.localizedString(key: "uart_settings_dataMode_ascii"), forSegmentAt: 0)
+        dataModeSegmentedControl.setTitle(localizationManager.localizedString(key: "uart_settings_dataMode_hex"), forSegmentAt: 1)
         
         // Init options layout
-        if traitCollection.userInterfaceIdiom == .Pad {            // iPad
+        if traitCollection.userInterfaceIdiom == .pad {            // iPad
             // moreOptionsNavigationItem.enabled = false
             
             self.view.removeConstraint(statsLabeliPhoneLeadingConstraint)
@@ -92,20 +92,20 @@ class UartModuleViewController: ModuleViewController {
             for subStackView in inputControlsStackView.subviews {
                 for subview in subStackView.subviews {
                     if let switchView = subview as? UISwitch {
-                        switchView.transform = CGAffineTransformMakeScale(0.6, 0.6)
+                        switchView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
                     }
                 }
             }
         }
         else {            // iPhone
             self.view.removeConstraint(statsLabeliPadLeadingConstraint)
-            statsLabel.textAlignment = .Left
+            statsLabel.textAlignment = .left
             
-            inputControlsStackView.hidden = true
+            inputControlsStackView.isHidden = true
         }
         
         // Mqtt init
-        mqttBarButtonItemImageView = UIImageView(image: UIImage(named: "mqtt_disconnected")!.tintWithColor(self.view.tintColor))      // use a uiimageview as custom barbuttonitem to allow frame animations
+        mqttBarButtonItemImageView = UIImageView(image: UIImage(named: "mqtt_disconnected")!.tintWithColor(color: self.view.tintColor))      // use a uiimageview as custom barbuttonitem to allow frame animations
         mqttBarButtonItemImageView!.tintColor = self.view.tintColor
         mqttBarButtonItemImageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(UartModuleViewController.onClickMqtt)))
         
@@ -120,25 +120,25 @@ class UartModuleViewController: ModuleViewController {
         super.viewDidLayoutSubviews()
         
         // Hide top controls on iPhone
-         if traitCollection.userInterfaceIdiom == .Phone {
-            controlsView.hidden = true
+        if traitCollection.userInterfaceIdiom == .phone {
+            controlsView.isHidden = true
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        registerNotifications(true)
+        registerNotifications(register: true)
         
         uartData.dataBufferEnabled = true
         
         // Update the navgation bar items
-        if var rightButtonItems = navigationController?.navigationItem.rightBarButtonItems where rightButtonItems.count == 2 {
+        if var rightButtonItems = navigationController?.navigationItem.rightBarButtonItems, rightButtonItems.count == 2 {
         //if var rightButtonItems = tabBarController?.navigationItem.rightBarButtonItems where rightButtonItems.count == 2 {
             
-            if traitCollection.userInterfaceIdiom == .Pad {
+            if traitCollection.userInterfaceIdiom == .pad {
                 // Remove more item
-                rightButtonItems.removeAtIndex(0)
+                rightButtonItems.remove(at: 0)
                 
                 // Add mqtt bar item
                 mqttBarButtonItem = UIBarButtonItem(customView: mqttBarButtonItemImageView!)
@@ -156,15 +156,15 @@ class UartModuleViewController: ModuleViewController {
         
         // UI
         reloadDataUI()
-        showEolSwitch.on = Preferences.uartIsAutomaticEolEnabled
-        addEolSwitch.on = Preferences.uartIsEchoEnabled
+        showEolSwitch.isOn = Preferences.uartIsAutomaticEolEnabled
+        addEolSwitch.isOn = Preferences.uartIsEchoEnabled
         displayModeSegmentedControl.selectedSegmentIndex = Preferences.uartIsDisplayModeTimestamp ? 0:1
         dataModeSegmentedControl.selectedSegmentIndex = Preferences.uartIsInHexMode ? 1:0
 
         // Check if characteristics are ready
         let isUartReady = uartData.isReady()
-        inputTextField.enabled = isUartReady
-        inputTextField.backgroundColor = isUartReady ? UIColor.whiteColor() : UIColor.blackColor().colorWithAlphaComponent(0.1)
+        inputTextField.isEnabled = isUartReady
+        inputTextField.backgroundColor = isUartReady ? UIColor.white : UIColor.black.withAlphaComponent(0.1)
         
         // MQTT
         let mqttManager = MqttManager.sharedInstance
@@ -174,7 +174,7 @@ class UartModuleViewController: ModuleViewController {
         mqttUpdateStatusUI()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         baseTableView.enh_cancelPendingReload()
@@ -182,7 +182,7 @@ class UartModuleViewController: ModuleViewController {
         if !Config.uartShowAllUartCommunication {
             uartData.dataBufferEnabled = false
         }
-        registerNotifications(false)
+        registerNotifications(register: false)
     }
 
     override func didReceiveMemoryWarning() {
@@ -195,17 +195,17 @@ class UartModuleViewController: ModuleViewController {
         mqttManager.disconnect()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "uartSettingsSegue"  {
-            if let controller = segue.destinationViewController.popoverPresentationController {
+            if let controller = segue.destination.popoverPresentationController {
                 controller.delegate = self
                 
-                let uartSettingsViewController = segue.destinationViewController as! UartSettingsViewController
+                let uartSettingsViewController = segue.destination as! UartSettingsViewController
                 uartSettingsViewController.onClickClear = {
-                    self.onClickClear(self)
+                    self.onClickClear(sender: self)
                 }
                 uartSettingsViewController.onClickExport = {
-                    self.onClickExport(self)
+                    self.onClickExport(sender: self)
                 }
             }
         }
@@ -214,16 +214,16 @@ class UartModuleViewController: ModuleViewController {
     // MARK: - Preferences
     func registerNotifications(register : Bool) {
         
-        let notificationCenter =  NSNotificationCenter.defaultCenter()
+        let notificationCenter =  NotificationCenter.default
         if (register) {
-            notificationCenter.addObserver(self, selector: #selector(UartModuleViewController.preferencesUpdated(_:)), name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(UartModuleViewController.preferencesUpdated), name: .didUpdatePreferences, object: nil)
         }
         else {
-            notificationCenter.removeObserver(self, name: Preferences.PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil)
+            notificationCenter.removeObserver(self, name: .didUpdatePreferences, object: nil)
         }
     }
     
-    func preferencesUpdated(notification : NSNotification) {
+    @objc func preferencesUpdated(notification : NSNotification) {
         txColor = Preferences.uartSentDataColor
         rxColor = Preferences.uartReceveivedDataColor
         reloadDataUI()
@@ -233,15 +233,15 @@ class UartModuleViewController: ModuleViewController {
     func reloadDataUI() {
         let displayMode = Preferences.uartIsDisplayModeTimestamp ? UartModuleManager.DisplayMode.Table : UartModuleManager.DisplayMode.Text
         
-        baseTableView.hidden = displayMode == .Text
-        baseTextView.hidden = displayMode == .Table
+        baseTableView.isHidden = displayMode == .Text
+        baseTextView.isHidden = displayMode == .Table
         
         switch(displayMode) {
         case .Text:
             
             textCachedBuffer.setAttributedString(NSAttributedString())
             for dataChunk in uartData.dataBuffer {
-                addChunkToUIText(dataChunk)
+                addChunkToUIText(dataChunk: dataChunk)
             }
             baseTextView.attributedText = textCachedBuffer
             reloadData()
@@ -256,23 +256,23 @@ class UartModuleViewController: ModuleViewController {
     func updateBytesUI() {
         if let blePeripheral = uartData.blePeripheral {
             let localizationManager = LocalizationManager.sharedInstance
-            let sentBytesMessage = String(format: localizationManager.localizedString("uart_sentbytes_format"), arguments: [blePeripheral.uartData.sentBytes])
-            let receivedBytesMessage = String(format: localizationManager.localizedString("uart_recievedbytes_format"), arguments: [blePeripheral.uartData.receivedBytes])
+            let sentBytesMessage = String(format: localizationManager.localizedString(key: "uart_sentbytes_format"), arguments: [blePeripheral.uartData.sentBytes])
+            let receivedBytesMessage = String(format: localizationManager.localizedString(key: "uart_recievedbytes_format"), arguments: [blePeripheral.uartData.receivedBytes])
             
             statsLabel.text = String(format: "%@     %@", arguments: [sentBytesMessage, receivedBytesMessage])
         }
     }
     
     // MARK: - UI Actions
-    func onClickMqtt() {
-        let viewController = storyboard!.instantiateViewControllerWithIdentifier("UartMqttSettingsViewController")
-        viewController.modalPresentationStyle = .Popover
+    @objc func onClickMqtt() {
+        let viewController = storyboard!.instantiateViewController(withIdentifier: "UartMqttSettingsViewController")
+        viewController.modalPresentationStyle = .popover
         if let popovoverController = viewController.popoverPresentationController
         {
             popovoverController.barButtonItem = mqttBarButtonItem
             popovoverController.delegate = self
         }
-        presentViewController(viewController, animated: true, completion: nil)
+        present(viewController, animated: true, completion: nil)
     }
     
     @IBAction func onClickSend(sender: AnyObject) {
@@ -284,12 +284,12 @@ class UartModuleViewController: ModuleViewController {
             newText += "\n"
         }
         
-        uartData.sendMessageToUart(newText)
+        uartData.sendMessageToUart(text: newText)
         inputTextField.text = ""
     }
     
     @IBAction func onInputTextFieldEdidtingDidEndOnExit(sender: UITextField) {
-        onClickSend(sender)
+        onClickSend(sender: sender)
     }
     
     @IBAction func onClickClear(sender: AnyObject) {
@@ -305,35 +305,35 @@ class UartModuleViewController: ModuleViewController {
         }
         
         let localizationManager = LocalizationManager.sharedInstance
-        let alertController = UIAlertController(title: "Export data", message: "Choose the prefered format:", preferredStyle: .ActionSheet)
+        let alertController = UIAlertController(title: "Export data", message: "Choose the prefered format:", preferredStyle: .actionSheet)
         
         for exportFormat in UartModuleManager.kExportFormats {
-            let exportAction = UIAlertAction(title: exportFormat.rawValue, style: .Default) {[unowned self] (_) in
+            let exportAction = UIAlertAction(title: exportFormat.rawValue, style: .default) {[unowned self] (_) in
                 
                 var exportData: AnyObject?
                 
                 switch(exportFormat) {
                 case .txt:
-                    exportData = UartDataExport.dataAsText(dataBuffer)
+                    exportData = UartDataExport.dataAsText(dataBuffer: dataBuffer) as AnyObject
                 case .csv:
-                    exportData = UartDataExport.dataAsCsv(dataBuffer)
+                    exportData = UartDataExport.dataAsCsv(dataBuffer: dataBuffer) as AnyObject
                 case .json:
-                    exportData = UartDataExport.dataAsJson(dataBuffer)
+                    exportData = UartDataExport.dataAsJson(dataBuffer: dataBuffer) as AnyObject
                 case .xml:
-                    exportData = UartDataExport.dataAsXml(dataBuffer)
+                    exportData = UartDataExport.dataAsXml(dataBuffer: dataBuffer) as AnyObject
                 case .bin:
-                    exportData = UartDataExport.dataAsBinary(dataBuffer)
+                    exportData = UartDataExport.dataAsBinary(dataBuffer: dataBuffer)
                 }
-                self.exportData(exportData)
+                self.exportData(data: exportData)
             }
             alertController.addAction(exportAction)
         }
         
-        let cancelAction = UIAlertAction(title: localizationManager.localizedString("dialog_cancel"), style: .Cancel, handler:nil)
+        let cancelAction = UIAlertAction(title: localizationManager.localizedString(key: "dialog_cancel"), style: .cancel, handler:nil)
         alertController.addAction(cancelAction)
         
         alertController.popoverPresentationController?.sourceView = exportButton
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
     
     
@@ -344,30 +344,30 @@ class UartModuleViewController: ModuleViewController {
             let activityViewController = UIActivityViewController(activityItems: [data], applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = exportButton
             
-            navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
+            navigationController?.present(activityViewController, animated: true, completion: nil)
             
         }
         else {
-            DLog("exportString with empty text")
+            DLog(message: "exportString with empty text")
             showDialogWarningNoTextToExport()
         }
     }
     
     private func showDialogWarningNoTextToExport() {
         let localizationManager = LocalizationManager.sharedInstance
-        let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("uart_export_nodata"), preferredStyle: .Alert)
-        let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler:nil)
+        let alertController = UIAlertController(title: nil, message: localizationManager.localizedString(key: "uart_export_nodata"), preferredStyle: .alert)
+        let okAction = UIAlertAction(title: localizationManager.localizedString(key: "dialog_ok"), style: .default, handler:nil)
         alertController.addAction(okAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
         
     }
     
     @IBAction func onShowEchoValueChanged(sender: UISwitch) {
-        Preferences.uartIsEchoEnabled = sender.on
+        Preferences.uartIsEchoEnabled = sender.isOn
     }
     
     @IBAction func onAddEolValueChanged(sender: UISwitch) {
-        Preferences.uartIsAutomaticEolEnabled = sender.on
+        Preferences.uartIsAutomaticEolEnabled = sender.isOn
     }
     
     @IBAction func onDisplayModeChanged(sender: UISegmentedControl) {
@@ -381,21 +381,22 @@ class UartModuleViewController: ModuleViewController {
     
     @IBAction func onClickHelp(sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
-        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpViewController") as! HelpViewController
-        helpViewController.setHelp(localizationManager.localizedString("uart_help_text"), title: localizationManager.localizedString("uart_help_title"))
+        let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
+        helpViewController.setHelp(message: localizationManager.localizedString(key: "uart_help_text"), title: localizationManager.localizedString(key: "uart_help_title"))
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
-        helpNavigationController.modalPresentationStyle = .Popover
+        helpNavigationController.modalPresentationStyle = .popover
         helpNavigationController.popoverPresentationController?.barButtonItem = sender
         
-        presentViewController(helpNavigationController, animated: true, completion: nil)
+        present(helpNavigationController, animated: true, completion: nil)
     }
 }
 
 // MARK: - UITableViewDataSource
 extension UartModuleViewController : UITableViewDataSource {
+    
     private static var dataFont = UIFont(name: "CourierNewPSMT", size: 14)! //Font.systemFontOfSize(Font.systemFontSize())
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (Preferences.uartIsEchoEnabled)  {
             tableCachedDataBuffer = uartData.dataBuffer
         }
@@ -408,37 +409,37 @@ extension UartModuleViewController : UITableViewDataSource {
         return tableCachedDataBuffer!.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let reuseIdentifier = "TimestampCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath:indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for:indexPath)
         
         // Data binding in cellForRowAtIndexPath to avoid problems with multiple-line labels and dyanmic tableview height calculation
         let dataChunk = tableCachedDataBuffer![indexPath.row]
         let date = NSDate(timeIntervalSinceReferenceDate: dataChunk.timestamp)
-        let dateString = timestampDateFormatter.stringFromDate(date)
-        let modeString = LocalizationManager.sharedInstance.localizedString(dataChunk.mode == .RX ? "uart_timestamp_direction_rx" : "uart_timestamp_direction_tx")
+        let dateString = timestampDateFormatter.string(from: date as Date)
+        let modeString = LocalizationManager.sharedInstance.localizedString(key: dataChunk.mode == .RX ? "uart_timestamp_direction_rx" : "uart_timestamp_direction_tx")
         let color = dataChunk.mode == .TX ? txColor : rxColor
         
         let timestampCell = cell as! UartTimetampTableViewCell
 
         timestampCell.timeStampLabel.text = String(format: "%@ %@", arguments: [dateString, modeString])
         
-        if let attributedText = UartModuleManager.attributeTextFromData(dataChunk.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: UartModuleViewController.dataFont) where attributedText.length > 0 {
+        if let attributedText = UartModuleManager.attributeTextFromData(data: dataChunk.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: UartModuleViewController.dataFont), attributedText.length > 0 {
             timestampCell.dataLabel.attributedText = attributedText
         }
         else {
             timestampCell.dataLabel.attributedText = NSAttributedString(string: " ")        // space to maintain height
         }
  
-        timestampCell.contentView.backgroundColor = indexPath.row%2 == 0 ? UIColor.whiteColor() : UIColor(hex: 0xeeeeee)
+        timestampCell.contentView.backgroundColor = indexPath.row%2 == 0 ? UIColor.white : UIColor(hex: 0xeeeeee)
         return cell
     }
 }
 
 // MARK: UITableViewDelegate
 extension UartModuleViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
     }
 }
@@ -448,7 +449,7 @@ extension UartModuleViewController: UartModuleDelegate {
     
     func addChunkToUI(dataChunk : UartDataChunk) {
         // Check that the view has been initialized before updating UI
-        guard isViewLoaded() && view.window != nil &&  baseTableView != nil else {
+        guard isViewLoaded && view.window != nil &&  baseTableView != nil else {
             return
         }
         
@@ -456,7 +457,7 @@ extension UartModuleViewController: UartModuleDelegate {
 
         switch(displayMode) {
         case .Text:
-            addChunkToUIText(dataChunk)
+            addChunkToUIText(dataChunk: dataChunk)
             self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
 
         case .Table:
@@ -483,8 +484,8 @@ extension UartModuleViewController: UartModuleDelegate {
             baseTableView.reloadData()
             if let tableCachedDataBuffer = tableCachedDataBuffer {
                 if tableCachedDataBuffer.count > 0 {
-                    let lastIndex = NSIndexPath(forRow: tableCachedDataBuffer.count-1, inSection: 0)
-                    baseTableView.scrollToRowAtIndexPath(lastIndex, atScrollPosition: UITableViewScrollPosition.Bottom, animated: false)
+                    let lastIndex = NSIndexPath(row: tableCachedDataBuffer.count-1, section: 0)
+                    baseTableView.scrollToRow(at: lastIndex as IndexPath as IndexPath, at: UITableViewScrollPosition.bottom, animated: false)
                 }
             }
         }
@@ -495,8 +496,8 @@ extension UartModuleViewController: UartModuleDelegate {
         if (Preferences.uartIsEchoEnabled || dataChunk.mode == .RX) {
             let color = dataChunk.mode == .TX ? txColor : rxColor
             
-            if let attributedString = UartModuleManager.attributeTextFromData(dataChunk.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: UartModuleViewController.dataFont) {
-                textCachedBuffer.appendAttributedString(attributedString)
+            if let attributedString = UartModuleManager.attributeTextFromData(data: dataChunk.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: UartModuleViewController.dataFont) {
+                textCachedBuffer.append(attributedString)
             }
         }
     }
@@ -509,9 +510,9 @@ extension UartModuleViewController: UartModuleDelegate {
             switch (status) {
             case .Connecting:
                 let imageFrames = [
-                    UIImage(named:"mqtt_connecting1")!.tintWithColor(tintColor),
-                    UIImage(named:"mqtt_connecting2")!.tintWithColor(tintColor),
-                    UIImage(named:"mqtt_connecting3")!.tintWithColor(tintColor)
+                    UIImage(named:"mqtt_connecting1")!.tintWithColor(color: tintColor!),
+                    UIImage(named:"mqtt_connecting2")!.tintWithColor(color: tintColor!),
+                    UIImage(named:"mqtt_connecting3")!.tintWithColor(color: tintColor!)
                 ]
                 imageView.animationImages = imageFrames
                 imageView.animationDuration = 0.5 * Double(imageFrames.count)
@@ -520,11 +521,11 @@ extension UartModuleViewController: UartModuleDelegate {
                 
             case .Connected:
                 imageView.stopAnimating()
-                imageView.image = UIImage(named:"mqtt_connected")!.tintWithColor(tintColor)
+                imageView.image = UIImage(named:"mqtt_connected")!.tintWithColor(color: tintColor!)
                 
             default:
                 imageView.stopAnimating()
-                imageView.image = UIImage(named:"mqtt_disconnected")!.tintWithColor(tintColor)
+                imageView.image = UIImage(named:"mqtt_disconnected")!.tintWithColor(color: tintColor!)
             }
         }
     }
@@ -532,12 +533,12 @@ extension UartModuleViewController: UartModuleDelegate {
     func mqttError(message: String, isConnectionError: Bool) {
         let localizationManager = LocalizationManager.sharedInstance
 
-        let alertMessage = isConnectionError ? localizationManager.localizedString("uart_mqtt_connectionerror_title"): message
-        let alertController = UIAlertController(title: nil, message: alertMessage, preferredStyle: .Alert)
+        let alertMessage = isConnectionError ? localizationManager.localizedString(key: "uart_mqtt_connectionerror_title"): message
+        let alertController = UIAlertController(title: nil, message: alertMessage, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler:nil)
+        let okAction = UIAlertAction(title: localizationManager.localizedString(key: "dialog_ok"), style: .default, handler:nil)
         alertController.addAction(okAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -545,32 +546,32 @@ extension UartModuleViewController: UartModuleDelegate {
 extension UartModuleViewController: CBPeripheralDelegate {
     // Pass peripheral callbacks to UartData
     
-    func peripheral(peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+    func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
         uartData.peripheral(peripheral, didModifyServices: invalidatedServices)
     }
     
-    func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         uartData.peripheral(peripheral, didDiscoverServices:error)
     }
     
-    func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         
-        uartData.peripheral(peripheral, didDiscoverCharacteristicsForService: service, error: error)
+        uartData.peripheral(peripheral, didDiscoverCharacteristicsFor: service, error: error)
         
         // Check if ready
         if uartData.isReady() {
             // Enable input
-            dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+            DispatchQueue.main.async { [unowned self] in
                 if self.inputTextField != nil {     // could be nil if the viewdidload has not been executed yet
-                    self.inputTextField.enabled = true
-                    self.inputTextField.backgroundColor = UIColor.whiteColor()
+                    self.inputTextField.isEnabled = true
+                    self.inputTextField.backgroundColor = UIColor.white
                 }
-                });
+            }
         }
     }
     
-    func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        uartData.peripheral(peripheral, didUpdateValueForCharacteristic: characteristic, error: error)
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        uartData.peripheral(peripheral, didUpdateValueFor: characteristic, error: error)
     }
 }
 
@@ -595,10 +596,10 @@ extension UartModuleViewController: UIPopoverPresentationControllerDelegate {
     
     func adaptivePresentationStyleForPresentationController(PC: UIPresentationController) -> UIModalPresentationStyle {
         // This *forces* a popover to be displayed on the iPhone
-        return .None
+        return .none
     }
     
-    func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
 
         // MQTT
         let mqttManager = MqttManager.sharedInstance

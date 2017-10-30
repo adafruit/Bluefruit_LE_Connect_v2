@@ -39,11 +39,11 @@ class NeopixelModuleViewController: ModuleViewController {
     private var board: NeopixelModuleManager.Board?
     private var ledViews: [UIView] = []
     
-    private var currentColor: UIColor = UIColor.redColor()
+    private var currentColor: UIColor = UIColor.red
     private var contentRotationAngle: CGFloat = 0
 
-    private var boardMargin = UIEdgeInsetsZero
-    private var boardCenterScrollOffset = CGPointZero
+    private var boardMargin = UIEdgeInsets.zero //UIEdgeInsetsZero
+    private var boardCenterScrollOffset = CGPoint.zero
     
     private var isSketchTooltipAlreadyShown = false
     
@@ -52,17 +52,17 @@ class NeopixelModuleViewController: ModuleViewController {
         
         // Init
         neopixel.delegate = self
-        board = NeopixelModuleManager.Board.loadStandardBoard(0)
+        board = NeopixelModuleManager.Board.loadStandardBoard(standardIndex: 0)
         
         // Read palette from resources
-        let path = NSBundle.mainBundle().pathForResource("NeopixelDefaultPalette", ofType: "plist")!
+        let path = Bundle.main.path(forResource: "NeopixelDefaultPalette", ofType: "plist")!
         defaultPalette = NSArray(contentsOfFile: path) as! [String]
         
         // UI
-        statusView.layer.borderColor = UIColor.whiteColor().CGColor
+        statusView.layer.borderColor = UIColor.white.cgColor
         statusView.layer.borderWidth = 1
         
-        boardScrollView.layer.borderColor = UIColor.whiteColor().CGColor
+        boardScrollView.layer.borderColor = UIColor.white.cgColor
         boardScrollView.layer.borderWidth = 1
         
         colorPickerButton.layer.cornerRadius = 4
@@ -71,23 +71,23 @@ class NeopixelModuleViewController: ModuleViewController {
         createBoardUI()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Show tooltip alert
         if Preferences.neopixelIsSketchTooltipEnabled && !isSketchTooltipAlreadyShown{
             let localizationManager = LocalizationManager.sharedInstance
-            let alertController = UIAlertController(title: localizationManager.localizedString("dialog_notice"), message: localizationManager.localizedString("neopixel_sketch_tooltip"), preferredStyle: .Alert)
+            let alertController = UIAlertController(title: localizationManager.localizedString(key: "dialog_notice"), message: localizationManager.localizedString(key: "neopixel_sketch_tooltip"), preferredStyle: .alert)
             
-            let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .Default, handler:nil)
+            let okAction = UIAlertAction(title: localizationManager.localizedString(key: "dialog_ok"), style: .default, handler:nil)
             alertController.addAction(okAction)
             
-            let dontshowAction = UIAlertAction(title: localizationManager.localizedString("dialog_dontshowagain"), style: .Destructive) { (action) in
+            let dontshowAction = UIAlertAction(title: localizationManager.localizedString(key: "dialog_dontshowagain"), style: .destructive) { (action) in
                 Preferences.neopixelIsSketchTooltipEnabled = false
             }
             alertController.addAction(dontshowAction)
             
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
             isSketchTooltipAlreadyShown = true
         }
         
@@ -96,7 +96,7 @@ class NeopixelModuleViewController: ModuleViewController {
         neopixel.start()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         neopixel.stop()
@@ -106,13 +106,14 @@ class NeopixelModuleViewController: ModuleViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+  
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "boardSelectorSegue"  {
-            if let controller = segue.destinationViewController.popoverPresentationController {
+            if let controller = segue.destination.popoverPresentationController {
                 controller.delegate = self
                 
-                let boardSelectorViewController = segue.destinationViewController as! NeopixelBoardSelectorViewController
+                let boardSelectorViewController = segue.destination as! NeopixelBoardSelectorViewController
                 boardSelectorViewController.onClickStandardBoard = { [unowned self] standardBoardIndex in
                     var currentType: UInt16!
                     if let type = self.board?.type {
@@ -122,8 +123,8 @@ class NeopixelModuleViewController: ModuleViewController {
                         currentType = NeopixelModuleManager.kDefaultType
                     }
                     
-                    let board = NeopixelModuleManager.Board.loadStandardBoard(standardBoardIndex, type: currentType)
-                    self.changeBoard(board)
+                    let board = NeopixelModuleManager.Board.loadStandardBoard(standardIndex: standardBoardIndex, type: currentType)
+                    self.changeBoard(board: board)
                 }
                 
                 boardSelectorViewController.onClickCustomLineStrip = { [unowned self] in
@@ -133,10 +134,10 @@ class NeopixelModuleViewController: ModuleViewController {
             }
         }
         else if segue.identifier == "boardTypeSegue" {
-            if let controller = segue.destinationViewController.popoverPresentationController {
+            if let controller = segue.destination.popoverPresentationController {
                 controller.delegate = self
                 
-                let typeSelectorViewController = segue.destinationViewController as! NeopixelTypeSelectorViewController
+                let typeSelectorViewController = segue.destination as! NeopixelTypeSelectorViewController
                 
                 if let type = board?.type {
                     typeSelectorViewController.currentType = type
@@ -148,16 +149,16 @@ class NeopixelModuleViewController: ModuleViewController {
                 typeSelectorViewController.onClickSetType = { [unowned self] type in
                     if var board = self.board {
                         board.type = type
-                        self.changeBoard(board)
+                        self.changeBoard(board: board)
                     }
                 }
             }
         }
         else if segue.identifier == "colorPickerSegue"  {
-            if let controller = segue.destinationViewController.popoverPresentationController {
+            if let controller = segue.destination.popoverPresentationController {
                 controller.delegate = self
                 
-                if let colorPickerViewController = segue.destinationViewController as? NeopixelColorPickerViewController {
+                if let colorPickerViewController = segue.destination as? NeopixelColorPickerViewController {
                     colorPickerViewController.delegate = self
                 }
             }
@@ -182,31 +183,31 @@ class NeopixelModuleViewController: ModuleViewController {
     private func showLineStripDialog() {
         // Show dialog
         let localizationManager = LocalizationManager.sharedInstance
-        let alertController = UIAlertController(title: nil, message: "Select line strip length", preferredStyle: .Alert)
+        let alertController = UIAlertController(title: nil, message: "Select line strip length", preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "Select", style: .Default) { (_) in
+        let okAction = UIAlertAction(title: "Select", style: .default) { (_) in
             let stripLengthTextField = alertController.textFields![0] as UITextField
             
             if let text = stripLengthTextField.text, let stripLength = Int(text) {
                 let board = NeopixelModuleManager.Board(name: "1x\(stripLength)", width: UInt8(stripLength), height:UInt8(1), components: UInt8(3), stride: UInt8(stripLength), type: NeopixelModuleManager.kDefaultType)
-                self.changeBoard(board)
+                self.changeBoard(board: board)
             }
         }
-        okAction.enabled = false
+        okAction.isEnabled = false
         alertController.addAction(okAction)
         
-        alertController.addTextFieldWithConfigurationHandler { (textField) -> Void in
+        alertController.addTextField { (textField) -> Void in
             textField.placeholder = "Enter Length"
-            textField.keyboardType = .NumberPad
+            textField.keyboardType = .numberPad
             
-            NSNotificationCenter.defaultCenter().addObserverForName(UITextFieldTextDidChangeNotification, object: textField, queue: NSOperationQueue.mainQueue()) { (notification) in
-                okAction.enabled = textField.text != ""
+            NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: OperationQueue.main) { (notification) in
+                okAction.isEnabled = textField.text != ""
             }            
         }
       
-        alertController.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_cancel"), style: .Cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: localizationManager.localizedString(key: "dialog_cancel"), style: .cancel, handler: nil))
         
-        self.presentViewController(alertController, animated: true) { () -> Void in
+        self.present(alertController, animated: true) { () -> Void in
         }
     }
 
@@ -215,11 +216,11 @@ class NeopixelModuleViewController: ModuleViewController {
         super.viewDidLayoutSubviews()
         
         updateBoardPositionValues()
-        setDefaultPositionAndScaleAnimated(true)
+        setDefaultPositionAndScaleAnimated(animated: true)
     }
     
     private func updateStatusUI() {
-        connectButton.enabled = neopixel.isSketchDetected != true || (neopixel.isReady() && (neopixel.board == nil && !neopixel.isWaitingResponse))
+        connectButton.isEnabled = neopixel.isSketchDetected != true || (neopixel.isReady() && (neopixel.board == nil && !neopixel.isWaitingResponse))
         
         let isBoardConfigured = neopixel.isBoardConfigured()
         boardScrollView.alpha = isBoardConfigured ? 1.0:0.2
@@ -263,7 +264,7 @@ class NeopixelModuleViewController: ModuleViewController {
         }
         
         // Create views
-        let ledBorderColor = UIColor.whiteColor().colorWithAlphaComponent(0.2).CGColor
+        let ledBorderColor = UIColor.white.withAlphaComponent(0.2).cgColor
         let ledCircleMargin: CGFloat = 1
         var k = 0
         ledViews = []
@@ -276,15 +277,16 @@ class NeopixelModuleViewController: ModuleViewController {
             
             for j in 0..<board.height {
                 for i in 0..<board.width {
-                    let button = UIButton(frame: CGRectMake(CGFloat(i)*kLedWidth+boardMargin.left, CGFloat(j)*kLedHeight+boardMargin.top, kLedWidth, kLedHeight))
+                    let button = UIButton(frame: CGRect(x: CGFloat(i)*kLedWidth+boardMargin.left, y: CGFloat(j)*kLedHeight+boardMargin.top, width: kLedWidth, height: kLedHeight))
+//                    let button = UIButton(frame: CGRectMake(CGFloat(i)*kLedWidth+boardMargin.left, CGFloat(j)*kLedHeight+boardMargin.top, kLedWidth, kLedHeight))
                     button.layer.borderColor = ledBorderColor
                     button.layer.borderWidth = 1
                     button.tag = k
-                    button.addTarget(self, action: #selector(NeopixelModuleViewController.ledPressed(_:)), forControlEvents: [.TouchDown])
+                  button.addTarget(self, action: #selector(NeopixelModuleViewController.ledPressed), for: [.touchDown])
                     rotationView.addSubview(button)
                     
-                    let colorView = UIView(frame: CGRectMake(ledCircleMargin, ledCircleMargin, kLedWidth-ledCircleMargin*2, kLedHeight-ledCircleMargin*2))
-                    colorView.userInteractionEnabled = false
+                    let colorView = UIView(frame: CGRect(x: ledCircleMargin, y: ledCircleMargin, width: kLedWidth-ledCircleMargin*2, height: kLedHeight-ledCircleMargin*2))
+                    colorView.isUserInteractionEnabled = false
                     colorView.layer.borderColor = ledBorderColor
                     colorView.layer.borderWidth = 2
                     colorView.layer.cornerRadius = kLedWidth/2
@@ -301,7 +303,7 @@ class NeopixelModuleViewController: ModuleViewController {
             contentViewHeightConstrait.constant = CGFloat(board.height) * kLedHeight + boardMargin.top + boardMargin.bottom
             boardScrollView.minimumZoomScale = 0.1
             boardScrollView.maximumZoomScale = 10
-            setDefaultPositionAndScaleAnimated(false)
+            setDefaultPositionAndScaleAnimated(animated: false)
             boardScrollView.layoutIfNeeded()
         }
 
@@ -322,7 +324,7 @@ class NeopixelModuleViewController: ModuleViewController {
             let horizontalMargin = max(0, (boardScrollView.bounds.width - boardWidthPoints)/2)
             let verticalMargin = max(0, (boardScrollView.bounds.height - boardHeightPoints)/2)
             
-            boardCenterScrollOffset = CGPointMake(boardMargin.left - horizontalMargin, boardMargin.top - verticalMargin)
+            boardCenterScrollOffset = CGPoint(x: boardMargin.left - horizontalMargin, y: boardMargin.top - verticalMargin)
         }
     }
 
@@ -331,15 +333,15 @@ class NeopixelModuleViewController: ModuleViewController {
         boardScrollView.setContentOffset(boardCenterScrollOffset, animated: animated)
     }
     
-    func ledPressed(sender: UIButton) {
+  @objc func ledPressed(sender: UIButton) {
         let isBoardConfigured = neopixel.isBoardConfigured()
-        if let board = board where isBoardConfigured {
+        if let board = board, isBoardConfigured {
             let x = sender.tag % Int(board.width)
             let y = sender.tag / Int(board.width)
-            DLog("led: (\(x)x\(y))")
+            DLog(message: "led: (\(x)x\(y))")
             
             ledViews[sender.tag].backgroundColor = currentColor
-            neopixel.setPixelColor(currentColor, x: UInt8(x), y: UInt8(y))
+            neopixel.setPixelColor(color: currentColor, x: UInt8(x), y: UInt8(y))
         }
     }
     
@@ -350,80 +352,81 @@ class NeopixelModuleViewController: ModuleViewController {
     }
     
     @IBAction func onDoubleTapScrollView(sender: AnyObject) {
-        setDefaultPositionAndScaleAnimated(true)
+        setDefaultPositionAndScaleAnimated(animated: true)
     }
     
     @IBAction func onClickClear(sender: AnyObject) {
         for ledView in ledViews {
             ledView.backgroundColor = currentColor
         }
-        neopixel.clearBoard(currentColor)
+        neopixel.clearBoard(color: currentColor)
     }
     
     @IBAction func onChangeBrightness(sender: UISlider) {
-        neopixel.setBrighness(sender.value)
+        neopixel.setBrighness(brightness: sender.value)
     }
     
     @IBAction func onClickHelp(sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
-        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpExportViewController") as! HelpExportViewController
-        helpViewController.setHelp(localizationManager.localizedString("neopixel_help_text"), title: localizationManager.localizedString("neopixel_help_title"))
+        let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpExportViewController") as! HelpExportViewController
+        helpViewController.setHelp(message: localizationManager.localizedString(key: "neopixel_help_text"), title: localizationManager.localizedString(key: "neopixel_help_title"))
         helpViewController.fileTitle = "Neopixel Sketch"
         
-        let cacheDirectoryURL = try! NSFileManager().URLForDirectory(.CachesDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: true)
-        if let sketchPath = cacheDirectoryURL.URLByAppendingPathComponent("Neopixel.zip")!.path {
+        let cacheDirectoryURL = try! FileManager().url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let sketchPath = cacheDirectoryURL.appendingPathComponent("Neopixel.zip").path 
             
-            let isSketchZipAvailable = NSFileManager.defaultManager().fileExistsAtPath(sketchPath)
+      let isSketchZipAvailable = FileManager.default.fileExists(atPath: sketchPath)
             
             if !isSketchZipAvailable {
                 // Create zip from code if not exists
-                if let sketchFolder = NSBundle.mainBundle().pathForResource("Neopixel", ofType: nil) {
+                if let sketchFolder = Bundle.main.path(forResource: "Neopixel", ofType: nil) {
                     
-                    let result = SSZipArchive.createZipFileAtPath(sketchPath, withContentsOfDirectory: sketchFolder)
-                    DLog("Neopiel zip created: \(result)")
+                  let result = SSZipArchive.createZipFile(atPath: sketchPath, withContentsOfDirectory: sketchFolder)
+                  DLog(message: "Neopiel zip created: \(result)")
                 }
                 else {
-                    DLog("Error creating zip file")
+                    DLog(message: "Error creating zip file")
                 }
             }
             
             // Setup file download
             helpViewController.fileURL = NSURL(fileURLWithPath: sketchPath)
-        }
+        
         
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
-        helpNavigationController.modalPresentationStyle = .Popover
+        helpNavigationController.modalPresentationStyle = .popover
         helpNavigationController.popoverPresentationController?.barButtonItem = sender
         
-        presentViewController(helpNavigationController, animated: true, completion: nil)
+        present(helpNavigationController, animated: true, completion: nil)
     }
 
     @IBAction func onClickRotate(sender: AnyObject) {
-        contentRotationAngle += CGFloat(M_PI_2)
-        rotationView.transform = CGAffineTransformMakeRotation(contentRotationAngle)
-        setDefaultPositionAndScaleAnimated(true)
+        contentRotationAngle += CGFloat(Double.pi / 2)
+        rotationView.transform = CGAffineTransform(rotationAngle: contentRotationAngle)
+        setDefaultPositionAndScaleAnimated(animated: true)
     }
 }
 
 // MARK: - UICollectionViewDataSource
 extension NeopixelModuleViewController: UICollectionViewDataSource {
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return defaultPalette.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let reuseIdentifier = "ColorCell"
-        let colorCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) //as! AdminMenuCollectionViewCell
+        let colorCell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) //as! AdminMenuCollectionViewCell
         
         let colorHex = defaultPalette[indexPath.row]
-        let color = UIColor(CSS: colorHex)
+        let color = UIColor(css: colorHex)
         colorCell.backgroundColor = color
         
         let isSelected = currentColor.isEqual(color)
         colorCell.layer.borderWidth = isSelected ? 4:2
-        colorCell.layer.borderColor =  (isSelected ? UIColor.whiteColor(): color.darker(0.5)).CGColor
+        colorCell.layer.borderColor =  (isSelected ? UIColor.white: (color?.darker(amount: 0.5))!).cgColor
         colorCell.layer.cornerRadius = 4
         colorCell.layer.masksToBounds = true
         
@@ -433,16 +436,17 @@ extension NeopixelModuleViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 extension NeopixelModuleViewController: UICollectionViewDelegate {
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        DLog("colors selected: \(indexPath.item)")
+        DLog(message: "colors selected: \(indexPath.item)")
         let colorHex = defaultPalette[indexPath.row]
-        let color = UIColor(CSS: colorHex)
-        currentColor = color
-        updatePickerColorButton(false)
+        let color = UIColor(css: colorHex)
+        currentColor = color!
+        updatePickerColorButton(isSelected: false)
         
         collectionView.reloadData()
     }
+
 }
 
 
@@ -452,7 +456,7 @@ extension NeopixelModuleViewController: UIScrollViewDelegate {
         return contentView
     }
     
-    func scrollViewDidZoom(scrollView: UIScrollView) {
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
         //        let zoomScale = scrollView.zoomScale
         //        contentViewWidthConstraint.constant = zoomScale*200
         //        contentViewHeightConstrait.constant = zoomScale*200
@@ -462,32 +466,32 @@ extension NeopixelModuleViewController: UIScrollViewDelegate {
 
 // MARK: - NeopixelModuleManagerDelegate
 extension NeopixelModuleViewController: NeopixelModuleManagerDelegate {
-    func onNeopixelSetupFinished(success: Bool) {
+    func onNeopixelSetupFinished(sucess success: Bool) {
         if (success) {
-            neopixel.clearBoard(kDefaultLedColor)
+            neopixel.clearBoard(color: kDefaultLedColor!)
         }
         
-        dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+        DispatchQueue.main.async { [unowned self] in
             self.updateStatusUI()
-            });
+        }
     }
     
     func onNeopixelSketchDetected(detected: Bool) {
         if detected {
             if let board = board {
-                neopixel.setupNeopixel(board)
+                neopixel.setupNeopixel(device: board)
             }
         }
         
-        dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+        DispatchQueue.main.async { [unowned self] in
             self.updateStatusUI()
-            });
+            }
     }
     
     func onNeopixelUartIsReady() {
-        dispatch_async(dispatch_get_main_queue(), { [unowned self] in
+        DispatchQueue.main.async { [unowned self] in
             self.updateStatusUI()
-            });
+            }
     }
 }
 
@@ -496,16 +500,16 @@ extension NeopixelModuleViewController: UIPopoverPresentationControllerDelegate 
     
     func adaptivePresentationStyleForPresentationController(PC: UIPresentationController) -> UIModalPresentationStyle {
         // This *forces* a popover to be displayed on the iPhone
-        if traitCollection.verticalSizeClass != .Compact {
-            return .None
+        if traitCollection.verticalSizeClass != .compact {
+            return .none
         }
         else {
-            return .FullScreen
+            return .fullScreen
         }
     }
     
-    func popoverPresentationControllerDidDismissPopover(popoverPresentationController: UIPopoverPresentationController) {
-        DLog("selector dismissed")
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        DLog(message: "selector dismissed")
     }
 }
 
@@ -513,13 +517,13 @@ extension NeopixelModuleViewController: UIPopoverPresentationControllerDelegate 
 extension NeopixelModuleViewController: NeopixelColorPickerViewControllerDelegate {
     func onColorPickerChooseColor(color: UIColor) {
         colorPickerButton.backgroundColor = color
-        updatePickerColorButton(true)
+        updatePickerColorButton(isSelected: true)
         currentColor = color
         paletteCollection.reloadData()
     }
 
     private func updatePickerColorButton(isSelected: Bool) {
         colorPickerButton.layer.borderWidth = isSelected ? 4:2
-        colorPickerButton.layer.borderColor =  (isSelected ? UIColor.whiteColor(): colorPickerButton.backgroundColor!.darker(0.5)).CGColor
+        colorPickerButton.layer.borderColor =  (isSelected ? UIColor.white: colorPickerButton.backgroundColor!.darker(amount: 0.5)).cgColor
     }
 }

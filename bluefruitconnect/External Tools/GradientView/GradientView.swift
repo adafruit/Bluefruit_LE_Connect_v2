@@ -23,11 +23,11 @@ class GradientView: UIView {
 //        self.setNeedsDisplay()
 //    }
     required init(coder aDecoder: NSCoder) {
-        endColor = UIColor.whiteColor()
+        endColor = UIColor.white
         super.init(coder: aDecoder)!
     }
     
-    override func drawRect(rect: CGRect) {
+  override func draw(_ rect: CGRect) {
         
         // Create a gradient from white to red
         var red:CGFloat = 0.0
@@ -40,22 +40,22 @@ class GradientView: UIView {
             red, green, blue, alpha]
         
         let baseSpace = CGColorSpaceCreateDeviceRGB()
-        let gradient = CGGradientCreateWithColorComponents(baseSpace, colors, nil, 2)
+        let gradient = CGGradient(colorSpace: baseSpace, colorComponents: colors, locations: nil, count: 2)
 //        CGColorSpaceRelease(baseSpace)
 //        baseSpace = nil
         
         let context = UIGraphicsGetCurrentContext()
         
-        CGContextSaveGState(context!)
+        context!.saveGState()
 //        CGContextClip(context) 
+    
+        let startPoint = CGPoint(x: rect.minX, y: rect.minY)
+        let endPoint = CGPoint(x: rect.maxX, y: rect.maxY)
         
-        let startPoint = CGPointMake(CGRectGetMinX(rect), CGRectGetMidY(rect))
-        let endPoint = CGPointMake(CGRectGetMaxX(rect), CGRectGetMidY(rect))
-        
-        CGContextDrawLinearGradient(context!, gradient!, startPoint, endPoint, CGGradientDrawingOptions.DrawsBeforeStartLocation)
+        context!.drawLinearGradient(gradient!, start: startPoint, end: endPoint, options: CGGradientDrawingOptions.drawsBeforeStartLocation)
 //        CGGradientRelease(gradient), gradient = NULL
         
-        CGContextRestoreGState(context!)
+        context!.restoreGState()
         
         //    CGContextDrawPath(context, kCGPathStroke);
     }

@@ -16,11 +16,11 @@ class ModuleViewController: UIViewController {
         self.view.backgroundColor = StyleConfig.backgroundColor
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Setup navigation item
-        if let parentNavigationItem = parentViewController?.navigationItem {
+        if let parentNavigationItem = parent?.navigationItem {
 
             // Setup navigation item title and buttons
             parentNavigationItem.title = navigationItem.title

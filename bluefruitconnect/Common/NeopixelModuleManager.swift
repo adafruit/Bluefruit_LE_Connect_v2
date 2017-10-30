@@ -29,15 +29,15 @@ class NeopixelModuleManager: NSObject {
         var type: UInt16 = kDefaultType
         
         static func loadStandardBoard(standardIndex: Int, type: UInt16 = kDefaultType) -> Board {
-            let path = NSBundle.mainBundle().pathForResource("NeopixelBoards", ofType: "plist")!
+            let path = Bundle.main.path(forResource: "NeopixelBoards", ofType: "plist")!
             let boards = NSArray(contentsOfFile: path) as? [[String: AnyObject]]
             
             let boardData = boards![standardIndex]
             let name = boardData["name"] as! String
-            let width = UInt8((boardData["width"] as! NSNumber).integerValue)
-            let height = UInt8((boardData["height"] as! NSNumber).integerValue)
-            let components = UInt8((boardData["components"] as! NSNumber).integerValue)
-            let stride = UInt8((boardData["stride"] as! NSNumber).integerValue)
+            let width = UInt8((boardData["width"] as! NSNumber).intValue)
+            let height = UInt8((boardData["height"] as! NSNumber).intValue)
+            let components = UInt8((boardData["components"] as! NSNumber).intValue)
+            let stride = UInt8((boardData["stride"] as! NSNumber).intValue)
             
             let board = NeopixelModuleManager.Board(name: name, width: width, height: height, components: components, stride: stride, type: type)
             return board
@@ -50,7 +50,7 @@ class NeopixelModuleManager: NSObject {
     // Bluetooth Uart
     private let uartData = UartManager.sharedInstance
     private var uartResponseDelegate : ((NSData?)->Void)?
-    private var uartResponseTimer : NSTimer?
+    private var uartResponseTimer : Timer?
     
     // Neopixel
     var isSketchDetected : Bool?
@@ -60,31 +60,31 @@ class NeopixelModuleManager: NSObject {
     var board: Board?
     
     func start() {
-        DLog("neopixel start");
+        DLog(message: "neopixel start");
         
         // Start Uart Manager
         UartManager.sharedInstance.blePeripheral = BleManager.sharedInstance.blePeripheralConnected       // Note: this will start the service discovery
         
         // Notifications
-        let notificationCenter =  NSNotificationCenter.defaultCenter()
+        let notificationCenter =  NotificationCenter.default
         if !uartData.isReady() {
-            notificationCenter.addObserver(self, selector: #selector(NeopixelModuleManager.uartIsReady(_:)), name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(uartIsReady), name: .uartDidBecomeReady, object: nil)
         }
-        notificationCenter.addObserver(self, selector: #selector(NeopixelModuleManager.didReceiveData(_:)), name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(didReceiveData), name: .uartDidReceiveData, object: nil)
     }
     
     func stop() {
-        DLog("neopixel stop");
-        let notificationCenter =  NSNotificationCenter.defaultCenter()
-        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
-        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidReceiveData.rawValue, object: nil)
+        DLog(message: "neopixel stop");
+        let notificationCenter =  NotificationCenter.default
+        notificationCenter.removeObserver(self, name: .uartDidBecomeReady, object: nil)
+        notificationCenter.removeObserver(self, name: .uartDidReceiveData, object: nil)
         
         uartResponseDelegate = nil
         cancelUartResponseTimer()
     }
     
     deinit {
-        DLog("neopixel deinit")
+        DLog(message: "neopixel deinit")
         stop()
     }
     
@@ -101,29 +101,29 @@ class NeopixelModuleManager: NSObject {
     }
     
     // MARK: Notifications
-    func uartIsReady(notification: NSNotification) {
-        DLog("Uart is ready")
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+    @objc func uartIsReady(notification: NSNotification) {
+        DLog(message: "Uart is ready")
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.removeObserver(self, name: .uartDidBecomeReady, object: nil)
         
         delegate?.onNeopixelUartIsReady()
     }
     
     
     // MARK: - Uart
-    private func sendDataToUart(data: NSData, completionHandler: (response: NSData?)->Void) {
+    private func sendDataToUart(data: NSData, completionHandler: @escaping (_ response: NSData?)->Void) {
         guard uartResponseDelegate == nil && uartResponseTimer == nil else {
-            DLog("sendDataToUart error: waiting for a previous response")
+            DLog(message: "sendDataToUart error: waiting for a previous response")
             return
         }
         
-        uartResponseTimer = NSTimer.scheduledTimerWithTimeInterval(NeopixelModuleManager.kUartTimeout, target: self, selector: #selector(uartResponseTimeout), userInfo: nil, repeats: false)
+    uartResponseTimer = Timer.scheduledTimer(timeInterval: NeopixelModuleManager.kUartTimeout, target: self, selector: #selector(uartResponseTimeout), userInfo: nil, repeats: false)
         uartResponseDelegate = completionHandler
-        uartData.sendData(data)
+        uartData.sendData(data: data)
     }
     
     
-    func didReceiveData(notification: NSNotification) {
+    @objc func didReceiveData(notification: NSNotification) {
         if let dataChunk = notification.userInfo?["dataChunk"] as? UartDataChunk {
             if let uartResponseDelegate = uartResponseDelegate {
                 self.uartResponseDelegate = nil
@@ -133,8 +133,8 @@ class NeopixelModuleManager: NSObject {
         }
     }
     
-    func uartResponseTimeout() {
-        DLog("uartResponseTimeout")
+    @objc func uartResponseTimeout() {
+        DLog(message: "uartResponseTimeout")
         if let uartResponseDelegate = uartResponseDelegate {
             self.uartResponseDelegate = nil
             cancelUartResponseTimer()
@@ -152,42 +152,42 @@ class NeopixelModuleManager: NSObject {
     private func checkNeopixelSketch() {
         
         // Send version command and check if returns a valid response
-        DLog("Command: get Version")
+        DLog(message: "Command: get Version")
         
         let command : [UInt8] = [0x56]      // V
         let data = NSData(bytes: command, length: command.count)
         
-        sendDataToUart(data) { [unowned self] responseData in
+        sendDataToUart(data: data) { [unowned self] responseData in
             var isSketchDetected = false
-            if let data = responseData, result = NSString(data:data, encoding: NSUTF8StringEncoding) as? String {
+          if let data = responseData as Data?, let result = String(data: data, encoding: .utf8) {
                 isSketchDetected = result.hasPrefix("Neopixel")
             }
             
-            DLog("isNeopixelAvailable: \(isSketchDetected)")
+            DLog(message: "isNeopixelAvailable: \(isSketchDetected)")
             self.isSketchDetected = isSketchDetected
             
-            self.delegate?.onNeopixelSketchDetected(isSketchDetected)
+            self.delegate?.onNeopixelSketchDetected(detected: isSketchDetected)
         }
     }
     
     func setupNeopixel(device: Board) {
-        DLog("Command: Setup")
+        DLog(message: "Command: Setup")
 //        let pinNumber: UInt8 = 6       // TODO: ask user
         let pixelType: UInt16 = device.type
         
         let command : [UInt8] = [0x53, device.width, device.height, device.components, device.stride, /*pinNumber,*/ UInt8(pixelType), UInt8((UInt(pixelType) >> 8) & 0xff) ]            // Command: 'S'
         let data = NSData(bytes: command, length: command.count)
-        sendDataToUart(data) { [unowned self] responseData in
+        sendDataToUart(data: data) { [unowned self] responseData in
             var success = false
-            if let data = responseData, result = NSString(data:data, encoding: NSUTF8StringEncoding) as? String {
+            if let data = responseData as Data?, let result = String(data: data, encoding: .utf8) {
                 success = result.hasPrefix("OK")
             }
             
-            DLog("setup success: \(success)")
+            DLog(message: "setup success: \(success)")
             if success {
                 self.board = device
             }
-            self.delegate?.onNeopixelSetupFinished(success)
+            self.delegate?.onNeopixelSetupFinished(sucess: success)
         }
     }
     
@@ -196,32 +196,32 @@ class NeopixelModuleManager: NSObject {
     }
     
     func setPixelColor(color: Color, x: UInt8, y: UInt8, completionHandler: ((Bool)->())? = nil) {
-        DLog("Command: set Pixel")
+        DLog(message: "Command: set Pixel")
         if board?.components == 3
         {
-            let components = colorComponents(color)
+            let components = colorComponents(color: color)
             let command : [UInt8] = [0x50, x, y, components.red, components.green, components.blue ]      // Command: 'P'
-            sendCommand(command, completionHandler: completionHandler)
+            sendCommand(command: command, completionHandler: completionHandler)
         }
     }
     
     func clearBoard(color: Color, completionHandler: ((Bool)->())? = nil) {
-        DLog("Command: Clear");
+        DLog(message: "Command: Clear");
         
         if board?.components == 3
         {
-            let components = colorComponents(color)
+            let components = colorComponents(color: color)
             let command : [UInt8] = [0x43, components.red, components.green, components.blue ]          // Command: 'C'
-            sendCommand(command, completionHandler: completionHandler)
+            sendCommand(command: command, completionHandler: completionHandler)
         }
     }
     
     func setBrighness(brightness: Float, completionHandler: ((Bool)->())? = nil) {
-        DLog("Command: set Brightness: \(brightness)");
+        DLog(message: "Command: set Brightness: \(brightness)");
         
         let brightnessValue = UInt8(brightness*255)
         let command : [UInt8] = [0x42, brightnessValue ]          // Command: 'C'
-        sendCommand(command, completionHandler: completionHandler)
+        sendCommand(command: command, completionHandler: completionHandler)
     }
     
     private func colorComponents(color: Color) -> (red: UInt8, green: UInt8, blue: UInt8) {
@@ -233,17 +233,17 @@ class NeopixelModuleManager: NSObject {
         DLog("r: \(ciColor.red), g: \(ciColor.green), b:\(ciColor.blue)")
         */
         
-        let colorComponents = CGColorGetComponents(color.CGColor)
-        let r = UInt8(colorComponents[0] * 255)
-        let g = UInt8(colorComponents[1] * 255)
-        let b = UInt8(colorComponents[2] * 255)
+        let colorComponents = color.cgColor.components
+        let r = UInt8(colorComponents![0] * 255)
+        let g = UInt8(colorComponents![1] * 255)
+        let b = UInt8(colorComponents![2] * 255)
         
         return (r, g, b)
     }
     
     
     func setImage(completionHandler: ((Bool)->())?) {
-        DLog("Command: set Image");
+        DLog(message: "Command: set Image");
     
         // todo: implement
         let width : UInt8 = 8
@@ -256,32 +256,32 @@ class NeopixelModuleManager: NSObject {
         var imageData : [UInt8] = []
         let imageLength = width * height
         for i in 0..<imageLength {
-            imageData.appendContentsOf(i%2==0 ? redPixel : blackPixel)
+            imageData.append(contentsOf: i%2==0 ? redPixel : blackPixel)
         }
-        command.appendContentsOf(imageData)
+        command.append(contentsOf: imageData)
         
-        sendCommand(command, completionHandler: completionHandler)
+        sendCommand(command: command, completionHandler: completionHandler)
     }
     
     private func sendCommand(command: [UInt8], completionHandler: ((Bool)->())? = nil) {
         let data = NSData(bytes: command, length: command.count)
-        sendCommand(data, completionHandler: completionHandler)
+        sendCommand(data: data, completionHandler: completionHandler)
     }
     
     private func sendCommand(data: NSData, completionHandler: ((Bool)->())? = nil) {
         guard board != nil else {
-            DLog("setImage: unknown board")
+            DLog(message: "setImage: unknown board")
             completionHandler?(false)
             return
         }
         
-        sendDataToUart(data) { responseData in
+        sendDataToUart(data: data) { responseData in
             var success = false
-            if let data = responseData, result = NSString(data:data, encoding: NSUTF8StringEncoding) as? String {
+          if let data = responseData as Data?, let result = String(data: data, encoding: .utf8) {
                 success = result.hasPrefix("OK")
             }
             
-            DLog("result: \(success)")
+            DLog(message: "result: \(success)")
             completionHandler?(success)
         }
     }

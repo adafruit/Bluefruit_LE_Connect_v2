@@ -15,15 +15,15 @@ class UartSettingTableViewCell: UITableViewCell {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var switchControl: UISwitch!
     
-    var onSwitchEnabled : ((enabled: Bool) -> ())?
-    var onSegmentedControlIndexChanged : ((selectedIndex: Int) -> ())?
+    var onSwitchEnabled : ((_ enabled: Bool) -> ())?
+    var onSegmentedControlIndexChanged : ((_ selectedIndex: Int) -> ())?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
@@ -31,10 +31,10 @@ class UartSettingTableViewCell: UITableViewCell {
     
     
     @IBAction func onSwitchValueChanged(sender: UISwitch) {
-        onSwitchEnabled?(enabled: sender.on)
+        onSwitchEnabled?(sender.isOn)
     }
 
     @IBAction func onSegmentedControlValueChanged(sender: UISegmentedControl) {
-        onSegmentedControlIndexChanged?(selectedIndex: sender.selectedSegmentIndex)
+        onSegmentedControlIndexChanged?(sender.selectedSegmentIndex)
     }
 }

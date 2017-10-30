@@ -25,7 +25,7 @@ class NeopixelColorPickerViewController: UIViewController {
     private var selectedColorComponents: [UInt8]?
     private var wheelView: ISColorWheel = ISColorWheel()
 
-    private var selectedColor = UIColor.whiteColor()
+  private var selectedColor = UIColor.white
     weak var delegate: NeopixelColorPickerViewControllerDelegate?
     
     override func viewDidLoad() {
@@ -34,15 +34,15 @@ class NeopixelColorPickerViewController: UIViewController {
         // UI
         colorView.layer.cornerRadius = 8
         colorView.layer.borderWidth = 2
-        colorView.layer.borderColor = UIColor.blackColor().CGColor
+        colorView.layer.borderColor = UIColor.black.cgColor
         
         sliderGradientView.layer.borderWidth = 2
-        sliderGradientView.layer.borderColor = UIColor.blackColor().CGColor
+        sliderGradientView.layer.borderColor = UIColor.black.cgColor
         sliderGradientView.layer.cornerRadius = sliderGradientView.bounds.size.height/2
         sliderGradientView.layer.masksToBounds = true
         
-        brightnessSlider.setMinimumTrackImage(UIImage(), forState: .Normal)
-        brightnessSlider.setMaximumTrackImage(UIImage(), forState: .Normal)
+        brightnessSlider.setMinimumTrackImage(UIImage(), for: [])
+        brightnessSlider.setMaximumTrackImage(UIImage(), for: [])
         
         // Setup wheel view
         wheelView.continuous = true
@@ -74,8 +74,8 @@ class NeopixelColorPickerViewController: UIViewController {
     }
     
     @IBAction func onClickSend(sender: AnyObject) {
-        delegate?.onColorPickerChooseColor(selectedColor)
-        dismissViewControllerAnimated(true, completion: nil)
+        delegate?.onColorPickerChooseColor(color: selectedColor)
+        dismiss(animated: true, completion: nil)
     }
 
 }
@@ -84,13 +84,13 @@ class NeopixelColorPickerViewController: UIViewController {
 
 // MARK: - ISColorWheelDelegate
 extension NeopixelColorPickerViewController : ISColorWheelDelegate {
-    func colorWheelDidChangeColor(colorWheel:ISColorWheel) {
+    func colorWheelDidChangeColor(_ colorWheel:ISColorWheel) {
         
         let colorWheelColor = colorWheel.currentColor
         
         let brightness = CGFloat(brightnessSlider.value)
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0
-        colorWheelColor.getRed(&red, green: &green, blue: &blue, alpha: nil)
+        colorWheelColor?.getRed(&red, green: &green, blue: &blue, alpha: nil)
         red = red*brightness
         green = green*brightness
         blue = blue*brightness
@@ -99,7 +99,7 @@ extension NeopixelColorPickerViewController : ISColorWheelDelegate {
         
         colorView.backgroundColor = color
         valueLabel.text = "RGB: \(Int(255.0 * Float(red)))-\(Int(255.0 * Float(green)))-\(Int(255.0 * Float(blue)))"
-        let hexString = colorHexString(color)
+        let hexString = colorHexString(color: color)
         hexValueLabel.text = "Hex: \(hexString)"
         sliderGradientView.endColor = color
         

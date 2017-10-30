@@ -1,10 +1,11 @@
-EMBEDDED_CONTENT_CONTAINS_SWIFT = YES
-FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/CocoaAsyncSocket-iOS" "$PODS_CONFIGURATION_BUILD_DIR/CocoaMQTT-iOS" "$PODS_CONFIGURATION_BUILD_DIR/MSWeakTimer-iOS" "$PODS_CONFIGURATION_BUILD_DIR/SSZipArchive" "$PODS_CONFIGURATION_BUILD_DIR/UIColor+Hex"
+ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/CocoaAsyncSocket-iOS" "$PODS_CONFIGURATION_BUILD_DIR/CocoaMQTT-iOS" "$PODS_CONFIGURATION_BUILD_DIR/SSZipArchive" "$PODS_CONFIGURATION_BUILD_DIR/SwiftyTimer-iOS" "$PODS_CONFIGURATION_BUILD_DIR/UIColor+Hex"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/CocoaAsyncSocket-iOS/CocoaAsyncSocket.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/CocoaMQTT-iOS/CocoaMQTT.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/MSWeakTimer-iOS/MSWeakTimer.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/SSZipArchive/SSZipArchive.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/UIColor+Hex/UIColor_Hex.framework/Headers"
-OTHER_LDFLAGS = $(inherited) -framework "CocoaAsyncSocket" -framework "CocoaMQTT" -framework "MSWeakTimer" -framework "SSZipArchive" -framework "UIColor_Hex"
+OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/CocoaAsyncSocket-iOS/CocoaAsyncSocket.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/CocoaMQTT-iOS/CocoaMQTT.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/SSZipArchive/SSZipArchive.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/SwiftyTimer-iOS/SwiftyTimer.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/UIColor+Hex/UIColor_Hex.framework/Headers"
+OTHER_LDFLAGS = $(inherited) -framework "CocoaAsyncSocket" -framework "CocoaMQTT" -framework "SSZipArchive" -framework "SwiftyTimer" -framework "UIColor_Hex"
 OTHER_SWIFT_FLAGS = $(inherited) "-D" "COCOAPODS"
 PODS_BUILD_DIR = $BUILD_DIR
 PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
 PODS_ROOT = ${SRCROOT}/Pods

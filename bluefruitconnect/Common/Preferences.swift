@@ -44,94 +44,94 @@ import Foundation
     
     private static let neopixelIsSketchTooltipEnabledKey = "NeopixelIsSketchTooltipEnabledKey"
     
-    enum PreferencesNotifications: String {
-        case DidUpdatePreferences = "didUpdatePreferences"          // Note: used on some objective-c code, so when changed, update it
-    }
+//    enum PreferencesNotifications: String {
+//        case DidUpdatePreferences = "didUpdatePreferences"          // Note: used on some objective-c code, so when changed, update it
+//    }
     
     // MARK: - General
     static var appInSystemStatusBar: Bool {
         get {
-            return getBoolPreference(Preferences.appInSystemStatusBarKey)
+            return getBoolPreference(key: Preferences.appInSystemStatusBarKey)
         }
         set {
-            setBoolPreference(Preferences.appInSystemStatusBarKey, newValue: newValue)
+            setBoolPreference(key: Preferences.appInSystemStatusBarKey, newValue: newValue)
         }
     }
     
     // MARK: - Scanning Filters
     static var scanFilterIsPanelOpen: Bool {
         get {
-            return getBoolPreference(Preferences.scanFilterIsPanelOpenKey)
+            return getBoolPreference(key: Preferences.scanFilterIsPanelOpenKey)
         }
         set {
-            setBoolPreference(Preferences.scanFilterIsPanelOpenKey, newValue: newValue)
+            setBoolPreference(key: Preferences.scanFilterIsPanelOpenKey, newValue: newValue)
         }
     }
 
     static var scanFilterName: String? {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            return defaults.stringForKey(Preferences.scanFilterNameKey)
+            let defaults = UserDefaults.standard
+            return defaults.string(forKey: Preferences.scanFilterNameKey)
         }
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setObject(newValue, forKey: Preferences.scanFilterNameKey)
+            let defaults = UserDefaults.standard
+            defaults.set(newValue, forKey: Preferences.scanFilterNameKey)
         }
     }
     
     static var scanFilterIsNameExact: Bool {
         get {
-            return getBoolPreference(Preferences.scanFilterIsNameExactKey)
+            return getBoolPreference(key: Preferences.scanFilterIsNameExactKey)
         }
         set {
-            setBoolPreference(Preferences.scanFilterIsNameExactKey, newValue: newValue)
+            setBoolPreference(key: Preferences.scanFilterIsNameExactKey, newValue: newValue)
         }
     }
 
     static var scanFilterIsNameCaseInsensitive: Bool {
         get {
-            return getBoolPreference(Preferences.scanFilterIsNameCaseInsensitiveKey)
+            return getBoolPreference(key: Preferences.scanFilterIsNameCaseInsensitiveKey)
         }
         set {
-            setBoolPreference(Preferences.scanFilterIsNameCaseInsensitiveKey, newValue: newValue)
+            setBoolPreference(key: Preferences.scanFilterIsNameCaseInsensitiveKey, newValue: newValue)
         }
     }
 
     static var scanFilterRssiValue: Int? {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let rssiValue = defaults.integerForKey(Preferences.scanFilterRssiValueKey)
+            let defaults = UserDefaults.standard
+            let rssiValue = defaults.integer(forKey: Preferences.scanFilterRssiValueKey)
             return rssiValue >= 0 ? rssiValue:nil
         }
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setInteger(newValue ?? -1, forKey: Preferences.scanFilterRssiValueKey)
+            let defaults = UserDefaults.standard
+            defaults.set(newValue ?? -1, forKey: Preferences.scanFilterRssiValueKey)
         }
     }
     
     static var scanFilterIsUnnamedEnabled: Bool {
         get {
-            return getBoolPreference(Preferences.scanFilterIsUnnamedEnabledKey)
+            return getBoolPreference(key: Preferences.scanFilterIsUnnamedEnabledKey)
         }
         set {
-            setBoolPreference(Preferences.scanFilterIsUnnamedEnabledKey, newValue: newValue)
+            setBoolPreference(key: Preferences.scanFilterIsUnnamedEnabledKey, newValue: newValue)
         }
     }
     
     static var scanFilterIsOnlyWithUartEnabled: Bool {
         get {
-            return getBoolPreference(Preferences.scanFilterIsOnlyWithUartEnabledKey)
+            return getBoolPreference(key: Preferences.scanFilterIsOnlyWithUartEnabledKey)
         }
         set {
-            setBoolPreference(Preferences.scanFilterIsOnlyWithUartEnabledKey, newValue: newValue)
+            setBoolPreference(key: Preferences.scanFilterIsOnlyWithUartEnabledKey, newValue: newValue)
         }
     }
     
     // MARK: - Firmware Updates
     static var updateServerUrl: NSURL? {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let urlString = defaults.stringForKey(Preferences.updateServerUrlKey)
+            let defaults = UserDefaults.standard
+            let urlString = defaults.string(forKey: Preferences.updateServerUrlKey)
             if let urlString = urlString {
                 return NSURL(string: urlString)
             }
@@ -140,39 +140,39 @@ import Foundation
             }
         }
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setObject(newValue?.absoluteString, forKey: Preferences.updateServerUrlKey)
-            NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
+            let defaults = UserDefaults.standard
+            defaults.set(newValue?.absoluteString, forKey: Preferences.updateServerUrlKey)
+            NotificationCenter.default.post(name: .didUpdatePreferences, object: nil);
         }
     }
     
     static var showBetaVersions: Bool {
         get {
-            return getBoolPreference(Preferences.updateShowBetaVersionsKey)
+            return getBoolPreference(key: Preferences.updateShowBetaVersionsKey)
         }
         set {
-            setBoolPreference(Preferences.updateShowBetaVersionsKey, newValue: newValue)
+            setBoolPreference(key: Preferences.updateShowBetaVersionsKey, newValue: newValue)
         }
     }
     
-    static var softwareUpdateIgnoredVersion: String? {
+    @objc static var softwareUpdateIgnoredVersion: String? {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            return defaults.stringForKey(Preferences.updateIgnoredVersionKey)
+            let defaults = UserDefaults.standard
+            return defaults.string(forKey: Preferences.updateIgnoredVersionKey)
         }
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setObject(newValue, forKey: Preferences.updateIgnoredVersionKey)
+            let defaults = UserDefaults.standard
+            defaults.set(newValue, forKey: Preferences.updateIgnoredVersionKey)
         }
     }
     
     // MARK: - Info
     static var infoIsRefreshOnLoadEnabled: Bool {
         get {
-            return getBoolPreference(Preferences.infoRefreshOnLoadKey)
+            return getBoolPreference(key: Preferences.infoRefreshOnLoadKey)
         }
         set {
-            setBoolPreference(Preferences.infoRefreshOnLoadKey, newValue: newValue)
+            setBoolPreference(key: Preferences.infoRefreshOnLoadKey, newValue: newValue)
         }
     }
     
@@ -180,110 +180,113 @@ import Foundation
     // MARK: - Uart
     static var uartReceveivedDataColor: Color {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let hexColorString = defaults.stringForKey(Preferences.uartReceivedDataColorKey)
-            return Color(CSS: hexColorString)
+            let defaults = UserDefaults.standard
+            let hexColorString = defaults.string(forKey: Preferences.uartReceivedDataColorKey)
+            return Color(css: hexColorString)
         }
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setObject(newValue.hexString(), forKey: Preferences.uartReceivedDataColorKey)
-            NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
+            let defaults = UserDefaults.standard
+            defaults.set(newValue.hexString(), forKey: Preferences.uartReceivedDataColorKey)
+            NotificationCenter.default.post(name: .didUpdatePreferences, object: nil);
         }
     }
     
     static var uartSentDataColor: Color {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let hexColorString = defaults.stringForKey(Preferences.uartSentDataColorKey)
-            return Color(CSS: hexColorString)
+            let defaults = UserDefaults.standard
+            let hexColorString = defaults.string(forKey: Preferences.uartSentDataColorKey)
+            return Color(css: hexColorString)
         }
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setObject(newValue.hexString(), forKey: Preferences.uartSentDataColorKey)
-            NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
+            let defaults = UserDefaults.standard
+            defaults.set(newValue.hexString(), forKey: Preferences.uartSentDataColorKey)
+            NotificationCenter.default.post(name: .didUpdatePreferences, object: nil);
         }
     }
     
     static var uartShowInvisibleChars: Bool {
         get {
-            return getBoolPreference(Preferences.uartShowInvisibleCharsKey)
+            return getBoolPreference(key: Preferences.uartShowInvisibleCharsKey)
         }
         set {
-            setBoolPreference(Preferences.uartShowInvisibleCharsKey, newValue: newValue)
+            setBoolPreference(key: Preferences.uartShowInvisibleCharsKey, newValue: newValue)
         }
     }
     
     
     static var uartIsDisplayModeTimestamp: Bool {
         get {
-            return getBoolPreference(Preferences.uartIsDisplayModeTimestampKey)
+            return getBoolPreference(key: Preferences.uartIsDisplayModeTimestampKey)
         }
         set {
-            setBoolPreference(Preferences.uartIsDisplayModeTimestampKey, newValue: newValue)
+            setBoolPreference(key: Preferences.uartIsDisplayModeTimestampKey, newValue: newValue)
         }
     }
     
     static var uartIsInHexMode: Bool {
         get {
-            return getBoolPreference(Preferences.uartIsInHexModeKey)
+            return getBoolPreference(key: Preferences.uartIsInHexModeKey)
         }
         set {
-            setBoolPreference(Preferences.uartIsInHexModeKey, newValue: newValue)
+            setBoolPreference(key: Preferences.uartIsInHexModeKey, newValue: newValue)
         }
     }
     
     static var uartIsEchoEnabled: Bool {
         get {
-            return getBoolPreference(Preferences.uartIsEchoEnabledKey)
+            return getBoolPreference(key: Preferences.uartIsEchoEnabledKey)
         }
         set {
-            setBoolPreference(Preferences.uartIsEchoEnabledKey, newValue: newValue)
+            setBoolPreference(key: Preferences.uartIsEchoEnabledKey, newValue: newValue)
         }
     }
     
     static var uartIsAutomaticEolEnabled: Bool {
         get {
-            return getBoolPreference(Preferences.uartIsAutomaticEolEnabledKey)
+            return getBoolPreference(key: Preferences.uartIsAutomaticEolEnabledKey)
         }
         set {
-            setBoolPreference(Preferences.uartIsAutomaticEolEnabledKey, newValue: newValue)
+            setBoolPreference(key: Preferences.uartIsAutomaticEolEnabledKey, newValue: newValue)
         }
     }
     
     // MARK: - Neopixels
     static var neopixelIsSketchTooltipEnabled: Bool {
         get {
-            return getBoolPreference(Preferences.neopixelIsSketchTooltipEnabledKey)
+            return getBoolPreference(key: Preferences.neopixelIsSketchTooltipEnabledKey)
         }
         set {
-            setBoolPreference(Preferences.neopixelIsSketchTooltipEnabledKey, newValue: newValue)
+            setBoolPreference(key: Preferences.neopixelIsSketchTooltipEnabledKey, newValue: newValue)
         }
     }
     
     // MARK: - Common
     static func getBoolPreference(key: String) -> Bool {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        return defaults.boolForKey(key)
+        let defaults = UserDefaults.standard
+        return defaults.bool(forKey: key)
     }
     
     static func setBoolPreference(key: String, newValue: Bool) {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setBool(newValue, forKey: key)
-        NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
+        let defaults = UserDefaults.standard
+        defaults.set(newValue, forKey: key)
+        NotificationCenter.default.post(name: .didUpdatePreferences, object: nil);
     }
     
     // MARK: - Defaults
     static func registerDefaults() {
-        let path = NSBundle.mainBundle().pathForResource("DefaultPreferences", ofType: "plist")!
+        let path = Bundle.main.path(forResource: "DefaultPreferences", ofType: "plist")!
         let defaultPrefs = NSDictionary(contentsOfFile: path) as! [String : AnyObject]
         
-        NSUserDefaults.standardUserDefaults().registerDefaults(defaultPrefs)
+        UserDefaults.standard.register(defaults: defaultPrefs)
     }
     
     static func resetDefaults() {
-        let appDomain = NSBundle.mainBundle().bundleIdentifier!
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.removePersistentDomainForName(appDomain)
+        let appDomain = Bundle.main.bundleIdentifier!
+        let defaults = UserDefaults.standard
+        defaults.removePersistentDomain(forName: appDomain)
     }
 }
 
+extension Notification.Name {
+    static let didUpdatePreferences = Notification.Name("didUpdatePreferences")          // Note: used on some objective-c code, so when changed, update it
+}

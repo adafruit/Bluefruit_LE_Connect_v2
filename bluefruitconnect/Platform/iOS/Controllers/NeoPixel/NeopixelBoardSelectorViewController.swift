@@ -23,7 +23,7 @@ class NeopixelBoardSelectorViewController: UIViewController {
         super.viewDidLoad()
 
         // Read boards from resources
-        let path = NSBundle.mainBundle().pathForResource("NeopixelBoards", ofType: "plist")!
+        let path = Bundle.main.path(forResource: "NeopixelBoards", ofType: "plist")!
         boards = NSArray(contentsOfFile: path) as? [Dictionary]
     }
 
@@ -34,8 +34,8 @@ class NeopixelBoardSelectorViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        preferredContentSize = CGSizeMake(preferredContentSize.width, baseTableView.contentSize.height)
+        preferredContentSize = CGSize(width: preferredContentSize.width, height: baseTableView.contentSize.height)
+        //preferredContentSize = CGSizeMake(preferredContentSize.width, baseTableView.contentSize.height)
     }
 }
 
@@ -52,7 +52,7 @@ extension NeopixelBoardSelectorViewController : UITableViewDataSource {
         return 2
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var title: String?
         switch section {
         case 0:
@@ -66,7 +66,7 @@ extension NeopixelBoardSelectorViewController : UITableViewDataSource {
     }
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return boards != nil ? boards!.count: 0
         }
@@ -75,10 +75,10 @@ extension NeopixelBoardSelectorViewController : UITableViewDataSource {
         }
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let reuseIdentifier = "TextCell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath:indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for:indexPath)
         
         cell.backgroundColor = UIColor(hex: 0xe2e1e0)
         return cell
@@ -103,11 +103,11 @@ extension NeopixelBoardSelectorViewController : UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension NeopixelBoardSelectorViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
       
-        tableView.deselectRowAtIndexPath(indexPath, animated: indexPath.section == 0)
+        tableView.deselectRow(at: indexPath as IndexPath, animated: indexPath.section == 0)
         
-        dismissViewControllerAnimated(true) {[unowned self] () -> Void in
+        dismiss(animated: true) {[unowned self] () -> Void in
             if indexPath.section == 0 {
                 self.onClickStandardBoard?(indexPath.row)
             }

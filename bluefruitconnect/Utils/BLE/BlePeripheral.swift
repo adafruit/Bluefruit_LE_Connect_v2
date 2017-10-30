@@ -48,8 +48,8 @@ class BlePeripheral {
     func hasUart() -> Bool {
         var hasUart = false
         if let services = peripheral.services {
-            hasUart = services.contains({ (service : CBService) -> Bool in
-                service.UUID.isEqual(CBUUID(string: BlePeripheral.kUartServiceUUID))
+            hasUart = services.contains(where: { (service : CBService) -> Bool in
+                service.uuid.isEqual(CBUUID(string: BlePeripheral.kUartServiceUUID))
             })
         }
         return hasUart

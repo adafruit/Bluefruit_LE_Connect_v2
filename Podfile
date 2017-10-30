@@ -2,8 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
 def shared_pods
-	pod 'CocoaMQTT', '~> 1.0.9'
-#	pod 'MSWeakTimer', '~> 1.1.0' 		// Already included in CocoaMQTT
+  pod 'CocoaMQTT'
 end
 
 target 'OSX' do
@@ -14,8 +13,8 @@ end
 target 'iOS' do
 	platform :ios, '9.0'
 	shared_pods
-	pod 'UIColor+Hex', '~> 1.0.1'
-	pod 'SSZipArchive', '~> 1.5'
+	pod 'UIColor+Hex'
+	pod 'SSZipArchive'
 	
 end
 

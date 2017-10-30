@@ -8,29 +8,26 @@
 
 import Foundation
 
+
 /**
  * MQTT Message
  */
-public class CocoaMQTTMessage: NSObject {
+open class CocoaMQTTMessage: NSObject {
+    open var qos = CocoaMQTTQOS.qos1
+    var dup = false
 
-    public var topic: String
-
-    public var payload: [UInt8]
-
-    //utf8 bytes array to string
+    open var topic: String
+    open var payload: [UInt8]
+    open var retained = false
+    
+    // utf8 bytes array to string
     public var string: String? {
         get {
-            return NSString(bytes: payload, length: payload.count, encoding: NSUTF8StringEncoding) as? String
+            return NSString(bytes: payload, length: payload.count, encoding: String.Encoding.utf8.rawValue) as String?
         }
     }
     
-    public var retained: Bool = false
-
-    var qos: CocoaMQTTQOS = .QOS1
-
-    var dup: Bool = false
-
-    public init(topic: String, string: String, qos: CocoaMQTTQOS = .QOS1, retained: Bool = false, dup: Bool = false) {
+    public init(topic: String, string: String, qos: CocoaMQTTQOS = .qos1, retained: Bool = false, dup: Bool = false) {
         self.topic = topic
         self.payload = [UInt8](string.utf8)
         self.qos = qos
@@ -38,23 +35,20 @@ public class CocoaMQTTMessage: NSObject {
         self.dup = dup
     }
 
-    public init(topic: String, payload: [UInt8], qos: CocoaMQTTQOS = .QOS1, retained: Bool = false, dup: Bool = false) {
+    public init(topic: String, payload: [UInt8], qos: CocoaMQTTQOS = .qos1, retained: Bool = false, dup: Bool = false) {
         self.topic = topic
         self.payload = payload
         self.qos = qos
         self.retained = retained
         self.dup = dup
     }
-
 }
 
 /**
  * MQTT Will Message
  */
-public class CocoaMQTTWill: CocoaMQTTMessage {
-
+open class CocoaMQTTWill: CocoaMQTTMessage {
     public init(topic: String, message: String) {
         super.init(topic: topic, payload: message.bytesWithLength)
     }
-
 }

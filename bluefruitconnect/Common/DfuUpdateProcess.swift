@@ -49,76 +49,81 @@ class DfuUpdateProcess : NSObject {
         dfuOperations = DFUOperations(delegate: self)
         
         // Download files
-        delegate?.onUpdateProgressText("Opening hex file")      // command line doesnt have localizationManager
+        delegate?.onUpdateProgressText(message: "Opening hex file")      // command line doesnt have localizationManager
         //delegate?.onUpdateProgressText(LocalizationManager.sharedInstance.localizedString("dfu_download_hex_message"))
-        DataDownloader.downloadDataFromURL(hexUrl) {[weak self] (data) -> Void in
-            self?.downloadedFirmwareData(data)
+        
+        DataDownloader.downloadData(from: hexUrl as URL) { [weak self] (data) in
+            self?.downloadedFirmwareData(data: data)
         }
     }
     
-    private func downloadedFirmwareData(data: NSData?) {
+    private func downloadedFirmwareData(data: Data?) {
         // Single hex file needed
-        if let data = data {
-            let bootloaderVersion = deviceInfoData!.bootloaderVersion()
-            let useHexOnly = bootloaderVersion == deviceInfoData!.defaultBootloaderVersion()
-            if (useHexOnly) {
-                let path = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(DfuUpdateProcess.kApplicationHexFilename)
-                let fileUrl = NSURL.fileURLWithPath(path)
-                data.writeToURL(fileUrl, atomically: true)
-                startDfuOperation()
-            }
-            else {
-                delegate?.onUpdateProgressText("Opening init file")     // command line doesnt have localizationManager
-                //delegate?.onUpdateProgressText(LocalizationManager.sharedInstance.localizedString("dfu_download_init_message"))
-                DataDownloader.downloadDataFromURL(iniUrl, withCompletionHandler: {[weak self]  (iniData) -> Void in
-                    self?.downloadedFirmwareHexAndInitData(data, iniData: iniData)
-                    })
-            }
-        }
-        else {
+        guard let data = data else {
             showSoftwareDownloadError()
+            return
         }
-    }
-    
-    private func downloadedFirmwareHexAndInitData(hexData: NSData?, iniData: NSData?) {
-        //  hex + dat file needed
-        if (hexData != nil && iniData != nil)
-        {
-            let hexPath = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(DfuUpdateProcess.kApplicationHexFilename)
-            let hexFileUrl = NSURL.fileURLWithPath(hexPath)
-            let hexDataWritten = hexData!.writeToURL(hexFileUrl, atomically: true)
-            if (!hexDataWritten) {
-                DLog("Error saving hex file")
-            }
-            
-            let initPath = (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(DfuUpdateProcess.kApplicationIniFilename)
-            let iniFileUrl = NSURL.fileURLWithPath(initPath)
-            let initDataWritten = iniData!.writeToURL(iniFileUrl, atomically: true)
-            if (!initDataWritten) {
-                DLog("Error saving ini file")
-            }
-            
+        
+        let bootloaderVersion = deviceInfoData!.bootloaderVersion()
+        let useHexOnly = bootloaderVersion == deviceInfoData!.defaultBootloaderVersion()
+        if (useHexOnly) {
+            let fileUrl = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(DfuUpdateProcess.kApplicationHexFilename)
+            do { try data.write(to: fileUrl, options: .atomicWrite) } catch { onError(error.localizedDescription) }
             startDfuOperation()
         }
         else {
-            showSoftwareDownloadError()
+            delegate?.onUpdateProgressText(message: "Opening init file")     // command line doesnt have localizationManager
+            //delegate?.onUpdateProgressText(LocalizationManager.sharedInstance.localizedString("dfu_download_init_message"))
+            
+            guard let iniUrl = self.iniUrl else {
+                DLog(message: "Error iniUrl is empty")
+                return
+            }
+            
+            DataDownloader.downloadData(from: iniUrl as URL, withCompletionHandler: {[weak self]  (iniData) -> Void in
+                self?.downloadedFirmwareHexAndInitData(hexData: data, iniData: iniData)
+                })
         }
     }
     
+    private func downloadedFirmwareHexAndInitData(hexData: Data?, iniData: Data?) {
+        //  hex + dat file needed
+        guard let hexData = hexData, let iniData = iniData else {
+            showSoftwareDownloadError()
+            return
+        }
+        
+        let hexPath = (NSTemporaryDirectory() as NSString).appendingPathComponent(DfuUpdateProcess.kApplicationHexFilename)
+        let hexFileUrl = NSURL.fileURL(withPath: hexPath)
+        
+        do {
+            try hexData.write(to: hexFileUrl, options: .atomicWrite)
+        } catch { DLog(message: "Error saving hex file. Original error: \(error.localizedDescription)")}
+        
+        let initPath = (NSTemporaryDirectory() as NSString).appendingPathComponent(DfuUpdateProcess.kApplicationIniFilename)
+        let iniFileUrl = NSURL.fileURL(withPath: initPath)
+        
+        do {
+            try iniData.write(to: iniFileUrl, options: .atomicWrite)
+        } catch { DLog(message: "Error saving ini file. Original error: \(error.localizedDescription)") }
+        
+        startDfuOperation()
+    }
+    
     private func showSoftwareDownloadError() {
-        delegate?.onUpdateProcessError("Software download error", infoMessage: "Please check your internet connection and try again later")
+        delegate?.onUpdateProcessError(errorMessage: "Software download error", infoMessage: "Please check your internet connection and try again later")
     }
     
     private func startDfuOperation() {
         guard let peripheral = peripheral else {
-            DLog("startDfuOperation error: No peripheral defined")
+            DLog(message: "startDfuOperation error: No peripheral defined")
             return
         }
         
-        DLog("startDfuOperation");
+        DLog(message: "startDfuOperation");
         isDfuStarted = false
         isDFUCancelled = false
-        delegate?.onUpdateProgressText("DFU Init")
+        delegate?.onUpdateProgressText(message: "DFU Init")
         
         // Files should be ready at NSTemporaryDirectory/application.hex (and application.dat if needed)
         if let centralManager = BleManager.sharedInstance.centralManager {
@@ -175,23 +180,23 @@ class DfuUpdateProcess : NSObject {
 
 // MARK: - DFUOperationsDelegate
 extension DfuUpdateProcess : DFUOperationsDelegate {
-    func onDeviceConnected(peripheral: CBPeripheral!) {
-        DLog("DFUOperationsDelegate - onDeviceConnected");
+    func onDeviceConnected(_ peripheral: CBPeripheral) {
+        DLog(message: "DFUOperationsDelegate - onDeviceConnected");
         isConnected = true
         isDFUVersionExits = false
         dfuVersion = -1
         
     }
     
-    func onDeviceConnectedWithVersion(peripheral: CBPeripheral!) {
-        DLog("DFUOperationsDelegate - onDeviceConnectedWithVersion");
+    func onDeviceConnected(withVersion: CBPeripheral) {
+        DLog(message: "DFUOperationsDelegate - onDeviceConnectedWithVersion");
         isConnected = true
         isDFUVersionExits = true
         dfuVersion = -1
     }
     
-    func onDeviceDisconnected(peripheral: CBPeripheral!) {
-        DLog("DFUOperationsDelegate - onDeviceDisconnected");
+    func onDeviceDisconnected(_ peripheral: CBPeripheral!) {
+        DLog(message: "DFUOperationsDelegate - onDeviceDisconnected");
         if (dfuVersion != 1) {
             isTransferring = false
             isConnected = false
@@ -207,15 +212,16 @@ extension DfuUpdateProcess : DFUOperationsDelegate {
         }
         else {
             let delayInSeconds = 3.0;
-            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
-            dispatch_after(delayTime, dispatch_get_main_queue()) { [unowned self] in
+            // dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+            let delayTime = DispatchTime.now() + (delayInSeconds * Double(NSEC_PER_SEC))
+            DispatchQueue.main.asyncAfter(deadline: delayTime){ [unowned self] in
                 self.dfuOperations?.connectDevice(peripheral)
             }
         }
     }
     
-    func onReadDFUVersion(version: Int32) {
-        DLog("DFUOperationsDelegate - onReadDFUVersion: \(version)")
+    func onReadDFUVersion(_ version: Int32) {
+        DLog(message: "DFUOperationsDelegate - onReadDFUVersion: \(version)")
         
         guard dfuOperations != nil && deviceInfoData != nil else {
             onError("Internal error")
@@ -224,7 +230,7 @@ extension DfuUpdateProcess : DFUOperationsDelegate {
         
         dfuVersion = version;
         if (dfuVersion == 1) {
-            delegate?.onUpdateProgressText("DFU set bootloader mode")
+            delegate?.onUpdateProgressText(message: "DFU set bootloader mode")
             dfuOperations!.setAppToBootloaderMode()
         }
         else if (dfuVersion > 1 && !isDFUCancelled && !isDfuStarted)
@@ -235,29 +241,29 @@ extension DfuUpdateProcess : DFUOperationsDelegate {
             let defaultBootloaderVersion  = deviceInfoData!.defaultBootloaderVersion()
             let useHexOnly = (bootloaderVersion == defaultBootloaderVersion)
             
-            DLog("Updating")
-            delegate?.onUpdateProgressText("Updating")
+            DLog(message: "Updating")
+            delegate?.onUpdateProgressText(message: "Updating")
             if (useHexOnly)
             {
-                let fileURL = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(DfuUpdateProcess.kApplicationHexFilename))
-                dfuOperations!.performDFUOnFile(fileURL, firmwareType: APPLICATION)
+                let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(DfuUpdateProcess.kApplicationHexFilename)
+                dfuOperations!.performDFU(onFile: fileURL, firmwareType: APPLICATION)
             }
             else {
-                let hexFileURL = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(DfuUpdateProcess.kApplicationHexFilename))
-                let iniFileURL = NSURL(fileURLWithPath: (NSTemporaryDirectory() as NSString).stringByAppendingPathComponent(DfuUpdateProcess.kApplicationIniFilename))
+                let hexFileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(DfuUpdateProcess.kApplicationHexFilename)
+                let iniFileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(DfuUpdateProcess.kApplicationIniFilename)
                 
-                dfuOperations!.performDFUOnFileWithMetaData(hexFileURL, firmwareMetaDataURL: iniFileURL, firmwareType: APPLICATION)
+                dfuOperations!.performDFUOnFile(withMetaData: hexFileURL, firmwareMetaDataURL: iniFileURL, firmwareType: APPLICATION)
             }
         }
     }
     
     func onDFUStarted() {
-        DLog("DFUOperationsDelegate - onDFUStarted")
+        DLog(message: "DFUOperationsDelegate - onDFUStarted")
         isTransferring = true
     }
     
     func onDFUCancelled() {
-        DLog("DFUOperationsDelegate - onDFUCancelled")
+        DLog(message: "DFUOperationsDelegate - onDFUCancelled")
         
         // Disconnected while updating
         isDFUCancelled = true
@@ -265,51 +271,51 @@ extension DfuUpdateProcess : DFUOperationsDelegate {
     }
     
     func onSoftDeviceUploadStarted() {
-        DLog("DFUOperationsDelegate - onSoftDeviceUploadStarted")
+        DLog(message: "DFUOperationsDelegate - onSoftDeviceUploadStarted")
         
     }
     
     func onSoftDeviceUploadCompleted() {
-        DLog("DFUOperationsDelegate - onBootloaderUploadStarted")
+        DLog(message: "DFUOperationsDelegate - onBootloaderUploadStarted")
         
     }
     
     func onBootloaderUploadStarted() {
-        DLog("DFUOperationsDelegate - onSoftDeviceUploadCompleted")
+        DLog(message: "DFUOperationsDelegate - onSoftDeviceUploadCompleted")
         
     }
     
     func onBootloaderUploadCompleted() {
-        DLog("DFUOperationsDelegate - onBootloaderUploadCompleted")
+        DLog(message: "DFUOperationsDelegate - onBootloaderUploadCompleted")
         
     }
     
     
-    func onTransferPercentage(percentage: Int32) {
-        DLog("DFUOperationsDelegate - onTransferPercentage: \(percentage)")
+    func onTransferPercentage(_ percentage: Int32) {
+        DLog(message: "DFUOperationsDelegate - onTransferPercentage: \(percentage)")
         
         if currentTransferPercentage != percentage {
             currentTransferPercentage = percentage
-            dispatch_async(dispatch_get_main_queue(), { [weak self] in
-                self?.delegate?.onUpdateProgressValue(Double(percentage))
-                })
+            DispatchQueue.main.async { [weak self] in
+                self?.delegate?.onUpdateProgressValue(progress: Double(percentage))
+                }
         }
     }
     
     func onSuccessfulFileTranferred() {
-        DLog("DFUOperationsDelegate - onSuccessfulFileTranferred")
+        DLog(message: "DFUOperationsDelegate - onSuccessfulFileTranferred")
         
-        dispatch_async(dispatch_get_main_queue(), {  [weak self] in
+        DispatchQueue.main.async {  [weak self] in
             self?.delegate?.onUpdateProcessSuccess()
-            })
+            }
     }
     
-    func onError(errorMessage: String!) {
+    func onError(_ errorMessage: String!) {
         
-        DLog("DFUOperationsDelegate - onError: \(errorMessage)" )
+        DLog(message: "DFUOperationsDelegate - onError: \(errorMessage)" )
         
-        dispatch_async(dispatch_get_main_queue(), { [weak self] in
-            self?.delegate?.onUpdateProcessError(errorMessage, infoMessage: nil)
-            })
+        DispatchQueue.main.async { [weak self] in
+            self?.delegate?.onUpdateProcessError(errorMessage: errorMessage, infoMessage: nil)
+            }
     }
 }

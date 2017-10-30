@@ -13,9 +13,9 @@ class PeripheralDetailsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
 
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            let tintColor = selected ? self.tintColor:UIColor.lightGrayColor()
+            let tintColor = isSelected ? self.tintColor:UIColor.lightGray
             titleLabel.textColor = tintColor
             iconImageView.tintColor = tintColor
         }

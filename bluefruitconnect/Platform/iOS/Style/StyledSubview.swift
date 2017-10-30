@@ -16,7 +16,7 @@ class StyledSubview: UIView {
         super.awakeFromNib()
         
         layer.borderWidth = 1
-        layer.borderColor = UIColor.blackColor().CGColor
+        layer.borderColor = UIColor.black.cgColor
     }
     
     @IBInspectable var cornerRadius: CGFloat = 0 {
@@ -32,7 +32,7 @@ class StyledSubview: UIView {
     }
     @IBInspectable var borderColor: UIColor? {
         didSet {
-            layer.borderColor = borderColor?.CGColor
+            layer.borderColor = borderColor?.cgColor
         }
     }
 }

@@ -37,15 +37,15 @@ class ControllerColorWheelViewController: UIViewController {
         // UI
         colorView.layer.cornerRadius = 8
         colorView.layer.borderWidth = 2
-        colorView.layer.borderColor = UIColor.blackColor().CGColor
+      colorView.layer.borderColor = UIColor.black.cgColor
 
         sliderGradientView.layer.borderWidth = 2
-        sliderGradientView.layer.borderColor = UIColor.blackColor().CGColor
+      sliderGradientView.layer.borderColor = UIColor.black.cgColor
         sliderGradientView.layer.cornerRadius = sliderGradientView.bounds.size.height/2
         sliderGradientView.layer.masksToBounds = true
         
-        brightnessSlider.setMinimumTrackImage(UIImage(), forState: .Normal)
-        brightnessSlider.setMaximumTrackImage(UIImage(), forState: .Normal)
+      brightnessSlider.setMinimumTrackImage(UIImage(), for: [])
+      brightnessSlider.setMaximumTrackImage(UIImage(), for: [])
         
         // Setup wheel view
         wheelView.continuous = true
@@ -78,32 +78,32 @@ class ControllerColorWheelViewController: UIViewController {
 
    @IBAction func onClickSend(sender: AnyObject) {
     
-        if let delegate = delegate, selectedColorComponents = selectedColorComponents {
-            delegate.onSendColorComponents(selectedColorComponents)
+    if let delegate = delegate, let selectedColorComponents = selectedColorComponents {
+      delegate.onSendColorComponents(colorComponents: selectedColorComponents)
         }
     }
     
     @IBAction func onClickHelp(sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
-        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpViewController") as! HelpViewController
-        helpViewController.setHelp(localizationManager.localizedString("colorpicker_help_text"), title: localizationManager.localizedString("colorpicker_help_title"))
+      let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
+      helpViewController.setHelp(message: localizationManager.localizedString(key: "colorpicker_help_text"), title: localizationManager.localizedString(key: "colorpicker_help_title"))
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
-        helpNavigationController.modalPresentationStyle = .Popover
+        helpNavigationController.modalPresentationStyle = .popover
         helpNavigationController.popoverPresentationController?.barButtonItem = sender
         
-        presentViewController(helpNavigationController, animated: true, completion: nil)
+      present(helpNavigationController, animated: true, completion: nil)
     }
 }
 
 // MARK: - ISColorWheelDelegate
 extension ControllerColorWheelViewController : ISColorWheelDelegate {
-    func colorWheelDidChangeColor(colorWheel:ISColorWheel) {
+  func colorWheelDidChangeColor(_ colorWheel:ISColorWheel) {
         
         let colorWheelColor = colorWheel.currentColor
         
         let brightness = CGFloat(brightnessSlider.value)
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0
-        colorWheelColor.getRed(&red, green: &green, blue: &blue, alpha: nil)
+    colorWheelColor?.getRed(&red, green: &green, blue: &blue, alpha: nil)
         red = red*brightness
         green = green*brightness
         blue = blue*brightness
@@ -112,7 +112,7 @@ extension ControllerColorWheelViewController : ISColorWheelDelegate {
         
         colorView.backgroundColor = color
         valueLabel.text = "R: \(Int(255.0 * Float(red)))  G: \(Int(255.0 * Float(green)))  B: \(Int(255.0 * Float(blue)))"
-        let hexString = colorHexString(color)
+    let hexString = colorHexString(color: color)
         hexValueLabel.text = "Hex: \(hexString)"
         sliderGradientView.endColor = color
     

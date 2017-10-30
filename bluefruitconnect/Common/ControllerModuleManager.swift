@@ -8,7 +8,6 @@
 
 import Foundation
 import CoreLocation
-import MSWeakTimer
 
 // TODO: add support for OSX
 #if os(OSX)
@@ -36,21 +35,20 @@ class ControllerModuleManager : NSObject {
     // Data
     weak var delegate: ControllerModuleManagerDelegate?
     
-    var isSensorEnabled = [Bool](count:ControllerModuleManager.numSensors, repeatedValue: false)
+  var isSensorEnabled = [Bool](repeating: false, count: ControllerModuleManager.numSensors)
+  
+    let coreMotionManager = CMMotionManager()
 
-    #if os(OSX)
-    #else
-    private let coreMotionManager = CMMotionManager()
-    #endif
     private let locationManager = CLLocationManager()
     private var lastKnownLocation :CLLocation?
     
-    private var pollTimer : MSWeakTimer?
+    private var pollTimer : DispatchSourceTimer?
+//    private var pollTimer: Timer?
     private var timerHandler : (()->())?
     
     private let uartManager = UartManager.sharedInstance
     
-    private var pollInterval: NSTimeInterval = 1        // in seconds
+    private var pollInterval: TimeInterval = 1        // in seconds
     
     override init() {
         super.init()
@@ -65,11 +63,11 @@ class ControllerModuleManager : NSObject {
         locationManager.delegate = nil
         // Disable everthing
         for i in 0..<ControllerModuleManager.numSensors {
-            setSensorEnabled(false, index: i)
+          setSensorEnabled(enabled: false, index: i)
         }
     }
     
-    func start(pollInterval: NSTimeInterval, handler:(()->())?) {
+    func start(pollInterval: TimeInterval, handler:(()->())?) {
         self.pollInterval = pollInterval
         self.timerHandler = handler
         
@@ -77,9 +75,9 @@ class ControllerModuleManager : NSObject {
         UartManager.sharedInstance.blePeripheral = BleManager.sharedInstance.blePeripheralConnected       // Note: this will start the service discovery
         
         // Notifications
-        let notificationCenter =  NSNotificationCenter.defaultCenter()
+      let notificationCenter =  NotificationCenter.default
         if !uartManager.isReady() {
-            notificationCenter.addObserver(self, selector: #selector(uartIsReady(_:)), name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(uartIsReady), name: .uartDidBecomeReady, object: nil)
         }
         else {
             delegate?.onControllerUartIsReady()
@@ -89,17 +87,17 @@ class ControllerModuleManager : NSObject {
     }
     
     func stop() {
-        let notificationCenter =  NSNotificationCenter.defaultCenter()
-        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+        let notificationCenter =  NotificationCenter.default
+        notificationCenter.removeObserver(self, name: .uartDidBecomeReady, object: nil)
         
         stopUpdatingData()
     }
     
     // MARK: Notifications
-    func uartIsReady(notification: NSNotification) {
-        DLog("Uart is ready")
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.removeObserver(self, name: UartManager.UartNotifications.DidBecomeReady.rawValue, object: nil)
+  @objc func uartIsReady(notification: NSNotification) {
+    DLog(message: "Uart is ready")
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.removeObserver(self, name: .uartDidBecomeReady, object: nil)
         
         delegate?.onControllerUartIsReady()
         startUpdatingData()
@@ -108,32 +106,41 @@ class ControllerModuleManager : NSObject {
 
     // MARK: -
     private func startUpdatingData() {
-        pollTimer = MSWeakTimer.scheduledTimerWithTimeInterval(pollInterval, target: self, selector: #selector(updateSensors), userInfo: nil, repeats: true, dispatchQueue: dispatch_get_main_queue())
+//        pollTimer = MSWeakTimer.scheduledTimer(pollInterval, target: self, selector: #selector(updateSensors), userInfo: nil, repeats: true, dispatchQueue: dispatch_get_main_queue())
+        
+        let queue = DispatchQueue.main
+        pollTimer = DispatchSource.makeTimerSource(queue: queue)
+        pollTimer?.schedule(deadline: .now(), repeating: pollInterval, leeway: .nanoseconds(0))
+        pollTimer?.setEventHandler(handler: { [weak self] in
+            self?.updateSensors()
+        })
+        pollTimer?.resume()
     }
     
     private func stopUpdatingData() {
         timerHandler = nil
-        pollTimer?.invalidate()
+//        pollTimer?.invalidate()
+        pollTimer?.cancel()
         pollTimer = nil
     }
     
-    func updateSensors() {
+  @objc func updateSensors() {
         timerHandler?()
         
         for i in 0..<ControllerModuleManager.numSensors {
-            if isSensorEnabled(i) {
-                if let sensorData = getSensorData(i) {
+            if isSensorEnabled(index: i) {
+              if let sensorData = getSensorData(index: i) {
                     
                     let data = NSMutableData()
-                    let prefixData = ControllerModuleManager.prefixes[i].dataUsingEncoding(NSUTF8StringEncoding)!
-                    data.appendData(prefixData)
+                let prefixData = ControllerModuleManager.prefixes[i].data(using: String.Encoding.utf8)!
+                data.append(prefixData)
                     
                     for value in sensorData {
                         var floatValue = Float(value)
-                        data.appendBytes(&floatValue, length: sizeof(Float))
+                      data.append(&floatValue, length: MemoryLayout<Float>.size)
                     }
                     
-                    uartManager.sendDataWithCrc(data)
+                uartManager.sendDataWithCrc(data: data)
                 }
             }
         }
@@ -144,7 +151,7 @@ class ControllerModuleManager : NSObject {
     }
     
     func getSensorData(index: Int) -> [Double]? {
-        guard isSensorEnabled(index) else {
+        guard isSensorEnabled(index: index) else {
             return nil
         }
         
@@ -215,19 +222,19 @@ class ControllerModuleManager : NSObject {
                 if CLLocationManager.locationServicesEnabled() {
                     let authorizationStatus = CLLocationManager.authorizationStatus()
                     switch authorizationStatus {
-                    case .NotDetermined:
+                    case .notDetermined:
                         locationManager.requestWhenInUseAuthorization()
-                    case .Denied:
-                        errorString = LocalizationManager.sharedInstance.localizedString("controller_sensor_location_denied")
-                    case .Restricted:
-                        errorString = LocalizationManager.sharedInstance.localizedString("controller_sensor_location_restricted")
+                    case .denied:
+                      errorString = LocalizationManager.sharedInstance.localizedString(key: "controller_sensor_location_denied")
+                    case .restricted:
+                      errorString = LocalizationManager.sharedInstance.localizedString(key: "controller_sensor_location_restricted")
                     default:
                         locationManager.startUpdatingLocation()
                     }
                 }
                 else {      // Location services disabled
-                    DLog("Location services disabled")
-                    errorString = LocalizationManager.sharedInstance.localizedString("controller_sensor_location_disabled")
+                  DLog(message: "Location services disabled")
+                  errorString = LocalizationManager.sharedInstance.localizedString(key: "controller_sensor_location_disabled")
                 }
             }
             else {
@@ -241,13 +248,28 @@ class ControllerModuleManager : NSObject {
 }
 
 extension ControllerModuleManager: CLLocationManagerDelegate {
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == .AuthorizedAlways || status == .AuthorizedWhenInUse {
+  func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+      if status == .authorizedAlways || status == .authorizedWhenInUse {
             manager.startUpdatingLocation()
         }
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         lastKnownLocation = locations.last
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

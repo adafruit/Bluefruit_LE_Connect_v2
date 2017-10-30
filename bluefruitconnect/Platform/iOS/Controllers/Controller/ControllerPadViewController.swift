@@ -30,13 +30,13 @@ class ControllerPadViewController: UIViewController {
         // Setup buttons targets
         for subview in directionsView.subviews {
             if let button = subview as? UIButton {
-                setupButton(button)
+              setupButton(button: button)
             }
         }
         
         for subview in numbersView.subviews {
             if let button = subview as? UIButton {
-                setupButton(button)
+              setupButton(button: button)
             }
         }
     }
@@ -45,18 +45,18 @@ class ControllerPadViewController: UIViewController {
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.whiteColor().CGColor
+      button.layer.borderColor = UIColor.white.cgColor
         button.layer.masksToBounds = true
         
-        button.setTitleColor(UIColor.lightGrayColor(), forState: .Highlighted)
+      button.setTitleColor(UIColor.lightGray, for: .highlighted)
         
-        let hightlightedImage = UIImage(color: UIColor.darkGrayColor())
-        button.setBackgroundImage(hightlightedImage, forState: .Highlighted)
+      let hightlightedImage = UIImage(color: UIColor.darkGray)
+      button.setBackgroundImage(hightlightedImage, for: .highlighted)
         
-        button.addTarget(self, action: #selector(onTouchDown(_:)), forControlEvents: .TouchDown)
-        button.addTarget(self, action: #selector(onTouchUp(_:)), forControlEvents: .TouchUpInside)
-        button.addTarget(self, action: #selector(onTouchUp(_:)), forControlEvents: .TouchDragExit)
-        button.addTarget(self, action: #selector(onTouchUp(_:)), forControlEvents: .TouchCancel)
+      button.addTarget(self, action: #selector(onTouchDown), for: .touchDown)
+      button.addTarget(self, action: #selector(onTouchUp), for: .touchUpInside)
+      button.addTarget(self, action: #selector(onTouchUp), for: .touchDragExit)
+      button.addTarget(self, action: #selector(onTouchUp), for: .touchCancel)
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,21 +66,21 @@ class ControllerPadViewController: UIViewController {
     
     
     
-    override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // Fix: remove the UINavigationController pop gesture to avoid problems with the arrows left button
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { [unowned self] in
+        let delayTime = DispatchTime.now() + (0.1 * Double(NSEC_PER_SEC))
+        DispatchQueue.main.asyncAfter(deadline: delayTime) { [unowned self] in
             
             self.navigationController?.interactivePopGestureRecognizer?.delaysTouchesBegan = false
             self.navigationController?.interactivePopGestureRecognizer?.delaysTouchesEnded = false
-            self.navigationController?.interactivePopGestureRecognizer?.enabled = false
+            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         }
     }
  
 
-    override func viewDidDisappear(animated: Bool) {
+  override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         
@@ -88,27 +88,27 @@ class ControllerPadViewController: UIViewController {
     
     private func sendTouchEvent(tag: Int, isPressed: Bool) {
         if let delegate = delegate {
-            delegate.onSendControllerPadButtonStatus(tag, isPressed: isPressed)
+          delegate.onSendControllerPadButtonStatus(tag: tag, isPressed: isPressed)
         }
     }
     
     // MARK: - Actions
-    func onTouchDown(sender: UIButton) {
-        sendTouchEvent(sender.tag, isPressed: true)
+  @objc func onTouchDown(sender: UIButton) {
+      sendTouchEvent(tag: sender.tag, isPressed: true)
     }
     
-    func onTouchUp(sender: UIButton) {
-        sendTouchEvent(sender.tag, isPressed: false)
+  @objc func onTouchUp(sender: UIButton) {
+      sendTouchEvent(tag: sender.tag, isPressed: false)
     }
     
     @IBAction func onClickHelp(sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
-        let helpViewController = storyboard!.instantiateViewControllerWithIdentifier("HelpViewController") as! HelpViewController
-        helpViewController.setHelp(localizationManager.localizedString("controlpad_help_text"), title: localizationManager.localizedString("controlpad_help_title"))
+      let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
+      helpViewController.setHelp(message: localizationManager.localizedString(key: "controlpad_help_text"), title: localizationManager.localizedString(key: "controlpad_help_title"))
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
-        helpNavigationController.modalPresentationStyle = .Popover
+      helpNavigationController.modalPresentationStyle = .popover
         helpNavigationController.popoverPresentationController?.barButtonItem = sender
         
-        presentViewController(helpNavigationController, animated: true, completion: nil)
+      present(helpNavigationController, animated: true, completion: nil)
     }
 }
