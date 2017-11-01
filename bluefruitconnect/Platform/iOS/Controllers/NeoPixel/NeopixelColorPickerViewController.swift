@@ -69,11 +69,11 @@ class NeopixelColorPickerViewController: UIViewController {
     }
     
     // MARK: - Actions
-    @IBAction func onBrightnessValueChanged(sender: AnyObject) {
+    @IBAction func onBrightnessValueChanged(_ sender: Any) {
         colorWheelDidChangeColor(wheelView)
     }
     
-    @IBAction func onClickSend(sender: AnyObject) {
+    @IBAction func onClickSend(_ sender: Any) {
         delegate?.onColorPickerChooseColor(color: selectedColor)
         dismiss(animated: true, completion: nil)
     }

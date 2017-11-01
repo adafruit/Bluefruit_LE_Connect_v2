@@ -23,7 +23,7 @@ class DfuFilesPickerTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    @IBAction func onPickFilesButton(sender: AnyObject) {
+    @IBAction func onPickFilesButton(_ sender: Any) {
         onPickFiles?()
     }
 }

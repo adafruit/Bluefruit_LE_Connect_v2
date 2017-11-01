@@ -72,18 +72,18 @@ class ControllerColorWheelViewController: UIViewController {
     }
 
     // MARK: - Actions
-    @IBAction func onBrightnessValueChanged(sender: AnyObject) {
+    @IBAction func onBrightnessValueChanged(_ sender: Any) {
         colorWheelDidChangeColor(wheelView)
     }
 
-   @IBAction func onClickSend(sender: AnyObject) {
+   @IBAction func onClickSend(_ sender: Any) {
     
     if let delegate = delegate, let selectedColorComponents = selectedColorComponents {
       delegate.onSendColorComponents(colorComponents: selectedColorComponents)
         }
     }
     
-    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+    @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
       let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
       helpViewController.setHelp(message: localizationManager.localizedString(key: "colorpicker_help_text"), title: localizationManager.localizedString(key: "colorpicker_help_title"))

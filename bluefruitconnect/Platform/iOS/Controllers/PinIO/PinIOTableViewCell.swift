@@ -96,15 +96,15 @@ class PinIOTableViewCell: UITableViewCell {
 
     
     // MARK: - Actions
-    @IBAction func onClickSelectButton(sender: UIButton) {
+    @IBAction func onClickSelectButton(_ sender: UIButton) {
       delegate?.onPinToggleCell(pinIndex: tag)
     }
     
-    @IBAction func onModeChanged(sender: UISegmentedControl) {
+    @IBAction func onModeChanged(_ sender: UISegmentedControl) {
       delegate?.onPinModeChanged(mode: modesInSegmentedControl[sender.selectedSegmentIndex], pinIndex: tag)
     }
     
-    @IBAction func onDigitalChanged(sender: UISegmentedControl) {
+    @IBAction func onDigitalChanged(_ sender: UISegmentedControl) {
         if let selectedDigital = PinIOModuleManager.PinData.DigitalValue(rawValue: sender.selectedSegmentIndex) {
           delegate?.onPinDigitalValueChanged(value: selectedDigital, pinIndex: tag)
         }
@@ -113,7 +113,7 @@ class PinIOTableViewCell: UITableViewCell {
         }
     }
     
-    @IBAction func onValueSliderChanged(sender: UISlider) {
+    @IBAction func onValueSliderChanged(_ sender: UISlider) {
       delegate?.onPinAnalogValueChanged(value: sender.value, pinIndex: tag)
     }
 }

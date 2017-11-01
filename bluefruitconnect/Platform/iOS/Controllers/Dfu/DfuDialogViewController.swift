@@ -68,7 +68,7 @@ class DfuDialogViewController: UIViewController {
         progressPercentageLabel.text = String(format: "%1.0f%%", value);
     }
     
-    @IBAction func onClickCancel(sender: AnyObject) {
+    @IBAction func onClickCancel(_ sender: Any) {
         delegate?.onUpdateDialogCancel()
     }
 

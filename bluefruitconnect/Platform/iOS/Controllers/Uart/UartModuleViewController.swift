@@ -202,10 +202,10 @@ class UartModuleViewController: ModuleViewController {
                 
                 let uartSettingsViewController = segue.destination as! UartSettingsViewController
                 uartSettingsViewController.onClickClear = {
-                    self.onClickClear(sender: self)
+                    self.onClickClear(self)
                 }
                 uartSettingsViewController.onClickExport = {
-                    self.onClickExport(sender: self)
+                    self.onClickExport(self)
                 }
             }
         }
@@ -275,7 +275,7 @@ class UartModuleViewController: ModuleViewController {
         present(viewController, animated: true, completion: nil)
     }
     
-    @IBAction func onClickSend(sender: AnyObject) {
+    @IBAction func onClickSend(_ sender: Any) {
         let text = inputTextField.text != nil ? inputTextField.text! : ""
         
         var newText = text
@@ -288,16 +288,16 @@ class UartModuleViewController: ModuleViewController {
         inputTextField.text = ""
     }
     
-    @IBAction func onInputTextFieldEdidtingDidEndOnExit(sender: UITextField) {
-        onClickSend(sender: sender)
+    @IBAction func onInputTextFieldEdidtingDidEndOnExit(_ sender: UITextField) {
+        onClickSend(sender)
     }
     
-    @IBAction func onClickClear(sender: AnyObject) {
+    @IBAction func onClickClear(_ sender: Any) {
         uartData.clearData()
         reloadDataUI()
     }
     
-    @IBAction func onClickExport(sender: AnyObject) {
+    @IBAction func onClickExport(_ sender: Any) {
         let dataBuffer = self.uartData.dataBuffer
         guard dataBuffer.count>0 else {
             showDialogWarningNoTextToExport()
@@ -362,24 +362,24 @@ class UartModuleViewController: ModuleViewController {
         
     }
     
-    @IBAction func onShowEchoValueChanged(sender: UISwitch) {
+    @IBAction func onShowEchoValueChanged(_ sender: UISwitch) {
         Preferences.uartIsEchoEnabled = sender.isOn
     }
     
-    @IBAction func onAddEolValueChanged(sender: UISwitch) {
+    @IBAction func onAddEolValueChanged(_ sender: UISwitch) {
         Preferences.uartIsAutomaticEolEnabled = sender.isOn
     }
     
-    @IBAction func onDisplayModeChanged(sender: UISegmentedControl) {
+    @IBAction func onDisplayModeChanged(_ sender: UISegmentedControl) {
          Preferences.uartIsDisplayModeTimestamp = sender.selectedSegmentIndex == 0
         
     }
     
-    @IBAction func onDataModeChanged(sender: UISegmentedControl) {
+    @IBAction func onDataModeChanged(_ sender: UISegmentedControl) {
          Preferences.uartIsInHexMode = sender.selectedSegmentIndex == 1
     }
     
-    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+    @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
         helpViewController.setHelp(message: localizationManager.localizedString(key: "uart_help_text"), title: localizationManager.localizedString(key: "uart_help_title"))

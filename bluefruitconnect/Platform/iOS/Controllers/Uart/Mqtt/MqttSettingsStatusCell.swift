@@ -18,7 +18,7 @@ class MqttSettingsStatusCell: UITableViewCell {
     // Data
     var onClickAction : (() -> ())?
     
-    @IBAction func onClickButton(sender: AnyObject) {
+    @IBAction func onClickButton(_ sender: Any) {
         self.onClickAction?()
     }
 }

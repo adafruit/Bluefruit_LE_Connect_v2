@@ -40,7 +40,7 @@ class HelpExportViewController: HelpViewController {
     */
 
     
-    @IBAction func onCickExport(sender: AnyObject) {
+    @IBAction func onCickExport(_ sender: Any) {
         if let fileTitle = fileTitle, let fileURL = fileURL {
             
             let activityViewController = UIActivityViewController(activityItems: [fileTitle, fileURL], applicationActivities: nil)

@@ -62,7 +62,7 @@ class DfuFilesPickerDialogViewController: UIViewController {
     }
     
     // MARK: - Actions
-    @IBAction func onClickPickFile(sender: UIButton) {
+    @IBAction func onClickPickFile(_ sender: UIButton) {
         isPickingHexFile = sender.tag == 0
         
       let importMenu = UIDocumentMenuViewController(documentTypes: ["public.data", "public.content"], in: .import)
@@ -71,13 +71,13 @@ class DfuFilesPickerDialogViewController: UIViewController {
       present(importMenu, animated: true, completion: nil)
     }
     
-    @IBAction func onClickStartUpdate(sender: AnyObject) {
+    @IBAction func onClickStartUpdate(_ sender: Any) {
       dismiss(animated: true) { [unowned self] () -> Void in
           self.delegate?.onFilesPickerStartUpdate(hexUrl: self.hexFileUrl, iniUrl: self.iniFileUrl)
         }
     }
 
-    @IBAction func onClickCancel(sender: AnyObject) {
+    @IBAction func onClickCancel(_ sender: Any) {
       dismiss(animated: true) { [unowned self] () -> Void in
             self.delegate?.onFilesPickerCancel()
         }

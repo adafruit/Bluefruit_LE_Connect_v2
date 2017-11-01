@@ -30,11 +30,11 @@ class UartSettingTableViewCell: UITableViewCell {
     }
     
     
-    @IBAction func onSwitchValueChanged(sender: UISwitch) {
+    @IBAction func onSwitchValueChanged(_ sender: UISwitch) {
         onSwitchEnabled?(sender.isOn)
     }
 
-    @IBAction func onSegmentedControlValueChanged(sender: UISegmentedControl) {
+    @IBAction func onSegmentedControlValueChanged(_ sender: UISegmentedControl) {
         onSegmentedControlIndexChanged?(sender.selectedSegmentIndex)
     }
 }

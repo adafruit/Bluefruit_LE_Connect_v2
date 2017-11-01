@@ -109,7 +109,7 @@ class InfoModuleViewController: ModuleViewController {
     }
     
     // MARK: - Actions
-    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+    @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
         helpViewController.setHelp(message: localizationManager.localizedString(key: "info_help_text"), title: localizationManager.localizedString(key: "info_help_title"))
@@ -129,7 +129,7 @@ class InfoModuleViewController: ModuleViewController {
         
     }
     
-    @IBAction func onClickRefresh(sender: AnyObject) {
+    @IBAction func onClickRefresh(_ sender: Any) {
         discoverServices()
     }
     
@@ -142,7 +142,7 @@ extension InfoModuleViewController: UITableViewDataSource {
         case Hex = 2
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         // Services
         if let services = services {
             return services.count

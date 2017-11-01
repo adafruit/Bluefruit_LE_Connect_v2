@@ -26,7 +26,7 @@ class ControllerSensorTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    @IBAction func onEnabledValueChanged(sender: UISwitch) {
+    @IBAction func onEnabledValueChanged(_ sender: UISwitch) {
       onSensorEnabled?(sender.isOn)
     }
 }

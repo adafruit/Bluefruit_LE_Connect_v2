@@ -381,34 +381,34 @@ class PeripheralTableViewController: UIViewController {
         refreshControl.endRefreshing()
     }
     
-    @IBAction func onClickExpandFilters(sender: AnyObject) {
+    @IBAction func onClickExpandFilters(_ sender: Any) {
         openFiltersPanel(isOpen: !Preferences.scanFilterIsPanelOpen, animated: true)
     }
     
-    @IBAction func onFilterNameChanged(sender: UITextField) {
+    @IBAction func onFilterNameChanged(_ sender: UITextField) {
         let isEmpty = sender.text?.trimmingCharacters(in: NSCharacterSet.whitespacesAndNewlines).isEmpty ?? true
         peripheralList.filterName = isEmpty ? nil : sender.text
         updateFilters()
     }
     
-    @IBAction func onRssiSliderChanged(sender: UISlider) {
+    @IBAction func onRssiSliderChanged(_ sender: UISlider) {
         let rssiValue = Int(-sender.value)
         peripheralList.rssiFilterValue = rssiValue
         updateRssiValueLabel()
         updateFilters()
     }
     
-    @IBAction func onFilterSettingsUnnamedChanged(sender: UISwitch) {
+    @IBAction func onFilterSettingsUnnamedChanged(_ sender: UISwitch) {
         peripheralList.isUnnamedEnabled = sender.isOn
         updateFilters()
     }
     
-    @IBAction func onFilterSettingsUartChanged(sender: UISwitch) {
+    @IBAction func onFilterSettingsUartChanged(_ sender: UISwitch) {
         peripheralList.isOnlyUartEnabled = sender.isOn
         updateFilters()
     }
     
-    @IBAction func onClickRemoveFilters(sender: AnyObject) {
+    @IBAction func onClickRemoveFilters(_ sender: Any) {
         peripheralList.setDefaultFilters()
         filtersNameTextField.text = peripheralList.filterName ?? ""
         setRssiSliderValue(value: peripheralList.rssiFilterValue)

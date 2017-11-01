@@ -51,7 +51,7 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
         let notificationCenter = NotificationCenter.default
         if !isFullScreen {       // For compact mode, the connection is managed by the peripheral list
             notificationCenter.addObserver(self, selector: #selector(willConnectToPeripheral), name: .bleWillConnectToPeripheral, object: nil)
-            notificationCenter.addObserver(self, selector: #selector(didConnectToPeripheral(notification:)), name: .bleDidConnectToPeripheral, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(_didConnectToPeripheral), name: .bleDidConnectToPeripheral, object: nil)
         }
         notificationCenter.addObserver(self, selector: #selector(willDisconnectFromPeripheral), name: .bleWillDisconnectFromPeripheral, object: nil)
         notificationCenter.addObserver(self, selector: #selector(didDisconnectFromPeripheral), name: .bleDidDisconnectFromPeripheral, object: nil)
@@ -97,13 +97,13 @@ class PeripheralDetailsViewController: ScrollingTabBarViewController {
             }
     }
 
-    @objc func didConnectToPeripheral(notification: NSNotification) {
+    @objc func _didConnectToPeripheral(notification: NSNotification) {
         DispatchQueue.main.async { [unowned self] in
             self.didConnectToPeripheral()
             }
     }
     
-    func didConnectToPeripheral() {
+    @objc func didConnectToPeripheral() {
         guard BleManager.sharedInstance.blePeripheralConnected != nil else {
             DLog(message: "Warning: didConnectToPeripheral with empty blePeripheralConnected");
             return

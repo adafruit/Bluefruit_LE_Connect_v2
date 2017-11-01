@@ -34,7 +34,7 @@ class NeopixelTypeValueTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    @IBAction func onClickSet(sender: AnyObject) {
+    @IBAction func onClickSet(_ sender: Any) {
         
       if let type = typeFromInput(originalText: valueTextField.text) {
         self.delegate?.onSetValue(value: type)

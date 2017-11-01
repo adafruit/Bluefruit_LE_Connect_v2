@@ -11,9 +11,9 @@ import WatchConnectivity
 
 class WatchSessionManager {
     // Notifications
-    enum Notifications : String {
-        case DidReceiveWatchCommand = "didReceiveWatchCommand"
-    }
+//    enum Notifications : String {
+//        case DidReceiveWatchCommand = "didReceiveWatchCommand"
+//    }
 
     // Constants
     enum Mode: String {
@@ -68,4 +68,8 @@ class WatchSessionManager {
         }
     }
 #endif
+}
+
+extension Notification.Name {
+    static let wsmDidReceiveWatchCommand = Notification.Name("didReceiveWatchCommand")
 }

@@ -116,7 +116,7 @@ class DfuModuleViewController: ModuleViewController {
     }*/
     
     // MARK: - Actions
-    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+    @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
       helpViewController.setHelp(message: localizationManager.localizedString(key: "dfu_help_text"), title: localizationManager.localizedString(key: "dfu_help_title"))

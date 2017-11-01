@@ -43,11 +43,11 @@ class PeripheralTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    @IBAction func onClickDisconnect(sender: AnyObject) {
+    @IBAction func onClickDisconnect(_ sender: Any) {
         onDisconnect?()
     }
     
-    @IBAction func onClickConnect(sender: AnyObject) {
+    @IBAction func onClickConnect(_ sender: Any) {
         onConnect?()
     }
     

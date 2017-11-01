@@ -118,11 +118,11 @@ class PinIOModuleViewController: ModuleViewController {
     }
     
     // MARK: - Actions
-    @IBAction func onClickQuery(sender: AnyObject) {
+    @IBAction func onClickQuery(_ sender: Any) {
         setupFirmata()
     }
     
-    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+    @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
       helpViewController.setHelp(message: localizationManager.localizedString(key: "pinio_help_text"), title: localizationManager.localizedString(key: "pinio_help_title"))

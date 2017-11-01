@@ -213,7 +213,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         NotificationCenter.default.post(name: .bleDidDiscoverPeripheral, object:nil, userInfo: ["uuid" : identifierString])
     }
     
-    func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
+    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         //DLog("didConnectPeripheral: \(peripheral.name != nil ? peripheral.name! : "")")
         
         blePeripheralConnecting = nil
@@ -221,6 +221,7 @@ class BleManager : NSObject, CBCentralManagerDelegate {
         synchronize(lock: blePeripheralsFound as NSDictionary) {
             self.blePeripheralConnected = self.blePeripheralsFound[identifier]
         }
+      
         NotificationCenter.default.post(name: .bleDidConnectToPeripheral, object: nil, userInfo: ["uuid" : identifier])
     }
     

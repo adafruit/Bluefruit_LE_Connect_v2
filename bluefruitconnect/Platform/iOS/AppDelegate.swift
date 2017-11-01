@@ -15,7 +15,7 @@
     var window: UIWindow?
     private var splitDividerCover = UIView()
   
-
+    
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         
@@ -114,7 +114,7 @@
  // MARK: - UISplitViewControllerDelegate
  extension AppDelegate: UISplitViewControllerDelegate {
     
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController:UIViewController, ontoPrimaryViewController primaryViewController:UIViewController) -> Bool {
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         
         if BleManager.sharedInstance.blePeripheralConnected == nil {
             return true
@@ -155,7 +155,7 @@
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
         if message["command"] != nil {
           DLog(message: "watchCommand notification")
-          NotificationCenter.default.post(name: NSNotification.Name(rawValue: WatchSessionManager.Notifications.DidReceiveWatchCommand.rawValue), object: nil)
+          NotificationCenter.default.post(name: .wsmDidReceiveWatchCommand, object: nil)
         }
     }
     

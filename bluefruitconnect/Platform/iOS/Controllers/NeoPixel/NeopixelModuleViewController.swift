@@ -346,27 +346,27 @@ class NeopixelModuleViewController: ModuleViewController {
     }
     
     // MARK: - Actions
-    @IBAction func onClickConnect(sender: AnyObject) {
+    @IBAction func onClickConnect(_ sender: Any) {
         neopixel.connectNeopixel()
         updateStatusUI()
     }
     
-    @IBAction func onDoubleTapScrollView(sender: AnyObject) {
+    @IBAction func onDoubleTapScrollView(_ sender: Any) {
         setDefaultPositionAndScaleAnimated(animated: true)
     }
     
-    @IBAction func onClickClear(sender: AnyObject) {
+    @IBAction func onClickClear(_ sender: Any) {
         for ledView in ledViews {
             ledView.backgroundColor = currentColor
         }
         neopixel.clearBoard(color: currentColor)
     }
     
-    @IBAction func onChangeBrightness(sender: UISlider) {
+    @IBAction func onChangeBrightness(_ sender: UISlider) {
         neopixel.setBrighness(brightness: sender.value)
     }
     
-    @IBAction func onClickHelp(sender: UIBarButtonItem) {
+    @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.sharedInstance
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpExportViewController") as! HelpExportViewController
         helpViewController.setHelp(message: localizationManager.localizedString(key: "neopixel_help_text"), title: localizationManager.localizedString(key: "neopixel_help_title"))

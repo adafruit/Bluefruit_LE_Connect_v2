@@ -59,7 +59,7 @@ class HelpViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func onClickDone(sender: AnyObject) {
+    @IBAction func onClickDone(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
 
