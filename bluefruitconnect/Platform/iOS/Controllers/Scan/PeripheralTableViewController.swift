@@ -191,7 +191,7 @@ class PeripheralTableViewController: UIViewController {
             DLog(message: "list: connection on compact mode detected")
             
             let kTimeToWaitForPeripheralConnectionError: Double = 0.5
-            let time = DispatchTime.now() + (kTimeToWaitForPeripheralConnectionError * Double(NSEC_PER_SEC))
+            let time = DispatchTime.now() + kTimeToWaitForPeripheralConnectionError
             DispatchQueue.main.asyncAfter(deadline: time){ [unowned self] in
                 
                 if BleManager.sharedInstance.blePeripheralConnected != nil {
