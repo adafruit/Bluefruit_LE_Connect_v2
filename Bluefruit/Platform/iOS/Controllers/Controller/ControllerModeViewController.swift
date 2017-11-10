@@ -265,7 +265,7 @@ extension ControllerModeViewController : UITableViewDataSource {
                         if let label = subview as? UILabel, hasComponent {
                             let attributedText = NSMutableAttributedString(string: "\(componentNameKeys[i]): \(sensorData[i])")
                             let titleLength = componentNameKeys[i].lengthOfBytes(using: String.Encoding.utf8)
-                            attributedText.addAttribute(NSFontAttributeName, value: UIFont.systemFont(ofSize: 12, weight: UIFontWeightMedium), range: NSMakeRange(0, titleLength))
+                            attributedText.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.medium), range: NSMakeRange(0, titleLength))
                             label.attributedText = attributedText
                         }
 

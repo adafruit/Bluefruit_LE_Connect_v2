@@ -256,7 +256,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         return IndexPath(row: tag % scale, section: tag / scale)
     }
 
-    func onClickTypeButton(_ sender: UIButton) {
+    @objc func onClickTypeButton(_ sender: UIButton) {
         let selectedIndexPath = indexPathFromTag(sender.tag, scale:100)
         let isAction = selectedIndexPath.section ==  SettingsSections.subscribe.rawValue && selectedIndexPath.row == 1
         pickerViewType = isAction ? PickerViewType.action : PickerViewType.qos

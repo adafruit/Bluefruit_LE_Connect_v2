@@ -86,7 +86,7 @@ class ControllerPadViewController: UIViewController {
     func setUartText(_ text: String) {
 
         // Remove the last character if is a newline character
-        let lastCharacter = text.characters.last
+        let lastCharacter = text.last
         let shouldRemoveTrailingNewline = lastCharacter == "\n" || lastCharacter == "\r" //|| lastCharacter == "\r\n"
         let formattedText = shouldRemoveTrailingNewline ? text.substring(to: text.index(before: text.endIndex)) : text
 
@@ -105,11 +105,11 @@ class ControllerPadViewController: UIViewController {
     }
 
     // MARK: - Actions
-    func onTouchDown(_ sender: UIButton) {
+    @objc func onTouchDown(_ sender: UIButton) {
         sendTouchEvent(tag: sender.tag, isPressed: true)
     }
 
-    func onTouchUp(_ sender: UIButton) {
+    @objc func onTouchUp(_ sender: UIButton) {
         sendTouchEvent(tag: sender.tag, isPressed: false)
     }
 

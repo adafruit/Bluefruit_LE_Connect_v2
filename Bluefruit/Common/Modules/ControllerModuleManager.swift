@@ -136,7 +136,7 @@ class ControllerModuleManager: NSObject {
         pollTimer = nil
     }
 
-    func updateSensors() {
+    @objc func updateSensors() {
         timerHandler?()
 
         for i in 0..<ControllerModuleManager.numSensors {

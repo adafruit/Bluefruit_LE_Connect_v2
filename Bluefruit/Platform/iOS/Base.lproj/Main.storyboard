@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13770" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13770"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -32,8 +32,7 @@
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="titleTextAttributes">
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         </textAttributes>
                     </navigationBar>
                     <connections>
@@ -1442,7 +1441,7 @@
             </objects>
             <point key="canvasLocation" x="-719" y="308"/>
         </scene>
-        <!--Mode Tabs View Controller-->
+        <!--Cosa-->
         <scene sceneID="xQc-mP-MnO">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="Aso-UJ-OIx" customClass="ModeTabsViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
@@ -1537,7 +1536,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="PAQ-pa-4Xe"/>
+                    <navigationItem key="navigationItem" title="Cosa" id="PAQ-pa-4Xe"/>
                     <connections>
                         <outlet property="contentView" destination="p3o-Sf-etn" id="dsY-S3-X5J"/>
                         <outlet property="tabBarCollectionView" destination="IUb-gH-HgU" id="6wd-OV-qxo"/>

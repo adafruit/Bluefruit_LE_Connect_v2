@@ -78,7 +78,7 @@ class GyroscopeViewController: CalibrationUartSamplerViewController {
                 //DLog("\(line)")
                 let kRawPrefix = "Raw:"
                 if line.hasPrefix(kRawPrefix) {
-                    let valuesString = line.substring(from: line.characters.index(line.startIndex, offsetBy: kRawPrefix.characters.count))
+                    let valuesString = line.substring(from: line.index(line.startIndex, offsetBy: kRawPrefix.count))
                     //                DLog("\(values)")
                     let values = valuesString.components(separatedBy: ",")
                     let accel = [Int16(values[0])!, Int16(values[1])!, Int16(values[2])!]

@@ -36,7 +36,7 @@ class LocalizationManager {
         } else {
             if let range = languageCode.range(of: "-") {
 
-                let baseCode = languageCode.substring(to: range.lowerBound)
+                let baseCode = String(languageCode[..<range.lowerBound])
                 if let path =  Bundle.main.path(forResource: baseCode, ofType: "lproj") {
                     localizationBundle = Bundle(path:path)
                 }
@@ -62,7 +62,7 @@ class LocalizationManager {
         }
 
         if LocalizationManager.kDebugShowDummyCharacters {
-            result = String(repeating: "x", count: result.characters.count)
+            result = String(repeating: "x", count: result.count)
         }
 
         return result

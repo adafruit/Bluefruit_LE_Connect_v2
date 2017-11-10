@@ -301,7 +301,7 @@ class UartBaseViewController: PeripheralModeViewController {
     }
     
     // MARK: - UI Actions
-    func onClickMqtt() {
+    @objc func onClickMqtt() {
         let viewController = storyboard!.instantiateViewController(withIdentifier: "UartMqttSettingsViewController")
         viewController.modalPresentationStyle = .popover
         if let popovoverController = viewController.popoverPresentationController {
@@ -630,7 +630,7 @@ extension UartBaseViewController: MqttManagerDelegate {
         }
     }
     
-    func onMqttMessageReceived(message: String, topic: String) {
+    @objc func onMqttMessageReceived(message: String, topic: String) {
         assert(false, "should be overrided by subclasses")
     }
     

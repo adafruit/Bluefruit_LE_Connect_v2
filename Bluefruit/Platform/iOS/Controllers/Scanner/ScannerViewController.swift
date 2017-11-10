@@ -464,7 +464,7 @@ class ScannerViewController: ModeTabViewController {
     }
 
     // MARK: - Actions
-    func onTableRefresh(_ sender: AnyObject) {
+    @objc func onTableRefresh(_ sender: AnyObject) {
         refreshPeripherals()
         refreshControl.endRefreshing()
     }

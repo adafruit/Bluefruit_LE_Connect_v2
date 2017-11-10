@@ -30,7 +30,7 @@ class WatchSessionManager {
     func activate(with delegate: WCSessionDelegate?) {
         if WCSession.isSupported() {
             DLog("watchSession setup")
-            session = WCSession.default()
+            session = WCSession.default
             session!.delegate = delegate
             session!.activate()
         }

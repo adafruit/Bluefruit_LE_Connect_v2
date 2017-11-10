@@ -223,7 +223,7 @@ class PinIOModuleManager: NSObject {
         }
     }
 
-    func cancelQueryCapabilities() {
+    @objc func cancelQueryCapabilities() {
         DLog("timeout: cancelQueryCapabilities")
         endPinQuery(abort: true)
     }

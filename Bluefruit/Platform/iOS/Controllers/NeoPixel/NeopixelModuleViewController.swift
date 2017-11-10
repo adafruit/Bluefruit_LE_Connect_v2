@@ -348,7 +348,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
         boardScrollView.setContentOffset(boardCenterScrollOffset, animated: animated)
     }
 
-    func ledPressed(_ sender: UIButton) {
+    @objc func ledPressed(_ sender: UIButton) {
         let isBoardConfigured = neopixel.isBoardConfigured()
         if let board = board, isBoardConfigured {
             let x = sender.tag % Int(board.width)

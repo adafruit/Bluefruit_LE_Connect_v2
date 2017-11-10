@@ -289,7 +289,7 @@ class InfoModeViewController: PeripheralModeViewController {
     }
 
     // MARK - Actions
-    func onTableRefresh(_ sender: AnyObject) {
+    @objc func onTableRefresh(_ sender: AnyObject) {
         refreshControl.endRefreshing()
         discoverServices()
     }
