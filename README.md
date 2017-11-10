@@ -1,12 +1,20 @@
 # Bluefruit LE Connect v2
 
-iOS and OS X app for use with Bluefruit Bluetooth LE modules and dev boards from Adafruit.
-
-This is version 2.0 of the app.  The source code for version 1.0 (iOS only) is available at [Bluefruit_LE_Connect](https://github.com/adafruit/Bluefruit_LE_Connect).
+iOS app for use with Bluefruit Bluetooth LE modules and dev boards from Adafruit.
 
 **Important:** Open this project in Xcode by using the .xcworkspace file and not the .xcodeproj file
 
 Work in progress!
+
+## App Versions
+
+- Master branch is for version 3.x of the app (iOS) 
+
+- Swift2 branch is for version 2.0. Includes iOS and macOS apps. 
+Note: Xcode 8.2.1 is the last version that builds Swift2 code
+
+- The source code for version 1.0 (iOS only) is available at [Bluefruit_LE_Connect](https://github.com/adafruit/Bluefruit_LE_Connect).
+
 
 ## Supported Hardware
 
