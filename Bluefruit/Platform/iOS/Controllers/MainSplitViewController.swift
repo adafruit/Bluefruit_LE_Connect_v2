@@ -46,14 +46,14 @@ class MainSplitViewController: UISplitViewController {
         if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {NotificationCenter.default.removeObserver(didDisconnectFromPeripheralObserver)}
     }
 
+    
     override var traitCollection: UITraitCollection {
         // Force iphone plus to behave like an standard iphone (to avoid disconnection problems when rotating). If removed check that "ScannerViewController -> viewWillAppear -> autodisconnection when only 1 connected peripheral" won't force an disconnect incorrectly
         if UI_USER_INTERFACE_IDIOM() == .pad {
             return super.traitCollection
         } else {
             let horizontal = UITraitCollection(horizontalSizeClass: .compact)
-            let vertical = UITraitCollection(verticalSizeClass: super.traitCollection.verticalSizeClass)
-            return UITraitCollection.init(traitsFrom: [horizontal, vertical])
+            return UITraitCollection(traitsFrom: [super.traitCollection, horizontal])
         }
     }
 
