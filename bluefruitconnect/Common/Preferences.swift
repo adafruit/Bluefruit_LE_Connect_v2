@@ -41,6 +41,7 @@ import Foundation
     private static let uartIsEchoEnabledKey = "UartIsEchoEnabled"
     private static let uartIsAutomaticEolEnabledKey = "UartIsAutomaticEolEnabled"
     private static let uartShowInvisibleCharsKey = "UartShowInvisibleChars"
+    private static let uartEolCharactersIdKey = "UartEolCharactersId"
     
     private static let neopixelIsSketchTooltipEnabledKey = "NeopixelIsSketchTooltipEnabledKey"
     
@@ -70,12 +71,10 @@ import Foundation
 
     static var scanFilterName: String? {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            return defaults.stringForKey(Preferences.scanFilterNameKey)
+            return NSUserDefaults.standardUserDefaults().stringForKey(Preferences.scanFilterNameKey)
         }
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setObject(newValue, forKey: Preferences.scanFilterNameKey)
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: Preferences.scanFilterNameKey)
         }
     }
     
@@ -99,13 +98,11 @@ import Foundation
 
     static var scanFilterRssiValue: Int? {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let rssiValue = defaults.integerForKey(Preferences.scanFilterRssiValueKey)
+            let rssiValue = NSUserDefaults.standardUserDefaults().integerForKey(Preferences.scanFilterRssiValueKey)
             return rssiValue >= 0 ? rssiValue:nil
         }
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setInteger(newValue ?? -1, forKey: Preferences.scanFilterRssiValueKey)
+            NSUserDefaults.standardUserDefaults().setInteger(newValue ?? -1, forKey: Preferences.scanFilterRssiValueKey)
         }
     }
     
@@ -180,26 +177,22 @@ import Foundation
     // MARK: - Uart
     static var uartReceveivedDataColor: Color {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let hexColorString = defaults.stringForKey(Preferences.uartReceivedDataColorKey)
+            let hexColorString = NSUserDefaults.standardUserDefaults().stringForKey(Preferences.uartReceivedDataColorKey)
             return Color(CSS: hexColorString)
         }
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setObject(newValue.hexString(), forKey: Preferences.uartReceivedDataColorKey)
+            NSUserDefaults.standardUserDefaults().setObject(newValue.hexString(), forKey: Preferences.uartReceivedDataColorKey)
             NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
         }
     }
     
     static var uartSentDataColor: Color {
         get {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            let hexColorString = defaults.stringForKey(Preferences.uartSentDataColorKey)
+            let hexColorString = NSUserDefaults.standardUserDefaults().stringForKey(Preferences.uartSentDataColorKey)
             return Color(CSS: hexColorString)
         }
         set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setObject(newValue.hexString(), forKey: Preferences.uartSentDataColorKey)
+            NSUserDefaults.standardUserDefaults().setObject(newValue.hexString(), forKey: Preferences.uartSentDataColorKey)
             NSNotificationCenter.defaultCenter().postNotificationName(PreferencesNotifications.DidUpdatePreferences.rawValue, object: nil);
         }
     }
@@ -248,6 +241,27 @@ import Foundation
         set {
             setBoolPreference(Preferences.uartIsAutomaticEolEnabledKey, newValue: newValue)
         }
+    }
+    
+    
+    static var uartEolCharactersId: Int {
+        get {
+            return NSUserDefaults.standardUserDefaults().integerForKey(Preferences.uartEolCharactersIdKey)
+        }
+        set {
+            NSUserDefaults.standardUserDefaults().setInteger(newValue, forKey: Preferences.uartEolCharactersIdKey)
+        }
+    }
+    
+    static var uartEolCharacters: String {
+        var uartEolCharacters: String
+        switch Preferences.uartEolCharactersId {
+        case 1: uartEolCharacters = "\r"
+        case 2: uartEolCharacters = "\n\r"
+        case 3: uartEolCharacters = "\r\n"
+        default: uartEolCharacters = "\n"
+        }
+        return uartEolCharacters
     }
     
     // MARK: - Neopixels

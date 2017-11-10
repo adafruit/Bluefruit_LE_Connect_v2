@@ -42,5 +42,7 @@
 	<false/>
 	<key>NeopixelIsSketchTooltipEnabledKey</key>
 	<true/>
+	<key>UartEolCharactersId</key>
+	<integer>0</integer>
 </dict>
 </plist>

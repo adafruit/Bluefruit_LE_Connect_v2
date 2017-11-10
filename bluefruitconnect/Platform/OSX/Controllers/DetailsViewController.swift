@@ -402,8 +402,7 @@ extension DetailsViewController : CBPeripheralDelegate {
         }
     }
     
-    func peripheralDidUpdateRSSI(peripheral: CBPeripheral, error: NSError?) {
-
+    func peripheral(peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: NSError?) {
         // Update peripheral rssi
         let identifierString = peripheral.identifier.UUIDString
         if let existingPeripheral = BleManager.sharedInstance.blePeripherals()[identifierString], rssi =  peripheral.RSSI?.integerValue {
@@ -420,6 +419,8 @@ extension DetailsViewController : CBPeripheralDelegate {
             }
         }
     }
+    
+ 
 }
 
 // MARK: - NSTabViewDelegate

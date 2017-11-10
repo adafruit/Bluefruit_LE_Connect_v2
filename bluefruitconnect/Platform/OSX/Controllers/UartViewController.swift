@@ -189,7 +189,7 @@ class UartViewController: NSViewController {
         var newText = text
         // Eol
         if (Preferences.uartIsAutomaticEolEnabled)  {
-            newText += "\n"
+            newText += Preferences.uartEolCharacters // "\n"
         }
 
         uartData.sendMessageToUart(newText)

@@ -21,6 +21,7 @@ class PreferencesViewController: NSViewController {
     @IBOutlet weak var receivedDataColorWell: NSColorWell!
     @IBOutlet weak var sentDataColorWell: NSColorWell!
     @IBOutlet weak var uartShowInvisibleCharsButton: NSButton!
+    @IBOutlet weak var uartEolCharacterPopupButton: NSPopUpButton!
     
     // Mqtt
     @IBOutlet weak var mqttServerTextField: NSTextField!
@@ -61,6 +62,8 @@ class PreferencesViewController: NSViewController {
         sentDataColorWell.color = uartSentDataColor
 
         uartShowInvisibleCharsButton.state = Preferences.uartShowInvisibleChars ? NSOnState:NSOffState
+        
+        uartEolCharacterPopupButton.selectItemAtIndex(Preferences.uartEolCharactersId)
         
         // Mqtt Server
         let mqttSettings = MqttSettings.sharedInstance
@@ -146,6 +149,10 @@ class PreferencesViewController: NSViewController {
     
     @IBAction func onChangedUartShowInvisibleChars(sender: NSButton) {
         Preferences.uartShowInvisibleChars = sender.state == NSOnState
+    }
+    
+    @IBAction func onChangedUartEolCharacter(sender: NSPopUpButton) {
+        Preferences.uartEolCharactersId = sender.indexOfSelectedItem
     }
     
     // MARK: - Mqtt
