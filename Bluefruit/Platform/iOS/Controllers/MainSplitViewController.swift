@@ -76,7 +76,7 @@ class MainSplitViewController: UISplitViewController {
     private func peripheralDidDisconnect() {
         let isLastConnectedPeripheral = BleManager.sharedInstance.connectedPeripherals().count == 0
         let localizationManager = LocalizationManager.sharedInstance
-        let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("peripherallist_peripheraldisconnected"), preferredStyle: .alert)
+        let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("scanner_peripheraldisconnected"), preferredStyle: .alert)
         let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: { [weak self] (_) -> Void in
             guard let context = self else { return }
 

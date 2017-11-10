@@ -62,7 +62,7 @@ extension UartSelectPeripheralViewController: UITableViewDelegate {
             let peripheral = connectedPeripherals[indexPath.row-1]
 
             let localizationManager = LocalizationManager.sharedInstance
-            cell.textLabel?.text = peripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")
+            cell.textLabel?.text = peripheral.name ?? localizationManager.localizedString("scanner_unnamed")
             cell.textLabel?.textColor = colorForPeripheral?[peripheral.identifier] ?? UIColor.black
         }
     }
@@ -74,7 +74,7 @@ extension UartSelectPeripheralViewController: UITableViewDelegate {
         } else {
             let localizationManager = LocalizationManager.sharedInstance
             let peripheral = connectedPeripherals[indexPath.row-1]
-            let name = peripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")
+            let name = peripheral.name ?? localizationManager.localizedString("scanner_unnamed")
             delegate?.onUartSendToChanged(uuid: peripheral.identifier, name: name)
         }
         tableView.deselectRow(at: indexPath, animated: true)

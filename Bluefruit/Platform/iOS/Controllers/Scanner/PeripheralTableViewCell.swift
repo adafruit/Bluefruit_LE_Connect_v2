@@ -46,6 +46,10 @@ class PeripheralTableViewCell: UITableViewCell {
         //DLog("right margin: \(rightMarginInset)")
         connectButton.titleEdgeInsets.right += rightMarginInset
         disconnectButton.titleEdgeInsets.right += rightMarginInset
+        
+        let localizationManager = LocalizationManager.sharedInstance
+        connectButton.setTitle(localizationManager.localizedString("scanresult_connect"), for: .normal)
+        disconnectButton.setTitle(localizationManager.localizedString("scanresult_disconnect"), for: .normal)
     }
 
     override func prepareForReuse() {

@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirmwareUpdater.refreshSoftwareUpdatesDatabase(url: Preferences.updateServerUrl, completion: nil)
 
         // Style
+        
         let navigationBarAppearance = UINavigationBar.appearance()
         navigationBarAppearance.barTintColor = UIColor.black
         navigationBarAppearance.isTranslucent = true

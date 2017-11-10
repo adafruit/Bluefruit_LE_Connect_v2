@@ -117,7 +117,7 @@ class DetailsViewController: NSViewController {
         guard let peripheral = BleManager.sharedInstance.peripheral(from: notification) else { return }
         self.blePeripheral = peripheral
 
-        emptyLabel.stringValue = LocalizationManager.sharedInstance.localizedString("periperhaldetails_discoveringservices")
+        emptyLabel.stringValue = LocalizationManager.sharedInstance.localizedString("peripheraldetails_discoveringservices")
         
         /* TODO: restore
         // UI
@@ -162,7 +162,7 @@ class DetailsViewController: NSViewController {
         guard let blePeripheral = BleManager.sharedInstance.blePeripheralConnected else { return }
         
         // UI: Info
-        let name = blePeripheral.name != nil ? blePeripheral.name! : LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
+        let name = blePeripheral.name != nil ? blePeripheral.name! : LocalizationManager.sharedInstance.localizedString("scanner_unnamed")
         self.infoNameLabel.stringValue = name
         self.updateRssiUI()
         

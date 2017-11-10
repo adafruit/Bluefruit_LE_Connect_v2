@@ -333,7 +333,7 @@ extension PeripheralModulesViewController: UITableViewDelegate {
         case .device:
             guard let deviceCell = cell as? PeripheralModulesDeviceTableViewCell, let peripheral = blePeripheral else { return }
 
-            deviceCell.titleLabel.text = peripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")
+            deviceCell.titleLabel.text = peripheral.name ?? localizationManager.localizedString("scanner_unnamed")
             deviceCell.rssiImageView.image = RssiUI.signalImage(for: peripheral.rssi)
             deviceCell.rssiLabel.text = peripheral.rssi != nil ? String(format: localizationManager.localizedString("peripheralmodules_rssi_format"), peripheral.rssi!) : localizationManager.localizedString("peripheralmodules_rssi_unavailable")
             

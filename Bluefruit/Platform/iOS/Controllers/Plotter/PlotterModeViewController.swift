@@ -33,7 +33,7 @@ class PlotterModeViewController: PeripheralModeViewController {
 
         // Title
         let localizationManager = LocalizationManager.sharedInstance
-        let name = blePeripheral?.name ?? localizationManager.localizedString("peripherallist_unnamed")
+        let name = blePeripheral?.name ?? localizationManager.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("plotter_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("plotter_tab_title")
 
         // UI

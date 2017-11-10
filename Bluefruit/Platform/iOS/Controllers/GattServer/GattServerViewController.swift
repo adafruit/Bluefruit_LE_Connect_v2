@@ -33,7 +33,6 @@ class GattServerViewController: ModeTabViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -75,7 +74,6 @@ class GattServerViewController: ModeTabViewController {
             showDetailViewController(detailRootController, sender: self)
         }
     }
-
 }
 
 // MARK: - UITableViewDataSource
@@ -105,7 +103,8 @@ extension GattServerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? "Advertising Info" : "Services"
+        let localizationManager = LocalizationManager.sharedInstance
+        return localizationManager.localizedString( section == 0 ? "peripheral_advertisinginfo" : "peripheral_services")
     }
 }
 
@@ -114,9 +113,11 @@ extension GattServerViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
+        let localizationManager = LocalizationManager.sharedInstance
         if indexPath.section == 0 {
             guard let editValueCell = cell as? MqttSettingsValueAndSelector else { return }
             editValueCell.reset()
+            editValueCell.nameLabel.text = localizationManager.localizedString("peripheral_localname")
             let valueTextField = editValueCell.valueTextField!
             valueTextField.placeholder = UIDevice.current.name
             valueTextField.text = gattServer.advertisementLocalName

@@ -17,7 +17,7 @@ protocol PeripheralServiceDelegate: class {
 class PeripheralService {
     
     // Data
-    public var name: String = "Undefined Peripheral"
+    public var name = LocalizationManager.sharedInstance.localizedString("peripheral_unknown_title")
     public var isEnabled = true
     public var service: CBMutableService!
     internal var characteristics: [CBMutableCharacteristic]!

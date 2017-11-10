@@ -79,7 +79,7 @@ class InfoModeViewController: PeripheralModeViewController {
 
         // Title
         let localizationManager = LocalizationManager.sharedInstance
-        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
+        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("scanner_unnamed")
 
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("info_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("info_tab_title")
 

@@ -135,8 +135,9 @@ class PeripheralList {
             filtersTitle = filterName
         }
 
+        let localizationManager = LocalizationManager.sharedInstance
         if let rssiFilterValue = rssiFilterValue {
-            let rssiString = "RSSI >= \(rssiFilterValue)"
+            let rssiString = String(format: localizationManager.localizedString("scanner_filter_rssi_description_format"), rssiFilterValue) //  "RSSI >= \(rssiFilterValue)"
             if filtersTitle != nil && !filtersTitle!.isEmpty {
                 filtersTitle!.append(", \(rssiString)")
             } else {
@@ -145,7 +146,7 @@ class PeripheralList {
         }
 
         if !isUnnamedEnabled {
-            let namedString = "with name"
+            let namedString = localizationManager.localizedString("scanner_filter_unnamed_description")
             if filtersTitle != nil && !filtersTitle!.isEmpty {
                 filtersTitle!.append(", \(namedString)")
             } else {
@@ -154,7 +155,7 @@ class PeripheralList {
         }
 
         if isOnlyUartEnabled {
-            let uartString = "with UART"
+            let uartString = localizationManager.localizedString("scanner_filter_uart_description")
             if filtersTitle != nil && !filtersTitle!.isEmpty {
                 filtersTitle!.append(", \(uartString)")
             } else {

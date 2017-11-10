@@ -29,7 +29,6 @@ class GattServer: NSObject {
     
     fileprivate var peripheralServices = [PeripheralService]()
 
-    
     /*
     public var state: CBManagerState {
         return peripheralManager.state
@@ -217,14 +216,29 @@ extension GattServer: CBPeripheralManagerDelegate {
     public func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest) {
         DLog("didReceiveRead for characteristic: \(request.characteristic.uuid.uuidString)")
         
+        var isCharacteristicValid = false
         let serviceUuid = request.characteristic.service.uuid
+        if let peripheralService = peripheralServices.first(where: {$0.service.uuid == serviceUuid}) {
+            let characteristicUuid = request.characteristic.uuid
+            if let characteristic = peripheralService.characteristic(uuid: characteristicUuid) {
+                processReadRequest(request, value: characteristic.value)
+                isCharacteristicValid = true
+            }
+        }
+        
+        /*
         for peripheralService in peripheralServices {
             if serviceUuid == peripheralService.service.uuid {
                 let characteristicUuid = request.characteristic.uuid
                 if let characteristic = peripheralService.characteristic(uuid: characteristicUuid) {
                     processReadRequest(request, value: characteristic.value)
+                    characteristicFound = true
                 }
             }
+        }*/
+        
+        if !isCharacteristicValid {
+            peripheralManager.respond(to: request, withResult: .readNotPermitted)
         }
     }
     
@@ -235,6 +249,13 @@ extension GattServer: CBPeripheralManagerDelegate {
             let serviceUuid = request.characteristic.service.uuid
             
             var isCharacteristicValid = false
+            if let peripheralService = peripheralServices.first(where: {$0.service.uuid == serviceUuid}) {
+                let characteristicUuid = request.characteristic.uuid
+                if peripheralService.characteristic(uuid: characteristicUuid) != nil {
+                    isCharacteristicValid = true
+                }
+            }
+            /*
             for peripheralService in peripheralServices {
                 if serviceUuid == peripheralService.service.uuid {
                     let characteristicUuid = request.characteristic.uuid
@@ -243,7 +264,7 @@ extension GattServer: CBPeripheralManagerDelegate {
                         isCharacteristicValid = true
                     }
                 }
-            }
+            }*/
             
             guard isCharacteristicValid else {
                 DLog("didReceiveWrite error. Aborting \(requests.count) write requests")
@@ -256,11 +277,15 @@ extension GattServer: CBPeripheralManagerDelegate {
         for request in requests {
             DLog("didReceiveWrite for characteristic: \(request.characteristic.uuid.uuidString)")
             let serviceUuid = request.characteristic.service.uuid
+            if let peripheralService = peripheralServices.first(where: {$0.service.uuid == serviceUuid}) {
+                processWriteRequest(request, peripheralService: peripheralService)
+            }
+                /*
             for peripheralService in peripheralServices {
                 if serviceUuid == peripheralService.service.uuid {
                     processWriteRequest(request, peripheralService: peripheralService)
                 }
-            }
+            }*/
         }
     
         peripheralManager.respond(to: requests.first!, withResult: .success)
@@ -269,10 +294,9 @@ extension GattServer: CBPeripheralManagerDelegate {
     public func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager) {
         DLog("peripheralManagerIsReady")
     }
-
 }
 
-// MARK: - v
+// MARK: - PeripheralServiceDelegate
 extension GattServer: PeripheralServiceDelegate {
     func updateValue(_ value: Data, for characteristic: CBMutableCharacteristic, onSubscribedCentrals: [CBCentral]?) {
         

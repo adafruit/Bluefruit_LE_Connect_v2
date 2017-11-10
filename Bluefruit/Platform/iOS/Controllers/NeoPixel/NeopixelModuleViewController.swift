@@ -57,7 +57,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
 
         // Title
         let localizationManager = LocalizationManager.sharedInstance
-        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("peripherallist_unnamed")
+        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("neopixels_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("neopixels_tab_title")
         
         // Init

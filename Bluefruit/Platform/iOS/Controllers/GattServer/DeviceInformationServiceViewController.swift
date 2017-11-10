@@ -37,10 +37,10 @@ class DeviceInformationServiceViewController: UIViewController {
 
 // MARK: UITableViewDataSource
 extension DeviceInformationServiceViewController: UITableViewDataSource {
-    private static let labels = ["Manufacturer", "Model Number", "Serial Number", "Hardware Number", "Firmware Revision", "Software Revision"]
+    private static let labelStringIds = ["peripheral_dis_manufacturer", "peripheral_dis_modelnumber", "peripheral_dis_serialnumber", "peripheral_dis_hardwarenumber", "peripheral_dis_firmwarerevision", "peripheral_dis_softwarerevision"]
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return DeviceInformationServiceViewController.labels.count
+        return DeviceInformationServiceViewController.labelStringIds.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -49,7 +49,7 @@ extension DeviceInformationServiceViewController: UITableViewDataSource {
         let editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueCell", for: indexPath) as! MqttSettingsValueAndSelector
         editValueCell.reset()
         
-        editValueCell.nameLabel.text = DeviceInformationServiceViewController.labels[row]
+        editValueCell.nameLabel.text = LocalizationManager.sharedInstance.localizedString(DeviceInformationServiceViewController.labelStringIds[row])
         
         let valueTextField = editValueCell.valueTextField!
         if row == 0 {
@@ -77,14 +77,12 @@ extension DeviceInformationServiceViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Characteristics"
+        return LocalizationManager.sharedInstance.localizedString("peripheral_characteristics")
     }
-    
 }
 
 // MARK: UITableViewDelegate
 extension DeviceInformationServiceViewController: UITableViewDelegate {
-    
 }
 
 // MARK: - UITextFieldDelegate
@@ -130,6 +128,5 @@ extension DeviceInformationServiceViewController: UITextFieldDelegate {
         } else if row == 5 {
             disPeripheralService?.softwareRevision = text
         }
-        
     }
 }

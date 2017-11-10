@@ -58,13 +58,14 @@ extension FilterTextSettingsViewController: UITableViewDataSource {
         var title: String
         var accesoryType: UITableViewCellAccessoryType
 
+        let localizationManager = LocalizationManager.sharedInstance
         if let peripheralList = peripheralList {
             switch indexPath.section {
             case 0:
-                title = row == 0 ? "Name contains" : "Name equals"
+                title = localizationManager.localizedString(row == 0 ? "scanner_filter_name_settings_contains" : "scanner_filter_name_settings_exact")
                 accesoryType = (row == 0 && !peripheralList.isFilterNameExact) || (row == 1 && peripheralList.isFilterNameExact) ? .checkmark : .none
             default:
-                title = row == 0 ? "Matching case" : "Ignoring case"
+                title = localizationManager.localizedString(row == 0 ? "scanner_filter_name_settings_sensitive" : "scanner_filter_name_settings_insensitive")
                 accesoryType = (row == 0 && !peripheralList.isFilterNameCaseInsensitive) || (row == 1 && peripheralList.isFilterNameCaseInsensitive) ? .checkmark : .none
             }
 

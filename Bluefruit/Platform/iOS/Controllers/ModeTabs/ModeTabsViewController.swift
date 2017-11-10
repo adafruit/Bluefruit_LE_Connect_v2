@@ -17,10 +17,10 @@ class ModeTabsViewController: ScrollingTabBarViewController {
         // Add Tab ViewControllers
         var viewControllers = [ModeTabViewController]()
         
-        
+        let localizationManager = LocalizationManager.sharedInstance
         if let scannerViewController = self.storyboard?.instantiateViewController(withIdentifier: "ScannerViewController") as? ScannerViewController  {
             // Add scanner to tabs content viewcontroller
-            scannerViewController.tabBarItem.title = "Central Mode"      // Tab title
+            scannerViewController.tabBarItem.title = localizationManager.localizedString("main_tabbar_centralmode")      // Tab title
             scannerViewController.tabBarItem.image = UIImage(named: "tab_centralmode_icon")
             viewControllers.append(scannerViewController)
         }
@@ -28,7 +28,7 @@ class ModeTabsViewController: ScrollingTabBarViewController {
         if let gattServerViewController = self.storyboard?.instantiateViewController(withIdentifier: "GattServerViewController") as? GattServerViewController {
             
              // Add advertiser to tabs content viewcontroller
-            gattServerViewController.tabBarItem.title = "Peripheral Mode"      // Tab title
+            gattServerViewController.tabBarItem.title =  localizationManager.localizedString("main_tabbar_peripheralmode")       // Tab title
             gattServerViewController.tabBarItem.image = UIImage(named: "tab_peripheralmode_icon")
             viewControllers.append(gattServerViewController)
         }

@@ -1,85 +1,112 @@
 // AUTO-GENERATED
 // General
 
+// Bluetooth Management
 
-"about_text" = "A detailed guide to using this app can be found here:
-https://learn.adafruit.com/bluefruit-le-connect-for-ios
+"bluetooth_unsupported" = "This device doesn't support Bluetooth Low Energy";
+"bluetooth_notauthorized" = "This app is not authorized to use the Bluetooth Low Energy";
+"bluetooth_poweredoff" = "Bluetooth is currently powered off";
 
-Configure your Bluefruit LE hardware using instructions found here:
-http://www.adafruit.com/bluefruitle
-
-Drag the table down and release to clear the list of found peripherals and begin scanning
-
-Tap a row in the table to view a peripheral's advertisement data.
-
-Each peripheral's Received Signal Strength (RSSI) is displayed to the left of its name.
-
-Tap a row's connect button to connect the corresponding device in one of the available modes:
-
-• Info - displays peripheral services & characteristics
-
-• UART - basic terminal, send & receive data 
-
-• Pin I/O - uses Bluefruit's UART to control Arduino running BLEFirmata sketch:
-https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakout/software-bluefruit-firmata
-
-• Controller - streams sensor data from your iOS device to Bluefruit LE over UART
-
-• Plotter - can be used to plot incoming numeric data in a chart
-
-• Updates - update device firmware
+// Main Tab-Bar
+"main_tabbar_centralmode" = "Central Mode";
+"main_tabbar_peripheralmode" = "Peripheral Mode";
 
 
 
-Acknowledgements
+// Scanner
+"scanner_title" = "Peripherals";
+"scanner_backbutton" = "Disconnect";
+"scanner_splitmasterbutton" = "Peripheral List";
+"scanner_subtitle" = "Peripherals found";
+"scanner_uartavailable" = "Uart capable";
+"scanner_beacon" = "Beacon";
+"scanner_uribeacon" = "Uri-Beacon";
+"scanner_notconnectable" = "Not Connectable";
+"scanner_peripheraldisconnected" = "Peripheral disconnected";
+"scanner_unnamed" = "<Unknown>";
+"scanner_connect" = "Connect";
+"scanner_connecting" = "Connecting...";
+"scanner_disconnect" = "Disconnect";
+"scanner_discoveringservices" = "Discovering services...";
 
-Portions of this Software may utilize the following copyrighted material, the use of which is hereby acknowledged. 
+"scanner_filter_name_title" = "Name:";
+"scanner_filter_name_hint" = "Filter by name";
+"scanner_filter_rssi_title" = "RSSI >=";
+"scanner_filter_rssi_description_format" = "RSSI >= %ld";
+"scanner_filter_unnamed_title" = "Show unnamed devices";
+"scanner_filter_unnamed_description" = "with name";
+"scanner_filter_uart_title" = "Must have UART Service";
+"scanner_filter_uart_description" = "with UART";
+"scanner_filter_name_matchsection" = "Match";
+"scanner_filter_name_casesection" = "Case sensitivity";
+"scanner_filter_currentfilter_format" = "Filter: %@";
+"scanner_filter_nofilter" = "No filter selected";
+"scanner_filter_rssivalue_format" = "%ld dBM";
 
-IOS-Pods-DFU-Library
-Copyright (c) 2016, Nordic Semiconductor
-All rights reserved.
-https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library
+"scanner_filter_name_settings_contains" = "Name contains";
+"scanner_filter_name_settings_exact" = "Name equals";
+"scanner_filter_name_settings_sensitive" = "Matching case";
+"scanner_filter_name_settings_insensitive" = "Ignoring case";
 
-CocoaMQTT
-Copyright (c) 2014 emqtt
-https://github.com/emqtt/CocoaMQTT
+"scanner_filteredoutinfo_single_format" = "%ld peripheral filtered out";
+"scanner_filteredoutinfo_multiple_format" = "ld peripherals filtered out";
 
-SwiftyXML
-Copyright (c) 2016 ChenYunGui (陈云贵)
-https://github.com/chenyunguiMilook/SwiftyXML
+// Scan Result
+"scanresult_connect" = "Connect";
+"scanresult_disconnect" = "Disconnect";
 
-Charts
-Copyright 2016 Daniel Cohen Gindi & Philipp Jahoda
-https://github.com/danielgindi/Charts
+"scanresult_advertisement_viewrawdata" = "View Raw Data";
+"scanresult_advertisement_rawdata_title" = "Advertising Raw Data";
 
-iOS-Color-Wheel
-https://github.com/justinmeiners/ios-color-wheel
+"scanresult_advertisement_localname" = "Local name";
+"scanresult_advertisement_address" = "Address";
+"scanresult_advertisement_manufacturer" = "Manufacturer";
+"scanresult_advertisement_services" = "Services";
+"scanresult_advertisement_servicesuuids" = "Services UUIDs";
+"scanresult_advertisement_overflowservices" = "Overflow services";
+"scanresult_advertisement_servicesdata" = "Services data";
+"scanresult_advertisement_servicesdata_uuid" = "UUID";
+"scanresult_advertisement_servicesdata_data" = "Data";
+"scanresult_advertisement_servicessolicited" = "Services solicited";
+"scanresult_advertisement_connectable" = "Connectable";
+"scanresult_advertisement_connectable_true" = "true";
+"scanresult_advertisement_connectable_false" = "false";
+"scanresult_advertisement_connectable_unknown" = "unknown";
+"scanresult_advertisement_datapacket" = "Advertising packet data";
+"scanresult_advertisement_txpower" = "TX Power Level";
 
-UIColor-Hex
-Copyright (C) 2011-2014, Tom Adriaenssen
-https://github.com/Inferis/UIColor-Hex
+"scanresult_advertisement_uribeacon_uri" = "Uri";
+"scanresult_advertisement_beacon_uuid" = "UUID";
+"scanresult_advertisement_beacon_major" = "Major";
+"scanresult_advertisement_beacon_minor" = "Minor";
 
-VectorMath
-Copyright (c) 2014 Nick Lockwood. All rights reserved.
-https://github.com/nicklockwood/VectorMath";
 
-// Peripheral List
-"peripherallist_title" = "Peripherals";
-"peripherallist_backbutton" = "Disconnect";
-"peripherallist_splitmasterbutton" = "Peripheral List";
-"peripherallist_subtitle" = "Peripherals found";
-"peripherallist_uartavailable" = "Uart capable";
-"peripherallist_uartunavailable" = "No Uart detected";
-"peripherallist_notconnectable" = "Not Connectable";
-"peripherallist_peripheraldisconnected" = "Peripheral disconnected";
-"peripherallist_unnamed" = "<Unknown>";
-"peripherallist_connect" = "Connect";
-"peripherallist_connecting" = "Connecting...";
-"peripherallist_disconnect" = "Disconnect";
-"periperhallist_discoveringservices" = "Discovering services...";
 
-"peripherallist_filter_name_matchsection" = "Match";
-"peripherallist_filter_name_casesection" = "Case sensitivity";
+
+
+// Multiconnect Management
+"multiconnect_connecteddevices_single_format" = "Connected to %ld device";
+"multiconnect_connecteddevices_multiple_format" = "Connected to %ld devices";
+
+
+// Peripheral Mode
+"peripheral_advertisinginfo" = "Advertising Info";
+"peripheral_localname" = "Local Name";
+"peripheral_services" = "Services";
+"peripheral_characteristics" = "Characteristics";
+
+"peripheral_dis_title" = "Device Information Service";
+"peripheral_uart_title" = "UART";
+
+// Peripheral Dis
+"peripheral_dis_manufacturer" = "Manufacturer";
+"peripheral_dis_modelnumber" = "Model Number";
+"peripheral_dis_serialnumber" = "Serial Number";
+"peripheral_dis_hardwarenumber" = "Hardware Number";
+"peripheral_dis_firmwarerevision" = "Firmware Revision";
+"peripheral_dis_softwarerevision" = "Software Revision";
+
+
 
 // AutoUpdate Firmware
 "autoupdate_title" = "Update available";
@@ -92,8 +119,9 @@ https://github.com/nicklockwood/VectorMath";
 // Peripheral Details
 "peripheraldetails_select" = "Connect to a peripheral from the list on the left";
 "peripheraldetails_connecting" = "Connecting...";
-"periperhaldetails_discoveringservices" = "Discovering services...";
-
+"peripheraldetails_discoveringservices" = "Discovering services...";
+"peripheraldetails_errordiscoveringservices" = "Error discovering peripheral services";
+"peripheraldetails_checkingupdates" = "Checking updates...";
 
 // Peripheral Modules
 "peripheralmodules_sectiontitle_device" = "Device";
@@ -105,9 +133,6 @@ https://github.com/nicklockwood/VectorMath";
 // Info
 "info_tab_title" = "Info";
 "info_navigation_title_format" = "Info - %@";
-
-
-
 
 "info_type_service" = "Service";
 "info_type_characteristic" = "Characteristic";
@@ -341,8 +366,73 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "thermalcamera_navigation_title_format" = "Thermal Camera - %@";
 
 // Common
-"dialog_ok" = "Ok";
+"dialog_ok" = "OK";
 "dialog_cancel" = "Cancel";
 "dialog_error" = "Error";
 "dialog_notice" = "Notice";
 "dialog_dontshowagain" = "Don't show again";
+
+
+
+
+// About
+"about_text" = "A detailed guide to using this app can be found here:
+https://learn.adafruit.com/bluefruit-le-connect-for-ios
+
+Configure your Bluefruit LE hardware using instructions found here:
+http://www.adafruit.com/bluefruitle
+
+Drag the table down and release to clear the list of found peripherals and begin scanning
+
+Tap a row in the table to view a peripheral's advertisement data.
+
+Each peripheral's Received Signal Strength (RSSI) is displayed to the left of its name.
+
+Tap a row's connect button to connect the corresponding device in one of the available modes:
+
+• Info - displays peripheral services & characteristics
+
+• UART - basic terminal, send & receive data 
+
+• Pin I/O - uses Bluefruit's UART to control Arduino running BLEFirmata sketch:
+https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakout/software-bluefruit-firmata
+
+• Controller - streams sensor data from your iOS device to Bluefruit LE over UART
+
+• Plotter - can be used to plot incoming numeric data in a chart
+
+• Updates - update device firmware
+
+
+
+Acknowledgements
+
+Portions of this Software may utilize the following copyrighted material, the use of which is hereby acknowledged. 
+
+IOS-Pods-DFU-Library
+Copyright (c) 2016, Nordic Semiconductor
+All rights reserved.
+https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library
+
+CocoaMQTT
+Copyright (c) 2014 emqtt
+https://github.com/emqtt/CocoaMQTT
+
+SwiftyXML
+Copyright (c) 2016 ChenYunGui (陈云贵)
+https://github.com/chenyunguiMilook/SwiftyXML
+
+Charts
+Copyright 2016 Daniel Cohen Gindi & Philipp Jahoda
+https://github.com/danielgindi/Charts
+
+iOS-Color-Wheel
+https://github.com/justinmeiners/ios-color-wheel
+
+UIColor-Hex
+Copyright (C) 2011-2014, Tom Adriaenssen
+https://github.com/Inferis/UIColor-Hex
+
+VectorMath
+Copyright (c) 2014 Nick Lockwood. All rights reserved.
+https://github.com/nicklockwood/VectorMath";

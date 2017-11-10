@@ -126,7 +126,7 @@ class PeripheralListViewController: NSViewController {
                 
                 let localizationManager = LocalizationManager.sharedInstance
                 let alert = NSAlert()
-                alert.messageText = localizationManager.localizedString("peripherallist_peripheraldisconnected")
+                alert.messageText = localizationManager.localizedString("scanner_peripheraldisconnected")
                 alert.addButton(withTitle: localizationManager.localizedString("dialog_ok"))
                 alert.alertStyle = .warning
                 alert.beginSheetModal(for: self.view.window!, completionHandler: nil)
@@ -231,44 +231,43 @@ class PeripheralListViewController: NSViewController {
         filterRssiValueLabel.stringValue = "\(-filtersRssiSlider.integerValue) dBM"
     }
     
-    
     // MARK: - Advertising Packet
     fileprivate func showAdverisingPacketData(for blePeripheral: BlePeripheral) {
         let localizationManager = LocalizationManager.sharedInstance
         var advertisementString = ""
 
         if let localName = blePeripheral.advertisement.localName {
-            advertisementString += "Local name: \(localName)\n"
+            advertisementString += "\(localizationManager.localizedString("scanresult_advertisement_localname"): \(localName)\n"
         }
         if let manufacturerString = blePeripheral.advertisement.manufacturerString {
-            advertisementString += "Manufacturer: \(manufacturerString)\n"
+            advertisementString += "\(localizationManager.localizedString("scanresult_advertisement_manufacturer"): \(manufacturerString)\n"
         }
         if let services = blePeripheral.advertisement.services, !services.isEmpty {
-            advertisementString += "Services UUIDs:\n"
+            advertisementString += "\(localizationManager.localizedString("scanresult_advertisement_servicesuuids"):\n"
             advertisementString += servicesDescription(services)
         }
         if let servicesOverflow =  blePeripheral.advertisement.servicesOverflow, !servicesOverflow.isEmpty {
-            advertisementString += "Overflow services:\n"
+            advertisementString += "\(localizationManager.localizedString("scanresult_advertisement_overflowservices"):\n"
             advertisementString += servicesDescription(servicesOverflow)
         }
         if let serviceData =  blePeripheral.advertisement.serviceData, !serviceData.isEmpty {
-            advertisementString += "Services Data:\n"
+            advertisementString += "\(localizationManager.localizedString("scanresult_advertisement_servicesdata"):\n"
             for (cbuuid, data) in serviceData {
-                advertisementString += "\tUUID: \(cbuuid.uuidString) Data: \(hexDescription(data: data))\n"
+                advertisementString += "\t\(localizationManager.localizedString("scanresult_advertisement_servicesdata_uuid"): \(cbuuid.uuidString) \(localizationManager.localizedString("scanresult_advertisement_servicesdata_data"): \(hexDescription(data: data))\n"
             }
         }
         if let servicesSolicited = blePeripheral.advertisement.servicesSolicited, !servicesSolicited.isEmpty {
-            advertisementString += "Services solicited:\n"
+            advertisementString += "\(localizationManager.localizedString("scanresult_advertisement_servicessolicited"):\n"
             advertisementString += servicesDescription(servicesSolicited)
         }
         if let txPower = blePeripheral.advertisement.txPower {
-            advertisementString += "TX Power Level: \(txPower)\n"
+            advertisementString += "\(localizationManager.localizedString("scanresult_advertisement_txpower"): \(txPower)\n"
         }
         let isConnectable = blePeripheral.advertisement.isConnectable
-        advertisementString += "Connectable: \(isConnectable != nil ? (isConnectable! ? "true":"false") : "unknown")\n"
+        advertisementString += "\(localizationManager.localizedString("scanresult_advertisement_connectable"): \(isConnectable != nil ? (isConnectable! ? \(localizationManager.localizedString("scanresult_advertisement_connectable_true"):\(localizationManager.localizedString("scanresult_advertisement_connectable_false")) : \(localizationManager.localizedString("scanresult_advertisement_connectable_unknown"))\n"
         
         let alert = NSAlert()
-        alert.messageText = "Advertising packet data"
+        alert.messageText = localizationManager.localizedString("scanresult_advertisement_datapacket")
         alert.informativeText = advertisementString
         alert.addButton(withTitle: localizationManager.localizedString("dialog_ok"))
         alert.alertStyle = .warning
@@ -386,7 +385,7 @@ extension PeripheralListViewController: NSTableViewDelegate {
         let blePeripheral = peripheralList.filteredPeripherals(forceUpdate: false)[row]
 
         let localizationManager = LocalizationManager.sharedInstance
-        let name = blePeripheral.name != nil ? blePeripheral.name! : localizationManager.localizedString("peripherallist_unnamed")
+        let name = blePeripheral.name != nil ? blePeripheral.name! : localizationManager.localizedString("scanner_unnamed")
         cell.titleTextField.stringValue = name
         
         let isUartCapable = blePeripheral.isUartAdvertised()

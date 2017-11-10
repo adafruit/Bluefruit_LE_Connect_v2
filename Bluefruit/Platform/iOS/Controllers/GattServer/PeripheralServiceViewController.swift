@@ -9,7 +9,6 @@
 import UIKit
 
 class PeripheralServiceViewController: UIViewController {
-
     
     // Data
     private var emptyViewController: EmptyDetailsViewController?
@@ -28,7 +27,6 @@ class PeripheralServiceViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
     // MARK: -
     func showEmpty(_ showEmpty: Bool) {
@@ -64,8 +62,4 @@ class PeripheralServiceViewController: UIViewController {
             }
         }
     }
-
-   
-    
-
 }

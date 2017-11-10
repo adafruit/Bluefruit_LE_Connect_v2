@@ -17,7 +17,7 @@ class UartModeViewController: UartBaseViewController {
         
         // Title
         let localizationManager = LocalizationManager.sharedInstance
-        let name = blePeripheral?.name ?? localizationManager.localizedString("peripherallist_unnamed")
+        let name = blePeripheral?.name ?? localizationManager.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("uart_navigation_title_format"), arguments: [name])  : localizationManager.localizedString("uart_tab_title")
         
         // Init Uart

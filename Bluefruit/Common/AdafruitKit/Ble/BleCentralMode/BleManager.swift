@@ -258,8 +258,8 @@ class BleManager: NSObject {
             }
             peripheralsFound[peripheral.identifier] = existingPeripheral
         } else {      // New peripheral found
-            let peripheral = BlePeripheral(peripheral: peripheral, advertisementData: advertisementData, rssi: rssi)
-            peripheralsFound[peripheral.identifier] = peripheral
+            let blePeripheral = BlePeripheral(peripheral: peripheral, advertisementData: advertisementData, rssi: rssi)
+            peripheralsFound[peripheral.identifier] = blePeripheral
         }
     }
 

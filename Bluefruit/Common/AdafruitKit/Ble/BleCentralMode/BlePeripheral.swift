@@ -141,6 +141,7 @@ class BlePeripheral: NSObject {
     // Profiling
     //fileprivate var profileStartTime: CFTimeInterval = 0
 
+    // MARK: - Init
     init(peripheral: CBPeripheral, advertisementData: [String: Any]?, rssi: Int?) {
         self.peripheral = peripheral
         self.advertisement = Advertisement(advertisementData: advertisementData)

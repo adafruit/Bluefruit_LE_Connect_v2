@@ -12,7 +12,6 @@ import CoreBluetooth
 class ScannerViewController: ModeTabViewController {
     // Config
     // private static let kServicesToScan = [BlePeripheral.kUartServiceUUID]
-
     static let kFiltersPanelClosedHeight: CGFloat = 44
     static let kFiltersPanelOpenHeight: CGFloat = 226
 
@@ -27,15 +26,19 @@ class ScannerViewController: ModeTabViewController {
     @IBOutlet weak var filtersTitleLabel: UILabel!
     @IBOutlet weak var filtersClearButton: UIButton!
     @IBOutlet weak var filtersNameTextField: UITextField!
+    @IBOutlet weak var filtersRssiLabel: UILabel!
     @IBOutlet weak var filtersRssiSlider: UISlider!
     @IBOutlet weak var filterRssiValueLabel: UILabel!
+    @IBOutlet weak var filtersUnnamedLabel: UILabel!
     @IBOutlet weak var filtersUnnamedSwitch: UISwitch!
+    @IBOutlet weak var filtersUartLabel: UILabel!
     @IBOutlet weak var filtersUartSwitch: UISwitch!
 
     @IBOutlet weak var multiConnectPanelView: UIView!
     @IBOutlet weak var multiConnectDisclosureButton: UIButton!
     @IBOutlet weak var multiConnectPanelViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var multiConnectSwitch: UISwitch!
+    @IBOutlet weak var multiConnectTitleLabel: UILabel!
     @IBOutlet weak var multiConnectDetailsLabel: UILabel!
     @IBOutlet weak var multiConnectShowButton: UIButton!
 
@@ -56,9 +59,6 @@ class ScannerViewController: ModeTabViewController {
     fileprivate var isBaseTableScrolling = false
     fileprivate var isScannerTableWaitingForReload = false
     fileprivate var isBaseTableAnimating = false
-
-    
-
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -68,12 +68,12 @@ class ScannerViewController: ModeTabViewController {
         peripheralList = PeripheralList()                  // Initialize here to wait for Preferences.registerDefaults to be executed
 
         // Setup filters
-        filtersNameTextField.leftViewMode = .always
+       filtersNameTextField.leftViewMode = .always
         let searchImageView = UIImageView(image: UIImage(named: "ic_search_18pt"))
         searchImageView.contentMode = UIViewContentMode.right
         searchImageView.frame = CGRect(x: 0, y: 0, width: searchImageView.image!.size.width + 6.0, height: searchImageView.image!.size.height)
         filtersNameTextField.leftView = searchImageView
-
+ 
         // Setup table view
         baseTableView.estimatedRowHeight = 66
         baseTableView.rowHeight = UITableViewAutomaticDimension
@@ -86,12 +86,22 @@ class ScannerViewController: ModeTabViewController {
         // Setup filters
         filtersRssiSlider.minimumValue = Float(PeripheralList.kMinRssiValue)
         filtersRssiSlider.maximumValue = Float(PeripheralList.kMaxRssiValue)
-
+        
         // Setup multiconnect
         multiConnectShowButton.setBackgroundImage(UIImage(color: view.tintColor), for: .normal)
         multiConnectShowButton.setBackgroundImage(UIImage(color: UIColor.clear), for: .disabled)
-
+        
         openMultiConnectPanel(isOpen: false, animated: false)
+        
+        // Localization
+        let localizationManager = LocalizationManager.sharedInstance
+        filtersNameTextField.placeholder = localizationManager.localizedString("scanner_filter_name_hint")
+        filtersRssiLabel.text = localizationManager.localizedString("scanner_filter_rssi_title")
+        filtersUnnamedLabel.text = localizationManager.localizedString("scanner_filter_unnamed_title")
+        filtersUartLabel.text = localizationManager.localizedString("scanner_filter_uart_title")
+        multiConnectTitleLabel.text = localizationManager.localizedString("multiconnect_title")
+        multiConnectShowButton.setTitle(localizationManager.localizedString("multiconnect_start_action"), for: .normal)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -182,27 +192,28 @@ class ScannerViewController: ModeTabViewController {
         guard let state = BleManager.sharedInstance.centralManager?.state else { return }
 
         // Check if there is any error
-        var errorMessage: String?
+        var errorMessageId: String?
         switch state {
         case .unsupported:
-            errorMessage = "This device doesn't support Bluetooth Low Energy"
+            errorMessageId = "bluetooth_unsupported"
         case .unauthorized:
-            errorMessage = "This app is not authorized to use the Bluetooth Low Energy"
+            errorMessageId = "bluetooth_notauthorized"
         case .poweredOff:
-            errorMessage = "Bluetooth is currently powered off"
+            errorMessageId = "bluetooth_poweredoff"
         default:
-            errorMessage = nil
+            errorMessageId = nil
         }
 
         // Show alert if error found
-        if let errorMessage = errorMessage {
+        if let errorMessageId = errorMessageId {
+            let localizationManager = LocalizationManager.sharedInstance
+            let errorMessage = localizationManager.localizedString(errorMessageId)
             DLog("Error: \(errorMessage)")
 
             // Reload peripherals
             refreshPeripherals()
 
             // Show error
-            let localizationManager = LocalizationManager.sharedInstance
             let alertController = UIAlertController(title: localizationManager.localizedString("dialog_error"), message: errorMessage, preferredStyle: .alert)
             let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: { (_) -> Void in
                 if let navController = self.splitViewController?.viewControllers[0] as? UINavigationController {
@@ -230,7 +241,7 @@ class ScannerViewController: ModeTabViewController {
 
     private func willConnectToPeripheral(notification: Notification) {
         guard let peripheral = BleManager.sharedInstance.peripheral(from: notification) else { return }
-        presentInfoDialog(title: LocalizationManager.sharedInstance.localizedString("peripherallist_connecting"), peripheral: peripheral)
+        presentInfoDialog(title: LocalizationManager.sharedInstance.localizedString("scanner_connecting"), peripheral: peripheral)
     }
 
     private func didConnectToPeripheral(notification: Notification) {
@@ -242,7 +253,7 @@ class ScannerViewController: ModeTabViewController {
         }
   
         // Discover services
-        infoAlertController?.message = LocalizationManager.sharedInstance.localizedString("periperhallist_discoveringservices")
+        infoAlertController?.message = LocalizationManager.sharedInstance.localizedString("scanner_discoveringservices")
         discoverServices(peripheral: selectedPeripheral)
     }
 
@@ -291,9 +302,6 @@ class ScannerViewController: ModeTabViewController {
             WatchSessionManager.sharedInstance.updateApplicationContext(mode: .connected)
         }
 
-        // Segue
-        //performSegue(withIdentifier: "showDetailSegue", sender: self)
-
         detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralModulesNavigationController")
         if let peripheralModulesNavigationController = detailRootController as? UINavigationController, let peripheralModulesViewController = peripheralModulesNavigationController.topViewController as? PeripheralModulesViewController {
             peripheralModulesViewController.blePeripheral = selectedPeripheral
@@ -306,9 +314,6 @@ class ScannerViewController: ModeTabViewController {
         if !isMultiConnectEnabled {
             WatchSessionManager.sharedInstance.updateApplicationContext(mode: .connected)
         }
-
-        // Segue
-        //performSegue(withIdentifier: "showUpdateSegue", sender: self)
         
         detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralModulesNavigationController")
         if let peripheralModulesNavigationController = detailRootController as? UINavigationController, let peripheralModulesViewController = peripheralModulesNavigationController.topViewController as? PeripheralModulesViewController {
@@ -323,9 +328,6 @@ class ScannerViewController: ModeTabViewController {
     }
 
     fileprivate func showMultiUartMode() {
-        // Segue
-        //performSegue(withIdentifier: "showMultiUartSegue", sender: self)
-        
         detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralModulesNavigationController")
         if let peripheralModulesNavigationController = detailRootController as? UINavigationController, let peripheralModulesViewController = peripheralModulesNavigationController.topViewController as? PeripheralModulesViewController {
             peripheralModulesViewController.blePeripheral = nil
@@ -340,31 +342,7 @@ class ScannerViewController: ModeTabViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        /*
-        if segue.identifier == "showDetailSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {     // Note: Not used anymore. Remove when the change is permanent
-            peripheralDetailsViewController.blePeripheral = selectedPeripheral
-        } else if segue.identifier == "showDetailSegue", let peripheralModulesViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralModulesViewController {
-            peripheralModulesViewController.blePeripheral = selectedPeripheral
-        } else if segue.identifier == "showUpdateSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {       // Note: Not used anymore. Remove when the change is permanent
-            peripheralDetailsViewController.blePeripheral = selectedPeripheral
-            peripheralDetailsViewController.startingController = .update
-        } else if segue.identifier == "showUpdateSegue", let detailsNavigationController = segue.destination as? UINavigationController, let peripheralModulesViewController = detailsNavigationController.topViewController as? PeripheralModulesViewController {
-            peripheralModulesViewController.blePeripheral = selectedPeripheral
-            //peripheralModulesViewController.startingController = .update
-
-            if let dfuViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuModeViewController") as? DfuModeViewController {
-                dfuViewController.blePeripheral = selectedPeripheral
-                detailsNavigationController.viewControllers = [peripheralModulesViewController, dfuViewController]
-
-            }
-        } else if segue.identifier == "showMultiUartSegue", let peripheralDetailsViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralDetailsViewController {   // Note: Not used anymore. Remove when the change is permanent
-            peripheralDetailsViewController.blePeripheral = nil
-            peripheralDetailsViewController.startingController = .multiUart
-        } else if segue.identifier == "showMultiUartSegue", let peripheralModulesViewController = (segue.destination as? UINavigationController)?.topViewController as? PeripheralModulesViewController {
-            peripheralModulesViewController.blePeripheral = nil
-            peripheralModulesViewController.startingController = .multiUart
-
-        } else */if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController {
+        if segue.identifier == "filterNameSettingsSegue", let controller = segue.destination.popoverPresentationController {
             controller.delegate = self
 
             if let sourceView = sender as? UIView {
@@ -386,13 +364,14 @@ class ScannerViewController: ModeTabViewController {
 
         peripheral.discover(serviceUuids: nil) { [weak self] error in
             guard let context = self else { return }
-
+            let localizationManager = LocalizationManager.sharedInstance
+            
             DispatchQueue.main.async { [unowned context] in
                 guard error == nil else {
                     DLog("Error initializing peripheral")
                     context.dismiss(animated: true, completion: { [weak self] () -> Void in
                         if let context = self {
-                            showErrorAlert(from: context, title: "Error", message: "Error discovering peripheral services")
+                            showErrorAlert(from: context, title: localizationManager.localizedString("dialog_error"), message: localizationManager.localizedString("peripheraldetails_errordiscoveringservices"))
                             BleManager.sharedInstance.disconnect(from: peripheral)
                         }
                     })
@@ -404,7 +383,7 @@ class ScannerViewController: ModeTabViewController {
                     }
                 } else {
                     // Check updates if needed
-                    context.infoAlertController?.message = "Checking updates..."
+                    context.infoAlertController?.message = localizationManager.localizedString("peripheraldetails_checkingupdates")
                     context.startUpdatesCheck(peripheral: peripheral)
                 }
             }
@@ -453,7 +432,8 @@ class ScannerViewController: ModeTabViewController {
 
     private func updateFiltersTitle() {
         let filtersTitle = peripheralList.filtersDescription()
-        filtersTitleLabel.text = filtersTitle != nil ? "Filter: \(filtersTitle!)" : "No filter selected"
+        let localizationManager = LocalizationManager.sharedInstance
+        filtersTitleLabel.text = filtersTitle != nil ? String(format:localizationManager.localizedString("scanner_filter_currentfilter_format"), filtersTitle!) : localizationManager.localizedString("scanner_filter_nofilter")
 
         filtersClearButton.isHidden = !peripheralList.isAnyFilterEnabled()
     }
@@ -469,7 +449,7 @@ class ScannerViewController: ModeTabViewController {
     }
 
     private func updateRssiValueLabel() {
-        filterRssiValueLabel.text = "\(Int(-filtersRssiSlider.value)) dBM"
+        filterRssiValueLabel.text = String(format: LocalizationManager.sharedInstance.localizedString("scanner_filter_rssivalue_format"), Int(-filtersRssiSlider.value))
     }
 
     // MARK: - MultiConnect
@@ -548,7 +528,6 @@ class ScannerViewController: ModeTabViewController {
     @IBAction func onClickExpandMultiConnect(_ sender: Any) {
         enabledMulticonnect(enable: !isMultiConnectEnabled)
         multiConnectSwitch.isOn = isMultiConnectEnabled
-        //openMultiConnectPanel(isOpen: !Preferences.scanMultiConnectIsPanelOpen, animated: true)
     }
 
     @IBAction func onMultiConnectShow(_ sender: Any) {
@@ -568,10 +547,8 @@ class ScannerViewController: ModeTabViewController {
                 for connectedPeripheral in connectedPeripherals {
                     BleManager.sharedInstance.disconnect(from: connectedPeripheral)
                 }
-               // BleManager.sharedInstance.refreshPeripherals()      // Force refresh because they wont reappear. Check why is this happening
             }
         }
-
     }
 
     // MARK: - Connections
@@ -621,9 +598,11 @@ class ScannerViewController: ModeTabViewController {
             }, completion: nil)
         }
 
+        let localizationManager = LocalizationManager.sharedInstance
+        
         filteredPeripheralsCountLabel.isHidden = isFilteredPeripheralCountLabelHidden
         
-        filteredPeripheralsCountLabel.text = String(format: numPeripheralsFilteredOut == 1 ? "%ld peripheral filtered out":"%ld peripherals filtered out", numPeripheralsFilteredOut)
+        filteredPeripheralsCountLabel.text = String(format:  localizationManager.localizedString(numPeripheralsFilteredOut == 1 ? "scanner_filteredoutinfo_single_format":"scanner_filteredoutinfo_multiple_format"), numPeripheralsFilteredOut)
         
         // Select the previously selected row
         if let selectedPeripheral = selectedPeripheral, let selectedRow = filteredPeripherals.index(of: selectedPeripheral) {
@@ -633,7 +612,7 @@ class ScannerViewController: ModeTabViewController {
 
     private func updateMultiConnectUI() {
         let numConnectedPeripherals = BleManager.sharedInstance.connectedPeripherals().count
-        multiConnectDetailsLabel.text = "Connected to \(numConnectedPeripherals) \(numConnectedPeripherals == 1 ? "device":"devices")"
+        multiConnectDetailsLabel.text = String(format:LocalizationManager.sharedInstance.localizedString(numConnectedPeripherals == 1 ? "multiconnect_connecteddevices_single_format":"multiconnect_connecteddevices_multiple_format"), numConnectedPeripherals)
         multiConnectShowButton.isEnabled = numConnectedPeripherals >= 2
     }
 
@@ -643,7 +622,7 @@ class ScannerViewController: ModeTabViewController {
         }
         
         infoAlertController = UIAlertController(title: nil, message: title, preferredStyle: .alert)
-        infoAlertController!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) -> Void in
+        infoAlertController!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
             BleManager.sharedInstance.disconnect(from: peripheral)
             //BleManager.sharedInstance.refreshPeripherals()      // Force refresh because they wont reappear. Check why is this happening
         }))
@@ -659,7 +638,6 @@ class ScannerViewController: ModeTabViewController {
         infoAlertController?.dismiss(animated: true, completion: completion)
         infoAlertController = nil
     }
-
 }
 
 // MARK: - UITableViewDataSource
@@ -683,15 +661,15 @@ extension ScannerViewController: UITableViewDataSource {
 
         // Fill data
         let localizationManager = LocalizationManager.sharedInstance
-        peripheralCell.titleLabel.text = peripheral.name ?? localizationManager.localizedString("peripherallist_unnamed")
+        peripheralCell.titleLabel.text = peripheral.name ?? localizationManager.localizedString("scanner_unnamed")
         peripheralCell.rssiImageView.image = RssiUI.signalImage(for: peripheral.rssi)
 
         var subtitle: String? = nil
         if peripheral.advertisement.isConnectable == false {
-            subtitle = localizationManager.localizedString("peripherallist_notconnectable")
+            subtitle = localizationManager.localizedString("scanner_notconnectable")
         }
         else if peripheral.isUartAdvertised() {
-            subtitle = localizationManager.localizedString("peripherallist_uartavailable")
+            subtitle = localizationManager.localizedString("scanner_uartavailable")
         }
         peripheralCell.subtitleLabel.text = subtitle
 
