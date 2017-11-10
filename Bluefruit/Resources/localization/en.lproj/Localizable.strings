@@ -7,11 +7,15 @@
 "bluetooth_notauthorized" = "This app is not authorized to use the Bluetooth Low Energy";
 "bluetooth_poweredoff" = "Bluetooth is currently powered off";
 
+"bluetooth_locationpermission_disabled_text" = "Location Services should be enabled to scan bluetooth peripherals.\nPlease, go to settings and enable it to start scanning peripherals";
+"bluetooth_locationpermission_title" = "This app needs location access";
+"bluetooth_locationpermission_text" = "Please grant location access so this app can scan for Bluetooth peripherals";
+"bluetooth_locationpermission_notavailable_title" = "Bluetooth Scanning not available";
+"bluetooth_locationpermission_notavailable_text" = "Since location access has not been granted, the app will not be able to scan for Bluetooth peripherals";
+
 // Main Tab-Bar
 "main_tabbar_centralmode" = "Central Mode";
 "main_tabbar_peripheralmode" = "Peripheral Mode";
-
-
 
 // Scanner
 "scanner_title" = "Peripherals";
@@ -28,6 +32,7 @@
 "scanner_connecting" = "Connecting...";
 "scanner_disconnect" = "Disconnect";
 "scanner_discoveringservices" = "Discovering services...";
+"scanner_discoveringservices_failed" = "Error discovering services";
 
 "scanner_filter_name_title" = "Name:";
 "scanner_filter_name_hint" = "Filter by name";
@@ -85,9 +90,10 @@
 
 
 // Multiconnect Management
+"multiconnect_title" = "Multiple UART mode";
 "multiconnect_connecteddevices_single_format" = "Connected to %ld device";
 "multiconnect_connecteddevices_multiple_format" = "Connected to %ld devices";
-
+"multiconnect_start_action" = "Start";
 
 // Peripheral Mode
 "peripheral_advertisinginfo" = "Advertising Info";
@@ -95,6 +101,7 @@
 "peripheral_services" = "Services";
 "peripheral_characteristics" = "Characteristics";
 
+"peripheral_unknown_title" = "Undefined Peripheral";
 "peripheral_dis_title" = "Device Information Service";
 "peripheral_uart_title" = "UART";
 

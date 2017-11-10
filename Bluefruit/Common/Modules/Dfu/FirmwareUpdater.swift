@@ -55,12 +55,12 @@ class FirmwareUpdater {
     static let kFirmwareRevisionCharacteristic = "00002A26-0000-1000-8000-00805F9B34FB"
 
     // Data
-    static let kDisServiceUUID =  CBUUID(string: FirmwareUpdater.kDeviceInformationService)
-    static let kDfuServiceUUID =  CBUUID(string: FirmwareUpdater.kNordicDeviceFirmwareUpdateService)
-    static let kManufacturerCharacteristicUUID =  CBUUID(string: FirmwareUpdater.kManufacturerNameCharacteristic)
-    static let kModelNumberCharacteristicUUID =  CBUUID(string: FirmwareUpdater.kModelNumberCharacteristic)
-    static let kSoftwareRevisionCharacteristicUUID =  CBUUID(string: FirmwareUpdater.kSoftwareRevisionCharacteristic)
-    static let kFirmwareRevisionCharacteristicUUID =  CBUUID(string: FirmwareUpdater.kFirmwareRevisionCharacteristic)
+    static let kDisServiceUUID = CBUUID(string: FirmwareUpdater.kDeviceInformationService)
+    static let kDfuServiceUUID = CBUUID(string: FirmwareUpdater.kNordicDeviceFirmwareUpdateService)
+    static let kManufacturerCharacteristicUUID = CBUUID(string: FirmwareUpdater.kManufacturerNameCharacteristic)
+    static let kModelNumberCharacteristicUUID = CBUUID(string: FirmwareUpdater.kModelNumberCharacteristic)
+    static let kSoftwareRevisionCharacteristicUUID = CBUUID(string: FirmwareUpdater.kSoftwareRevisionCharacteristic)
+    static let kFirmwareRevisionCharacteristicUUID = CBUUID(string: FirmwareUpdater.kFirmwareRevisionCharacteristic)
 
     static func refreshSoftwareUpdatesDatabase(url: URL?, completion: ((Bool) -> Void)?) {
         guard let url = url else { return }
