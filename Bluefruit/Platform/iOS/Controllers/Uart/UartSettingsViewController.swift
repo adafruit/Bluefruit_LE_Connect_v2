@@ -102,7 +102,7 @@ extension UartSettingsViewController: UITableViewDataSource {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for:indexPath)
 
-        cell.backgroundColor = UIColor(hex: 0xe2e1e0)
+        cell.backgroundColor = .groupTableViewBackground // UIColor(hex: 0xe2e1e0)
         return cell
     }
 

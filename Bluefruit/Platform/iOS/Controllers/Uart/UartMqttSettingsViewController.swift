@@ -116,7 +116,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
             pickerCell.pickerView.dataSource = self
             pickerCell.pickerView.delegate = self
 
-            pickerCell.backgroundColor = UIColor(hex: 0xe2e1e0)
+            pickerCell.backgroundColor = .groupTableViewBackground //UIColor(hex: 0xe2e1e0)
             cell = pickerCell
         } else if section == .status {
             let statusCell = tableView.dequeueReusableCell(withIdentifier: "StatusCell", for: indexPath) as! MqttSettingsStatusCell
@@ -236,7 +236,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 valueTextField.tag = tagFromIndexPath(indexPath, scale:10)
             }
 
-            editValueCell.backgroundColor = UIColor(hex: 0xe2e1e0)
+            editValueCell.backgroundColor = .groupTableViewBackground//UIColor(hex: 0xe2e1e0)
             cell = editValueCell
         }
         return cell
@@ -400,7 +400,7 @@ extension UartMqttSettingsViewController: UIPickerViewDataSource {
         return pickerViewType == .action ? 2:3
     }
 
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch pickerViewType {
         case .qos:
             return titleForQos(MqttManager.MqttQos(rawValue: row)!)
