@@ -182,9 +182,9 @@
 "uart_settings_dataMode_title" = "Data Mode";
 "uart_settings_dataMode_hex" = "Hex";
 "uart_settings_dataMode_ascii" = "Ascii";
-"uart_settings_eol_title" = "Send EoL";
 "uart_settings_echo_title" = "Show Echo";
-
+"uart_settings_eol_title" = "Send EoL";
+"uart_settings_eolCharacters_title" = "EoL Characters";
 
 "uart_mqtt_settings_title" = "MQTT Settings";
 "uart_mqtt_settings_group_status" = "Status";

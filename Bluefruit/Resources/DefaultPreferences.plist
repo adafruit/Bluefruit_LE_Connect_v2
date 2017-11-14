@@ -42,6 +42,8 @@
 	<true/>
 	<key>UartShowInvisibleChars</key>
 	<false/>
+	<key>UartEolCharactersId</key>
+	<integer>0</integer>
 	<key>NeopixelIsSketchTooltipEnabledKey</key>
 	<true/>
 	<key>MagnetometerGapTarget</key>

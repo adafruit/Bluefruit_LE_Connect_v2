@@ -44,6 +44,7 @@ class Preferences {
     fileprivate static let uartIsEchoEnabledKey = "UartIsEchoEnabled"
     fileprivate static let uartIsAutomaticEolEnabledKey = "UartIsAutomaticEolEnabled"
     fileprivate static let uartShowInvisibleCharsKey = "UartShowInvisibleChars"
+    fileprivate static let uartEolCharactersIdKey = "UartEolCharactersId"
 
     // Neopixel
     fileprivate static let neopixelIsSketchTooltipEnabledKey = "NeopixelIsSketchTooltipEnabledKey"
@@ -252,6 +253,26 @@ class Preferences {
         set {
             setBoolPreference(Preferences.uartIsAutomaticEolEnabledKey, newValue: newValue)
         }
+    }
+    
+    static var uartEolCharactersId: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: Preferences.uartEolCharactersIdKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Preferences.uartEolCharactersIdKey)
+        }
+    }
+    
+    static var uartEolCharacters: String {
+        var uartEolCharacters: String
+        switch Preferences.uartEolCharactersId {
+        case 1: uartEolCharacters = "\r"
+        case 2: uartEolCharacters = "\n\r"
+        case 3: uartEolCharacters = "\r\n"
+        default: uartEolCharacters = "\n"
+        }
+        return uartEolCharacters
     }
 
     // MARK: - Neopixels

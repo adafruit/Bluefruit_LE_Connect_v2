@@ -409,7 +409,7 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <view key="tableFooterView" contentMode="scaleToFill" id="6qP-k8-qyU" userLabel="Footer">
-                                    <rect key="frame" x="0.0" y="205.5" width="375" height="1"/>
+                                    <rect key="frame" x="0.0" y="349.5" width="375" height="1"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 </view>
@@ -495,6 +495,79 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SelectorCell" id="gii-0q-f47" customClass="UartSettingTableViewCell" customModule="iOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="187.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="gii-0q-f47" id="si4-8b-kZs">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="reb-7C-Gh5">
+                                                    <rect key="frame" x="15" y="11" width="44" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eQV-Ln-vFF">
+                                                    <rect key="frame" x="63" y="14" width="297" height="16"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                                    <state key="normal" title="At most once"/>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="reb-7C-Gh5" firstAttribute="leading" secondItem="si4-8b-kZs" secondAttribute="leadingMargin" id="Ac7-oJ-BKP"/>
+                                                <constraint firstItem="eQV-Ln-vFF" firstAttribute="leading" secondItem="reb-7C-Gh5" secondAttribute="trailing" constant="4" id="Mhc-Fc-mK9"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="eQV-Ln-vFF" secondAttribute="trailing" id="cdX-PH-7jL"/>
+                                                <constraint firstItem="eQV-Ln-vFF" firstAttribute="centerY" secondItem="reb-7C-Gh5" secondAttribute="centerY" id="dWM-oN-KuL"/>
+                                                <constraint firstItem="reb-7C-Gh5" firstAttribute="centerY" secondItem="si4-8b-kZs" secondAttribute="centerY" id="i7t-fg-tfk"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="reb-7C-Gh5" id="E0D-nQ-eYA"/>
+                                            <outlet property="typeButton" destination="eQV-Ln-vFF" id="iYG-Zs-w3r"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PickerCell" rowHeight="100" id="CLK-eH-v1V" customClass="MqttSettingPickerCell" customModule="iOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="231.5" width="375" height="100"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="CLK-eH-v1V" id="SZy-zX-n4W">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J5Z-kU-ZPw">
+                                                    <rect key="frame" x="15" y="11" width="345" height="78"/>
+                                                    <subviews>
+                                                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ww7-jc-ldD">
+                                                            <rect key="frame" x="13" y="0.0" width="320" height="78"/>
+                                                        </pickerView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="ww7-jc-ldD" secondAttribute="bottom" id="9zp-lG-hFH"/>
+                                                        <constraint firstAttribute="trailing" secondItem="ww7-jc-ldD" secondAttribute="trailing" id="LFw-h4-vmS"/>
+                                                        <constraint firstItem="ww7-jc-ldD" firstAttribute="top" secondItem="J5Z-kU-ZPw" secondAttribute="top" id="NTi-Va-SnQ"/>
+                                                        <constraint firstItem="ww7-jc-ldD" firstAttribute="leading" secondItem="J5Z-kU-ZPw" secondAttribute="leading" id="hiT-B6-5CA"/>
+                                                        <constraint firstItem="ww7-jc-ldD" firstAttribute="centerX" secondItem="J5Z-kU-ZPw" secondAttribute="centerX" id="jSN-bx-biG"/>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="LFw-h4-vmS"/>
+                                                            <exclude reference="hiT-B6-5CA"/>
+                                                        </mask>
+                                                    </variation>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="J5Z-kU-ZPw" secondAttribute="bottom" id="AsZ-y1-YeW"/>
+                                                <constraint firstItem="J5Z-kU-ZPw" firstAttribute="leading" secondItem="SZy-zX-n4W" secondAttribute="leadingMargin" id="LNH-EK-tEO"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="J5Z-kU-ZPw" secondAttribute="trailing" id="Xb4-9f-xc6"/>
+                                                <constraint firstItem="J5Z-kU-ZPw" firstAttribute="top" secondItem="SZy-zX-n4W" secondAttribute="topMargin" id="huM-IF-1GX"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="pickerView" destination="ww7-jc-ldD" id="V4g-l5-QbO"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <sections/>

@@ -319,7 +319,7 @@ class UartBaseViewController: PeripheralModeViewController {
         
         // Eol
         if Preferences.uartIsAutomaticEolEnabled {
-            newText += "\n"
+            newText += Preferences.uartEolCharacters //"\n"
         }
         
         send(message: newText)

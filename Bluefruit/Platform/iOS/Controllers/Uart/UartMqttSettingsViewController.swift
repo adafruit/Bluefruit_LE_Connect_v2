@@ -80,6 +80,18 @@ class UartMqttSettingsViewController: UIViewController {
         }
         previousSubscriptionTopic = newTopic
     }
+    
+    
+    // MARK: - Cell Utils
+    fileprivate func tagFromIndexPath(_ indexPath: IndexPath, scale: Int) -> Int {
+        // To help identify each textfield a tag is added with this format: ab (a is the section, b is the row)
+        return indexPath.section * scale + indexPath.row
+    }
+    
+    fileprivate func indexPathFromTag(_ tag: Int, scale: Int) -> IndexPath {
+        // To help identify each textfield a tag is added with this format: 12 (1 is the section, 2 is the row)
+        return IndexPath(row: tag % scale, section: tag / scale)
+    }
 }
 
 // MARK: UITableViewDataSource
@@ -244,16 +256,6 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return indexPath == openCellIndexPath ? 100 : 44
-    }
-
-    private func tagFromIndexPath(_ indexPath: IndexPath, scale: Int) -> Int {
-        // To help identify each textfield a tag is added with this format: ab (a is the section, b is the row)
-        return indexPath.section * scale + indexPath.row
-    }
-
-    fileprivate func indexPathFromTag(_ tag: Int, scale: Int) -> IndexPath {
-        // To help identify each textfield a tag is added with this format: 12 (1 is the section, 2 is the row)
-        return IndexPath(row: tag % scale, section: tag / scale)
     }
 
     @objc func onClickTypeButton(_ sender: UIButton) {
