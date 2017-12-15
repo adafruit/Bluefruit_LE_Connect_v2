@@ -86,9 +86,6 @@
 "scanresult_advertisement_beacon_minor" = "Minor";
 
 
-
-
-
 // Multiconnect Management
 "multiconnect_title" = "Multiple UART mode";
 "multiconnect_connecteddevices_single_format" = "Connected to %ld device";
@@ -131,11 +128,12 @@
 "peripheraldetails_checkingupdates" = "Checking updates...";
 
 // Peripheral Modules
-"peripheralmodules_sectiontitle_device" = "Device";
+"peripheralmodules_sectiontitle_device_single" = "Device";
+"peripheralmodules_sectiontitle_device_multiconnect" = "Multiple Devices";
 "peripheralmodules_sectiontitle_modules" = "Modules";
 "peripheralmodules_rssi_format" = "%ld dBm";
 "peripheralmodules_rssi_unavailable" = "not available";
-
+"peripheralmodules_battery_format" = "%ld%%";
 
 // Info
 "info_tab_title" = "Info";

@@ -331,7 +331,7 @@ class ScannerViewController: ModeTabViewController {
         detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralModulesNavigationController")
         if let peripheralModulesNavigationController = detailRootController as? UINavigationController, let peripheralModulesViewController = peripheralModulesNavigationController.topViewController as? PeripheralModulesViewController {
             peripheralModulesViewController.blePeripheral = nil
-            peripheralModulesViewController.startingController = .multiUart
+            peripheralModulesViewController.connectionMode = .multiplePeripherals
             showDetailViewController(peripheralModulesNavigationController, sender: self)
         }
     }
@@ -394,7 +394,7 @@ class ScannerViewController: ModeTabViewController {
     private func startUpdatesCheck(peripheral: BlePeripheral) {
         DLog("Check firmware updates")
 
-        // Refresh updates available
+        // Refresh available updates
         firmwareUpdater.checkUpdatesForPeripheral(peripheral, delegate: self, shouldDiscoverServices: false, shouldRecommendBetaReleases: false, versionToIgnore: Preferences.softwareUpdateIgnoredVersion)
     }
 

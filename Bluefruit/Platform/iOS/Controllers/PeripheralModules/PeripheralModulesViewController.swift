@@ -17,12 +17,12 @@ class PeripheralModulesViewController: UIViewController {
     @IBOutlet weak var baseTableView: UITableView!
 
     // Parameters
-    enum ModuleController {
-        case info
-        case multiUart
+    enum ConnectionMode {
+        case singlePeripheral
+        case multiplePeripherals
     }
 
-    var startingController = ModuleController.info
+    var connectionMode = ConnectionMode.singlePeripheral
     weak var blePeripheral: BlePeripheral?
 
     // Data
@@ -41,7 +41,6 @@ class PeripheralModulesViewController: UIViewController {
     private var emptyViewController: EmptyDetailsViewController?
     fileprivate var hasUart = false
     fileprivate var hasDFU = false
-    fileprivate var hasBattery = false
     fileprivate var rssiRefreshTimer: MSWeakTimer?
     
     fileprivate var batteryLevel: Int?
@@ -58,11 +57,19 @@ class PeripheralModulesViewController: UIViewController {
 
         emptyViewController = storyboard?.instantiateViewController(withIdentifier: "EmptyDetailsViewController") as? EmptyDetailsViewController
 
+        // Note: Services should have been discovered previously because we will invoke .hasUart, .hasBattery, etc...
+        
         // Init for iPhone
-        if blePeripheral != nil {
-            setupConnectedPeripheral()
-        } else if startingController == .multiUart {
-            //setupMultiUart()
+        if let blePeripheral = blePeripheral {
+            hasUart = blePeripheral.hasUart()
+            hasDFU = blePeripheral.peripheral.services?.first(where: {$0.uuid == FirmwareUpdater.kDfuServiceUUID}) != nil
+            setupBatteryUI(blePeripheral: blePeripheral)
+            baseTableView.reloadData()
+        } else if connectionMode == .multiplePeripherals {
+            for blePeripheral in BleManager.sharedInstance.connectedPeripherals() {
+                setupBatteryUI(blePeripheral: blePeripheral)
+            }
+            baseTableView.reloadData()
         } else {
             let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
             if !isFullScreen {
@@ -100,8 +107,15 @@ class PeripheralModulesViewController: UIViewController {
 
     deinit {
         DLog("PeripheralModulesViewController deinit")
+        
+        if let blePeripheral = blePeripheral {
+            stopBatterUI(blePeripheral: blePeripheral)
+        } else if connectionMode == .multiplePeripherals {
+            for blePeripheral in BleManager.sharedInstance.connectedPeripherals() {
+                stopBatterUI(blePeripheral: blePeripheral)
+            }
+        }
     }
-
     
     // MARK: - BLE Notifications
     private weak var willConnectToPeripheralObserver: NSObjectProtocol?
@@ -146,7 +160,7 @@ class PeripheralModulesViewController: UIViewController {
             // Back to peripheral list
             goBackToPeripheralList()
         } else {
-            if startingController != .multiUart {
+            if connectionMode != .multiplePeripherals {
                 blePeripheral = nil
             }
             showEmpty(true)
@@ -154,13 +168,11 @@ class PeripheralModulesViewController: UIViewController {
         }
     }
     
-    
     fileprivate func peripheralDidUpdateRssi(notification: Notification) {
         guard let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, identifier == blePeripheral?.identifier else { return }
 
         // Update section
         baseTableView.reloadSections([TableSection.device.rawValue], with: .none)
-
     }
     
     private func didDisconnectFromPeripheral(notification: Notification) {
@@ -179,7 +191,7 @@ class PeripheralModulesViewController: UIViewController {
     fileprivate func isInMultiUartMode() -> Bool {
         return blePeripheral == nil && BleManager.sharedInstance.connectedPeripherals().count > 0
     }
-
+    
     // MARK: - UI
     @objc private func rssiRefreshFired() {
         blePeripheral?.readRssi()
@@ -224,30 +236,27 @@ class PeripheralModulesViewController: UIViewController {
         }
     }
 
-    fileprivate func setupConnectedPeripheral() {
-        // Note: Services should have been discovered previously
-        guard let blePeripheral = blePeripheral else { return }
+    fileprivate func setupBatteryUI(blePeripheral: BlePeripheral) {
+        guard blePeripheral.hasBattery() else { return }
 
-        hasUart = blePeripheral.hasUart()
-        hasDFU = blePeripheral.peripheral.services?.first(where: {$0.uuid == FirmwareUpdater.kDfuServiceUUID}) != nil
-        hasBattery = blePeripheral.hasBattery()
-        
-        if hasBattery {
-            blePeripheral.startReadingBatteryLevel(handler: { [weak self] batteryLevel in
-                guard let context = self else { return }
-
-                context.batteryLevel = batteryLevel
-                
-                DispatchQueue.main.async { [unowned context] in
-                    // Update section
-                    context.baseTableView.reloadSections([TableSection.device.rawValue], with: .none)
-
-                }
-            })
-        }
-
-        baseTableView.reloadData()
+        blePeripheral.startReadingBatteryLevel(handler: { [weak self] batteryLevel in
+            guard let context = self else { return }
+            
+            context.batteryLevel = batteryLevel
+            
+            DispatchQueue.main.async { [unowned context] in
+                // Update section
+                context.baseTableView.reloadSections([TableSection.device.rawValue], with: .none)
+            }
+        })
     }
+    
+    fileprivate func stopBatterUI(blePeripheral: BlePeripheral) {
+        guard blePeripheral.hasBattery() else { return }
+
+        blePeripheral.stopReadingBatteryLevel()
+    }
+
 
     fileprivate func showDfu() {
         if let dfuViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuModeViewController") as? DfuModeViewController {
@@ -258,7 +267,7 @@ class PeripheralModulesViewController: UIViewController {
     }
 
     fileprivate func menuItems() -> [Modules] {
-        if startingController == .multiUart {
+        if connectionMode == .multiplePeripherals {
             return [.uart, .plotter]
         } else if hasUart && hasDFU {
             return [.info, .uart, .plotter, .pinIO, .controller, .neopixel, .calibration, .thermalcamera, .dfu]
@@ -270,6 +279,7 @@ class PeripheralModulesViewController: UIViewController {
             return [.info]
         }
     }
+    
 }
 
 // MARK: - UITableViewDataSource
@@ -287,7 +297,7 @@ extension PeripheralModulesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch TableSection(rawValue: section)! {
         case .device:
-            return 1
+            return BleManager.sharedInstance.connectedPeripherals().count
         case .modules:
             return menuItems().count
         }
@@ -299,7 +309,7 @@ extension PeripheralModulesViewController: UITableViewDataSource {
         
         switch TableSection(rawValue: section)! {
         case .device:
-            localizationKey = "peripheralmodules_sectiontitle_device"
+            localizationKey = isInMultiUartMode() ? "peripheralmodules_sectiontitle_device_multiconnect" : "peripheralmodules_sectiontitle_device_single"
         case .modules:
             localizationKey = "peripheralmodules_sectiontitle_modules"
         }
@@ -331,15 +341,18 @@ extension PeripheralModulesViewController: UITableViewDelegate {
         
         switch TableSection(rawValue: indexPath.section)! {
         case .device:
-            guard let deviceCell = cell as? PeripheralModulesDeviceTableViewCell, let peripheral = blePeripheral else { return }
-
+            guard let deviceCell = cell as? PeripheralModulesDeviceTableViewCell else { return }
+            let peripherals = BleManager.sharedInstance.connectedPeripherals()
+            guard peripherals.count > 0, indexPath.row < peripherals.count else { return }
+            let peripheral = peripherals[indexPath.row]
+            
             deviceCell.titleLabel.text = peripheral.name ?? localizationManager.localizedString("scanner_unnamed")
             deviceCell.rssiImageView.image = RssiUI.signalImage(for: peripheral.rssi)
             deviceCell.rssiLabel.text = peripheral.rssi != nil ? String(format: localizationManager.localizedString("peripheralmodules_rssi_format"), peripheral.rssi!) : localizationManager.localizedString("peripheralmodules_rssi_unavailable")
             
             deviceCell.batteryStackView.isHidden = batteryLevel == nil
             if let batteryLevel = batteryLevel {
-                deviceCell.batteryLabel.text = "\(batteryLevel)%"
+                deviceCell.batteryLabel.text = String(format: localizationManager.localizedString("peripheralmodules_battery_format"), batteryLevel)   //"\(batteryLevel)%"
             }
             
         case .modules:
