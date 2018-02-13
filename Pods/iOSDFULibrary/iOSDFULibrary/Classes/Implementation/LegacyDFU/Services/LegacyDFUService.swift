@@ -172,6 +172,20 @@ import CoreBluetooth
     }
     
     /**
+     Returns whether the bootloader is expected to advertise with the same address on one incremented by 1.
+     In the latter case the library needs to scan for a new advertising device and select it by filtering the adv packet,
+     as device address is not available through iOS API.
+     */
+    var newAddressExpected: Bool {
+        // See https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library/issues/170 and
+        // https://github.com/NordicSemiconductor/Android-DFU-Library/pull/45
+        // The legacy bootloader will advertise with address +1 only in SDK 6.1. Future implementations
+        // of legacy DFU will advertise directly with the same address no matter whether the device was
+        // bonded or not. In SDK 6.1 there was no DFU Version characteristic.
+        return version == nil
+    }
+    
+    /**
      Enables notifications for DFU Control Point characteristic. Result it reported using callbacks.
      
      - parameter success: method called when notifications were enabled without a problem
@@ -190,7 +204,7 @@ import CoreBluetooth
      
      - parameter report:  method called when an error occurred
      */
-    func jumpToBootloaderMode(onError report:@escaping ErrorCallback) {
+    func jumpToBootloaderMode(onError report: @escaping ErrorCallback) {
         if !aborted {
             dfuControlPointCharacteristic!.send(Request.jumpToBootloader, onSuccess: nil, onError: report)
         } else {
@@ -405,15 +419,23 @@ import CoreBluetooth
                     },
                     onPacketReceiptNofitication: {
                         bytesReceived in
+                        // This callback is called from SecureDFUControlPoint in 2 cases: when a PRN is received (bytesReceived contains number
+                        // of bytes reported), or when the iOS reports the peripheralIsReady(toSendWriteWithoutResponse:) callback
+                        // (bytesReceived is nil). If PRNs are enabled we ignore this second case as the PRNs are responsible for synchronization.
+                        let peripheralIsReadyToSendWriteWithoutRequest = bytesReceived == nil
+                        if self.packetReceiptNotificationNumber > 0 && peripheralIsReadyToSendWriteWithoutRequest {
+                            return
+                        }
+                        
                         // Each time a PRN is received, send next bunch of packets
                         if !self.paused && !self.aborted {
                             let bytesSent = self.dfuPacketCharacteristic!.bytesSent
                             // Due to https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library/issues/54 only 16 least significant bits are verified
-                            if (bytesSent & 0xFFFF) == (bytesReceived & 0xFFFF) {
+                            if peripheralIsReadyToSendWriteWithoutRequest || (bytesSent & 0xFFFF) == (bytesReceived! & 0xFFFF) {
                                 self.dfuPacketCharacteristic!.sendNext(self.packetReceiptNotificationNumber, packetsOf: aFirmware, andReportProgressTo: progressDelegate)
                             } else {
                                 // Target device deported invalid number of bytes received
-                                report(.bytesLost, "\(bytesSent) bytes were sent while \(bytesReceived) bytes were reported as received")
+                                report(.bytesLost, "\(bytesSent) bytes were sent while \(bytesReceived!) bytes were reported as received")
                             }
                         } else if self.aborted {
                             // Upload has been aborted. Reset the target device. It will disconnect automatically

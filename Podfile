@@ -2,11 +2,11 @@ source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
 def shared_pods
-	pod 'CocoaMQTT', '~> 1.0.19'
+	pod 'CocoaMQTT', '~> 1.0.20'
 	pod 'MSWeakTimer', '~> 1.1.0'
     pod 'SwiftyXML', '~> 1.4.0'
-    pod 'iOSDFULibrary', '~> 4.0.2'
-    pod 'Charts', '~> 3.0.4'
+    pod 'iOSDFULibrary', '~> 4.1.1'
+    pod 'Charts', '~> 3.0.5'
 end
 
 target 'iOS' do
