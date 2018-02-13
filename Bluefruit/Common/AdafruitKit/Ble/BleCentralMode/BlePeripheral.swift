@@ -329,7 +329,7 @@ class BlePeripheral: NSObject {
             self.completion = completion
         }
 
-        func endExecution(withError error: Error?) {
+        func completion(withError error: Error?) {
             completion?(error)
         }
 
@@ -371,9 +371,9 @@ class BlePeripheral: NSObject {
 
         // Result Callback
         if let command = commandQueue.first(), !command.isCancelled {
-            command.endExecution(withError: error)
+            command.completion(withError: error)
         }
-        commandQueue.next()
+        commandQueue.executeNext()
     }
 
     // MARK: - Commands

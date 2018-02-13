@@ -40,7 +40,7 @@ class PeripheralModulesViewController: UIViewController {
 
     private var emptyViewController: EmptyDetailsViewController?
     fileprivate var hasUart = false
-    fileprivate var hasDFU = false
+    fileprivate var hasDfu = false
     fileprivate var rssiRefreshTimer: MSWeakTimer?
     
     fileprivate var batteryLevel: Int?
@@ -56,13 +56,14 @@ class PeripheralModulesViewController: UIViewController {
         }
 
         emptyViewController = storyboard?.instantiateViewController(withIdentifier: "EmptyDetailsViewController") as? EmptyDetailsViewController
-
+        self.title = LocalizationManager.sharedInstance.localizedString("peripheralmodules_title")
+        
         // Note: Services should have been discovered previously because we will invoke .hasUart, .hasBattery, etc...
         
         // Init for iPhone
         if let blePeripheral = blePeripheral {
             hasUart = blePeripheral.hasUart()
-            hasDFU = blePeripheral.peripheral.services?.first(where: {$0.uuid == FirmwareUpdater.kDfuServiceUUID}) != nil
+            hasDfu = blePeripheral.peripheral.services?.first(where: {$0.uuid == FirmwareUpdater.kDfuServiceUUID}) != nil
             setupBatteryUI(blePeripheral: blePeripheral)
             baseTableView.reloadData()
         } else if connectionMode == .multiplePeripherals {
@@ -269,11 +270,11 @@ class PeripheralModulesViewController: UIViewController {
     fileprivate func menuItems() -> [Modules] {
         if connectionMode == .multiplePeripherals {
             return [.uart, .plotter]
-        } else if hasUart && hasDFU {
+        } else if hasUart && hasDfu {
             return [.info, .uart, .plotter, .pinIO, .controller, .neopixel, .calibration, .thermalcamera, .dfu]
         } else if hasUart {
             return [.info, .uart, .plotter, .pinIO, .controller, .calibration, .thermalcamera]
-        } else if hasDFU {
+        } else if hasDfu {
             return [.info, .dfu]
         } else {
             return [.info]

@@ -54,7 +54,7 @@
 "scanner_filter_name_settings_insensitive" = "Ignoring case";
 
 "scanner_filteredoutinfo_single_format" = "%ld peripheral filtered out";
-"scanner_filteredoutinfo_multiple_format" = "ld peripherals filtered out";
+"scanner_filteredoutinfo_multiple_format" = "%ld peripherals filtered out";
 
 // Scan Result
 "scanresult_connect" = "Connect";
@@ -128,6 +128,7 @@
 "peripheraldetails_checkingupdates" = "Checking updates...";
 
 // Peripheral Modules
+"peripheralmodules_title" = "Modules";
 "peripheralmodules_sectiontitle_device_single" = "Device";
 "peripheralmodules_sectiontitle_device_multiconnect" = "Multiple Devices";
 "peripheralmodules_sectiontitle_modules" = "Modules";

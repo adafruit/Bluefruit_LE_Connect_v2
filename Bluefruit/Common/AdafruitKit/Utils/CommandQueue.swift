@@ -66,10 +66,10 @@ class CommandQueue<Element> {
         return queue.first
     }
 
-    func next() {
-        guard !queue.isEmpty else { return }
-
+    func executeNext() {
         queueLock.lock()
+        guard !queue.isEmpty else { queueLock.unlock(); return }
+       
         // Delete finished command and trigger next execution if needed
         queue.removeFirst()
         let nextElement = queue.first

@@ -33,7 +33,7 @@ class MqttManager {
     }
 
     // Singleton
-    static let sharedInstance = MqttManager()
+    static let shared = MqttManager()
 
     // Constants
     private static let defaultKeepAliveInterval: Int32 = 60
@@ -49,7 +49,7 @@ class MqttManager {
     }
 
     func connectFromSavedSettings() {
-        let mqttSettings = MqttSettings.sharedInstance
+        let mqttSettings = MqttSettings.shared
 
         if let host = mqttSettings.serverAddress {
             let port = mqttSettings.serverPort
@@ -68,7 +68,7 @@ class MqttManager {
         }
 
         // Init connection process
-        MqttSettings.sharedInstance.isConnected = true
+        MqttSettings.shared.isConnected = true
         status = .connecting
 
         // Configure MQTT connection
@@ -106,7 +106,7 @@ class MqttManager {
     }
 
     func disconnect() {
-        MqttSettings.sharedInstance.isConnected = false
+        MqttSettings.shared.isConnected = false
 
         if let client = mqttClient {
             status = .disconnecting
@@ -127,7 +127,7 @@ extension MqttManager: CocoaMQTTDelegate {
     func mqtt(_ mqtt: CocoaMQTT, didConnectAck ack: CocoaMQTTConnAck) {
         DLog("didConnectAck: \(ack)")
 
-        let mqttSettings = MqttSettings.sharedInstance
+        let mqttSettings = MqttSettings.shared
 
         if ack == .accept {
             delegate?.onMqttConnected()

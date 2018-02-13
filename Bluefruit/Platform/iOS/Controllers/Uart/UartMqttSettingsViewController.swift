@@ -45,8 +45,8 @@ class UartMqttSettingsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        previousSubscriptionTopic = MqttSettings.sharedInstance.subscribeTopic
-        MqttManager.sharedInstance.delegate = self
+        previousSubscriptionTopic = MqttSettings.shared.subscribeTopic
+        MqttManager.shared.delegate = self
         baseTableView.reloadData()
     }
 
@@ -71,7 +71,7 @@ class UartMqttSettingsViewController: UIViewController {
     fileprivate func subscriptionTopicChanged(_ newTopic: String?, qos: MqttManager.MqttQos) {
         DLog("subscription changed from: \(previousSubscriptionTopic != nil ? previousSubscriptionTopic!:"") to: \(newTopic != nil ? newTopic!:"")")
 
-        let mqttManager = MqttManager.sharedInstance
+        let mqttManager = MqttManager.shared
         if previousSubscriptionTopic != nil {
             mqttManager.unsubscribe(topic: previousSubscriptionTopic!)
         }
@@ -133,7 +133,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         } else if section == .status {
             let statusCell = tableView.dequeueReusableCell(withIdentifier: "StatusCell", for: indexPath) as! MqttSettingsStatusCell
 
-            let status = MqttManager.sharedInstance.status
+            let status = MqttManager.shared.status
             let showWait = status == .connecting || status == .disconnecting
             if showWait {
                 statusCell.waitView.startAnimating()
@@ -153,13 +153,13 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 self.view.endEditing(true)
 
                 // Connect / Disconnect
-                let mqttManager = MqttManager.sharedInstance
+                let mqttManager = MqttManager.shared
                 let status = mqttManager.status
                 if status == .disconnected || status == .none || status == .error {
                     mqttManager.connectFromSavedSettings()
                 } else {
                     mqttManager.disconnect()
-                    MqttSettings.sharedInstance.isConnected = false
+                    MqttSettings.shared.isConnected = false
                 }
 
                 self.baseTableView?.reloadData()
@@ -168,7 +168,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
             statusCell.backgroundColor = UIColor.clear
             cell = statusCell
         } else {
-            let mqttSettings = MqttSettings.sharedInstance
+            let mqttSettings = MqttSettings.shared
             let editValueCell: MqttSettingsValueAndSelector
             let row = indexPath.row
 
@@ -365,7 +365,7 @@ extension UartMqttSettingsViewController: UITableViewDelegate {
         let hasSwitch = section == SettingsSections.publish.rawValue || section == SettingsSections.subscribe.rawValue
         headerCell.isOnSwitch.isHidden = !hasSwitch
         if hasSwitch {
-            let mqttSettings = MqttSettings.sharedInstance
+            let mqttSettings = MqttSettings.shared
             if section == SettingsSections.publish.rawValue {
                 headerCell.isOnSwitch.isOn = mqttSettings.isPublishEnabled
                 headerCell.isOnChanged = { isOn in
@@ -419,7 +419,7 @@ extension UartMqttSettingsViewController: UIPickerViewDelegate {
 
         // Update settings with new values
         let section = SettingsSections(rawValue: selectedIndexPath.section)!
-        let mqttSettings = MqttSettings.sharedInstance
+        let mqttSettings = MqttSettings.shared
 
         switch section {
         case .publish:
@@ -475,7 +475,7 @@ extension UartMqttSettingsViewController: UITextFieldDelegate {
         let indexPath = indexPathFromTag(textField.tag, scale:10)
         let section = indexPath.section
         let row = indexPath.row
-        let mqttSettings = MqttSettings.sharedInstance
+        let mqttSettings = MqttSettings.shared
 
         // Update settings with new values
         switch section {

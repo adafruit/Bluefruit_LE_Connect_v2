@@ -11,7 +11,7 @@ import Foundation
 class BleUUIDNames {
 
     // Manager
-    static let sharedInstance = BleUUIDNames()
+    static let shared = BleUUIDNames()
 
     // Data
     fileprivate var gattUUIds: [String:String]?

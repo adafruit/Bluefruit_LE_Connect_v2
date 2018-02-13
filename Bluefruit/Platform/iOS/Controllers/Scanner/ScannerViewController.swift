@@ -241,7 +241,7 @@ class ScannerViewController: ModeTabViewController {
 
     private func willConnectToPeripheral(notification: Notification) {
         guard let peripheral = BleManager.sharedInstance.peripheral(from: notification) else { return }
-        presentInfoDialog(title: LocalizationManager.sharedInstance.localizedString("scanner_connecting"), peripheral: peripheral)
+        presentInfoDialog(title: LocalizationManager.sharedInstance.localizedString("peripheraldetails_connecting"), peripheral: peripheral)
     }
 
     private func didConnectToPeripheral(notification: Notification) {
@@ -253,7 +253,7 @@ class ScannerViewController: ModeTabViewController {
         }
   
         // Discover services
-        infoAlertController?.message = LocalizationManager.sharedInstance.localizedString("scanner_discoveringservices")
+        infoAlertController?.message = LocalizationManager.sharedInstance.localizedString("peripheraldetails_discoveringservices")
         discoverServices(peripheral: selectedPeripheral)
     }
 
@@ -587,7 +587,7 @@ class ScannerViewController: ModeTabViewController {
         baseTableView.reloadData()
 
         // Filtered out label
-        let numPeripheralsFilteredOut = peripheralList.numPeriprehalsFiltered()
+        let numPeripheralsFilteredOut = peripheralList.numPeripheralsFiltered()
         
         let isFilteredPeripheralCountLabelHidden = filteredPeripherals.count > 0 || numPeripheralsFilteredOut == 0
         if filteredPeripheralsCountLabel.isHidden && !isFilteredPeripheralCountLabelHidden {
@@ -689,6 +689,9 @@ extension ScannerViewController: UITableViewDataSource {
         peripheralCell.connectButton.isHidden = !showConnect
         peripheralCell.disconnectButton.isHidden = !showDisconnect
 
+        peripheralCell.connectButton.titleLabel?.text = localizationManager.localizedString("scanner_connect")
+        peripheralCell.disconnectButton.titleLabel?.text = localizationManager.localizedString("scanner_disconnect")
+        
         peripheralCell.onConnect = { [unowned self] in
             self.connect(peripheral: peripheral)
         }

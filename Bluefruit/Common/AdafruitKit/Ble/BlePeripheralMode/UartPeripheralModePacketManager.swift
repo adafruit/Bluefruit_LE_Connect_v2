@@ -21,11 +21,11 @@ class UartPeripheralModePacketManager: UartPacketManagerBase {
         #if os(iOS)
         if isMqttEnabled {
             // Mqtt publish to TX
-            let mqttSettings = MqttSettings.sharedInstance
+            let mqttSettings = MqttSettings.shared
             if mqttSettings.isPublishEnabled {
                 if let topic = mqttSettings.getPublishTopic(index: MqttSettings.PublishFeed.tx.rawValue) {
                     let qos = mqttSettings.getPublishQos(index: MqttSettings.PublishFeed.tx.rawValue)
-                    MqttManager.sharedInstance.publish(message: text, topic: topic, qos: qos)
+                    MqttManager.shared.publish(message: text, topic: topic, qos: qos)
                 }
             }
         }
@@ -40,7 +40,7 @@ class UartPeripheralModePacketManager: UartPacketManagerBase {
             }
 
             #if os(iOS)
-                let shouldBeSent = !wasReceivedFromMqtt || (isMqttEnabled && MqttSettings.sharedInstance.subscribeBehaviour == .transmit)
+                let shouldBeSent = !wasReceivedFromMqtt || (isMqttEnabled && MqttSettings.shared.subscribeBehaviour == .transmit)
             #else
                 let shouldBeSent = true
             #endif

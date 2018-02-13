@@ -14,7 +14,7 @@ class MqttSettings {
     static let defaultServerPort = 1883
 
     // Singleton
-    static let sharedInstance = MqttSettings()
+    static let shared = MqttSettings()
 
     // Constants
     private static let preferences_serveraddress = "serveraddress"

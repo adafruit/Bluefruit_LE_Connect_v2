@@ -89,7 +89,6 @@ class BleManager: NSObject {
         if isScanning {
             startScan()
         }
-
     }
 
     // MARK: - Scan

@@ -330,7 +330,7 @@ extension InfoModeViewController: UITableViewDataSource {
         }
 
         var identifier = service.uuid.uuidString
-        if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
+        if let name = BleUUIDNames.shared.nameForUUID(identifier) {
             identifier = name
         }
 
@@ -414,7 +414,7 @@ extension InfoModeViewController: UITableViewDataSource {
                 itemDisplayMode[displayModeIdentifier] = .auto
             }
 
-            if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
+            if let name = BleUUIDNames.shared.nameForUUID(identifier) {
                 identifier = name
             }
 

@@ -161,7 +161,7 @@ class PeripheralTableViewCell: UITableViewCell {
         for serviceCBUUID in services {
             let label = UILabel()
             var identifier = serviceCBUUID.uuidString
-            if let name = BleUUIDNames.sharedInstance.nameForUUID(identifier) {
+            if let name = BleUUIDNames.shared.nameForUUID(identifier) {
                 identifier = name
             }
             label.text = identifier

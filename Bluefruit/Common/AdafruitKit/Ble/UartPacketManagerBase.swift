@@ -61,12 +61,12 @@ class UartPacketManagerBase {
         // Mqtt publish to RX
         #if os(iOS)
             if isMqttEnabled {
-                let mqttSettings = MqttSettings.sharedInstance
+                let mqttSettings = MqttSettings.shared
                 if mqttSettings.isPublishEnabled {
                     if let message = String(data: uartPacket.data, encoding: .utf8) {
                         if let topic = mqttSettings.getPublishTopic(index: MqttSettings.PublishFeed.rx.rawValue) {
                             let qos = mqttSettings.getPublishQos(index: MqttSettings.PublishFeed.rx.rawValue)
-                            MqttManager.sharedInstance.publish(message: message, topic: topic, qos: qos)
+                            MqttManager.shared.publish(message: message, topic: topic, qos: qos)
                         }
                     }
                 }

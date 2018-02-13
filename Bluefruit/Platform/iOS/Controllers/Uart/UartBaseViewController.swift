@@ -115,15 +115,14 @@ class UartBaseViewController: PeripheralModeViewController {
             mqttBarButtonItemImageView!.tintColor = self.view.tintColor
             mqttBarButtonItemImageView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onClickMqtt)))
             
-            let mqttManager = MqttManager.sharedInstance
-            if MqttSettings.sharedInstance.isConnected {
+            if MqttSettings.shared.isConnected {
+                let mqttManager = MqttManager.shared
                 mqttManager.delegate = self
                 mqttManager.connectFromSavedSettings()
             }
         }
         
         // Note: uartData should be initialized on the subclasses
-        
         
     }
     
@@ -173,9 +172,8 @@ class UartBaseViewController: PeripheralModeViewController {
         
         // MQTT
         if !isInMultiUartMode() {
-            let mqttManager = MqttManager.sharedInstance
-            if MqttSettings.sharedInstance.isConnected {
-                mqttManager.delegate = self
+            if MqttSettings.shared.isConnected {
+                MqttManager.shared.delegate = self
             }
             mqttUpdateStatusUI()
         }
@@ -201,7 +199,7 @@ class UartBaseViewController: PeripheralModeViewController {
     deinit {
         uartData = nil
         
-        let mqttManager = MqttManager.sharedInstance
+        let mqttManager = MqttManager.shared
         mqttManager.disconnect()
     }
     
@@ -550,7 +548,7 @@ extension UartBaseViewController: UartPacketManagerDelegate {
     func mqttUpdateStatusUI() {
         guard let imageView = mqttBarButtonItemImageView, let tintColor = self.view.tintColor else { return }
         
-        let status = MqttManager.sharedInstance.status
+        let status = MqttManager.shared.status
         
         switch status {
         case .connecting:
@@ -598,8 +596,8 @@ extension UartBaseViewController: UIPopoverPresentationControllerDelegate {
         // Note: same delegate used for MQTT popover and Export popover
         
         // MQTT
-        let mqttManager = MqttManager.sharedInstance
-        if MqttSettings.sharedInstance.isConnected {
+        let mqttManager = MqttManager.shared
+        if MqttSettings.shared.isConnected {
             mqttManager.delegate = self
         }
         mqttUpdateStatusUI()
@@ -635,7 +633,7 @@ extension UartBaseViewController: MqttManagerDelegate {
     }
     
     func onMqttError(message: String) {
-        let mqttManager = MqttManager.sharedInstance
+        let mqttManager = MqttManager.shared
         let status = mqttManager.status
         let isConnectionError = status == .connecting
         
