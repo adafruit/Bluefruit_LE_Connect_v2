@@ -107,7 +107,7 @@ class CalibrationUartSamplerViewController: CalibrationUartViewController {
             guard let context = self else { return }
 
             guard error == nil else {
-                DispatchQueue.main.async { [unowned context] in
+                DispatchQueue.main.async {
                     DLog("Error initializing uart")
                     showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
 

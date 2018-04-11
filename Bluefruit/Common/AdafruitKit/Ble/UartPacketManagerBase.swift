@@ -80,7 +80,7 @@ class UartPacketManagerBase {
         }
         
         // Send data to delegate
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             self.delegate?.onUartPacket(uartPacket)
         }
         

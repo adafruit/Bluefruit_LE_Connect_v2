@@ -245,7 +245,7 @@ class PeripheralModulesViewController: UIViewController {
             
             context.batteryLevel = batteryLevel
             
-            DispatchQueue.main.async { [unowned context] in
+            DispatchQueue.main.async { 
                 // Update section
                 context.baseTableView.reloadSections([TableSection.device.rawValue], with: .none)
             }

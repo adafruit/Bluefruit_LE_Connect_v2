@@ -183,7 +183,7 @@ extension DfuModeViewController: FirmwareUpdaterDelegate {
         }
 
         // Update UI
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             if self.dis == nil {
                 showErrorAlert(from: self, title: LocalizationManager.sharedInstance.localizedString("dialog_error"), message: "Device Information Service not found. Unable to peform an OTA DFU update")
             } else if let dis = self.dis, dis.hasDefaultBootloaderVersion {
@@ -461,13 +461,13 @@ extension  DfuModeViewController: DfuUpdateProcessDelegate {
     }
 
     func onUpdateProgressText(_ message: String) {
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             self.dfuDialogViewController?.setProgressText(message)
         }
     }
 
     func onUpdateProgressValue(_ progress: Double) {
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             self.dfuDialogViewController?.setProgress(progress)
         }
     }

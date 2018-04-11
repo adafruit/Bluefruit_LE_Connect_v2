@@ -219,8 +219,8 @@ class GyroscopeViewController: CalibrationUartSamplerViewController {
             isCalibrating = false
 
             // Go to results page
-            DispatchQueue.main.async { [weak self] in
-                self?.gotoPage(1)
+            DispatchQueue.main.async {
+                self.gotoPage(1)
             }
 
             /*

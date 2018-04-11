@@ -87,10 +87,9 @@ class NeopixelColorPickerViewController: UIViewController {
         if let currentColor = initialColor {
             wheelView.frame = wheelContainerView.bounds
             wheelView.layoutIfNeeded()
-            DispatchQueue.main.async { [weak self] in
-                guard let context = self else  { return }
-                context.wheelView.setCurrentColor(currentColor)
-                context.colorWheelDidChangeColor(context.wheelView)
+            DispatchQueue.main.async {
+                self.wheelView.setCurrentColor(currentColor)
+                self.colorWheelDidChangeColor(self.wheelView)
             }
         }
     }

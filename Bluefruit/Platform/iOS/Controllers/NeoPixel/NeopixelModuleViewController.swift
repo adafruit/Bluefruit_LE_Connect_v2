@@ -92,25 +92,22 @@ class NeopixelModeViewController: PeripheralModeViewController {
         // Start
         updateStatusUI(isWaitingResponse: true)
         neopixel.start { error in
-            DispatchQueue.main.async { [weak self] in
-                guard let context = self else { return  }
-
+            DispatchQueue.main.async {
                 guard error == nil else {
                     DLog("Error initializing uart")
-                    context.dismiss(animated: true, completion: { [weak self] () -> Void in
-                        if let context = self {
-                            showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
-
-                            if let blePeripheral = context.blePeripheral {
-                                BleManager.sharedInstance.disconnect(from: blePeripheral)
-                            }
+                    self.dismiss(animated: true, completion: { [weak self] in
+                        guard let context = self else { return }
+                        showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
+                        
+                        if let blePeripheral = context.blePeripheral {
+                            BleManager.sharedInstance.disconnect(from: blePeripheral)
                         }
                     })
                     return
                 }
 
                 // Uart Ready
-                context.updateStatusUI(isWaitingResponse: false)
+                self.updateStatusUI(isWaitingResponse: false)
             }
         }
     }
@@ -371,7 +368,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
                 context.neopixel.setupNeopixel(board: board, components: context.components, is400HzEnabled: context.is400HzEnabled) { [weak context] success in
                     guard let context = context else { return }
 
-                    DispatchQueue.main.async { [unowned context] in
+                    DispatchQueue.main.async {
                         if success {
                             context.onClickClear(context)
                             //context.neopixel.clearBoard(color: context.currentColor/*context.kDefaultLedColor*/, colorW: context.colorW)
@@ -381,7 +378,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
                     }
                 }
             } else {
-                DispatchQueue.main.async { [unowned context] in
+                DispatchQueue.main.async {
                     context.updateStatusUI(isWaitingResponse: false)
                 }
             }

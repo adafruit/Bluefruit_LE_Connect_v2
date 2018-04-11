@@ -111,9 +111,9 @@ class PeripheralListViewController: NSViewController {
         
         
         // Reload after dispatch (because at this point the peripheral has not been removed from BleManager)
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async {
             // Reload table
-            self?.reloadBaseTable()
+            self.reloadBaseTable()
         }
         
         /*

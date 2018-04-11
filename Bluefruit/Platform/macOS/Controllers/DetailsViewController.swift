@@ -475,12 +475,10 @@ extension DetailsViewController: FirmwareUpdaterDelegate {
     func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceInfo: DeviceInformationService?) {
         DLog("FirmwareUpdaterDelegate isUpdateAvailable: \(isUpdateAvailable)")
         
-        DispatchQueue.main.async { [weak self] in
-            guard let context = self else { return }
-            
-            context.setupConnectedPeripheral()
+        DispatchQueue.main.async {
+            self.setupConnectedPeripheral()
             if isUpdateAvailable {
-                self?.showUpdateAvailableForRelease(latestRelease)
+                self.showUpdateAvailableForRelease(latestRelease)
             }
         }
     }

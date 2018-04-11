@@ -60,7 +60,7 @@ class UartServiceViewController: UartBaseViewController {
     override func onMqttMessageReceived(message: String, topic: String) {
         guard let uartPeripheralService = uartPeripheralService else { return }
         
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             guard let uartData = self.uartData as? UartPeripheralModePacketManager else { DLog("Error send with invalid uartData class"); return }
             uartData.send(uartPeripheralService: uartPeripheralService, text: message, wasReceivedFromMqtt: true)
         }

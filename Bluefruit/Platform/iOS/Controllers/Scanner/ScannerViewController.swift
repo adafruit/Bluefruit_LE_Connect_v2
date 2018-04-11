@@ -285,9 +285,9 @@ class ScannerViewController: ModeTabViewController {
         let name = notification.userInfo?[BlePeripheral.NotificationUserInfoKey.name.rawValue] as? String
         DLog("centralManager peripheralDidUpdateName: \(name ?? "<unknown>")")
 
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async {
             // Reload table
-            self?.reloadBaseTable()
+            self.reloadBaseTable()
         }
     }
 
@@ -366,7 +366,7 @@ class ScannerViewController: ModeTabViewController {
             guard let context = self else { return }
             let localizationManager = LocalizationManager.sharedInstance
             
-            DispatchQueue.main.async { [unowned context] in
+            DispatchQueue.main.async {
                 guard error == nil else {
                     DLog("Error initializing peripheral")
                     context.dismiss(animated: true, completion: { [weak self] () -> Void in
@@ -784,12 +784,12 @@ extension ScannerViewController: FirmwareUpdaterDelegate {
 
         DLog("FirmwareUpdaterDelegate isUpdateAvailable: \(isUpdateAvailable)")
 
-        DispatchQueue.main.async { [weak self] in
-            self?.dismissInfoDialog {
+        DispatchQueue.main.async {
+            self.dismissInfoDialog {
                 if isUpdateAvailable, let latestRelease = latestRelease {
-                    self?.showUpdateAvailableForRelease(latestRelease)
+                    self.showUpdateAvailableForRelease(latestRelease)
                 } else {
-                    self?.showPeripheralDetails()
+                    self.showPeripheralDetails()
                 }
             }
         }

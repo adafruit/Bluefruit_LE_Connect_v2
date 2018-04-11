@@ -73,7 +73,7 @@ class PlotterModeViewController: PeripheralModeViewController {
                     guard let context = self else { return }
 
                     let peripheralName = blePeripheral.name ?? blePeripheral.identifier.uuidString
-                    DispatchQueue.main.async { [unowned context] in
+                    DispatchQueue.main.async {
                         guard error == nil else {
                             DLog("Error initializing uart")
                             context.dismiss(animated: true, completion: { [weak self] () -> Void in
@@ -96,7 +96,7 @@ class PlotterModeViewController: PeripheralModeViewController {
             blePeripheral.uartEnable(uartRxHandler: uartDataManager.rxDataReceived) { [weak self] error in
                 guard let context = self else { return }
 
-                DispatchQueue.main.async { [unowned context] in
+                DispatchQueue.main.async {
                     guard error == nil else {
                         DLog("Error initializing uart")
                         context.dismiss(animated: true, completion: { [weak self] () -> Void in
@@ -258,8 +258,8 @@ extension PlotterModeViewController: UartDataManagerDelegate {
                     }
                 }
                 
-                DispatchQueue.main.async { [weak self] in
-                    self?.notifyDataSetChanged()
+                DispatchQueue.main.async {
+                    self.notifyDataSetChanged()
                 }
             }
         }

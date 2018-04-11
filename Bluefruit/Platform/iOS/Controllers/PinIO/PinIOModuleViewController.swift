@@ -40,28 +40,23 @@ class PinIOModeViewController: PeripheralModeViewController {
         if isMovingToParentViewController {       // To keep working while the help is displayed
 
             pinIO.start { error in
-                DispatchQueue.main.async { [weak self] in
-                    guard let context = self else {
-                        return
-                    }
-
+                DispatchQueue.main.async {
                     guard error == nil else {
                         DLog("Error initializing uart")
-                        context.dismiss(animated: true, completion: { [weak self] () -> Void in
-                            if let context = self {
-                                showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
-
-                                if let blePeripheral = context.blePeripheral {
-                                    BleManager.sharedInstance.disconnect(from: blePeripheral)
-                                }
+                        self.dismiss(animated: true, completion: { [weak self] () in
+                            guard let context = self else { return }
+                            showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
+                            
+                            if let blePeripheral = context.blePeripheral {
+                                BleManager.sharedInstance.disconnect(from: blePeripheral)
                             }
                         })
                         return
                     }
 
                     // Uart Ready
-                    if context.pinIO.pins.count == 0 && !context.pinIO.isQueryingCapabilities() {
-                        context.startQueryCapabilitiesProcess()
+                    if self.pinIO.pins.count == 0 && !self.pinIO.isQueryingCapabilities() {
+                        self.startQueryCapabilitiesProcess()
                     }
                 }
             }
@@ -219,10 +214,10 @@ extension PinIOModeViewController: PinIoTableViewCellDelegate {
 
 extension PinIOModeViewController: PinIOModuleManagerDelegate {
     func onPinIODidEndPinQuery(isDefaultConfigurationAssumed: Bool) {
-        DispatchQueue.main.async { [weak self] in
-            self?.baseTableView.reloadData()
+        DispatchQueue.main.async {
+            self.baseTableView.reloadData()
 
-            self?.presentedViewController?.dismiss(animated: true, completion: { [weak self] () -> Void in
+            self.presentedViewController?.dismiss(animated: true, completion: { [weak self] in
                 if isDefaultConfigurationAssumed {
                     self?.defaultCapabilitiesAssumedDialog()
                 }
@@ -231,9 +226,8 @@ extension PinIOModeViewController: PinIOModuleManagerDelegate {
     }
 
     func onPinIODidReceivePinState() {
-        DispatchQueue.main.async { [weak self] in
-            self?.baseTableView.reloadData()
+        DispatchQueue.main.async {
+            self.baseTableView.reloadData()
         }
     }
-
 }

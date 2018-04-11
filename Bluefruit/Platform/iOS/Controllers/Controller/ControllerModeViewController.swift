@@ -376,26 +376,23 @@ extension ControllerModeViewController: UITableViewDelegate {
 // MARK: - ControllerModuleManagerDelegate
 extension ControllerModeViewController: ControllerModuleManagerDelegate {
     func onControllerUartIsReady(error: Error?) {
-        DispatchQueue.main.async { [weak self] in
-            guard let context = self else { return }
-
-            context.updateUartUI(isReady: error == nil)
+        DispatchQueue.main.async {
+            self.updateUartUI(isReady: error == nil)
             guard error == nil else {
                 DLog("Error initializing uart")
-                context.dismiss(animated: true, completion: { [weak self] in
-                    if let context = self {
-                        showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
-
-                        if let blePeripheral = context.blePeripheral {
-                            BleManager.sharedInstance.disconnect(from: blePeripheral)
-                        }
+                self.dismiss(animated: true, completion: { [weak self] in
+                    guard let context = self else { return }
+                    showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
+                    
+                    if let blePeripheral = context.blePeripheral {
+                        BleManager.sharedInstance.disconnect(from: blePeripheral)
                     }
                 })
                 return
             }
 
             // Uart Ready
-            context.baseTableView.reloadData()
+            self.baseTableView.reloadData()
         }
     }
 

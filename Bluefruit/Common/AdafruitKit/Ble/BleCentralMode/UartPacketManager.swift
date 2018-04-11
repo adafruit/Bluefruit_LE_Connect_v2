@@ -66,7 +66,7 @@ class UartPacketManager: UartPacketManagerBase {
         if let data = text.data(using: .utf8) {
             let uartPacket = UartPacket(peripheralId: blePeripheral.identifier, mode: .tx, data: data)
 
-            DispatchQueue.main.async { [unowned self] in
+            DispatchQueue.main.async {
                 self.delegate?.onUartPacket(uartPacket)
             }
 

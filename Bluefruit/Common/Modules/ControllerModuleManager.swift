@@ -272,7 +272,7 @@ extension ControllerModuleManager: UartDataManagerDelegate {
         if let dataString = stringFromData(data, useHexMode: false) {
             //DLog("rx: \(dataString)")
             textCachedBuffer.append(dataString)
-            DispatchQueue.main.async { [unowned self] in
+            DispatchQueue.main.async {
                 self.delegate?.onUarRX()
             }
         }

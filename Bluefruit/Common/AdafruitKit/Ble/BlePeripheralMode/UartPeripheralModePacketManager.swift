@@ -35,7 +35,7 @@ class UartPeripheralModePacketManager: UartPacketManagerBase {
         if let data = text.data(using: .utf8) {
             let uartPacket = UartPacket(peripheralId: nil, mode: .rx, data: data)
 
-            DispatchQueue.main.async { [unowned self] in
+            DispatchQueue.main.async {
                 self.delegate?.onUartPacket(uartPacket)
             }
 

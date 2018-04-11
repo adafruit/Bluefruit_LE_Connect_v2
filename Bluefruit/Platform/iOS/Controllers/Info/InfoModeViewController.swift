@@ -130,9 +130,9 @@ class InfoModeViewController: PeripheralModeViewController {
         // let invalidatedServices =  notification.userInfo?[BlePeripheral.NotificationUserInfoKey.invalidatedServices.rawValue] as? [CBService]
         DLog("info didModifyServices: \(selectedPeripheral.name ?? "<unknown>")")
 
-        DispatchQueue.main.async { [weak self] in
-            self?.blePeripheral?.reset()
-            self?.discoverServices()
+        DispatchQueue.main.async {
+            self.blePeripheral?.reset()
+            self.discoverServices()
         }
     }
 
@@ -191,7 +191,7 @@ class InfoModeViewController: PeripheralModeViewController {
         }
 
         // Update UI
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             self.baseTableView?.reloadData()
             self.showWait(false)
         }
@@ -227,15 +227,15 @@ class InfoModeViewController: PeripheralModeViewController {
             }
         }
 
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             self.baseTableView?.reloadData()
         }
     }
 
     private func didReadCharacteristic() {
         if elementsDiscovered >= elementsToDiscover {
-            DispatchQueue.main.async { [weak self] in
-                self?.baseTableView?.reloadData()
+            DispatchQueue.main.async {
+                self.baseTableView?.reloadData()
             }
         }
     }
@@ -257,7 +257,7 @@ class InfoModeViewController: PeripheralModeViewController {
         }
 
         if self.elementsDiscovered == self.elementsToDiscover {
-            DispatchQueue.main.async { [unowned self] in
+            DispatchQueue.main.async {
                 self.baseTableView?.reloadData()
             }
         }
@@ -265,8 +265,8 @@ class InfoModeViewController: PeripheralModeViewController {
 
     private func didReadDescriptor() {
         if elementsDiscovered >= elementsToDiscover {
-            DispatchQueue.main.async { [weak self] in
-                self?.baseTableView?.reloadData()
+            DispatchQueue.main.async {
+                self.baseTableView?.reloadData()
             }
         }
     }

@@ -621,13 +621,13 @@ extension UartBaseViewController: KeyboardPositionNotifierDelegate {
 // MARK: - MqttManagerDelegate
 extension UartBaseViewController: MqttManagerDelegate {
     func onMqttConnected() {
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             self.mqttUpdateStatusUI()
         }
     }
     
     func onMqttDisconnected() {
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             self.mqttUpdateStatusUI()
         }
     }
@@ -641,7 +641,7 @@ extension UartBaseViewController: MqttManagerDelegate {
         let status = mqttManager.status
         let isConnectionError = status == .connecting
         
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             self.mqttError(message: message, isConnectionError: isConnectionError)
         }
     }

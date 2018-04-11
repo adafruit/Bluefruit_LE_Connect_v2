@@ -516,14 +516,14 @@ extension UartMqttSettingsViewController: UITextFieldDelegate {
 extension UartMqttSettingsViewController: MqttManagerDelegate {
     func onMqttConnected() {
         // Update status
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             self.baseTableView.reloadData()
         }
     }
 
     func onMqttDisconnected() {
         // Update status
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             self.baseTableView.reloadData()
         }
     }
@@ -532,7 +532,7 @@ extension UartMqttSettingsViewController: MqttManagerDelegate {
     }
 
     func onMqttError(message: String) {
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             let alert = UIAlertController(title:"Error", message: message, preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)

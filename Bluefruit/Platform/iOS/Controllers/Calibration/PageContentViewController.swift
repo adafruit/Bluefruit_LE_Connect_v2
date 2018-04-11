@@ -13,8 +13,8 @@ class PageContentViewController: UIViewController {
     @IBOutlet weak var contentView: UIView?
     var isCalibrating = false {
         didSet {
-            DispatchQueue.main.async { [weak self] in
-                self?.updateUI()
+            DispatchQueue.main.async {
+                self.updateUI()
             }
         }
     }

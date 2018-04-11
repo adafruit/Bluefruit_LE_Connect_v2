@@ -154,7 +154,7 @@ class ThermalCameraModuleManager: NSObject {
 
         let dimen = Int(floor(sqrt(Double(pixelData.count))))
         if let image = imageFromARGB32Bitmap(pixels: pixelData, width: dimen, height: dimen) {
-            DispatchQueue.main.async { [unowned self] in
+            DispatchQueue.main.async {
                 self.delegate?.onImageUpdated(image)
             }
         }
