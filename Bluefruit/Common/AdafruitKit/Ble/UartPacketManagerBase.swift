@@ -102,5 +102,4 @@ class UartPacketManagerBase {
         receivedBytes = 0
         sentBytes = 0
     }
-
 }

@@ -9,7 +9,6 @@
 import Foundation
 
 class BleUUIDNames {
-
     // Manager
     static let shared = BleUUIDNames()
 

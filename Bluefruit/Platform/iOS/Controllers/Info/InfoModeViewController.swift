@@ -170,10 +170,10 @@ class InfoModeViewController: PeripheralModeViewController {
         elementsDiscovered = 0
 
         // Order services so "DIS" is at the top (if present)
-        let kDisServiceUUID = "180A"    // DIS service UUID
+        let kDisServiceUUID = CBUUID(string: InfoModeViewController.kDeviceInformationService)
         if let unorderedServices = services {
             services = unorderedServices.sorted(by: { (serviceA, serviceB) -> Bool in
-                let isServiceBDis = serviceB.uuid.isEqual(CBUUID(string: kDisServiceUUID))
+                let isServiceBDis = serviceB.uuid.isEqual(kDisServiceUUID)
                 return !isServiceBDis
             })
         }

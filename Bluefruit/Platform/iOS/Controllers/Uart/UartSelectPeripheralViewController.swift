@@ -69,10 +69,10 @@ extension UartSelectPeripheralViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
+        let localizationManager = LocalizationManager.sharedInstance
         if indexPath.row == 0 {
-            delegate?.onUartSendToChanged(uuid: nil, name: "To All")
+            delegate?.onUartSendToChanged(uuid: nil, name: localizationManager.localizedString("uart_send_toall_action"))
         } else {
-            let localizationManager = LocalizationManager.sharedInstance
             let peripheral = connectedPeripherals[indexPath.row-1]
             let name = peripheral.name ?? localizationManager.localizedString("scanner_unnamed")
             delegate?.onUartSendToChanged(uuid: peripheral.identifier, name: name)

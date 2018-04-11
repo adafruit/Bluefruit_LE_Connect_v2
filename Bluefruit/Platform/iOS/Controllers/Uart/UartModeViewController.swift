@@ -10,7 +10,6 @@ import UIKit
 
 class UartModeViewController: UartBaseViewController {
 
-
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +49,7 @@ class UartModeViewController: UartBaseViewController {
                     guard let context = self else { return }
                     
                     let peripheralName = blePeripheral.name ?? blePeripheral.identifier.uuidString
-                    DispatchQueue.main.async { [unowned context] in
+                    DispatchQueue.main.async {
                         guard error == nil else {
                             DLog("Error initializing uart")
                             context.dismiss(animated: true, completion: { [weak self] () -> Void in
@@ -77,7 +76,7 @@ class UartModeViewController: UartBaseViewController {
             blePeripheral.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
                 guard let context = self else { return }
                 
-                DispatchQueue.main.async { [unowned context] in
+                DispatchQueue.main.async {
                     guard error == nil else {
                         DLog("Error initializing uart")
                         context.dismiss(animated: true, completion: { [weak self] in
@@ -148,12 +147,11 @@ class UartModeViewController: UartBaseViewController {
         return color ?? UIColor.black
     }
     
-    
     // MARK: - MqttManagerDelegate
     override func onMqttMessageReceived(message: String, topic: String) {
         guard let blePeripheral = blePeripheral else { return }
         
-        DispatchQueue.main.async { [unowned self] in
+        DispatchQueue.main.async {
             guard let uartData = self.uartData as? UartPacketManager else { DLog("Error send with invalid uartData class"); return }
             uartData.send(blePeripheral: blePeripheral, text: message, wasReceivedFromMqtt: true)
         }

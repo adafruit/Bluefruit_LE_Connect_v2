@@ -13,7 +13,7 @@ import UIColor_Hex
 
 class UartBaseViewController: PeripheralModeViewController {
     // Config
-    fileprivate static var dataRxFont = UIFont(name: "CourierNewPSMT", size: 14)! //Font.systemFontOfSize(Font.systemFontSize())
+    fileprivate static var dataRxFont = UIFont(name: "CourierNewPSMT", size: 14)!
     fileprivate static var dataTxFont = UIFont(name: "CourierNewPS-BoldMT", size: 14)!
     
     // Export
@@ -121,6 +121,10 @@ class UartBaseViewController: PeripheralModeViewController {
                 mqttManager.connectFromSavedSettings()
             }
         }
+        
+        // Localization
+        sendInputButton.setTitle(localizationManager.localizedString("uart_send_action"), for: .normal)
+        sendPeripheralButton?.setTitle(localizationManager.localizedString("uart_send_toall_action"), for: .normal)     // Default value
         
         // Note: uartData should be initialized on the subclasses
         
@@ -283,7 +287,7 @@ class UartBaseViewController: PeripheralModeViewController {
     fileprivate func updateBytesUI() {
         let localizationManager = LocalizationManager.sharedInstance
         let sentBytesMessage = String(format: localizationManager.localizedString("uart_sentbytes_format"), arguments: [uartData.sentBytes])
-        let receivedBytesMessage = String(format: localizationManager.localizedString("uart_recievedbytes_format"), arguments: [uartData.receivedBytes])
+        let receivedBytesMessage = String(format: localizationManager.localizedString("uart_receivedbytes_format"), arguments: [uartData.receivedBytes])
         
         statsLabel.text = String(format: "%@     %@", arguments: [sentBytesMessage, receivedBytesMessage])
     }
