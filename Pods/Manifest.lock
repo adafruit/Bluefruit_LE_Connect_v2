@@ -1,43 +1,53 @@
 PODS:
-  - Charts (3.0.5):
-    - Charts/Core (= 3.0.5)
-  - Charts/Core (3.0.5)
-  - CocoaAsyncSocket (7.5.1):
-    - CocoaAsyncSocket/GCD (= 7.5.1)
-  - CocoaAsyncSocket/GCD (7.5.1)
-  - CocoaMQTT (1.0.20):
-    - CocoaAsyncSocket (~> 7.5.1)
+  - Charts (3.1.1):
+    - Charts/Core (= 3.1.1)
+  - Charts/Core (3.1.1)
+  - CocoaAsyncSocket (7.6.3)
+  - CocoaMQTT (1.1.2):
+    - CocoaAsyncSocket (~> 7.6.1)
     - SwiftyTimer (~> 2.0.0)
-  - iOSDFULibrary (4.1.1):
+  - iOSDFULibrary (4.1.2):
     - Zip (~> 1.0)
   - MSWeakTimer (1.1.0)
   - SwiftyTimer (2.0.0)
-  - SwiftyXML (1.4.0)
-  - UIColor+Hex (1.0.1):
-    - UIColor+Hex/NSColor (= 1.0.1)
-    - UIColor+Hex/UIColor (= 1.0.1)
-  - UIColor+Hex/UIColor (1.0.1)
+  - SwiftyXML (1.6.0)
+  - "UIColor+Hex (1.0.1)":
+    - "UIColor+Hex/NSColor (= 1.0.1)"
+    - "UIColor+Hex/UIColor (= 1.0.1)"
+  - "UIColor+Hex/UIColor (1.0.1)"
   - Zip (1.1.0)
 
 DEPENDENCIES:
-  - Charts (~> 3.0.5)
-  - CocoaMQTT (~> 1.0.20)
-  - iOSDFULibrary (~> 4.1.1)
+  - Charts (~> 3.1.1)
+  - CocoaMQTT (~> 1.1.2)
+  - iOSDFULibrary (~> 4.1.2)
   - MSWeakTimer (~> 1.1.0)
-  - SwiftyXML (~> 1.4.0)
-  - UIColor+Hex (~> 1.0.1)
+  - SwiftyXML (~> 1.6.0)
+  - "UIColor+Hex (~> 1.0.1)"
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Charts
+    - CocoaAsyncSocket
+    - CocoaMQTT
+    - iOSDFULibrary
+    - MSWeakTimer
+    - SwiftyTimer
+    - SwiftyXML
+    - "UIColor+Hex"
+    - Zip
 
 SPEC CHECKSUMS:
-  Charts: 45cdc985b764c838b35ee47eb1365d15735f6d1a
-  CocoaAsyncSocket: e0a7e93b2ffa411592ff87e58524fbbc9b95b4fa
-  CocoaMQTT: 10a0249ecf50884a89fe123ce61128305803c199
-  iOSDFULibrary: 35e8a9e23d67759d57af9924d7a808e48c04583a
+  Charts: 90a4d61da0f6e06684c591e3bcab11940fe61736
+  CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
+  CocoaMQTT: d33ab3cd4e329f9f1cfbb62e25306a318a606616
+  iOSDFULibrary: 5a3c53b9c8e7a1303ec962c8e7bb4f30b1fd47b1
   MSWeakTimer: 9426150f933b80ed3acf3f6d228e4b61f0e303c8
   SwiftyTimer: 2efd74b060d69ad4f1496baf5bbedbe132125fcf
-  SwiftyXML: 46906ae6975720b9bffc7c534350eaebe16821ed
-  UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
+  SwiftyXML: 3cb99996220435600058c2919c19fbbafa0da253
+  "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: fb826c5b679efffb89cd9a104f3e0ca1b5ba6f6e
+PODFILE CHECKSUM: 218d09c04d4a44329ee04de9ee6bec4e9f94e1c5
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0
