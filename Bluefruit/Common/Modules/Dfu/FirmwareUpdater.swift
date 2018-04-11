@@ -22,8 +22,9 @@ struct DeviceInformationService {
     var bootloaderVersion: String? {
         get {
             var result = DeviceInformationService.kDefaultBootloaderVersion
-            if let firmwareRevision = firmwareRevision, let versionSepartorUpperBound = firmwareRevision.range(of: ", ")?.upperBound {
-                let bootloaderVersion = firmwareRevision.substring(from: versionSepartorUpperBound)
+            if let firmwareRevision = firmwareRevision, let versionSeparatorUpperBound = firmwareRevision.range(of: ", ")?.upperBound {
+                //let bootloaderVersion = firmwareRevision.substring(from: versionSeparatorUpperBound)
+                let bootloaderVersion = String(firmwareRevision[versionSeparatorUpperBound...])
                 result = bootloaderVersion
             }
             return result

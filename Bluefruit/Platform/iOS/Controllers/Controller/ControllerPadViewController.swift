@@ -88,8 +88,9 @@ class ControllerPadViewController: UIViewController {
         // Remove the last character if is a newline character
         let lastCharacter = text.last
         let shouldRemoveTrailingNewline = lastCharacter == "\n" || lastCharacter == "\r" //|| lastCharacter == "\r\n"
-        let formattedText = shouldRemoveTrailingNewline ? text.substring(to: text.index(before: text.endIndex)) : text
-
+        //let formattedText = shouldRemoveTrailingNewline ? text.substring(to: text.index(before: text.endIndex)) : text
+        let formattedText = shouldRemoveTrailingNewline ? String(text[..<text.index(before: text.endIndex)]) : text
+        
         //
         uartTextView.text = formattedText
 

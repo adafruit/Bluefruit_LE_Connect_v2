@@ -105,8 +105,10 @@ class ThermalCameraModuleManager: NSObject {
             let endRange = textCachedBuffer.range(of: "]")
             
             if let startRange = startRange, let endRange = endRange {
-                var imageComponentsString = textCachedBuffer.substring(with: startRange.upperBound..<endRange.lowerBound)
-                imageComponentsString = imageComponentsString.components(separatedBy: .whitespacesAndNewlines).joined() // Remove spaces and newlines: https://stackoverflow.com/questions/28570973/how-should-i-remove-all-the-spaces-from-a-string-swift/39067610#39067610
+                //var imageComponentsString = textCachedBuffer.substring(with: startRange.upperBound..<endRange.lowerBound)
+                var imageComponentsString = String(textCachedBuffer[startRange.upperBound..<endRange.lowerBound])
+
+                imageComponentsString = imageComponentsString.components(separatedBy: .whitespacesAndNewlines).joined()     // Remove spaces and newlines: https://stackoverflow.com/questions/28570973/how-should-i-remove-all-the-spaces-from-a-string-swift/39067610#39067610
                 imageComponentsString = imageComponentsString.trimmingCharacters(in: CharacterSet(charactersIn: ","))       // Trim extra commas
                 
                 let imageComponents = imageComponentsString.components(separatedBy: ",")
