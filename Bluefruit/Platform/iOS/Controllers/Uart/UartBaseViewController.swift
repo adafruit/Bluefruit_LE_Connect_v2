@@ -231,16 +231,12 @@ class UartBaseViewController: PeripheralModeViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            didUpdatePreferencesObserver = notificationCenter.addObserver(forName: .didUpdatePreferences, object: nil, queue: .main, using: didUpdatePreferences)
+            didUpdatePreferencesObserver = notificationCenter.addObserver(forName: .didUpdatePreferences, object: nil, queue: .main) { [weak self] _ in
+                self?.reloadDataUI()
+            }
         } else {
             if let didUpdatePreferencesObserver = didUpdatePreferencesObserver {notificationCenter.removeObserver(didUpdatePreferencesObserver)}
         }
-    }
-    
-    private func didUpdatePreferences(notification: Notification) {
-        //        txColor = Preferences.uartSentDataColor
-        //        rxColor = Preferences.uartReceveivedDataColor
-        reloadDataUI()
     }
     
     // MARK: - UART

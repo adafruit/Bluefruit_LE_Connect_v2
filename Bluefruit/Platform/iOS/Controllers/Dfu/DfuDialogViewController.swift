@@ -33,9 +33,9 @@ class DfuDialogViewController: UIViewController {
 
         // Fade-in background
         backgroundView.alpha = 0
-        UIView.animate(withDuration: 0.5, animations: { [unowned self] () -> Void in
+        UIView.animate(withDuration: 0.5, animations: {
             self.backgroundView.alpha = 1
-            })
+        })
 
         // Disable sleep mode while the DFU Dialog progress is shown
         UIApplication.shared.isIdleTimerDisabled = true

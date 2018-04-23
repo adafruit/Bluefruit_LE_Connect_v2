@@ -15,7 +15,9 @@ class PlotterModeViewController: PeripheralModeViewController {
     @IBOutlet weak var chartView: LineChartView!
     @IBOutlet weak var autoscrollButton: UISwitch!
     @IBOutlet weak var xMaxEntriesSlider: UISlider!
-
+    @IBOutlet weak var autoscrollLabel: UILabel!
+    @IBOutlet weak var widthLabel: UILabel!
+    
     // Data
     fileprivate var uartDataManager: UartDataManager!
     fileprivate var originTimestamp: CFAbsoluteTime!
@@ -40,6 +42,10 @@ class PlotterModeViewController: PeripheralModeViewController {
         autoscrollButton.isOn = isAutoScrollEnabled
         chartView.dragEnabled = !isAutoScrollEnabled
         xMaxEntriesSlider.value = Float(visibleInterval)
+        
+        // Localization
+        autoscrollLabel.text = localizationManager.localizedString("plotter_autoscroll")
+        widthLabel.text = localizationManager.localizedString("plotter_width")
     }
 
     override func viewWillAppear(_ animated: Bool) {

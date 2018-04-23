@@ -26,14 +26,10 @@ class UartPacketManager: UartPacketManagerBase {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: didConnectToPeripheral)
+            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main) {[weak self] _ in self?.clearPacketsCache()}
         } else {
             if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
         }
-    }
-
-    private func didConnectToPeripheral(notification: Notification) {
-        clearPacketsCache()
     }
 
     // MARK: - Send data

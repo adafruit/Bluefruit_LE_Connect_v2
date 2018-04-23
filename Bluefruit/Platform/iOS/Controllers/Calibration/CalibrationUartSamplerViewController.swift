@@ -29,7 +29,7 @@ class CalibrationUartSamplerViewController: CalibrationUartViewController {
     var currentPage = 0 {
         didSet {
             DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.3) { [unowned self] in
+                UIView.animate(withDuration: 0.3) {
                     self.pageLeftButton?.alpha = self.currentPage > 0 ? 1:0
                     self.pageRightButton?.alpha = self.currentPage < self.pageViewControllerIds.count-1 ? 1:0
                 }

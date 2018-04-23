@@ -34,13 +34,13 @@ class StatusViewController: NSViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            didUpdateStatusObserver = notificationCenter.addObserver(forName: .didUpdateStatus, object: nil, queue: .main, using: didUpdateStatus)
+            didUpdateStatusObserver = notificationCenter.addObserver(forName: .didUpdateStatus, object: nil, queue: .main, using: {[weak self] _ in self?.didUpdateStatus()})
         } else {
             if let didUpdateStatusObserver = didUpdateStatusObserver {notificationCenter.removeObserver(didUpdateStatusObserver)}
         }
     }
     
-    func didUpdateStatus(notification: Notification) {
+    private func didUpdateStatus() {
         
         let message = StatusManager.sharedInstance.statusDescription()
         

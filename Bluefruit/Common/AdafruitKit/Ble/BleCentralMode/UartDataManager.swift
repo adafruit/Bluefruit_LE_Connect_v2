@@ -23,7 +23,7 @@ class UartDataManager {
             }
         }
     }
-    var isRxCacheEnabled = true {               // If cache is enabled, onUartRx sends the cachedData. You can clear cache using removeRxCacheFirst or clearRxCache. If not enabled onUartRx sends only the latest data received
+    var isRxCacheEnabled = true {   // If cache is enabled, onUartRx sends the cachedData. Cache can be cleared using removeRxCacheFirst or clearRxCache. If not enabled, onUartRx sends only the latest data received
         didSet {
             if !isRxCacheEnabled {
                 DLog("Clearing all rx caches")
@@ -55,8 +55,8 @@ class UartDataManager {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: didConnectToPeripheral)
-            didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: didDisconnectFromPeripheral)
+            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.didConnectToPeripheral(notification: notification)})
+            didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.didDisconnectFromPeripheral(notification: notification)})
 
         } else {
             if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}

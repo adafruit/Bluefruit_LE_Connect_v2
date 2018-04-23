@@ -47,17 +47,16 @@ class ScanningAnimationViewController: PeripheralModeViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            applicationWillEnterForegroundObserver = notificationCenter.addObserver(forName: .UIApplicationWillEnterForeground, object: nil, queue: .main, using: applicationWillEnterForeground)
+            applicationWillEnterForegroundObserver = notificationCenter.addObserver(forName: .UIApplicationWillEnterForeground, object: nil, queue: .main) { [weak self] _ in
+                guard let context = self else { return }
+                
+                // Restarts animation when coming back from background
+                if context.isAnimating {
+                    context.startAnimating()
+                }
+            }
         } else {
             if let applicationWillEnterForegroundObserver = applicationWillEnterForegroundObserver {notificationCenter.removeObserver(applicationWillEnterForegroundObserver)}
-        }
-    }
-
-    func applicationWillEnterForeground(notification: Notification) {
-        // Restarts animation when coming back from background
-
-        if isAnimating {
-            startAnimating()
         }
     }
 
@@ -74,7 +73,7 @@ class ScanningAnimationViewController: PeripheralModeViewController {
         // First wave
         self.scanningWave0ImageView.transform = CGAffineTransform(scaleX: initialScaleFactor, y: initialScaleFactor)
         self.scanningWave0ImageView.alpha = 1
-        UIView.animate(withDuration: duration, delay: 0, options: [.repeat, .curveEaseInOut], animations: {[unowned self] () -> Void in
+        UIView.animate(withDuration: duration, delay: 0, options: [.repeat, .curveEaseInOut], animations: {
             self.scanningWave0ImageView.transform = CGAffineTransform(scaleX: finalScaleFactor, y: finalScaleFactor)
             self.scanningWave0ImageView.alpha = 0
             }, completion: nil)
@@ -82,7 +81,7 @@ class ScanningAnimationViewController: PeripheralModeViewController {
         // Second wave
         self.scanningWave1ImageView.transform = CGAffineTransform(scaleX: initialScaleFactor, y: initialScaleFactor)
         self.scanningWave1ImageView.alpha = 1
-        UIView.animate(withDuration: duration, delay: duration/2, options: [.repeat, .curveEaseInOut], animations: { [unowned self] () -> Void in
+        UIView.animate(withDuration: duration, delay: duration/2, options: [.repeat, .curveEaseInOut], animations: {
             self.scanningWave1ImageView.transform = CGAffineTransform(scaleX: finalScaleFactor, y: finalScaleFactor)
             self.scanningWave1ImageView.alpha = 0
             }, completion: nil)
@@ -96,5 +95,4 @@ class ScanningAnimationViewController: PeripheralModeViewController {
             scanningWave1ImageView.layer.removeAllAnimations()
         }
     }
-
 }

@@ -72,18 +72,16 @@ class DfuModeViewController: PeripheralModeViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            didUpdatePreferencesObserver = notificationCenter.addObserver(forName: .didUpdatePreferences, object: nil, queue: .main, using: didUpdatePreferences)
+            didUpdatePreferencesObserver = notificationCenter.addObserver(forName: .didUpdatePreferences, object: nil, queue: .main) { [weak self] _ in
+                self?.startUpdatesCheck()
+            }
         } else {
             if let didUpdatePreferencesObserver = didUpdatePreferencesObserver {notificationCenter.removeObserver(didUpdatePreferencesObserver)}
         }
     }
 
-    private func didUpdatePreferences(notification: Notification) {
-        startUpdatesCheck()
-    }
-
     // MARK: - Updates
-    func startUpdatesCheck() {
+    private func startUpdatesCheck() {
         guard let blePeripheral = blePeripheral, !isCheckingUpdates else { return }
 
         // Refresh updates available
@@ -104,7 +102,7 @@ class DfuModeViewController: PeripheralModeViewController {
     }
 
     // MARK: - DFU update
-    func confirmDfuUpdateWithFirmware(_ firmwareInfo: FirmwareInfo) {
+    fileprivate func confirmDfuUpdateWithFirmware(_ firmwareInfo: FirmwareInfo) {
         guard let dis = dis, let firmwareBootloaderVersion = firmwareInfo.minBootloaderVersion else {
             DLog("Error: Not ready to update")
             return
@@ -134,13 +132,13 @@ class DfuModeViewController: PeripheralModeViewController {
         }
     }
 
-    func startDfuUpdateWithFirmware(_ firmwareInfo: FirmwareInfo) {
+    private func startDfuUpdateWithFirmware(_ firmwareInfo: FirmwareInfo) {
         guard let hexUrl = firmwareInfo.hexFileUrl else { return }
         let iniUrl = firmwareInfo.iniFileUrl
         startDfuUpdate(hexUrl: hexUrl, iniUrl: iniUrl)
     }
 
-    func startDfuUpdate(hexUrl: URL, iniUrl: URL?) {
+    private func startDfuUpdate(hexUrl: URL, iniUrl: URL?) {
         guard let blePeripheral = blePeripheral else {
             onUpdateProcessError(errorMessage: "No peripheral conected. Abort update", infoMessage: nil)
             return

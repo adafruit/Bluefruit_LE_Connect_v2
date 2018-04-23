@@ -101,7 +101,6 @@ class ScannerViewController: ModeTabViewController {
         filtersUartLabel.text = localizationManager.localizedString("scanner_filter_uart_title")
         multiConnectTitleLabel.text = localizationManager.localizedString("multiconnect_title")
         multiConnectShowButton.setTitle(localizationManager.localizedString("multiconnect_start_action"), for: .normal)
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -121,7 +120,7 @@ class ScannerViewController: ModeTabViewController {
         filtersUartSwitch.isOn = peripheralList.isOnlyUartEnabled
 
         // Flush any pending state notifications
-        didUpdateBleState(notification: nil)
+        didUpdateBleState()
 
         // Ble Notifications
         registerNotifications(enabled: true)
@@ -172,12 +171,12 @@ class ScannerViewController: ModeTabViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            didUpdateBleStateObserver = notificationCenter.addObserver(forName: .didUpdateBleState, object: nil, queue: .main, using: didUpdateBleState)
-            didDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didDiscoverPeripheral, object: nil, queue: .main, using: didDiscoverPeripheral)
-            willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: .main, using: willConnectToPeripheral)
-            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: didConnectToPeripheral)
-            didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: didDisconnectFromPeripheral)
-            peripheralDidUpdateNameObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateName, object: nil, queue: .main, using: peripheralDidUpdateName)
+            didUpdateBleStateObserver = notificationCenter.addObserver(forName: .didUpdateBleState, object: nil, queue: .main, using: {[weak self] _ in self?.didUpdateBleState()})
+            didDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didDiscoverPeripheral, object: nil, queue: .main, using: {[weak self] _ in self?.didDiscoverPeripheral()})
+            willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.willConnectToPeripheral(notification: notification)})
+            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.didConnectToPeripheral(notification: notification)})
+            didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.didDisconnectFromPeripheral(notification: notification)})
+            peripheralDidUpdateNameObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateName, object: nil, queue: .main, using: {[weak self] notification in self?.peripheralDidUpdateName(notification: notification)})
        } else {
             if let didUpdateBleStateObserver = didUpdateBleStateObserver {notificationCenter.removeObserver(didUpdateBleStateObserver)}
             if let didDiscoverPeripheralObserver = didDiscoverPeripheralObserver {notificationCenter.removeObserver(didDiscoverPeripheralObserver)}
@@ -188,7 +187,7 @@ class ScannerViewController: ModeTabViewController {
         }
     }
 
-    private func didUpdateBleState(notification: Notification?) {
+    private func didUpdateBleState() {
         guard let state = BleManager.sharedInstance.centralManager?.state else { return }
 
         // Check if there is any error
@@ -226,7 +225,7 @@ class ScannerViewController: ModeTabViewController {
         }
     }
 
-    private func didDiscoverPeripheral(notification: Notification) {
+    private func didDiscoverPeripheral() {
         /*
         #if DEBUG
             let peripheralUuid = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID
@@ -327,7 +326,7 @@ class ScannerViewController: ModeTabViewController {
         }
     }
 
-    fileprivate func showMultiUartMode() {
+    fileprivate func showMultipleConnectionsMode() {
         detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralModulesNavigationController")
         if let peripheralModulesNavigationController = detailRootController as? UINavigationController, let peripheralModulesViewController = peripheralModulesNavigationController.topViewController as? PeripheralModulesViewController {
             peripheralModulesViewController.blePeripheral = nil
@@ -425,7 +424,7 @@ class ScannerViewController: ModeTabViewController {
         self.filtersDisclosureButton.isSelected = isOpen
 
         self.filtersPanelViewHeightConstraint.constant = isOpen ? ScannerViewController.kFiltersPanelOpenHeight:ScannerViewController.kFiltersPanelClosedHeight
-        UIView.animate(withDuration: animated ? 0.3:0) { [unowned self] in
+        UIView.animate(withDuration: animated ? 0.3:0) {
             self.view.layoutIfNeeded()
         }
     }
@@ -458,7 +457,7 @@ class ScannerViewController: ModeTabViewController {
         self.multiConnectDisclosureButton.isSelected = isOpen
 
         self.multiConnectPanelViewHeightConstraint.constant = isOpen ? ScannerViewController.kMultiConnectPanelOpenHeight:ScannerViewController.kMultiConnectPanelClosedHeight
-        UIView.animate(withDuration: animated ? 0.3:0) { [unowned self] in
+        UIView.animate(withDuration: animated ? 0.3:0) {
             self.view.layoutIfNeeded()
         }
     }
@@ -531,7 +530,7 @@ class ScannerViewController: ModeTabViewController {
     }
 
     @IBAction func onMultiConnectShow(_ sender: Any) {
-        showMultiUartMode()
+        showMultipleConnectionsMode()
     }
 
     fileprivate func enabledMulticonnect(enable: Bool) {
@@ -593,8 +592,8 @@ class ScannerViewController: ModeTabViewController {
         if filteredPeripheralsCountLabel.isHidden && !isFilteredPeripheralCountLabelHidden {
             // If becoming visible, animate the change but wait a bit to avoid unnecesary blinking if a device is about to be discovered
             filteredPeripheralsCountLabel.alpha = 0
-            UIView.animate(withDuration: 0.25, delay: 0.2, options: [], animations: { [weak self] in
-                self?.filteredPeripheralsCountLabel.alpha = 1
+            UIView.animate(withDuration: 0.25, delay: 0.2, options: [], animations: {
+                self.filteredPeripheralsCountLabel.alpha = 1
             }, completion: nil)
         }
 

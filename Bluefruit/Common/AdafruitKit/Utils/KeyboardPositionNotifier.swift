@@ -32,8 +32,8 @@ class KeyboardPositionNotifier: NSObject {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            keyboardWillBeShownObserver = notificationCenter.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: nil, queue: .main, using: keyboardWillBeShown)
-            keyboardWillBeHiddenObserver = notificationCenter.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: .main, using: keyboardWillBeHidden)
+            keyboardWillBeShownObserver = notificationCenter.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: nil, queue: .main, using: {[weak self] notification in self?.keyboardWillBeShown(notification: notification)})
+            keyboardWillBeHiddenObserver = notificationCenter.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: .main, using: {[weak self] notification in self?.keyboardWillBeHidden(notification: notification)})
         } else {
             if let keyboardWillBeShownObserver = keyboardWillBeShownObserver {notificationCenter.removeObserver(keyboardWillBeShownObserver)}
             if let keyboardWillBeHiddenObserver = keyboardWillBeHiddenObserver {notificationCenter.removeObserver(keyboardWillBeHiddenObserver)}

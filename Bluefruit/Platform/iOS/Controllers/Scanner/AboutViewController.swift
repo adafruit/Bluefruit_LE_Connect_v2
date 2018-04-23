@@ -10,9 +10,12 @@ import UIKit
 
 class AboutViewController: UIViewController {
 
+    // UI
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var messageLabel: UITextView!
-
+    @IBOutlet weak var appNameLabel: UILabel!
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,17 +25,20 @@ class AboutViewController: UIViewController {
         }
 
         // Text
-        let message = LocalizationManager.sharedInstance.localizedString("about_text")
+        let localizationManager = LocalizationManager.sharedInstance
+        self.title = localizationManager.localizedString("about_title")
+        
+        appNameLabel.text = localizationManager.localizedString("about_app_name")
+        messageLabel.text  = localizationManager.localizedString("about_ios_text")
         /*
         let htmlData = NSString(string: message).data(using: String.Encoding.unicode.rawValue)
         
         let attributedString = try! NSAttributedString(data: htmlData!, options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType], documentAttributes: nil)
         
         messageLabel.attributedText = attributedString
-        
         */
-        messageLabel.text = message
 
+        // UI
         messageLabel.layer.borderColor = UIColor(red: 202/255, green: 202/255, blue: 202/255, alpha: 1).cgColor
         messageLabel.layer.borderWidth = 1
 
@@ -55,6 +61,7 @@ class AboutViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    // MARK: - Actions
     @IBAction func onClickDone(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }

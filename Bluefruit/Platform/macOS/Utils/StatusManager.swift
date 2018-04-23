@@ -56,15 +56,15 @@ class StatusManager: NSObject {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            didUpdateBleStateObserver = notificationCenter.addObserver(forName: .didUpdateBleState, object: nil, queue: .main, using: updateStatus)
-            didStartScanningObserver = notificationCenter.addObserver(forName: .didStartScanning, object: nil, queue: .main, using: updateStatus)
-            willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: .main, using: updateStatus)
-            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: updateStatus)
-            willDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .willDisconnectFromPeripheral, object: nil, queue: .main, using: updateStatus)
-            didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: updateStatus)
-            didStopScanningObserver = notificationCenter.addObserver(forName: .didStopScanning, object: nil, queue: .main, using: updateStatus)
-            didDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didDiscoverPeripheral, object: nil, queue: .main, using: updateStatus)
-            didUnDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didUnDiscoverPeripheral, object: nil, queue: .main, using: updateStatus)
+            didUpdateBleStateObserver = notificationCenter.addObserver(forName: .didUpdateBleState, object: nil, queue: .main, using: {[weak self] _ in self?.updateStatus()})
+            didStartScanningObserver = notificationCenter.addObserver(forName: .didStartScanning, object: nil, queue: .main, using: {[weak self] _ in self?.updateStatus()})
+            willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: .main, using: {[weak self] _ in self?.updateStatus()})
+            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: {[weak self] _ in self?.updateStatus()})
+            willDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .willDisconnectFromPeripheral, object: nil, queue: .main, using: {[weak self] _ in self?.updateStatus()})
+            didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: {[weak self] _ in self?.updateStatus()})
+            didStopScanningObserver = notificationCenter.addObserver(forName: .didStopScanning, object: nil, queue: .main, using: {[weak self] _ in self?.updateStatus()})
+            didDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didDiscoverPeripheral, object: nil, queue: .main, using: {[weak self] _ in self?.updateStatus()})
+            didUnDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didUnDiscoverPeripheral, object: nil, queue: .main, using: {[weak self] _ in self?.updateStatus()})
         } else {
             if let didUpdateBleStateObserver = didUpdateBleStateObserver {notificationCenter.removeObserver(didUpdateBleStateObserver)}
             if let didStartScanningObserver = didStartScanningObserver {notificationCenter.removeObserver(didStartScanningObserver)}
@@ -78,7 +78,7 @@ class StatusManager: NSObject {
         }
     }
 
-    func updateStatus(notification: Notification) {
+    private func updateStatus() {
         let bleManager = BleManager.sharedInstance
         let isUpdating = false // updateDialogViewController != nil  TODO: restore
         let isConnected = !bleManager.connectedPeripherals().isEmpty

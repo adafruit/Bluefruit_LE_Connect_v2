@@ -1,6 +1,7 @@
 // AUTO-GENERATED
 // General
 
+
 // Bluetooth Management
 
 "bluetooth_unsupported" = "This device doesn't support Bluetooth Low Energy";
@@ -17,6 +18,7 @@
 "main_tabbar_centralmode" = "Central Mode";
 "main_tabbar_peripheralmode" = "Peripheral Mode";
 
+
 // Scanner
 "scanner_title" = "Peripherals";
 "scanner_backbutton" = "Disconnect";
@@ -29,10 +31,7 @@
 "scanner_peripheraldisconnected" = "Peripheral disconnected";
 "scanner_unnamed" = "<Unknown>";
 "scanner_connect" = "Connect";
-"scanner_connecting" = "Connecting...";
 "scanner_disconnect" = "Disconnect";
-"scanner_discoveringservices" = "Discovering services...";
-"scanner_discoveringservices_failed" = "Error discovering services";
 
 "scanner_filter_name_title" = "Name:";
 "scanner_filter_name_hint" = "Filter by name";
@@ -111,7 +110,6 @@
 "peripheral_dis_softwarerevision" = "Software Revision";
 
 
-
 // AutoUpdate Firmware
 "autoupdate_title" = "Update available";
 "auoupadte_description_format" = "Software version %@ is available";
@@ -144,6 +142,9 @@
 "info_type_characteristic" = "Characteristic";
 "info_type_descriptor" = "Descriptor";
 
+"info_uuid" = "UUID:";
+
+
 "info_help_title" = "Info";
 "info_help_text" = "• Each section of the table represents one of the peripheral's services followed by its relevant characteristics.
 
@@ -156,10 +157,16 @@
 "uart_tab_title" = "UART";
 "uart_navigation_title_format" = "UART - %@";
 
+
+"uart_send_action" = "Send";
+"uart_send_toall_action" = "To All";
+
 "uart_sentbytes_format" = "Sent: %ld bytes";
-"uart_recievedbytes_format" = "Received: %ld bytes";
+"uart_receivedbytes_format" = "Received: %ld bytes";
 "uart_timestamp_direction_rx" = "RX";
 "uart_timestamp_direction_tx" = "TX";
+"uart_text_dataomitted" = "(Previous data omitted to improve performance…)";
+
 
 "uart_mqtt_undefinedserver" = "Mqtt server not defined";
 "uart_mqtt_editsettings" = "Edit Mqtt Settings";
@@ -209,11 +216,16 @@
 
 • Use the Clear button to clear the console's contents.";
 
-
+// Mqtt
+"mqtt_connection_lost" = "Mqtt server connection failed";
+"mqtt_connection_failed" = "Mqtt connection to server lost";
 
 // Plotter
 "plotter_tab_title" = "Plotter";
 "plotter_navigation_title_format" = "Plotter - %@";
+"plotter_autoscroll" = "AutoScroll:";
+"plotter_width" = "Width:";
+
 "plotter_help_title" = "Plotter";
 "plotter_help_text" = "• The 'Plotter' utility can be used to plot incoming numeric data in a chart, without having to create a custom plotter code or application. It behaves similarly to the Serial Plotter in recent versions of the Arduino IDE.
 
@@ -382,7 +394,55 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 
 
 // About
-"about_text" = "A detailed guide to using this app can be found here:
+"about_title" = "About";
+"about_app_name" = "Bluefruit LE Connect";
+"about_android_text" = "A detailed guide to using this app can be found here:
+https://learn.adafruit.com/bluefruit-le-connect-for-ios
+
+Configure your Bluefruit LE hardware using instructions found here:
+http://www.adafruit.com/bluefruitle
+
+Drag the table down and release to clear the list of found peripherals and begin scanning
+
+Tap a row in the table to view a peripheral's advertisement data.
+
+Each peripheral's Received Signal Strength (RSSI) is displayed to the left of its name.
+
+Tap a row's connect button to connect the corresponding device in one of the available modes:
+
+• Info - displays peripheral services & characteristics
+
+• UART - basic terminal, send & receive data 
+
+• Pin I/O - uses Bluefruit's UART to control Arduino running BLEFirmata sketch:
+https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakout/software-bluefruit-firmata
+
+• Controller - streams sensor data from your iOS device to Bluefruit LE over UART
+
+• Plotter - can be used to plot incoming numeric data in a chart
+
+• Updates - update device firmware
+
+
+
+Acknowledgements
+
+Portions of this Software may utilize the following copyrighted material, the use of which is hereby acknowledged. 
+
+Android-DFU-Library
+Copyright (c) 2015, Nordic Semiconductor
+https://github.com/NordicSemiconductor/Android-DFU-Library
+
+Android-Scanner-Compat-Library
+Copyright (c) 2015, Nordic Semiconductor
+https://github.com/NordicSemiconductor/Android-Scanner-Compat-Library
+
+Eclipse Paho
+https://eclipse.org/paho/clients/java/
+
+MPAndroidChart
+https://github.com/PhilJay/MPAndroidChart";
+"about_ios_text" = "A detailed guide to using this app can be found here:
 https://learn.adafruit.com/bluefruit-le-connect-for-ios
 
 Configure your Bluefruit LE hardware using instructions found here:
@@ -417,7 +477,6 @@ Portions of this Software may utilize the following copyrighted material, the us
 
 IOS-Pods-DFU-Library
 Copyright (c) 2016, Nordic Semiconductor
-All rights reserved.
 https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library
 
 CocoaMQTT

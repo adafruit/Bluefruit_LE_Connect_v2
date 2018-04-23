@@ -119,8 +119,8 @@ extension ThermalCameraModuleViewController: ThermalCameraModuleManagerDelegate 
         
         if temperatureScaleContainerView.alpha == 0 && thermalCameraData.isTemperatureReadReceived {
             thermalScaleView.setNeedsDisplay()
-            UIView.animate(withDuration: 0.3, animations: { [weak self] in
-                self?.temperatureScaleContainerView.alpha = 1
+            UIView.animate(withDuration: 0.3, animations: {
+                self.temperatureScaleContainerView.alpha = 1
             })
         }
         

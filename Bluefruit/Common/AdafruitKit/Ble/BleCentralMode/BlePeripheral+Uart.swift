@@ -119,7 +119,7 @@ extension BlePeripheral {
         }
 
         // Disable notify
-        guard let characteristic = uartRxCharacteristic, characteristic.isNotifying else {  return }
+        guard let characteristic = uartRxCharacteristic, characteristic.isNotifying else { return }
 
         disableNotify(for: characteristic)
     }

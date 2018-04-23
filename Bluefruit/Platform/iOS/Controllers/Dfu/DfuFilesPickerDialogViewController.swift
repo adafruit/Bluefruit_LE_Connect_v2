@@ -46,11 +46,11 @@ class DfuFilesPickerDialogViewController: UIViewController {
 
         // Fade-in background
         backgroundView.alpha = 0
-        UIView.animate(withDuration: 0.5, animations: { [unowned self] () -> Void in
+        UIView.animate(withDuration: 0.5, animations: {
             self.backgroundView.alpha = 1
-            })
+        })
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

@@ -106,8 +106,8 @@ class InfoModeViewController: PeripheralModeViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            peripheralDidUpdateNameObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateName, object: nil, queue: .main, using: peripheralDidUpdateName)
-            peripheralDidModifyServicesObserver = notificationCenter.addObserver(forName: .peripheralDidModifyServices, object: nil, queue: .main, using: peripheralDidModifyServices)
+            peripheralDidUpdateNameObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateName, object: nil, queue: .main, using: {[weak self] notification in self?.peripheralDidUpdateName(notification: notification)})
+                peripheralDidModifyServicesObserver = notificationCenter.addObserver(forName: .peripheralDidModifyServices, object: nil, queue: .main, using: {[weak self] notification in self?.peripheralDidModifyServices(notification: notification)})
         } else {
             if let peripheralDidUpdateNameObserver = peripheralDidUpdateNameObserver {notificationCenter.removeObserver(peripheralDidUpdateNameObserver)}
             if let peripheralDidModifyServicesObserver = peripheralDidModifyServicesObserver {notificationCenter.removeObserver(peripheralDidModifyServicesObserver)}
@@ -115,18 +115,14 @@ class InfoModeViewController: PeripheralModeViewController {
     }
 
     private func peripheralDidUpdateName(notification: Notification) {
-        guard let selectedPeripheral = blePeripheral, let identifier = notification.userInfo?[BlePeripheral.NotificationUserInfoKey.uuid.rawValue] as? UUID, selectedPeripheral.identifier == identifier else {
-            return
-        }
+        guard let selectedPeripheral = blePeripheral, let identifier = notification.userInfo?[BlePeripheral.NotificationUserInfoKey.uuid.rawValue] as? UUID, selectedPeripheral.identifier == identifier else { return }
 
         let name = notification.userInfo?[BlePeripheral.NotificationUserInfoKey.name.rawValue] as? String
         DLog("centralManager peripheralDidUpdateName: \(name ?? "<unknown>")")
     }
 
     private func peripheralDidModifyServices(notification: Notification) {
-        guard let selectedPeripheral = blePeripheral, let identifier = notification.userInfo?[BlePeripheral.NotificationUserInfoKey.uuid.rawValue] as? UUID, selectedPeripheral.identifier == identifier else {
-            return
-        }
+        guard let selectedPeripheral = blePeripheral, let identifier = notification.userInfo?[BlePeripheral.NotificationUserInfoKey.uuid.rawValue] as? UUID, selectedPeripheral.identifier == identifier else { return }
         // let invalidatedServices =  notification.userInfo?[BlePeripheral.NotificationUserInfoKey.invalidatedServices.rawValue] as? [CBService]
         DLog("info didModifyServices: \(selectedPeripheral.name ?? "<unknown>")")
 

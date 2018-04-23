@@ -78,60 +78,29 @@ class PeripheralListViewController: NSViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            didDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didDiscoverPeripheral, object: nil, queue: .main, using: didDiscoverPeripheral)
-            didUnDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didUnDiscoverPeripheral, object: nil, queue: .main, using: didDiscoverPeripheral)
-            didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: didDisconnectFromPeripheral)
-            peripheralDidUpdateNameObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateName, object: nil, queue: .main, using: peripheralDidUpdateName)
+            didDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didDiscoverPeripheral, object: nil, queue: .main, using: {[weak self] _ in self?.didDiscoverPeripheral()})
+            didUnDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didUnDiscoverPeripheral, object: nil, queue: .main, using: {[weak self] _ in self?.didDiscoverPeripheral()})
+            didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: {[weak self] _ in self?.didDisconnectFromPeripheral()})
+            peripheralDidUpdateNameObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateName, object: nil, queue: .main, using: {[weak self] notification in self?.peripheralDidUpdateName(notification: notification)})
 
         } else {
             if let didDiscoverPeripheralObserver = didDiscoverPeripheralObserver {notificationCenter.removeObserver(didDiscoverPeripheralObserver)}
             if let didUnDiscoverPeripheralObserver = didUnDiscoverPeripheralObserver {notificationCenter.removeObserver(didUnDiscoverPeripheralObserver)}
             if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {notificationCenter.removeObserver(didDisconnectFromPeripheralObserver)}
             if let peripheralDidUpdateNameObserver = peripheralDidUpdateNameObserver {notificationCenter.removeObserver(peripheralDidUpdateNameObserver)}
-
         }
     }
     
-    private func didDiscoverPeripheral(notification: Notification) {
+    private func didDiscoverPeripheral() {
         reloadBaseTable()
     }
     
-    private func didDisconnectFromPeripheral(notification: Notification) {
-        /*
-        let peripheral = BleManager.sharedInstance.peripheral(from: notification)
-        let currentlyConnectedPeripheralsCount = BleManager.sharedInstance.connectedPeripherals().count
-
-        guard let selectedPeripheral = selectedPeripheral, selectedPeripheral.identifier == peripheral?.identifier || currentlyConnectedPeripheralsCount == 0 else {        // If selected peripheral is disconnected or if there not any peripherals connected (after a failed dfu update)
-            return
-        }
-        
-        // Clear selected peripheral
-        self.selectedPeripheral = nil
-*/
-        
-        
+    private func didDisconnectFromPeripheral() {
         // Reload after dispatch (because at this point the peripheral has not been removed from BleManager)
         DispatchQueue.main.async {
             // Reload table
             self.reloadBaseTable()
         }
-        
-        /*
-        if BleManager.sharedInstance.blePeripheralConnected == nil && self.baseTableView.selectedRow >= 0 {
-            
-            // Unexpected disconnect if the row is still selected but the connected peripheral is nil and the time since the user selected a new peripheral is bigger than kMinTimeSinceUserSelection seconds
-            let kMinTimeSinceUserSelection = 1.0    // in secs
-            if self.peripheralList.elapsedTimeSinceSelection > kMinTimeSinceUserSelection {
-                self.baseTableView.deselectAll(nil)
-                
-                let localizationManager = LocalizationManager.sharedInstance
-                let alert = NSAlert()
-                alert.messageText = localizationManager.localizedString("scanner_peripheraldisconnected")
-                alert.addButton(withTitle: localizationManager.localizedString("dialog_ok"))
-                alert.alertStyle = .warning
-                alert.beginSheetModal(for: self.view.window!, completionHandler: nil)
-            }
-        }*/
     }
     
     private func peripheralDidUpdateName(notification: Notification) {
@@ -151,12 +120,6 @@ class PeripheralListViewController: NSViewController {
         baseTableView.reloadData()
         
         // Select the previously selected row
-        // scanningWaitView.isHidden = peripherals.count > 0
-        /*
-        if let selectedPeripheral = selectedPeripheral, let selectedRow = peripherals.index(of: selectedPeripheral) {
-            baseTableView.selectRowIndexes([selectedRow], byExtendingSelection: false)
-        }*/
-        
         let selectedPeripherals = BleManager.sharedInstance.connectedOrConnectingPeripherals()
         let selectedIndexes = selectedPeripherals.map({peripherals.index(of: $0)})
         let selectedNotNilIndexes = selectedIndexes.filter{ $0 != nil }.map { $0! }

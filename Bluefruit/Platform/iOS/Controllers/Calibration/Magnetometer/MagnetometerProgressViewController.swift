@@ -89,7 +89,7 @@ class MagnetometerProgressViewController: MagnetometerPageContentViewController 
         let showHelp = progress < 0.10 || progress >= 1
 
         if showHelp != isShowingHelp {
-            UIView.animate(withDuration: 0.3) { [unowned self] in
+            UIView.animate(withDuration: 0.3) {
                 self.calibrationDescriptionLabel.alpha = showHelp ? 1:0
                 self.valuesStackView.alpha = showHelp ? 0:1
             }
