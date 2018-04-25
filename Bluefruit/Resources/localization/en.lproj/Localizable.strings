@@ -216,6 +216,9 @@
 
 • Use the Clear button to clear the console's contents.";
 
+"uart_error_peripheralinit" = "Uart protocol can not be initialized";
+"uart_error_multipleperiperipheralinit_format" = "Uart protocol can not be initialized for peripheral: %@";
+
 // Mqtt
 "mqtt_connection_lost" = "Mqtt server connection failed";
 "mqtt_connection_failed" = "Mqtt connection to server lost";
@@ -225,6 +228,7 @@
 "plotter_navigation_title_format" = "Plotter - %@";
 "plotter_autoscroll" = "AutoScroll:";
 "plotter_width" = "Width:";
+"plotter_nodata" = "No chart data available";
 
 "plotter_help_title" = "Plotter";
 "plotter_help_text" = "• The 'Plotter' utility can be used to plot incoming numeric data in a chart, without having to create a custom plotter code or application. It behaves similarly to the Serial Plotter in recent versions of the Arduino IDE.

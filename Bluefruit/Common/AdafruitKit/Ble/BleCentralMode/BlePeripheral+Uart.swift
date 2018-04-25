@@ -217,7 +217,6 @@ extension BlePeripheral {
     func hasUart() -> Bool {
         return peripheral.services?.first(where: {$0.uuid == BlePeripheral.kUartServiceUUID}) != nil
     }
-
 }
 
 // MARK: - Data + CRC

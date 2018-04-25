@@ -24,7 +24,9 @@ class PlotterModeViewController: PeripheralModeViewController {
     fileprivate var isAutoScrollEnabled = true
     fileprivate var visibleInterval: TimeInterval = 20      // in seconds
     fileprivate var lineDashForPeripheral = [UUID: [CGFloat]?]()
-
+    fileprivate var dataSetsForPeripheral = [UUID: [LineChartDataSet]]()
+    fileprivate var lastDataSetModified: LineChartDataSet?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -84,7 +86,8 @@ class PlotterModeViewController: PeripheralModeViewController {
                             DLog("Error initializing uart")
                             context.dismiss(animated: true, completion: { [weak self] () -> Void in
                                 if let context = self {
-                                    showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized for peripheral: \(peripheralName)")
+                                    let localizationManager = LocalizationManager.sharedInstance
+                                    showErrorAlert(from: context, title: localizationManager.localizedString("dialog_error"), message: String(format: localizationManager.localizedString("uart_error_multipleperiperipheralinit_format"), peripheralName))
 
                                     BleManager.sharedInstance.disconnect(from: blePeripheral)
                                 }
@@ -105,13 +108,13 @@ class PlotterModeViewController: PeripheralModeViewController {
                 DispatchQueue.main.async {
                     guard error == nil else {
                         DLog("Error initializing uart")
-                        context.dismiss(animated: true, completion: { [weak self] () -> Void in
-                            if let context = self {
-                                showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
-
-                                if let blePeripheral = context.blePeripheral {
-                                    BleManager.sharedInstance.disconnect(from: blePeripheral)
-                                }
+                        context.dismiss(animated: true, completion: { [weak self] in
+                            guard let context = self else { return }
+                            let localizationManager = LocalizationManager.sharedInstance
+                            showErrorAlert(from: context, title: localizationManager.localizedString("dialog_error"), message: localizationManager.localizedString("uart_error_peripheralinit"))
+                            
+                            if let blePeripheral = context.blePeripheral {
+                                BleManager.sharedInstance.disconnect(from: blePeripheral)
                             }
                         })
                         return
@@ -126,29 +129,17 @@ class PlotterModeViewController: PeripheralModeViewController {
 
     // MARK: - Line Chart
     fileprivate func setupChart() {
-
         chartView.delegate = self
+        chartView.backgroundColor = .white      // Fix for Charts 3.0.3 (overrides the default background color)
 
-        
-        chartView.backgroundColor = .white      // Fix for Charts 3.0.3 (overrides the default backgorund color)
-        
         chartView.chartDescription?.enabled = false
-        //chartView.scaleXEnabled = false
-//        chartView.xAxis.setLabelCount(5, force: true)
         chartView.xAxis.granularityEnabled = true
         chartView.xAxis.granularity = 5
         chartView.leftAxis.drawZeroLineEnabled = true
-        //chartView.xAxis.drawAxisLineEnabled = true
-        //chartView.leftAxis.drawAxisLineEnabled = true
-
         chartView.setExtraOffsets(left: 10, top: 10, right: 10, bottom: 0)
-      // chartView.xAxis.gridLineWidth = 2
-
         chartView.legend.enabled = false
+        chartView.noDataText = LocalizationManager.sharedInstance.localizedString("plotter_nodata")
     }
-
-    fileprivate var dataSetsForPeripheral = [UUID: [LineChartDataSet]]()
-    fileprivate var lastDataSetModified: LineChartDataSet?
 
     fileprivate func addEntry(peripheralIdentifier identifier: UUID, index: Int, value: Double, timestamp: CFAbsoluteTime) {
         let entry = ChartDataEntry(x: timestamp, y: value)
@@ -247,12 +238,10 @@ extension PlotterModeViewController: UartDataManagerDelegate {
         let subData = data.subdata(in: 0..<lastSeparatorRange.upperBound)
         if let dataString = String(data: subData, encoding: .utf8) {
 
+            let currentTimestamp = CFAbsoluteTimeGetCurrent() - originTimestamp
             let linesStrings = dataString.replacingOccurrences(of: "\r", with: "").components(separatedBy: "\n")
             for lineString in linesStrings {
-
-                let currentTimestamp = CFAbsoluteTimeGetCurrent() - originTimestamp
                 //   DLog("\tline: \(lineString)")
-
                 let valuesStrings = lineString.components(separatedBy: CharacterSet(charactersIn: ",; \t"))
                 var i = 0
                 // DLog("values: \(valuesStrings)")

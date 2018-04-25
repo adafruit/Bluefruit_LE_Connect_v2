@@ -99,7 +99,7 @@ class BlePeripheral: NSObject {
         var timeoutAction: ((String)->())?
         var isNotifyOmitted: Bool
 
-        init(identifier: String, result: @escaping CapturedReadCompletionHandler, timeout: Double?, timeoutAction:((String)->())?,  isNotifyOmitted: Bool = false) {
+        init(identifier: String, result: @escaping CapturedReadCompletionHandler, timeout: Double?, timeoutAction:((String)->())?, isNotifyOmitted: Bool = false) {
             self.identifier = identifier
             self.result = result
             self.isNotifyOmitted = isNotifyOmitted
@@ -118,19 +118,13 @@ class BlePeripheral: NSObject {
         }
     }
 
-    fileprivate func timeOutRemoveCaptureHandler(identifier: String) {
-        var hasCaptureHandler = false
-        if captureReadHandlers.count > 0, let index = captureReadHandlers.index(where: {$0.identifier == identifier}) {
-            hasCaptureHandler = true
-            // DLog("captureReadHandlers index: \(index) / \(captureReadHandlers.count)")
-            
-            // Remove capture handler
-            captureReadHandlers.remove(at: index)
-        }
+    fileprivate func timeOutRemoveCaptureHandler(identifier: String) {   // Default behaviour for a capture handler timeout
+        guard captureReadHandlers.count > 0, let index = captureReadHandlers.index(where: {$0.identifier == identifier}) else { return }
+        // DLog("captureReadHandlers index: \(index) / \(captureReadHandlers.count)")
         
-        if hasCaptureHandler {
-            finishedExecutingCommand(error: PeripheralError.timeout)
-        }
+        // Remove capture handler
+        captureReadHandlers.remove(at: index)
+        finishedExecutingCommand(error: PeripheralError.timeout)
     }
     
     // Internal data
@@ -526,7 +520,7 @@ extension BlePeripheral: CBPeripheralDelegate {
         //DLog("didUpdateValueFor \(characteristic.uuid.uuidString): \(String(data: characteristic.value ?? Data(), encoding: .utf8) ?? "<invalid>")")
 
         // Check if waiting to capture this read
-        var isNotifyOmmited = false
+        var isNotifyOmitted = false
         var hasCaptureHandler = false
         if captureReadHandlers.count > 0, let index = captureReadHandlers.index(where: {$0.identifier == identifier}) {
             hasCaptureHandler = true
@@ -537,18 +531,20 @@ extension BlePeripheral: CBPeripheralDelegate {
 
             //  DLog("captureReadHandlers postRemove count: \(captureReadHandlers.count)")
 
-            // Send result
+            // Cancel timeout timer
             captureReadHandler.timeoutTimer?.invalidate()
             captureReadHandler.timeoutTimer = nil
+
+            // Send result
             let value = characteristic.value
             //  DLog("updated value: \(String(data: value!, encoding: .utf8)!)")
             captureReadHandler.result(value, error)
 
-            isNotifyOmmited = captureReadHandler.isNotifyOmitted
+            isNotifyOmitted = captureReadHandler.isNotifyOmitted
         }
 
         // Notify
-        if !isNotifyOmmited {
+        if !isNotifyOmitted {
             if let notifyHandler = notifyHandlers[identifier] {
 
                 //let currentTime = CACurrentMediaTime()

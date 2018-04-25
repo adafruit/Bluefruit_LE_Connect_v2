@@ -35,7 +35,6 @@ class UartDataManager {
 
     // Data
     fileprivate var rxDatas = [UUID: Data]()
-    //fileprivate var rxDataSemaphores = [UUID: DispatchSemaphore]()
     fileprivate var rxDataSemaphore = DispatchSemaphore(value: 1)
 
     init(delegate: UartDataManagerDelegate?) {
@@ -61,7 +60,6 @@ class UartDataManager {
         } else {
             if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
             if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {notificationCenter.removeObserver(didDisconnectFromPeripheralObserver)}
-
         }
     }
 
@@ -77,9 +75,7 @@ class UartDataManager {
         // Clean data on disconnect
         rxDatas[identifier] = nil
 
-        //guard let rxDataSemaphore = rxDataSemaphores[identifier] else { return }
         rxDataSemaphore.signal()        // Force signal if was waiting
-        //rxDataSemaphores[identifier] = nil
     }
 
     // MARK: - Send data
@@ -89,27 +85,13 @@ class UartDataManager {
 
     // MARK: - Received data
     func rxDataReceived(data: Data?, peripheralIdentifier identifier: UUID, error: Error?) {
+        guard error == nil else { DLog("rxDataReceived error: \(error!)"); return }
+        guard let data = data else { return }
 
-        guard error == nil else {
-            DLog("rxDataReceived error: \(error!)")
-            return
-        }
-
-        guard let data = data else {
-            return
-        }
-
-        /*
-         // Create data and semaphore if is the first time receiving data
-         if rxDataSemaphores[identifier] == nil {
-         rxDataSemaphores[identifier] = DispatchSemaphore(value: 1)
-         }*/
-
+        // Pre-create rxData entry if needed
         if isRxCacheEnabled && rxDatas[identifier] == nil {
             rxDatas[identifier] = Data()
         }
-
-        // guard /*let rxDataSemaphore = rxDataSemaphores[identifier], */var rxData = rxDatas[identifier] else { return }
 
         if isRxCacheEnabled {
             rxDataSemaphore.wait()            // don't append more data, till the delegate has finished processing it
@@ -119,7 +101,6 @@ class UartDataManager {
             delegate?.onUartRx(data: rxDatas[identifier]!, peripheralIdentifier: identifier)
 
             //DLog("cachedRxData: \(cachedRxData.count)")
-
             rxDataSemaphore.signal()
         } else {
             delegate?.onUartRx(data: data, peripheralIdentifier: identifier)
@@ -138,7 +119,7 @@ class UartDataManager {
         //DLog("remove \(n) items")
         //DLog("pre remove: \(hexDescription(data: rxData))")
 
-        if n <= rxData.count {
+        if n < rxData.count {
             rxDatas[identifier]!.removeFirst(n)
         } else {
             clearRxCache(peripheralIdentifier: identifier)
@@ -148,7 +129,7 @@ class UartDataManager {
     }
 
     func flushRxCache(peripheralIdentifier identifier: UUID) {
-        guard /*let rxDataSemaphore = rxDataSemaphores[identifier],*/ var rxData = rxDatas[identifier] else { return }
+        guard var rxData = rxDatas[identifier] else { return }
 
         if rxData.count > 0 {
             rxDataSemaphore.wait()
