@@ -13,6 +13,10 @@
 "bluetooth_locationpermission_text" = "Please grant location access so this app can scan for Bluetooth peripherals";
 "bluetooth_locationpermission_notavailable_title" = "Bluetooth Scanning not available";
 "bluetooth_locationpermission_notavailable_text" = "Since location access has not been granted, the app will not be able to scan for Bluetooth peripherals";
+"bluetooth_scanner_errorregisteringapp" = "App cannot be registered for bluetooth scanning.
+Please reset bluetooth and try again.";
+"bluetooth_connecting_error" = "Error connecting to peripheral";
+"bluetooth_advertising_start_error" = "Error starting advertising";
 
 // Main Tab-Bar
 "main_tabbar_centralmode" = "Central Mode";
@@ -54,6 +58,7 @@
 
 "scanner_filteredoutinfo_single_format" = "%ld peripheral filtered out";
 "scanner_filteredoutinfo_multiple_format" = "%ld peripherals filtered out";
+
 
 // Scan Result
 "scanresult_connect" = "Connect";
@@ -100,6 +105,8 @@
 "peripheral_unknown_title" = "Undefined Peripheral";
 "peripheral_dis_title" = "Device Information Service";
 "peripheral_uart_title" = "UART";
+
+
 
 // Peripheral Dis
 "peripheral_dis_manufacturer" = "Manufacturer";
@@ -368,6 +375,21 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "neopixels_tab_title" = "Neopixels";
 "neopixels_navigation_title_format" = "Neopixels - %@";
 
+"neopixels_status_title" = "Status:";
+"neopixels_connect_action" = "Connect";
+
+"neopixels_waitingforuart" = "Waiting for Uart...";
+"neopixels_status_readytoconnect" = "Ready to Connect";
+"neopixels_status_waitingsetup" = "Waiting for Setup";
+"neopixels_status_readyforsetup" = "Ready for Setup";
+"neopixels_status_connected" = "Connected";
+"neopixels_status_checkingsketch" = "Checking Sketch...";
+"neopixels_status_notdetected" = "Not detected";
+
+"neopixels_picker_title" = "Picker:";
+"neopixels_brightness_title" = "Brightness:";
+"neopixels_colorpicker_setcolor" = "Set";
+
 "neopixel_help_title" = "NeoPixels";
 "neopixel_help_text" = "To use the NeoPixel application:
 
@@ -386,6 +408,17 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 // Thermal Camera
 "thermalcamera_tab_title" = "Thermal Camera";
 "thermalcamera_navigation_title_format" = "Thermal Camera - %@";
+
+"thermalcamera_waitingforuart" = "Waiting for Uart...";
+"thermalcamera_colormode_title" = "Color Mode:";
+"thermalcamera_colormode_color" = "Color";
+"thermalcamera_colormode_monochrome" = "Monochrome";
+"thermalcamera_magnification_title" = "Magnification:";
+"thermalcamera_magnification_pixelated" = "Pixelated";
+"thermalcamera_magnification_filtered" = "Filtered";
+
+"thermalcamera_temprange_title" = "Temperature Range:";
+
 
 // Common
 "dialog_ok" = "OK";

@@ -19,10 +19,14 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
     @IBOutlet weak var temperatureScaleView: UIView!
     @IBOutlet weak var temperatureScaleContainerView: UIView!
     @IBOutlet weak var filterSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var colorModeLabel: UILabel!
+    @IBOutlet weak var magnificationLabel: UILabel!
+    @IBOutlet weak var temperatureRangeLabel: UILabel!
+    @IBOutlet weak var colorModeSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var magnificationSegmentedControl: UISegmentedControl!
     
     // Data
     fileprivate var thermalCameraData: ThermalCameraModuleManager!
-
 
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -36,9 +40,19 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
         // Style
         cameraImageView.layer.borderWidth = 1
         cameraImageView.layer.borderColor = UIColor.lightGray.cgColor
-        
+
         temperatureScaleView.layer.cornerRadius = 4
         temperatureScaleView.layer.masksToBounds = true
+
+        // Localization
+        uartWaitingLabel.text = localizationManager.localizedString("thermalcamera_waitingforuart")
+        colorModeLabel.text = localizationManager.localizedString("thermalcamera_colormode_title")
+        magnificationLabel.text = localizationManager.localizedString("thermalcamera_magnification_title")
+        temperatureRangeLabel.text = localizationManager.localizedString("thermalcamera_temprange_title")
+        colorModeSegmentedControl.setTitle(localizationManager.localizedString("thermalcamera_colormode_color"), forSegmentAt: 0)
+        colorModeSegmentedControl.setTitle(localizationManager.localizedString("thermalcamera_colormode_monochrome"), forSegmentAt: 1)
+        magnificationSegmentedControl.setTitle(localizationManager.localizedString("thermalcamera_magnification_pixelated"), forSegmentAt: 0)
+        magnificationSegmentedControl.setTitle(localizationManager.localizedString("thermalcamera_magnification_filtered"), forSegmentAt: 1)
         
         // Init
         assert(blePeripheral != nil)
@@ -88,7 +102,6 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
         thermalCameraData.isColorEnabled = isColorEnabled
         thermalScaleView.setNeedsDisplay()
     }
-    
 }
 
 // MARK: - ThermalCameraModuleManagerDelegate
@@ -110,7 +123,6 @@ extension ThermalCameraModuleViewController: ThermalCameraModuleManagerDelegate 
             }
             
             // Uart Ready
-            
         }
     }
     

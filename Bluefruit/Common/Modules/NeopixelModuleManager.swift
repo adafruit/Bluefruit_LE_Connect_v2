@@ -276,7 +276,12 @@ class NeopixelModuleManager: NSObject {
 
     func setPixelColor(_ color: Color, colorW: Float, x: UInt8, y: UInt8, completion: ((Bool) -> Void)? = nil) {
         DLog("Command: set Pixel")
-        guard components.numComponents == 3 || components.numComponents == 4 else { DLog("Error: unsupported numComponents: \(components.numComponents)"); return }
+        let numComponents = components.numComponents
+        guard numComponents == 3 || numComponents == 4 else {
+            DLog("Error: unsupported numComponents: \(numComponents)");
+            completion?(false)
+            return
+        }
 
         let rgb = colorComponents(color)
         var command: [UInt8] = [0x50, x, y, rgb.red, rgb.green, rgb.blue ]      // Command: 'P'
@@ -289,11 +294,16 @@ class NeopixelModuleManager: NSObject {
 
     func clearBoard(color: Color, colorW: Float, completion: ((Bool) -> Void)? = nil) {
         DLog("Command: Clear")
-        guard components.numComponents == 3 || components.numComponents == 4 else { DLog("Error: unsupported numComponents: \(components.numComponents)"); return }
+        let numComponents = components.numComponents
+        guard numComponents == 3 || numComponents == 4 else {
+            DLog("Error: unsupported numComponents: \(components.numComponents)");
+            completion?(false)
+            return
+        }
 
         let rgb = colorComponents(color)
         var command: [UInt8] = [0x43, rgb.red, rgb.green, rgb.blue]                 // Command: 'C'
-        if components.numComponents == 4 {
+        if numComponents == 4 {
             let colorWValue = UInt8(colorW*255)
             command.append(colorWValue)
         }
@@ -304,7 +314,7 @@ class NeopixelModuleManager: NSObject {
         DLog("Command: set Brightness: \(brightness)")
 
         let brightnessValue = UInt8(brightness*255)
-        let command: [UInt8] = [0x42, brightnessValue ]          // Command: 'C'
+        let command: [UInt8] = [0x42, brightnessValue ]          // Command: 'B'
         sendCommand(command, completion: completion)
     }
 
@@ -345,7 +355,7 @@ class NeopixelModuleManager: NSObject {
 
     private func sendCommand(data: Data, completion: ((Bool) -> Void)? = nil) {
         guard board != nil else {
-            DLog("setImage: unknown board")
+            DLog("sendCommand: unknown board")
             completion?(false)
             return
         }

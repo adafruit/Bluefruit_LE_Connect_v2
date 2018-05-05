@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 class UartPacketManager: UartPacketManagerBase {
 
     override init(delegate: UartPacketManagerDelegate?, isPacketCacheEnabled: Bool, isMqttEnabled: Bool) {
@@ -40,7 +39,7 @@ class UartPacketManager: UartPacketManagerBase {
 
     func sendAndWaitReply(blePeripheral: BlePeripheral, data: Data?, writeCompletion: ((Error?) -> Void)? = nil, readTimeout: Double? = BlePeripheral.kUartReplyDefaultTimeout, readCompletion: @escaping BlePeripheral.CapturedReadCompletionHandler) {
         sentBytes += Int64(data?.count ?? 0)
-        blePeripheral.uartSendWithAndWaitReply(data: data, writeCompletion: writeCompletion, readTimeout: readTimeout, readCompletion: readCompletion)
+        blePeripheral.uartSendAndWaitReply(data: data, writeCompletion: writeCompletion, readTimeout: readTimeout, readCompletion: readCompletion)
     }
 
     func send(blePeripheral: BlePeripheral, text: String, wasReceivedFromMqtt: Bool = false) {

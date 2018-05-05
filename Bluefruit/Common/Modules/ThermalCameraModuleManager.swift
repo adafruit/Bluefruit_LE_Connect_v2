@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 protocol ThermalCameraModuleManagerDelegate: class {
     func onThermalUartIsReady(error: Error?)
     func onImageUpdated(_ image: UIImage)
@@ -18,7 +17,6 @@ class ThermalCameraModuleManager: NSObject {
     // Config
     private static let kColdHue: Double = 270       // Hue for coldest color
     private static let kHotHue: Double = 0          // Hue for hottest color
-    
     
     // Params
     var isColorEnabled = true
@@ -61,7 +59,6 @@ class ThermalCameraModuleManager: NSObject {
         return minTemperature < Double.greatestFiniteMagnitude && maxTemperature > -Double.greatestFiniteMagnitude
     }
 
-    
     // MARK: - Start / Stop
     func start() {
         DLog("thermalcamera start")
@@ -172,7 +169,6 @@ class ThermalCameraModuleManager: NSObject {
     private let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
     private let bitmapInfo:CGBitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue)
     
-    
     private func imageFromARGB32Bitmap(pixels: [PixelData], width: Int, height: Int) -> UIImage? {
         // Based on http://blog.human-friendly.com/drawing-images-from-pixel-data-in-swift
         guard pixels.count == width * height else { DLog("Invalid pixel count"); return nil }
@@ -200,23 +196,17 @@ class ThermalCameraModuleManager: NSObject {
         return UIImage(cgImage: cgImage)
     }
     
-    
     // MARK: - Color
     public func temperatureComponentsForValue(_ value: Double) -> (r: Double, g: Double, b: Double) {
         if isColorEnabled {
-            return temperatureColorComponentsForValue(value)
+            let hue = ThermalCameraModuleManager.kColdHue + (ThermalCameraModuleManager.kHotHue-ThermalCameraModuleManager.kColdHue) * value
+            return rgb(h: hue, s: 0.7, v: 0.5)
         }
         else {
             return (value, value, value)
         }
     }
-    
-    private func temperatureColorComponentsForValue(_ value: Double) -> (r: Double, g: Double, b: Double) {
-        let hue = ThermalCameraModuleManager.kColdHue + (ThermalCameraModuleManager.kHotHue-ThermalCameraModuleManager.kColdHue) * value
-        let colorComponents = rgb(h: hue, s: 0.7, v: 0.5)
-        return colorComponents
-    }
-    
+        
     private func rgb(h: Double, s: Double, v: Double) -> (r: Double, g: Double, b: Double) {
         // Based on: https://gist.github.com/FredrikSjoberg/cdea97af68c6bdb0a89e3aba57a966ce
         
@@ -250,9 +240,7 @@ class ThermalCameraModuleManager: NSObject {
     private func pixelDataFromRgb(r: Double, g: Double, b: Double) -> PixelData {
         return PixelData(a: 255, r: UInt8(r * 255), g: UInt8(g * 255), b: UInt8(b * 255))
     }
-
 }
-
 
 // MARK: - UartDataManagerDelegate
 extension ThermalCameraModuleManager: UartDataManagerDelegate {

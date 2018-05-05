@@ -185,7 +185,6 @@ class NeopixelModeViewController: PeripheralModeViewController {
             neopixel.setupNeopixel(board: self.board, components: components, is400HzEnabled: is400HkzEnabled, completion: <#T##((Bool) -> (Void))##((Bool) -> (Void))##(Bool) -> (Void)#>)
         }*/
         onClickConnect(self)
-
     }
 
     private func changeBoard(_ board: NeopixelModuleManager.Board) {
@@ -233,36 +232,36 @@ class NeopixelModeViewController: PeripheralModeViewController {
     }
 
     fileprivate func updateStatusUI(isWaitingResponse: Bool) {
-        connectButton.isEnabled = !isWaitingResponse && (neopixel.isSketchDetected != true || (neopixel.isReady() && !neopixel.isBoardConfigured()))
-
         let isBoardConfigured = neopixel.isBoardConfigured()
+        connectButton.isEnabled = !isWaitingResponse && (neopixel.isSketchDetected != true || (neopixel.isReady() && !isBoardConfigured))
+
         boardScrollView.alpha = isBoardConfigured ? 1.0:0.2
         boardControlsView.alpha = isBoardConfigured ? 1.0:0.2
 
-        var statusMessage: String?
+        var statusMessageId: String
         if !neopixel.isReady() {
-            statusMessage = "Waiting for Uart..."
+            statusMessageId = "neopixels_waitingforuart"
         } else if neopixel.isSketchDetected == nil {
-            statusMessage = "Ready to Connect"
+            statusMessageId = "neopixels_status_readytoconnect"
         } else if neopixel.isSketchDetected! {
             if !neopixel.isBoardConfigured() {
                 if isWaitingResponse {
-                    statusMessage = "Waiting for Setup"
+                    statusMessageId = "neopixels_status_waitingsetup"
                 } else {
-                    statusMessage = "Ready to Setup"
+                    statusMessageId = "neopixels_status_readyforsetup"
                 }
             } else {
-                statusMessage = "Connected"
+                statusMessageId = "neopixels_status_connected"
             }
         } else {
             if isWaitingResponse {
-                statusMessage = "Checking Sketch..."
+                statusMessageId = "neopixels_status_checkingsketch"
             }
             else {
-                statusMessage = "Not detected"
+                statusMessageId = "neopixels_status_notdetected"
             }
         }
-        statusLabel.text = statusMessage
+        statusLabel.text = LocalizationManager.sharedInstance.localizedString(statusMessageId)
     }
 
     private func createBoardUI() {

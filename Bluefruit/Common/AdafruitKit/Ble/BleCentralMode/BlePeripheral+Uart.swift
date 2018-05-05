@@ -161,7 +161,7 @@ extension BlePeripheral {
         } while offset < data.count
     }
 
-    func uartSendWithAndWaitReply(data: Data?, writeCompletion: ((Error?) -> Void)? = nil, readTimeout: Double? = BlePeripheral.kUartReplyDefaultTimeout, readCompletion: @escaping CapturedReadCompletionHandler) {
+    func uartSendAndWaitReply(data: Data?, writeCompletion: ((Error?) -> Void)? = nil, readTimeout: Double? = BlePeripheral.kUartReplyDefaultTimeout, readCompletion: @escaping CapturedReadCompletionHandler) {
         
         guard let data = data else {
             if let writeCompletion = writeCompletion {
@@ -185,7 +185,7 @@ extension BlePeripheral {
             return
         }
 
-        // Split data  in kUartTxMaxBytes bytes packets
+        // Split data in kUartTxMaxBytes bytes packets
         var offset = 0
         repeat {
             let packetSize = min(data.count-offset, BlePeripheral.kUartTxMaxBytes)
