@@ -19,6 +19,7 @@ class NeopixelBoardSelectorViewController: UIViewController {
     // UI
     @IBOutlet weak var baseTableView: UITableView!
 
+    // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -53,16 +54,22 @@ extension NeopixelBoardSelectorViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        var title: String?
+        var titleId: String?
         switch section {
         case 0:
-            title = "STANDARD BOARD SIZES"
+            titleId = "neopixelboardselector_standardboardsizes_title"
         case 1:
-            title = "CUSTOM BOARD SIZE"
+            titleId = "neopixelboardselector_customboardsize_title"
         default:
             break
         }
-        return title
+
+        if let titleId = titleId {
+            return LocalizationManager.sharedInstance.localizedString(titleId).uppercased()
+        }
+        else {
+            return nil
+        }
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -93,7 +100,7 @@ extension NeopixelBoardSelectorViewController: UITableViewDelegate {
             let board = boards![row]
             uartCell.titleLabel?.text = board["name"] as? String
         } else {
-            uartCell.titleLabel?.text = "Line Strip"
+            uartCell.titleLabel?.text = LocalizationManager.sharedInstance.localizedString("neopixelboardselector_customboardsize_linestrip")
         }
     }
 

@@ -180,10 +180,6 @@ class NeopixelModeViewController: PeripheralModeViewController {
         self.is400HzEnabled = is400HkzEnabled
         colorPickerWComponentColorView.isHidden = components.numComponents != 4
 
-        /*
-        if neopixel.isBoardConfigured() {
-            neopixel.setupNeopixel(board: self.board, components: components, is400HzEnabled: is400HkzEnabled, completion: <#T##((Bool) -> (Void))##((Bool) -> (Void))##(Bool) -> (Void)#>)
-        }*/
         onClickConnect(self)
     }
 
@@ -197,9 +193,9 @@ class NeopixelModeViewController: PeripheralModeViewController {
     private func showLineStripDialog() {
         // Show dialog
         let localizationManager = LocalizationManager.sharedInstance
-        let alertController = UIAlertController(title: nil, message: "Select line strip length", preferredStyle: .alert)
+        let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("neopixelboardselector_linestriplength_title"), preferredStyle: .alert)
 
-        let okAction = UIAlertAction(title: "Select", style: .default) { (_) in
+        let okAction = UIAlertAction(title: localizationManager.localizedString("neopixelboardselector_linestriplength_action"), style: .default) { (_) in
             let stripLengthTextField = alertController.textFields![0] as UITextField
 
             if let text = stripLengthTextField.text, let stripLength = Int(text) {
@@ -211,7 +207,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
         alertController.addAction(okAction)
 
         alertController.addTextField { textField in
-            textField.placeholder = "Enter Length"
+            textField.placeholder = localizationManager.localizedString("neopixelboardselector_linestriplength_hint")
             textField.keyboardType = .numberPad
 
             NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: .main) { notification in
@@ -370,7 +366,6 @@ class NeopixelModeViewController: PeripheralModeViewController {
                     DispatchQueue.main.async {
                         if success {
                             context.onClickClear(context)
-                            //context.neopixel.clearBoard(color: context.currentColor/*context.kDefaultLedColor*/, colorW: context.colorW)
                         }
 
                         context.updateStatusUI(isWaitingResponse: false)

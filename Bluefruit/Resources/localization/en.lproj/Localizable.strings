@@ -362,6 +362,20 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 
 // Color Picker
 
+"colorpicker_title" = "Color Picker";
+
+"colorpicker_brightness" = "Brightness:";
+"colorpicker_saturation" = "Saturation:";
+"colorpicker_wcomponent" = "W component:";
+"colorpicker_rgb_format" = "RGB: %ld-%ld-%ld";
+"colorpicker_rgbw_format" = "RGBW: %ld-%ld-%ld-%ld";
+"colorpicker_hex_format" = "Hex: %@";
+"colorpicker_select_action" = "Select";
+
+"colorpicker_boardselector_action" = "Board Selector";
+"colorpicker_boardtype_action" = "Board Type";
+"colorpicker_help_action" = "Help";
+
 "colorpicker_help_title" = "Color Picker";
 "colorpicker_help_text" = "The Color Picker sends a color's RGB values to Bluefruit LE.  This can be used to control the state of RGB LEDs such as Neopixels.
 
@@ -400,6 +414,19 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 • Select a color and tap individual pixels to set them
 • Adjust overall brightness as desired using the Brightness slider";
 "neopixel_sketch_tooltip" = "Neopixel support requires a custom sketch to be running on your Arduino.";
+
+// Neopixels Board Selector
+"neopixelboardselector_standardboardsizes_title" = "Standard board sizes";
+"neopixelboardselector_customboardsize_title" = "Custom board size";
+"neopixelboardselector_customboardsize_linestrip" = "Line Strip";
+"neopixelboardselector_linestriplength_title" = "Select line strip length";
+"neopixelboardselector_linestriplength_hint" = "Enter length";
+"neopixelboardselector_linestriplength_action" = "Select";
+
+// Neopixels Component Selector
+"neopixelcomponentselector_speed_title" = "Speed";
+"neopixelcomponentselector_pixelorder_title" = "Pixel Order";
+"neopixelcomponentselector_speed_400khz" = "400 Khz Mode";
 
 // Calibration
 "calibration_tab_title" = "AHRS/Calibration";

@@ -198,8 +198,6 @@
 		A98DE4131E456AFC00EEF4C8 /* NeopixelModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98DE40A1E456AFC00EEF4C8 /* NeopixelModuleViewController.swift */; };
 		A98DE4271E45EB3900EEF4C8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4201E45EB3900EEF4C8 /* Localizable.strings */; };
 		A98DE4281E45EB3900EEF4C8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4201E45EB3900EEF4C8 /* Localizable.strings */; };
-		A98DE4291E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4231E45EB3900EEF4C8 /* Neopixel_Arduino.zip */; };
-		A98DE42A1E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4231E45EB3900EEF4C8 /* Neopixel_Arduino.zip */; };
 		A98DE42B1E45EB3900EEF4C8 /* NeopixelBoards.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */; };
 		A98DE42C1E45EB3900EEF4C8 /* NeopixelBoards.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */; };
 		A98DE42D1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */; };
@@ -557,7 +555,6 @@
 		A98DE4091E456AFC00EEF4C8 /* NeopixelColorPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelColorPickerViewController.swift; sourceTree = "<group>"; };
 		A98DE40A1E456AFC00EEF4C8 /* NeopixelModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeopixelModuleViewController.swift; sourceTree = "<group>"; };
 		A98DE4211E45EB3900EEF4C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		A98DE4231E45EB3900EEF4C8 /* Neopixel_Arduino.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Neopixel_Arduino.zip; sourceTree = "<group>"; };
 		A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelBoards.plist; sourceTree = "<group>"; };
 		A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelDefaultPalette.plist; sourceTree = "<group>"; };
 		A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSelectPeripheralViewController.swift; sourceTree = "<group>"; };
@@ -1421,7 +1418,6 @@
 		A98DE4221E45EB3900EEF4C8 /* NeoPixel */ = {
 			isa = PBXGroup;
 			children = (
-				A98DE4231E45EB3900EEF4C8 /* Neopixel_Arduino.zip */,
 				A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */,
 				A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */,
 			);
@@ -1823,7 +1819,6 @@
 				A9FA1BE91EDEE1C20086CDCC /* NeoPixel.storyboard in Resources */,
 				A9CA08481F35E04200A0C621 /* PeripheralServices.storyboard in Resources */,
 				A9BB78F91EDCECDB004663DE /* magnetometer.scn in Resources */,
-				A98DE4291E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */,
 				A9BB78F71EDCECDB004663DE /* gyroscope.scn in Resources */,
 				A9BB78F51EDCECDB004663DE /* AccelerometerParameters.plist in Resources */,
 				A98DE4271E45EB3900EEF4C8 /* Localizable.strings in Resources */,
@@ -1842,7 +1837,6 @@
 				A9F4E1B61F014B9900BF8A70 /* GattUUIDs.plist in Resources */,
 				A98DE42E1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */,
 				A98DE4281E45EB3900EEF4C8 /* Localizable.strings in Resources */,
-				A98DE42A1E45EB3900EEF4C8 /* Neopixel_Arduino.zip in Resources */,
 				A983783C1E42BFF900170319 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

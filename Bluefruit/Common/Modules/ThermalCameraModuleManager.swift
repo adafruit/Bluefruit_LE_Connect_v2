@@ -84,10 +84,11 @@ class ThermalCameraModuleManager: NSObject {
         return textCachedBuffer
     }
 
+    /*
     func uartRxCacheReset() {
         uartManager.clearRxCache(peripheralIdentifier: blePeripheral.identifier)
         textCachedBuffer.removeAll()
-    }
+    }*/
     
     // MARK: - Process
     fileprivate func processBuffer(adding dataString: String) {

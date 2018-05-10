@@ -254,12 +254,13 @@ class NeopixelModuleManager: NSObject {
             guard let context = self else { completion(false); return }
 
             var success = false
-            if let data = data as? Data, error == nil, let result = String(data: data, encoding: .utf8) {
-                success = result.hasPrefix("OK")
-            } else if let error = error {
+            if let error = error {
                 DLog("Error: setupNeopixel: \(error)")
             }
-
+            else if let data = data as? Data, let result = String(data: data, encoding: .utf8) {
+                success = result.hasPrefix("OK")
+            }
+            
             DLog("setup success: \(success)")
             if success {
                 context.board = device

@@ -66,7 +66,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AdvertisingInfoCell" id="gIN-oI-uSI" customClass="MqttSettingsValueAndSelector" customModule="iOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AdvertisingInfoCell" id="gIN-oI-uSI" customClass="MqttSettingsValueAndSelector" customModule="iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="1024" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="gIN-oI-uSI" id="Buz-f7-b6p">
@@ -104,7 +104,7 @@
                                             <outlet property="valueTextField" destination="ael-P3-HOU" id="h01-Mk-LTM"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ServiceCell" id="XuX-sI-OvQ" customClass="ServiceTableViewCell" customModule="iOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ServiceCell" id="XuX-sI-OvQ" customClass="ServiceTableViewCell" customModule="iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="109.5" width="1024" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="XuX-sI-OvQ" id="BfE-Cg-cpy">
@@ -314,7 +314,7 @@
                                 <rect key="frame" x="20" y="64" width="984" height="660"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ServiceCell" id="NKk-tm-okp" customClass="InfoCharacteristicTableViewCell" customModule="iOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ServiceCell" id="NKk-tm-okp" customClass="InfoCharacteristicTableViewCell" customModule="iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="984" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NKk-tm-okp" id="ZkM-a3-AEg">
@@ -350,7 +350,7 @@
                                             <outlet property="titleLabel" destination="wKf-Gm-4a0" id="H7d-Vg-oC5"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CharacteristicCell" id="Y6w-XW-mdm" customClass="InfoCharacteristicTableViewCell" customModule="iOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="CharacteristicCell" id="Y6w-XW-mdm" customClass="InfoCharacteristicTableViewCell" customModule="iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="115.5" width="984" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="Y6w-XW-mdm" id="0r5-Vw-TMQ">
@@ -385,7 +385,7 @@
                                             <outlet property="titleLabel" destination="oz4-d7-uYb" id="eYV-Mz-5ZN"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DescriptorCell" id="XYC-2Y-Wi9" customClass="InfoCharacteristicTableViewCell" customModule="iOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DescriptorCell" id="XYC-2Y-Wi9" customClass="InfoCharacteristicTableViewCell" customModule="iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="175.5" width="984" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="XYC-2Y-Wi9" id="mCW-Z3-R0Z">
@@ -492,7 +492,7 @@
                                 <rect key="frame" x="20" y="64" width="984" height="704"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SensorCell" id="5Og-na-RiJ" customClass="ControllerSensorTableViewCell" customModule="iOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SensorCell" id="5Og-na-RiJ" customClass="ControllerSensorTableViewCell" customModule="iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="984" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="5Og-na-RiJ" id="Vrf-Uy-E9n">
@@ -526,7 +526,7 @@
                                             <outlet property="titleLabel" destination="GOQ-oW-I6g" id="TiG-t8-d7h"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ComponentsCell" rowHeight="120" id="dXM-FF-U5V" customClass="ControllerComponentsTableViewCell" customModule="iOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ComponentsCell" rowHeight="120" id="dXM-FF-U5V" customClass="ControllerComponentsTableViewCell" customModule="iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="99.5" width="984" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="dXM-FF-U5V" id="Ejt-2v-Zbc">
@@ -658,7 +658,7 @@
                                 <rect key="frame" x="20" y="64" width="984" height="660"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PinCell" id="RHl-fy-Sqt" customClass="PinIOTableViewCell" customModule="iOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PinCell" id="RHl-fy-Sqt" customClass="PinIOTableViewCell" customModule="iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="984" height="150"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="RHl-fy-Sqt" id="3Xr-Ev-69Y">
@@ -1413,7 +1413,6 @@
                         <outlet property="magnificationSegmentedControl" destination="eVC-QI-Tpx" id="tn9-mn-Dwh"/>
                         <outlet property="temperatureRangeLabel" destination="YKw-hk-Umd" id="1b5-yU-iNU"/>
                         <outlet property="temperatureScaleContainerView" destination="n1C-fy-3k3" id="n2b-nW-dxi"/>
-                        <outlet property="temperatureScaleView" destination="Lbc-QC-yzd" id="GcL-EK-Kfy"/>
                         <outlet property="thermalScaleView" destination="Lbc-QC-yzd" id="gNw-9M-6Bk"/>
                         <outlet property="uartWaitingLabel" destination="f6X-wP-OOt" id="WVr-kp-SLn"/>
                         <outlet property="upperTempLabel" destination="P70-ac-WRJ" id="K8U-fH-VHY"/>
@@ -1557,7 +1556,7 @@
                                 <rect key="frame" x="20" y="0.0" width="984" height="768"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DeviceCell" rowHeight="80" id="ARF-f4-8jl" customClass="PeripheralModulesDeviceTableViewCell" customModule="iOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DeviceCell" rowHeight="80" id="ARF-f4-8jl" customClass="PeripheralModulesDeviceTableViewCell" customModule="iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="984" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="ARF-f4-8jl" id="nmw-Hi-T5m">
@@ -1648,7 +1647,7 @@
                                             <outlet property="titleLabel" destination="xTa-mG-Xlg" id="YYs-k2-pQP"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ModuleCell" id="Kle-ht-UFC" customClass="PeripheralModulesTableViewCell" customModule="iOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ModuleCell" id="Kle-ht-UFC" customClass="PeripheralModulesTableViewCell" customModule="iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="135.5" width="984" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="Kle-ht-UFC" id="QvJ-AV-MaO">
@@ -1953,15 +1952,15 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="100" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Sec-Db-U58">
-                                        <rect key="frame" x="87" y="93" width="202" height="31"/>
+                                        <rect key="frame" x="87" y="93" width="206" height="31"/>
                                         <connections>
                                             <action selector="onRssiSliderChanged:" destination="DSy-Yb-eRw" eventType="valueChanged" id="D1e-ri-jcy"/>
                                         </connections>
                                     </slider>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-100 dBM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EXC-Yj-cx4">
-                                        <rect key="frame" x="291" y="99" width="76" height="18"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-100 dBM" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EXC-Yj-cx4">
+                                        <rect key="frame" x="295" y="99" width="72" height="18"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="76" id="Jpq-wM-Qal"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="72" id="Jpq-wM-Qal"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <nil key="textColor"/>
@@ -1996,7 +1995,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Must have UART Service" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7aK-IC-WZP">
-                                        <rect key="frame" x="26" y="189" width="281" height="18"/>
+                                        <rect key="frame" x="26" y="189" width="284" height="18"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -2036,7 +2035,7 @@
                                     <constraint firstItem="Ox3-1q-kTv" firstAttribute="leading" secondItem="lk7-0s-WtG" secondAttribute="leading" id="csN-Fp-vLZ"/>
                                     <constraint firstItem="EXC-Yj-cx4" firstAttribute="baseline" secondItem="4Rv-Pd-Rs8" secondAttribute="baseline" id="eaH-Yf-H8v"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="rUg-DE-Icb" secondAttribute="trailing" id="ec2-4f-8Gy"/>
-                                    <constraint firstItem="3Ge-TN-Srg" firstAttribute="leading" secondItem="7aK-IC-WZP" secondAttribute="trailing" constant="11" id="gfh-bo-dLb"/>
+                                    <constraint firstItem="3Ge-TN-Srg" firstAttribute="leading" secondItem="7aK-IC-WZP" secondAttribute="trailing" constant="8" id="gfh-bo-dLb"/>
                                     <constraint firstAttribute="height" constant="230" id="hzF-JD-CWN"/>
                                     <constraint firstItem="dEM-qB-SJ6" firstAttribute="leading" secondItem="PiD-9p-UD4" secondAttribute="leading" id="izG-a4-qqM"/>
                                     <constraint firstItem="50g-Pp-L8K" firstAttribute="trailing" secondItem="lk7-0s-WtG" secondAttribute="trailing" id="jn6-i5-JjB"/>
@@ -2114,7 +2113,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W25-RG-Geg" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
                                                 <rect key="frame" x="256" y="0.0" width="77" height="36"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="77" id="pSs-Pe-bOA"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="77" id="pSs-Pe-bOA"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
@@ -2392,7 +2391,7 @@
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d98-yH-4uS">
-                                                                                    <rect key="frame" x="82" y="50" width="247" height="0.0"/>
+                                                                                    <rect key="frame" x="82" y="49.5" width="247" height="0.0"/>
                                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                     <nil key="highlightedColor"/>
@@ -2455,7 +2454,7 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="CzO-RQ-cpO" secondAttribute="bottom" id="GxQ-98-iEZ"/>
                                                 <constraint firstItem="AJz-ce-Oin" firstAttribute="bottom" secondItem="XVx-Pc-pIF" secondAttribute="bottom" id="I0T-Ui-W90"/>
                                                 <constraint firstItem="AJz-ce-Oin" firstAttribute="top" secondItem="XVx-Pc-pIF" secondAttribute="top" id="o2e-GA-Jko"/>
-                                                <constraint firstAttribute="trailing" secondItem="XVx-Pc-pIF" secondAttribute="trailing" id="pXg-pE-Uc2"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="XVx-Pc-pIF" secondAttribute="trailing" constant="-15" id="pXg-pE-Uc2"/>
                                                 <constraint firstItem="AJz-ce-Oin" firstAttribute="leading" secondItem="XVx-Pc-pIF" secondAttribute="leading" id="vCd-Iv-xWd"/>
                                                 <constraint firstItem="AJz-ce-Oin" firstAttribute="trailing" secondItem="XVx-Pc-pIF" secondAttribute="trailing" id="vTs-2S-1UY"/>
                                             </constraints>

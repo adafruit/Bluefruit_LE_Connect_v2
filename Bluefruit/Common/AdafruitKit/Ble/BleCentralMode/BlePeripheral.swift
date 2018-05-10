@@ -105,8 +105,8 @@ class BlePeripheral: NSObject {
             self.isNotifyOmitted = isNotifyOmitted
 
             if let timeout = timeout {
-                timeoutTimer = MSWeakTimer.scheduledTimer(withTimeInterval: timeout, target: self, selector: #selector(timerFired), userInfo: nil, repeats: false, dispatchQueue: DispatchQueue.global(qos: .background))
                 self.timeoutAction = timeoutAction
+                timeoutTimer = MSWeakTimer.scheduledTimer(withTimeInterval: timeout, target: self, selector: #selector(timerFired), userInfo: nil, repeats: false, dispatchQueue: .global(qos: .background))
             }
         }
 

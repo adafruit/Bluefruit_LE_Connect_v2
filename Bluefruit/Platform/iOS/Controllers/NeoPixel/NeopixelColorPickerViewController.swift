@@ -22,6 +22,7 @@ class NeopixelColorPickerViewController: UIViewController {
     @IBOutlet weak var valueLabel: UILabel!
     @IBOutlet weak var hexValueLabel: UILabel!
     @IBOutlet weak var sliderGradientView: GradientView!
+    @IBOutlet weak var brightnessLabel: UILabel!
     @IBOutlet weak var wComponentGradientView: GradientView!
     @IBOutlet weak var wComponentLabel: UILabel!
     @IBOutlet weak var wComponentSliderContainerView: UIView!
@@ -77,8 +78,11 @@ class NeopixelColorPickerViewController: UIViewController {
         wComponentSliderContainerView.isHidden = !is4ComponentsEnabled
         wComponentColorView.isHidden = !is4ComponentsEnabled
 
-        // Refresh
-        
+        // Localization
+        let localizationManager = LocalizationManager.sharedInstance
+         self.title = localizationManager.localizedString("colorpicker_title")
+        brightnessLabel.text = localizationManager.localizedString("colorpicker_brightness")
+        wComponentLabel.text = localizationManager.localizedString("colorpicker_wcomponent")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -148,14 +152,15 @@ extension NeopixelColorPickerViewController: ISColorWheelDelegate {
         let blueByte = UInt8(255.0 * Float(blue))
         let rgbHexString = colorHexString(color)
 
+        let localizationManager = LocalizationManager.sharedInstance
         if is4ComponentsEnabled {
             let wByte = UInt8(255.0 * Float(wComponent))
             let wHex = String(format:"%02X", wByte)
-            valueLabel.text = "RGBW: \(redByte)-\(greendByte)-\(blueByte)-\(wByte)"
-            hexValueLabel.text = "Hex: \(rgbHexString)\(wHex)"
+            valueLabel.text = String(format: localizationManager.localizedString("colorpicker_rgbw_format"), redByte, greendByte, blueByte, wByte)
+            hexValueLabel.text = String(format: localizationManager.localizedString("colorpicker_hex_format"), "\(rgbHexString)\(wHex)")
         } else {
-            valueLabel.text = "RGB: \(redByte)-\(greendByte)-\(blueByte)"
-            hexValueLabel.text = "Hex: \(rgbHexString)"
+            valueLabel.text = String(format: localizationManager.localizedString("colorpicker_rgb_format"), redByte, greendByte, blueByte)
+            hexValueLabel.text = String(format: localizationManager.localizedString("colorpicker_hex_format"), rgbHexString)
         }
 
         sliderGradientView.endColor = color

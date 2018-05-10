@@ -21,6 +21,7 @@ class NeopixelComponentSelectorViewController: UIViewController {
     // Data
     fileprivate var components = NeopixelModuleManager.Components.all
 
+    // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -44,16 +45,22 @@ extension NeopixelComponentSelectorViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        var title: String?
+        var titleId: String?
         switch section {
         case 0:
-            title = "SPEED"
+            titleId = "neopixelcomponentselector_speed_title"
         case 1:
-            title = "PIXEL ORDER"
+            titleId = "neopixelcomponentselector_pixelorder_title"
         default:
             break
         }
-        return title
+        
+        if let titleId = titleId {
+            return LocalizationManager.sharedInstance.localizedString(titleId).uppercased()
+        }
+        else {
+            return nil
+        }
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -84,7 +91,7 @@ extension NeopixelComponentSelectorViewController: UITableViewDelegate {
         guard let uartCell = cell as? UartSettingTableViewCell else { return }
 
         if indexPath.section == 0 {
-            uartCell.titleLabel?.text = "400 Khz Mode"
+            uartCell.titleLabel?.text = LocalizationManager.sharedInstance.localizedString("neopixelcomponentselector_speed_400khz")
             uartCell.switchControl.isOn = is400HkzEnabled
             uartCell.onSwitchEnabled = { [unowned self] isEnabled in
                 self.is400HkzEnabled = isEnabled
@@ -95,16 +102,6 @@ extension NeopixelComponentSelectorViewController: UITableViewDelegate {
             uartCell.accessoryType = selectedComponent == component ? .checkmark:.none
         }
     }
-
-    /*
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return 44
-        }
-        else {
-            return 88
-        }
-    }*/
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 

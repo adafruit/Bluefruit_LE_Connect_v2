@@ -16,7 +16,6 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
     @IBOutlet weak var thermalScaleView: ThermalGradientView!
     @IBOutlet weak var lowerTempLabel: UILabel!
     @IBOutlet weak var upperTempLabel: UILabel!
-    @IBOutlet weak var temperatureScaleView: UIView!
     @IBOutlet weak var temperatureScaleContainerView: UIView!
     @IBOutlet weak var filterSegmentedControl: UISegmentedControl!
     @IBOutlet weak var colorModeLabel: UILabel!
@@ -41,8 +40,8 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
         cameraImageView.layer.borderWidth = 1
         cameraImageView.layer.borderColor = UIColor.lightGray.cgColor
 
-        temperatureScaleView.layer.cornerRadius = 4
-        temperatureScaleView.layer.masksToBounds = true
+        thermalScaleView.layer.cornerRadius = 4
+        thermalScaleView.layer.masksToBounds = true
 
         // Localization
         uartWaitingLabel.text = localizationManager.localizedString("thermalcamera_waitingforuart")
