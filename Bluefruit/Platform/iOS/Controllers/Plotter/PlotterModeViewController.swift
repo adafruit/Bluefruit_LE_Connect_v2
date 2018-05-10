@@ -36,7 +36,7 @@ class PlotterModeViewController: PeripheralModeViewController {
         originTimestamp = CFAbsoluteTimeGetCurrent()
 
         // Title
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let name = blePeripheral?.name ?? localizationManager.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("plotter_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("plotter_tab_title")
 
@@ -74,7 +74,7 @@ class PlotterModeViewController: PeripheralModeViewController {
 
         // Enable uart
         if isInMultiUartMode() {            // Multiple peripheral mode
-            let blePeripherals = BleManager.sharedInstance.connectedPeripherals()
+            let blePeripherals = BleManager.shared.connectedPeripherals()
             for (i, blePeripheral) in blePeripherals.enumerated() {
                 lineDashForPeripheral[blePeripheral.identifier] = lineDashes[i % lineDashes.count]
                 blePeripheral.uartEnable(uartRxHandler: uartDataManager.rxDataReceived) { [weak self] error in
@@ -86,10 +86,10 @@ class PlotterModeViewController: PeripheralModeViewController {
                             DLog("Error initializing uart")
                             context.dismiss(animated: true, completion: { [weak self] () -> Void in
                                 if let context = self {
-                                    let localizationManager = LocalizationManager.sharedInstance
+                                    let localizationManager = LocalizationManager.shared
                                     showErrorAlert(from: context, title: localizationManager.localizedString("dialog_error"), message: String(format: localizationManager.localizedString("uart_error_multipleperiperipheralinit_format"), peripheralName))
 
-                                    BleManager.sharedInstance.disconnect(from: blePeripheral)
+                                    BleManager.shared.disconnect(from: blePeripheral)
                                 }
                             })
                             return
@@ -110,11 +110,11 @@ class PlotterModeViewController: PeripheralModeViewController {
                         DLog("Error initializing uart")
                         context.dismiss(animated: true, completion: { [weak self] in
                             guard let context = self else { return }
-                            let localizationManager = LocalizationManager.sharedInstance
+                            let localizationManager = LocalizationManager.shared
                             showErrorAlert(from: context, title: localizationManager.localizedString("dialog_error"), message: localizationManager.localizedString("uart_error_peripheralinit"))
                             
                             if let blePeripheral = context.blePeripheral {
-                                BleManager.sharedInstance.disconnect(from: blePeripheral)
+                                BleManager.shared.disconnect(from: blePeripheral)
                             }
                         })
                         return
@@ -138,7 +138,7 @@ class PlotterModeViewController: PeripheralModeViewController {
         chartView.leftAxis.drawZeroLineEnabled = true
         chartView.setExtraOffsets(left: 10, top: 10, right: 10, bottom: 0)
         chartView.legend.enabled = false
-        chartView.noDataText = LocalizationManager.sharedInstance.localizedString("plotter_nodata")
+        chartView.noDataText = LocalizationManager.shared.localizedString("plotter_nodata")
     }
 
     fileprivate func addEntry(peripheralIdentifier identifier: UUID, index: Int, value: Double, timestamp: CFAbsoluteTime) {
@@ -203,7 +203,7 @@ class PlotterModeViewController: PeripheralModeViewController {
 
     // MARK: - Actions
     @IBAction func onClickHelp(_  sender: UIBarButtonItem) {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
         helpViewController.setHelp(localizationManager.localizedString("plotter_help_text"), title: localizationManager.localizedString("plotter_help_title"))
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)

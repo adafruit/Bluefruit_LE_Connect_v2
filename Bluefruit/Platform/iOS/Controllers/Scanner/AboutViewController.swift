@@ -25,7 +25,7 @@ class AboutViewController: UIViewController {
         }
 
         // Text
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         self.title = localizationManager.localizedString("about_title")
         
         appNameLabel.text = localizationManager.localizedString("about_app_name")

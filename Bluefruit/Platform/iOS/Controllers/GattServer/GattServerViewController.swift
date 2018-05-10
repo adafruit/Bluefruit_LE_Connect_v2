@@ -103,7 +103,7 @@ extension GattServerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         return localizationManager.localizedString( section == 0 ? "peripheral_advertisinginfo" : "peripheral_services")
     }
 }
@@ -113,7 +113,7 @@ extension GattServerViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         if indexPath.section == 0 {
             guard let editValueCell = cell as? MqttSettingsValueAndSelector else { return }
             editValueCell.reset()

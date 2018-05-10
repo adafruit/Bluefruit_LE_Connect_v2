@@ -15,7 +15,7 @@ class UartModeViewController: UartBaseViewController {
         super.viewDidLoad()
         
         // Title
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let name = blePeripheral?.name ?? localizationManager.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("uart_navigation_title_format"), arguments: [name])  : localizationManager.localizedString("uart_tab_title")
         
@@ -42,7 +42,7 @@ class UartModeViewController: UartBaseViewController {
         
         // Enable uart
         if isInMultiUartMode() {            // Multiple peripheral mode
-            let blePeripherals = BleManager.sharedInstance.connectedPeripherals()
+            let blePeripherals = BleManager.shared.connectedPeripherals()
             for (i, blePeripheral) in blePeripherals.enumerated() {
                 colorForPeripheral[blePeripheral.identifier] = colors[i % colors.count]
                 blePeripheral.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
@@ -56,7 +56,7 @@ class UartModeViewController: UartBaseViewController {
                                 if let context = self {
                                     showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized for peripheral: \(peripheralName)")
                                     
-                                    BleManager.sharedInstance.disconnect(from: blePeripheral)
+                                    BleManager.shared.disconnect(from: blePeripheral)
                                 }
                             })
                             return
@@ -84,7 +84,7 @@ class UartModeViewController: UartBaseViewController {
                                 showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
                                 
                                 if let blePeripheral = context.blePeripheral {
-                                    BleManager.sharedInstance.disconnect(from: blePeripheral)
+                                    BleManager.shared.disconnect(from: blePeripheral)
                                 }
                             }
                         })
@@ -105,7 +105,7 @@ class UartModeViewController: UartBaseViewController {
         if let blePeripheral = blePeripheral {      // Single peripheral mode
             uartData.send(blePeripheral: blePeripheral, text: message)
         } else {      // Multiple peripheral mode
-            let peripherals = BleManager.sharedInstance.connectedPeripherals()
+            let peripherals = BleManager.shared.connectedPeripherals()
             
             if let multiUartSendToPeripheralId = multiUartSendToPeripheralId {
                 // Send to single peripheral

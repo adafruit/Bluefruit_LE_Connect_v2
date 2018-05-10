@@ -17,7 +17,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     func applicationDidFinishLaunching() {
 
         // Watch Connectivity
-        WatchSessionManager.sharedInstance.activate(with: self)
+        WatchSessionManager.shared.activate(with: self)
     }
 
     func applicationDidBecomeActive() {
@@ -61,7 +61,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
         if isActive && currentMode == WatchSessionManager.Mode.inactive {
 
-            if let appContext = WatchSessionManager.sharedInstance.session?.receivedApplicationContext, let modeString = appContext["mode"] as? String, let mode = WatchSessionManager.Mode(rawValue: modeString) {
+            if let appContext = WatchSessionManager.shared.session?.receivedApplicationContext, let modeString = appContext["mode"] as? String, let mode = WatchSessionManager.Mode(rawValue: modeString) {
                 updateMode(mode)
             }
         } else if !isActive && currentMode != WatchSessionManager.Mode.inactive {

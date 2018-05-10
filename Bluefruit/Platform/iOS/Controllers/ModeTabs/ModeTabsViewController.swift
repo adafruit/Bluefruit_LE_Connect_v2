@@ -17,7 +17,7 @@ class ModeTabsViewController: ScrollingTabBarViewController {
         // Add Tab ViewControllers
         var viewControllers = [ModeTabViewController]()
         
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         if let scannerViewController = self.storyboard?.instantiateViewController(withIdentifier: "ScannerViewController") as? ScannerViewController  {
             // Add scanner to tabs content viewcontroller
             scannerViewController.tabBarItem.title = localizationManager.localizedString("main_tabbar_centralmode")      // Tab title

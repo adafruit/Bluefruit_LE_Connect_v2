@@ -21,7 +21,7 @@ class WatchSessionManager {
     }
 
     // Singleton
-    static let sharedInstance = WatchSessionManager()
+    static let shared = WatchSessionManager()
 
     // Data
     var session: WCSession?
@@ -39,7 +39,7 @@ class WatchSessionManager {
     // MARK: - iOS Specific
     #if os(iOS)
     func updateApplicationContext(mode: Mode) {
-        guard let session = WatchSessionManager.sharedInstance.session, session.isPaired && session.isWatchAppInstalled else {
+        guard let session = WatchSessionManager.shared.session, session.isPaired && session.isWatchAppInstalled else {
             return
         }
 
@@ -50,10 +50,10 @@ class WatchSessionManager {
         }
 
         do {
-            let peripheralsCount = BleManager.sharedInstance.peripherals().count
+            let peripheralsCount = BleManager.shared.peripherals().count
             var appContext: [String: Any] = ["mode": mode.rawValue, "bleFoundPeripherals": peripheralsCount]
 
-            if let bleConnectedPeripheral = BleManager.sharedInstance.connectedPeripherals().first {
+            if let bleConnectedPeripheral = BleManager.shared.connectedPeripherals().first {
                 appContext["bleConnectedPeripheralName"] = bleConnectedPeripheral.name
                 appContext["bleHasUart"] = bleConnectedPeripheral.isUartAdvertised()
             }

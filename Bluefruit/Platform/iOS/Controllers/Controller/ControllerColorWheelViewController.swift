@@ -84,7 +84,7 @@ class ControllerColorWheelViewController: UIViewController {
     }
 
     @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
         helpViewController.setHelp(localizationManager.localizedString("colorpicker_help_text"), title: localizationManager.localizedString("colorpicker_help_title"))
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)

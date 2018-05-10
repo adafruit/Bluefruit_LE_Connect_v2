@@ -60,7 +60,7 @@ class ControlPadInterfaceController: WKInterfaceController {
     }
 
     private func onClickControlPadButton(_ tag: Int) {
-        if let session = WatchSessionManager.sharedInstance.session {
+        if let session = WatchSessionManager.shared.session {
             session.sendMessage(["command": "controlPad", "tag": tag], replyHandler: nil) { (error) in
                 DLog("controlPad error: \(error)")
             }

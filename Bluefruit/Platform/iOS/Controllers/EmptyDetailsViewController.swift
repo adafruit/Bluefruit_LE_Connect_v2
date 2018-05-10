@@ -40,7 +40,7 @@ class EmptyDetailsViewController: PeripheralModeViewController {
         self.isConnnecting = isConnecting
 
         loadViewIfNeeded()
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         emptyLabel.text = localizationManager.localizedString(isConnecting ? "peripheraldetails_connecting" : "peripheraldetails_select")
     }
     

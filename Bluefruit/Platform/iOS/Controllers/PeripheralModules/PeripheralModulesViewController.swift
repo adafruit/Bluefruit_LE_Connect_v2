@@ -56,7 +56,7 @@ class PeripheralModulesViewController: UIViewController {
         }
 
         emptyViewController = storyboard?.instantiateViewController(withIdentifier: "EmptyDetailsViewController") as? EmptyDetailsViewController
-        self.title = LocalizationManager.sharedInstance.localizedString("peripheralmodules_title")
+        self.title = LocalizationManager.shared.localizedString("peripheralmodules_title")
         
         // Note: Services should have been discovered previously because we will invoke .hasUart, .hasBattery, etc...
         
@@ -67,7 +67,7 @@ class PeripheralModulesViewController: UIViewController {
             setupBatteryUI(blePeripheral: blePeripheral)
             baseTableView.reloadData()
         } else if connectionMode == .multiplePeripherals {
-            for blePeripheral in BleManager.sharedInstance.connectedPeripherals() {
+            for blePeripheral in BleManager.shared.connectedPeripherals() {
                 setupBatteryUI(blePeripheral: blePeripheral)
             }
             baseTableView.reloadData()
@@ -112,7 +112,7 @@ class PeripheralModulesViewController: UIViewController {
         if let blePeripheral = blePeripheral {
             stopBatterUI(blePeripheral: blePeripheral)
         } else if connectionMode == .multiplePeripherals {
-            for blePeripheral in BleManager.sharedInstance.connectedPeripherals() {
+            for blePeripheral in BleManager.shared.connectedPeripherals() {
                 stopBatterUI(blePeripheral: blePeripheral)
             }
         }
@@ -190,7 +190,7 @@ class PeripheralModulesViewController: UIViewController {
 
     // MARK: - MultiUart Mode
     fileprivate func isInMultiUartMode() -> Bool {
-        return blePeripheral == nil && BleManager.sharedInstance.connectedPeripherals().count > 0
+        return blePeripheral == nil && BleManager.shared.connectedPeripherals().count > 0
     }
     
     // MARK: - UI
@@ -298,7 +298,7 @@ extension PeripheralModulesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch TableSection(rawValue: section)! {
         case .device:
-            return BleManager.sharedInstance.connectedPeripherals().count
+            return BleManager.shared.connectedPeripherals().count
         case .modules:
             return menuItems().count
         }
@@ -315,7 +315,7 @@ extension PeripheralModulesViewController: UITableViewDataSource {
             localizationKey = "peripheralmodules_sectiontitle_modules"
         }
         
-        return LocalizationManager.sharedInstance.localizedString(localizationKey)
+        return LocalizationManager.shared.localizedString(localizationKey)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -338,12 +338,12 @@ extension PeripheralModulesViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         
         switch TableSection(rawValue: indexPath.section)! {
         case .device:
             guard let deviceCell = cell as? PeripheralModulesDeviceTableViewCell else { return }
-            let peripherals = BleManager.sharedInstance.connectedPeripherals()
+            let peripherals = BleManager.shared.connectedPeripherals()
             guard peripherals.count > 0, indexPath.row < peripherals.count else { return }
             let peripheral = peripherals[indexPath.row]
             

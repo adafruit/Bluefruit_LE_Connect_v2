@@ -84,7 +84,7 @@ class UartBaseViewController: PeripheralModeViewController {
         baseTextView.layer.borderColor = UIColor.lightGray.cgColor
         
         // Setup controls
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         displayModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_displayMode_timestamp"), forSegmentAt: 0)
         displayModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_displayMode_text"), forSegmentAt: 1)
         dataModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_dataMode_ascii"), forSegmentAt: 0)
@@ -281,7 +281,7 @@ class UartBaseViewController: PeripheralModeViewController {
     }
     
     fileprivate func updateBytesUI() {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let sentBytesMessage = String(format: localizationManager.localizedString("uart_sentbytes_format"), arguments: [uartData.sentBytes])
         let receivedBytesMessage = String(format: localizationManager.localizedString("uart_receivedbytes_format"), arguments: [uartData.receivedBytes])
         
@@ -343,7 +343,7 @@ class UartBaseViewController: PeripheralModeViewController {
             return
         }
         
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let alertController = UIAlertController(title: "Export data", message: "Choose the prefered format:", preferredStyle: .actionSheet)
         
         for exportFormat in UartModeViewController.kExportFormats {
@@ -393,7 +393,7 @@ class UartBaseViewController: PeripheralModeViewController {
     }
     
     private func showDialogWarningNoTextToExport() {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("uart_export_nodata"), preferredStyle: .alert)
         let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler:nil)
         alertController.addAction(okAction)
@@ -419,7 +419,7 @@ class UartBaseViewController: PeripheralModeViewController {
     }
     
     @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
         helpViewController.setHelp(localizationManager.localizedString("uart_help_text"), title: localizationManager.localizedString("uart_help_title"))
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
@@ -464,7 +464,7 @@ extension UartBaseViewController: UITableViewDataSource {
         let dataPacket = tableCachedDataBuffer![indexPath.row]
         let date = Date(timeIntervalSinceReferenceDate: dataPacket.timestamp)
         let dateString = timestampDateFormatter.string(from: date)
-        let modeString = LocalizationManager.sharedInstance.localizedString(dataPacket.mode == .rx ? "uart_timestamp_direction_rx" : "uart_timestamp_direction_tx")
+        let modeString = LocalizationManager.shared.localizedString(dataPacket.mode == .rx ? "uart_timestamp_direction_rx" : "uart_timestamp_direction_tx")
         let color = colorForPacket(packet: dataPacket)
         let font = fontForPacket(packet: dataPacket)
         
@@ -573,7 +573,7 @@ extension UartBaseViewController: UartPacketManagerDelegate {
     }
     
     func mqttError(message: String, isConnectionError: Bool) {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         
         let alertMessage = isConnectionError ? localizationManager.localizedString("uart_mqtt_connectionerror_title") : message
         let alertController = UIAlertController(title: nil, message: alertMessage, preferredStyle: .alert)

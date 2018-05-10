@@ -39,7 +39,7 @@ class UartMqttSettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = LocalizationManager.sharedInstance.localizedString("uart_mqtt_settings_title")
+        self.title = LocalizationManager.shared.localizedString("uart_mqtt_settings_title")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -65,7 +65,7 @@ class UartMqttSettingsViewController: UIViewController {
         case .advanced: key = "uart_mqtt_settings_group_advanced"
         }
 
-        return (key==nil ? nil : LocalizationManager.sharedInstance.localizedString(key!).uppercased())
+        return (key==nil ? nil : LocalizationManager.shared.localizedString(key!).uppercased())
     }
 
     fileprivate func subscriptionTopicChanged(_ newTopic: String?, qos: MqttManager.MqttQos) {

@@ -40,7 +40,7 @@ class DfuUpdateProcess: NSObject {
             return
         }
 
-        guard let centralManager = BleManager.sharedInstance.centralManager else {
+        guard let centralManager = BleManager.shared.centralManager else {
             delegate?.onUpdateProcessError(errorMessage: "Bluetooth not ready", infoMessage: nil)
             return
         }
@@ -66,7 +66,7 @@ class DfuUpdateProcess: NSObject {
             return
         }
         
-        guard let centralManager = BleManager.sharedInstance.centralManager else {
+        guard let centralManager = BleManager.shared.centralManager else {
             delegate?.onUpdateProcessError(errorMessage: "Bluetooth not ready", infoMessage: nil)
             return
         }

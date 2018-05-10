@@ -175,7 +175,7 @@ class ColorPaletteInterfaceController: WKInterfaceController {
     }
 
     private func onClickColor(_ tag: Int) {
-        guard let session = WatchSessionManager.sharedInstance.session else { return }
+        guard let session = WatchSessionManager.shared.session else { return }
 
         let color = ColorPaletteInterfaceController.palette[tag]
         let hex = colorHexInt(color)

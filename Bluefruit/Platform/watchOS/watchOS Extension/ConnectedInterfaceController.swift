@@ -26,7 +26,7 @@ class ConnectedInterfaceController: WKInterfaceController {
         super.willActivate()
 
         // Update values
-        if let appContext = WatchSessionManager.sharedInstance.session?.receivedApplicationContext {
+        if let appContext = WatchSessionManager.shared.session?.receivedApplicationContext {
             didReceiveApplicationContext(appContext)
         }
     }

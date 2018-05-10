@@ -31,8 +31,8 @@ class DfuModeViewController: PeripheralModeViewController {
         assert(blePeripheral != nil)
 
         // Title
-        let localizationManager = LocalizationManager.sharedInstance
-        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("scanner_unnamed")
+        let localizationManager = LocalizationManager.shared
+        let name = blePeripheral?.name ?? LocalizationManager.shared.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("dfu_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("dfu_tab_title")
     
         // Init Data
@@ -91,7 +91,7 @@ class DfuModeViewController: PeripheralModeViewController {
 
     // MARK: - Actions
     @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
         helpViewController.setHelp(localizationManager.localizedString("dfu_help_text"), title: localizationManager.localizedString("dfu_help_title"))
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
@@ -108,7 +108,7 @@ class DfuModeViewController: PeripheralModeViewController {
             return
         }
 
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
 
         let compareBootloader = dis.bootloaderVersion?.caseInsensitiveCompare(firmwareBootloaderVersion)
         if compareBootloader == .orderedDescending || compareBootloader == .orderedSame {        // Requeriments met
@@ -183,9 +183,9 @@ extension DfuModeViewController: FirmwareUpdaterDelegate {
         // Update UI
         DispatchQueue.main.async {
             if self.dis == nil {
-                showErrorAlert(from: self, title: LocalizationManager.sharedInstance.localizedString("dialog_error"), message: "Device Information Service not found. Unable to peform an OTA DFU update")
+                showErrorAlert(from: self, title: LocalizationManager.shared.localizedString("dialog_error"), message: "Device Information Service not found. Unable to peform an OTA DFU update")
             } else if let dis = self.dis, dis.hasDefaultBootloaderVersion {
-                showErrorAlert(from: self, title: LocalizationManager.sharedInstance.localizedString("dialog_error"), message: LocalizationManager.sharedInstance.localizedString("dfu_legacybootloader"))
+                showErrorAlert(from: self, title: LocalizationManager.shared.localizedString("dialog_error"), message: LocalizationManager.shared.localizedString("dfu_legacybootloader"))
             }
 
             // Refresh
@@ -195,13 +195,13 @@ extension DfuModeViewController: FirmwareUpdaterDelegate {
 
     func onDfuServiceNotFound() {
 
-        onUpdateProcessError(errorMessage: LocalizationManager.sharedInstance.localizedString("dfu_dfunotavailable"), infoMessage: nil)
+        onUpdateProcessError(errorMessage: LocalizationManager.shared.localizedString("dfu_dfunotavailable"), infoMessage: nil)
     }
 
     fileprivate func onUpdateDialogError(_ errorMessage: String) {
         guard presentedViewController == nil else { return }
 
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let alertController = UIAlertController(title: nil, message: errorMessage, preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: nil)
@@ -258,7 +258,7 @@ extension DfuModeViewController: UITableViewDataSource {
             localizationKey = "dfu_bootloaderreleases_title"
         }
 
-        return LocalizationManager.sharedInstance.localizedString(localizationKey)
+        return LocalizationManager.shared.localizedString(localizationKey)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -294,7 +294,7 @@ extension DfuModeViewController: UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension DfuModeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         
         switch DfuSection(rawValue: indexPath.section)! {
         case .currentVersion:
@@ -370,7 +370,7 @@ extension DfuModeViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let dis = dis else {
-            showErrorAlert(from: self, title: LocalizationManager.sharedInstance.localizedString("dialog_error"), message: "Device Information Service not found. Unable to peform an OTA DFU update")
+            showErrorAlert(from: self, title: LocalizationManager.shared.localizedString("dialog_error"), message: "Device Information Service not found. Unable to peform an OTA DFU update")
             return
         }
 
@@ -381,7 +381,7 @@ extension DfuModeViewController: UITableViewDelegate {
         case .firmwareReleases:
             if selectedRow >= 0 {
                 if dis.hasDefaultBootloaderVersion {
-                    showErrorAlert(from: self, title: LocalizationManager.sharedInstance.localizedString("dialog_error"), message: LocalizationManager.sharedInstance.localizedString("dfu_legacybootloader"))
+                    showErrorAlert(from: self, title: LocalizationManager.shared.localizedString("dialog_error"), message: LocalizationManager.shared.localizedString("dfu_legacybootloader"))
                     //onUpdateProcessError(errorMessage: LocalizationManager.sharedInstance.localizedString("dialog_error"), infoMessage: LocalizationManager.sharedInstance.localizedString("dfu_legacybootloader"))
                 } else {
                     let firmwareInfo = firmwareInfoForRow(indexPath.row)
@@ -415,7 +415,7 @@ extension  DfuModeViewController: DfuUpdateProcessDelegate {
         }
         //BleManager.sharedInstance.restoreCentralManager()
 
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("dfu_udaptedcompleted_message"), preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default) { [unowned self] _ in
@@ -428,10 +428,10 @@ extension  DfuModeViewController: DfuUpdateProcessDelegate {
 
     fileprivate func restoreCentralManager() {
         DLog("Restoring Central Manager from DFU")
-        BleManager.sharedInstance.restoreCentralManager()
+        BleManager.shared.restoreCentralManager()
 
         // Check if we are no longer connected
-        let currentlyConnectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
+        let currentlyConnectedPeripherals = BleManager.shared.connectedPeripherals()
         DLog("currentlyConnectedPeripherals: \(currentlyConnectedPeripherals.count)")
         if currentlyConnectedPeripherals.count == 0 {
             // Simulate disconnection to trigger the go back to scanning
@@ -447,7 +447,7 @@ extension  DfuModeViewController: DfuUpdateProcessDelegate {
             dfuDialogViewController.dismiss(animated: false, completion: nil)
         }
 
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let alertController = UIAlertController(title: (infoMessage != nil ? errorMessage:nil), message: (infoMessage != nil ? infoMessage : errorMessage), preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default) { [weak self] _ in
@@ -484,7 +484,7 @@ extension DfuModeViewController: DfuFilesPickerDialogViewControllerDelegate {
                 self.dfuUpdateProcess.startUpdateForPeripheral(peripheral: self.blePeripheral!.peripheral, hexUrl: hexUrl, iniUrl:iniUrl)
                 })
         } else {
-            let localizationManager = LocalizationManager.sharedInstance
+            let localizationManager = LocalizationManager.shared
             let alertController = UIAlertController(title: nil, message: "At least an Hex file should be selected", preferredStyle: .alert)
 
             let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: nil)

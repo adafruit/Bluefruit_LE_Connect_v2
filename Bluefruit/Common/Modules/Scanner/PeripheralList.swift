@@ -72,7 +72,7 @@ class PeripheralList {
 
     func numPeripheralsFiltered() -> Int {
         let filteredCount = filteredPeripherals(forceUpdate: false).count
-        return BleManager.sharedInstance.peripherals().count - filteredCount
+        return BleManager.shared.peripherals().count - filteredCount
     }
     
     func filteredPeripherals(forceUpdate: Bool) -> [BlePeripheral] {
@@ -89,7 +89,7 @@ class PeripheralList {
 
     private func calculateFilteredPeripherals() -> [BlePeripheral] {
         let kUnnamedSortingString = "~~~"       // Unnamed devices go to the bottom
-        var peripherals = BleManager.sharedInstance.peripherals().sorted(by: {$0.name ?? kUnnamedSortingString < $1.name ?? kUnnamedSortingString})
+        var peripherals = BleManager.shared.peripherals().sorted(by: {$0.name ?? kUnnamedSortingString < $1.name ?? kUnnamedSortingString})
 
         // Apply filters
         if isOnlyUartEnabled {
@@ -135,7 +135,7 @@ class PeripheralList {
             filtersTitle = filterName
         }
 
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         if let rssiFilterValue = rssiFilterValue {
             let rssiString = String(format: localizationManager.localizedString("scanner_filter_rssi_description_format"), rssiFilterValue) //  "RSSI >= \(rssiFilterValue)"
             if filtersTitle != nil && !filtersTitle!.isEmpty {

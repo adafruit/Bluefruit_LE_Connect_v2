@@ -92,7 +92,7 @@ class DeviceInformationPeripheralService: PeripheralService {
     override init() {
         super.init()
         
-        name = LocalizationManager.sharedInstance.localizedString("peripheral_dis_title")
+        name = LocalizationManager.shared.localizedString("peripheral_dis_title")
         
         service = CBMutableService(type: DeviceInformationPeripheralService.kDisServiceUUID, primary: true)
         characteristics = [manufacturerNameCharacteristic, modelNumberCharacteristic, serialNumberCharacteristic, hardwareNumberCharacteristic, firmwareRevisionCharacteristic, softwareRevisionCharacteristic]

@@ -56,8 +56,8 @@ class NeopixelModeViewController: PeripheralModeViewController {
         super.viewDidLoad()
 
         // Title
-        let localizationManager = LocalizationManager.sharedInstance
-        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("scanner_unnamed")
+        let localizationManager = LocalizationManager.shared
+        let name = blePeripheral?.name ?? LocalizationManager.shared.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("neopixels_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("neopixels_tab_title")
         
         // Init
@@ -100,7 +100,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
                         showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
                         
                         if let blePeripheral = context.blePeripheral {
-                            BleManager.sharedInstance.disconnect(from: blePeripheral)
+                            BleManager.shared.disconnect(from: blePeripheral)
                         }
                     })
                     return
@@ -117,7 +117,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
 
         // Show tooltip alert
         if Preferences.neopixelIsSketchTooltipEnabled && !isSketchTooltipAlreadyShown {
-            let localizationManager = LocalizationManager.sharedInstance
+            let localizationManager = LocalizationManager.shared
             let alertController = UIAlertController(title: localizationManager.localizedString("dialog_notice"), message: localizationManager.localizedString("neopixel_sketch_tooltip"), preferredStyle: .alert)
 
             let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler:nil)
@@ -192,7 +192,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
 
     private func showLineStripDialog() {
         // Show dialog
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("neopixelboardselector_linestriplength_title"), preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: localizationManager.localizedString("neopixelboardselector_linestriplength_action"), style: .default) { (_) in
@@ -257,7 +257,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
                 statusMessageId = "neopixels_status_notdetected"
             }
         }
-        statusLabel.text = LocalizationManager.sharedInstance.localizedString(statusMessageId)
+        statusLabel.text = LocalizationManager.shared.localizedString(statusMessageId)
     }
 
     private func createBoardUI() {
@@ -395,7 +395,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
     }
 
     @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
 
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
         helpViewController.setHelp(localizationManager.localizedString("neopixel_help_text"), title: localizationManager.localizedString("neopixel_help_title"))

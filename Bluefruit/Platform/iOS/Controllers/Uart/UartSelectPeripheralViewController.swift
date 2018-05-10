@@ -35,7 +35,7 @@ class UartSelectPeripheralViewController: UIViewController {
 extension UartSelectPeripheralViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        connectedPeripherals = BleManager.sharedInstance.connectedPeripherals()
+        connectedPeripherals = BleManager.shared.connectedPeripherals()
         return connectedPeripherals.count + 1   // +1 All
     }
 
@@ -61,7 +61,7 @@ extension UartSelectPeripheralViewController: UITableViewDelegate {
         } else {
             let peripheral = connectedPeripherals[indexPath.row-1]
 
-            let localizationManager = LocalizationManager.sharedInstance
+            let localizationManager = LocalizationManager.shared
             cell.textLabel?.text = peripheral.name ?? localizationManager.localizedString("scanner_unnamed")
             cell.textLabel?.textColor = colorForPeripheral?[peripheral.identifier] ?? UIColor.black
         }
@@ -69,7 +69,7 @@ extension UartSelectPeripheralViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         if indexPath.row == 0 {
             delegate?.onUartSendToChanged(uuid: nil, name: localizationManager.localizedString("uart_send_toall_action"))
         } else {

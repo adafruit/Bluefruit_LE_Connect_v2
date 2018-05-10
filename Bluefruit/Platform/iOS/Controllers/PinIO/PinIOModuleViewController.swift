@@ -20,8 +20,8 @@ class PinIOModeViewController: PeripheralModeViewController {
         super.viewDidLoad()
 
         // Title
-        let localizationManager = LocalizationManager.sharedInstance
-        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("scanner_unnamed")
+        let localizationManager = LocalizationManager.shared
+        let name = blePeripheral?.name ?? LocalizationManager.shared.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("pinio_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("pinio_tab_title")
 
         // Init
@@ -48,7 +48,7 @@ class PinIOModeViewController: PeripheralModeViewController {
                             showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
                             
                             if let blePeripheral = context.blePeripheral {
-                                BleManager.sharedInstance.disconnect(from: blePeripheral)
+                                BleManager.shared.disconnect(from: blePeripheral)
                             }
                         })
                         return
@@ -96,7 +96,7 @@ class PinIOModeViewController: PeripheralModeViewController {
         }
 
         // Show dialog
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("pinio_capabilityquery_querying_title"), preferredStyle: .alert)
 
         alertController.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_cancel"), style: .cancel, handler: { [weak self] (_) -> Void in
@@ -112,7 +112,7 @@ class PinIOModeViewController: PeripheralModeViewController {
     func defaultCapabilitiesAssumedDialog() {
 
         DLog("QueryCapabilities not found")
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let alertController = UIAlertController(title: localizationManager.localizedString("pinio_capabilityquery_expired_title"), message: localizationManager.localizedString("pinio_capabilityquery_expired_message"), preferredStyle: .alert)
         let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: { (_) -> Void in
         })
@@ -126,7 +126,7 @@ class PinIOModeViewController: PeripheralModeViewController {
     }
 
     @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
         helpViewController.setHelp(localizationManager.localizedString("pinio_help_text"), title: localizationManager.localizedString("pinio_help_title"))
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
@@ -145,7 +145,7 @@ extension PinIOModeViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return LocalizationManager.sharedInstance.localizedString("pinio_pins_header")
+        return LocalizationManager.shared.localizedString("pinio_pins_header")
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

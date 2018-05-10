@@ -233,15 +233,15 @@ class ControllerModuleManager: NSObject {
                     case .notDetermined:
                         locationManager.requestWhenInUseAuthorization()
                     case .denied:
-                        errorString = LocalizationManager.sharedInstance.localizedString("controller_sensor_location_denied")
+                        errorString = LocalizationManager.shared.localizedString("controller_sensor_location_denied")
                     case .restricted:
-                        errorString = LocalizationManager.sharedInstance.localizedString("controller_sensor_location_restricted")
+                        errorString = LocalizationManager.shared.localizedString("controller_sensor_location_restricted")
                     default:
                         locationManager.startUpdatingLocation()
                     }
                 } else {      // Location services disabled
                     DLog("Location services disabled")
-                    errorString = LocalizationManager.sharedInstance.localizedString("controller_sensor_location_disabled")
+                    errorString = LocalizationManager.shared.localizedString("controller_sensor_location_disabled")
                 }
             } else {
                 locationManager.stopUpdatingLocation()

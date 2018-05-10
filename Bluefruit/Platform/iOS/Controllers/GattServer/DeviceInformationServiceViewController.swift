@@ -49,7 +49,7 @@ extension DeviceInformationServiceViewController: UITableViewDataSource {
         let editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueCell", for: indexPath) as! MqttSettingsValueAndSelector
         editValueCell.reset()
         
-        editValueCell.nameLabel.text = LocalizationManager.sharedInstance.localizedString(DeviceInformationServiceViewController.labelStringIds[row])
+        editValueCell.nameLabel.text = LocalizationManager.shared.localizedString(DeviceInformationServiceViewController.labelStringIds[row])
         
         let valueTextField = editValueCell.valueTextField!
         if row == 0 {
@@ -77,7 +77,7 @@ extension DeviceInformationServiceViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return LocalizationManager.sharedInstance.localizedString("peripheral_characteristics")
+        return LocalizationManager.shared.localizedString("peripheral_characteristics")
     }
 }
 

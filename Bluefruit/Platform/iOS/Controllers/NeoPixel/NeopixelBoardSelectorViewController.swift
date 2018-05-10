@@ -65,7 +65,7 @@ extension NeopixelBoardSelectorViewController: UITableViewDataSource {
         }
 
         if let titleId = titleId {
-            return LocalizationManager.sharedInstance.localizedString(titleId).uppercased()
+            return LocalizationManager.shared.localizedString(titleId).uppercased()
         }
         else {
             return nil
@@ -100,7 +100,7 @@ extension NeopixelBoardSelectorViewController: UITableViewDelegate {
             let board = boards![row]
             uartCell.titleLabel?.text = board["name"] as? String
         } else {
-            uartCell.titleLabel?.text = LocalizationManager.sharedInstance.localizedString("neopixelboardselector_customboardsize_linestrip")
+            uartCell.titleLabel?.text = LocalizationManager.shared.localizedString("neopixelboardselector_customboardsize_linestrip")
         }
     }
 

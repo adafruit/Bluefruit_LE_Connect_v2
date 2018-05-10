@@ -27,7 +27,7 @@ class UartPeripheralService: PeripheralService {
     override init() {
         super.init()
         
-        name = LocalizationManager.sharedInstance.localizedString("peripheral_uart_title")
+        name = LocalizationManager.shared.localizedString("peripheral_uart_title")
         
         service = CBMutableService(type: UartPeripheralService.kUartServiceUUID, primary: true)
         characteristics = [txCharacteristic, rxCharacteristic]

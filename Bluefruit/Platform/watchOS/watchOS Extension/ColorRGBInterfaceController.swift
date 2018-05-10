@@ -80,7 +80,7 @@ class ColorRGBInterfaceController: WKInterfaceController {
     }
 
     @IBAction func onClickSend() {
-        guard let session = WatchSessionManager.sharedInstance.session else { return }
+        guard let session = WatchSessionManager.shared.session else { return }
 
         let hex = colorHexInt(swatchColor)
         session.sendMessage(["command": "color", "color": hex], replyHandler: nil) { (error) in

@@ -32,8 +32,8 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
         super.viewDidLoad()
 
         // Title
-        let localizationManager = LocalizationManager.sharedInstance
-        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("scanner_unnamed")
+        let localizationManager = LocalizationManager.shared
+        let name = blePeripheral?.name ?? LocalizationManager.shared.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("thermalcamera_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("thermalcamera_tab_title")
         
         // Style
@@ -115,7 +115,7 @@ extension ThermalCameraModuleViewController: ThermalCameraModuleManagerDelegate 
                     showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
                     
                     if let blePeripheral = context.blePeripheral {
-                        BleManager.sharedInstance.disconnect(from: blePeripheral)
+                        BleManager.shared.disconnect(from: blePeripheral)
                     }
                 })
                 return

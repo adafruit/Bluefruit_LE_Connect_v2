@@ -18,8 +18,8 @@ class CalibrationMenuViewController: PeripheralModeViewController {
         super.viewDidLoad()
 
         // Title
-        let localizationManager = LocalizationManager.sharedInstance
-        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("scanner_unnamed")
+        let localizationManager = LocalizationManager.shared
+        let name = blePeripheral?.name ?? LocalizationManager.shared.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("calibration_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("calibration_tab_title")
         
         // UI

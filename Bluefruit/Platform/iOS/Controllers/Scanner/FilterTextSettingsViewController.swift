@@ -58,7 +58,7 @@ extension FilterTextSettingsViewController: UITableViewDataSource {
         var title: String
         var accesoryType: UITableViewCellAccessoryType
 
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         if let peripheralList = peripheralList {
             switch indexPath.section {
             case 0:

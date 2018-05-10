@@ -20,7 +20,7 @@ class BleManager: NSObject {
     fileprivate static let kAlwaysAllowDuplicateKeys = true
 
     // Singleton
-    static let sharedInstance = BleManager()
+    static let shared = BleManager()
 
     // Ble
     var centralManager: CBCentralManager?

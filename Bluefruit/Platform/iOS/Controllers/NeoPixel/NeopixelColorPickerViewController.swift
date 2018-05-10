@@ -79,7 +79,7 @@ class NeopixelColorPickerViewController: UIViewController {
         wComponentColorView.isHidden = !is4ComponentsEnabled
 
         // Localization
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
          self.title = localizationManager.localizedString("colorpicker_title")
         brightnessLabel.text = localizationManager.localizedString("colorpicker_brightness")
         wComponentLabel.text = localizationManager.localizedString("colorpicker_wcomponent")
@@ -152,7 +152,7 @@ extension NeopixelColorPickerViewController: ISColorWheelDelegate {
         let blueByte = UInt8(255.0 * Float(blue))
         let rgbHexString = colorHexString(color)
 
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         if is4ComponentsEnabled {
             let wByte = UInt8(255.0 * Float(wComponent))
             let wHex = String(format:"%02X", wByte)

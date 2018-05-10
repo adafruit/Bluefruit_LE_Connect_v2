@@ -151,7 +151,7 @@ extension UartSettingsViewController: UITableViewDataSource {
 
         guard let uartCell = cell as? UartSettingTableViewCell else { return }
 
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         var titleKey: String?
         let row = indexPath.row
 

@@ -78,8 +78,8 @@ class InfoModeViewController: PeripheralModeViewController {
         registerNotifications(enabled: true)
 
         // Title
-        let localizationManager = LocalizationManager.sharedInstance
-        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("scanner_unnamed")
+        let localizationManager = LocalizationManager.shared
+        let name = blePeripheral?.name ?? LocalizationManager.shared.localizedString("scanner_unnamed")
 
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("info_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("info_tab_title")
 
@@ -274,7 +274,7 @@ class InfoModeViewController: PeripheralModeViewController {
 
     // MARK: - Actions
     @IBAction func onClickHelp(_ sender: UIBarButtonItem) {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
         helpViewController.setHelp(localizationManager.localizedString("info_help_text"), title: localizationManager.localizedString("info_help_title"))
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
@@ -443,7 +443,7 @@ extension InfoModeViewController: UITableViewDataSource {
 
         let characteristicCell = cell as! InfoCharacteristicTableViewCell
         characteristicCell.titleLabel.text = identifier
-        characteristicCell.subtitleLabel.text = valueData != nil ? value : LocalizationManager.sharedInstance.localizedString(isDescriptor ? "info_type_descriptor":"info_type_characteristic")
+        characteristicCell.subtitleLabel.text = valueData != nil ? value : LocalizationManager.shared.localizedString(isDescriptor ? "info_type_descriptor":"info_type_characteristic")
         characteristicCell.subtitleLabel.textColor = valueData != nil ? UIColor.black : UIColor.lightGray
 
         return cell

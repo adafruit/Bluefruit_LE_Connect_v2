@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Preferences.registerDefaults()
 
         // Watch Connectivity
-        WatchSessionManager.sharedInstance.activate(with: self)
+        WatchSessionManager.shared.activate(with: self)
 
         // Check if there is any update to the fimware database
         FirmwareUpdater.refreshSoftwareUpdatesDatabase(url: Preferences.updateServerUrl, completion: nil)
@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationBarAppearance.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
 
         // Watch Session
-        WatchSessionManager.sharedInstance.session?.sendMessage(["isActive": true], replyHandler: nil, errorHandler: nil)
+        WatchSessionManager.shared.session?.sendMessage(["isActive": true], replyHandler: nil, errorHandler: nil)
 
         return true
     }
@@ -61,8 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 
         // Watch Session
-        WatchSessionManager.sharedInstance.session?.sendMessage(["isActive": false], replyHandler: nil, errorHandler: nil)
-
+        WatchSessionManager.shared.session?.sendMessage(["isActive": false], replyHandler: nil, errorHandler: nil)
     }
 }
 
@@ -74,7 +73,7 @@ extension AppDelegate: WCSessionDelegate {
         if session.isReachable {
             // Update foreground status
             let isActive = UIApplication.shared.applicationState != .inactive
-            WatchSessionManager.sharedInstance.session?.sendMessage(["isActive": isActive], replyHandler: nil, errorHandler: nil)
+            WatchSessionManager.shared.session?.sendMessage(["isActive": isActive], replyHandler: nil, errorHandler: nil)
 
             NotificationCenter.default.post(name: .watchSessionDidBecomeActive, object: nil, userInfo: nil)
         }

@@ -30,8 +30,8 @@ class ControllerModeViewController: PeripheralModeViewController {
         super.viewDidLoad()
 
         // Title
-        let localizationManager = LocalizationManager.sharedInstance
-        let name = blePeripheral?.name ?? LocalizationManager.sharedInstance.localizedString("scanner_unnamed")
+        let localizationManager = LocalizationManager.shared
+        let name = blePeripheral?.name ?? LocalizationManager.shared.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("controller_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("controller_tab_title")
         
         // Init
@@ -53,7 +53,7 @@ class ControllerModeViewController: PeripheralModeViewController {
             }
 
             // Watch
-            WatchSessionManager.sharedInstance.updateApplicationContext(mode: .controller)
+            WatchSessionManager.shared.updateApplicationContext(mode: .controller)
 
             // Notifications
             registerNotifications(enabled: true)
@@ -70,7 +70,7 @@ class ControllerModeViewController: PeripheralModeViewController {
             controllerData.stop()
 
             // Watch
-            WatchSessionManager.sharedInstance.updateApplicationContext(mode: .connected)
+            WatchSessionManager.shared.updateApplicationContext(mode: .connected)
 
             // Notifications
             registerNotifications(enabled: false)
@@ -144,7 +144,7 @@ class ControllerModeViewController: PeripheralModeViewController {
 
     // MARK: - Actions
     @IBAction func onClickHelp(_  sender: UIBarButtonItem) {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
         helpViewController.setHelp(localizationManager.localizedString("controller_help_text"), title: localizationManager.localizedString("controller_help_title"))
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
@@ -234,11 +234,11 @@ extension ControllerModeViewController : UITableViewDataSource {
             localizationKey = "controller_module_title"
         }
 
-        return LocalizationManager.sharedInstance.localizedString(localizationKey)
+        return LocalizationManager.shared.localizedString(localizationKey)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         var cell: UITableViewCell!
         switch ControllerSection(rawValue: indexPath.section)! {
 
@@ -385,7 +385,7 @@ extension ControllerModeViewController: ControllerModuleManagerDelegate {
                     showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
                     
                     if let blePeripheral = context.blePeripheral {
-                        BleManager.sharedInstance.disconnect(from: blePeripheral)
+                        BleManager.shared.disconnect(from: blePeripheral)
                     }
                 })
                 return

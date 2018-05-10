@@ -18,7 +18,7 @@ class UartServiceViewController: UartBaseViewController {
         super.viewDidLoad()
         
         // Title
-        let localizationManager = LocalizationManager.sharedInstance
+        let localizationManager = LocalizationManager.shared
         self.title = localizationManager.localizedString("uart_tab_title")
 
         // Init Uart

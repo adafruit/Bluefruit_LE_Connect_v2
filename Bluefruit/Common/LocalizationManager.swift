@@ -13,7 +13,7 @@ class LocalizationManager {
     static fileprivate let kDebugShowDummyCharacters = false
 
     //
-    static let sharedInstance = LocalizationManager()
+    static let shared = LocalizationManager()
 
     fileprivate var localizationBundle: Bundle?
 

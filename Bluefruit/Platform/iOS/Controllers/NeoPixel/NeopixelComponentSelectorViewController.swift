@@ -56,7 +56,7 @@ extension NeopixelComponentSelectorViewController: UITableViewDataSource {
         }
         
         if let titleId = titleId {
-            return LocalizationManager.sharedInstance.localizedString(titleId).uppercased()
+            return LocalizationManager.shared.localizedString(titleId).uppercased()
         }
         else {
             return nil
@@ -91,7 +91,7 @@ extension NeopixelComponentSelectorViewController: UITableViewDelegate {
         guard let uartCell = cell as? UartSettingTableViewCell else { return }
 
         if indexPath.section == 0 {
-            uartCell.titleLabel?.text = LocalizationManager.sharedInstance.localizedString("neopixelcomponentselector_speed_400khz")
+            uartCell.titleLabel?.text = LocalizationManager.shared.localizedString("neopixelcomponentselector_speed_400khz")
             uartCell.switchControl.isOn = is400HkzEnabled
             uartCell.onSwitchEnabled = { [unowned self] isEnabled in
                 self.is400HkzEnabled = isEnabled

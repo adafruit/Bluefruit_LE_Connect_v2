@@ -112,7 +112,7 @@ class CalibrationUartSamplerViewController: CalibrationUartViewController {
                     showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
 
                     if let blePeripheral = context.blePeripheral {
-                        BleManager.sharedInstance.disconnect(from: blePeripheral)
+                        BleManager.shared.disconnect(from: blePeripheral)
                     }
                 }
                 return
