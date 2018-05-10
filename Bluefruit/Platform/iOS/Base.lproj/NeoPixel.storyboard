@@ -34,13 +34,13 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="koR-DV-nLl">
-                                        <rect key="frame" x="59" y="15.5" width="41.5" height="14.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Status:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="koR-DV-nLl">
+                                        <rect key="frame" x="59" y="15.5" width="194" height="14.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dEf-i3-H4n" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dEf-i3-H4n" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
                                         <rect key="frame" x="261" y="9" width="72" height="26"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="CpS-4c-rOc"/>
@@ -64,6 +64,7 @@
                                     <constraint firstItem="koR-DV-nLl" firstAttribute="baseline" secondItem="poI-pY-6vE" secondAttribute="baseline" id="ITw-67-4c9"/>
                                     <constraint firstItem="koR-DV-nLl" firstAttribute="leading" secondItem="poI-pY-6vE" secondAttribute="trailing" constant="8" id="NB3-Z1-Lbd"/>
                                     <constraint firstItem="poI-pY-6vE" firstAttribute="centerY" secondItem="8wz-oi-VMP" secondAttribute="centerY" id="amu-77-gp4"/>
+                                    <constraint firstItem="dEf-i3-H4n" firstAttribute="leading" secondItem="koR-DV-nLl" secondAttribute="trailing" constant="8" id="oWM-es-qUv"/>
                                     <constraint firstItem="poI-pY-6vE" firstAttribute="leading" secondItem="8wz-oi-VMP" secondAttribute="leading" constant="8" id="oeP-rF-Ep9"/>
                                     <constraint firstItem="dEf-i3-H4n" firstAttribute="centerY" secondItem="8wz-oi-VMP" secondAttribute="centerY" id="okw-24-e3C"/>
                                     <constraint firstAttribute="height" constant="44" id="ymU-Wb-d4f"/>

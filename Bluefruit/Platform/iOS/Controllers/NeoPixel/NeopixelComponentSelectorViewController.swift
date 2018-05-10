@@ -95,6 +95,9 @@ extension NeopixelComponentSelectorViewController: UITableViewDelegate {
             uartCell.switchControl.isOn = is400HkzEnabled
             uartCell.onSwitchEnabled = { [unowned self] isEnabled in
                 self.is400HkzEnabled = isEnabled
+                if let selectedComponent = self.selectedComponent {
+                    self.onSetComponents?(selectedComponent, self.is400HkzEnabled)
+                }
             }
         } else {
             let component = components[indexPath.row]
