@@ -60,7 +60,7 @@ class ControllerModuleManager: NSObject {
     private var pollTimer: MSWeakTimer?
     private var timerHandler: (() -> Void)?
 
-    fileprivate let uartManager: UartDataManager// = UartDataManager(delegate: self)
+    fileprivate let uartManager: UartDataManager
     fileprivate var textCachedBuffer: String = ""
 
     private var pollInterval: TimeInterval = 1        // in seconds
@@ -253,7 +253,7 @@ class ControllerModuleManager: NSObject {
     }
 }
 
- // MARK: - CLLocationManagerDelegate
+// MARK: - CLLocationManagerDelegate
 extension ControllerModuleManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways || status == .authorizedWhenInUse {

@@ -292,6 +292,7 @@ Each unique set of data samples must be terminated by a LINE FEED character (0x0
 (Arduino Uno)";
 
 "pinio_pins_header" = "Available Pins";
+"pinio_pintype_unknown" = "Unknown";
 "pinio_pintype_input" = "Input";
 "pinio_pintype_output" = "Output";
 "pinio_pintype_pwm" = "PWM";
@@ -300,8 +301,9 @@ Each unique set of data samples must be terminated by a LINE FEED character (0x0
 "pinio_pintype_low" = "Low";
 "pinio_pintype_high" = "High";
 "pinio_pintype_input_floating" = "Floating";
+"pinio_pintype_inputfloating_long" = "Input Floating";
 "pinio_pintype_input_pullup" = "Pull Up";
-"pinio_pintype_input_unknown" = "Unknown";
+"pinio_pintype_inputpullup_long" = "Input Pullup";
 "pinio_pinname_digital_format" = "Pin %ld";
 "pinio_pinname_analog_format" = "Pin %ld, Analog %ld";
 "pinio_tag_mode" = "Mode";
@@ -330,6 +332,8 @@ https://learn.adafruit.com/bluefruit-le-connect-for-ios/pin-i-slash-o
 "controller_tab_title" = "Controller";
 "controller_navigation_title_format" = "Controller - %@";
 
+"controller_uartwarning" = "Please ensure that your Bluefruit LE module is set to DATA/UART mode when using this module";
+
 "controller_sensor_title" = "Stream Sensor Data";
 "controller_module_title" = "Module";
 
@@ -339,9 +343,20 @@ https://learn.adafruit.com/bluefruit-le-connect-for-ios/pin-i-slash-o
 "controller_sensor_magnetometer" = "Magnetometer";
 "controller_sensor_location" = "Location";
 
+"controller_component_lat" = "lat";
+"controller_component_long" = "long";
+"controller_component_alt" = "alt";
+"controller_component_x" = "x";
+"controller_component_y" = "y";
+"controller_component_z" = "z";
+"controller_component_w" = "w";
+
 "controller_sensor_location_disabled" = "Location Services Disabled";
-"controller_sensor_location_restricted" = "This application is not authorized to use location services";
+"controller_sensor_location_restricted" = "This module is not authorized to use location services";
 "controller_sensor_location_denied" = "Location Services are disabled. Go to settings and enable location services for this app to use this feature.";
+"controller_location_unknown" = "Waiting for location data…";
+"controller_magnetometermissing" = "Your device doesn't have a magnetic sensor";
+
 "controller_module_pad" = "Control Pad";
 "controller_module_colorpicker" = "Color Picker";
 

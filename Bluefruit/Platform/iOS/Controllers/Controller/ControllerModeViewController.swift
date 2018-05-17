@@ -13,9 +13,6 @@ class ControllerModeViewController: PeripheralModeViewController {
     // Constants
     fileprivate static let kPollInterval = 0.25
 
-    fileprivate static let kSensorTitleKeys: [String] = ["controller_sensor_quaternion", "controller_sensor_accelerometer", "controller_sensor_gyro", "controller_sensor_magnetometer", "controller_sensor_location"]
-    fileprivate static let kModuleTitleKeys: [String] = ["controller_module_pad", "controller_module_colorpicker"]
-
     // UI
     @IBOutlet weak var baseTableView: UITableView!
     @IBOutlet weak var uartWaitingLabel: UILabel!
@@ -203,7 +200,9 @@ extension ControllerModeViewController: ControllerPadViewControllerDelegate {
 
 // MARK: - UITableViewDataSource
 extension ControllerModeViewController : UITableViewDataSource {
-
+    fileprivate static let kSensorTitleKeys: [String] = ["controller_sensor_quaternion", "controller_sensor_accelerometer", "controller_sensor_gyro", "controller_sensor_magnetometer", "controller_sensor_location"]
+    fileprivate static let kModuleTitleKeys: [String] = ["controller_module_pad", "controller_module_colorpicker"]
+    
     enum ControllerSection: Int {
         case sensorData = 0
         case module = 1
@@ -251,11 +250,11 @@ extension ControllerModeViewController : UITableViewDataSource {
                 let reuseIdentifier = "ComponentsCell"
                 let componentsCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ControllerComponentsTableViewCell
 
-                let componentNameKeys: [String]
+                let componentNameId: [String]
                 if sensorIndex == ControllerModuleManager.ControllerType.location.rawValue {
-                    componentNameKeys = ["lat", "long", "alt"]
+                    componentNameId = ["controller_component_lat", "controller_component_long", "controller_component_alt"]
                 } else {
-                    componentNameKeys = ["x", "y", "z", "w"]
+                    componentNameId = ["controller_component_x", "controller_component_y", "controller_component_z", "controller_component_w"]
                 }
                 if let sensorData = controllerData.getSensorData(index: sensorIndex) {
                     var i=0
@@ -263,8 +262,9 @@ extension ControllerModeViewController : UITableViewDataSource {
                         let hasComponent = i<sensorData.count
                         subview.isHidden = !hasComponent
                         if let label = subview as? UILabel, hasComponent {
-                            let attributedText = NSMutableAttributedString(string: "\(componentNameKeys[i]): \(sensorData[i])")
-                            let titleLength = componentNameKeys[i].lengthOfBytes(using: String.Encoding.utf8)
+                            let componentName = LocalizationManager.shared.localizedString(componentNameId[i])
+                            let attributedText = NSMutableAttributedString(string: "\(componentName): \(sensorData[i])")
+                            let titleLength = componentName.lengthOfBytes(using: String.Encoding.utf8)
                             attributedText.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.medium), range: NSMakeRange(0, titleLength))
                             label.attributedText = attributedText
                         }
