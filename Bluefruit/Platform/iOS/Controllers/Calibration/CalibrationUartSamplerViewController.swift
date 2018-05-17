@@ -64,7 +64,7 @@ class CalibrationUartSamplerViewController: CalibrationUartViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        uartManager = UartDataManager(delegate: self)
+        uartManager = UartDataManager(delegate: self, isRxCacheEnabled: true)
 
         // Init cached view controllers
         for _ in 0..<pageViewControllerIds.count {
@@ -109,7 +109,8 @@ class CalibrationUartSamplerViewController: CalibrationUartViewController {
             guard error == nil else {
                 DispatchQueue.main.async {
                     DLog("Error initializing uart")
-                    showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
+                    let localizationManager = LocalizationManager.shared
+                    showErrorAlert(from: context, title: localizationManager.localizedString("dialog_error"), message: localizationManager.localizedString("uart_error_peripheralinit"))
 
                     if let blePeripheral = context.blePeripheral {
                         BleManager.shared.disconnect(from: blePeripheral)

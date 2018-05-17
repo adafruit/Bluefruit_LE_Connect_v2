@@ -45,7 +45,8 @@ class PinIOModeViewController: PeripheralModeViewController {
                         DLog("Error initializing uart")
                         self.dismiss(animated: true, completion: { [weak self] () in
                             guard let context = self else { return }
-                            showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
+                            let localizationManager = LocalizationManager.shared
+                            showErrorAlert(from: context, title: localizationManager.localizedString("dialog_error"), message: localizationManager.localizedString("uart_error_peripheralinit"))
                             
                             if let blePeripheral = context.blePeripheral {
                                 BleManager.shared.disconnect(from: blePeripheral)
@@ -75,7 +76,6 @@ class PinIOModeViewController: PeripheralModeViewController {
 
             DLog("PinIO viewWillDisappear")
             pinIO.stop()
-
         }
     }
 
@@ -212,6 +212,7 @@ extension PinIOModeViewController: PinIoTableViewCellDelegate {
     }
 }
 
+// MARK: - PinIOModuleManagerDelegate
 extension PinIOModeViewController: PinIOModuleManagerDelegate {
     func onPinIODidEndPinQuery(isDefaultConfigurationAssumed: Bool) {
         DispatchQueue.main.async {

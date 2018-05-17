@@ -68,7 +68,7 @@ class ControllerModuleManager: NSObject {
     init(blePeripheral: BlePeripheral, delegate: ControllerModuleManagerDelegate) {
         self.blePeripheral = blePeripheral
         self.delegate = delegate
-        uartManager = UartDataManager(delegate: nil)
+        uartManager = UartDataManager(delegate: nil, isRxCacheEnabled: true)
         super.init()
 
         // Setup Location Manager
@@ -136,7 +136,7 @@ class ControllerModuleManager: NSObject {
         pollTimer = nil
     }
 
-    @objc func updateSensors() {
+    @objc private func updateSensors() {
         timerHandler?()
 
         for i in 0..<ControllerModuleManager.numSensors {

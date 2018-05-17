@@ -16,14 +16,14 @@ protocol UartDataManagerDelegate: class {
 class UartDataManager {
 
     // Params
-    var isEnabled: Bool = false {
+    var isEnabled: Bool {
         didSet {
             if isEnabled != oldValue {
                 registerNotifications(enabled: isEnabled)
             }
         }
     }
-    var isRxCacheEnabled = true {   // If cache is enabled, onUartRx sends the cachedData. Cache can be cleared using removeRxCacheFirst or clearRxCache. If not enabled, onUartRx sends only the latest data received
+    var isRxCacheEnabled: Bool {   // If cache is enabled, onUartRx sends the cachedData. Cache can be cleared using removeRxCacheFirst or clearRxCache. If not enabled, onUartRx sends only the latest data received
         didSet {
             if !isRxCacheEnabled {
                 DLog("Clearing all rx caches")
@@ -37,9 +37,10 @@ class UartDataManager {
     fileprivate var rxDatas = [UUID: Data]()
     fileprivate var rxDataSemaphore = DispatchSemaphore(value: 1)
 
-    init(delegate: UartDataManagerDelegate?) {
+    init(delegate: UartDataManagerDelegate?, isRxCacheEnabled: Bool) {
         self.delegate = delegate
-
+        self.isRxCacheEnabled = isRxCacheEnabled
+        
         isEnabled = true
     }
 

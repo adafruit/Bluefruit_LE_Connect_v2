@@ -110,7 +110,7 @@ class BlePeripheral: NSObject {
             }
         }
 
-        @objc func timerFired() {
+        @objc private func timerFired() {
             timeoutTimer?.invalidate()
             timeoutTimer = nil
             result(nil, PeripheralError.timeout)

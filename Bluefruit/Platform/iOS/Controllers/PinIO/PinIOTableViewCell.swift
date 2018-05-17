@@ -46,17 +46,17 @@ class PinIOTableViewCell: UITableViewCell {
         digitalSegmentedControl.selectedSegmentIndex = pin.digitalValue.rawValue
         valueSlider.value = Float(pin.analogValue)
 
-        let analogName = pin.isAnalog ?", Analog \(pin.analogPinId)":""
-        let fullName = "Pin \(pin.digitalPinId)\(analogName)"
+        let localizationManager = LocalizationManager.shared
+        let fullName = pin.isAnalog ? String(format: localizationManager.localizedString("pinio_pinname_analog_format"), pin.digitalPinId, pin.analogPinId) : String(format: localizationManager.localizedString("pinio_pinname_digital_format"), pin.digitalPinId)
         nameLabel.text = fullName
-        modeLabel.text = pin.mode.description
+        modeLabel.text = modeDescription(pin.mode)
 
         var valueText: String?
         switch pin.mode {
         case .input:
-            valueText = pin.digitalValue.description
+            valueText = digitalValueDescription(pin.digitalValue)
         case .output:
-            valueText = pin.digitalValue.description
+            valueText = digitalValueDescription(pin.digitalValue)
         case .analog:
             valueText = String(pin.analogValue)
         case .pwm:
@@ -66,11 +66,39 @@ class PinIOTableViewCell: UITableViewCell {
             valueText = ""
         }
         valueLabel.text = valueText
-
+        
         valueSlider.isHidden = pin.mode != .pwm
         digitalSegmentedControl.isHidden = pin.mode != .output
     }
+    
+    private func modeDescription(_ mode: PinIOModuleManager.PinData.Mode) -> String {
+        let localizationManager = LocalizationManager.shared
+        
+        var resultStringId: String
+        switch mode {
+        case .input: resultStringId = "pinio_pintype_input"
+        case .output: resultStringId = "pinio_pintype_output"
+        case .analog:  resultStringId = "pinio_pintype_analog"
+        case .pwm: resultStringId = "pinio_pintype_pwm"
+        case .servo: resultStringId = "pinio_pintype_servo"
+        default: resultStringId =  "pinio_pintype_unknown"
+        }
 
+        return localizationManager.localizedString(resultStringId)
+    }
+
+    private func digitalValueDescription(_ digitalValue: PinIOModuleManager.PinData.DigitalValue) -> String {
+        let localizationManager = LocalizationManager.shared
+        
+        var resultStringId: String
+        switch digitalValue {
+        case .low: resultStringId = "pinio_pintype_low"
+        case .high: resultStringId = "pinio_pintype_high"
+        }
+        
+        return localizationManager.localizedString(resultStringId)
+    }
+    
     private func setupModeSegmentedControl(pin: PinIOModuleManager.PinData) {
         modesInSegmentedControl.removeAll()
         if pin.isDigital == true {
@@ -86,7 +114,7 @@ class PinIOTableViewCell: UITableViewCell {
 
         modeSegmentedControl.removeAllSegments()
         for mode in modesInSegmentedControl {
-            let modeName = mode.description
+            let modeName = modeDescription(mode)
             modeSegmentedControl.insertSegment(withTitle: modeName, at: modeSegmentedControl.numberOfSegments, animated: false)
             if pin.mode == mode {
                 modeSegmentedControl.selectedSegmentIndex = modeSegmentedControl.numberOfSegments-1    // Select the mode we just added

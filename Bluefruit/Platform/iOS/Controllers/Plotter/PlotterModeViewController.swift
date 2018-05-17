@@ -31,7 +31,7 @@ class PlotterModeViewController: PeripheralModeViewController {
         super.viewDidLoad()
 
         // Init
-        uartDataManager = UartDataManager(delegate: self)
+        uartDataManager = UartDataManager(delegate: self, isRxCacheEnabled: true)
         setupChart()
         originTimestamp = CFAbsoluteTimeGetCurrent()
 

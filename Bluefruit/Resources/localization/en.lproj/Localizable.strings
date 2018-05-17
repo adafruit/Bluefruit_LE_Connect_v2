@@ -292,6 +292,19 @@ Each unique set of data samples must be terminated by a LINE FEED character (0x0
 (Arduino Uno)";
 
 "pinio_pins_header" = "Available Pins";
+"pinio_pintype_input" = "Input";
+"pinio_pintype_output" = "Output";
+"pinio_pintype_pwm" = "PWM";
+"pinio_pintype_servo" = "Servo";
+"pinio_pintype_analog" = "Analog";
+"pinio_pintype_low" = "Low";
+"pinio_pintype_high" = "High";
+"pinio_pintype_input_floating" = "Floating";
+"pinio_pintype_input_pullup" = "Pull Up";
+"pinio_pintype_input_unknown" = "Unknown";
+"pinio_pinname_digital_format" = "Pin %ld";
+"pinio_pinname_analog_format" = "Pin %ld, Analog %ld";
+"pinio_tag_mode" = "Mode";
 
 "pinio_help_title" = "Pin I/O";
 "pinio_help_text" = "Instructions:

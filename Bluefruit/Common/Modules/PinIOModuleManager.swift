@@ -47,32 +47,14 @@ class PinIOModuleManager: NSObject {
             case analog = 2
             case pwm = 3
             case servo = 4
-
-            var description: String {
-                switch self {
-                case .input: return "Input"
-                case .output: return "Output"
-                case .analog:  return "Analog"
-                case .pwm: return "PWM"
-                case .servo: return "Servo"
-                default: return "Unkwnown"
-                }
-            }
         }
 
         enum DigitalValue: Int {
             case low = 0
             case high = 1
-
-            var description: String {
-                switch self {
-                case .low: return "Low"
-                case .high: return "High"
-                }
-            }
         }
 
-        var digitalPinId: Int = -1
+        var digitalPinId: Int
         var analogPinId: Int = -1
 
         var isDigital: Bool
@@ -114,8 +96,7 @@ class PinIOModuleManager: NSObject {
         self.delegate = delegate
         super.init()
 
-        uartManager = UartDataManager(delegate: self)
-        uartManager.isRxCacheEnabled = false
+        uartManager = UartDataManager(delegate: self, isRxCacheEnabled: false)
     }
 
     deinit {
@@ -167,7 +148,7 @@ class PinIOModuleManager: NSObject {
         let data = Data(bytes: bytes)
         uartManager.send(blePeripheral: blePeripheral, data: data)
 
-        queryCapabilitiesTimer = MSWeakTimer.scheduledTimer(withTimeInterval: CAPABILITY_QUERY_TIMEOUT, target: self, selector: #selector(cancelQueryCapabilities), userInfo: nil, repeats: false, dispatchQueue: DispatchQueue.main)
+        queryCapabilitiesTimer = MSWeakTimer.scheduledTimer(withTimeInterval: CAPABILITY_QUERY_TIMEOUT, target: self, selector: #selector(cancelQueryCapabilities), userInfo: nil, repeats: false, dispatchQueue: .main)
     }
 
     fileprivate func receivedQueryCapabilities(data: Data) {
@@ -223,7 +204,7 @@ class PinIOModuleManager: NSObject {
         }
     }
 
-    @objc func cancelQueryCapabilities() {
+    @objc private func cancelQueryCapabilities() {
         DLog("timeout: cancelQueryCapabilities")
         endPinQuery(abort: true)
     }

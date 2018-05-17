@@ -41,6 +41,7 @@ class UartModeViewController: UartBaseViewController {
         colorForPeripheral.removeAll()
         
         // Enable uart
+        let localizationManager = LocalizationManager.shared
         if isInMultiUartMode() {            // Multiple peripheral mode
             let blePeripherals = BleManager.shared.connectedPeripherals()
             for (i, blePeripheral) in blePeripherals.enumerated() {
@@ -54,7 +55,7 @@ class UartModeViewController: UartBaseViewController {
                             DLog("Error initializing uart")
                             context.dismiss(animated: true, completion: { [weak self] () -> Void in
                                 if let context = self {
-                                    showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized for peripheral: \(peripheralName)")
+                                    showErrorAlert(from: context, title: localizationManager.localizedString("dialog_error"), message: String(format: localizationManager.localizedString("uart_error_multipleperiperipheralinit_format"), peripheralName))
                                     
                                     BleManager.shared.disconnect(from: blePeripheral)
                                 }
@@ -81,7 +82,7 @@ class UartModeViewController: UartBaseViewController {
                         DLog("Error initializing uart")
                         context.dismiss(animated: true, completion: { [weak self] in
                             if let context = self {
-                                showErrorAlert(from: context, title: "Error", message: "Uart protocol can not be initialized")
+                                showErrorAlert(from: context, title: localizationManager.localizedString("dialog_error"), message: localizationManager.localizedString("uart_error_peripheralinit"))
                                 
                                 if let blePeripheral = context.blePeripheral {
                                     BleManager.shared.disconnect(from: blePeripheral)

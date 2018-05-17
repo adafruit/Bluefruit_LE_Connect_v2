@@ -37,7 +37,7 @@ class ThermalCameraModuleManager: NSObject {
     init(blePeripheral: BlePeripheral, delegate: ThermalCameraModuleManagerDelegate) {
         self.blePeripheral = blePeripheral
         self.delegate = delegate
-        uartManager = UartDataManager(delegate: nil)
+        uartManager = UartDataManager(delegate: nil, isRxCacheEnabled: true)
         super.init()
         
         uartManager.delegate = self
