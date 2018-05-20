@@ -68,7 +68,7 @@ class PlotterModeViewController: PeripheralModeViewController {
     }
 
     fileprivate func setupUart() {
-        // Reset colors assigned to peripherals
+        // Reset line dashes assigned to peripherals
         let lineDashes = UartStyle.defaultLineDashes()
         lineDashForPeripheral.removeAll()
 

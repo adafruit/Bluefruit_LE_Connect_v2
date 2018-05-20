@@ -59,7 +59,6 @@ class UartBaseViewController: PeripheralModeViewController {
     }
     
     internal var uartData: UartPacketManagerBase!
-    internal var colorForPeripheral = [UUID: UIColor]()
     fileprivate let timestampDateFormatter = DateFormatter()
     fileprivate var tableCachedDataBuffer: [UartPacket]?
     fileprivate var textCachedBuffer = NSMutableAttributedString()
@@ -317,7 +316,7 @@ class UartBaseViewController: PeripheralModeViewController {
         
         // Eol
         if Preferences.uartIsAutomaticEolEnabled {
-            newText += Preferences.uartEolCharacters //"\n"
+            newText += Preferences.uartEolCharacters
         }
         
         send(message: newText)
@@ -460,7 +459,7 @@ extension UartBaseViewController: UITableViewDataSource {
         let reuseIdentifier = "TimestampCell"
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for:indexPath)
         
-        // Data binding in cellForRowAtIndexPath to avoid problems with multiple-line labels and dyanmic tableview height calculation
+        // Data binding in cellForRowAtIndexPath to avoid problems with multiple-line labels and dynamic tableview height calculation
         let dataPacket = tableCachedDataBuffer![indexPath.row]
         let date = Date(timeIntervalSinceReferenceDate: dataPacket.timestamp)
         let dateString = timestampDateFormatter.string(from: date)
@@ -486,11 +485,10 @@ extension UartBaseViewController: UITableViewDataSource {
 // MARK: UITableViewDelegate
 extension UartBaseViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
     }
 }
 
-// MARK: - UartModuleDelegate
+// MARK: - UartPacketManagerDelegate
 extension UartBaseViewController: UartPacketManagerDelegate {
     
     func onUartPacket(_ packet: UartPacket) {

@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="CourierNew.ttf">
-            <string>CourierNewPSMT</string>
-        </array>
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--UART-->
         <scene sceneID="w3V-gu-5eN">
@@ -32,13 +24,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="L3f-WT-rxL">
-                                <rect key="frame" x="20" y="84" width="760" height="413"/>
+                                <rect key="frame" x="20" y="84" width="760" height="401"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qn4-jq-Ibb">
-                                        <rect key="frame" x="0.0" y="0.0" width="760" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="760" height="38"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Display Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s8o-9Z-gCo">
-                                                <rect key="frame" x="0.0" y="16" width="97" height="18"/>
+                                                <rect key="frame" x="0.0" y="10" width="97" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="90" id="FMA-H9-J9m"/>
                                                 </constraints>
@@ -52,7 +44,7 @@
                                                 </variation>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="rLh-Ko-VDk">
-                                                <rect key="frame" x="105" y="5" width="164" height="41"/>
+                                                <rect key="frame" x="105" y="5" width="164" height="29"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" priority="999" constant="164" id="dSi-iH-Lnt"/>
                                                 </constraints>
@@ -65,7 +57,7 @@
                                                 </connections>
                                             </segmentedControl>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Data Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vx-2Y-rKI">
-                                                <rect key="frame" x="289" y="16" width="79" height="18"/>
+                                                <rect key="frame" x="289" y="10" width="79" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="90" id="YAP-cX-lUb"/>
                                                 </constraints>
@@ -79,7 +71,7 @@
                                                 </variation>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ska-Q4-Rud">
-                                                <rect key="frame" x="376" y="11" width="164" height="29"/>
+                                                <rect key="frame" x="376" y="5" width="164" height="29"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" priority="999" constant="164" id="f7j-rJ-Ooa"/>
                                                 </constraints>
@@ -92,7 +84,7 @@
                                                 </connections>
                                             </segmentedControl>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hcy-52-jZX">
-                                                <rect key="frame" x="661" y="12" width="45" height="27"/>
+                                                <rect key="frame" x="661" y="6" width="45" height="27"/>
                                                 <inset key="contentEdgeInsets" minX="13" minY="0.0" maxX="13" maxY="0.0"/>
                                                 <state key="normal" image="action_icon"/>
                                                 <connections>
@@ -100,7 +92,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XhR-ff-hxR">
-                                                <rect key="frame" x="716" y="13" width="44" height="25"/>
+                                                <rect key="frame" x="716" y="7" width="44" height="25"/>
                                                 <inset key="contentEdgeInsets" minX="13" minY="0.0" maxX="13" maxY="0.0"/>
                                                 <state key="normal" image="clear_icon"/>
                                                 <connections>
@@ -127,7 +119,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nxv-cn-1D2">
-                                        <rect key="frame" x="0.0" y="54" width="760" height="359"/>
+                                        <rect key="frame" x="0.0" y="42" width="760" height="359"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hc7-Pd-8gv">
                                                 <rect key="frame" x="0.0" y="10" width="760" height="329"/>
@@ -153,7 +145,7 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1eH-Yz-WQN">
-                                                                    <rect key="frame" x="15" y="11" width="69" height="14"/>
+                                                                    <rect key="frame" x="8" y="11" width="69" height="14"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="69" id="VLr-Yy-YVf"/>
                                                                     </constraints>
@@ -162,7 +154,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="mIo-YR-pQj">
-                                                                    <rect key="frame" x="92" y="11" width="653" height="16"/>
+                                                                    <rect key="frame" x="85" y="11" width="667" height="16"/>
                                                                     <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="14"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -258,10 +250,10 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="TE2-Zf-20E">
-                                <rect key="frame" x="20" y="501" width="760" height="6"/>
+                                <rect key="frame" x="20" y="489" width="760" height="18"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1mG-jJ-5xo">
-                                        <rect key="frame" x="0.0" y="0.0" width="630" height="6"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="630" height="18"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="send" enablesReturnKeyAutomatically="YES"/>
                                         <connections>
@@ -269,7 +261,7 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hwu-uD-5tU" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                        <rect key="frame" x="638" y="0.0" width="56" height="6"/>
+                                        <rect key="frame" x="638" y="0.0" width="56" height="18"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                         <state key="normal" title="Send"/>
                                         <connections>
@@ -277,7 +269,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h43-sj-iGz" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                        <rect key="frame" x="702" y="0.0" width="58" height="6"/>
+                                        <rect key="frame" x="702" y="0.0" width="58" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="140" id="81y-Cr-XNq"/>
                                         </constraints>
@@ -895,13 +887,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="i8u-3c-Fjl">
-                                <rect key="frame" x="20" y="84" width="760" height="413"/>
+                                <rect key="frame" x="20" y="84" width="760" height="401"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Qn-KM-hUB">
-                                        <rect key="frame" x="0.0" y="0.0" width="760" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="760" height="38"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Display Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Vl-YY-0YK">
-                                                <rect key="frame" x="0.0" y="16" width="97" height="18"/>
+                                                <rect key="frame" x="0.0" y="10" width="97" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="90" id="rBg-XV-7fR"/>
                                                 </constraints>
@@ -915,7 +907,7 @@
                                                 </variation>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uij-0J-mXf">
-                                                <rect key="frame" x="105" y="5" width="164" height="41"/>
+                                                <rect key="frame" x="105" y="5" width="164" height="29"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" priority="999" constant="164" id="nql-dt-UdI"/>
                                                 </constraints>
@@ -928,7 +920,7 @@
                                                 </connections>
                                             </segmentedControl>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Data Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fN-vB-Pe2">
-                                                <rect key="frame" x="289" y="16" width="79" height="18"/>
+                                                <rect key="frame" x="289" y="10" width="79" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="90" id="vzA-o9-clV"/>
                                                 </constraints>
@@ -942,7 +934,7 @@
                                                 </variation>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="mok-Hn-JYb">
-                                                <rect key="frame" x="376" y="11" width="164" height="29"/>
+                                                <rect key="frame" x="376" y="5" width="164" height="29"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" priority="999" constant="164" id="lw2-Oa-s5F"/>
                                                 </constraints>
@@ -955,7 +947,7 @@
                                                 </connections>
                                             </segmentedControl>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1XB-yV-3WS">
-                                                <rect key="frame" x="661" y="12" width="45" height="27"/>
+                                                <rect key="frame" x="661" y="6" width="45" height="27"/>
                                                 <inset key="contentEdgeInsets" minX="13" minY="0.0" maxX="13" maxY="0.0"/>
                                                 <state key="normal" image="action_icon"/>
                                                 <connections>
@@ -963,7 +955,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k7H-Bl-ifq">
-                                                <rect key="frame" x="716" y="13" width="44" height="25"/>
+                                                <rect key="frame" x="716" y="7" width="44" height="25"/>
                                                 <inset key="contentEdgeInsets" minX="13" minY="0.0" maxX="13" maxY="0.0"/>
                                                 <state key="normal" image="clear_icon"/>
                                                 <connections>
@@ -990,7 +982,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sWF-lQ-Wys">
-                                        <rect key="frame" x="0.0" y="54" width="760" height="359"/>
+                                        <rect key="frame" x="0.0" y="42" width="760" height="359"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fRu-rJ-C2x">
                                                 <rect key="frame" x="0.0" y="10" width="760" height="329"/>
@@ -1016,7 +1008,7 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gkm-Ln-aAi">
-                                                                    <rect key="frame" x="15" y="11" width="69" height="14"/>
+                                                                    <rect key="frame" x="8" y="11" width="69" height="14"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="69" id="ol1-N0-jAB"/>
                                                                     </constraints>
@@ -1025,7 +1017,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="P9Z-br-kAA">
-                                                                    <rect key="frame" x="92" y="11" width="653" height="16"/>
+                                                                    <rect key="frame" x="85" y="11" width="667" height="16"/>
                                                                     <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="14"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -1121,10 +1113,10 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="wUQ-8a-efW">
-                                <rect key="frame" x="20" y="501" width="760" height="6"/>
+                                <rect key="frame" x="20" y="489" width="760" height="18"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Gbp-6I-SDZ">
-                                        <rect key="frame" x="0.0" y="0.0" width="696" height="6"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="696" height="18"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="send" enablesReturnKeyAutomatically="YES"/>
                                         <connections>
@@ -1132,7 +1124,7 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiA-c3-707" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                        <rect key="frame" x="704" y="0.0" width="56" height="6"/>
+                                        <rect key="frame" x="704" y="0.0" width="56" height="18"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                         <state key="normal" title="Send"/>
                                         <connections>

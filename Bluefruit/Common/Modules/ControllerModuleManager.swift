@@ -68,7 +68,7 @@ class ControllerModuleManager: NSObject {
     init(blePeripheral: BlePeripheral, delegate: ControllerModuleManagerDelegate) {
         self.blePeripheral = blePeripheral
         self.delegate = delegate
-        uartManager = UartDataManager(delegate: nil, isRxCacheEnabled: true)
+        uartManager = UartDataManager(delegate: nil, isRxCacheEnabled: false)
         super.init()
 
         // Setup Location Manager

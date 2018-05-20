@@ -55,7 +55,7 @@ class ControllerModeViewController: PeripheralModeViewController {
             // Notifications
             registerNotifications(enabled: true)
         } else {
-            // Disable cache if coming back grom Control Pad
+            // Disable cache if coming back from Control Pad
             controllerData.isUartRxCacheEnabled = false
         }
     }

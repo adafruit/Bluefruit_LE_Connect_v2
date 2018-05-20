@@ -148,6 +148,8 @@ Please reset bluetooth and try again.";
 "info_type_service" = "Service";
 "info_type_characteristic" = "Characteristic";
 "info_type_descriptor" = "Descriptor";
+"info_data_hex" = "Data (Hex):";
+"info_data_dec" = "Data (Dec):";
 
 "info_uuid" = "UUID:";
 
@@ -174,7 +176,7 @@ Please reset bluetooth and try again.";
 "uart_timestamp_direction_tx" = "TX";
 "uart_text_dataomitted" = "(Previous data omitted to improve performance…)";
 
-
+"uart_mqtt_action" = "MQTT";
 "uart_mqtt_undefinedserver" = "Mqtt server not defined";
 "uart_mqtt_editsettings" = "Edit Mqtt Settings";
 
@@ -198,6 +200,10 @@ Please reset bluetooth and try again.";
 "uart_settings_echo_title" = "Show Echo";
 "uart_settings_eol_title" = "Send EoL";
 "uart_settings_eolCharacters_title" = "EoL Characters";
+"uart_eolmode_n" = "\n";
+"uart_eolmode_r" = "\r";
+"uart_eolmode_nr" = "\nr";
+"uart_eolmode_rn" = "\rn";
 
 "uart_mqtt_settings_title" = "MQTT Settings";
 "uart_mqtt_settings_group_status" = "Status";
@@ -354,6 +360,7 @@ https://learn.adafruit.com/bluefruit-le-connect-for-ios/pin-i-slash-o
 "controller_sensor_location_disabled" = "Location Services Disabled";
 "controller_sensor_location_restricted" = "This module is not authorized to use location services";
 "controller_sensor_location_denied" = "Location Services are disabled. Go to settings and enable location services for this app to use this feature.";
+"controller_sensor_locationpermission_text" = "Please grant fine location access to show the current location";
 "controller_location_unknown" = "Waiting for location data…";
 "controller_magnetometermissing" = "Your device doesn't have a magnetic sensor";
 
@@ -380,6 +387,8 @@ Format: [ ‘!’ ] [ ‘L’ ] [ float latitude ] [ float longitude ] [ float a
 
 // Control Pad
 
+"controlpad_title" = "Control Pad";
+
 "controlpad_help_title" = "Control Pad";
 "controlpad_help_text" = "The Control Pad function provides a familiar momentary button interface for common control scenarios.  Data is sent on the press and release of each button.  Each packet consists of 4 bytes, each representing a char value.  The first two chars identify the packet as a button message, the third specifies a button, and the fourth signifies either a press or release.  Example:
 
@@ -402,7 +411,7 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 
 "colorpicker_boardselector_action" = "Board Selector";
 "colorpicker_boardtype_action" = "Board Type";
-"colorpicker_help_action" = "Help";
+
 
 "colorpicker_help_title" = "Color Picker";
 "colorpicker_help_text" = "The Color Picker sends a color's RGB values to Bluefruit LE.  This can be used to control the state of RGB LEDs such as Neopixels.
@@ -482,7 +491,7 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "dialog_notice" = "Notice";
 "dialog_dontshowagain" = "Don't show again";
 
-
+"common_help_action" = "Help";
 
 
 // About

@@ -10,6 +10,9 @@ import UIKit
 
 class UartModeViewController: UartBaseViewController {
 
+    // Data
+    fileprivate var colorForPeripheral = [UUID: UIColor]()
+    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
