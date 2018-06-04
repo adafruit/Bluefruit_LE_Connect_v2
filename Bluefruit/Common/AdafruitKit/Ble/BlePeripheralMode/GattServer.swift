@@ -141,14 +141,14 @@ class GattServer: NSObject {
     
     fileprivate func processWriteRequest(_ request: CBATTRequest, peripheralService: PeripheralService) {
         guard let newValue = request.value, let characteristic = peripheralService.characteristic(uuid: request.characteristic.uuid) else { return }
-        
+
         var value = characteristic.value
-        let size = request.offset + newValue.count
-        if value == nil {
+        if value == nil || request.offset == 0 {            // When receveiving offset 0, delete the old contents (is this correct?)
             value = newValue
         }
         else {
-            if value!.count < size {        // If smaller than the size needed, expand the capacity
+            let size = request.offset + newValue.count
+            if value!.count < size {        // If smaller than the size needed, expand the capacity maintaining the old contents (is this correct?)
                 value!.append(contentsOf: [UInt8](repeatElement(0x00, count: size - value!.count)))
             }
             value!.replaceSubrange(request.offset..<request.offset+newValue.count, with: newValue)

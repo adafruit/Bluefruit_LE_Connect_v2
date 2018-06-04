@@ -34,7 +34,7 @@ class PeripheralService {
         let mutableCharacteristic = characteristics?.first(where: {$0.uuid == characteristicUuid})
         mutableCharacteristic?.value = value
     }
-    
+
     public func subscribe(characteristicUuid: CBUUID, central: CBCentral) {
         if var existingSubscribedCharacteristic = subscribedCharacteristics[characteristicUuid] {
             existingSubscribedCharacteristic.insert(central)
@@ -43,20 +43,20 @@ class PeripheralService {
             subscribedCharacteristics[characteristicUuid] = [central]
         }
     }
-    
+
     public func unsubscribe(characteristicUuid: CBUUID, central: CBCentral) {
         if var existingSubscribedCharacteristic = subscribedCharacteristics[characteristicUuid] {
             existingSubscribedCharacteristic.remove(central)
         }
     }
-    
+
     public func centralsSubscribedToCharacteristic(uuid characteristicUuid: CBUUID) -> [CBCentral]? {
         var result: [CBCentral]?
         
         if let subscribedCentrals = subscribedCharacteristics[characteristicUuid] {
             result = Array(subscribedCentrals)
         }
-        
+
         return result
     }
 }

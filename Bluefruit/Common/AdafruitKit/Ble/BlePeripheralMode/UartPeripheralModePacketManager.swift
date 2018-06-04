@@ -11,7 +11,7 @@ import Foundation
 class UartPeripheralModePacketManager: UartPacketManagerBase {
 
     // MARK: - Send data
-    func send(uartPeripheralService: UartPeripheralService, data: Data?, completion: ((Error?) -> Void)? = nil) {
+    func send(uartPeripheralService: UartPeripheralService, data: Data?/*, completion: ((Error?) -> Void)? = nil*/) {
         sentBytes += Int64(data?.count ?? 0)
         uartPeripheralService.rx = data
     }
