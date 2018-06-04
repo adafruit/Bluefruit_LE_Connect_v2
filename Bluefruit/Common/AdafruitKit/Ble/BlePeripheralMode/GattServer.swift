@@ -55,8 +55,11 @@ class GattServer: NSObject {
             service.delegate = nil
         }
     }
-    
+ 
     public func removeAllServices() {
+        for peripheralService in peripheralServices {
+            peripheralService.delegate = nil
+        }
         peripheralServices.removeAll()
     }
     
@@ -101,15 +104,15 @@ class GattServer: NSObject {
         DLog("Stop Advertising")
         
         peripheralManager.stopAdvertising()
+        removeAllServices()
         peripheralManager.removeAllServices()
-        
+
         isAdvertisingService = false
     }
 
     public func isAdvertising() -> Bool {
         return isAdvertisingService
     }
-    
     
     // MARK: - Request Processing
     fileprivate func processReadRequest(_ request: CBATTRequest, value: Data?) {

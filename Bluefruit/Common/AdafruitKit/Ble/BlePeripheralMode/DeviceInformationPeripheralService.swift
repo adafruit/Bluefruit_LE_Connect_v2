@@ -30,7 +30,6 @@ class DeviceInformationPeripheralService: PeripheralService {
     fileprivate let firmwareRevisionCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kFirmwareRevisionCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
     fileprivate let softwareRevisionCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kSoftwareRevisionCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
     
-    
     var manufacturer: String? {
         get {
             return characteristicText(characteristic: manufacturerNameCharacteristic)

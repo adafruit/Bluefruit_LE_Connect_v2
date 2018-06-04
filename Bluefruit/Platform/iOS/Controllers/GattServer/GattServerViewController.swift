@@ -18,17 +18,6 @@ class GattServerViewController: ModeTabViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Define services
-        let deviceInformationPeripheralService = DeviceInformationPeripheralService()
-        let uartPeripheralService = UartPeripheralService()
-        peripheralServices = [deviceInformationPeripheralService, uartPeripheralService]
-        
-        // Add services
-        for peripheralService in peripheralServices {
-            if peripheralService.isEnabled {
-                gattServer.addService(peripheralService)
-            }
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -46,11 +35,27 @@ class GattServerViewController: ModeTabViewController {
 
     // MARK: - Tab Management
     override func tabShown() {
+        // Note: services are recreated because when trying to reuse them if previously a value was written to a chracteristic, when is added using gattServer.addService, an error is thrown (Characteristics with cached values must be read-only)
+        
+        // Define services
+        let deviceInformationPeripheralService = DeviceInformationPeripheralService()
+        let uartPeripheralService = UartPeripheralService()
+        peripheralServices = [deviceInformationPeripheralService, uartPeripheralService]
+
+        // Add services
+        for peripheralService in peripheralServices {
+            if peripheralService.isEnabled {
+                gattServer.addService(peripheralService)
+            }
+        }
+        
         gattServer.startAdvertising()
     }
 
     override func tabHidden() {
         gattServer.stopAdvertising()
+        
+        peripheralServices.removeAll()
     }
     
     // MARK: - Navigation
