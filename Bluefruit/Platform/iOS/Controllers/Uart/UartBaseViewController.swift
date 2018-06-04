@@ -28,7 +28,6 @@ class UartBaseViewController: PeripheralModeViewController {
     
     @IBOutlet weak var inputTextField: UITextField!
     @IBOutlet weak var sendInputButton: UIButton!
-    @IBOutlet weak var sendPeripheralButton: UIButton?
     @IBOutlet weak var keyboardSpacerHeightConstraint: NSLayoutConstraint!
     
     fileprivate var mqttBarButtonItem: UIBarButtonItem!
@@ -62,7 +61,6 @@ class UartBaseViewController: PeripheralModeViewController {
     fileprivate let timestampDateFormatter = DateFormatter()
     fileprivate var tableCachedDataBuffer: [UartPacket]?
     fileprivate var textCachedBuffer = NSMutableAttributedString()
-    internal var multiUartSendToPeripheralId: UUID?       // nil = all peripherals
     
     private let keyboardPositionNotifier = KeyboardPositionNotifier()
     
@@ -107,7 +105,6 @@ class UartBaseViewController: PeripheralModeViewController {
             inputControlsStackView.isHidden = true
         }
         
-        sendPeripheralButton?.isHidden = !isInMultiUartMode()
         if !isInMultiUartMode() {
             // Mqtt init
             mqttBarButtonItemImageView = UIImageView(image: UIImage(named: "mqtt_disconnected")!.tintWithColor(self.view.tintColor))      // use a uiimageview as custom barbuttonitem to allow frame animations
@@ -123,7 +120,7 @@ class UartBaseViewController: PeripheralModeViewController {
         
         // Localization
         sendInputButton.setTitle(localizationManager.localizedString("uart_send_action"), for: .normal)
-        sendPeripheralButton?.setTitle(localizationManager.localizedString("uart_send_toall_action"), for: .normal)     // Default value
+        
         
         // Note: uartData should be initialized on the subclasses
         
@@ -641,11 +638,3 @@ extension UartBaseViewController: MqttManagerDelegate {
     }
 }
 
-// MARK: - UartSelectPeripheralViewControllerDelegate
-extension UartBaseViewController: UartSelectPeripheralViewControllerDelegate {
-    func onUartSendToChanged(uuid: UUID?, name: String) {
-        multiUartSendToPeripheralId = uuid
-        sendPeripheralButton?.setTitle(name, for: .normal)
-    }
-    
-}

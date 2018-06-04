@@ -10,9 +10,14 @@ import UIKit
 
 class UartModeViewController: UartBaseViewController {
 
+    // UI
+    @IBOutlet weak var sendPeripheralButton: UIButton!
+
+    
     // Data
     fileprivate var colorForPeripheral = [UUID: UIColor]()
-    
+    fileprivate var multiUartSendToPeripheralId: UUID?       // nil = all peripherals
+
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +26,12 @@ class UartModeViewController: UartBaseViewController {
         let localizationManager = LocalizationManager.shared
         let name = blePeripheral?.name ?? localizationManager.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("uart_navigation_title_format"), arguments: [name])  : localizationManager.localizedString("uart_tab_title")
+        
+        // Setup controls
+        sendPeripheralButton.isHidden = !isInMultiUartMode()
+      
+        // Localization
+        sendPeripheralButton.setTitle(localizationManager.localizedString("uart_send_toall_action"), for: .normal)     // Default value
         
         // Init Uart
         uartData = UartPacketManager(delegate: self, isPacketCacheEnabled: true, isMqttEnabled: true)
@@ -154,10 +165,19 @@ class UartModeViewController: UartBaseViewController {
     // MARK: - MqttManagerDelegate
     override func onMqttMessageReceived(message: String, topic: String) {
         guard let blePeripheral = blePeripheral else { return }
+        guard let uartData = self.uartData as? UartPacketManager else { DLog("Error send with invalid uartData class"); return }
         
         DispatchQueue.main.async {
-            guard let uartData = self.uartData as? UartPacketManager else { DLog("Error send with invalid uartData class"); return }
             uartData.send(blePeripheral: blePeripheral, text: message, wasReceivedFromMqtt: true)
         }
+    }
+}
+
+
+// MARK: - UartSelectPeripheralViewControllerDelegate
+extension UartModeViewController: UartSelectPeripheralViewControllerDelegate {
+    func onUartSendToChanged(uuid: UUID?, name: String) {
+        multiUartSendToPeripheralId = uuid
+        sendPeripheralButton?.setTitle(name, for: .normal)
     }
 }

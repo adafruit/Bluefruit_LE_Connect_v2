@@ -169,6 +169,7 @@ Please reset bluetooth and try again.";
 
 "uart_send_action" = "Send";
 "uart_send_toall_action" = "To All";
+"uart_send_toall_long" = "All Connected Peripherals";
 
 "uart_sentbytes_format" = "Sent: %ld bytes";
 "uart_receivedbytes_format" = "Received: %ld bytes";

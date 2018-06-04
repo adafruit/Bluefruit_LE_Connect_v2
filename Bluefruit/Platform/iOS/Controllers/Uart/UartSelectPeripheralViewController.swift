@@ -56,7 +56,7 @@ extension UartSelectPeripheralViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 
         if indexPath.row == 0 {
-            cell.textLabel?.text = "All Connected Peripherals"
+            cell.textLabel?.text = LocalizationManager.shared.localizedString("uart_send_toall_long")
             cell.textLabel?.textColor = UIColor.black
         } else {
             let peripheral = connectedPeripherals[indexPath.row-1]
