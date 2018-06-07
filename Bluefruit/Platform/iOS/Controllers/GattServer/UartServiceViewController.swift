@@ -51,7 +51,7 @@ class UartServiceViewController: UartBaseViewController {
         uartData.send(uartPeripheralService: uartPeripheralService, text: message)
     }
     
-     // MARK: - Style
+    // MARK: - Stylei
     override func colorForPacket(packet: UartPacket) -> UIColor {
         return .black
     }

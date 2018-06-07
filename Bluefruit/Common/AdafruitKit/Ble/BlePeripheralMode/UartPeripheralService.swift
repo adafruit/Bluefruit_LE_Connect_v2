@@ -35,6 +35,7 @@ class UartPeripheralService: PeripheralService {
     }
 
     // MARK: - Characteristics Read / Write / Subcription
+    
     var tx: Data? {
         get {
             return txCharacteristic.value
@@ -65,7 +66,7 @@ class UartPeripheralService: PeripheralService {
     }
     
     override public func setCharacteristic(uuid characteristicUuid: CBUUID, value: Data) {
-        // Override behaviour for tx
+        // Override behaviour for tx and rx
         if characteristicUuid == UartPeripheralService.kUartTxCharacteristicUUID {
             tx = value
         }

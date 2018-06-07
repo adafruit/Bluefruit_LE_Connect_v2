@@ -12,7 +12,6 @@ class UartModeViewController: UartBaseViewController {
 
     // UI
     @IBOutlet weak var sendPeripheralButton: UIButton!
-
     
     // Data
     fileprivate var colorForPeripheral = [UUID: UIColor]()
