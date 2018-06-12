@@ -10,11 +10,17 @@ import UIKit
 
 class DfuFilesPickerTableViewCell: UITableViewCell {
 
+    // UI
+    @IBOutlet weak var chooseButton: UIButton!
+    
+    // Params
     var onPickFiles: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+       
+        let localizationManager = LocalizationManager.shared
+        chooseButton.setTitle(localizationManager.localizedString("dfu_choose_firmware_action"), for: .normal)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

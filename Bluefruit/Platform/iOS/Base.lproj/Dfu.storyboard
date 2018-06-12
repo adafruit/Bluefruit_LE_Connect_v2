@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -293,10 +293,16 @@
                         <outlet property="backgroundView" destination="Znu-qZ-xjw" id="e6W-TU-yLI"/>
                         <outlet property="cancelButton" destination="d5a-Hq-fLf" id="JTR-FB-Eoq"/>
                         <outlet property="dialogView" destination="NRm-6q-3uD" id="hrC-ZL-dXt"/>
+                        <outlet property="hexChooseButton" destination="iAq-dF-uyR" id="8tW-RY-cz8"/>
+                        <outlet property="hexFileTitleLabel" destination="rMR-jU-qWF" id="ER5-Ok-pCJ"/>
                         <outlet property="hexFileUrlLabel" destination="K5E-Tb-pvS" id="EBg-Sx-Srq"/>
                         <outlet property="hexPickerView" destination="6nq-He-ouN" id="DLy-f4-huh"/>
+                        <outlet property="iniFileTitleLabel" destination="f9n-LN-nph" id="OYq-3q-1dk"/>
                         <outlet property="iniFileUrlLabel" destination="pKv-bb-iBn" id="8f0-AF-F8h"/>
                         <outlet property="iniPickerView" destination="55g-AW-GQ8" id="irN-rB-lUa"/>
+                        <outlet property="initChooseButton" destination="BCp-Y3-Gn4" id="0rz-IB-zpY"/>
+                        <outlet property="titleLabel" destination="c92-OX-mQs" id="SHV-hw-Q6s"/>
+                        <outlet property="updateButton" destination="RjN-Qd-b3X" id="a2r-yT-WON"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N19-6p-c2o" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -343,6 +349,9 @@
                                                 <constraint firstItem="6RV-AM-iVj" firstAttribute="leading" secondItem="7Y0-sV-mhR" secondAttribute="leadingMargin" id="yac-bh-jmd"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="chooseButton" destination="6RV-AM-iVj" id="dKB-0W-PIA"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>

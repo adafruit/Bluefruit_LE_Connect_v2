@@ -19,7 +19,7 @@ class DfuModeViewController: PeripheralModeViewController {
     fileprivate var dfuDialogViewController: DfuDialogViewController!
 
     fileprivate var boardRelease: BoardInfo?
-    fileprivate var dis: DeviceInformationService?
+    fileprivate var deviceDfuInfo: DeviceDfuInfo?
     fileprivate var allReleases: [String: BoardInfo]?
 
     fileprivate var isCheckingUpdates = false
@@ -38,7 +38,7 @@ class DfuModeViewController: PeripheralModeViewController {
         // Init Data
         isCheckingUpdates = false
         boardRelease = nil
-        dis = nil
+        deviceDfuInfo = nil
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -103,7 +103,7 @@ class DfuModeViewController: PeripheralModeViewController {
 
     // MARK: - DFU update
     fileprivate func confirmDfuUpdateWithFirmware(_ firmwareInfo: FirmwareInfo) {
-        guard let dis = dis, let firmwareBootloaderVersion = firmwareInfo.minBootloaderVersion else {
+        guard let dis = deviceDfuInfo, let firmwareBootloaderVersion = firmwareInfo.minBootloaderVersion else {
             DLog("Error: Not ready to update")
             return
         }
@@ -123,7 +123,7 @@ class DfuModeViewController: PeripheralModeViewController {
             alertController.addAction(cancelAction)
             self.present(alertController, animated: true, completion: nil)
         } else {      // Requeriments not met
-            let message = String(format: localizationManager.localizedString("dfu_unabletoupdate_bootloader_format"), arguments: [firmwareInfo.version])
+            let message = String(format: localizationManager.localizedString("dfu_unabletoupdate_bootloader_format"), arguments: [firmwareInfo.version, firmwareInfo.version])
             let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
             let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: nil)
@@ -158,18 +158,18 @@ class DfuModeViewController: PeripheralModeViewController {
 // MARK: - FirmwareUpdaterDelegate
 extension DfuModeViewController: FirmwareUpdaterDelegate {
 
-    func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceInfo: DeviceInformationService?) {
+    func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceDfuInfo: DeviceDfuInfo?) {
         DLog("onFirmwareUpdatesAvailable")
 
-        self.dis = deviceInfo
+        self.deviceDfuInfo = deviceDfuInfo
         self.allReleases = nil
         self.boardRelease = nil
 
-        if self.dis != nil {
+        if self.deviceDfuInfo != nil {
             self.allReleases = firmwareUpdater.releases(showBetaVersions: Preferences.showBetaVersions)
 
             if let allReleases = allReleases {
-                if let modelNumber = deviceInfo?.modelNumber {
+                if let modelNumber = deviceDfuInfo?.modelNumber {
                     boardRelease = allReleases[modelNumber]
                 } else {
                     DLog("Warning: no releases found for this board")
@@ -182,10 +182,11 @@ extension DfuModeViewController: FirmwareUpdaterDelegate {
 
         // Update UI
         DispatchQueue.main.async {
-            if self.dis == nil {
-                showErrorAlert(from: self, title: LocalizationManager.shared.localizedString("dialog_error"), message: "Device Information Service not found. Unable to peform an OTA DFU update")
-            } else if let dis = self.dis, dis.hasDefaultBootloaderVersion {
-                showErrorAlert(from: self, title: LocalizationManager.shared.localizedString("dialog_error"), message: LocalizationManager.shared.localizedString("dfu_legacybootloader"))
+            let localizationManager = LocalizationManager.shared
+            if self.deviceDfuInfo == nil {
+                showErrorAlert(from: self, title: localizationManager.localizedString("dialog_error"), message: localizationManager.localizedString("dfu_disnotavailable"))
+            } else if let dis = self.deviceDfuInfo, dis.hasDefaultBootloaderVersion {
+                showErrorAlert(from: self, title: localizationManager.localizedString("dialog_error"), message: LocalizationManager.shared.localizedString("dfu_legacybootloader"))
             }
 
             // Refresh
@@ -299,7 +300,7 @@ extension DfuModeViewController: UITableViewDelegate {
         switch DfuSection(rawValue: indexPath.section)! {
         case .currentVersion:
             var firmwareString: String?
-            if let softwareRevision = dis?.softwareRevision {
+            if let softwareRevision = deviceDfuInfo?.softwareRevision {
                 firmwareString = String(format: localizationManager.localizedString("dfu_firmware_format"), arguments: [softwareRevision])
             }
             cell.textLabel!.text = blePeripheral?.name
@@ -329,7 +330,6 @@ extension DfuModeViewController: UITableViewDelegate {
             
             cell.contentView.backgroundColor = UIColor.white
             cell.selectionStyle = isLastRow ? .none:.blue
-            
         }
     }
     
@@ -341,18 +341,20 @@ extension DfuModeViewController: UITableViewDelegate {
         } else {      // If showing all available releases
             var currentRow = 0
             var currentBoardIndex = 0
+            let sortedKeys = allReleases!.keys.sorted(by: <)        // Order alphabetically
+
             while currentRow <= row {
-                
-                let sortedKeys = allReleases!.keys.sorted(by: <)        // Order alphabetically
                 let currentKey = sortedKeys[currentBoardIndex]
                 let boardRelease = allReleases![currentKey]
                 
+                /*
                 // order versions numerically
                 let firmwareReleases = boardRelease!.firmwareReleases.sorted(by: { (firmwareA, firmwareB) -> Bool in
-                    let versionA = (firmwareA ).version
-                    let versionB = (firmwareB ).version
+                    let versionA = (firmwareA).version
+                    let versionB = (firmwareB).version
                     return versionA.compare(versionB, options: .numeric) == .orderedAscending
-                })
+                })*/
+                let firmwareReleases = boardRelease!.firmwareReleases
                 
                 let numReleases = firmwareReleases.count
                 let remaining = row - currentRow
@@ -369,7 +371,7 @@ extension DfuModeViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let dis = dis else {
+        guard let dis = deviceDfuInfo else {
             showErrorAlert(from: self, title: LocalizationManager.shared.localizedString("dialog_error"), message: "Device Information Service not found. Unable to peform an OTA DFU update")
             return
         }
@@ -416,7 +418,7 @@ extension  DfuModeViewController: DfuUpdateProcessDelegate {
         //BleManager.sharedInstance.restoreCentralManager()
 
         let localizationManager = LocalizationManager.shared
-        let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("dfu_udaptedcompleted_message"), preferredStyle: .alert)
+        let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("dfu_updatecompleted_message"), preferredStyle: .alert)
 
         let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default) { [unowned self] _ in
             //self.gotoScanController()
@@ -478,7 +480,7 @@ extension DfuModeViewController: DfuFilesPickerDialogViewControllerDelegate {
         if let hexUrl = hexUrl {
             // Show dialog
             dfuDialogViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuDialogViewController") as! DfuDialogViewController
-            self.present(dfuDialogViewController, animated: true, completion: { [unowned self] () -> Void in
+            self.present(dfuDialogViewController, animated: true, completion: { [unowned self] in
                 // Setup update process
                 self.dfuUpdateProcess.delegate = self
                 self.dfuUpdateProcess.startUpdateForPeripheral(peripheral: self.blePeripheral!.peripheral, hexUrl: hexUrl, iniUrl:iniUrl)

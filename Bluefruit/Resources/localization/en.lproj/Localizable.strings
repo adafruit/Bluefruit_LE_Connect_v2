@@ -106,7 +106,8 @@ Please reset bluetooth and try again.";
 "peripheral_dis_title" = "Device Information Service";
 "peripheral_uart_title" = "UART";
 
-
+"peripheral_advertising_starterror_undefined" = "Peripheral mode can't not be started";
+"peripheral_advertising_starterror_toolarge" = "Peripheral mode can't not be started: Advertising data too large";
 
 // Peripheral Dis
 "peripheral_dis_manufacturer" = "Manufacturer";
@@ -119,7 +120,7 @@ Please reset bluetooth and try again.";
 
 // AutoUpdate Firmware
 "autoupdate_title" = "Update available";
-"auoupadte_description_format" = "Software version %@ is available";
+"autoupdate_description_format" = "Software version %@ is available";
 "autoupdate_update" = "Go to updates";
 "autoupdate_later" = "Ask later";
 "autoupdate_ignore" = "Ignore";
@@ -201,10 +202,10 @@ Please reset bluetooth and try again.";
 "uart_settings_echo_title" = "Show Echo";
 "uart_settings_eol_title" = "Send EoL";
 "uart_settings_eolCharacters_title" = "EoL Characters";
-"uart_eolmode_n" = "\n";
-"uart_eolmode_r" = "\r";
-"uart_eolmode_nr" = "\nr";
-"uart_eolmode_rn" = "\rn";
+"uart_eolmode_n" = "\\n";
+"uart_eolmode_r" = "\\r";
+"uart_eolmode_nr" = "\\n\\r";
+"uart_eolmode_rn" = "\\r\\n";
 
 "uart_mqtt_settings_title" = "MQTT Settings";
 "uart_mqtt_settings_group_status" = "Status";
@@ -269,17 +270,38 @@ Each unique set of data samples must be terminated by a LINE FEED character (0x0
 "dfu_betaversion_format" = "Beta Version %@";
 "dfu_version_format" = "Version %@";
 
+"dfu_choose_firmware_action" = "Use Custom Firmware";
+
+"dfu_pickfiles_customfirmware_title" = "Select Custom Firmware";
+"dfu_pickfiles_custombootloader_title" = "Select Custom Bootloader";
+"dfu_pickfiles_hex_title" = "Hex File:";
+"dfu_pickfiles_init_title" = "Init File:";
+"dfu_pickfiles_hex_action" = "Choose";
+"dfu_pickfiles_init_action" = "Choose";
+"dfu_pickfiles_file_empty" = "<No file selected>";
+"dfu_pickfiles_update_action" = "Start Update";
+"dfu_pickfiles_error_hexmissing" = "At least an Hex file should be selected";
+"dfu_pickfiles_error_noexplorer_title" = "Unavailable";
+"dfu_pickfiles_error_noexplorer_message" = "File browser app not has not been found on your device. You should install an app like Dropbox, GoogleDrive…";
+
+
 "dfu_install_action_title_format" = "Install firmware version %@?";
 "dfu_install_action_message" = "The firmware will be downloaded and updated. Please wait until the process finishes before disconnecting the peripheral";
-"dfu_unabletoupdate_bootloader_format" = "This firmware update is not compatible with your bootloader. You need to update your bootloader to version %@ before installing this firmware release \(firmwareInfo.version)";
+"dfu_unabletoupdate_bootloader_format" = "This firmware update is not compatible with your bootloader. You need to update your bootloader to version %@ before installing this firmware release %@";
 
+"dfu_disnotavailable" = "Device Information Service not found. Unable to peform an OTA DFU update";
 "dfu_dfunotavailable" = "No DFU Service found on device";
 "dfu_legacybootloader" = "The legacy bootloader on this device is not compatible with this application";
+"dfu_error_invalidfirmware" = "Firmware files not valid";
+"dfu_error_bluetootherror" = "Bluetooth not ready";
 
-"dfu_udaptedcompleted_message" = "Update completed successfully";
-
+"dfu_updatecompleted_message" = "Update completed successfully";
+"dfu_updatecancelled_message" = "Update cancelled";
+"dfu_updateaborted_message" = "Update aborted";
 "dfu_download_hex_message" = "Downloading hex file";
 "dfu_download_init_message" = "Downloading init file";
+"dfu_download_firmware_message" = "Downloading firmware";
+"dfu_download_bootloader_message" = "Downloading bootloader";
 
 "dfu_help_title" = "Firmware Updates";
 "dfu_help_text" = "Instructions:

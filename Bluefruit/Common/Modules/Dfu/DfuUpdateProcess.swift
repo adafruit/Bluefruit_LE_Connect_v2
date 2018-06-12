@@ -35,13 +35,14 @@ class DfuUpdateProcess: NSObject {
 
         let firmware = DFUFirmware(urlToBinOrHexFile: hexUrl, urlToDatFile: iniUrl, type: .application)
 
+        let localizationManager = LocalizationManager.shared
         guard let selectedFirmware = firmware, selectedFirmware.valid else {
-            delegate?.onUpdateProcessError(errorMessage: "Firmware files not valid", infoMessage: nil)
+            delegate?.onUpdateProcessError(errorMessage: localizationManager.localizedString("dfu_error_invalidfirmware"), infoMessage: nil)
             return
         }
 
         guard let centralManager = BleManager.shared.centralManager else {
-            delegate?.onUpdateProcessError(errorMessage: "Bluetooth not ready", infoMessage: nil)
+            delegate?.onUpdateProcessError(errorMessage: localizationManager.localizedString("dfu_error_bluetootherror"), infoMessage: nil)
             return
         }
         let initiator = DFUServiceInitiator(centralManager: centralManager, target: peripheral).with(firmware: selectedFirmware)
@@ -57,17 +58,17 @@ class DfuUpdateProcess: NSObject {
         dfuController = initiator.start()
     }
     
-    
     func startUpdateForPeripheral(peripheral: CBPeripheral, zipUrl: URL) {
         let firmware = DFUFirmware(urlToZipFile: zipUrl)
         
+            let localizationManager = LocalizationManager.shared
         guard let selectedFirmware = firmware, selectedFirmware.valid else {
-            delegate?.onUpdateProcessError(errorMessage: "Firmware files not valid", infoMessage: nil)
+            delegate?.onUpdateProcessError(errorMessage: localizationManager.localizedString("dfu_error_invalidfirmware"), infoMessage: nil)
             return
         }
         
         guard let centralManager = BleManager.shared.centralManager else {
-            delegate?.onUpdateProcessError(errorMessage: "Bluetooth not ready", infoMessage: nil)
+            delegate?.onUpdateProcessError(errorMessage: localizationManager.localizedString("dfu_error_bluetootherror"), infoMessage: nil)
             return
         }
         let initiator = DFUServiceInitiator(centralManager: centralManager, target: peripheral).with(firmware: selectedFirmware)
@@ -87,7 +88,8 @@ class DfuUpdateProcess: NSObject {
         // Cancel current operation
         let aborted = dfuController?.abort()
         DLog("Aborted: \(aborted ?? false)")
-        delegate?.onUpdateProcessError(errorMessage: "Update cancelled", infoMessage: nil)
+        let localizationManager = LocalizationManager.shared
+        delegate?.onUpdateProcessError(errorMessage: localizationManager.localizedString("dfu_updatecancelled_message"), infoMessage: nil)
     }
 }
 
@@ -107,7 +109,8 @@ extension DfuUpdateProcess: DFUServiceDelegate {
             delegate?.onUpdateProcessSuccess()
         } else if state == .aborted {
             DLog("Dfu aborted")
-            delegate?.onUpdateProcessError(errorMessage: "Update aborted", infoMessage: nil)
+            let localizationManager = LocalizationManager.shared
+            delegate?.onUpdateProcessError(errorMessage: localizationManager.localizedString("dfu_updateaborted_message"), infoMessage: nil)
         }
     }
 

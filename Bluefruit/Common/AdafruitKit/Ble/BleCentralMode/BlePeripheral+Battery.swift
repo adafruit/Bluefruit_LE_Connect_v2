@@ -38,7 +38,7 @@ extension BlePeripheral {
         self.characteristic(uuid: BlePeripheral.kBatteryCharacteristicUUID, serviceUuid: BlePeripheral.kBatteryServiceUUID) { (characteristic, error) in
             guard error == nil, let characteristic = characteristic else { DLog("Error starting read for battery characteristic: \(error?.localizedDescription ?? "")"); return }
             
-            // Read actual value
+            // Read current value
             self.readCharacteristic(characteristic) { (result, error) in
                 guard error == nil, let data = result as? Data, data.count >= 1 else {  DLog("Error reading battery level: \(error?.localizedDescription ?? "")"); return }
                 
@@ -54,10 +54,9 @@ extension BlePeripheral {
                 let level = Int(data[0])        // from 0 to 100
                 handler(level)
             })
-            
         }
     }
-    
+
     func stopReadingBatteryLevel() {
         self.characteristic(uuid: BlePeripheral.kBatteryCharacteristicUUID, serviceUuid: BlePeripheral.kBatteryServiceUUID) { (characteristic, error) in
             guard error == nil, let characteristic = characteristic else { DLog("Error stopping read for battery characteristic: \(error?.localizedDescription ?? "")"); return }

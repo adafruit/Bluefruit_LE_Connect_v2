@@ -18,10 +18,16 @@ class DfuFilesPickerDialogViewController: UIViewController {
     // UI
     @IBOutlet weak var dialogView: UIView!
     @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var hexFileTitleLabel: UILabel!
     @IBOutlet weak var hexFileUrlLabel: UILabel!
+    @IBOutlet weak var hexChooseButton: StyledButton!
+    @IBOutlet weak var iniFileTitleLabel: UILabel!
     @IBOutlet weak var iniFileUrlLabel: UILabel!
+    @IBOutlet weak var initChooseButton: StyledButton!
     @IBOutlet weak var backgroundView: UIView!
-
+    @IBOutlet weak var updateButton: StyledButton!
+    
     @IBOutlet weak var hexPickerView: UIView!
     @IBOutlet weak var iniPickerView: UIView!
 
@@ -38,7 +44,16 @@ class DfuFilesPickerDialogViewController: UIViewController {
         // UI
         dialogView.layer.cornerRadius = 4
         dialogView.layer.masksToBounds = true
-
+        
+        // Localization
+        let localizationManager = LocalizationManager.shared
+        titleLabel.text = localizationManager.localizedString("dfu_pickfiles_customfirmware_title")
+        hexFileTitleLabel.text = localizationManager.localizedString("dfu_pickfiles_hex_title")
+        iniFileTitleLabel.text = localizationManager.localizedString("dfu_pickfiles_init_title")
+        hexChooseButton.setTitle(localizationManager.localizedString("dfu_pickfiles_hex_action"), for: .normal)
+        initChooseButton.setTitle(localizationManager.localizedString("dfu_pickfiles_init_action"), for: .normal)
+        updateButton.setTitle(localizationManager.localizedString("dfu_pickfiles_update_action"), for: .normal)
+        cancelButton.setTitle(localizationManager.localizedString("dialog_cancel"), for: .normal)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -57,8 +72,9 @@ class DfuFilesPickerDialogViewController: UIViewController {
     }
 
     fileprivate func updateFileNames() {
-        hexFileUrlLabel.text = hexFileUrl != nil ? hexFileUrl!.lastPathComponent: "<No file selected>"
-        iniFileUrlLabel.text = iniFileUrl != nil ? iniFileUrl!.lastPathComponent: "<No file selected>"
+        let nofileString = LocalizationManager.shared.localizedString("dfu_pickfiles_file_empty")
+        hexFileUrlLabel.text = hexFileUrl != nil ? hexFileUrl!.lastPathComponent: nofileString
+        iniFileUrlLabel.text = iniFileUrl != nil ? iniFileUrl!.lastPathComponent: nofileString
     }
 
     // MARK: - Actions

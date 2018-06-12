@@ -401,7 +401,7 @@ class ScannerViewController: ModeTabViewController {
 
         let localizationManager = LocalizationManager.shared
         let alert = UIAlertController(title: localizationManager.localizedString("autoupdate_title"),
-                                      message: String(format: localizationManager.localizedString("auoupadte_description_format"), latestRelease.version),
+                                      message: String(format: localizationManager.localizedString("autoupdate_description_format"), latestRelease.version),
                                       preferredStyle: UIAlertControllerStyle.alert)
 
         alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_update"), style: UIAlertActionStyle.default, handler: { [unowned self] _ in
@@ -779,7 +779,7 @@ extension ScannerViewController: UITextFieldDelegate {
 // MARK: - FirmwareUpdaterDelegate
 extension ScannerViewController: FirmwareUpdaterDelegate {
 
-    func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceInfo: DeviceInformationService?) {
+    func onFirmwareUpdateAvailable(isUpdateAvailable: Bool, latestRelease: FirmwareInfo?, deviceDfuInfo: DeviceDfuInfo?) {
 
         DLog("FirmwareUpdaterDelegate isUpdateAvailable: \(isUpdateAvailable)")
 

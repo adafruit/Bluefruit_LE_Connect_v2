@@ -50,6 +50,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
     private var boardCenterScrollOffset = CGPoint()
 
     private var isSketchTooltipAlreadyShown = false
+    private var isNeopixelInitialized = false;
 
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -80,35 +81,41 @@ class NeopixelModeViewController: PeripheralModeViewController {
         colorPickerContainerView.layer.cornerRadius = 4
         colorPickerContainerView.layer.masksToBounds = true
 
-        // Setup
-        changeComponents(components, is400HkzEnabled: is400HzEnabled)
-        createBoardUI()
-        updatePickerColorButton(isSelected: false)
+     
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         // Start
-        updateStatusUI(isWaitingResponse: true)
-        neopixel.start { error in
-            DispatchQueue.main.async {
-                guard error == nil else {
-                    DLog("Error initializing uart")
-                    self.dismiss(animated: true, completion: { [weak self] in
-                        guard let context = self else { return }
-                        let localizationManager = LocalizationManager.shared
-                        showErrorAlert(from: context, title: localizationManager.localizedString("dialog_error"), message: localizationManager.localizedString("uart_error_peripheralinit"))
-                        
-                        if let blePeripheral = context.blePeripheral {
-                            BleManager.shared.disconnect(from: blePeripheral)
-                        }
-                    })
-                    return
+        if (!isNeopixelInitialized) {
+            updateStatusUI(isWaitingResponse: true)
+            neopixel.start { error in
+                DispatchQueue.main.async {
+                    guard error == nil else {
+                        DLog("Error initializing uart")
+                        self.dismiss(animated: true, completion: { [weak self] in
+                            guard let context = self else { return }
+                            let localizationManager = LocalizationManager.shared
+                            showErrorAlert(from: context, title: localizationManager.localizedString("dialog_error"), message: localizationManager.localizedString("uart_error_peripheralinit"))
+                            
+                            if let blePeripheral = context.blePeripheral {
+                                BleManager.shared.disconnect(from: blePeripheral)
+                            }
+                        })
+                        return
+                    }
+                    
+                    // Uart Ready
+                    self.updateStatusUI(isWaitingResponse: false)
+                    
+                    // Setup
+                    self.changeComponents(self.components, is400HkzEnabled: self.is400HzEnabled)
+                    self.createBoardUI()
+                    self.updatePickerColorButton(isSelected: false)
+                    
+                    self.isNeopixelInitialized = true
                 }
-
-                // Uart Ready
-                self.updateStatusUI(isWaitingResponse: false)
             }
         }
     }
@@ -188,7 +195,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
         self.board = board
         createBoardUI()
         neopixel.resetBoard()
-        updateStatusUI(isWaitingResponse: false)
+        onClickConnect(self)
     }
 
     private func showLineStripDialog() {

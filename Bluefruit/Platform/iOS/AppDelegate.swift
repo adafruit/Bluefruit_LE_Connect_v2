@@ -23,11 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Watch Connectivity
         WatchSessionManager.shared.activate(with: self)
 
-        // Check if there is any update to the fimware database
+        // Check if there is any update to the firmware database
         FirmwareUpdater.refreshSoftwareUpdatesDatabase(url: Preferences.updateServerUrl, completion: nil)
 
         // Style
-        
         let navigationBarAppearance = UINavigationBar.appearance()
         navigationBarAppearance.barTintColor = UIColor.black
         navigationBarAppearance.isTranslucent = true
