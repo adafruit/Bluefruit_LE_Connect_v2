@@ -10,7 +10,7 @@ import UIKit
 //import iOS_color_wheel
 
 protocol NeopixelColorPickerViewControllerDelegate: class {
-    func onColorPickerChooseColor(_ color: UIColor, wComponent: Float)
+    func onColorPickerChooseColor(colorPickerViewController: NeopixelColorPickerViewController, color: UIColor, wComponent: Float)
 }
 
 class NeopixelColorPickerViewController: UIViewController {
@@ -31,6 +31,8 @@ class NeopixelColorPickerViewController: UIViewController {
     // Params
     var is4ComponentsEnabled = false
     var initialColor: UIColor?
+    var initialBrightness: Float?
+    var initialWComponent: Float?
 
     // Data
     fileprivate var selectedColorComponents: [UInt8]?
@@ -93,6 +95,12 @@ class NeopixelColorPickerViewController: UIViewController {
             wheelView.layoutIfNeeded()
             DispatchQueue.main.async {
                 self.wheelView.setCurrentColor(currentColor)
+                if let brightness = self.initialBrightness {
+                    self.brightnessSlider.value = brightness
+                }
+                if let wComponent = self.initialWComponent {
+                    self.wComponentSlider.value = wComponent
+                }
                 self.colorWheelDidChangeColor(self.wheelView)
             }
         }
@@ -119,12 +127,20 @@ class NeopixelColorPickerViewController: UIViewController {
     }
 
     @IBAction func onClickSend(_ sender: AnyObject) {
-        delegate?.onColorPickerChooseColor(selectedColor, wComponent: selectedWComponent)
+        delegate?.onColorPickerChooseColor(colorPickerViewController: self, color: selectedColor, wComponent: selectedWComponent)
         dismiss(animated: true, completion: nil)
     }
 
     @IBAction func onClickDone(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    func colorWheelColor() -> UIColor {
+        return wheelView.currentColor()!
+    }
+    
+    func colorWheelBrightness() -> Float {
+        return brightnessSlider.value
     }
 }
 
@@ -132,11 +148,11 @@ class NeopixelColorPickerViewController: UIViewController {
 extension NeopixelColorPickerViewController: ISColorWheelDelegate {
     func colorWheelDidChangeColor(_ colorWheel: ISColorWheel) {
 
-        let colorWheelColor = colorWheel.currentColor
+        let colorWheelColor = colorWheel.currentColor()!
 
         let brightness = CGFloat(brightnessSlider.value)
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0
-        colorWheelColor().getRed(&red, green: &green, blue: &blue, alpha: nil)
+        colorWheelColor.getRed(&red, green: &green, blue: &blue, alpha: nil)
         red = red*brightness
         green = green*brightness
         blue = blue*brightness

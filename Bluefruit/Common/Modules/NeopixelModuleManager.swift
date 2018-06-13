@@ -170,7 +170,7 @@ class NeopixelModuleManager: NSObject {
 
     // Neopixel
     var isSketchDetected: Bool?
-    fileprivate var board: Board?
+    public fileprivate(set) var board: Board?
     fileprivate var components = Components.grb
     fileprivate var is400HzEnabled = false
 
@@ -210,6 +210,7 @@ class NeopixelModuleManager: NSObject {
     func isBoardConfigured() -> Bool {
         return board != nil
     }
+    
 
     func connectNeopixel(completion: @escaping ((Bool) -> Void)) {
         self.checkNeopixelSketch(completion: completion)
