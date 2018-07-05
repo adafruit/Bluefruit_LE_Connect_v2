@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -651,6 +651,7 @@
                                         <connections>
                                             <outlet property="actionButton" destination="5RP-K1-RQw" id="CX1-my-agi"/>
                                             <outlet property="statusLabel" destination="A7J-46-B7S" id="jmV-O4-Aaf"/>
+                                            <outlet property="statusTitleLabel" destination="VNV-tX-el0" id="jG0-0q-uVb"/>
                                             <outlet property="waitView" destination="jnl-66-tPd" id="krf-pc-iBR"/>
                                         </connections>
                                     </tableViewCell>

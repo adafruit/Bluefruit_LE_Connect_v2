@@ -208,13 +208,40 @@ Please reset bluetooth and try again.";
 "uart_eolmode_rn" = "\\r\\n";
 
 "uart_mqtt_settings_title" = "MQTT Settings";
+"uart_mqtt_action_title" = "Mqtt Status:";
+"uart_mqtt_action_connect" = "Connect";
+"uart_mqtt_action_disconnect" = "Disconnect";
+
 "uart_mqtt_settings_group_status" = "Status";
 "uart_mqtt_settings_group_server" = "Server";
+"uart_mqtt_settings_server_address" = "Address:";
+"uart_mqtt_settings_server_port" = "Port:";
 "uart_mqtt_settings_group_publish" = "Publish";
+"uart_mqtt_settings_publish_rx" = "Uart RX:";
+"uart_mqtt_settings_publish_tx" = "Uart TX:";
 "uart_mqtt_settings_group_subscribe" = "Subscribe";
+"uart_mqtt_settings_subscribe_topic" = "Topic:";
+"uart_mqtt_settings_subscribe_action" = "Action:";
 "uart_mqtt_settings_group_advanced" = "Advanced";
+"uart_mqtt_settings_advanced_username" = "Username:";
+"uart_mqtt_settings_advanced_password" = "Pass/Key:";
 "uart_settings_clear_title" = "Clear";
 "uart_settings_export_title" = "Export...";
+
+"uart_mqtt_status_connected" = "Connected";
+"uart_mqtt_status_connecting" = "Connecting...";
+"uart_mqtt_status_disconnecting" = "Disconnecting...";
+"uart_mqtt_status_error" = "Error";
+"uart_mqtt_status_disconnected" = "Disconnected";
+
+"uart_mqtt_subscription_localonly" = "Local Only";
+"uart_mqtt_subscription_transmit" = "Transmit";
+
+"uart_mqtt_qos_atleastonce" = "At Least Once";
+"uart_mqtt_qos_atmostonce" = "At Most Once";
+"uart_mqtt_qos_exactlyonce" = "Exactly Once";
+
+
 
 "uart_help_title" = "UART";
 "uart_help_text" = "Instructions:
@@ -302,6 +329,7 @@ Each unique set of data samples must be terminated by a LINE FEED character (0x0
 "dfu_download_init_message" = "Downloading init file";
 "dfu_download_firmware_message" = "Downloading firmware";
 "dfu_download_bootloader_message" = "Downloading bootloader";
+"dfu_download_error_message" = "Error downloading files. Check your internet connection and try again.";
 
 "dfu_help_title" = "Firmware Updates";
 "dfu_help_text" = "Instructions:

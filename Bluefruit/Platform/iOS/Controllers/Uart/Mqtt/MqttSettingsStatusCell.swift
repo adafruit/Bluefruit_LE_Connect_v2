@@ -11,6 +11,7 @@ import UIKit
 class MqttSettingsStatusCell: UITableViewCell {
 
     // UI
+    @IBOutlet weak var statusTitleLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var waitView: UIActivityIndicatorView!

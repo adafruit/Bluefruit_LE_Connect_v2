@@ -121,6 +121,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = SettingsSections(rawValue: indexPath.section)!
         let cell: UITableViewCell
+        let localizationManager = LocalizationManager.shared
 
         if indexPath == openCellIndexPath {
             let pickerCell = tableView.dequeueReusableCell(withIdentifier: "PickerCell", for: indexPath) as! MqttSettingPickerCell
@@ -141,10 +142,11 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 statusCell.waitView.stopAnimating()
             }
             statusCell.actionButton.isHidden = showWait
+            statusCell.statusTitleLabel.text = localizationManager.localizedString("uart_mqtt_action_title")
             statusCell.statusLabel.text = titleForMqttManagerStatus(status)
 
             UIView.performWithoutAnimation({ () -> Void in      // Change title disabling animations (if enabled the user can see the old title for a moment)
-                statusCell.actionButton.setTitle(status == .connected ?"Disconnect":"Connect", for: UIControlState.normal)
+                statusCell.actionButton.setTitle(localizationManager.localizedString(status == .connected ?"uart_mqtt_action_disconnect":"uart_mqtt_action_connect"), for: UIControlState.normal)
                 statusCell.layoutIfNeeded()
             })
 
@@ -177,9 +179,10 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueCell", for: indexPath) as! MqttSettingsValueAndSelector
                 editValueCell.reset()
 
-                let labels = ["Address:", "Port:"]
-                editValueCell.nameLabel.text = labels[row]
+                let labels = ["uart_mqtt_settings_server_address", "uart_mqtt_settings_server_port"]
+                editValueCell.nameLabel.text = localizationManager.localizedString(labels[row])
                 let valueTextField = editValueCell.valueTextField!      // valueTextField should exist on this cell
+                valueTextField.isSecureTextEntry = false
                 if row == 0 {
                     valueTextField.text = mqttSettings.serverAddress
                 } else if row == 1 {
@@ -194,8 +197,8 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueAndSelectorCell", for: indexPath) as! MqttSettingsValueAndSelector
                 editValueCell.reset()
 
-                let labels = ["Uart RX:", "Uart TX:"]
-                editValueCell.nameLabel.text = labels[row]
+                let labels = ["uart_mqtt_settings_publish_rx", "uart_mqtt_settings_publish_tx"]
+                editValueCell.nameLabel.text = localizationManager.localizedString(labels[row])
 
                 editValueCell.valueTextField!.text = mqttSettings.getPublishTopic(index: row)
 
@@ -208,8 +211,8 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 editValueCell = tableView.dequeueReusableCell(withIdentifier: row==0 ? "ValueAndSelectorCell":"SelectorCell", for: indexPath) as! MqttSettingsValueAndSelector
                 editValueCell.reset()
 
-                let labels = ["Topic:", "Action:"]
-                editValueCell.nameLabel.text = labels[row]
+                let labels = ["uart_mqtt_settings_subscribe_topic", "uart_mqtt_settings_subscribe_action"]
+                editValueCell.nameLabel.text =  localizationManager.localizedString(labels[row])
 
                 let typeButton = editValueCell.typeButton!
                 typeButton.tag = tagFromIndexPath(indexPath, scale:100)
@@ -225,8 +228,8 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 editValueCell = tableView.dequeueReusableCell(withIdentifier: "ValueCell", for: indexPath) as! MqttSettingsValueAndSelector
                 editValueCell.reset()
 
-                let labels = ["Username:", "Pass/Key:" /*"Password:"*/]
-                editValueCell.nameLabel.text = labels[row]
+                let labels = ["uart_mqtt_settings_advanced_username", "uart_mqtt_settings_advanced_password"]
+                editValueCell.nameLabel.text = localizationManager.localizedString(labels[row])
 
                 let valueTextField = editValueCell.valueTextField!
                 if row == 0 {
@@ -245,6 +248,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
             if let valueTextField = editValueCell.valueTextField {
                 valueTextField.returnKeyType = UIReturnKeyType.next
                 valueTextField.delegate = self
+                valueTextField.isSecureTextEntry = false
                 valueTextField.tag = tagFromIndexPath(indexPath, scale:10)
             }
 
@@ -330,28 +334,37 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
     fileprivate func titleForMqttManagerStatus(_ status: MqttManager.ConnectionStatus) -> String {
         let statusText: String
         switch status {
-        case .connected: statusText = "Connected"
-        case .connecting: statusText = "Connecting..."
-        case .disconnecting: statusText = "Disconnecting..."
-        case .error: statusText = "Error"
-        default: statusText = "Disconnected"
+        case .connected: statusText = "uart_mqtt_status_connected"
+        case .connecting: statusText = "uart_mqtt_status_connecting"
+        case .disconnecting: statusText = "uart_mqtt_status_disconnecting"
+        case .error: statusText = "uart_mqtt_status_error"
+        default: statusText = "uart_mqtt_status_disconnected"
         }
-        return statusText
+        
+        let localizationManager = LocalizationManager.shared
+        return localizationManager.localizedString(statusText)
     }
 
     fileprivate func titleForSubscribeBehaviour(_ behaviour: MqttSettings.SubscribeBehaviour) -> String {
+        let textId: String
         switch behaviour {
-        case .localOnly: return "Local Only"
-        case .transmit: return "Transmit"
+        case .localOnly: textId = "uart_mqtt_subscription_localonly"
+        case .transmit: textId = "uart_mqtt_subscription_transmit"
         }
+        
+        let localizationManager = LocalizationManager.shared
+        return localizationManager.localizedString(textId)
     }
-
+    
     fileprivate func titleForQos(_ qos: MqttManager.MqttQos) -> String {
+        let textId: String
         switch qos {
-        case .atLeastOnce : return "At Least Once"
-        case .atMostOnce : return "At Most Once"
-        case .exactlyOnce : return "Exactly Once"
+        case .atLeastOnce: textId = "uart_mqtt_qos_atleastonce"
+        case .atMostOnce: textId = "uart_mqtt_qos_atmostonce"
+        case .exactlyOnce: textId = "uart_mqtt_qos_exactlyonce"
         }
+        let localizationManager = LocalizationManager.shared
+        return localizationManager.localizedString(textId)
     }
 }
 
@@ -533,8 +546,9 @@ extension UartMqttSettingsViewController: MqttManagerDelegate {
 
     func onMqttError(message: String) {
         DispatchQueue.main.async {
-            let alert = UIAlertController(title:"Error", message: message, preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+            let localizationManager = LocalizationManager.shared
+            let alert = UIAlertController(title:localizationManager.localizedString("dialog_error"), message: message, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
 
             // Update status
