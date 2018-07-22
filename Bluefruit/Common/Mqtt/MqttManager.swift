@@ -51,7 +51,12 @@ class MqttManager {
     func connectFromSavedSettings() {
         let mqttSettings = MqttSettings.shared
 
-        if let host = mqttSettings.serverAddress {
+        var host = mqttSettings.serverAddress
+        if host == nil || host!.isEmpty {
+            host = MqttSettings.defaultServerAddress
+        }
+        
+        if let host = host {
             let port = mqttSettings.serverPort
             let username = mqttSettings.username
             let password = mqttSettings.password

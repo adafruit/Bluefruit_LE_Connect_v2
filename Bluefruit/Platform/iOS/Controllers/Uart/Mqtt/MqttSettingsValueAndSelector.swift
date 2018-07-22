@@ -22,5 +22,9 @@ class MqttSettingsValueAndSelector: UITableViewCell {
         valueTextField?.text = nil
         valueTextField?.placeholder = nil
         valueTextField?.keyboardType = UIKeyboardType.default
+        valueTextField?.autocorrectionType = .default
+        if #available(iOS 10, *) {
+            valueTextField?.textContentType = nil
+        }
     }
 }

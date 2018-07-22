@@ -184,7 +184,11 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 let valueTextField = editValueCell.valueTextField!      // valueTextField should exist on this cell
                 valueTextField.isSecureTextEntry = false
                 if row == 0 {
-                    valueTextField.text = mqttSettings.serverAddress
+                    valueTextField.placeholder = MqttSettings.defaultServerAddress
+                    if mqttSettings.serverAddress != MqttSettings.defaultServerAddress {
+                        valueTextField.text = mqttSettings.serverAddress
+                    }
+                    valueTextField.keyboardType = .URL
                 } else if row == 1 {
                     valueTextField.placeholder = "\(MqttSettings.defaultServerPort)"
                     if mqttSettings.serverPort != MqttSettings.defaultServerPort {
@@ -201,6 +205,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 editValueCell.nameLabel.text = localizationManager.localizedString(labels[row])
 
                 editValueCell.valueTextField!.text = mqttSettings.getPublishTopic(index: row)
+                editValueCell.valueTextField!.autocorrectionType = .no
 
                 let typeButton = editValueCell.typeButton!
                 typeButton.tag = tagFromIndexPath(indexPath, scale:100)
@@ -219,6 +224,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 typeButton.addTarget(self, action: #selector(UartMqttSettingsViewController.onClickTypeButton(_:)), for: .touchUpInside)
                 if row == 0 {
                     editValueCell.valueTextField!.text = mqttSettings.subscribeTopic
+                    editValueCell.valueTextField!.autocorrectionType = .no
                     typeButton.setTitle(titleForQos(mqttSettings.subscribeQos), for: .normal)
                 } else if row == 1 {
                     typeButton.setTitle(titleForSubscribeBehaviour(mqttSettings.subscribeBehaviour), for: .normal)
@@ -235,9 +241,15 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
                 if row == 0 {
                     valueTextField.text = mqttSettings.username
                     valueTextField.isSecureTextEntry = false
+                    if #available(iOS 11, *) {
+                        valueTextField.textContentType = .username
+                    }
                 } else if row == 1 {
                     valueTextField.text = mqttSettings.password
                     valueTextField.isSecureTextEntry = true
+                    if #available(iOS 11, *) {
+                        valueTextField.textContentType = .password
+                    }
                 }
 
             default:
@@ -489,12 +501,17 @@ extension UartMqttSettingsViewController: UITextFieldDelegate {
         let section = indexPath.section
         let row = indexPath.row
         let mqttSettings = MqttSettings.shared
-
+        
         // Update settings with new values
         switch section {
         case SettingsSections.server.rawValue:
             if row == 0 {         // Server Address
-                mqttSettings.serverAddress = textField.text
+                if let serverAddress = textField.text, !serverAddress.isEmpty {
+                    mqttSettings.serverAddress = textField.text
+                }
+                else {
+                    mqttSettings.serverAddress = MqttSettings.defaultServerAddress
+                }
             } else if row == 1 {    // Server Port
                 if let port = Int(textField.text!) {
                     mqttSettings.serverPort = port
