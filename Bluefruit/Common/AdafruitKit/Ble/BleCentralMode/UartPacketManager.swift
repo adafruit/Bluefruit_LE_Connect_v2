@@ -61,22 +61,23 @@ class UartPacketManager: UartPacketManagerBase {
         if let data = text.data(using: .utf8) {
             let uartPacket = UartPacket(peripheralId: blePeripheral.identifier, mode: .tx, data: data)
 
+            // Add Packet
+            packetsSemaphore.wait()
+            packets.append(uartPacket)
+            packetsSemaphore.signal()
+            
             DispatchQueue.main.async {
                 self.delegate?.onUartPacket(uartPacket)
             }
-
+            
             #if os(iOS)
-                let shouldBeSent = !wasReceivedFromMqtt || (isMqttEnabled && MqttSettings.shared.subscribeBehaviour == .transmit)
+            let shouldBeSent = !wasReceivedFromMqtt || (isMqttEnabled && MqttSettings.shared.subscribeBehaviour == .transmit)
             #else
-                let shouldBeSent = true
+            let shouldBeSent = true
             #endif
-
+            
             if shouldBeSent {
                 send(blePeripheral: blePeripheral, data: data)
-
-                packetsSemaphore.wait()            // don't append more data, till the delegate has finished processing it
-                packets.append(uartPacket)
-                packetsSemaphore.signal()
             }
         }
     }

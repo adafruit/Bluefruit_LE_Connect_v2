@@ -35,6 +35,11 @@ class UartPeripheralModePacketManager: UartPacketManagerBase {
         if let data = text.data(using: .utf8) {
             let uartPacket = UartPacket(peripheralId: nil, mode: .tx, data: data)
 
+            // Add packet
+            packetsSemaphore.wait()            
+            packets.append(uartPacket)
+            packetsSemaphore.signal()
+
             DispatchQueue.main.async {
                 self.delegate?.onUartPacket(uartPacket)
             }
@@ -47,11 +52,8 @@ class UartPeripheralModePacketManager: UartPacketManagerBase {
 
             if shouldBeSent {
                 send(uartPeripheralService: uartPeripheralService, data: data)
-
-                packetsSemaphore.wait()            // don't append more data, till the delegate has finished processing it
-                packets.append(uartPacket)
-                packetsSemaphore.signal()
             }
+            
         }
     }
 }
