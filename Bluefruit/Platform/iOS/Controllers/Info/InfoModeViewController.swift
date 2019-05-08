@@ -56,12 +56,12 @@ class InfoModeViewController: PeripheralModeViewController {
 
         // Setup table
         baseTableView.estimatedRowHeight = 60
-        baseTableView.rowHeight = UITableViewAutomaticDimension
+        baseTableView.rowHeight = UITableView.automaticDimension
 
         // Setup table refresh
         refreshControl.addTarget(self, action: #selector(onTableRefresh(_:)), for: .valueChanged)
         baseTableView.addSubview(refreshControl)
-        baseTableView.sendSubview(toBack: refreshControl)
+        baseTableView.sendSubviewToBack(refreshControl)
     }
 
     override func viewWillAppear(_ animated: Bool) {

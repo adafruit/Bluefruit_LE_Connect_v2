@@ -145,7 +145,7 @@ class DfuModeViewController: PeripheralModeViewController {
         }
 
         // Show dialog
-        dfuDialogViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuDialogViewController") as! DfuDialogViewController
+        dfuDialogViewController = (self.storyboard!.instantiateViewController(withIdentifier: "DfuDialogViewController") as! DfuDialogViewController)
         dfuDialogViewController.delegate = self
         self.present(dfuDialogViewController, animated: true, completion: { [unowned self] () -> Void in
             // Setup update process
@@ -479,7 +479,7 @@ extension DfuModeViewController: DfuFilesPickerDialogViewControllerDelegate {
     func onFilesPickerStartUpdate(hexUrl: URL?, iniUrl: URL?) {
         if let hexUrl = hexUrl {
             // Show dialog
-            dfuDialogViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuDialogViewController") as! DfuDialogViewController
+            dfuDialogViewController = (self.storyboard!.instantiateViewController(withIdentifier: "DfuDialogViewController") as! DfuDialogViewController)
             self.present(dfuDialogViewController, animated: true, completion: { [unowned self] in
                 // Setup update process
                 self.dfuUpdateProcess.delegate = self

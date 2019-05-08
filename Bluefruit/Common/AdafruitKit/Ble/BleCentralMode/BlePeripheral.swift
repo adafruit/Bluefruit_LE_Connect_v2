@@ -119,7 +119,7 @@ class BlePeripheral: NSObject {
     }
 
     fileprivate func timeOutRemoveCaptureHandler(identifier: String) {   // Default behaviour for a capture handler timeout
-        guard captureReadHandlers.count > 0, let index = captureReadHandlers.index(where: {$0.identifier == identifier}) else { return }
+        guard captureReadHandlers.count > 0, let index = captureReadHandlers.firstIndex(where: {$0.identifier == identifier}) else { return }
         // DLog("captureReadHandlers index: \(index) / \(captureReadHandlers.count)")
         
         // Remove capture handler
@@ -149,7 +149,7 @@ class BlePeripheral: NSObject {
     }
 
     deinit {
-        DLog("peripheral deinit")
+        //DLog("peripheral deinit")
     }
 
     func reset() {
@@ -522,7 +522,7 @@ extension BlePeripheral: CBPeripheralDelegate {
         // Check if waiting to capture this read
         var isNotifyOmitted = false
         var hasCaptureHandler = false
-        if captureReadHandlers.count > 0, let index = captureReadHandlers.index(where: {$0.identifier == identifier}) {
+        if captureReadHandlers.count > 0, let index = captureReadHandlers.firstIndex(where: {$0.identifier == identifier}) {
             hasCaptureHandler = true
             // DLog("captureReadHandlers index: \(index) / \(captureReadHandlers.count)")
 
@@ -580,7 +580,7 @@ extension BlePeripheral: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
         let identifier = handlerIdentifier(from: descriptor)
 
-        if captureReadHandlers.count > 0, let index = captureReadHandlers.index(where: {$0.identifier == identifier}) {
+        if captureReadHandlers.count > 0, let index = captureReadHandlers.firstIndex(where: {$0.identifier == identifier}) {
             // Remove capture handler
             let captureReadHandler = captureReadHandlers.remove(at: index)
 

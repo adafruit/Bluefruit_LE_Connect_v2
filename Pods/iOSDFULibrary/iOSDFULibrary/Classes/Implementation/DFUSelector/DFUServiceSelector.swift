@@ -23,37 +23,45 @@
 import CoreBluetooth
 
 internal protocol DFUStarterPeripheralDelegate : BasePeripheralDelegate {
+    
     /**
      Callback called when a DFU service has been found on a remote device.
-     - returns: The executor type based on the found DFU Service: SecureDFUExecutor or LegacyDFUExecutor
+     
+     - parameter ExecutorType: The type of the seleceted executor.
+     
+     - returns: The executor type based on the found DFU Service:
+                SecureDFUExecutor or LegacyDFUExecutor.
      */
     func peripheralDidSelectedExecutor(_ ExecutorType: DFUExecutorAPI.Type)
 }
 
 /**
- This class has a responsibility to connect to a given peripheral and determin which DFU implementation should be used
- based on the services found on the device.
+ This class has a responsibility to connect to a given peripheral and
+ determin which DFU implementation should be used based on the services
+ found on the device.
  */
 internal class DFUServiceSelector : BaseDFUExecutor, DFUStarterPeripheralDelegate {
     typealias DFUPeripheralType = DFUStarterPeripheral
     
     internal let initiator:  DFUServiceInitiator
+    internal let logger:     LoggerHelper
     internal let controller: DFUServiceController
     internal let peripheral: DFUStarterPeripheral
     internal var error: (error: DFUError, message: String)?
     
     init(initiator: DFUServiceInitiator, controller: DFUServiceController) {
         self.initiator  = initiator
+        self.logger     = LoggerHelper(initiator.logger, initiator.loggerQueue)
         self.controller = controller
-        self.peripheral = DFUStarterPeripheral(initiator)
+        self.peripheral = DFUStarterPeripheral(initiator, logger)
         
         self.peripheral.delegate = self
     }
     
     func start() {
-        DispatchQueue.main.async(execute: {
-            self.delegate?.dfuStateDidChange(to: .connecting)
-        })
+        delegate {
+            $0.dfuStateDidChange(to: .connecting)
+        }
         peripheral.start()
     }
     
@@ -61,7 +69,7 @@ internal class DFUServiceSelector : BaseDFUExecutor, DFUStarterPeripheralDelegat
         // Release the cyclic reference
         peripheral.destroy()
         
-        let executor = ExecutorType.init(initiator)
+        let executor = ExecutorType.init(initiator, logger)
         controller.executor = executor
         executor.start()
     }

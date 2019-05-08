@@ -8,6 +8,7 @@
 
 import UIKit
 import SceneKit
+import VectorMath
 
 class MagnetometerViewController: CalibrationUartSamplerViewController {
 

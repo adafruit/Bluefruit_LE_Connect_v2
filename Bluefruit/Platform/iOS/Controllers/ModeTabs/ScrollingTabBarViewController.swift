@@ -85,11 +85,11 @@ class ScrollingTabBarViewController: UIViewController {
         guard let currentViewController = selectedViewController else { return }
 
         // Remove previous
-        currentViewController.willMove(toParentViewController: nil)
+        currentViewController.willMove(toParent: nil)
         currentViewController.beginAppearanceTransition(false, animated: false)
         currentViewController.view.removeFromSuperview()
         currentViewController.endAppearanceTransition()
-        currentViewController.removeFromParentViewController()
+        currentViewController.removeFromParent()
     }
 
     internal func changeSelectedViewController(_ viewController: UIViewController?) {
@@ -100,13 +100,13 @@ class ScrollingTabBarViewController: UIViewController {
         if let containerView = contentView, let subview = viewController.view {
             subview.translatesAutoresizingMaskIntoConstraints = false
             containerView.addSubview(subview)
-            self.addChildViewController(viewController)
+            self.addChild(viewController)
 
             let dictionaryOfVariableBindings = ["subview": subview]
-            containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
-            containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
+            containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[subview]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
+            containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[subview]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
 
-            viewController.didMove(toParentViewController: self)
+            viewController.didMove(toParent: self)
         }
     }
 }

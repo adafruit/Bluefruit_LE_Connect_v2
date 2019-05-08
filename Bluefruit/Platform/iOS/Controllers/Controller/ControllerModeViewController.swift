@@ -44,7 +44,7 @@ class ControllerModeViewController: PeripheralModeViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if isMovingToParentViewController {       // To keep streaming data when pushing a child view
+        if isMovingToParent {       // To keep streaming data when pushing a child view
             controllerData.start(pollInterval: ControllerModeViewController.kPollInterval) { [unowned self] in
                 self.baseTableView.reloadData()
             }
@@ -63,7 +63,7 @@ class ControllerModeViewController: PeripheralModeViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        if isMovingFromParentViewController {     // To keep streaming data when pushing a child view
+        if isMovingFromParent {     // To keep streaming data when pushing a child view
             controllerData.stop()
 
             // Watch
@@ -265,7 +265,7 @@ extension ControllerModeViewController : UITableViewDataSource {
                             let componentName = LocalizationManager.shared.localizedString(componentNameId[i])
                             let attributedText = NSMutableAttributedString(string: "\(componentName): \(sensorData[i])")
                             let titleLength = componentName.lengthOfBytes(using: String.Encoding.utf8)
-                            attributedText.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.medium), range: NSMakeRange(0, titleLength))
+                            attributedText.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.medium), range: NSMakeRange(0, titleLength))
                             label.attributedText = attributedText
                         }
 
@@ -406,7 +406,7 @@ extension ControllerModeViewController: ControllerModuleManagerDelegate {
         self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
     }
 
-    func reloadData() {
+    @objc func reloadData() {
         // Refresh the controllerPadViewController uart text
         self.controllerPadViewController?.setUartText(self.controllerData.uartTextBuffer())
 

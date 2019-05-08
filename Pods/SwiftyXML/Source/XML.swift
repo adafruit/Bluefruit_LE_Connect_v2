@@ -580,7 +580,7 @@ extension StringProvider {
 
 // MARK: - XML Descriptions
 
-public extension XML {
+extension XML {
     
     public var description:String {
         return self.toXMLString()

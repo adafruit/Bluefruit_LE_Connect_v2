@@ -219,7 +219,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
             textField.placeholder = localizationManager.localizedString("neopixelboardselector_linestriplength_hint")
             textField.keyboardType = .numberPad
 
-            NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: .main) { notification in
+            NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: textField, queue: .main) { notification in
                 okAction.isEnabled = textField.text != ""
             }
         }
@@ -331,7 +331,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
         
         //let marginScale: CGFloat = 5
         //boardMargin = UIEdgeInsetsMake(boardScrollView.bounds.height * marginScale, boardScrollView.bounds.width * marginScale, boardScrollView.bounds.height * marginScale, boardScrollView.bounds.width * marginScale)
-        boardMargin = UIEdgeInsetsMake(2000, 2000, 2000, 2000)
+        boardMargin = UIEdgeInsets.init(top: 2000, left: 2000, bottom: 2000, right: 2000)
         
         let boardWidthPoints = CGFloat(board.width) * NeopixelModeViewController.kLedWidth
         let boardHeightPoints = CGFloat(board.height) * NeopixelModeViewController.kLedHeight

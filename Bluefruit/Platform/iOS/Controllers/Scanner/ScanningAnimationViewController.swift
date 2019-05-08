@@ -47,7 +47,7 @@ class ScanningAnimationViewController: PeripheralModeViewController {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            applicationWillEnterForegroundObserver = notificationCenter.addObserver(forName: .UIApplicationWillEnterForeground, object: nil, queue: .main) { [weak self] _ in
+            applicationWillEnterForegroundObserver = notificationCenter.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] _ in
                 guard let context = self else { return }
                 
                 // Restarts animation when coming back from background

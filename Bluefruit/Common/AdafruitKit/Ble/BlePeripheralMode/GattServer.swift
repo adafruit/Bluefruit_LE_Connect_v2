@@ -50,7 +50,7 @@ class GattServer: NSObject {
     }
     
     public func removeService(_ service: PeripheralService) {
-        if let index = peripheralServices.index(where: {$0.service.uuid.isEqual($0.service.uuid)}) {
+        if let index = peripheralServices.firstIndex(where: {$0.service.uuid.isEqual($0.service.uuid)}) {
             peripheralServices.remove(at: index)
             service.delegate = nil
         }
@@ -134,7 +134,7 @@ class GattServer: NSObject {
             request.value = value
         }
         else {
-            request.value = value.subdata(in: Range(request.offset..<value.count))
+            request.value = value.subdata(in: request.offset..<value.count)
         }
         
         peripheralManager.respond(to: request, withResult: .success)

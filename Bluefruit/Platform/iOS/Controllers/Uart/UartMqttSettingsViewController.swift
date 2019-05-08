@@ -146,7 +146,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
             statusCell.statusLabel.text = titleForMqttManagerStatus(status)
 
             UIView.performWithoutAnimation({ () -> Void in      // Change title disabling animations (if enabled the user can see the old title for a moment)
-                statusCell.actionButton.setTitle(localizationManager.localizedString(status == .connected ?"uart_mqtt_action_disconnect":"uart_mqtt_action_connect"), for: UIControlState.normal)
+                statusCell.actionButton.setTitle(localizationManager.localizedString(status == .connected ?"uart_mqtt_action_disconnect":"uart_mqtt_action_connect"), for: UIControl.State.normal)
                 statusCell.layoutIfNeeded()
             })
 
@@ -564,8 +564,8 @@ extension UartMqttSettingsViewController: MqttManagerDelegate {
     func onMqttError(message: String) {
         DispatchQueue.main.async {
             let localizationManager = LocalizationManager.shared
-            let alert = UIAlertController(title:localizationManager.localizedString("dialog_error"), message: message, preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: UIAlertActionStyle.default, handler: nil))
+            let alert = UIAlertController(title:localizationManager.localizedString("dialog_error"), message: message, preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
 
             // Update status

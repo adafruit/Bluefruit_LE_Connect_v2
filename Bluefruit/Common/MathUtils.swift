@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VectorMath
 
 // Fast inverse square-root
 // See: http://en.wikipedia.org/wiki/Fast_inverse_square_root
@@ -81,7 +82,7 @@ func eigencompute(_ a: inout [[Scalar]], eigenValues eigval: inout [Scalar], eig
             // loop over above diagonal columns
             for ic in ir+1..<n {
                 // accumulate the residual off diagonal terms which are being driven to zero
-                residue += fabs(a[ir][ic])
+                residue += abs(a[ir][ic])
             }
         }
 
@@ -92,12 +93,12 @@ func eigencompute(_ a: inout [[Scalar]], eigenValues eigval: inout [Scalar], eig
                 // loop over columns ic (where ic is always greater than ir since above diagonal)
                 for ic in ir+1..<n {
                     // only continue with this element if the element is non-zero
-                    if fabs(a[ir][ic]) > 0.0 {
+                    if abs(a[ir][ic]) > 0.0 {
                         // calculate cot(2*phi) where phi is the Jacobi rotation angle
                         let cot2phi: Scalar = 0.5 * (eigval[ic] - eigval[ir]) / a[ir][ic]
 
                         // calculate tan(phi) correcting sign to ensure the smaller solution is used
-                        var tanphi: Scalar = 1.0 / (fabs(cot2phi) + sqrtf(1.0 + cot2phi * cot2phi))
+                        var tanphi: Scalar = 1.0 / (abs(cot2phi) + sqrtf(1.0 + cot2phi * cot2phi))
                         if cot2phi < 0.0 {
                             tanphi = -tanphi
                         }
@@ -200,11 +201,11 @@ func fmatrixAeqInvA(_ a: inout [[Scalar]], size: Int) {
                     // check if column k has previously been pivoted
                     if iPivot[k] == 0 {
                         // check if the pivot element is the largest found so far
-                        if fabs(a[j][k]) >= largest {
+                        if abs(a[j][k]) >= largest {
                             // and store this location as the current best candidate for pivoting
                             iPivotRow = j
                             iPivotCol = k
-                            largest = fabs(a[iPivotRow][iPivotCol])
+                            largest = abs(a[iPivotRow][iPivotCol])
                         }
                     } else if iPivot[k] > 1 {
                         // zero determinant situation: exit with identity matrix

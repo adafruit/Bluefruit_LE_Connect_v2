@@ -59,7 +59,7 @@ class MainSplitViewController: UISplitViewController {
 
     // MARK: - Notifications
     fileprivate func didDisconnectFromPeripheral(notification: Notification) {
-        DLog("main: disconnection")
+        //DLog("main: disconnection")
 
         // Show disconnected alert (if no previous alert is shown)
         if self.presentedViewController == nil {
@@ -77,7 +77,7 @@ class MainSplitViewController: UISplitViewController {
         let isLastConnectedPeripheral = BleManager.shared.connectedPeripherals().count == 0
         let localizationManager = LocalizationManager.shared
         let alertController = UIAlertController(title: nil, message: localizationManager.localizedString("scanner_peripheraldisconnected"), preferredStyle: .alert)
-        let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: { [weak self] (_) -> Void in
+        let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: { [weak self] _ in
             guard let context = self else { return }
 
             if isLastConnectedPeripheral {
@@ -113,7 +113,7 @@ extension MainSplitViewController: UISplitViewControllerDelegate {
         return connectedPeripherals.isEmpty
     }
 
-    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
+    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewController.DisplayMode) {
         // Hack to hide splitdivider cover
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
         let isCoverHidden = isFullScreen || displayMode != .allVisible

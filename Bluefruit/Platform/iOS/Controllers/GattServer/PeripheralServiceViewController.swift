@@ -37,17 +37,17 @@ class PeripheralServiceViewController: UIViewController {
                 
                 if let containerView = self.view, let subview = viewController.view {
                     subview.translatesAutoresizingMaskIntoConstraints = false
-                    self.addChildViewController(viewController)
+                    self.addChild(viewController)
                     
                     viewController.beginAppearanceTransition(true, animated: true)
                     containerView.addSubview(subview)
                     viewController.endAppearanceTransition()
                     
                     let dictionaryOfVariableBindings = ["subview": subview]
-                    containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
-                    containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[subview]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
+                    containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[subview]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
+                    containerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[subview]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: dictionaryOfVariableBindings))
                     
-                    viewController.didMove(toParentViewController: self)
+                    viewController.didMove(toParent: self)
                 }
             }
             
@@ -56,9 +56,9 @@ class PeripheralServiceViewController: UIViewController {
             emptyViewController?.stopAnimating()
             
             if let viewController = emptyViewController {
-                viewController.willMove(toParentViewController: nil)
+                viewController.willMove(toParent: nil)
                 viewController.view.removeFromSuperview()
-                viewController.removeFromParentViewController()
+                viewController.removeFromParent()
             }
         }
     }

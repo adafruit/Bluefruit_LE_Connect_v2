@@ -63,25 +63,25 @@ internal enum Request {
     var data : Data {
         switch self {
         case .jumpToBootloader:
-            return Data(bytes: [DFUOpCode.startDfu.code, FIRMWARE_TYPE_APPLICATION])
+            return Data([DFUOpCode.startDfu.code, FIRMWARE_TYPE_APPLICATION])
         case .startDfu(let type):
-            return Data(bytes: [DFUOpCode.startDfu.code, type])
+            return Data([DFUOpCode.startDfu.code, type])
         case .startDfu_v1:
-            return Data(bytes: [DFUOpCode.startDfu.code])
+            return Data([DFUOpCode.startDfu.code])
         case .initDfuParameters(let req):
-            return Data(bytes: [DFUOpCode.initDfuParameters.code, req.code])
+            return Data([DFUOpCode.initDfuParameters.code, req.code])
         case .initDfuParameters_v1:
-            return Data(bytes: [DFUOpCode.initDfuParameters.code])
+            return Data([DFUOpCode.initDfuParameters.code])
         case .receiveFirmwareImage:
-            return Data(bytes: [DFUOpCode.receiveFirmwareImage.code])
+            return Data([DFUOpCode.receiveFirmwareImage.code])
         case .validateFirmware:
-            return Data(bytes: [DFUOpCode.validateFirmware.code])
+            return Data([DFUOpCode.validateFirmware.code])
         case .activateAndReset:
-            return Data(bytes: [DFUOpCode.activateAndReset.code])
+            return Data([DFUOpCode.activateAndReset.code])
         case .reset:
-            return Data(bytes: [DFUOpCode.reset.code])
+            return Data([DFUOpCode.reset.code])
         case .packetReceiptNotificationRequest(let number):
-            var data = Data(bytes: [DFUOpCode.packetReceiptNotificationRequest.code])
+            var data = Data([DFUOpCode.packetReceiptNotificationRequest.code])
             data += number.littleEndian
             return data
         }
@@ -169,22 +169,17 @@ internal struct PacketReceiptNotification {
         // in SDK 5.2.0.39364 the bytesReveived value in a PRN packet is 16-bit long, instad of 32-bit.
         // However, the packet is still 5 bytes long and the two last bytes are 0x00-00.
         // This has to be taken under consideration when comparing number of bytes sent and received as
-        // the latter counter may rewind if fw size is > 0xFFFF bytes (LegacyDFUService:L372).
-        let bytesReceived: UInt32 = data.subdata(in: 1 ..< 4).withUnsafeBytes { $0.pointee }
+        // the latter counter may rewind if fw size is > 0xFFFF bytes (LegacyDFUService:L446).
+        let bytesReceived: UInt32 = data.asValue(offset: 1)
         self.bytesReceived = bytesReceived
     }
 }
 
-@objc internal class DFUControlPoint : NSObject, CBPeripheralDelegate {
-    static let UUID = CBUUID(string: "00001531-1212-EFDE-1523-785FEABCD123")
-    
-    static func matches(_ characteristic: CBCharacteristic) -> Bool {
-        return characteristic.uuid.isEqual(UUID)
-    }
-    
-    private var characteristic: CBCharacteristic
-    private var logger: LoggerHelper
-    
+@objc internal class DFUControlPoint : NSObject, CBPeripheralDelegate, DFUCharacteristic {
+
+    internal var characteristic: CBCharacteristic
+    internal var logger: LoggerHelper
+
     private var success: Callback?
     private var proceed: ProgressCallback?
     private var report:  ErrorCallback?
@@ -197,21 +192,21 @@ internal struct PacketReceiptNotification {
     }
     
     // MARK: - Initialization
-    
-    init(_ characteristic: CBCharacteristic, _ logger: LoggerHelper) {
+
+    required init(_ characteristic: CBCharacteristic, _ logger: LoggerHelper) {
         self.characteristic = characteristic
         self.logger = logger
     }
-    
+
     // MARK: - Characteristic API methods
     
     /**
-    Enables notifications for the DFU Control Point characteristics. Reports success or an error 
-    using callbacks.
+     Enables notifications for the DFU Control Point characteristics.
+     Reports success or an error using callbacks.
     
-    - parameter success: method called when notifications were successfully enabled
-    - parameter report:  method called in case of an error
-    */
+     - parameter success: Method called when notifications were successfully enabled.
+     - parameter report:  Method called in case of an error.
+     */
     func enableNotifications(onSuccess success: Callback?, onError report: ErrorCallback?) {
         // Save callbacks
         self.success = success
@@ -229,12 +224,12 @@ internal struct PacketReceiptNotification {
     }
     
     /**
-     Sends given request to the DFU Control Point characteristic. Reports success or an error
-     using callbacks.
+     Sends given request to the DFU Control Point characteristic.
+     Reports success or an error using callbacks.
      
-     - parameter request: request to be sent
-     - parameter success: method called when peripheral reported with status success
-     - parameter report:  method called in case of an error
+     - parameter request: Request to be sent.
+     - parameter success: Method called when peripheral reported with status success.
+     - parameter report:  Method called in case of an error.
      */
     func send(_ request: Request, onSuccess success: Callback?, onError report: ErrorCallback?) {
         // Save callbacks and parameter
@@ -269,12 +264,15 @@ internal struct PacketReceiptNotification {
     }
     
     /**
-     Sets the callbacks used later on when a Packet Receipt Notification is received, a device reported an error or the whole firmware has been sent
-     and the notification with success status was received. Sending the firmware is done using DFU Packet characteristic.
+     Sets the callbacks used later on when a Packet Receipt Notification is received,
+     a device reported an error or the whole firmware has been sent and the notification
+     with success status was received. Sending the firmware is done using DFU Packet
+     characteristic.
      
-     - parameter success: method called when peripheral reported with status success
-     - parameter proceed: method called the a PRN has been received and sending following data can be resumed
-     - parameter report:  method called in case of an error
+     - parameter success: Method called when peripheral reported with status success.
+     - parameter proceed: Method called the a PRN has been received and sending following
+     data can be resumed.
+     - parameter report:  Method called in case of an error.
      */
     func waitUntilUploadComplete(onSuccess success: Callback?, onPacketReceiptNofitication proceed: ProgressCallback?, onError report: ErrorCallback?) {
         // Save callbacks. The proceed callback will be called periodically whenever a packet receipt notification is received. It resumes uploading.
@@ -312,10 +310,10 @@ internal struct PacketReceiptNotification {
         // This method, according to the iOS documentation, should be called only after writing with response to a characteristic.
         // However, on iOS 10 this method is called even after writing without response, which is a bug.
         // The DFU Control Point characteristic always writes with response, in oppose to the DFU Packet, which uses write without response.
-        guard characteristic.uuid.isEqual(DFUControlPoint.UUID) else {
+        guard self.characteristic.isEqual(characteristic) else {
             return
         }
-        
+
         if error != nil {
             if !resetSent {
                 logger.e("Writing to characteristic failed. Check if Service Changed service is enabled.")
@@ -360,10 +358,10 @@ internal struct PacketReceiptNotification {
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         // Ignore updates received for other characteristics
-        guard characteristic.uuid.isEqual(DFUControlPoint.UUID) else {
+        guard self.characteristic.isEqual(characteristic) else {
             return
         }
-        
+
         if error != nil {
             // This characteristic is never read, the error may only pop up when notification is received
             logger.e("Receiving notification failed")

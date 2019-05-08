@@ -10,6 +10,7 @@
 
 import Foundation
 import QuartzCore
+import VectorMath
 
 class Calibration {
     // Config
@@ -248,7 +249,7 @@ class Calibration {
 
         init() {
             // Initial values
-            v = Vector3(x: 0, y: 0, z: 80)      // initial guess
+            v = Vector3(0, 0, 80)      // initial guess
             invW = .identity
             b = MagCalibration.kDefaultB
             fourBsq = 0
@@ -290,7 +291,7 @@ class Calibration {
         mutating func addMagCalData(accelX: Int16, accelY: Int16, accelZ: Int16, gyroX: Int16, gyroY: Int16, gyroZ: Int16, magX: Int16, magY: Int16, magZ: Int16) {
             // first look for an unused caldata slot
 
-            var unusedIndex = valid.index(where: {!$0})
+            var unusedIndex = valid.firstIndex(where: {!$0})
 
             if unusedIndex == nil {
                 // If the buffer is full, we must choose which old data to discard.
@@ -731,20 +732,20 @@ class Calibration {
             }
 
             // calculate the trial normalized fit error as a percentage
-            trFitErrorpc = 50.0 * sqrtf(fabs(vecA[j]) / Scalar(magBufferCount)) / fabs(ftmp)
+            trFitErrorpc = 50.0 * sqrtf(abs(vecA[j]) / Scalar(magBufferCount)) / abs(ftmp)
 
             // normalize the ellipsoid matrix A to unit determinant
             a = a * powf(det, -MagCalibration.kOneThird)
 
             // convert the geomagnetic field strength B into uT for normalized
             // soft iron matrix A and normalize
-            trB = sqrtf(fabs(ftmp)) * MagCalibration.kDefaultB * powf(det, -MagCalibration.kOneSixth)
+            trB = sqrtf(abs(ftmp)) * MagCalibration.kDefaultB * powf(det, -MagCalibration.kOneSixth)
 
             // compute trial invW from the square root of A also with normalized
             // determinant and hard iron offset in uT
             trinvW = .identity
             for k in X...Z {
-                trinvW[k, k] = sqrtf(fabs(a[k, k]))
+                trinvW[k, k] = sqrtf(abs(a[k, k]))
                 trV[k] = trV[k] * MagCalibration.kDefaultB + Scalar(iOffset[k]) * MagCalibration.kFxos8700UtPerCount
             }
         }
@@ -878,7 +879,7 @@ class Calibration {
             let component12 = a[1, 2] * trV[Y] * trV[Z]
             let component22 = a[2, 2] * trV[Z] * trV[Z]
 
-            trB = sqrtf(fabs(component00 +
+            trB = sqrtf(abs(component00 +
                 2.0 * component01 +
                 2.0 * component02 +
                 component11 +
@@ -887,7 +888,7 @@ class Calibration {
                 - matB[9][j]))
 
             // calculate the trial normalized fit error as a percentage
-            trFitErrorpc = 50.0 * sqrtf( fabs(vecA[j]) / Scalar(magBufferCount) ) /  (trB * trB)
+            trFitErrorpc = 50.0 * sqrtf( abs(vecA[j]) / Scalar(magBufferCount) ) /  (trB * trB)
 
             // correct for the measurement matrix offset and scaling and
             // get the computed hard iron offset in uT
@@ -918,7 +919,7 @@ class Calibration {
             // set MagCal->matB to be eigenvectors . diag(sqrt(sqrt(eigenvalues))) =
             //   matB . diag(sqrt(sqrt(vecA))
             for j in 0..<3 {        // loop over columns j
-                let ftmp: Scalar = sqrtf(sqrtf(fabs(vecA[j])))
+                let ftmp: Scalar = sqrtf(sqrtf(abs(vecA[j])))
                 for i in 0..<3 { // loop over rows i
                     matB[i][j] *= ftmp
                 }

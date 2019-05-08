@@ -37,7 +37,7 @@ class PinIOModeViewController: PeripheralModeViewController {
         super.viewWillAppear(animated)
 
         DLog("PinIO viewWillAppear")
-        if isMovingToParentViewController {       // To keep working while the help is displayed
+        if isMovingToParent {       // To keep working while the help is displayed
 
             pinIO.start { error in
                 DispatchQueue.main.async {
@@ -67,7 +67,7 @@ class PinIOModeViewController: PeripheralModeViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        if isMovingFromParentViewController {       // To keep working while the help is displayed
+        if isMovingFromParent {       // To keep working while the help is displayed
 
             // if a dialog is being shown, dismiss it. For example: when querying capabilities but a didmodifyservices callback is received and pinio is removed from the tabbar
             if let presentedViewController = presentedViewController {

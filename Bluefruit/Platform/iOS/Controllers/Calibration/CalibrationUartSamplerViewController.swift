@@ -8,6 +8,7 @@
 
 import UIKit
 import SceneKit
+import VectorMath
 
 class CalibrationUartSamplerViewController: CalibrationUartViewController {
     // Config
@@ -80,10 +81,10 @@ class CalibrationUartSamplerViewController: CalibrationUartViewController {
         pageRightButton?.alpha = 1
 
         if let subview = pageViewController.view {
-            addChildViewController(pageViewController)
+            addChild(pageViewController)
             subview.translatesAutoresizingMaskIntoConstraints = false
             detailsView.insertSubview(subview, at: 0)
-            pageViewController.didMove(toParentViewController: self)
+            pageViewController.didMove(toParent: self)
 
             let variableBindings: [String: AnyObject] = ["subview": subview]
             detailsView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[subview]-0-|", options: [], metrics: nil, views: variableBindings))
@@ -213,7 +214,7 @@ class CalibrationUartSamplerViewController: CalibrationUartViewController {
         } else {
             DLog("Warning: CADisplayLink.preferredFramesPerSecond not available on iOS9")
         }
-        displayLink?.add(to: RunLoop.current, forMode: RunLoopMode.commonModes)
+        displayLink?.add(to: RunLoop.current, forMode: RunLoop.Mode.common)
     }
 
     func stopDisplayLink() {

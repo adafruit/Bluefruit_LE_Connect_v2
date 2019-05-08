@@ -29,6 +29,7 @@
 //==============================================================================================
 
 import Foundation
+import VectorMath
 
 extension Calibration {
     func mahonyInit() {

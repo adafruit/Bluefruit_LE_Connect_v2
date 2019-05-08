@@ -506,7 +506,7 @@ extension UartBaseViewController: UartPacketManagerDelegate {
         updateBytesUI()
     }
     
-    func reloadData() {
+    @objc func reloadData() {
         let displayMode: UartModeViewController.DisplayMode = Preferences.uartIsDisplayModeTimestamp ? .table : .text
         switch displayMode {
         case .text:

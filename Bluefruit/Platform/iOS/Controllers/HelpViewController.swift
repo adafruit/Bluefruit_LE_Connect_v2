@@ -17,7 +17,7 @@ class HelpViewController: UIViewController {
         messageLabel.layer.borderColor = UIColor(hex: 0xcacaca).cgColor
         messageLabel.layer.borderWidth = 1
 
-        messageLabel.contentInset = UIEdgeInsetsMake(10, 0, 10, 0)
+        messageLabel.contentInset = UIEdgeInsets.init(top: 10, left: 0, bottom: 10, right: 0)
     }
 
     override func viewWillAppear(_ animated: Bool) {

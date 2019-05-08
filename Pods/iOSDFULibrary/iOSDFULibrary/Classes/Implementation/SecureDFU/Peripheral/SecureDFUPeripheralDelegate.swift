@@ -29,10 +29,11 @@ internal protocol SecureDFUPeripheralDelegate : DFUPeripheralDelegate {
     
     /**
      Callback when Command Object Info has been received from the peripheral.
-     - parameter maxLen: the maximum size of the Init Packet in bytes
-     - parameter offset: number of bytes of Init Packet already sent, for example during last DFU operation. 
+     
+     - parameter maxLen: The maximum size of the Init Packet in bytes.
+     - parameter offset: Number of bytes of Init Packet already sent, for example during last DFU operation.
      This resets to 0 on Create Command Object or when the DFU operation completes.
-     - parameter crc: the CRC-32 calculated from the 'offset' bytes. This may be used to calculate if
+     - parameter crc: The CRC-32 calculated from the 'offset' bytes. This may be used to calculate if
      the stored Init packet matches the one being sent now. If crc matches the operation may be resumed,
      if not a new Command Object should be created and DFU should start over.
      */
@@ -40,12 +41,13 @@ internal protocol SecureDFUPeripheralDelegate : DFUPeripheralDelegate {
 
     /**
      Callback when Data Object Info has been received from the peripheral.
-     - parameter maxLen: the maximum size of a single data object in bytes. A firmware may be sent in multiple objects.
-     - parameter offset: number of bytes of data already sent (in total, not only the last object),
+     
+     - parameter maxLen: The maximum size of a single data object in bytes. A firmware may be sent in multiple objects.
+     - parameter offset: Number of bytes of data already sent (in total, not only the last object),
      for example during last DFU operation.
      Sending Create Data will rewind the offset to the last executed data object. This resets to 0 on
      Create Command Object or when the DFU operation completes.
-     - parameter crc: the CRC-32 calculated from the 'offset' bytes. This may be used to calculate if
+     - parameter crc: The CRC-32 calculated from the 'offset' bytes. This may be used to calculate if
      the stored data matches the firmware being sent now. If crc matches the operation may be resumed,
      if not a new Command Object should be created and DFU should start over.
      */
@@ -75,8 +77,9 @@ internal protocol SecureDFUPeripheralDelegate : DFUPeripheralDelegate {
     
     /**
      Callback when Checksum was received after sending Calculate Checksum request.
-     - parameter offset: number of bytes of the current objecy received by the peripheral.
-     - parameter crc: CRC-32 calculated rom those received bytes.
+     
+     - parameter offset: Number of bytes of the current objecy received by the peripheral.
+     - parameter crc:    CRC-32 calculated rom those received bytes.
     */
     func peripheralDidSendChecksum(offset: UInt32, crc: UInt32)
 
@@ -85,6 +88,17 @@ internal protocol SecureDFUPeripheralDelegate : DFUPeripheralDelegate {
      may reset if the whole firmware was sent.
      */
     func peripheralDidExecuteObject()
+    
+    /**
+     Callback when the Command Object has been rejected by the target device by sending a Remote DFU Error,
+     but the firmware contains a second part that the service should try to send. Perhaps the Soft Device
+     and Bootloader were sent before and the target rejects second update (bootloader can't be updated with
+     one with the same FW version). Application update should succeeded in such case.
+     
+     - parameter error:   The error that occurred.
+     - parameter message: The error message.
+     */
+    func peripheralRejectedCommandObject(withError error: DFUError, andMessage message: String)
 
     /**
      Callback when Data Object was successfully sent.

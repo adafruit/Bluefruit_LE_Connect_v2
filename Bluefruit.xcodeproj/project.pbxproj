@@ -212,9 +212,6 @@
 		A9BB78E31EDCEC65004663DE /* Calibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78DF1EDCEC65004663DE /* Calibration.swift */; };
 		A9BB78E41EDCEC65004663DE /* SensorParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78E01EDCEC65004663DE /* SensorParameters.swift */; };
 		A9BB78E51EDCEC65004663DE /* VectorMath+Calibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78E11EDCEC65004663DE /* VectorMath+Calibration.swift */; };
-		A9BB78EA1EDCEC99004663DE /* VectorMath+Quartz.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78E71EDCEC99004663DE /* VectorMath+Quartz.swift */; };
-		A9BB78EB1EDCEC99004663DE /* VectorMath+SceneKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78E81EDCEC99004663DE /* VectorMath+SceneKit.swift */; };
-		A9BB78EC1EDCEC99004663DE /* VectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BB78E91EDCEC99004663DE /* VectorMath.swift */; };
 		A9BB78F51EDCECDB004663DE /* AccelerometerParameters.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78EE1EDCECDB004663DE /* AccelerometerParameters.plist */; };
 		A9BB78F71EDCECDB004663DE /* gyroscope.scn in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78F01EDCECDB004663DE /* gyroscope.scn */; };
 		A9BB78F81EDCECDB004663DE /* GyroscopeParameters.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9BB78F11EDCECDB004663DE /* GyroscopeParameters.plist */; };
@@ -567,9 +564,6 @@
 		A9BB78DF1EDCEC65004663DE /* Calibration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calibration.swift; sourceTree = "<group>"; };
 		A9BB78E01EDCEC65004663DE /* SensorParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SensorParameters.swift; sourceTree = "<group>"; };
 		A9BB78E11EDCEC65004663DE /* VectorMath+Calibration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VectorMath+Calibration.swift"; sourceTree = "<group>"; };
-		A9BB78E71EDCEC99004663DE /* VectorMath+Quartz.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VectorMath+Quartz.swift"; sourceTree = "<group>"; };
-		A9BB78E81EDCEC99004663DE /* VectorMath+SceneKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VectorMath+SceneKit.swift"; sourceTree = "<group>"; };
-		A9BB78E91EDCEC99004663DE /* VectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorMath.swift; sourceTree = "<group>"; };
 		A9BB78EE1EDCECDB004663DE /* AccelerometerParameters.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AccelerometerParameters.plist; sourceTree = "<group>"; };
 		A9BB78F01EDCECDB004663DE /* gyroscope.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = gyroscope.scn; sourceTree = "<group>"; };
 		A9BB78F11EDCECDB004663DE /* GyroscopeParameters.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GyroscopeParameters.plist; sourceTree = "<group>"; };
@@ -1087,7 +1081,6 @@
 			isa = PBXGroup;
 			children = (
 				A9F4E1B71F04467200BF8A70 /* iOS-color-wheel */,
-				A9BB78E61EDCEC99004663DE /* VectorMath */,
 				A98378031E422C4B00170319 /* NSObject+ENHThrottledReloading */,
 			);
 			path = "External Tools";
@@ -1444,16 +1437,6 @@
 			path = Calibration;
 			sourceTree = "<group>";
 		};
-		A9BB78E61EDCEC99004663DE /* VectorMath */ = {
-			isa = PBXGroup;
-			children = (
-				A9BB78E71EDCEC99004663DE /* VectorMath+Quartz.swift */,
-				A9BB78E81EDCEC99004663DE /* VectorMath+SceneKit.swift */,
-				A9BB78E91EDCEC99004663DE /* VectorMath.swift */,
-			);
-			path = VectorMath;
-			sourceTree = "<group>";
-		};
 		A9BB78ED1EDCECDB004663DE /* Calibration */ = {
 			isa = PBXGroup;
 			children = (
@@ -1742,7 +1725,7 @@
 					A9286C951E3A9216008E5F81 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 2X94RM7457;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.iCloud = {
@@ -1765,7 +1748,7 @@
 					A9BCD5A51E4D2761003D1CEA = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 2X94RM7457;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					A9BCD61B1E4D3A61003D1CEA = {
@@ -1778,7 +1761,7 @@
 			};
 			buildConfigurationList = A9286C911E3A9216008E5F81 /* Build configuration list for PBXProject "Bluefruit" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -1886,14 +1869,14 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-macOS/Pods-macOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-macOS/Pods-macOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Charts-macOS/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket-macOS/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaMQTT-macOS/CocoaMQTT.framework",
 				"${BUILT_PRODUCTS_DIR}/MSWeakTimer-macOS/MSWeakTimer.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyTimer-macOS/SwiftyTimer.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyXML-macOS/SwiftyXML.framework",
-				"${BUILT_PRODUCTS_DIR}/Zip-macOS/Zip.framework",
+				"${BUILT_PRODUCTS_DIR}/VectorMath-macOS/VectorMath.framework",
+				"${BUILT_PRODUCTS_DIR}/ZIPFoundation-macOS/ZIPFoundation.framework",
 				"${BUILT_PRODUCTS_DIR}/iOSDFULibrary-macOS/iOSDFULibrary.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1902,14 +1885,14 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaMQTT.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MSWeakTimer.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyTimer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyXML.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Zip.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VectorMath.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZIPFoundation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iOSDFULibrary.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-macOS/Pods-macOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-macOS/Pods-macOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AEED5FC814508D3028F6DBA6 /* [CP] Embed Pods Frameworks */ = {
@@ -1918,15 +1901,15 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Charts-iOS/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket-iOS/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaMQTT-iOS/CocoaMQTT.framework",
 				"${BUILT_PRODUCTS_DIR}/MSWeakTimer-iOS/MSWeakTimer.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyTimer-iOS/SwiftyTimer.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyXML-iOS/SwiftyXML.framework",
 				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
-				"${BUILT_PRODUCTS_DIR}/Zip-iOS/Zip.framework",
+				"${BUILT_PRODUCTS_DIR}/VectorMath-iOS/VectorMath.framework",
+				"${BUILT_PRODUCTS_DIR}/ZIPFoundation-iOS/ZIPFoundation.framework",
 				"${BUILT_PRODUCTS_DIR}/iOSDFULibrary-iOS/iOSDFULibrary.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1935,15 +1918,15 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaMQTT.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MSWeakTimer.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyTimer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyXML.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Zip.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VectorMath.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZIPFoundation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iOSDFULibrary.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F1359294F68DAA8B076BA899 /* [CP] Check Pods Manifest.lock */ = {
@@ -1987,7 +1970,6 @@
 				A9286CDA1E3A9B22008E5F81 /* LogHelper.swift in Sources */,
 				A98378671E4341C600170319 /* UartMqttSettingsViewController.swift in Sources */,
 				A915426A1EDD7BC8007A34EA /* GyroscopeParametersViewController.swift in Sources */,
-				A9BB78EC1EDCEC99004663DE /* VectorMath.swift in Sources */,
 				A9286CD71E3A9B22008E5F81 /* CommandQueue.swift in Sources */,
 				A91E7D501E4174F800DE90C6 /* KeyboardPositionNotifier.swift in Sources */,
 				A907982C1E4349D6005470A5 /* ControllerPadViewController.swift in Sources */,
@@ -1999,7 +1981,6 @@
 				A9F4E1BD1F04467200BF8A70 /* ISColorWheel.m in Sources */,
 				A9CA084E1F35EF6900A0C621 /* UartServiceViewController.swift in Sources */,
 				A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */,
-				A9BB78EA1EDCEC99004663DE /* VectorMath+Quartz.swift in Sources */,
 				A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */,
 				A9D2343A1E3AD70300DC0C99 /* FilterTextSettingsViewController.swift in Sources */,
 				A93DE7751F36195900B2EB5D /* GattServer.swift in Sources */,
@@ -2115,7 +2096,6 @@
 				A9BCD56A1E4D2549003D1CEA /* PeripheralList.swift in Sources */,
 				A9BCD5801E4D25E4003D1CEA /* UartSettings.swift in Sources */,
 				A9BCD5921E4D2616003D1CEA /* LocalizationManager.swift in Sources */,
-				A9BB78EB1EDCEC99004663DE /* VectorMath+SceneKit.swift in Sources */,
 				A907982B1E4349D6005470A5 /* ControllerModeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2485,13 +2465,12 @@
 				CODE_SIGN_ENTITLEMENTS = Bluefruit/Platform/iOS/Bluefruit.entitlements;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = Bluefruit/Platform/iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Bluefruit/Platform/iOS/Bluefruit-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -2503,13 +2482,12 @@
 				CODE_SIGN_ENTITLEMENTS = Bluefruit/Platform/iOS/Bluefruit.entitlements;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = Bluefruit/Platform/iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Bluefruit/Platform/iOS/Bluefruit-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -2523,7 +2501,7 @@
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = Bluefruit/Platform/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.osx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -2541,7 +2519,7 @@
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = Bluefruit/Platform/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.osx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -2560,8 +2538,7 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
@@ -2578,8 +2555,7 @@
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};

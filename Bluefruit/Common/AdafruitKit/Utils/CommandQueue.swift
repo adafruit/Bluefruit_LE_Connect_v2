@@ -63,6 +63,7 @@ class CommandQueue<Element> {
 
     func first() -> Element? {
         queueLock.lock(); defer { queueLock.unlock() }
+        //DLog("queue: \(queue) first: \(queue.first)")
         return queue.first
     }
 
@@ -70,6 +71,7 @@ class CommandQueue<Element> {
         queueLock.lock()
         guard !queue.isEmpty else { queueLock.unlock(); return }
        
+        //DLog("queue remove finished: \(queue.first)")
         // Delete finished command and trigger next execution if needed
         queue.removeFirst()
         let nextElement = queue.first
@@ -85,6 +87,7 @@ class CommandQueue<Element> {
         let shouldExecute = queue.isEmpty
         queue.append(element)
         queueLock.unlock()
+        //DLog("queue: \(queue) append: \(element). total: \(queue.count)")
 
         if shouldExecute {
             executeHandler?(element)
@@ -92,7 +95,7 @@ class CommandQueue<Element> {
     }
 
     func removeAll() {
-        //DLog("queue removeAll")
+        // DLog("queue removeAll: \(queue.count)")
         queue.removeAll()
     }
 

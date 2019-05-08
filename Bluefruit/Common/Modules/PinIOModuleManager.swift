@@ -130,7 +130,7 @@ class PinIOModuleManager: NSObject {
 
         // Reset Firmata
         let bytes: [UInt8] = [0xff]
-        let data = Data(bytes: bytes)
+        let data = Data(bytes)
         uartManager.send(blePeripheral: blePeripheral, data: data)
     }
 
@@ -145,7 +145,7 @@ class PinIOModuleManager: NSObject {
 
         // Query Capabilities
         let bytes: [UInt8] = [SYSEX_START, 0x6B, SYSEX_END]
-        let data = Data(bytes: bytes)
+        let data = Data(bytes)
         uartManager.send(blePeripheral: blePeripheral, data: data)
 
         queryCapabilitiesTimer = MSWeakTimer.scheduledTimer(withTimeInterval: CAPABILITY_QUERY_TIMEOUT, target: self, selector: #selector(cancelQueryCapabilities), userInfo: nil, repeats: false, dispatchQueue: .main)
@@ -183,7 +183,7 @@ class PinIOModuleManager: NSObject {
 
         // Query Analog Mapping
         let bytes: [UInt8] = [self.SYSEX_START, 0x69, self.SYSEX_END]
-        let data = Data(bytes: bytes)
+        let data = Data(bytes)
         uartManager.send(blePeripheral: blePeripheral, data: data)
     }
 
@@ -236,7 +236,7 @@ class PinIOModuleManager: NSObject {
     }
 
     private func parseCapabilities(_ cababilitiesData: [UInt8]) -> Bool {
-        let endIndex = cababilitiesData.index(of: SYSEX_END)
+        let endIndex = cababilitiesData.firstIndex(of: SYSEX_END)
         guard cababilitiesData.count > 2 && cababilitiesData[0] == SYSEX_START && cababilitiesData[1] == 0x6C && endIndex != nil else {
             DLog("invalid capabilities received")
             return false
@@ -306,7 +306,7 @@ class PinIOModuleManager: NSObject {
     }
 
     private func parseAnalogMappingData(_ analogData: [UInt8]) -> Bool {
-        let endIndex = analogData.index(of: SYSEX_END)
+        let endIndex = analogData.firstIndex(of: SYSEX_END)
         guard analogData.count > 2 && analogData[0] == SYSEX_START && analogData[1] == 0x6A && endIndex != nil else {
             DLog("invalid analog mapping received")
             return false
@@ -330,13 +330,13 @@ class PinIOModuleManager: NSObject {
     }
 
     private func indexOfPinWithDigitalId(_ digitalPinId: Int) -> Int? {
-        return pins.index { (pin) -> Bool in
+        return pins.firstIndex { (pin) -> Bool in
             pin.digitalPinId == digitalPinId
         }
     }
 
     private func indexOfPinWithAnalogId(_ analogPinId: Int) -> Int? {
-        return pins.index { (pin) -> Bool in
+        return pins.firstIndex { (pin) -> Bool in
             pin.analogPinId == analogPinId
         }
     }
@@ -370,7 +370,7 @@ class PinIOModuleManager: NSObject {
             let data0: UInt8 = 0xD0 + port        // start port 0 digital reporting (0xD0 + port#)
             let data1: UInt8 = 1                  // enable
             let bytes: [UInt8] = [data0, data1]
-            let data = Data(bytes: bytes)
+            let data = Data(bytes)
             uartManager.send(blePeripheral: blePeripheral, data: data)
         }
 
@@ -393,7 +393,7 @@ class PinIOModuleManager: NSObject {
 
         // Write pin mode
         let bytes: [UInt8] = [0xf4, UInt8(pin.digitalPinId), mode.rawValue]
-        let data = Data(bytes: bytes)
+        let data = Data(bytes)
         uartManager.send(blePeripheral: blePeripheral, data: data)
 
         // Update reporting for Analog pins
@@ -407,7 +407,7 @@ class PinIOModuleManager: NSObject {
     func setAnalogValueReporting(pin: PinData, enabled: Bool) {
         // Write pin mode
         let bytes: [UInt8] = [0xC0 + UInt8(pin.analogPinId), UInt8(enabled ?1:0)]
-        let data = Data(bytes: bytes)
+        let data = Data(bytes)
         uartManager.send(blePeripheral: blePeripheral, data: data)
     }
 
@@ -434,7 +434,7 @@ class PinIOModuleManager: NSObject {
         let data2 = UInt8(state >> 7)           // top bit in second byte
 
         let bytes: [UInt8] = [data0, data1, data2]
-        let data = Data(bytes: bytes)
+        let data = Data(bytes)
         uartManager.send(blePeripheral: blePeripheral, data: data)
     }
 
@@ -470,7 +470,7 @@ class PinIOModuleManager: NSObject {
             bytes = [data0, data1, data2]
         }
         
-        let data = Data(bytes: bytes)
+        let data = Data(bytes)
         uartManager.send(blePeripheral: blePeripheral, data: data)
 
         return true
@@ -488,7 +488,7 @@ class PinIOModuleManager: NSObject {
         }
 
         // Check if we received a pin state response
-        let endIndex = receivedPinStateDataBuffer.index(of: SYSEX_END)
+        let endIndex = receivedPinStateDataBuffer.firstIndex(of: SYSEX_END)
         if receivedPinStateDataBuffer.count >= 5 && receivedPinStateDataBuffer[0] == SYSEX_START && receivedPinStateDataBuffer[1] == 0x6e && endIndex != nil {
             /* pin state response
             * -------------------------------
@@ -567,7 +567,7 @@ class PinIOModuleManager: NSObject {
                         let pin = pins[index]
                         pin.analogValue = value
                     } else {
-                        DLog("Warning: received pinstate for unknown analog pin id: \(index)")
+                        DLog("Warning: received pinstate for unknown analog pin id: \(analogPinId)")
                     }
                 }
 

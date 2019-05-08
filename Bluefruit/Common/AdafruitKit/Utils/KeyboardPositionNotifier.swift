@@ -32,8 +32,8 @@ class KeyboardPositionNotifier: NSObject {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            keyboardWillBeShownObserver = notificationCenter.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: nil, queue: .main, using: {[weak self] notification in self?.keyboardWillBeShown(notification: notification)})
-            keyboardWillBeHiddenObserver = notificationCenter.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: .main, using: {[weak self] notification in self?.keyboardWillBeHidden(notification: notification)})
+            keyboardWillBeShownObserver = notificationCenter.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main, using: {[weak self] notification in self?.keyboardWillBeShown(notification: notification)})
+            keyboardWillBeHiddenObserver = notificationCenter.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main, using: {[weak self] notification in self?.keyboardWillBeHidden(notification: notification)})
         } else {
             if let keyboardWillBeShownObserver = keyboardWillBeShownObserver {notificationCenter.removeObserver(keyboardWillBeShownObserver)}
             if let keyboardWillBeHiddenObserver = keyboardWillBeHiddenObserver {notificationCenter.removeObserver(keyboardWillBeHiddenObserver)}
@@ -42,7 +42,7 @@ class KeyboardPositionNotifier: NSObject {
 
     private func keyboardWillBeShown(notification: Notification) {
         var info = notification.userInfo!
-        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
 
         keyboardPositionChanged(keyboardFrame: keyboardFrame, keyboardShown: true)
     }

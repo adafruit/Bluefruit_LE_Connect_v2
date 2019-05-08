@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VectorMath
 
 protocol GyroscopePageContentViewControllerDelegate: class {
     func onGyroscopeRestart()

@@ -1,0 +1,6 @@
+framework module VectorMath {
+  umbrella header "VectorMath-iOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

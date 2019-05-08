@@ -66,22 +66,22 @@ class ScannerViewController: ModeTabViewController {
 
         // Init
         peripheralList = PeripheralList()                  // Initialize here to wait for Preferences.registerDefaults to be executed
-
+        
         // Setup filters
-       filtersNameTextField.leftViewMode = .always
+        filtersNameTextField.leftViewMode = .always
         let searchImageView = UIImageView(image: UIImage(named: "ic_search_18pt"))
-        searchImageView.contentMode = UIViewContentMode.right
+        searchImageView.contentMode = UIView.ContentMode.right
         searchImageView.frame = CGRect(x: 0, y: 0, width: searchImageView.image!.size.width + 6.0, height: searchImageView.image!.size.height)
         filtersNameTextField.leftView = searchImageView
- 
+        
         // Setup table view
         baseTableView.estimatedRowHeight = 66
-        baseTableView.rowHeight = UITableViewAutomaticDimension
-
+        baseTableView.rowHeight = UITableView.automaticDimension
+        
         // Setup table refresh
-        refreshControl.addTarget(self, action: #selector(onTableRefresh(_:)), for: UIControlEvents.valueChanged)
+        refreshControl.addTarget(self, action: #selector(onTableRefresh(_:)), for: UIControl.Event.valueChanged)
         baseTableView.addSubview(refreshControl)
-        baseTableView.sendSubview(toBack: refreshControl)
+        baseTableView.sendSubviewToBack(refreshControl)
 
         // Setup filters
         filtersRssiSlider.minimumValue = Float(PeripheralList.kMinRssiValue)
@@ -262,7 +262,7 @@ class ScannerViewController: ModeTabViewController {
         let peripheral = BleManager.shared.peripheral(from: notification)
         let currentlyConnectedPeripheralsCount = BleManager.shared.connectedPeripherals().count
 
-        guard let selectedPeripheral = selectedPeripheral, selectedPeripheral.identifier == peripheral?.identifier || currentlyConnectedPeripheralsCount == 0 else {        // If selected peripheral is disconnected or if there not any peripherals connected (after a failed dfu update)
+        guard let selectedPeripheral = selectedPeripheral, selectedPeripheral.identifier == peripheral?.identifier || currentlyConnectedPeripheralsCount == 0 else {        // If selected peripheral is disconnected or if there are no peripherals connected (after a failed dfu update)
             return
         }
 
@@ -402,15 +402,15 @@ class ScannerViewController: ModeTabViewController {
         let localizationManager = LocalizationManager.shared
         let alert = UIAlertController(title: localizationManager.localizedString("autoupdate_title"),
                                       message: String(format: localizationManager.localizedString("autoupdate_description_format"), latestRelease.version),
-                                      preferredStyle: UIAlertControllerStyle.alert)
+                                      preferredStyle: UIAlertController.Style.alert)
 
-        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_update"), style: UIAlertActionStyle.default, handler: { [unowned self] _ in
+        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_update"), style: UIAlertAction.Style.default, handler: { [unowned self] _ in
             self.showPeripheralUpdate()
         }))
-        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_later"), style: UIAlertActionStyle.default, handler: { [unowned self] _ in
+        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_later"), style: UIAlertAction.Style.default, handler: { [unowned self] _ in
             self.showPeripheralDetails()
         }))
-        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_ignore"), style: UIAlertActionStyle.cancel, handler: { [unowned self] _ in
+        alert.addAction(UIAlertAction(title: localizationManager.localizedString("autoupdate_ignore"), style: UIAlertAction.Style.cancel, handler: { [unowned self] _ in
             Preferences.softwareUpdateIgnoredVersion = latestRelease.version
             self.showPeripheralDetails()
         }))
@@ -604,7 +604,7 @@ class ScannerViewController: ModeTabViewController {
         filteredPeripheralsCountLabel.text = String(format:  localizationManager.localizedString(numPeripheralsFilteredOut == 1 ? "scanner_filteredoutinfo_single_format":"scanner_filteredoutinfo_multiple_format"), numPeripheralsFilteredOut)
         
         // Select the previously selected row
-        if let selectedPeripheral = selectedPeripheral, let selectedRow = filteredPeripherals.index(of: selectedPeripheral) {
+        if let selectedPeripheral = selectedPeripheral, let selectedRow = filteredPeripherals.firstIndex(of: selectedPeripheral) {
             baseTableView.selectRow(at: IndexPath(row: selectedRow, section: 0), animated: false, scrollPosition: .none)
         }
     }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VectorMath
 
 extension Vector3 {
     subscript(index: Int) -> Scalar {

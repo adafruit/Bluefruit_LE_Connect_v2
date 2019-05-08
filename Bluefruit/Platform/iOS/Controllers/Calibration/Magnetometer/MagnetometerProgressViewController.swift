@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VectorMath
 
 class MagnetometerProgressViewController: MagnetometerPageContentViewController {
 

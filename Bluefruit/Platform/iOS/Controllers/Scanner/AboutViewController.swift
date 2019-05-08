@@ -42,7 +42,7 @@ class AboutViewController: UIViewController {
         messageLabel.layer.borderColor = UIColor(red: 202/255, green: 202/255, blue: 202/255, alpha: 1).cgColor
         messageLabel.layer.borderWidth = 1
 
-        messageLabel.contentInset = UIEdgeInsetsMake(10, 0, 10, 0)
+        messageLabel.contentInset = UIEdgeInsets.init(top: 10, left: 0, bottom: 10, right: 0)
     }
 
     override func viewWillAppear(_ animated: Bool) {

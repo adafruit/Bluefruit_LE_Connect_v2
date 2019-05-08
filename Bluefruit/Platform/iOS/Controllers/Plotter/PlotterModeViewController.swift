@@ -149,7 +149,7 @@ class PlotterModeViewController: PeripheralModeViewController {
             if index < dataSets.count {
                 // Add entry to existing dataset
                 let dataSet = dataSets[index]
-                let _ = dataSet.addEntry(entry)
+                let _ = dataSet.append(entry)
                 
                 dataSetExists = true
             }
@@ -176,14 +176,14 @@ class PlotterModeViewController: PeripheralModeViewController {
 
         if isAutoScrollEnabled {
             //let xOffset = Double(dataSet.entryCount) - (context.numEntriesVisible-1)
-            let xOffset = (dataSet.values.last?.x ?? 0) - (visibleInterval-1)
+            let xOffset = (dataSet.entries.last?.x ?? 0) - (visibleInterval-1)
             chartView.moveViewToX(xOffset)
         }
     }
 
     fileprivate func appendDataset(peripheralIdentifier identifier: UUID, entry: ChartDataEntry, index: Int) {
-        let dataSet = LineChartDataSet(values: [entry], label: "Values[\(identifier.uuidString) : \(index)]")
-        let _ = dataSet.addEntry(entry)
+        let dataSet = LineChartDataSet(entries: [entry], label: "Values[\(identifier.uuidString) : \(index)]")
+        let _ = dataSet.append(entry)
 
         dataSet.drawCirclesEnabled = false
         dataSet.drawValuesEnabled = false
@@ -227,7 +227,7 @@ class PlotterModeViewController: PeripheralModeViewController {
 
 // MARK: - UartDataManagerDelegate
 extension PlotterModeViewController: UartDataManagerDelegate {
-    private static let kLineSeparator = Data(bytes: [10])
+    private static let kLineSeparator = Data([10])
 
     func onUartRx(data: Data, peripheralIdentifier identifier: UUID) {
         // DLog("uart rx read (hex): \(hexDescription(data: data))")
