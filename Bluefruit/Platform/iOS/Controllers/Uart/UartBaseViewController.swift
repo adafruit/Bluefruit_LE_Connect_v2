@@ -340,7 +340,7 @@ class UartBaseViewController: PeripheralModeViewController {
         }
         
         let localizationManager = LocalizationManager.shared
-        let alertController = UIAlertController(title: "Export data", message: "Choose the prefered format:", preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: "Export data", message: "Choose the preferred format:", preferredStyle: .actionSheet)
         
         for exportFormat in UartModeViewController.kExportFormats {
             let exportAction = UIAlertAction(title: exportFormat.rawValue, style: .default) { [unowned self] (_) in
@@ -394,7 +394,6 @@ class UartBaseViewController: PeripheralModeViewController {
         let okAction = UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler:nil)
         alertController.addAction(okAction)
         self.present(alertController, animated: true, completion: nil)
-        
     }
     
     @IBAction func onShowEchoValueChanged(_ sender: UISwitch) {

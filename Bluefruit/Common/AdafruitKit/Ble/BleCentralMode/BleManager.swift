@@ -312,9 +312,8 @@ extension BleManager: CBCentralManagerDelegate {
         let rssi = RSSI.intValue
          DispatchQueue.main.async {      // This Fixes iOS12 race condition on cached filtered peripherals. TODO: investigate
             self.discovered(peripheral: peripheral, advertisementData: advertisementData, rssi: rssi)
-        }
-        
-        NotificationCenter.default.post(name: .didDiscoverPeripheral, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier])
+            NotificationCenter.default.post(name: .didDiscoverPeripheral, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier])
+        }        
     }
 
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
