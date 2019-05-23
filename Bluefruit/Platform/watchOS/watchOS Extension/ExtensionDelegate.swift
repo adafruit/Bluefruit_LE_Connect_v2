@@ -110,33 +110,37 @@ extension ExtensionDelegate: WCSessionDelegate {
 
         if let modeString = applicationContext[WatchSessionManager.kContextModeKey] as? String, let mode = WatchSessionManager.Mode(rawValue: modeString) {
             let rootController = WKExtension.shared().rootInterfaceController
-
-            switch mode {
-
-            case .scan:
-                if let scanningInterfaceController = rootController as? ScanningInterfaceController {
-                    scanningInterfaceController.didReceiveApplicationContext(applicationContext)
-                } else {
-                    updateMode(mode)
+            
+            DispatchQueue.main.async {  // Launch in MainQueue
+                
+                switch mode {
+                    
+                case .scan:
+                    if let scanningInterfaceController = rootController as? ScanningInterfaceController {
+                        scanningInterfaceController.didReceiveApplicationContext(applicationContext)
+                    } else {
+                        self.updateMode(mode)
+                    }
+                    
+                case .connected:
+                    if let connectedInterfaceController = rootController as? ConnectedInterfaceController {
+                        connectedInterfaceController.didReceiveApplicationContext(applicationContext)
+                    } else {
+                        self.updateMode(mode)
+                    }
+                    
+                case .controller:
+                    if !(rootController is ControlModeInterfaceController) {
+                        self.updateMode(mode)
+                    }
+                    
+                default:
+                    DLog("ExtensionDelegate didReceiveApplicationContext with unknown mode: \(mode.rawValue)")
+                    break
                 }
-
-            case .connected:
-                if let connectedInterfaceController = rootController as? ConnectedInterfaceController {
-                    connectedInterfaceController.didReceiveApplicationContext(applicationContext)
-                } else {
-                    updateMode(mode)
-                }
-
-            case .controller:
-                if !(rootController is ControlModeInterfaceController) {
-                    updateMode(mode)
-                }
-
-            default:
-                DLog("ExtensionDelegate didReceiveApplicationContext with unknown mode: \(mode.rawValue)")
-                break
             }
         }
+
     }
 
 }

@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>3.4.0</string>
 	<key>CFBundleVersion</key>
-	<string>25</string>
+	<string>26</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -29,7 +29,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSLocationWhenInUseUsageDescription - 2</key>
-	<string></string>
+	<string>Location is used on the Controller module when Streaming Location Data to Sensor is selected</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>com.adafruit.bluefruitconnect.scan</string>
