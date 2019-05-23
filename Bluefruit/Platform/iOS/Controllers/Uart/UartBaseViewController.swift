@@ -333,31 +333,32 @@ class UartBaseViewController: PeripheralModeViewController {
     }
     
     @IBAction func onClickExport(_ sender: AnyObject) {
-        let uartRxCache = uartData.packetsCache()
-        guard !uartRxCache.isEmpty else {
+        let packets = uartData.packetsCache()
+        guard !packets.isEmpty else {
             showDialogWarningNoTextToExport()
             return
         }
         
         let localizationManager = LocalizationManager.shared
-        let alertController = UIAlertController(title: "Export data", message: "Choose the preferred format:", preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: localizationManager.localizedString("uart_export_format_title"), message: localizationManager.localizedString("uart_export_format_subtitle"), preferredStyle: .actionSheet)
+        let isHexFormat = Preferences.uartIsInHexMode
         
         for exportFormat in UartModeViewController.kExportFormats {
-            let exportAction = UIAlertAction(title: exportFormat.rawValue, style: .default) { [unowned self] (_) in
+            let exportAction = UIAlertAction(title: exportFormat.rawValue, style: .default) { [unowned self] _ in
                 
                 var exportObject: AnyObject?
                 
                 switch exportFormat {
                 case .txt:
-                    exportObject = UartDataExport.packetsAsText(uartRxCache) as AnyObject
+                    exportObject = UartDataExport.packetsAsText(packets, isHexFormat: isHexFormat) as AnyObject
                 case .csv:
-                    exportObject = UartDataExport.packetsAsCsv(uartRxCache) as AnyObject
+                    exportObject = UartDataExport.packetsAsCsv(packets, isHexFormat: isHexFormat) as AnyObject
                 case .json:
-                    exportObject = UartDataExport.packetsAsJson(uartRxCache) as AnyObject
+                    exportObject = UartDataExport.packetsAsJson(packets, isHexFormat: isHexFormat) as AnyObject
                 case .xml:
-                    exportObject = UartDataExport.packetsAsXml(uartRxCache) as AnyObject
+                    exportObject = UartDataExport.packetsAsXml(packets, isHexFormat: isHexFormat) as AnyObject
                 case .bin:
-                    exportObject = UartDataExport.packetsAsBinary(uartRxCache) as AnyObject
+                    exportObject = UartDataExport.packetsAsBinary(packets) as AnyObject
                 }
                 
                 self.export(object: exportObject)

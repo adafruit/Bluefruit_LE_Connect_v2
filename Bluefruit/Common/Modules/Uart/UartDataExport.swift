@@ -11,15 +11,16 @@ import Foundation
 class UartDataExport {
 
     // MARK: - Export formatters
-    static func packetsAsText(_ packets: [UartPacket]) -> String? {
+    static func packetsAsText(_ packets: [UartPacket], isHexFormat: Bool) -> String? {
         // Compile all data
         var data = Data()
         for packet in packets {
             data.append(packet.data)
         }
 
+        // Convert to text
         var text: String?
-        if Preferences.uartIsInHexMode {
+        if isHexFormat {
             text = hexDescription(data: data)
         } else {
             text = String(data:data, encoding: .utf8)
@@ -28,7 +29,7 @@ class UartDataExport {
         return text
     }
 
-    static func packetsAsCsv(_ packets: [UartPacket]) -> String? {
+    static func packetsAsCsv(_ packets: [UartPacket], isHexFormat: Bool) -> String? {
         var text = "Timestamp,Mode,Data\r\n"        // csv Header
 
         let timestampDateFormatter = DateFormatter()
@@ -40,7 +41,7 @@ class UartDataExport {
             let dateString = timestampDateFormatter.string(from: date).replacingOccurrences(of: ",", with: ".")     //  comma messes with csv, so replace it by a point
             let mode = packet.mode == .rx ? "RX" : "TX"
             var dataString: String?
-            if Preferences.uartIsInHexMode {
+            if isHexFormat {
                 dataString = hexDescription(data: packet.data)
             } else {
                 dataString = String(data: packet.data, encoding: .utf8)
@@ -54,7 +55,7 @@ class UartDataExport {
         return text
     }
 
-    static func packetsAsJson(_ packets: [UartPacket]) -> String? {
+    static func packetsAsJson(_ packets: [UartPacket], isHexFormat: Bool) -> String? {
 
         var jsonItemsArray: [Any] = []
 
@@ -64,7 +65,7 @@ class UartDataExport {
             let mode = packet.mode == .rx ? "RX" : "TX"
 
             var dataString: String?
-            if Preferences.uartIsInHexMode {
+            if isHexFormat {
                 dataString = hexDescription(data: packet.data)
             } else {
                 dataString = String(data: packet.data, encoding: .utf8)
@@ -101,7 +102,7 @@ class UartDataExport {
         return result
     }
 
-    static func packetsAsXml(_ packets: [UartPacket]) -> String? {
+    static func packetsAsXml(_ packets: [UartPacket], isHexFormat: Bool) -> String? {
 
         #if os(OSX)
         let xmlRootElement = XMLElement(name: "uart")
@@ -112,7 +113,7 @@ class UartDataExport {
             let mode = packet.mode == .rx ? "RX" : "TX"
 
             var dataString: String?
-            if Preferences.uartIsInHexMode {
+            if isHexFormat {
                 dataString = hexDescription(data: packet.data)
             } else {
                 dataString = String(data: packet.data, encoding: .utf8)
@@ -146,9 +147,7 @@ class UartDataExport {
     }
 
     static func packetsAsBinary(_ packets: [UartPacket]) -> Data? {
-        guard !packets.isEmpty else {
-            return nil
-        }
+        guard !packets.isEmpty else { return nil }
 
         var result = Data()
         for packet in packets {

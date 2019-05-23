@@ -106,6 +106,7 @@ Please reset bluetooth and try again.";
 "peripheral_dis_title" = "Device Information Service";
 "peripheral_uart_title" = "UART";
 
+"peripheral_notsupported" = "Peripheral mode is not supported on your device";
 "peripheral_advertising_starterror_undefined" = "Peripheral mode can't not be started";
 "peripheral_advertising_starterror_toolarge" = "Peripheral mode can't not be started: Advertising data too large";
 
@@ -122,6 +123,7 @@ Please reset bluetooth and try again.";
 "autoupdate_title" = "Update available";
 "autoupdate_description_format" = "Software version %@ is available";
 "autoupdate_update" = "Go to updates";
+"autoupdate_startupdate" = "Start update";
 "autoupdate_later" = "Ask later";
 "autoupdate_ignore" = "Ignore";
 
@@ -182,13 +184,8 @@ Please reset bluetooth and try again.";
 "uart_mqtt_undefinedserver" = "Mqtt server not defined";
 "uart_mqtt_editsettings" = "Edit Mqtt Settings";
 
-"uart_mqtt_status_default" = "MQTT";
-"uart_mqtt_status_connecting" = "MQTT: connecting...";
-"uart_mqtt_status_connected" = "MQTT: connected";
-"uart_mqtt_status_disconnected" = "MQTT: disconnected";
-"uart_mqtt_connectionerror_title" = "Connection Error";
-"uart_mqtt_editsettings_action" = "Edit Mqtt Settings";
-
+"uart_export_format_title" = "Export data";
+"uart_export_format_subtitle" = "Choose the preferred format:";
 "uart_export_nodata" = "No data to export";
 "uart_export_save_message" = "Export Data to File";
 "uart_export_save_prompt" = "Export";
@@ -207,24 +204,7 @@ Please reset bluetooth and try again.";
 "uart_eolmode_nr" = "\\n\\r";
 "uart_eolmode_rn" = "\\r\\n";
 
-"uart_mqtt_settings_title" = "MQTT Settings";
-"uart_mqtt_action_title" = "Mqtt Status:";
-"uart_mqtt_action_connect" = "Connect";
-"uart_mqtt_action_disconnect" = "Disconnect";
 
-"uart_mqtt_settings_group_status" = "Status";
-"uart_mqtt_settings_group_server" = "Server";
-"uart_mqtt_settings_server_address" = "Address:";
-"uart_mqtt_settings_server_port" = "Port:";
-"uart_mqtt_settings_group_publish" = "Publish";
-"uart_mqtt_settings_publish_rx" = "Uart RX:";
-"uart_mqtt_settings_publish_tx" = "Uart TX:";
-"uart_mqtt_settings_group_subscribe" = "Subscribe";
-"uart_mqtt_settings_subscribe_topic" = "Topic:";
-"uart_mqtt_settings_subscribe_action" = "Action:";
-"uart_mqtt_settings_group_advanced" = "Advanced";
-"uart_mqtt_settings_advanced_username" = "Username:";
-"uart_mqtt_settings_advanced_password" = "Pass/Key:";
 "uart_settings_clear_title" = "Clear";
 "uart_settings_export_title" = "Export...";
 
@@ -257,6 +237,15 @@ Please reset bluetooth and try again.";
 • Use the Export button to copy or send the contents of the console.
 
 • Use the Clear button to clear the console's contents.";
+"uart_help_text_android" = "Instructions:
+
+• Tap the input field at the bottom of the screen.
+
+• Enter the text string you want to send.
+
+• Send a message by pressing the keyboard's Send button.
+
+• Use the Timestamp/Text and ASCII/Hex control above the main console view to control the display format of messages.";
 
 "uart_error_peripheralinit" = "Uart protocol can not be initialized";
 "uart_error_multipleperiperipheralinit_format" = "Uart protocol can not be initialized for peripheral: %@";
@@ -264,6 +253,40 @@ Please reset bluetooth and try again.";
 // Mqtt
 "mqtt_connection_lost" = "Mqtt server connection failed";
 "mqtt_connection_failed" = "Mqtt connection to server lost";
+
+"uart_mqtt_settings_title" = "MQTT Settings";
+"uart_mqtt_action_title" = "Mqtt Status:";
+"uart_mqtt_action_connect" = "Connect";
+"uart_mqtt_action_disconnect" = "Disconnect";
+
+"uart_mqtt_settings_group_status" = "Status";
+"uart_mqtt_settings_group_server" = "Server";
+"uart_mqtt_settings_server_address" = "Address:";
+"uart_mqtt_settings_server_port" = "Port:";
+"uart_mqtt_settings_group_publish" = "Publish";
+"uart_mqtt_settings_publish_rx" = "Uart RX:";
+"uart_mqtt_settings_publish_tx" = "Uart TX:";
+"uart_mqtt_settings_group_subscribe" = "Subscribe";
+"uart_mqtt_settings_subscribe_topic" = "Topic:";
+"uart_mqtt_settings_subscribe_action" = "Action:";
+"uart_mqtt_settings_group_advanced" = "Advanced";
+"uart_mqtt_settings_advanced_username" = "Username:";
+"uart_mqtt_settings_advanced_password" = "Pass/Key:";
+"uart_mqtt_settings_cleansession" = "Clean session:";
+"uart_mqtt_settings_sslconnection" = "SSL connection:";
+"uart_mqtt_qrconfig_action" = "Scan Code";
+"uart_mqtt_qrconfig" = "Configure using AdafruitIO QR-Code";
+
+"uart_mqtt_qrconfig_hint" = "Pich or strech to zoom the camera image";
+"uart_mqtt_qrconfig_instructions" = "Point your device camera to the QR-Code and center it on the preview image
+(The code will be automatically read when is visible)";
+
+
+// Mqtt code reader
+
+"mqttcodereader_cameraneeded" = "Access to the camera is needed for detection";
+"mqttcodereader_lowstorageerror" = "Code detector dependencies cannot be downloaded due to low device storage. Please increase the available storage";
+"mqttcodereader_nocamerapermission" = "Code detector cannot run because it does not have the camera permission";
 
 // Plotter
 "plotter_tab_title" = "Plotter";
@@ -593,7 +616,11 @@ Eclipse Paho
 https://eclipse.org/paho/clients/java/
 
 MPAndroidChart
-https://github.com/PhilJay/MPAndroidChart";
+https://github.com/PhilJay/MPAndroidChart
+
+Android Vision Sample for Barcode Reading
+Copyright (C) The Android Open Source Project
+Licensed under the Apache License, Version 2.0";
 "about_ios_text" = "A detailed guide to using this app can be found here:
 https://learn.adafruit.com/bluefruit-le-connect-for-ios
 
