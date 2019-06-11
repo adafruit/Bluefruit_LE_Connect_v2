@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Dfu Dialog View Controller-->
+        <!--Progress View Controller-->
         <scene sceneID="XHG-F4-i04">
             <objects>
-                <viewController storyboardIdentifier="DfuDialogViewController" modalPresentationStyle="overCurrentContext" id="kl6-aX-7zS" customClass="DfuDialogViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProgressViewController" modalPresentationStyle="overCurrentContext" id="kl6-aX-7zS" customClass="ProgressViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DKu-Ib-GKq"/>
                         <viewControllerLayoutGuide type="bottom" id="0FG-pz-BED"/>
@@ -24,7 +23,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z9O-lj-KbF">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmD-hH-kD9">
                                 <rect key="frame" x="36" y="287" width="303" height="93"/>
@@ -38,8 +37,8 @@
                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qPl-uQ-q3T">
                                         <rect key="frame" x="8" y="46" width="287" height="2"/>
                                     </progressView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i64-80-f7q">
-                                        <rect key="frame" x="275" y="68" width="20" height="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="0%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i64-80-f7q">
+                                        <rect key="frame" x="274.5" y="68" width="20.5" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -60,6 +59,7 @@
                                     <constraint firstItem="F0U-EU-etI" firstAttribute="leading" secondItem="bKd-73-48D" secondAttribute="trailing" constant="8" id="3cK-FS-B47"/>
                                     <constraint firstItem="qPl-uQ-q3T" firstAttribute="leading" secondItem="kmD-hH-kD9" secondAttribute="leadingMargin" id="5Hz-Uz-ong"/>
                                     <constraint firstItem="F0U-EU-etI" firstAttribute="baseline" secondItem="bKd-73-48D" secondAttribute="baseline" id="Ihj-mP-YNc"/>
+                                    <constraint firstItem="i64-80-f7q" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kmD-hH-kD9" secondAttribute="leading" constant="20" symbolic="YES" id="Ije-lk-Yec"/>
                                     <constraint firstItem="qPl-uQ-q3T" firstAttribute="trailing" secondItem="kmD-hH-kD9" secondAttribute="trailingMargin" id="LYg-pq-kzs"/>
                                     <constraint firstItem="qPl-uQ-q3T" firstAttribute="top" secondItem="bKd-73-48D" secondAttribute="bottom" constant="20" id="Sg3-h2-ZtW"/>
                                     <constraint firstItem="bKd-73-48D" firstAttribute="leading" secondItem="kmD-hH-kD9" secondAttribute="leadingMargin" id="h6I-B3-LET"/>
@@ -70,7 +70,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="kmD-hH-kD9" secondAttribute="trailing" constant="20" id="5K3-lk-lkz"/>
                             <constraint firstItem="kmD-hH-kD9" firstAttribute="leading" secondItem="Met-nX-FHc" secondAttribute="leadingMargin" constant="20" id="6Tx-lW-hjQ"/>
@@ -111,7 +111,7 @@
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59628232758620692" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NRm-6q-3uD">
-                                <rect key="frame" x="16" y="220" width="343" height="228"/>
+                                <rect key="frame" x="16" y="219.5" width="343" height="228"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Custom Firmware" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c92-OX-mQs">
                                         <rect key="frame" x="8" y="8" width="327" height="18"/>
@@ -129,7 +129,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAq-dF-uyR" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                                <rect key="frame" x="244" y="11" width="73" height="30"/>
+                                                <rect key="frame" x="244" y="11.5" width="73" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="vX6-pL-MJt"/>
                                                 </constraints>
@@ -184,7 +184,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BCp-Y3-Gn4" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                                <rect key="frame" x="244" y="11" width="73" height="30"/>
+                                                <rect key="frame" x="244" y="11.5" width="73" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="WvO-b6-uul"/>
                                                 </constraints>

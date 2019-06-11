@@ -16,7 +16,7 @@ class DfuModeViewController: PeripheralModeViewController {
     // Data
     fileprivate let firmwareUpdater = FirmwareUpdater()
     fileprivate let dfuUpdateProcess = DfuUpdateProcess()
-    fileprivate var dfuDialogViewController: DfuDialogViewController!
+    fileprivate var progressViewController: ProgressViewController!
 
     fileprivate var boardRelease: BoardInfo?
     fileprivate var deviceDfuInfo: DeviceDfuInfo?
@@ -145,9 +145,9 @@ class DfuModeViewController: PeripheralModeViewController {
         }
 
         // Show dialog
-        dfuDialogViewController = (self.storyboard!.instantiateViewController(withIdentifier: "DfuDialogViewController") as! DfuDialogViewController)
-        dfuDialogViewController.delegate = self
-        self.present(dfuDialogViewController, animated: true, completion: { [unowned self] () -> Void in
+        progressViewController = (self.storyboard!.instantiateViewController(withIdentifier: "ProgressViewController") as! ProgressViewController)
+        progressViewController.delegate = self
+        self.present(progressViewController, animated: true, completion: { [unowned self] () -> Void in
             // Setup update process
             self.dfuUpdateProcess.delegate = self
             self.dfuUpdateProcess.startUpdateForPeripheral(peripheral: blePeripheral.peripheral, hexUrl: hexUrl, iniUrl:iniUrl)
@@ -399,8 +399,8 @@ extension DfuModeViewController: UITableViewDelegate {
     }
 }
 
-// MARK: - UpdateDialogViewControlerDelegate
-extension DfuModeViewController: DfuDialogViewControllerDelegate {
+// MARK: - ProgressViewControllerDelegate
+extension DfuModeViewController: ProgressViewControllerDelegate {
 
     func onUpdateDialogCancel() {
         dfuUpdateProcess.cancel()
@@ -410,10 +410,10 @@ extension DfuModeViewController: DfuDialogViewControllerDelegate {
 }
 
 // MARK: - DfuUpdateProcessDelegate
-extension  DfuModeViewController: DfuUpdateProcessDelegate {
+extension DfuModeViewController: DfuUpdateProcessDelegate {
     func onUpdateProcessSuccess() {
-        if let dfuDialogViewController = self.dfuDialogViewController {
-            dfuDialogViewController.dismiss(animated: false, completion: nil)
+        if let progressViewController = self.progressViewController {
+            progressViewController.dismiss(animated: false, completion: nil)
         }
         //BleManager.sharedInstance.restoreCentralManager()
 
@@ -445,8 +445,8 @@ extension  DfuModeViewController: DfuUpdateProcessDelegate {
     func onUpdateProcessError(errorMessage: String, infoMessage: String?) {
         //BleManager.sharedInstance.restoreCentralManager()
 
-        if let dfuDialogViewController = self.dfuDialogViewController {
-            dfuDialogViewController.dismiss(animated: false, completion: nil)
+        if let progressViewController = self.progressViewController {
+            progressViewController.dismiss(animated: false, completion: nil)
         }
 
         let localizationManager = LocalizationManager.shared
@@ -462,25 +462,25 @@ extension  DfuModeViewController: DfuUpdateProcessDelegate {
 
     func onUpdateProgressText(_ message: String) {
         DispatchQueue.main.async {
-            self.dfuDialogViewController?.setProgressText(message)
+            self.progressViewController?.setProgressText(message)
         }
     }
 
     func onUpdateProgressValue(_ progress: Double) {
         DispatchQueue.main.async {
-            self.dfuDialogViewController?.setProgress(progress)
+            self.progressViewController?.setPercentage(progress)
         }
     }
 }
 
-// MARK: - DfuUpdateProcessDelegate
+// MARK: - DfuFilesPickerDialogViewControllerDelegate
 extension DfuModeViewController: DfuFilesPickerDialogViewControllerDelegate {
 
     func onFilesPickerStartUpdate(hexUrl: URL?, iniUrl: URL?) {
         if let hexUrl = hexUrl {
             // Show dialog
-            dfuDialogViewController = (self.storyboard!.instantiateViewController(withIdentifier: "DfuDialogViewController") as! DfuDialogViewController)
-            self.present(dfuDialogViewController, animated: true, completion: { [unowned self] in
+            progressViewController = (self.storyboard!.instantiateViewController(withIdentifier: "ProgressViewController") as! ProgressViewController)
+            self.present(progressViewController, animated: true, completion: { [unowned self] in
                 // Setup update process
                 self.dfuUpdateProcess.delegate = self
                 self.dfuUpdateProcess.startUpdateForPeripheral(peripheral: self.blePeripheral!.peripheral, hexUrl: hexUrl, iniUrl:iniUrl)

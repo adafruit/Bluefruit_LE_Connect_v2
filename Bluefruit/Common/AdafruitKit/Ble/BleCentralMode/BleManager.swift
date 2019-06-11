@@ -90,7 +90,7 @@ class BleManager: NSObject {
             startScan()
         }
     }
-
+    
     // MARK: - Scan
     func startScan(withServices services: [CBUUID]? = nil) {
         centralManagerPoweredOnSemaphore.wait()

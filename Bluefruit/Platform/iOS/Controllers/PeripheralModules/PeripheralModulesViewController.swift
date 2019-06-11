@@ -35,6 +35,7 @@ class PeripheralModulesViewController: UIViewController {
         case neopixel
         case calibration
         case thermalcamera
+        case imagetransfer
         case dfu
     }
 
@@ -271,9 +272,9 @@ class PeripheralModulesViewController: UIViewController {
         if connectionMode == .multiplePeripherals {
             return [.uart, .plotter]
         } else if hasUart && hasDfu {
-            return [.info, .uart, .plotter, .pinIO, .controller, .neopixel, .calibration, .thermalcamera, .dfu]
+            return [.info, .uart, .plotter, .pinIO, .controller, .neopixel, .calibration, .thermalcamera, .imagetransfer, .dfu]
         } else if hasUart {
-            return [.info, .uart, .plotter, .pinIO, .controller, .calibration, .thermalcamera]
+            return [.info, .uart, .plotter, .pinIO, .controller, .calibration, .thermalcamera, .imagetransfer]
         } else if hasDfu {
             return [.info, .dfu]
         } else {
@@ -388,6 +389,9 @@ extension PeripheralModulesViewController: UITableViewDelegate {
             case .thermalcamera:
                 iconName = "tab_thermalcamera_icon"
                 titleId = "thermalcamera_tab_title"
+            case .imagetransfer:
+                iconName = "tab_imagetransfer_icon"
+                titleId = "imagetransfer_tab_title"
             case .dfu:
                 iconName = "tab_dfu_icon"
                 titleId = "dfu_tab_title"
@@ -459,7 +463,12 @@ extension PeripheralModulesViewController: UITableViewDelegate {
                     thermalCameraViewController.blePeripheral = blePeripheral
                     show(thermalCameraViewController, sender: self)
                 }
-                
+            case .imagetransfer:
+                if let imageTransferViewController = self.storyboard?.instantiateViewController(withIdentifier: "ImageTransferModuleViewController") as? ImageTransferModuleViewController {
+                    imageTransferViewController.blePeripheral = blePeripheral
+                    show(imageTransferViewController, sender: self)
+                }
+
             case .dfu:
                 showDfu()
             }

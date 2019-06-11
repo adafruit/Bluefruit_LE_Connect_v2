@@ -98,5 +98,4 @@ class CommandQueue<Element> {
         // DLog("queue removeAll: \(queue.count)")
         queue.removeAll()
     }
-
 }

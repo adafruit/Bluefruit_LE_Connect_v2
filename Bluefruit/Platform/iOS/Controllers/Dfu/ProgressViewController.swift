@@ -1,5 +1,5 @@
 //
-//  DfuDialogViewController.swift
+//  ProgressViewController.swift
 //  Bluefruit Connect
 //
 //  Created by Antonio García on 09/02/16.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-protocol DfuDialogViewControllerDelegate: class {
+protocol ProgressViewControllerDelegate: class {
     func onUpdateDialogCancel()
 }
 
-class DfuDialogViewController: UIViewController {
+class ProgressViewController: UIViewController {
 
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var progressIndicator: UIProgressView!
@@ -20,28 +20,32 @@ class DfuDialogViewController: UIViewController {
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var cancelButton: UIButton!
 
-    weak var delegate: DfuDialogViewControllerDelegate?
+    weak var delegate: ProgressViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        backgroundView.alpha = 0
         cancelButton.isHidden = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Fade-in background
-        backgroundView.alpha = 0
-        UIView.animate(withDuration: 0.5, animations: {
-            self.backgroundView.alpha = 1
-        })
-
         // Disable sleep mode while the DFU Dialog progress is shown
         UIApplication.shared.isIdleTimerDisabled = true
         DLog("Disable sleep mode")
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Fade-in background
+        UIView.animate(withDuration: 0.3, animations: {
+            self.backgroundView.alpha = 1
+        })
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
@@ -56,10 +60,11 @@ class DfuDialogViewController: UIViewController {
     }
 
     func setProgressText(_ text: String) {
+        loadViewIfNeeded()
         progressLabel.text = text
     }
 
-    func setProgress(_ value: Double) {
+    func setPercentage(_ value: Double) {
         cancelButton.isHidden = value <= 0
         progressIndicator.progress = Float(value/100.0)
         progressPercentageLabel.text = String(format: "%1.0f%%", value)

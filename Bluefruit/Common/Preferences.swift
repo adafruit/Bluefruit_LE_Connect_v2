@@ -71,6 +71,8 @@ class Preferences {
     private static let visualizationZAxisFlippedKey = "VisualizationZAxisFlipped"
     private static let visualizationSwitchYZKey = "VisualizationSwitchYZ"
 
+    private static let imageTransferResolutionKey = "ImageTransferResolution"
+    
     // MARK: - General
     static var appInSystemStatusBar: Bool {
         get {
@@ -443,6 +445,20 @@ class Preferences {
             setBoolPreference(Preferences.visualizationSwitchYZKey, newValue: newValue)
         }
     }
+    
+    // MARK: - Image Transfer
+    static var imageTransferResolution: Int? {
+        get {
+            let defaults = UserDefaults.standard
+            let value = defaults.integer(forKey: Preferences.imageTransferResolutionKey)
+            return value >= 0 ? value:nil
+        }
+        set {
+            let defaults = UserDefaults.standard
+            defaults.set(newValue ?? -1, forKey: Preferences.imageTransferResolutionKey)
+        }
+    }
+
 
     // MARK: - Common
     static func getBoolPreference(_ key: String) -> Bool {

@@ -10,7 +10,14 @@ import Foundation
 
 // MARK: - Data Scan
 extension Data {
+    /*
     func scanValue<T>(start: Int, length: Int) -> T {
         return self.subdata(in: start..<start+length).withUnsafeBytes { $0.pointee }
+    }
+    */
+    
+    func scanValue<T>(start: Int, length: Int) -> T {
+        let subdata = self.subdata(in: start..<start+length)
+        return subdata.withUnsafeBytes { $0.load(as: T.self) }
     }
 }

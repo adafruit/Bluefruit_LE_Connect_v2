@@ -17,19 +17,23 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.4.0</string>
+	<string>3.5.0</string>
 	<key>CFBundleVersion</key>
-	<string>26</string>
+	<string>28</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Bluefruit would like to make data available to connected bluetooth devices while the app is in background</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Image Transfer requires access to the camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSLocationWhenInUseUsageDescription - 2</key>
 	<string>Location is used on the Controller module when Streaming Location Data to Sensor is selected</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Image Transfer requires access to the photo gallery</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>com.adafruit.bluefruitconnect.scan</string>

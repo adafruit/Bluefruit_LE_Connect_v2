@@ -86,14 +86,13 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
 
     // MARK: - UI
     fileprivate func updateThermalUI(isReady: Bool) {
-        // Setup UI
         uartWaitingLabel.isHidden = isReady
     }
     
     // MARK: - Actions
     @IBAction func onFilterModeChanged(_ sender: UISegmentedControl) {
         let isFilterEnabled = sender.selectedSegmentIndex == 1
-        cameraImageView.layer.magnificationFilter = convertToCALayerContentsFilter(isFilterEnabled ? CALayerContentsFilter.linear.rawValue:CALayerContentsFilter.nearest.rawValue)
+        cameraImageView.layer.magnificationFilter = isFilterEnabled ? .linear:.nearest
     }
     
     @IBAction func onColorModeChanged(_ sender: UISegmentedControl) {
@@ -139,9 +138,4 @@ extension ThermalCameraModuleViewController: ThermalCameraModuleManagerDelegate 
         lowerTempLabel.text = String(format: "%.2f", thermalCameraData.lowerTemperature)
         upperTempLabel.text = String(format: "%.2f", thermalCameraData.upperTemperature)
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToCALayerContentsFilter(_ input: String) -> CALayerContentsFilter {
-	return CALayerContentsFilter(rawValue: input)
 }

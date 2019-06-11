@@ -557,6 +557,22 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 
 "thermalcamera_temprange_title" = "Temperature Range:";
 
+// Image Transfer
+"imagetransfer_tab_title" = "Image Transfer";
+"imagetransfer_navigation_title_format" = "Image Transfer - %@";
+
+"imagetransfer_selectimage_action" = "Select image";
+"imagetransfer_imagepicker_camera" = "Take photo";
+"imagetransfer_imagepicker_cameraroll" = "Camera roll";
+"imagetransfer_imagepicker_photolibrary" = "Photo library";
+"imagetransfer_imageorigin_camera" = "Camera";
+"imagetransfer_imageorigin_cameraroll" = "Camera roll";
+"imagetransfer_imageorigin_photolibrary" = "Photo library";
+"imagetransfer_imageorigin_other" = "Other";
+"imagetransfer_imageorigin_default" = "Default";
+
+
+
 
 // Common
 "dialog_ok" = "OK";

@@ -210,7 +210,6 @@ class NeopixelModuleManager: NSObject {
     func isBoardConfigured() -> Bool {
         return board != nil
     }
-    
 
     func connectNeopixel(completion: @escaping ((Bool) -> Void)) {
         self.checkNeopixelSketch(completion: completion)

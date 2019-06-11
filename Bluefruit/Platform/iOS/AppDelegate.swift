@@ -70,11 +70,13 @@ extension AppDelegate: WCSessionDelegate {
         DLog("sessionReachabilityDidChange: \(session.isReachable ? "reachable":"not reachable")")
 
         if session.isReachable {
-            // Update foreground status
-            let isActive = UIApplication.shared.applicationState != .inactive
-            WatchSessionManager.shared.session?.sendMessage(["isActive": isActive], replyHandler: nil, errorHandler: nil)
-
-            NotificationCenter.default.post(name: .watchSessionDidBecomeActive, object: nil, userInfo: nil)
+            DispatchQueue.main.async {
+                // Update foreground status
+                let isActive = UIApplication.shared.applicationState != .inactive       // Shold be called from main thread
+                WatchSessionManager.shared.session?.sendMessage(["isActive": isActive], replyHandler: nil, errorHandler: nil)
+                
+                NotificationCenter.default.post(name: .watchSessionDidBecomeActive, object: nil, userInfo: nil)
+            }
         }
     }
 
@@ -91,8 +93,10 @@ extension AppDelegate: WCSessionDelegate {
         if let command = message["command"] as? String {
             switch command {
             case "isActive":
-                let isActive = UIApplication.shared.applicationState != .inactive
-                replyValues[command] = isActive as AnyObject
+                DispatchQueue.main.async {
+                    let isActive = UIApplication.shared.applicationState != .inactive       // Shold be called from main thread
+                    replyValues[command] = isActive as AnyObject
+                }
 
             default:
                 DLog("didReceiveMessage with unknown command: \(command)")

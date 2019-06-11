@@ -24,7 +24,7 @@ class ThermalCameraModuleManager: NSObject {
     
     // Data
     fileprivate var blePeripheral: BlePeripheral
-    fileprivate let uartManager: UartDataManager// = UartDataManager(delegate: self)
+    fileprivate let uartManager: UartDataManager
     
     fileprivate var textCachedBuffer: String = ""
     fileprivate var textCachedBufferLock = NSLock()
@@ -147,7 +147,6 @@ class ThermalCameraModuleManager: NSObject {
         })
         
         let pixelData: [PixelData] = valuesNormalized.map({
-            
             let colorComponents = temperatureComponentsForValue($0)
             return pixelDataFromRgb(r: colorComponents.r, g: colorComponents.g, b: colorComponents.b)
         })

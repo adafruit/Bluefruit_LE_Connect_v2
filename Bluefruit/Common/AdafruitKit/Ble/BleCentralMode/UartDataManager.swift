@@ -84,6 +84,7 @@ class UartDataManager {
         blePeripheral.uartSend(data: data, completion: completion)
     }
 
+    
     // MARK: - Received data
     func rxDataReceived(data: Data?, peripheralIdentifier identifier: UUID, error: Error?) {
         guard error == nil else { DLog("rxDataReceived error: \(error!)"); return }

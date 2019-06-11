@@ -46,6 +46,8 @@
 		A915427B1EDD7C3F007A34EA /* StyledLinkedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */; };
 		A915427D1EDD7CE8007A34EA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427C1EDD7CE8007A34EA /* Config.swift */; };
 		A915427F1EDD8041007A34EA /* StyledAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427E1EDD8041007A34EA /* StyledAnimations.swift */; };
+		A915D3FF22AEF8AA009DBFCF /* ImageTransferModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915D3FE22AEF8AA009DBFCF /* ImageTransferModuleViewController.swift */; };
+		A915D40122AF230E009DBFCF /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915D40022AF230E009DBFCF /* ImagePicker.swift */; };
 		A91D65A41EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91D65A31EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift */; };
 		A91D65AA1EFD69190097C8B6 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91D65A91EFD69190097C8B6 /* MainWindowController.swift */; };
 		A91D65AC1EFD6A6D0097C8B6 /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91D65AB1EFD6A6D0097C8B6 /* StatusViewController.swift */; };
@@ -116,7 +118,7 @@
 		A96AB4461F32CB480085115C /* GattServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96AB4451F32CB480085115C /* GattServerViewController.swift */; };
 		A96AB4491F32CF780085115C /* Dfu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A96AB4471F32CF780085115C /* Dfu.storyboard */; };
 		A98378091E422C4B00170319 /* NSObject+ENHThrottledReloading.m in Sources */ = {isa = PBXBuildFile; fileRef = A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */; };
-		A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378161E42A96400170319 /* DfuDialogViewController.swift */; };
+		A983781A1E42A96400170319 /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378161E42A96400170319 /* ProgressViewController.swift */; };
 		A983781B1E42A96400170319 /* DfuFilesPickerDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378171E42A96400170319 /* DfuFilesPickerDialogViewController.swift */; };
 		A983781C1E42A96400170319 /* DfuFilesPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378181E42A96400170319 /* DfuFilesPickerTableViewCell.swift */; };
 		A983781D1E42A96400170319 /* DfuModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378191E42A96400170319 /* DfuModeViewController.swift */; };
@@ -202,6 +204,9 @@
 		A98DE42C1E45EB3900EEF4C8 /* NeopixelBoards.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */; };
 		A98DE42D1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */; };
 		A98DE42E1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */; };
+		A991A7BD22AFBA36003AE632 /* ImageTransferModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991A7BC22AFBA36003AE632 /* ImageTransferModuleManager.swift */; };
+		A991A7C022AFDCFB003AE632 /* IntToBytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991A7BE22AFDC86003AE632 /* IntToBytes.swift */; };
+		A991A7C422AFDFE2003AE632 /* UIImage+pixelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991A7C122AFDF1E003AE632 /* UIImage+pixelData.swift */; };
 		A9A6C2471E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */; };
 		A9A89BDC1E83C5B000724F0E /* StyledConnectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A89BDB1E83C5B000724F0E /* StyledConnectButton.swift */; };
 		A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */; };
@@ -411,6 +416,8 @@
 		A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLinkedButton.swift; sourceTree = "<group>"; };
 		A915427C1EDD7CE8007A34EA /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		A915427E1EDD8041007A34EA /* StyledAnimations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledAnimations.swift; sourceTree = "<group>"; };
+		A915D3FE22AEF8AA009DBFCF /* ImageTransferModuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTransferModuleViewController.swift; sourceTree = "<group>"; };
+		A915D40022AF230E009DBFCF /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		A91D65A31EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralModulesDeviceTableViewCell.swift; sourceTree = "<group>"; };
 		A91D65A91EFD69190097C8B6 /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		A91D65AB1EFD6A6D0097C8B6 /* StatusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
@@ -470,7 +477,7 @@
 		A98378051E422C4B00170319 /* NSObject+ENHThrottledReloading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ENHThrottledReloading.h"; sourceTree = "<group>"; };
 		A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ENHThrottledReloading.m"; sourceTree = "<group>"; };
 		A983780B1E422CBC00170319 /* Bluefruit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bluefruit-Bridging-Header.h"; sourceTree = "<group>"; };
-		A98378161E42A96400170319 /* DfuDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuDialogViewController.swift; sourceTree = "<group>"; };
+		A98378161E42A96400170319 /* ProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressViewController.swift; sourceTree = "<group>"; };
 		A98378171E42A96400170319 /* DfuFilesPickerDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuFilesPickerDialogViewController.swift; sourceTree = "<group>"; };
 		A98378181E42A96400170319 /* DfuFilesPickerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuFilesPickerTableViewCell.swift; sourceTree = "<group>"; };
 		A98378191E42A96400170319 /* DfuModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DfuModeViewController.swift; sourceTree = "<group>"; };
@@ -554,6 +561,9 @@
 		A98DE4211E45EB3900EEF4C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelBoards.plist; sourceTree = "<group>"; };
 		A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelDefaultPalette.plist; sourceTree = "<group>"; };
+		A991A7BC22AFBA36003AE632 /* ImageTransferModuleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTransferModuleManager.swift; sourceTree = "<group>"; };
+		A991A7BE22AFDC86003AE632 /* IntToBytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntToBytes.swift; sourceTree = "<group>"; };
+		A991A7C122AFDF1E003AE632 /* UIImage+pixelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+pixelData.swift"; sourceTree = "<group>"; };
 		A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSelectPeripheralViewController.swift; sourceTree = "<group>"; };
 		A9A89BDB1E83C5B000724F0E /* StyledConnectButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledConnectButton.swift; sourceTree = "<group>"; };
 		A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -800,6 +810,17 @@
 			path = Visualization;
 			sourceTree = "<group>";
 		};
+		A915D3FD22AEF82F009DBFCF /* ImageTransfer */ = {
+			isa = PBXGroup;
+			children = (
+				A915D3FE22AEF8AA009DBFCF /* ImageTransferModuleViewController.swift */,
+				A915D40022AF230E009DBFCF /* ImagePicker.swift */,
+				A991A7BC22AFBA36003AE632 /* ImageTransferModuleManager.swift */,
+				A991A7C122AFDF1E003AE632 /* UIImage+pixelData.swift */,
+			);
+			path = ImageTransfer;
+			sourceTree = "<group>";
+		};
 		A91D65A81EFD68EB0097C8B6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -903,6 +924,7 @@
 				A90798391E43A4DA005470A5 /* PinIO */,
 				A98DE4061E456AFC00EEF4C8 /* NeoPixel */,
 				A9335ED81F526E0F009EB5B5 /* ThermalCamera */,
+				A915D3FD22AEF82F009DBFCF /* ImageTransfer */,
 				A98378151E42A96400170319 /* Dfu */,
 				A91542521EDD7BC8007A34EA /* Calibration */,
 			);
@@ -959,6 +981,7 @@
 			children = (
 				A9286CCA1E3A9B22008E5F81 /* CommandQueue.swift */,
 				A9286CCB1E3A9B22008E5F81 /* Data+ScanValue.swift */,
+				A991A7BE22AFDC86003AE632 /* IntToBytes.swift */,
 				A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */,
 				A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */,
 				A9286CC91E3A9B22008E5F81 /* AlertHelper.swift */,
@@ -1099,7 +1122,7 @@
 			isa = PBXGroup;
 			children = (
 				A98378191E42A96400170319 /* DfuModeViewController.swift */,
-				A98378161E42A96400170319 /* DfuDialogViewController.swift */,
+				A98378161E42A96400170319 /* ProgressViewController.swift */,
 				A98378171E42A96400170319 /* DfuFilesPickerDialogViewController.swift */,
 				A98378181E42A96400170319 /* DfuFilesPickerTableViewCell.swift */,
 			);
@@ -1981,7 +2004,7 @@
 				A9F4E1BD1F04467200BF8A70 /* ISColorWheel.m in Sources */,
 				A9CA084E1F35EF6900A0C621 /* UartServiceViewController.swift in Sources */,
 				A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */,
-				A983781A1E42A96400170319 /* DfuDialogViewController.swift in Sources */,
+				A983781A1E42A96400170319 /* ProgressViewController.swift in Sources */,
 				A9D2343A1E3AD70300DC0C99 /* FilterTextSettingsViewController.swift in Sources */,
 				A93DE7751F36195900B2EB5D /* GattServer.swift in Sources */,
 				A9BB78E51EDCEC65004663DE /* VectorMath+Calibration.swift in Sources */,
@@ -1995,6 +2018,7 @@
 				A91502741EE4DAA800298005 /* PeripheralModulesTableViewCell.swift in Sources */,
 				A9BCD60C1E4D36DE003D1CEA /* MainInterfaceController.swift in Sources */,
 				A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */,
+				A915D3FF22AEF8AA009DBFCF /* ImageTransferModuleViewController.swift in Sources */,
 				A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */,
 				A93DE7651F36195900B2EB5D /* BlePeripheral+Battery.swift in Sources */,
 				A9335EDA1F526E3C009EB5B5 /* ThermalCameraModuleViewController.swift in Sources */,
@@ -2019,6 +2043,7 @@
 				A94A21AD1E417271006A5F33 /* UartModeViewController.swift in Sources */,
 				A9BCD5721E4D25B3003D1CEA /* DfuUpdateProcess.swift in Sources */,
 				A9CA085B1F35F4B600A0C621 /* ModeTabViewController.swift in Sources */,
+				A991A7BD22AFBA36003AE632 /* ImageTransferModuleManager.swift in Sources */,
 				A93DE7771F36195900B2EB5D /* PeripheralService.swift in Sources */,
 				A91542791EDD7BC9007A34EA /* VisualizationViewController.swift in Sources */,
 				A90C79781E40CBFA0076E8AD /* InfoModuleManager.swift in Sources */,
@@ -2026,6 +2051,7 @@
 				A93DE76D1F36195900B2EB5D /* UartDataManager.swift in Sources */,
 				A93DE7791F36195900B2EB5D /* UartPeripheralModePacketManager.swift in Sources */,
 				A93DE77B1F36195900B2EB5D /* UartPeripheralService.swift in Sources */,
+				A991A7C422AFDFE2003AE632 /* UIImage+pixelData.swift in Sources */,
 				A9BCD58E1E4D2616003D1CEA /* DataFormatter.swift in Sources */,
 				A9D234391E3AD70300DC0C99 /* AboutViewController.swift in Sources */,
 				A9335EDC1F526EE2009EB5B5 /* ThermalCameraModuleManager.swift in Sources */,
@@ -2055,6 +2081,7 @@
 				A91E7D5C1E4216ED00DE90C6 /* UIImage+Color.swift in Sources */,
 				A9BCD60D1E4D36DE003D1CEA /* PickerModeInterfaceController.swift in Sources */,
 				A915426D1EDD7BC9007A34EA /* MagnetometerPageContentViewController.swift in Sources */,
+				A991A7C022AFDCFB003AE632 /* IntToBytes.swift in Sources */,
 				A9CA085A1F35F4B600A0C621 /* ModeTabsViewController.swift in Sources */,
 				A93DE7731F36195900B2EB5D /* DeviceInformationPeripheralService.swift in Sources */,
 				A90C79751E40CB150076E8AD /* HelpViewController.swift in Sources */,
@@ -2086,6 +2113,7 @@
 				A90798361E439DB9005470A5 /* PinIOModuleManager.swift in Sources */,
 				A93DE76B1F36195900B2EB5D /* BleUUIDNames.swift in Sources */,
 				A98DE40D1E456AFC00EEF4C8 /* HelpExportViewController.swift in Sources */,
+				A915D40122AF230E009DBFCF /* ImagePicker.swift in Sources */,
 				A915426B1EDD7BC8007A34EA /* GyroscopeProgressViewController.swift in Sources */,
 				A983786E1E43422100170319 /* MqttSettingsHeaderCell.swift in Sources */,
 				A93DE7711F36195900B2EB5D /* UartPacketManager.swift in Sources */,

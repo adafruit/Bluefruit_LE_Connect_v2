@@ -18,7 +18,7 @@ extension BlePeripheral {
     static let kUartServiceUUID =           CBUUID(string: "6e400001-b5a3-f393-e0a9-e50e24dcca9e")
     static let kUartTxCharacteristicUUID =  CBUUID(string: "6e400002-b5a3-f393-e0a9-e50e24dcca9e")
     static let kUartRxCharacteristicUUID =  CBUUID(string: "6e400003-b5a3-f393-e0a9-e50e24dcca9e")
-    fileprivate static let kUartTxMaxBytes = 20
+    //fileprivate static let kUartTxMaxBytes = 20
     static let kUartReplyDefaultTimeout = 2.0       // seconds
 
     // MARK: - Custom properties
@@ -26,6 +26,7 @@ extension BlePeripheral {
         static var uartRxCharacteristic: CBCharacteristic?
         static var uartTxCharacteristic: CBCharacteristic?
         static var uartTxCharacteristicWriteType: CBCharacteristicWriteType?
+        static var sendSequentiallyCancelled: Bool = false
     }
 
     fileprivate var uartRxCharacteristic: CBCharacteristic? {
@@ -55,6 +56,16 @@ extension BlePeripheral {
         }
     }
 
+    fileprivate var sendSequentiallyCancelled: Bool {
+        get {
+            return objc_getAssociatedObject(self, &CustomPropertiesKeys.sendSequentiallyCancelled) as! Bool
+        }
+        set {
+            objc_setAssociatedObject(self, &CustomPropertiesKeys.sendSequentiallyCancelled, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+
+    
     // MARK: -
     enum PeripheralUartError: Error {
         case invalidCharacteristic
@@ -125,43 +136,113 @@ extension BlePeripheral {
     }
 
     // MARK: - Send
-    func uartSend(data: Data?, completion: ((Error?) -> Void)? = nil) {
+    func uartSend(data: Data?, progress: ((Float)->Void)? = nil, completion: ((Error?) -> Void)? = nil) {
         guard let data = data else { completion?(nil); return }
-
+        
         guard let uartTxCharacteristic = uartTxCharacteristic, let uartTxCharacteristicWriteType = uartTxCharacteristicWriteType else {
             DLog("Command Error: characteristic no longer valid")
             completion?(PeripheralUartError.invalidCharacteristic)
             return
         }
-
+        
         // Split data in kUartTxMaxBytes bytes packets
         var offset = 0
+        var writtenSize = 0
+        
+        let maxPacketSize = peripheral.maximumWriteValueLength(for: uartTxCharacteristicWriteType)
+        
         repeat {
-            let packetSize = min(data.count-offset, BlePeripheral.kUartTxMaxBytes)
+            
+            let packetSize = min(data.count-offset, maxPacketSize)
             let packet = data.subdata(in: offset..<offset+packetSize)
-            offset += packetSize
-            write(data: packet, for: uartTxCharacteristic, type: uartTxCharacteristicWriteType) { error in
+            let writeStartingOffset = offset
+            self.write(data: packet, for: uartTxCharacteristic, type: uartTxCharacteristicWriteType) { error in
                 if let error = error {
-                    DLog("write packet at offset: \(offset) error: \(error)")
+                    DLog("write packet at offset: \(writeStartingOffset) error: \(error)")
                 } else {
                     DLog("uart tx write (hex): \(hexDescription(data: packet))")
                     // DLog("uart tx write (dec): \(decimalDescription(data: packet))")
                     // DLog("uart tx write (utf8): \(String(data: packet, encoding: .utf8) ?? "<invalid>")")
-
+                    
+                    writtenSize += packetSize
                     if BlePeripheral.kDebugLog {
                         UartLogManager.log(data: packet, type: .uartTx)
                     }
                 }
-
-                if offset >= data.count {
+                
+                if writtenSize >= data.count {
+                    progress?(1)
                     completion?(error)
                 }
+                else {
+                    progress?(Float(writtenSize) / Float(data.count))
+                }
             }
-
+            offset += packetSize
         } while offset < data.count
+        
+    }
+    
+    /*
+        Sends each packet with a DipatchQueue.main.async. Useful if the UI should be updated between packets
+     */
+    func uartEachPacketSendSequentiallyInMainThread(data: Data?, progress: ((Float)->Void)? = nil, completion: ((Error?) -> Void)? = nil) {
+        guard let data = data else { completion?(nil); return }
+        
+        guard let uartTxCharacteristic = uartTxCharacteristic, let uartTxCharacteristicWriteType = uartTxCharacteristicWriteType else {
+            DLog("Command Error: characteristic no longer valid")
+            completion?(PeripheralUartError.invalidCharacteristic)
+            return
+        }
+        
+        sendSequentiallyCancelled = false
+        uartSentPacket(data: data, offset: 0, uartTxCharacteristic: uartTxCharacteristic, uartTxCharacteristicWriteType: uartTxCharacteristicWriteType, progress: progress, completion: completion)
+    }
+    
+    func uartCancelOngoingSendPacketSequentiallyInMainThread() {
+        sendSequentiallyCancelled = true
+    }
+    
+    private func uartSentPacket(data: Data, offset: Int, uartTxCharacteristic: CBCharacteristic, uartTxCharacteristicWriteType: CBCharacteristicWriteType, progress: ((Float)->Void)? = nil, completion: ((Error?) -> Void)? = nil) {
+        
+        let maxPacketSize = peripheral.maximumWriteValueLength(for: uartTxCharacteristicWriteType)
+        let packetSize = min(data.count-offset, maxPacketSize)
+        let packet = data.subdata(in: offset..<offset+packetSize)
+        let writeStartingOffset = offset
+        self.write(data: packet, for: uartTxCharacteristic, type: uartTxCharacteristicWriteType) { error in
+            
+            var writtenSize = writeStartingOffset
+            if let error = error {
+                DLog("write packet at offset: \(writeStartingOffset) error: \(error)")
+            } else {
+                DLog("uart tx write at offset: \(writeStartingOffset) (hex): \(hexDescription(data: packet))")
+                
+                writtenSize += packet.count
+                if BlePeripheral.kDebugLog {
+                    UartLogManager.log(data: packet, type: .uartTx)
+                }
+                
+                if !self.sendSequentiallyCancelled && writtenSize < data.count {
+                    DispatchQueue.main.async { [weak self] in
+                        self?.uartSentPacket(data: data, offset: writtenSize, uartTxCharacteristic: uartTxCharacteristic, uartTxCharacteristicWriteType: uartTxCharacteristicWriteType, progress: progress, completion: completion)
+                    }
+                }
+            }
+            
+            if self.sendSequentiallyCancelled {
+                completion?(nil)
+            }
+            else if writtenSize >= data.count {
+                progress?(1)
+                completion?(error)
+            }
+            else {
+                progress?(Float(writtenSize) / Float(data.count))
+            }
+        }
     }
 
-    func uartSendAndWaitReply(data: Data?, writeCompletion: ((Error?) -> Void)? = nil, readTimeout: Double? = BlePeripheral.kUartReplyDefaultTimeout, readCompletion: @escaping CapturedReadCompletionHandler) {
+    func uartSendAndWaitReply(data: Data?, writeProgress: ((Float)->Void)? = nil, writeCompletion: ((Error?) -> Void)? = nil, readTimeout: Double? = BlePeripheral.kUartReplyDefaultTimeout, readCompletion: @escaping CapturedReadCompletionHandler) {
         
         guard let data = data else {
             if let writeCompletion = writeCompletion {
@@ -187,8 +268,10 @@ extension BlePeripheral {
 
         // Split data in kUartTxMaxBytes bytes packets
         var offset = 0
+        var writtenSize = 0
+        let maxPacketSize = peripheral.maximumWriteValueLength(for: .withResponse)
         repeat {
-            let packetSize = min(data.count-offset, BlePeripheral.kUartTxMaxBytes)
+            let packetSize = min(data.count-offset, maxPacketSize)
             let packet = data.subdata(in: offset..<offset+packetSize)
             offset += packetSize
 
@@ -199,10 +282,16 @@ extension BlePeripheral {
                     DLog("uart tx writeAndWait (hex): \(hexDescription(data: packet))")
 //                    DLog("uart tx writeAndWait (dec): \(decimalDescription(data: packet))")
 //                    DLog("uart tx writeAndWait (utf8): \(String(data: packet, encoding: .utf8) ?? "<invalid>")")
+                    
+                    writtenSize += packetSize
                 }
 
-                if offset >= data.count {
+                if writtenSize >= data.count {
+                    writeProgress?(1)
                     writeCompletion?(error)
+                }
+                else {
+                    writeProgress?(Float(writtenSize) / Float(data.count))
                 }
             }, readCharacteristic: uartRxCharacteristic, readTimeout: readTimeout, readCompletion: readCompletion)
 
