@@ -141,28 +141,23 @@ class PlotterModeViewController: PeripheralModeViewController {
         chartView.noDataText = LocalizationManager.shared.localizedString("plotter_nodata")
     }
 
+    
+    // Note: this method should be called on the main thread
     fileprivate func addEntry(peripheralIdentifier identifier: UUID, index: Int, value: Double, timestamp: CFAbsoluteTime) {
         let entry = ChartDataEntry(x: timestamp, y: value)
         
-        var dataSetExists = false
-        if let dataSets = dataSetsForPeripheral[identifier] {
-            if index < dataSets.count {
-                // Add entry to existing dataset
-                let dataSet = dataSets[index]
-                let _ = dataSet.append(entry)
-                
-                dataSetExists = true
-            }
+        if let dataSets = dataSetsForPeripheral[identifier], index < dataSets.count {
+            // Add entry to existing dataset
+            let dataSet = dataSets[index]
+            let _ = dataSet.append(entry)
+        }
+        else {
+            self.appendDataset(peripheralIdentifier: identifier, entry: entry, index: index)
+            let allDataSets = self.dataSetsForPeripheral.flatMap { $0.1 }
+            self.chartView.data = LineChartData(dataSets: allDataSets)      // Note: this internally calls setNeddsUpdate, so it should be called on the main thread
         }
         
-        if !dataSetExists {
-            appendDataset(peripheralIdentifier: identifier, entry: entry, index: index)
-            
-            let allDataSets = dataSetsForPeripheral.flatMap { $0.1 }
-            chartView.data = LineChartData(dataSets: allDataSets)
-        }
-        
-        guard let dataSets = dataSetsForPeripheral[identifier], index < dataSets.count else { return }
+        guard let dataSets = dataSetsForPeripheral[identifier], index < dataSets.count else { return}
         lastDataSetModified = dataSets[index]
     }
     
@@ -233,36 +228,37 @@ extension PlotterModeViewController: UartDataManagerDelegate {
         // DLog("uart rx read (hex): \(hexDescription(data: data))")
         // DLog("uart rx read (utf8): \(String(data: data, encoding: .utf8) ?? "<invalid>")")
 
-        guard let lastSeparatorRange = data.range(of: PlotterModeViewController.kLineSeparator, options: .backwards, in: nil) else { return }
+        guard let lastSeparatorRange = data.range(of: PlotterModeViewController.kLineSeparator, options: [.anchored, .backwards], in: nil) else { return }
 
         let subData = data.subdata(in: 0..<lastSeparatorRange.upperBound)
+        
         if let dataString = String(data: subData, encoding: .utf8) {
-
             let currentTimestamp = CFAbsoluteTimeGetCurrent() - originTimestamp
             let linesStrings = dataString.replacingOccurrences(of: "\r", with: "").components(separatedBy: "\n")
-            for lineString in linesStrings {
-                //   DLog("\tline: \(lineString)")
-                let valuesStrings = lineString.components(separatedBy: CharacterSet(charactersIn: ",; \t"))
-                var i = 0
-                // DLog("values: \(valuesStrings)")
-                for valueString in valuesStrings {
-                    if let value = Double(valueString) {
-                        //DLog("value \(i): \(value)")
-                        addEntry(peripheralIdentifier: identifier, index: i, value: value, timestamp: currentTimestamp)
-                        i = i+1
+                        
+            DispatchQueue.main.async {
+                for lineString in linesStrings {
+                    //   DLog("\tline: \(lineString)")
+                    let valuesStrings = lineString.components(separatedBy: CharacterSet(charactersIn: ",; \t"))
+                    var i = 0
+                    // DLog("values: \(valuesStrings)")
+                    for valueString in valuesStrings {
+                        if let value = Double(valueString) {
+                            //DLog("value \(i): \(value)")
+                            self.addEntry(peripheralIdentifier: identifier, index: i, value: value, timestamp: currentTimestamp)
+                            i = i+1
+                        }
                     }
-                }
-                
-                DispatchQueue.main.async {
+                    
                     self.notifyDataSetChanged()
                 }
             }
         }
-
+        
         //let numBytesProcessed = subData.count
         //uartDataManager.removeRxCacheFirst(n: numBytesProcessed, peripheralIdentifier: identifier)
 
-        uartDataManager.removeRxCacheFirst(n: lastSeparatorRange.upperBound+1, peripheralIdentifier: identifier)
+        uartDataManager.removeRxCacheFirst(n: lastSeparatorRange.upperBound, peripheralIdentifier: identifier)
     }
 }
 
