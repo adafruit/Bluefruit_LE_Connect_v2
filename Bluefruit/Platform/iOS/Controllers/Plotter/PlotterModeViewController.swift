@@ -235,7 +235,7 @@ extension PlotterModeViewController: UartDataManagerDelegate {
         if let dataString = String(data: subData, encoding: .utf8) {
             let currentTimestamp = CFAbsoluteTimeGetCurrent() - originTimestamp
             let linesStrings = dataString.replacingOccurrences(of: "\r", with: "").components(separatedBy: "\n")
-                        
+            
             DispatchQueue.main.async {
                 for lineString in linesStrings {
                     //   DLog("\tline: \(lineString)")
@@ -249,8 +249,8 @@ extension PlotterModeViewController: UartDataManagerDelegate {
                             i = i+1
                         }
                     }
-                    
-                    self.notifyDataSetChanged()
+  
+                    self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
                 }
             }
         }
@@ -259,6 +259,11 @@ extension PlotterModeViewController: UartDataManagerDelegate {
         //uartDataManager.removeRxCacheFirst(n: numBytesProcessed, peripheralIdentifier: identifier)
 
         uartDataManager.removeRxCacheFirst(n: lastSeparatorRange.upperBound, peripheralIdentifier: identifier)
+    }
+    
+    @objc func reloadData() {
+        self.notifyDataSetChanged()
+        
     }
 }
 
