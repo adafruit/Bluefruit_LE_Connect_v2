@@ -59,7 +59,11 @@ class PlotterModeViewController: PeripheralModeViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        
         // Dispose of any resources that can be recreated.
+        
+        // Remove old data
+        removeOldDataOnMemoryWarning()
     }
 
     // MARK: - UART
@@ -150,6 +154,12 @@ class PlotterModeViewController: PeripheralModeViewController {
             // Add entry to existing dataset
             let dataSet = dataSets[index]
             let _ = dataSet.append(entry)
+            
+            //Debug memory warning
+            /*
+            if dataSet.count > 1000  {
+                UIControl().sendAction(Selector(("_performMemoryWarning")), to: UIApplication.shared, for: nil)
+            }*/
         }
         else {
             self.appendDataset(peripheralIdentifier: identifier, entry: entry, index: index)
@@ -159,6 +169,15 @@ class PlotterModeViewController: PeripheralModeViewController {
         
         guard let dataSets = dataSetsForPeripheral[identifier], index < dataSets.count else { return}
         lastDataSetModified = dataSets[index]
+    }
+    
+    fileprivate func removeOldDataOnMemoryWarning() {
+        DLog("removeOldDataOnMemoryWarning")
+        for (_, dataSets) in dataSetsForPeripheral {
+            for dataSet in dataSets {
+                dataSet.removeAll(keepingCapacity: false)
+            }
+        }
     }
     
     fileprivate func notifyDataSetChanged() {
@@ -235,7 +254,7 @@ extension PlotterModeViewController: UartDataManagerDelegate {
         if let dataString = String(data: subData, encoding: .utf8) {
             let currentTimestamp = CFAbsoluteTimeGetCurrent() - originTimestamp
             let linesStrings = dataString.replacingOccurrences(of: "\r", with: "").components(separatedBy: "\n")
-            
+
             DispatchQueue.main.async {
                 for lineString in linesStrings {
                     //   DLog("\tline: \(lineString)")
