@@ -76,16 +76,21 @@ class ImageTransferModuleManager: NSObject {
     
     // MARK: - ImageTransfer Commands
     func sendImage(_ image: UIImage) {
-        guard let imagePixels = image.pixelData32bitRGB() else {
+        guard let imagePixels32Bit = image.pixelData32bitRGB() else {
             self.delegate?.onImageTransferFinished(error: ImageTransferError.decodeError)
             return
         }
         
+        // Convert 32bit color data to 24bit
+        let imagePixels24Bit = imagePixels32Bit.enumerated().filter({ index, _ in
+            index % 4 != 3
+        }).map { $0.1 }
+        
         // Command: 'I'
-        var command: [UInt8] = [0x49]       // Command + width + height
+        var command: [UInt8] = [0x21, 0x49]       // ! + Command + width + height
         command.append(contentsOf: UInt16(image.size.width).toBytes)
         command.append(contentsOf: UInt16(image.size.height).toBytes)
-        command.append(contentsOf: imagePixels)
+        command.append(contentsOf: imagePixels24Bit)
         
         sendCommandWithCrc(command)
     }

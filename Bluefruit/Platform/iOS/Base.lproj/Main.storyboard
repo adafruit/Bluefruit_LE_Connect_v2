@@ -1464,22 +1464,21 @@
                                 </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="IDT-ej-eez">
-                                <rect key="frame" x="16" y="206" width="343" height="327"/>
+                                <rect key="frame" x="16" y="206" width="343" height="343"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="mnm-a1-Y2m">
-                                        <rect key="frame" x="8" y="0.0" width="327" height="327"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="mnm-a1-Y2m" secondAttribute="height" multiplier="1:1" id="Oed-c3-t2C"/>
-                                        </constraints>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" image="imagetransfer_test1" translatesAutoresizingMaskIntoConstraints="NO" id="mnm-a1-Y2m">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="343"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="mnm-a1-Y2m" firstAttribute="centerX" secondItem="IDT-ej-eez" secondAttribute="centerX" id="FNv-oS-t9e"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="mnm-a1-Y2m" secondAttribute="trailing" priority="999" id="LCZ-Oq-8iW"/>
-                                    <constraint firstItem="mnm-a1-Y2m" firstAttribute="leading" secondItem="IDT-ej-eez" secondAttribute="leadingMargin" priority="999" id="ZIP-F5-Eay"/>
-                                    <constraint firstAttribute="bottom" secondItem="mnm-a1-Y2m" secondAttribute="bottom" id="jGY-Yj-ICO"/>
-                                    <constraint firstItem="mnm-a1-Y2m" firstAttribute="top" secondItem="IDT-ej-eez" secondAttribute="top" id="lnE-lW-zKD"/>
+                                    <constraint firstAttribute="trailing" secondItem="mnm-a1-Y2m" secondAttribute="trailing" priority="999" id="LCZ-Oq-8iW"/>
+                                    <constraint firstItem="mnm-a1-Y2m" firstAttribute="leading" secondItem="IDT-ej-eez" secondAttribute="leading" priority="999" id="ZIP-F5-Eay"/>
+                                    <constraint firstAttribute="bottom" secondItem="mnm-a1-Y2m" secondAttribute="bottom" priority="999" id="jGY-Yj-ICO"/>
+                                    <constraint firstItem="mnm-a1-Y2m" firstAttribute="top" secondItem="IDT-ej-eez" secondAttribute="top" priority="999" id="lnE-lW-zKD"/>
+                                    <constraint firstAttribute="width" secondItem="IDT-ej-eez" secondAttribute="height" multiplier="1:1" id="tEa-hW-Yhk"/>
+                                    <constraint firstItem="mnm-a1-Y2m" firstAttribute="centerY" secondItem="IDT-ej-eez" secondAttribute="centerY" id="wrX-BU-Qb3"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for Uart..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzH-J8-D3c">
@@ -1488,17 +1487,42 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lW-IS-4cL" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
-                                <rect key="frame" x="126.66666666666669" y="553" width="122" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="Ilz-be-tCg"/>
-                                </constraints>
-                                <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
-                                <state key="normal" title="Send Image"/>
-                                <connections>
-                                    <action selector="onClickSendImage:" destination="bLI-u8-EyO" eventType="touchUpInside" id="zx3-7w-c4q"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="c5j-Sv-ucc">
+                                <rect key="frame" x="16" y="569" width="343" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bnA-eJ-g9g" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="bnA-eJ-g9g" secondAttribute="height" multiplier="1:1" id="53A-lV-Tlx"/>
+                                        </constraints>
+                                        <state key="normal" image="rotate_left"/>
+                                        <connections>
+                                            <action selector="onClickRotateLeft:" destination="bLI-u8-EyO" eventType="touchUpInside" id="cDy-JM-iRS"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lW-IS-4cL" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                        <rect key="frame" x="64" y="0.0" width="215" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="Ilz-be-tCg"/>
+                                        </constraints>
+                                        <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
+                                        <state key="normal" title="Send Image"/>
+                                        <connections>
+                                            <action selector="onClickSendImage:" destination="bLI-u8-EyO" eventType="touchUpInside" id="zx3-7w-c4q"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bNy-iE-cgs" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                        <rect key="frame" x="299" y="0.0" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="bNy-iE-cgs" secondAttribute="height" multiplier="1:1" id="9xj-ja-Rcz"/>
+                                        </constraints>
+                                        <state key="normal" image="rotate_right"/>
+                                        <connections>
+                                            <action selector="onClickRotateRight:" destination="bLI-u8-EyO" eventType="touchUpInside" id="4QF-Le-dgE"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                             <textField hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Dummy textfield" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZYJ-cz-Fja">
                                 <rect key="frame" x="0.0" y="748" width="127" height="30"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1512,17 +1536,19 @@
                         </subviews>
                         <color key="backgroundColor" red="0.20874811460000001" green="0.20874811460000001" blue="0.20874811460000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="5lW-IS-4cL" firstAttribute="centerX" secondItem="EFR-D4-oiU" secondAttribute="centerX" id="3L2-7g-UnW"/>
                             <constraint firstItem="ZYJ-cz-Fja" firstAttribute="leading" secondItem="EFR-D4-oiU" secondAttribute="leading" id="9a8-yf-c07"/>
                             <constraint firstItem="gkg-vI-yB7" firstAttribute="top" secondItem="EFR-D4-oiU" secondAttribute="top" constant="20" id="9eU-sb-E79"/>
                             <constraint firstItem="IDT-ej-eez" firstAttribute="leading" secondItem="uJ2-Mf-19m" secondAttribute="leadingMargin" id="Kn6-zE-fgf"/>
+                            <constraint firstItem="c5j-Sv-ucc" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="uJ2-Mf-19m" secondAttribute="leadingMargin" id="QZJ-wX-NkM"/>
                             <constraint firstAttribute="trailingMargin" secondItem="IDT-ej-eez" secondAttribute="trailing" id="XJh-pv-XoS"/>
                             <constraint firstItem="IDT-ej-eez" firstAttribute="top" secondItem="gkg-vI-yB7" secondAttribute="bottom" constant="20" id="ZzS-q3-ZSQ"/>
+                            <constraint firstItem="IDT-ej-eez" firstAttribute="trailing" secondItem="c5j-Sv-ucc" secondAttribute="trailing" id="emL-RS-SsE"/>
                             <constraint firstItem="EFR-D4-oiU" firstAttribute="bottom" secondItem="ZYJ-cz-Fja" secondAttribute="bottom" id="gYi-Aj-fbb"/>
-                            <constraint firstItem="5lW-IS-4cL" firstAttribute="top" secondItem="IDT-ej-eez" secondAttribute="bottom" constant="20" id="hCk-sc-6qX"/>
                             <constraint firstItem="gkg-vI-yB7" firstAttribute="leading" secondItem="uJ2-Mf-19m" secondAttribute="leadingMargin" id="kBa-fR-FF6"/>
                             <constraint firstItem="mzH-J8-D3c" firstAttribute="centerX" secondItem="EFR-D4-oiU" secondAttribute="centerX" id="nVA-uF-mH8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gkg-vI-yB7" secondAttribute="trailing" id="r3z-7b-3Dd"/>
+                            <constraint firstItem="c5j-Sv-ucc" firstAttribute="top" secondItem="IDT-ej-eez" secondAttribute="bottom" constant="20" id="tRT-UN-X0P"/>
+                            <constraint firstItem="c5j-Sv-ucc" firstAttribute="centerX" secondItem="EFR-D4-oiU" secondAttribute="centerX" id="vXd-D2-tDH"/>
                             <constraint firstItem="mzH-J8-D3c" firstAttribute="centerY" secondItem="EFR-D4-oiU" secondAttribute="centerY" constant="-20" id="yeT-8o-kdF"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="EFR-D4-oiU"/>
@@ -1924,7 +1950,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="scaleAspectFit" image="scanning_background" translatesAutoresizingMaskIntoConstraints="NO" id="0vs-NH-GL1">
-                                <rect key="frame" x="158.66666666666666" y="158.66666666666666" width="16" height="16"/>
+                                <rect key="frame" x="-0.33333333333334281" y="-0.33333333333334281" width="333.66666666666674" height="333.66666666666674"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="0vs-NH-GL1" secondAttribute="height" multiplier="1:1" id="g06-vu-F7H"/>
                                     <constraint firstAttribute="width" constant="530" id="yEh-u0-elV"/>
@@ -1936,7 +1962,7 @@
                                 </variation>
                             </imageView>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="scaleAspectFit" image="scanning_background" translatesAutoresizingMaskIntoConstraints="NO" id="aaC-Ba-9J9">
-                                <rect key="frame" x="158.66666666666666" y="158.66666666666666" width="16" height="16"/>
+                                <rect key="frame" x="-0.33333333333334281" y="-0.33333333333334281" width="333.66666666666674" height="333.66666666666674"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="530" id="FAm-Ea-rer"/>
                                     <constraint firstAttribute="height" constant="800" id="Frq-Cc-SVq"/>
@@ -2813,9 +2839,12 @@
         <image name="ic_arrow_upward" width="48" height="48"/>
         <image name="ic_cancel_18pt" width="18" height="18"/>
         <image name="ic_more_vert" width="24" height="24"/>
+        <image name="imagetransfer_test1" width="120" height="180"/>
         <image name="info_adafruit_logo" width="280" height="105"/>
         <image name="info_icon" width="22" height="22"/>
         <image name="launch_icon" width="100" height="100"/>
+        <image name="rotate_left" width="24" height="24"/>
+        <image name="rotate_right" width="24" height="24"/>
         <image name="scanning_background" width="333.33334350585938" height="333.33334350585938"/>
         <image name="signalstrength4" width="24" height="21"/>
         <image name="tab_info_icon" width="30" height="30"/>

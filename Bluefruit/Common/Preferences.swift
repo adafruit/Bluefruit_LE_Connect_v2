@@ -447,18 +447,20 @@ class Preferences {
     }
     
     // MARK: - Image Transfer
-    static var imageTransferResolution: Int? {
+    static var imageTransferResolution: CGSize? {
         get {
             let defaults = UserDefaults.standard
-            let value = defaults.integer(forKey: Preferences.imageTransferResolutionKey)
-            return value >= 0 ? value:nil
+            
+            var value = CGSize.zero
+            if let valueString = defaults.string(forKey: Preferences.imageTransferResolutionKey) {
+                value = NSCoder.cgSize(for: valueString)
+            }
+            return value != .zero ? value:nil
         }
         set {
-            let defaults = UserDefaults.standard
-            defaults.set(newValue ?? -1, forKey: Preferences.imageTransferResolutionKey)
+            UserDefaults.standard.set(NSCoder.string(for: newValue ?? CGSize.zero), forKey: Preferences.imageTransferResolutionKey)
         }
     }
-
 
     // MARK: - Common
     static func getBoolPreference(_ key: String) -> Bool {

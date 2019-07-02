@@ -10,7 +10,28 @@ import UIKit
 
 class ImageTransferModuleViewController: PeripheralModeViewController {
     // Config
-    private static let kAcceptedResolutions = [4, 8, 16, 32, 64, 128, 256, 512, 1024]
+    private static let kAcceptedResolutions: [CGSize] = [
+        CGSize(width: 4, height: 4),
+        CGSize(width: 8, height: 8),
+        CGSize(width: 16, height: 16),
+        CGSize(width: 32, height: 32),
+        CGSize(width: 64, height: 64),
+        CGSize(width: 128, height: 128),
+        CGSize(width: 128, height: 160),
+        CGSize(width: 160, height: 80),
+        CGSize(width: 168, height: 144),
+        CGSize(width: 212, height: 104),
+        CGSize(width: 240, height: 240),
+        CGSize(width: 250, height: 122),
+        CGSize(width: 256, height: 256),
+        CGSize(width: 296, height: 128),
+        CGSize(width: 300, height: 400),
+        CGSize(width: 320, height: 240),
+        CGSize(width: 480, height: 320),
+        CGSize(width: 512, height: 512),
+        CGSize(width: 1024, height: 1024),
+        ]
+    
     
     // UI
     @IBOutlet weak var cameraImageView: UIImageView!
@@ -23,10 +44,11 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     
     // Data
     private var imagePicker: ImagePicker!
-    private var resolution: Int = Preferences.imageTransferResolution ?? 8
+    private var resolution: CGSize = Preferences.imageTransferResolution ?? CGSize(width:64, height: 64)
     private var image: UIImage?
     fileprivate var imageTransferData: ImageTransferModuleManager!
     fileprivate var progressViewController: ProgressViewController?
+    private var imageRotationDegress: CGFloat = 0
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -56,24 +78,13 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         assert(blePeripheral != nil)
         imageTransferData = ImageTransferModuleManager(blePeripheral: blePeripheral!, delegate: self)
         
-        updateImageForResolution(resolution)      // Setup with the initial value
-        
+        updateImage(resolution: resolution, rotation: imageRotationDegress)    // Setup with the initial value
+
         // Localization
         uartWaitingLabel.text = localizationManager.localizedString("thermalcamera_waitingforuart")
         
         imageTransferData.start()
     }
-
-    /*
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-    }*/
     
     deinit {
         imageTransferData.stop()
@@ -86,24 +97,29 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     }
     
     private func updateResolutionUI() {
-        resolutionButton.setTitle("\(resolution) x \(resolution)", for: .normal)
+        let text = String.init(format: "%.0f x %.0f", resolution.width, resolution.height)
+        resolutionButton.setTitle(text, for: .normal)
     }
     
     // MARK: - Image
-    fileprivate func updateImageForResolution(_ resolution: Int) {
+    fileprivate func updateImage(resolution: CGSize, rotation: CGFloat) {
         self.resolution = resolution
+        self.imageRotationDegress = rotation
         Preferences.imageTransferResolution = resolution
 
-        let scaledImage = imageWithImage(image: self.image, scaledToSize: CGSize(width: resolution, height: resolution), autoScale: false)
+        //let scaledImage = imageWithImage(image: self.image, scaledToSize: resolution, autoScale: false, rotate: imageRotation)
+        let scaledImage = imageRotatedByDegrees(image: self.image, scaledToSize: resolution, degrees: imageRotationDegress)
+        DLog("scaledImage: \(scaledImage?.size.width ?? -1) x \(scaledImage?.size.height ?? 0)")
         cameraImageView.image = scaledImage
         updateResolutionUI()
     }
     
     fileprivate func setImage(_ image: UIImage?, sourceType: UIImagePickerController.SourceType?) {
         self.image = image
-        updateImageForResolution(self.resolution)
+        updateImage(resolution: self.resolution, rotation: self.imageRotationDegress)
         
         // Origin text
+        /*
         let imageOriginId: String
         if let sourceType = sourceType {
             switch sourceType {
@@ -119,20 +135,45 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         }
         else {
             imageOriginId = "imagetransfer_imageorigin_default"
-        }
+        }*/
+        let imageOriginId = "imagetransfer_imageorigin_choose"
     
         let imageOrigin = LocalizationManager.shared.localizedString(imageOriginId)
         imageOriginButton.setTitle(imageOrigin, for: .normal)
     }
-
-    private func imageWithImage(image: UIImage?, scaledToSize newSize: CGSize, autoScale: Bool) -> UIImage? {
-        guard let image = image else { return nil }
+    
+    
+    private func degreesToRadians(_ degrees: CGFloat) -> CGFloat {
+        return degrees * .pi / 180
+    }
+    
+    private func imageRotatedByDegrees(image: UIImage?, scaledToSize newSize: CGSize, degrees: CGFloat) -> UIImage? {
+        // based on: https://stackoverflow.com/questions/40882487/how-to-rotate-image-in-swift
+        // calculate the size of the rotated view's containing box for our drawing space
+        let rotatedViewBox = UIView(frame: CGRect(x:0, y:0, width: newSize.width, height: newSize.height))
+        let t = CGAffineTransform(rotationAngle: self.degreesToRadians(degrees))
+        rotatedViewBox.transform = t
+        let rotatedSize = rotatedViewBox.frame.size
         
-        UIGraphicsBeginImageContextWithOptions(newSize, false, autoScale ? 0: 1)
-        image.draw(in: CGRect(origin: .zero, size: newSize))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return newImage
+        // Create the bitmap context
+        UIGraphicsBeginImageContext(newSize)
+        if let context = UIGraphicsGetCurrentContext(), let cgImage = image?.cgImage {
+            
+            // Move the origin to the middle of the image so we will rotate and scale around the center.
+            context.translateBy(x: newSize.width/2, y: newSize.height/2)
+
+            // Rotate the image context
+            context.rotate(by:degreesToRadians(degrees))
+            
+            // Now, draw the rotated/scaled image into the context
+            context.scaleBy(x: 1, y: -1)
+            context.draw(cgImage, in: CGRect(x: -rotatedSize.width / 2, y: -rotatedSize.height / 2, width: rotatedSize.width, height: rotatedSize.height), byTiling: false)
+            
+        }
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return newImage;
     }
     
     // MARK: - Actions
@@ -150,6 +191,17 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     @IBAction func onClickResolutionDone(_ sender: Any) {
         resolutionTextField.resignFirstResponder()
     }
+    
+    @IBAction func onClickRotateLeft(_ sender: Any) {
+        let rotation = (imageRotationDegress - 90).truncatingRemainder(dividingBy: 360)
+        updateImage(resolution: self.resolution, rotation: rotation)
+    }
+    
+    @IBAction func onClickRotateRight(_ sender: Any) {
+        let rotation = (imageRotationDegress + 90).truncatingRemainder(dividingBy: 360)
+        updateImage(resolution: self.resolution, rotation: rotation)
+    }
+    
     
     @IBAction func onClickSendImage(_ sender: Any) {
         guard let image = cameraImageView.image else { return }
@@ -180,12 +232,13 @@ extension ImageTransferModuleViewController: UIPickerViewDataSource {
 extension ImageTransferModuleViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         let resolution = ImageTransferModuleViewController.kAcceptedResolutions[row]
-        return "\(resolution) x \(resolution)"
+        let text = String.init(format: "%.0f x %.0f", resolution.width, resolution.height)
+        return text
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let resolution = ImageTransferModuleViewController.kAcceptedResolutions[row]
-        self.updateImageForResolution(resolution)
+        updateImage(resolution: resolution, rotation: self.imageRotationDegress)
     }
 }
 

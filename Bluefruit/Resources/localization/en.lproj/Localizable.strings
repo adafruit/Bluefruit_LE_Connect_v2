@@ -570,7 +570,7 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "imagetransfer_imageorigin_photolibrary" = "Photo library";
 "imagetransfer_imageorigin_other" = "Other";
 "imagetransfer_imageorigin_default" = "Default";
-
+"imagetransfer_imageorigin_choose" = "Choose Image";
 
 
 

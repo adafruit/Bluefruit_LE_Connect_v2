@@ -272,9 +272,9 @@ class PeripheralModulesViewController: UIViewController {
         if connectionMode == .multiplePeripherals {
             return [.uart, .plotter]
         } else if hasUart && hasDfu {
-            return [.info, .uart, .plotter, .pinIO, .controller, .neopixel, .calibration, .thermalcamera, /*.imagetransfer, */.dfu]
+            return [.info, .uart, .plotter, .pinIO, .controller, .neopixel, .calibration, .thermalcamera, .imagetransfer, .dfu]
         } else if hasUart {
-            return [.info, .uart, .plotter, .pinIO, .controller, .calibration, .thermalcamera, /*.imagetransfer*/]
+            return [.info, .uart, .plotter, .pinIO, .controller, .calibration, .thermalcamera, .imagetransfer]
         } else if hasDfu {
             return [.info, .dfu]
         } else {
