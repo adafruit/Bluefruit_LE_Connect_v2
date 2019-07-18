@@ -32,9 +32,9 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         CGSize(width: 1024, height: 1024),
         ]
     
-    
     // UI
     @IBOutlet weak var cameraImageView: UIImageView!
+    @IBOutlet weak var cameraImageViewAspectRationConstraint: NSLayoutConstraint!
     @IBOutlet var resolutionPickerView: UIPickerView!
     @IBOutlet var resolutionPickerToolbar: UIToolbar!
     @IBOutlet weak var resolutionTextField: UITextField!
@@ -60,6 +60,7 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("imagetransfer_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("imagetransfer_tab_title")
      
         // Style
+        cameraImageView.image = nil     // Remove any test image set in Interface Builder
         cameraImageView.layer.borderWidth = 1
         cameraImageView.layer.borderColor = UIColor.lightGray.cgColor
 
@@ -103,14 +104,27 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     
     // MARK: - Image
     fileprivate func updateImage(resolution: CGSize, rotation: CGFloat) {
+        guard let image = self.image else { return }
+        
         self.resolution = resolution
         self.imageRotationDegress = rotation
         Preferences.imageTransferResolution = resolution
 
-        //let scaledImage = imageWithImage(image: self.image, scaledToSize: resolution, autoScale: false, rotate: imageRotation)
-        let scaledImage = imageRotatedByDegrees(image: self.image, scaledToSize: resolution, degrees: imageRotationDegress)
+        NSLayoutConstraint.setMultiplier(multiplier: resolution.width / resolution.height, constraint: &cameraImageViewAspectRationConstraint)
+        DLog("aspectRatio: \(resolution.width)/\(resolution.height)")
+        
+        //let scaledImage = imageWithImage(image: image, scaledToSize: resolution, autoScale: false, rotate: imageRotation)
+        /*
+        let scaledImage = imageRotatedByDegrees(image: image, scaledToSize: resolution, degrees: imageRotationDegress)
         DLog("scaledImage: \(scaledImage?.size.width ?? -1) x \(scaledImage?.size.height ?? 0)")
-        cameraImageView.image = scaledImage
+ */
+//        let scaledImage = self.image
+
+        // Calculate aspectFit
+        
+        let transformedImage = scaleAndRotateImage(image: image, resolution: resolution, rotationDegrees: imageRotationDegress, backgroundColor: .black)
+        
+        cameraImageView.image = transformedImage
         updateResolutionUI()
     }
     
@@ -147,23 +161,62 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         return degrees * .pi / 180
     }
     
-    private func imageRotatedByDegrees(image: UIImage?, scaledToSize newSize: CGSize, degrees: CGFloat) -> UIImage? {
+    private func scaleAndRotateImage(image: UIImage, resolution: CGSize, rotationDegrees: CGFloat, backgroundColor: UIColor) -> UIImage? {
+        
+        let mW = resolution.width / image.size.width;
+        let mH = resolution.height / image.size.height;
+        
+        var fitResolution = resolution
+        if mH < mW  {
+            fitResolution.width = resolution.height / image.size.height * image.size.width
+        }
+        else if mW < mH  {
+            fitResolution.height = resolution.width / image.size.width * image.size.height
+        }
+        
+        guard let fitImage = imageRotatedByDegrees(image: image, scaledToSize: fitResolution, rotationDegrees: rotationDegrees) else { return nil }
+        
+        let x = floor((resolution.width - fitImage.size.width) / 2)
+        let y = floor((resolution.height - fitImage.size.height) / 2)
+        let fitDrawRect = CGRect(x: x, y: y, width: fitImage.size.width, height: fitImage.size.height)
+        
+        UIGraphicsBeginImageContext(resolution)
+        if let context = UIGraphicsGetCurrentContext() {//}, let cgImage = image.cgImage  {
+            backgroundColor.setFill()
+            context.fill(CGRect(x: 0, y: 0, width: resolution.width, height: resolution.height))
+            
+            // Draw fit image at center
+            fitImage.draw(in: fitDrawRect)
+            
+            /*
+            context.translateBy(x: 0, y: fitImage.size.height)
+            context.scaleBy(x: 1, y: -1)
+            context.draw(cgImage, in: fitDrawRect)
+ */
+        }
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+        
+    
+    }
+    
+    private func imageRotatedByDegrees(image: UIImage, scaledToSize newSize: CGSize, rotationDegrees: CGFloat) -> UIImage? {
         // based on: https://stackoverflow.com/questions/40882487/how-to-rotate-image-in-swift
         // calculate the size of the rotated view's containing box for our drawing space
         let rotatedViewBox = UIView(frame: CGRect(x:0, y:0, width: newSize.width, height: newSize.height))
-        let t = CGAffineTransform(rotationAngle: self.degreesToRadians(degrees))
+        let t = CGAffineTransform(rotationAngle: self.degreesToRadians(rotationDegrees))
         rotatedViewBox.transform = t
         let rotatedSize = rotatedViewBox.frame.size
         
         // Create the bitmap context
         UIGraphicsBeginImageContext(newSize)
-        if let context = UIGraphicsGetCurrentContext(), let cgImage = image?.cgImage {
-            
+        if let context = UIGraphicsGetCurrentContext(), let cgImage = image.cgImage {
             // Move the origin to the middle of the image so we will rotate and scale around the center.
             context.translateBy(x: newSize.width/2, y: newSize.height/2)
 
             // Rotate the image context
-            context.rotate(by:degreesToRadians(degrees))
+            context.rotate(by:degreesToRadians(rotationDegrees))
             
             // Now, draw the rotated/scaled image into the context
             context.scaleBy(x: 1, y: -1)
@@ -171,14 +224,19 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
             
         }
         
-        let newImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return newImage;
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
     }
     
     // MARK: - Actions
     @IBAction func onClickSelectImage(_ sender: UIButton) {
-        imagePicker = ImagePicker(presentationController: self) { [unowned self] (image, sourceType) in
+        
+        let croppingAreaViewController = self.storyboard?.instantiateViewController(withIdentifier: ImagePickerCroppingAreaViewController.kStoryboardId) as! ImagePickerCroppingAreaViewController
+        
+        croppingAreaViewController.setCroppingAreaSize(resolution)
+        
+        imagePicker = ImagePicker(presentationController: self, croppingAreaViewController: nil/*croppingAreaViewController*/) { [unowned self] (image, sourceType) in
             self.setImage(image, sourceType: sourceType)
         }
         imagePicker.present(from: sender)
@@ -202,7 +260,6 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         updateImage(resolution: self.resolution, rotation: rotation)
     }
     
-    
     @IBAction func onClickSendImage(_ sender: Any) {
         guard let image = cameraImageView.image else { return }
         
@@ -217,7 +274,7 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     }
 }
 
-// MARK: - UIPickerViewDelegate
+// MARK: - UIPickerViewDataSource
 extension ImageTransferModuleViewController: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1

@@ -49,6 +49,9 @@ class ProgressViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+        // Hide background
+        self.backgroundView.alpha = 0
+        
         // Enable sleep again mode when the DFU Dialog progress dissapears
         UIApplication.shared.isIdleTimerDisabled = false
         DLog("Restore sleep mode")

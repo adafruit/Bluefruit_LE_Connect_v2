@@ -561,6 +561,12 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "imagetransfer_tab_title" = "Image Transfer";
 "imagetransfer_navigation_title_format" = "Image Transfer - %@";
 
+"imagetransfer_waitingforuart" = "Waiting for Uart...";
+"imagetransfer_resolution_title" = "Resolution:";
+"imagetransfer_resolution_value_default" = "Default";
+"imagetransfer_image_title" = "Image:";
+"imagetransfer_image_value_default" = "Default";
+
 "imagetransfer_selectimage_action" = "Select image";
 "imagetransfer_imagepicker_camera" = "Take photo";
 "imagetransfer_imagepicker_cameraroll" = "Camera roll";
@@ -571,6 +577,9 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "imagetransfer_imageorigin_other" = "Other";
 "imagetransfer_imageorigin_default" = "Default";
 "imagetransfer_imageorigin_choose" = "Choose Image";
+"imagetransfer_resolution_choose" = "Choose Resolution";
+"imagetransfer_send_action" = "Send Image";
+"imagetransfer_cameranotavailable" = "Camera is not available";
 
 
 

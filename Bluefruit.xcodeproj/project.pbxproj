@@ -46,7 +46,6 @@
 		A915427B1EDD7C3F007A34EA /* StyledLinkedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */; };
 		A915427D1EDD7CE8007A34EA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427C1EDD7CE8007A34EA /* Config.swift */; };
 		A915427F1EDD8041007A34EA /* StyledAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427E1EDD8041007A34EA /* StyledAnimations.swift */; };
-		A915D3FF22AEF8AA009DBFCF /* ImageTransferModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915D3FE22AEF8AA009DBFCF /* ImageTransferModuleViewController.swift */; };
 		A915D40122AF230E009DBFCF /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915D40022AF230E009DBFCF /* ImagePicker.swift */; };
 		A91D65A41EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91D65A31EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift */; };
 		A91D65AA1EFD69190097C8B6 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A91D65A91EFD69190097C8B6 /* MainWindowController.swift */; };
@@ -71,6 +70,9 @@
 		A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCE1E3A9B22008E5F81 /* Preferences.swift */; };
 		A9335EDA1F526E3C009EB5B5 /* ThermalCameraModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9335ED91F526E3C009EB5B5 /* ThermalCameraModuleViewController.swift */; };
 		A9335EDC1F526EE2009EB5B5 /* ThermalCameraModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9335EDB1F526EE2009EB5B5 /* ThermalCameraModuleManager.swift */; };
+		A93845D022DFD99400CB218E /* ImageTransferModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915D3FE22AEF8AA009DBFCF /* ImageTransferModuleViewController.swift */; };
+		A93845D322DFD99F00CB218E /* ImagePickerCroppingAreaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93845CD22DFD7CF00CB218E /* ImagePickerCroppingAreaViewController.swift */; };
+		A93845D522DFE11D00CB218E /* NSLayoutConstraint+ChangeMultiplier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93845D422DFE11D00CB218E /* NSLayoutConstraint+ChangeMultiplier.swift */; };
 		A93DE7511F36176F00B2EB5D /* UartBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7501F36176F00B2EB5D /* UartBaseViewController.swift */; };
 		A93DE7631F36195900B2EB5D /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7541F36195900B2EB5D /* BleManager.swift */; };
 		A93DE7641F36195900B2EB5D /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7541F36195900B2EB5D /* BleManager.swift */; };
@@ -445,6 +447,8 @@
 		A9286CCE1E3A9B22008E5F81 /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		A9335ED91F526E3C009EB5B5 /* ThermalCameraModuleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThermalCameraModuleViewController.swift; sourceTree = "<group>"; };
 		A9335EDB1F526EE2009EB5B5 /* ThermalCameraModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThermalCameraModuleManager.swift; sourceTree = "<group>"; };
+		A93845CD22DFD7CF00CB218E /* ImagePickerCroppingAreaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerCroppingAreaViewController.swift; sourceTree = "<group>"; };
+		A93845D422DFE11D00CB218E /* NSLayoutConstraint+ChangeMultiplier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+ChangeMultiplier.swift"; sourceTree = "<group>"; };
 		A93DE7501F36176F00B2EB5D /* UartBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartBaseViewController.swift; sourceTree = "<group>"; };
 		A93DE7541F36195900B2EB5D /* BleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleManager.swift; sourceTree = "<group>"; };
 		A93DE7551F36195900B2EB5D /* BlePeripheral+Battery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlePeripheral+Battery.swift"; sourceTree = "<group>"; };
@@ -815,8 +819,10 @@
 			children = (
 				A915D3FE22AEF8AA009DBFCF /* ImageTransferModuleViewController.swift */,
 				A915D40022AF230E009DBFCF /* ImagePicker.swift */,
+				A93845CD22DFD7CF00CB218E /* ImagePickerCroppingAreaViewController.swift */,
 				A991A7BC22AFBA36003AE632 /* ImageTransferModuleManager.swift */,
 				A991A7C122AFDF1E003AE632 /* UIImage+pixelData.swift */,
+				A93845D422DFE11D00CB218E /* NSLayoutConstraint+ChangeMultiplier.swift */,
 			);
 			path = ImageTransfer;
 			sourceTree = "<group>";
@@ -1981,11 +1987,13 @@
 				A9BCD5961E4D2616003D1CEA /* MqttSettings.swift in Sources */,
 				A9BCD56C1E4D2549003D1CEA /* RssiUI.swift in Sources */,
 				A94A21B01E417271006A5F33 /* UartSettingTableViewCell.swift in Sources */,
+				A93845D522DFE11D00CB218E /* NSLayoutConstraint+ChangeMultiplier.swift in Sources */,
 				A91E7D5D1E4216ED00DE90C6 /* UIImage+Tint.swift in Sources */,
 				A91542761EDD7BC9007A34EA /* CalibrationUartViewController.swift in Sources */,
 				A9BCD5901E4D2616003D1CEA /* HexColorConversions.swift in Sources */,
 				A983781D1E42A96400170319 /* DfuModeViewController.swift in Sources */,
 				A91542731EDD7BC9007A34EA /* PageContentViewController.swift in Sources */,
+				A93845D022DFD99400CB218E /* ImageTransferModuleViewController.swift in Sources */,
 				A9BCD57E1E4D25E4003D1CEA /* UartDataExport.swift in Sources */,
 				A9286CD91E3A9B22008E5F81 /* DataConversions.swift in Sources */,
 				A983781B1E42A96400170319 /* DfuFilesPickerDialogViewController.swift in Sources */,
@@ -2018,8 +2026,8 @@
 				A91502741EE4DAA800298005 /* PeripheralModulesTableViewCell.swift in Sources */,
 				A9BCD60C1E4D36DE003D1CEA /* MainInterfaceController.swift in Sources */,
 				A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */,
-				A915D3FF22AEF8AA009DBFCF /* ImageTransferModuleViewController.swift in Sources */,
 				A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */,
+				A93845D322DFD99F00CB218E /* ImagePickerCroppingAreaViewController.swift in Sources */,
 				A93DE7651F36195900B2EB5D /* BlePeripheral+Battery.swift in Sources */,
 				A9335EDA1F526E3C009EB5B5 /* ThermalCameraModuleViewController.swift in Sources */,
 				A90798431E44F692005470A5 /* PlotterModuleManager.swift in Sources */,
