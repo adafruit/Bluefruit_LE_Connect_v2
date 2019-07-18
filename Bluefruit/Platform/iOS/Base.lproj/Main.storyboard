@@ -2078,7 +2078,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="scaleAspectFit" image="scanning_background" translatesAutoresizingMaskIntoConstraints="NO" id="0vs-NH-GL1">
-                                <rect key="frame" x="-0.33333333333334281" y="-0.33333333333334281" width="333.66666666666674" height="333.66666666666674"/>
+                                <rect key="frame" x="158.66666666666666" y="158.66666666666666" width="16" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="0vs-NH-GL1" secondAttribute="height" multiplier="1:1" id="g06-vu-F7H"/>
                                     <constraint firstAttribute="width" constant="530" id="yEh-u0-elV"/>
@@ -2090,7 +2090,7 @@
                                 </variation>
                             </imageView>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="scaleAspectFit" image="scanning_background" translatesAutoresizingMaskIntoConstraints="NO" id="aaC-Ba-9J9">
-                                <rect key="frame" x="-0.33333333333334281" y="-0.33333333333334281" width="333.66666666666674" height="333.66666666666674"/>
+                                <rect key="frame" x="158.66666666666666" y="158.66666666666666" width="16" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="530" id="FAm-Ea-rer"/>
                                     <constraint firstAttribute="height" constant="800" id="Frq-Cc-SVq"/>

@@ -84,6 +84,7 @@ extension BlePeripheral {
 
             self.uartTxCharacteristic = characteristic
             self.uartTxCharacteristicWriteType = characteristic.properties.contains(.writeWithoutResponse) ? .withoutResponse:.withResponse
+            //self.uartTxCharacteristicWriteType = .withResponse        // Debug: force withResponse
 
             self.characteristic(uuid: BlePeripheral.kUartRxCharacteristicUUID, serviceUuid: BlePeripheral.kUartServiceUUID) { [unowned self] (characteristic, error) in
                 guard let characteristic = characteristic, error == nil else {
@@ -160,7 +161,8 @@ extension BlePeripheral {
                 if let error = error {
                     DLog("write packet at offset: \(writeStartingOffset) error: \(error)")
                 } else {
-                    DLog("uart tx write (hex): \(hexDescription(data: packet))")
+                    //DLog("tx offset:\(offset): \(hexDescription(data: packet))")
+                    //DLog("uart tx write (hex): \(hexDescription(data: packet))")
                     // DLog("uart tx write (dec): \(decimalDescription(data: packet))")
                     // DLog("uart tx write (utf8): \(String(data: packet, encoding: .utf8) ?? "<invalid>")")
                     
@@ -186,7 +188,7 @@ extension BlePeripheral {
     /*
         Sends each packet with a DipatchQueue.main.async. Useful if the UI should be updated between packets
      */
-    func uartEachPacketSendSequentiallyInMainThread(data: Data?, progress: ((Float)->Void)? = nil, completion: ((Error?) -> Void)? = nil) {
+    func uartEachPacketSendSequentiallyInMainThread(data: Data?, delayBetweenPackets: TimeInterval, progress: ((Float)->Void)? = nil, completion: ((Error?) -> Void)? = nil) {
         guard let data = data else { completion?(nil); return }
         
         guard let uartTxCharacteristic = uartTxCharacteristic, let uartTxCharacteristicWriteType = uartTxCharacteristicWriteType else {
@@ -196,14 +198,14 @@ extension BlePeripheral {
         }
         
         sendSequentiallyCancelled = false
-        uartSentPacket(data: data, offset: 0, uartTxCharacteristic: uartTxCharacteristic, uartTxCharacteristicWriteType: uartTxCharacteristicWriteType, progress: progress, completion: completion)
+        uartSentPacket(data: data, offset: 0, uartTxCharacteristic: uartTxCharacteristic, uartTxCharacteristicWriteType: uartTxCharacteristicWriteType, delayBetweenPackets: delayBetweenPackets, progress: progress, completion: completion)
     }
     
     func uartCancelOngoingSendPacketSequentiallyInMainThread() {
         sendSequentiallyCancelled = true
     }
     
-    private func uartSentPacket(data: Data, offset: Int, uartTxCharacteristic: CBCharacteristic, uartTxCharacteristicWriteType: CBCharacteristicWriteType, progress: ((Float)->Void)? = nil, completion: ((Error?) -> Void)? = nil) {
+    private func uartSentPacket(data: Data, offset: Int, uartTxCharacteristic: CBCharacteristic, uartTxCharacteristicWriteType: CBCharacteristicWriteType, delayBetweenPackets: TimeInterval, progress: ((Float)->Void)? = nil, completion: ((Error?) -> Void)? = nil) {
         
         let maxPacketSize = peripheral.maximumWriteValueLength(for: uartTxCharacteristicWriteType)
         let packetSize = min(data.count-offset, maxPacketSize)
@@ -215,7 +217,7 @@ extension BlePeripheral {
             if let error = error {
                 DLog("write packet at offset: \(writeStartingOffset) error: \(error)")
             } else {
-                DLog("uart tx write at offset: \(writeStartingOffset) (hex): \(hexDescription(data: packet))")
+                DLog("uart tx offset: \(writeStartingOffset): \(hexDescription(data: packet))")
                 
                 writtenSize += packet.count
                 if BlePeripheral.kDebugLog {
@@ -223,21 +225,29 @@ extension BlePeripheral {
                 }
                 
                 if !self.sendSequentiallyCancelled && writtenSize < data.count {
-                    DispatchQueue.main.async { [weak self] in
-                        self?.uartSentPacket(data: data, offset: writtenSize, uartTxCharacteristic: uartTxCharacteristic, uartTxCharacteristicWriteType: uartTxCharacteristicWriteType, progress: progress, completion: completion)
+                    
+                    let deadlineTime = DispatchTime.now() + delayBetweenPackets
+                    DispatchQueue.main.asyncAfter(deadline: deadlineTime) { [weak self] in
+//                    DispatchQueue.main.async { [weak self] in
+                        self?.uartSentPacket(data: data, offset: writtenSize, uartTxCharacteristic: uartTxCharacteristic, uartTxCharacteristicWriteType: uartTxCharacteristicWriteType, delayBetweenPackets: delayBetweenPackets, progress: progress, completion: completion)
                     }
                 }
             }
             
-            if self.sendSequentiallyCancelled {
-                completion?(nil)
-            }
-            else if writtenSize >= data.count {
-                progress?(1)
-                completion?(error)
-            }
-            else {
-                progress?(Float(writtenSize) / Float(data.count))
+            // Call completion handlers in main thread
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                
+                if self.sendSequentiallyCancelled {
+                    completion?(nil)
+                }
+                else if writtenSize >= data.count {
+                    progress?(1)
+                    completion?(error)
+                }
+                else {
+                    progress?(Float(writtenSize) / Float(data.count))
+                }
             }
         }
     }

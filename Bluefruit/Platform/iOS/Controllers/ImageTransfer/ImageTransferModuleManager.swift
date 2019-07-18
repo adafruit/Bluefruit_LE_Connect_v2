@@ -102,12 +102,20 @@ class ImageTransferModuleManager: NSObject {
     }
     
     private func sendCommand(data: Data) {
-        uartManager.sendEachPacketSequentiallyInMainThread(blePeripheral: blePeripheral, data: data, progress: { progress in
+        
+        uartManager.sendEachPacketSequentiallyInMainThread(blePeripheral: blePeripheral, data: data, delayBetweenPackets: 0.03, progress: { progress in
             self.delegate?.onImageTransferProgress(progress: progress)
         }) { error in
             DLog("result: \(error ==  nil)")
             self.delegate?.onImageTransferFinished(error: error)
         }
+        
+        /*
+        uartManager.send(blePeripheral: blePeripheral, data: data, progress: nil) { (error) in
+            DLog("result: \(error ==  nil)")
+            self.delegate?.onImageTransferFinished(error: error)
+        }*/
+        
     }
     
     func cancelCurrentSendCommand() {

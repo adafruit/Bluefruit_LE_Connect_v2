@@ -89,6 +89,7 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     
     deinit {
         imageTransferData.stop()
+        progressViewController?.dismiss(animated: false, completion: nil)       // Force remove the progress
         DLog("ImageTransferModuleViewController deinit")
     }
     
@@ -221,7 +222,6 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
             // Now, draw the rotated/scaled image into the context
             context.scaleBy(x: 1, y: -1)
             context.draw(cgImage, in: CGRect(x: -rotatedSize.width / 2, y: -rotatedSize.height / 2, width: rotatedSize.width, height: rotatedSize.height), byTiling: false)
-            
         }
         
         let newImage = UIGraphicsGetImageFromCurrentImageContext()

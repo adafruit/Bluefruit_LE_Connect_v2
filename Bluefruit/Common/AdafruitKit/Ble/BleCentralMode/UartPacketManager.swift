@@ -37,9 +37,9 @@ class UartPacketManager: UartPacketManagerBase {
         blePeripheral.uartSend(data: data, progress: progress, completion: completion)
     }
 
-    func sendEachPacketSequentiallyInMainThread(blePeripheral: BlePeripheral, data: Data?, progress: ((Float)->Void)? = nil, completion: ((Error?) -> Void)? = nil) {
+    func sendEachPacketSequentiallyInMainThread(blePeripheral: BlePeripheral, data: Data?, delayBetweenPackets: TimeInterval, progress: ((Float)->Void)? = nil, completion: ((Error?) -> Void)? = nil) {
         sentBytes += Int64(data?.count ?? 0)
-        blePeripheral.uartEachPacketSendSequentiallyInMainThread(data: data, progress: progress, completion: completion)
+        blePeripheral.uartEachPacketSendSequentiallyInMainThread(data: data, delayBetweenPackets: delayBetweenPackets, progress: progress, completion: completion)
     }
     
     func cancelOngoingSendPacketSequentiallyInMainThread(blePeripheral: BlePeripheral) {
