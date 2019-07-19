@@ -1611,25 +1611,28 @@
         <scene sceneID="Yu0-Eb-dHu">
             <objects>
                 <viewController storyboardIdentifier="ImagePickerCroppingAreaViewController" id="Sf5-LJ-U6w" customClass="ImagePickerCroppingAreaViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" userInteractionEnabled="NO" contentMode="scaleToFill" id="Gx0-BH-j19">
+                    <view key="view" contentMode="scaleToFill" id="Gx0-BH-j19">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FUU-Mp-IrA">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="812" translatesAutoresizingMaskIntoConstraints="NO" id="Odk-uQ-dof">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                                     </imageView>
                                 </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="Odk-uQ-dof" firstAttribute="top" secondItem="FUU-Mp-IrA" secondAttribute="top" id="1RZ-W2-uZE"/>
                                     <constraint firstAttribute="trailing" secondItem="Odk-uQ-dof" secondAttribute="trailing" id="2iQ-26-JCW"/>
                                     <constraint firstAttribute="bottom" secondItem="Odk-uQ-dof" secondAttribute="bottom" id="GuB-mm-exD"/>
                                     <constraint firstItem="Odk-uQ-dof" firstAttribute="leading" secondItem="FUU-Mp-IrA" secondAttribute="leading" id="kpX-8A-6e2"/>
+                                    <constraint firstItem="Odk-uQ-dof" firstAttribute="height" relation="greaterThanOrEqual" secondItem="FUU-Mp-IrA" secondAttribute="height" id="roW-Ew-6NO"/>
+                                    <constraint firstItem="Odk-uQ-dof" firstAttribute="width" relation="greaterThanOrEqual" secondItem="FUU-Mp-IrA" secondAttribute="width" id="tgd-hn-fTc"/>
                                 </constraints>
                             </scrollView>
-                            <view userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dd1-AC-8Ux">
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dd1-AC-8Ux">
                                 <rect key="frame" x="0.0" y="311" width="375" height="200"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -1640,57 +1643,53 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="311"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view userInteractionEnabled="NO" alpha="0.20000000298023224" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5tf-uS-1zZ" userLabel="Transparent Outside Views">
+                            <view userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5tf-uS-1zZ" userLabel="Transparent Outside Views">
                                 <rect key="frame" x="375" y="311" width="0.0" height="200"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view userInteractionEnabled="NO" alpha="0.20000000298023224" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Axc-9Y-qXk" userLabel="Transparent Outside Views">
+                            <view userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Axc-9Y-qXk" userLabel="Transparent Outside Views">
                                 <rect key="frame" x="0.0" y="311" width="0.0" height="200"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view userInteractionEnabled="NO" alpha="0.20000000298023224" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VNO-eT-zFL" userLabel="Transparent Outside Views">
+                            <view userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VNO-eT-zFL" userLabel="Transparent Outside Views">
                                 <rect key="frame" x="0.0" y="511" width="375" height="301"/>
-                                <subviews>
-                                    <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JtM-BR-gyw">
-                                        <rect key="frame" x="8" y="215" width="359" height="44"/>
-                                        <items>
-                                            <barButtonItem systemItem="cancel" id="ZON-dC-7Vc">
-                                                <connections>
-                                                    <action selector="croppingCancelled:" destination="Sf5-LJ-U6w" id="aHu-Zs-tXB"/>
-                                                </connections>
-                                            </barButtonItem>
-                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="qyB-vC-zdD"/>
-                                            <barButtonItem systemItem="done" id="oTA-6n-6ki">
-                                                <connections>
-                                                    <action selector="croppingDone:" destination="Sf5-LJ-U6w" id="fYC-5x-Jcu"/>
-                                                </connections>
-                                            </barButtonItem>
-                                        </items>
-                                    </toolbar>
-                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="JtM-BR-gyw" firstAttribute="leading" secondItem="VNO-eT-zFL" secondAttribute="leadingMargin" id="5tG-xd-P7a"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="JtM-BR-gyw" secondAttribute="trailing" id="akB-fa-sod"/>
-                                    <constraint firstItem="JtM-BR-gyw" firstAttribute="bottom" secondItem="VNO-eT-zFL" secondAttribute="bottomMargin" id="mnG-59-w2P"/>
-                                </constraints>
                             </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JtM-BR-gyw">
+                                <rect key="frame" x="0.0" y="729" width="375" height="49"/>
+                                <items>
+                                    <barButtonItem systemItem="cancel" id="ZON-dC-7Vc">
+                                        <connections>
+                                            <action selector="croppingCancelled:" destination="Sf5-LJ-U6w" id="aHu-Zs-tXB"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="qyB-vC-zdD"/>
+                                    <barButtonItem systemItem="done" id="oTA-6n-6ki">
+                                        <connections>
+                                            <action selector="croppingDone:" destination="Sf5-LJ-U6w" id="fYC-5x-Jcu"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Axc-9Y-qXk" firstAttribute="leading" secondItem="ao3-M6-jsX" secondAttribute="leading" id="35t-gn-d19"/>
+                            <constraint firstItem="JtM-BR-gyw" firstAttribute="leading" secondItem="Gx0-BH-j19" secondAttribute="leading" id="6dz-Xo-F1i"/>
                             <constraint firstItem="dd1-AC-8Ux" firstAttribute="top" secondItem="1YT-Ap-QGs" secondAttribute="bottom" id="C5T-qL-AzI"/>
                             <constraint firstItem="ao3-M6-jsX" firstAttribute="leading" secondItem="FUU-Mp-IrA" secondAttribute="leading" id="CgO-sE-eZL"/>
                             <constraint firstItem="dd1-AC-8Ux" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ao3-M6-jsX" secondAttribute="leading" id="Hcl-Ow-1hA"/>
                             <constraint firstAttribute="bottom" secondItem="VNO-eT-zFL" secondAttribute="bottom" id="HzD-0G-ktV"/>
                             <constraint firstItem="dd1-AC-8Ux" firstAttribute="centerY" secondItem="ao3-M6-jsX" secondAttribute="centerY" id="NYa-fJ-zHA"/>
                             <constraint firstItem="1YT-Ap-QGs" firstAttribute="leading" secondItem="ao3-M6-jsX" secondAttribute="leading" id="NvR-qK-67a"/>
+                            <constraint firstItem="JtM-BR-gyw" firstAttribute="top" secondItem="FUU-Mp-IrA" secondAttribute="bottom" id="Nyi-f5-Hdo"/>
                             <constraint firstItem="ao3-M6-jsX" firstAttribute="trailing" secondItem="dd1-AC-8Ux" secondAttribute="trailing" id="Oea-SJ-1YV"/>
                             <constraint firstItem="5tf-uS-1zZ" firstAttribute="leading" secondItem="dd1-AC-8Ux" secondAttribute="trailing" id="TlM-9B-hs4"/>
+                            <constraint firstAttribute="trailing" secondItem="JtM-BR-gyw" secondAttribute="trailing" id="UPa-G5-Dzj"/>
                             <constraint firstItem="Axc-9Y-qXk" firstAttribute="top" secondItem="1YT-Ap-QGs" secondAttribute="bottom" id="ZF5-LH-qHY"/>
-                            <constraint firstAttribute="bottom" secondItem="FUU-Mp-IrA" secondAttribute="bottom" id="cAD-wk-57x"/>
                             <constraint firstItem="VNO-eT-zFL" firstAttribute="top" secondItem="Axc-9Y-qXk" secondAttribute="bottom" id="cnu-SZ-WqW"/>
                             <constraint firstItem="VNO-eT-zFL" firstAttribute="trailing" secondItem="ao3-M6-jsX" secondAttribute="trailing" id="d5G-nh-ZwK"/>
+                            <constraint firstItem="ao3-M6-jsX" firstAttribute="bottom" secondItem="JtM-BR-gyw" secondAttribute="bottom" id="g8E-BN-mkl"/>
                             <constraint firstItem="ao3-M6-jsX" firstAttribute="trailing" secondItem="1YT-Ap-QGs" secondAttribute="trailing" id="kGo-le-rIt"/>
                             <constraint firstItem="dd1-AC-8Ux" firstAttribute="centerX" secondItem="ao3-M6-jsX" secondAttribute="centerX" id="kx3-No-AQx"/>
                             <constraint firstItem="dd1-AC-8Ux" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ao3-M6-jsX" secondAttribute="top" id="nVW-Kx-Faf"/>

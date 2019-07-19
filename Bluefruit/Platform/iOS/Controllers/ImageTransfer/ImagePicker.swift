@@ -26,7 +26,7 @@ class ImagePicker: NSObject {
         self.presentationController = presentationController
         self.completion = completion
         self.croppingAreaViewController = croppingAreaViewController
-
+        
         self.pickerController.delegate = self
         self.pickerController.allowsEditing = false     // handle editing manually
         self.pickerController.mediaTypes = ["public.image"]
@@ -71,6 +71,7 @@ class ImagePicker: NSObject {
         // Custom cropping on camera
         
         if let image = image, let croppingAreaViewController = self.croppingAreaViewController {
+            croppingAreaViewController.delegate = self
             croppingAreaViewController.setImage(image)
             controller.present(croppingAreaViewController, animated: false, completion: nil)
         }
@@ -84,6 +85,7 @@ class ImagePicker: NSObject {
     }
     
     func fixOrientation(img: UIImage) -> UIImage {
+        // https://stackoverflow.com/questions/5427656/ios-uiimagepickercontroller-result-image-orientation-after-upload
         if (img.imageOrientation == .up) {
             return img
         }
@@ -99,6 +101,7 @@ class ImagePicker: NSObject {
     }
 }
 
+// MARK: - UIImagePickerControllerDelegate
 extension ImagePicker: UIImagePickerControllerDelegate {
     
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -118,6 +121,24 @@ extension ImagePicker: UIImagePickerControllerDelegate {
     }
 }
 
+// MARK: - UINavigationControllerDelegate
 extension ImagePicker: UINavigationControllerDelegate {
-    
+}
+
+// MARK: - ImagePickerCroppingAreaViewControllerDelegate
+extension ImagePicker: ImagePickerCroppingAreaViewControllerDelegate {
+    func imagePickerCroppingFinished(image: UIImage?) {
+        guard let croppingAreaViewController = self.croppingAreaViewController else { return }
+        
+        
+        // Dismiss
+        self.presentationController?.dismiss(animated: true, completion: {
+            croppingAreaViewController.dismiss(animated: false, completion: nil)
+        })
+        
+        // Call completion
+        if let image = image {
+            completion?(image, pickerController.sourceType)
+        }
+    }
 }

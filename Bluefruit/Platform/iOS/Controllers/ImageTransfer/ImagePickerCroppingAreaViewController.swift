@@ -8,7 +8,9 @@
 
 import UIKit
 
-
+protocol ImagePickerCroppingAreaViewControllerDelegate: class {
+    func imagePickerCroppingFinished(image: UIImage?)
+}
 
 class ImagePickerCroppingAreaViewController: UIViewController {
     // Contants
@@ -24,15 +26,23 @@ class ImagePickerCroppingAreaViewController: UIViewController {
         }
     }
     
-    // Data
-    
+    // Params
+    weak var delegate: ImagePickerCroppingAreaViewControllerDelegate?
     
     // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
         croppingAreaView.layer.borderColor = UIColor.white.cgColor
         croppingAreaView.layer.borderWidth = 2
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        imageScrollView.contentInset = UIEdgeInsets(top: imageScrollView.bounds.height/2, left: 0, bottom: imageScrollView.bounds.height/2, right: 0)
+
     }
     
     // MARK: - UI
@@ -45,20 +55,30 @@ class ImagePickerCroppingAreaViewController: UIViewController {
     public func setImage(_ image: UIImage) {
         imageView.image = image
         
-        imageScrollView.minimumZoomScale = image.size.width / self.view.bounds.width
+        let defaultScale =  self.view.bounds.width / image.size.width
+        imageScrollView.minimumZoomScale = min(1, defaultScale)
         imageScrollView.maximumZoomScale = 10.0
 
-        imageScrollView.zoomScale = 1
-        
+        imageScrollView.zoomScale = defaultScale
     }
     
     @IBAction func croppingDone(_ sender: Any) {
+        // Crop image to the croppingAreaView
+        var result: UIImage?
+        
+        if let cameraCGImage = imageView.image?.cgImage {
+            let croppingRect = croppingAreaView.convert(croppingAreaView.bounds, to: imageView)
+            if let imageRef = cameraCGImage.cropping(to: croppingRect) {
+                result = UIImage.init(cgImage: imageRef)
+            }
+        }
+        
+        delegate?.imagePickerCroppingFinished(image: result)
     }
     
     @IBAction func croppingCancelled(_ sender: Any) {
+        delegate?.imagePickerCroppingFinished(image: nil)
     }
-    
-    
 }
 
 // MARK: - UIScrollViewDelegate

@@ -211,17 +211,17 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         let rotatedSize = rotatedViewBox.frame.size
         
         // Create the bitmap context
-        UIGraphicsBeginImageContext(newSize)
+        UIGraphicsBeginImageContext(rotatedSize)
         if let context = UIGraphicsGetCurrentContext(), let cgImage = image.cgImage {
             // Move the origin to the middle of the image so we will rotate and scale around the center.
-            context.translateBy(x: newSize.width/2, y: newSize.height/2)
+            context.translateBy(x: rotatedSize.width/2, y: rotatedSize.height/2)
 
             // Rotate the image context
             context.rotate(by:degreesToRadians(rotationDegrees))
             
             // Now, draw the rotated/scaled image into the context
             context.scaleBy(x: 1, y: -1)
-            context.draw(cgImage, in: CGRect(x: -rotatedSize.width / 2, y: -rotatedSize.height / 2, width: rotatedSize.width, height: rotatedSize.height), byTiling: false)
+            context.draw(cgImage, in: CGRect(x: -newSize.width / 2, y: -newSize.height / 2, width: newSize.width, height: newSize.height), byTiling: false)
         }
         
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -236,7 +236,7 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         
         croppingAreaViewController.setCroppingAreaSize(resolution)
         
-        imagePicker = ImagePicker(presentationController: self, croppingAreaViewController: nil/*croppingAreaViewController*/) { [unowned self] (image, sourceType) in
+        imagePicker = ImagePicker(presentationController: self, croppingAreaViewController: croppingAreaViewController) { [unowned self] (image, sourceType) in
             self.setImage(image, sourceType: sourceType)
         }
         imagePicker.present(from: sender)
