@@ -20,7 +20,7 @@
                         <textAttributes key="titleTextAttributes"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="Aso-UJ-OIx" kind="relationship" relationship="rootViewController" id="v5C-7O-6cL"/>
+                        <segue destination="DSy-Yb-eRw" kind="relationship" relationship="rootViewController" id="sIj-bg-9fv"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8fS-aE-onr" sceneMemberID="firstResponder"/>
@@ -2187,7 +2187,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3VN-ud-Csn">
-                                                <rect key="frame" x="80.666666666666671" y="0.0" width="42" height="44"/>
+                                                <rect key="frame" x="80.666666666666671" y="0.0" width="44" height="44"/>
                                                 <inset key="contentEdgeInsets" minX="13" minY="11" maxX="13" maxY="11"/>
                                                 <state key="normal" image="ic_cancel_18pt"/>
                                                 <connections>
@@ -2217,7 +2217,7 @@
                                         </constraints>
                                     </view>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Filter by name" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="PiD-9p-UD4">
-                                        <rect key="frame" x="26" y="50" width="317" height="30"/>
+                                        <rect key="frame" x="26" y="50" width="309" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -2227,7 +2227,7 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rUg-DE-Icb">
-                                        <rect key="frame" x="351" y="54" width="16" height="22"/>
+                                        <rect key="frame" x="343" y="53" width="24" height="24"/>
                                         <state key="normal" image="ic_more_vert"/>
                                         <connections>
                                             <action selector="onClickFilterNameSettings:" destination="DSy-Yb-eRw" eventType="touchUpInside" id="hnr-a6-a2i"/>
