@@ -86,7 +86,7 @@ class ImageTransferModuleManager: NSObject {
             index % 4 != 3
         }).map { $0.1 }
         
-        // Command: 'I'
+        // Command: '!I'
         var command: [UInt8] = [0x21, 0x49]       // ! + Command + width + height
         command.append(contentsOf: UInt16(image.size.width).toBytes)
         command.append(contentsOf: UInt16(image.size.height).toBytes)
@@ -103,19 +103,13 @@ class ImageTransferModuleManager: NSObject {
     
     private func sendCommand(data: Data) {
         
-        uartManager.sendEachPacketSequentiallyInMainThread(blePeripheral: blePeripheral, data: data, delayBetweenPackets: 0.03, progress: { progress in
+        let kPacketWithResponseEveryPacketCount = 1     // Note: dont use bigger numbers or it will drop packets for big enough images
+        uartManager.sendEachPacketSequentially(blePeripheral: blePeripheral, data: data, withResponseEveryPacketCount: kPacketWithResponseEveryPacketCount, progress: { progress in
             self.delegate?.onImageTransferProgress(progress: progress)
         }) { error in
             DLog("result: \(error ==  nil)")
             self.delegate?.onImageTransferFinished(error: error)
         }
-        
-        /*
-        uartManager.send(blePeripheral: blePeripheral, data: data, progress: nil) { (error) in
-            DLog("result: \(error ==  nil)")
-            self.delegate?.onImageTransferFinished(error: error)
-        }*/
-        
     }
     
     func cancelCurrentSendCommand() {

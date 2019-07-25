@@ -29,7 +29,7 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         CGSize(width: 320, height: 240),
         CGSize(width: 480, height: 320),
         CGSize(width: 512, height: 512),
-        CGSize(width: 1024, height: 1024),
+        //CGSize(width: 1024, height: 1024),
         ]
     
     // UI
@@ -83,7 +83,8 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
 
         // Localization
         uartWaitingLabel.text = localizationManager.localizedString("thermalcamera_waitingforuart")
-        
+        imageOriginButton.setTitle(LocalizationManager.shared.localizedString("imagetransfer_imageorigin_choose"), for: .normal)
+
         imageTransferData.start()
     }
     
@@ -109,20 +110,15 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         
         self.resolution = resolution
         self.imageRotationDegress = rotation
+        
+        // Save selected resolution
         Preferences.imageTransferResolution = resolution
 
+        // Change UI to adjust aspect ration of the displayed image
         NSLayoutConstraint.setMultiplier(multiplier: resolution.width / resolution.height, constraint: &cameraImageViewAspectRationConstraint)
-        DLog("aspectRatio: \(resolution.width)/\(resolution.height)")
+        //DLog("aspectRatio: \(resolution.width)/\(resolution.height)")
         
-        //let scaledImage = imageWithImage(image: image, scaledToSize: resolution, autoScale: false, rotate: imageRotation)
-        /*
-        let scaledImage = imageRotatedByDegrees(image: image, scaledToSize: resolution, degrees: imageRotationDegress)
-        DLog("scaledImage: \(scaledImage?.size.width ?? -1) x \(scaledImage?.size.height ?? 0)")
- */
-//        let scaledImage = self.image
-
         // Calculate aspectFit
-        
         let transformedImage = scaleAndRotateImage(image: image, resolution: resolution, rotationDegrees: imageRotationDegress, backgroundColor: .black)
         
         cameraImageView.image = transformedImage
@@ -130,33 +126,10 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     }
     
     fileprivate func setImage(_ image: UIImage?, sourceType: UIImagePickerController.SourceType?) {
+        imageRotationDegress = 0        // Reset rotation
         self.image = image
         updateImage(resolution: self.resolution, rotation: self.imageRotationDegress)
-        
-        // Origin text
-        /*
-        let imageOriginId: String
-        if let sourceType = sourceType {
-            switch sourceType {
-            case .camera:
-                imageOriginId = "imagetransfer_imageorigin_camera"
-            case .savedPhotosAlbum:
-                imageOriginId = "imagetransfer_imageorigin_cameraroll"
-            case .photoLibrary:
-                imageOriginId = "imagetransfer_imageorigin_photolibrary"
-            @unknown default:
-                imageOriginId = "imagetransfer_imageorigin_other"
-            }
-        }
-        else {
-            imageOriginId = "imagetransfer_imageorigin_default"
-        }*/
-        let imageOriginId = "imagetransfer_imageorigin_choose"
-    
-        let imageOrigin = LocalizationManager.shared.localizedString(imageOriginId)
-        imageOriginButton.setTitle(imageOrigin, for: .normal)
     }
-    
     
     private func degreesToRadians(_ degrees: CGFloat) -> CGFloat {
         return degrees * .pi / 180
@@ -164,42 +137,36 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     
     private func scaleAndRotateImage(image: UIImage, resolution: CGSize, rotationDegrees: CGFloat, backgroundColor: UIColor) -> UIImage? {
         
-        let mW = resolution.width / image.size.width;
-        let mH = resolution.height / image.size.height;
+        // Calculate resolution for fitted image
+        let widthRatio = resolution.width / image.size.width
+        let heightRatio = resolution.height / image.size.height
         
         var fitResolution = resolution
-        if mH < mW  {
+        if heightRatio < widthRatio  {
             fitResolution.width = resolution.height / image.size.height * image.size.width
         }
-        else if mW < mH  {
+        else if widthRatio < heightRatio  {
             fitResolution.height = resolution.width / image.size.width * image.size.height
         }
         
         guard let fitImage = imageRotatedByDegrees(image: image, scaledToSize: fitResolution, rotationDegrees: rotationDegrees) else { return nil }
         
+        // Draw fitImage centered in canvas
         let x = floor((resolution.width - fitImage.size.width) / 2)
         let y = floor((resolution.height - fitImage.size.height) / 2)
         let fitDrawRect = CGRect(x: x, y: y, width: fitImage.size.width, height: fitImage.size.height)
         
         UIGraphicsBeginImageContext(resolution)
-        if let context = UIGraphicsGetCurrentContext() {//}, let cgImage = image.cgImage  {
+        if let context = UIGraphicsGetCurrentContext() {
             backgroundColor.setFill()
             context.fill(CGRect(x: 0, y: 0, width: resolution.width, height: resolution.height))
             
             // Draw fit image at center
             fitImage.draw(in: fitDrawRect)
-            
-            /*
-            context.translateBy(x: 0, y: fitImage.size.height)
-            context.scaleBy(x: 1, y: -1)
-            context.draw(cgImage, in: fitDrawRect)
- */
         }
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return newImage
-        
-    
     }
     
     private func imageRotatedByDegrees(image: UIImage, scaledToSize newSize: CGSize, rotationDegrees: CGFloat) -> UIImage? {
@@ -265,11 +232,10 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         
         progressViewController = self.storyboard?.instantiateViewController(withIdentifier: "ImageTransferProgressViewController") as? ProgressViewController
         progressViewController!.delegate = self
-        progressViewController!.setProgressText("Transferring...")
+        progressViewController!.setProgressText(LocalizationManager.shared.localizedString("imagetransfer_transferring"))
         self.present(progressViewController!, animated: true, completion: { [unowned self] in
             // Start image transfer process
             self.imageTransferData.sendImage(image)
-//            self.progressViewController!.setPercentage(50)
         })
     }
 }
@@ -307,7 +273,7 @@ extension ImageTransferModuleViewController: UITextFieldDelegate {
     }
 }
 
-// MARK: - ThermalCameraModuleManagerDelegate
+// MARK: - ImageTransferModuleManagerDelegate
 extension ImageTransferModuleViewController: ImageTransferModuleManagerDelegate {
     func onImageTransferUartIsReady(error: Error?) {
         DispatchQueue.main.async {

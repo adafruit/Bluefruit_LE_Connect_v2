@@ -580,8 +580,12 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "imagetransfer_resolution_choose" = "Choose Resolution";
 "imagetransfer_send_action" = "Send Image";
 "imagetransfer_cameranotavailable" = "Camera is not available";
-
-
+"imagetransfer_decodeimage_error" = "Image cannot be decoded";
+"imagetransfer_outofmemory_error" = "Image too big for available memory";
+"imagetransfer_transferring" = "Sending image...";
+"imagetransfer_senddata_error" = "There was an error while transferring the image data";
+"imagetransfer_crop_action" = "Crop image";
+"imagetransfer_crop_error" = "Error cropping image ";
 
 // Common
 "dialog_ok" = "OK";
@@ -645,7 +649,12 @@ https://github.com/PhilJay/MPAndroidChart
 
 Android Vision Sample for Barcode Reading
 Copyright (C) The Android Open Source Project
-Licensed under the Apache License, Version 2.0";
+Licensed under the Apache License, Version 2.0
+
+ImageCropView
+Copyright (c) 2015 Naver Corp.
+Author Ohkyun Kim
+https://github.com/naver/android-imagecropview";
 "about_ios_text" = "A detailed guide to using this app can be found here:
 https://learn.adafruit.com/bluefruit-le-connect-for-ios
 

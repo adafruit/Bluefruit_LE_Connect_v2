@@ -480,6 +480,7 @@ class BlePeripheral: NSObject {
     }
 }
 
+// MARK: - CBPeripheralDelegate
 extension BlePeripheral: CBPeripheralDelegate {
     func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
         DLog("peripheralDidUpdateName: \(name ?? "{ No Name }")")

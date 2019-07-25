@@ -78,6 +78,7 @@ class CommandQueue<Element> {
         queueLock.unlock()
 
         if let nextElement = nextElement {
+            //DLog("execute next")
             executeHandler?(nextElement)
         }
     }
