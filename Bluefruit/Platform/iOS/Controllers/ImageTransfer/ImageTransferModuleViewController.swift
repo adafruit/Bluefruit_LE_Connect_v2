@@ -38,9 +38,13 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     @IBOutlet var resolutionPickerView: UIPickerView!
     @IBOutlet var resolutionPickerToolbar: UIToolbar!
     @IBOutlet weak var resolutionTextField: UITextField!
+    @IBOutlet weak var resolutionLabel: UILabel!
+    @IBOutlet weak var resolutionButton: UIButton!
+    @IBOutlet weak var imageLabel: UILabel!
     @IBOutlet weak var imageOriginButton: UIButton!
     @IBOutlet weak var uartWaitingLabel: UILabel!
-    @IBOutlet weak var resolutionButton: UIButton!
+    @IBOutlet weak var tranferModeLabel: UILabel!
+    @IBOutlet weak var transferModeButton: UIButton!
     
     // Data
     private var imagePicker: ImagePicker!
@@ -49,6 +53,7 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     fileprivate var imageTransferData: ImageTransferModuleManager!
     fileprivate var progressViewController: ProgressViewController?
     private var imageRotationDegress: CGFloat = 0
+    private var isTransferModeWithoutResponse = Preferences.imageTransferWithoutResponse
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -74,15 +79,19 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         //resolutionTextField.tintColor = .clear      // don't show cursor
         
         cameraImageView.layer.magnificationFilter = .nearest    // .linear:
-        
+
         // Init
         assert(blePeripheral != nil)
         imageTransferData = ImageTransferModuleManager(blePeripheral: blePeripheral!, delegate: self)
-        
+ 
         updateImage(resolution: resolution, rotation: imageRotationDegress)    // Setup with the initial value
-
+        updateTransferModeUI()
+        
         // Localization
-        uartWaitingLabel.text = localizationManager.localizedString("thermalcamera_waitingforuart")
+        resolutionLabel.text = localizationManager.localizedString("imagetransfer_resolution_title")
+        imageLabel.text = localizationManager.localizedString("imagetransfer_image_title")
+        tranferModeLabel.text = localizationManager.localizedString("imagetransfer_transfermode_title")
+        uartWaitingLabel.text = localizationManager.localizedString("imagetransfer_waitingforuart")
         imageOriginButton.setTitle(LocalizationManager.shared.localizedString("imagetransfer_imageorigin_choose"), for: .normal)
 
         imageTransferData.start()
@@ -94,6 +103,15 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         DLog("ImageTransferModuleViewController deinit")
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Add bottom margin for phones without safeinsets
+        if self.view.window?.safeAreaInsets.bottom == 0 {
+            self.additionalSafeAreaInsets.bottom = 20
+        }
+    }
+    
     // MARK: - UI
     fileprivate func updateImageTransferUI(isReady: Bool) {
         uartWaitingLabel.isHidden = isReady
@@ -102,6 +120,10 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     private func updateResolutionUI() {
         let text = String.init(format: "%.0f x %.0f", resolution.width, resolution.height)
         resolutionButton.setTitle(text, for: .normal)
+    }
+    
+    private func updateTransferModeUI() {
+        transferModeButton.setTitle(LocalizationManager.shared.localizedString(isTransferModeWithoutResponse ? "imagetransfer_transfermode_value_withoutresponse":"imagetransfer_transfermode_value_withresponse"), for: .normal)
     }
     
     // MARK: - Image
@@ -152,8 +174,8 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         guard let fitImage = imageRotatedByDegrees(image: image, scaledToSize: fitResolution, rotationDegrees: rotationDegrees) else { return nil }
         
         // Draw fitImage centered in canvas
-        let x = floor((resolution.width - fitImage.size.width) / 2)
-        let y = floor((resolution.height - fitImage.size.height) / 2)
+        let x = ceil((resolution.width - fitImage.size.width) / 2)
+        let y = ceil((resolution.height - fitImage.size.height) / 2)
         let fitDrawRect = CGRect(x: x, y: y, width: fitImage.size.width, height: fitImage.size.height)
         
         UIGraphicsBeginImageContext(resolution)
@@ -197,6 +219,17 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     }
     
     // MARK: - Actions
+    @IBAction func onClickHelp(_  sender: UIBarButtonItem) {
+        let localizationManager = LocalizationManager.shared
+        let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
+        helpViewController.setHelp(localizationManager.localizedString("imagetransfer_help_text"), title: localizationManager.localizedString("imagetransfer_help_title"))
+        let helpNavigationController = UINavigationController(rootViewController: helpViewController)
+        helpNavigationController.modalPresentationStyle = .popover
+        helpNavigationController.popoverPresentationController?.barButtonItem = sender
+        
+        present(helpNavigationController, animated: true, completion: nil)
+    }
+    
     @IBAction func onClickSelectImage(_ sender: UIButton) {
         
         let croppingAreaViewController = self.storyboard?.instantiateViewController(withIdentifier: ImagePickerCroppingAreaViewController.kStoryboardId) as! ImagePickerCroppingAreaViewController
@@ -217,6 +250,12 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         resolutionTextField.resignFirstResponder()
     }
     
+    @IBAction func onClickChangeTransferMode(_ sender: Any) {
+        isTransferModeWithoutResponse = !isTransferModeWithoutResponse
+        Preferences.imageTransferWithoutResponse = isTransferModeWithoutResponse
+        updateTransferModeUI()
+    }
+    
     @IBAction func onClickRotateLeft(_ sender: Any) {
         let rotation = (imageRotationDegress - 90).truncatingRemainder(dividingBy: 360)
         updateImage(resolution: self.resolution, rotation: rotation)
@@ -235,7 +274,7 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         progressViewController!.setProgressText(LocalizationManager.shared.localizedString("imagetransfer_transferring"))
         self.present(progressViewController!, animated: true, completion: { [unowned self] in
             // Start image transfer process
-            self.imageTransferData.sendImage(image)
+            self.imageTransferData.sendImage(image, transferWithoutResponse: self.isTransferModeWithoutResponse)
         })
     }
 }

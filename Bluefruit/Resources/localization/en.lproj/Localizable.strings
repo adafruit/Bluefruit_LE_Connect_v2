@@ -19,6 +19,7 @@ Please reset bluetooth and try again.";
 "bluetooth_advertising_start_error" = "Error starting advertising";
 
 // Main Tab-Bar
+"main_tabbar_singlemode" = "Select Device";
 "main_tabbar_centralmode" = "Central Mode";
 "main_tabbar_peripheralmode" = "Peripheral Mode";
 
@@ -561,11 +562,19 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "imagetransfer_tab_title" = "Image Transfer";
 "imagetransfer_navigation_title_format" = "Image Transfer - %@";
 
+"imagetransfer_help_title" = "Image Transfer";
+"imagetransfer_help_text" = "The Image Transfer module sends the image of your choice to Bluefruit LE over UART. Each image sent begins with a single byte char “!” (0x21), image width (uint16 little endian, 2 bytes), height (uint16 little endian, 2 bytes), followed by pixel data encoded as RGB 24-bit and suffixed by a single byte CRC.
+
+Format: [ ‘!’ ] [ uint16 width ] [ uint16 height ] [ r g b ] [ r g b ] [ r g b ] … [ CRC ]";
+
 "imagetransfer_waitingforuart" = "Waiting for Uart...";
 "imagetransfer_resolution_title" = "Resolution:";
 "imagetransfer_resolution_value_default" = "Default";
 "imagetransfer_image_title" = "Image:";
 "imagetransfer_image_value_default" = "Default";
+"imagetransfer_transfermode_title" = "Transfer mode:";
+"imagetransfer_transfermode_value_withresponse" = "With Response";
+"imagetransfer_transfermode_value_withoutresponse" = "Without Response";
 
 "imagetransfer_selectimage_action" = "Select image";
 "imagetransfer_imagepicker_camera" = "Take photo";
@@ -586,6 +595,13 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "imagetransfer_senddata_error" = "There was an error while transferring the image data";
 "imagetransfer_crop_action" = "Crop image";
 "imagetransfer_crop_error" = "Error cropping image ";
+
+
+
+
+
+
+
 
 // Common
 "dialog_ok" = "OK";

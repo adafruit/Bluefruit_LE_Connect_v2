@@ -72,7 +72,8 @@ class Preferences {
     private static let visualizationSwitchYZKey = "VisualizationSwitchYZ"
 
     private static let imageTransferResolutionKey = "ImageTransferResolution"
-    
+    private static let imageTransferWithoutResponseKey = "ImageTransferWithoutResponse"
+
     // MARK: - General
     static var appInSystemStatusBar: Bool {
         get {
@@ -459,6 +460,15 @@ class Preferences {
         }
         set {
             UserDefaults.standard.set(NSCoder.string(for: newValue ?? CGSize.zero), forKey: Preferences.imageTransferResolutionKey)
+        }
+    }
+    
+    static var imageTransferWithoutResponse: Bool {
+        get {
+            return getBoolPreference(Preferences.imageTransferWithoutResponseKey)
+        }
+        set {
+            setBoolPreference(Preferences.imageTransferWithoutResponseKey, newValue: newValue)
         }
     }
 

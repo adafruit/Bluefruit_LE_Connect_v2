@@ -75,7 +75,7 @@ class ImageTransferModuleManager: NSObject {
     }
     
     // MARK: - ImageTransfer Commands
-    func sendImage(_ image: UIImage) {
+    func sendImage(_ image: UIImage, transferWithoutResponse: Bool) {
         guard let imagePixels32Bit = image.pixelData32bitRGB() else {
             self.delegate?.onImageTransferFinished(error: ImageTransferError.decodeError)
             return
@@ -92,19 +92,20 @@ class ImageTransferModuleManager: NSObject {
         command.append(contentsOf: UInt16(image.size.height).toBytes)
         command.append(contentsOf: imagePixels24Bit)
         
-        sendCommandWithCrc(command)
+        let packetWithResponseEveryPacketCount = transferWithoutResponse ? Int.max : 1
+        sendCommandWithCrc(command, packetWithResponseEveryPacketCount: packetWithResponseEveryPacketCount)
     }
     
-    private func sendCommandWithCrc(_ command: [UInt8]) {
+    private func sendCommandWithCrc(_ command: [UInt8], packetWithResponseEveryPacketCount: Int) {
         var data = Data(bytes: command, count: command.count)
         data.appendCrc()
-        sendCommand(data: data)
+        sendCommand(data: data, packetWithResponseEveryPacketCount: packetWithResponseEveryPacketCount)
     }
     
-    private func sendCommand(data: Data) {
+    private func sendCommand(data: Data, packetWithResponseEveryPacketCount: Int) {
         
-        let kPacketWithResponseEveryPacketCount = 1     // Note: dont use bigger numbers or it will drop packets for big enough images
-        uartManager.sendEachPacketSequentially(blePeripheral: blePeripheral, data: data, withResponseEveryPacketCount: kPacketWithResponseEveryPacketCount, progress: { progress in
+//        let kPacketWithResponseEveryPacketCount = 1     // Note: dont use bigger numbers or it will drop packets for big enough images
+        uartManager.sendEachPacketSequentially(blePeripheral: blePeripheral, data: data, withResponseEveryPacketCount: packetWithResponseEveryPacketCount, progress: { progress in
             self.delegate?.onImageTransferProgress(progress: progress)
         }) { error in
             DLog("result: \(error ==  nil)")

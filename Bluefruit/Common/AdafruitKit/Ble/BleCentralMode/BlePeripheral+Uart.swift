@@ -226,7 +226,9 @@ extension BlePeripheral {
                 }
                 
                 if !self.isSendSequentiallyCancelled && writtenSize < data.count {
-                    self.uartSentPacket(data: data, offset: writtenSize, uartTxCharacteristic: uartTxCharacteristic, withResponseEveryPacketCount: withResponseEveryPacketCount,  numPacketsRemainingForDelay: numPacketsRemainingForDelay <= 0 ? withResponseEveryPacketCount : numPacketsRemainingForDelay-1, progress: progress, completion: completion)
+                    DispatchQueue.main.async {      // Send in main thread to avoid commandqueue function nesting limit if there is a lot of data to send
+                        self.uartSentPacket(data: data, offset: writtenSize, uartTxCharacteristic: uartTxCharacteristic, withResponseEveryPacketCount: withResponseEveryPacketCount,  numPacketsRemainingForDelay: numPacketsRemainingForDelay <= 0 ? withResponseEveryPacketCount : numPacketsRemainingForDelay-1, progress: progress, completion: completion)
+                    }
                 }
             }
             

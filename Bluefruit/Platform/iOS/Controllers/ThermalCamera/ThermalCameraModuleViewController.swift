@@ -75,6 +75,15 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
         thermalCameraData.stop()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Add bottom margin for phones without safeinsets
+        if self.view.window?.safeAreaInsets.bottom == 0 {
+            self.additionalSafeAreaInsets.bottom = 20
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

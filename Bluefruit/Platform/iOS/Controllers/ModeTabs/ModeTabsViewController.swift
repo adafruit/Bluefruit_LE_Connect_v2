@@ -33,6 +33,7 @@ class ModeTabsViewController: ScrollingTabBarViewController {
             viewControllers.append(gattServerViewController)
         }
         
+        
         setViewControllers(viewControllers, animated: false)
         selectedIndex = 0
     }

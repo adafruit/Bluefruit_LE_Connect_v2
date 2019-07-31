@@ -95,6 +95,7 @@ class ScannerViewController: ModeTabViewController {
         
         // Localization
         let localizationManager = LocalizationManager.shared
+        self.title = localizationManager.localizedString("main_tabbar_singlemode")
         filtersNameTextField.placeholder = localizationManager.localizedString("scanner_filter_name_hint")
         filtersRssiLabel.text = localizationManager.localizedString("scanner_filter_rssi_title")
         filtersUnnamedLabel.text = localizationManager.localizedString("scanner_filter_unnamed_title")
