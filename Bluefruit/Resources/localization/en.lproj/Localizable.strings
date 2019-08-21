@@ -563,9 +563,9 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "imagetransfer_navigation_title_format" = "Image Transfer - %@";
 
 "imagetransfer_help_title" = "Image Transfer";
-"imagetransfer_help_text" = "The Image Transfer module sends the image of your choice to Bluefruit LE over UART. Each image sent begins with a single byte char “!” (0x21), image width (uint16 little endian, 2 bytes), height (uint16 little endian, 2 bytes), followed by pixel data encoded as RGB 24-bit and suffixed by a single byte CRC.
+"imagetransfer_help_text" = "The Image Transfer module sends the image of your choice to Bluefruit LE over UART. Each image sent begins with a single byte char “!” (0x21), single byte char 'I' (0x49), image width (uint16 little endian, 2 bytes), height (uint16 little endian, 2 bytes), followed by pixel data encoded as RGB 24-bit and suffixed by a single byte CRC.
 
-Format: [ ‘!’ ] [ uint16 width ] [ uint16 height ] [ r g b ] [ r g b ] [ r g b ] … [ CRC ]";
+Format: [ ‘!I’ ] [ uint16 width ] [ uint16 height ] [ r g b ] [ r g b ] [ r g b ] … [ CRC ]";
 
 "imagetransfer_waitingforuart" = "Waiting for Uart...";
 "imagetransfer_resolution_title" = "Resolution:";
@@ -596,9 +596,8 @@ Format: [ ‘!’ ] [ uint16 width ] [ uint16 height ] [ r g b ] [ r g b ] [ r g
 "imagetransfer_crop_action" = "Crop image";
 "imagetransfer_crop_error" = "Error cropping image ";
 
-
-
-
+"imagetransfer_cameraneeded" = "Access to the camera is needed to take pictures";
+"imagetransfer_readexternalneeded" = "Access to the media library is needed to choose picture";
 
 
 

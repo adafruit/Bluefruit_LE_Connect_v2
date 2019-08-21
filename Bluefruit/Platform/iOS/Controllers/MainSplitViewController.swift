@@ -39,7 +39,7 @@ class MainSplitViewController: UISplitViewController {
         super.viewDidLayoutSubviews()
 
         // Update splitDividerCover
-         splitViewController(self, willChangeTo: self.displayMode)
+        splitViewController(self, willChangeTo: self.displayMode)
     }
 
     deinit {

@@ -92,7 +92,7 @@ class ImageTransferModuleManager: NSObject {
         command.append(contentsOf: UInt16(image.size.height).toBytes)
         command.append(contentsOf: imagePixels24Bit)
         
-        let packetWithResponseEveryPacketCount = transferWithoutResponse ? Int.max : 1
+        let packetWithResponseEveryPacketCount = transferWithoutResponse ? Int.max : 0
         sendCommandWithCrc(command, packetWithResponseEveryPacketCount: packetWithResponseEveryPacketCount)
     }
     
