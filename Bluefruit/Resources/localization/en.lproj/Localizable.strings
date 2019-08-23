@@ -575,6 +575,11 @@ Format: [ ‘!I’ ] [ uint16 width ] [ uint16 height ] [ r g b ] [ r g b ] [ r 
 "imagetransfer_transfermode_title" = "Transfer mode:";
 "imagetransfer_transfermode_value_withresponse" = "With Response";
 "imagetransfer_transfermode_value_withoutresponse" = "Without Response";
+"imagetransfer_transfermode_value_interleaved" = "Interleaved";
+"imagetransfer_transfermode_value_interleaved_format" = "Interleaved [%ld : 1]";
+"imagetransfer_transfermode_interleavedcount_title" = "Interleaved";
+"imagetransfer_transfermode_interleavedcount_message" = "Number of packets without response for each packet with response";
+"imagetransfer_transfermode_interleavedcount_hint" = "Enter number";
 
 "imagetransfer_selectimage_action" = "Select image";
 "imagetransfer_imagepicker_camera" = "Take photo";

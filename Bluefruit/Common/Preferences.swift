@@ -72,7 +72,7 @@ class Preferences {
     private static let visualizationSwitchYZKey = "VisualizationSwitchYZ"
 
     private static let imageTransferResolutionKey = "ImageTransferResolution"
-    private static let imageTransferWithoutResponseKey = "ImageTransferWithoutResponse"
+    private static let imageTransferInterleavedWithoutResponseCountKey = "ImageTransferInterleavedWithoutResponseCountKey"
 
     // MARK: - General
     static var appInSystemStatusBar: Bool {
@@ -463,12 +463,12 @@ class Preferences {
         }
     }
     
-    static var imageTransferWithoutResponse: Bool {
+    static var imageTransferInterleavedWithoutResponseCount: Int {
         get {
-            return getBoolPreference(Preferences.imageTransferWithoutResponseKey)
+            return UserDefaults.standard.integer(forKey: Preferences.imageTransferInterleavedWithoutResponseCountKey)
         }
         set {
-            setBoolPreference(Preferences.imageTransferWithoutResponseKey, newValue: newValue)
+            UserDefaults.standard.set(newValue, forKey: Preferences.imageTransferInterleavedWithoutResponseCountKey)
         }
     }
 

@@ -10,6 +10,7 @@ import UIKit
 
 class ImageTransferModuleViewController: PeripheralModeViewController {
     // Config
+    private static let kShowInterleaveControls = true
     private static let kAcceptedResolutions: [CGSize] = [
         CGSize(width: 4, height: 4),
         CGSize(width: 8, height: 8),
@@ -53,7 +54,7 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     fileprivate var imageTransferData: ImageTransferModuleManager!
     fileprivate var progressViewController: ProgressViewController?
     private var imageRotationDegress: CGFloat = 0
-    private var isTransferModeWithoutResponse = Preferences.imageTransferWithoutResponse
+    private var interleavedWithoutResponseCount = Preferences.imageTransferInterleavedWithoutResponseCount
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -123,7 +124,20 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     }
     
     private func updateTransferModeUI() {
-        transferModeButton.setTitle(LocalizationManager.shared.localizedString(isTransferModeWithoutResponse ? "imagetransfer_transfermode_value_withoutresponse":"imagetransfer_transfermode_value_withresponse"), for: .normal)
+        let localizationManager = LocalizationManager.shared
+        
+        let text: String
+        if interleavedWithoutResponseCount == 0 {
+            text = localizationManager.localizedString("imagetransfer_transfermode_value_withresponse")
+        }
+        else if interleavedWithoutResponseCount == Int.max {
+            text = localizationManager.localizedString("imagetransfer_transfermode_value_withoutresponse")
+        }
+        else {
+            text = String(format: localizationManager.localizedString("imagetransfer_transfermode_value_interleaved_format"), interleavedWithoutResponseCount)
+        }
+        
+        transferModeButton.setTitle(text, for: .normal)
     }
     
     // MARK: - Image
@@ -250,10 +264,61 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         resolutionTextField.resignFirstResponder()
     }
     
-    @IBAction func onClickChangeTransferMode(_ sender: Any) {
-        isTransferModeWithoutResponse = !isTransferModeWithoutResponse
-        Preferences.imageTransferWithoutResponse = isTransferModeWithoutResponse
-        updateTransferModeUI()
+    @IBAction func onClickChangeTransferMode(_ sender: UIButton) {
+        
+        if ImageTransferModuleViewController.kShowInterleaveControls {
+            let localizationManager = LocalizationManager.shared
+            let alertController = UIAlertController(title: localizationManager.localizedString("imagetransfer_transfermode_title"), message: nil, preferredStyle: .alert)
+            
+            let withoutResponseAction = UIAlertAction(title: localizationManager.localizedString("imagetransfer_transfermode_value_withoutresponse"), style: .default) { [unowned self] _ in
+                self.interleavedWithoutResponseCount = Int.max
+                Preferences.imageTransferInterleavedWithoutResponseCount = self.interleavedWithoutResponseCount
+                self.updateTransferModeUI()
+            }
+            alertController.addAction(withoutResponseAction)
+            
+            let withResponseAction = UIAlertAction(title: localizationManager.localizedString("imagetransfer_transfermode_value_withresponse"), style: .default) { [unowned self] _ in
+                self.interleavedWithoutResponseCount = 0
+                Preferences.imageTransferInterleavedWithoutResponseCount = self.interleavedWithoutResponseCount
+                self.updateTransferModeUI()
+            }
+            alertController.addAction(withResponseAction)
+            
+            let interleavedResponseAction = UIAlertAction(title: localizationManager.localizedString("imagetransfer_transfermode_value_interleaved"), style: .default) { [unowned self] _ in
+                
+                let alertController = UIAlertController(title: localizationManager.localizedString("imagetransfer_transfermode_interleavedcount_title"), message: localizationManager.localizedString("imagetransfer_transfermode_interleavedcount_message"), preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_cancel"), style: .cancel, handler: nil))
+                
+                alertController.addTextField(configurationHandler: { textField in
+                    textField.placeholder = localizationManager.localizedString("imagetransfer_transfermode_interleavedcount_hint")
+                    textField.keyboardType = .numberPad
+                })
+                
+                alertController.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .default, handler: { action in
+                   
+                    let interleavedTextField = alertController.textFields![0] as UITextField
+                    
+                    if let text = interleavedTextField.text, let interleaveCount = Int(text) {
+                        self.interleavedWithoutResponseCount = interleaveCount
+                        Preferences.imageTransferInterleavedWithoutResponseCount = self.interleavedWithoutResponseCount
+                        self.updateTransferModeUI()
+                    }
+                }))
+                
+                self.present(alertController, animated: true)
+            }
+            alertController.addAction(interleavedResponseAction)
+            
+            
+            alertController.popoverPresentationController?.sourceView = sender
+            alertController.popoverPresentationController?.sourceRect = sender.bounds
+            self.present(alertController, animated: true, completion: nil)
+        }
+        else {
+            interleavedWithoutResponseCount = interleavedWithoutResponseCount == 0 ? Int.max : 0
+            Preferences.imageTransferInterleavedWithoutResponseCount = interleavedWithoutResponseCount
+            updateTransferModeUI()
+        }
     }
     
     @IBAction func onClickRotateLeft(_ sender: Any) {
@@ -274,7 +339,7 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         progressViewController!.setProgressText(LocalizationManager.shared.localizedString("imagetransfer_transferring"))
         self.present(progressViewController!, animated: true, completion: { [unowned self] in
             // Start image transfer process
-            self.imageTransferData.sendImage(image, transferWithoutResponse: self.isTransferModeWithoutResponse)
+            self.imageTransferData.sendImage(image, packetWithResponseEveryPacketCount: self.interleavedWithoutResponseCount)
         })
     }
 }

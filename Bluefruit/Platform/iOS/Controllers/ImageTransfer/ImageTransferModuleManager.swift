@@ -75,7 +75,7 @@ class ImageTransferModuleManager: NSObject {
     }
     
     // MARK: - ImageTransfer Commands
-    func sendImage(_ image: UIImage, transferWithoutResponse: Bool) {
+    func sendImage(_ image: UIImage, packetWithResponseEveryPacketCount: Int) {
         guard let imagePixels32Bit = image.pixelData32bitRGB() else {
             self.delegate?.onImageTransferFinished(error: ImageTransferError.decodeError)
             return
@@ -92,7 +92,6 @@ class ImageTransferModuleManager: NSObject {
         command.append(contentsOf: UInt16(image.size.height).toBytes)
         command.append(contentsOf: imagePixels24Bit)
         
-        let packetWithResponseEveryPacketCount = transferWithoutResponse ? Int.max : 0
         sendCommandWithCrc(command, packetWithResponseEveryPacketCount: packetWithResponseEveryPacketCount)
     }
     
