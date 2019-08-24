@@ -179,8 +179,8 @@ class BleManager: NSObject {
 
         #if os(OSX)
         #else
-            if shouldNotifyOnConnection || shouldNotifyOnDisconnection || shouldNotifyOnDisconnection {
-                options = [CBConnectPeripheralOptionNotifyOnConnectionKey: shouldNotifyOnConnection, CBConnectPeripheralOptionNotifyOnDisconnectionKey: shouldNotifyOnDisconnection, CBConnectPeripheralOptionNotifyOnNotificationKey: shouldNotifyOnDisconnection]
+            if shouldNotifyOnConnection || shouldNotifyOnDisconnection || shouldNotifyOnNotification {
+                options = [CBConnectPeripheralOptionNotifyOnConnectionKey: shouldNotifyOnConnection, CBConnectPeripheralOptionNotifyOnDisconnectionKey: shouldNotifyOnDisconnection, CBConnectPeripheralOptionNotifyOnNotificationKey: shouldNotifyOnNotification]
             }
         #endif
 
