@@ -425,8 +425,10 @@ class ScannerViewController: ModeTabViewController {
         self.filtersDisclosureButton.isSelected = isOpen
 
         self.filtersPanelViewHeightConstraint.constant = isOpen ? ScannerViewController.kFiltersPanelOpenHeight:ScannerViewController.kFiltersPanelClosedHeight
-        UIView.animate(withDuration: animated ? 0.3:0) {
-            self.view.layoutIfNeeded()
+        if self.view.window != nil {
+            UIView.animate(withDuration: animated ? 0.3:0) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
 
@@ -456,10 +458,12 @@ class ScannerViewController: ModeTabViewController {
     private func openMultiConnectPanel(isOpen: Bool, animated: Bool) {
         //Preferences.scanMultiConnectIsPanelOpen = isOpen
         self.multiConnectDisclosureButton.isSelected = isOpen
-
+        
         self.multiConnectPanelViewHeightConstraint.constant = isOpen ? ScannerViewController.kMultiConnectPanelOpenHeight:ScannerViewController.kMultiConnectPanelClosedHeight
-        UIView.animate(withDuration: animated ? 0.3:0) {
-            self.view.layoutIfNeeded()
+        if self.view.window != nil {
+            UIView.animate(withDuration: animated ? 0.3:0) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
 

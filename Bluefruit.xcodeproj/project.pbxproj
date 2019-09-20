@@ -211,6 +211,14 @@
 		A991A7C422AFDFE2003AE632 /* UIImage+pixelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991A7C122AFDF1E003AE632 /* UIImage+pixelData.swift */; };
 		A9A6C2471E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */; };
 		A9A89BDC1E83C5B000724F0E /* StyledConnectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A89BDB1E83C5B000724F0E /* StyledConnectButton.swift */; };
+		A9B7E0802334E72100ED0384 /* ColorPaletteInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E41E4D2B8A003D1CEA /* ColorPaletteInterfaceController.swift */; };
+		A9B7E0812334E72100ED0384 /* ColorRGBInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E51E4D2B8A003D1CEA /* ColorRGBInterfaceController.swift */; };
+		A9B7E0822334E72100ED0384 /* ConnectedInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E61E4D2B8A003D1CEA /* ConnectedInterfaceController.swift */; };
+		A9B7E0832334E72100ED0384 /* ControlModeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E71E4D2B8A003D1CEA /* ControlModeInterfaceController.swift */; };
+		A9B7E0842334E72100ED0384 /* ControlPadInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E81E4D2B8A003D1CEA /* ControlPadInterfaceController.swift */; };
+		A9B7E0852334E72100ED0384 /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E91E4D2B8A003D1CEA /* MainInterfaceController.swift */; };
+		A9B7E0862334E72100ED0384 /* PickerModeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5EA1E4D2B8A003D1CEA /* PickerModeInterfaceController.swift */; };
+		A9B7E0872334E72100ED0384 /* ScanningInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5EB1E4D2B8A003D1CEA /* ScanningInterfaceController.swift */; };
 		A9BAD20E1E3FA1370021DFA9 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */; };
 		A9BAD2121E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2101E3FC6CA0021DFA9 /* InfoCharacteristicTableViewCell.swift */; };
 		A9BAD2131E3FC6CA0021DFA9 /* InfoModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BAD2111E3FC6CA0021DFA9 /* InfoModeViewController.swift */; };
@@ -265,22 +273,6 @@
 		A9BCD6041E4D34D9003D1CEA /* HandoffManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD6011E4D34D9003D1CEA /* HandoffManager.swift */; };
 		A9BCD6051E4D34D9003D1CEA /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD6021E4D34D9003D1CEA /* WatchSessionManager.swift */; };
 		A9BCD6061E4D34D9003D1CEA /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD6021E4D34D9003D1CEA /* WatchSessionManager.swift */; };
-		A9BCD6071E4D36DE003D1CEA /* ColorPaletteInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E41E4D2B8A003D1CEA /* ColorPaletteInterfaceController.swift */; };
-		A9BCD6081E4D36DE003D1CEA /* ColorRGBInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E51E4D2B8A003D1CEA /* ColorRGBInterfaceController.swift */; };
-		A9BCD6091E4D36DE003D1CEA /* ConnectedInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E61E4D2B8A003D1CEA /* ConnectedInterfaceController.swift */; };
-		A9BCD60A1E4D36DE003D1CEA /* ControlModeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E71E4D2B8A003D1CEA /* ControlModeInterfaceController.swift */; };
-		A9BCD60B1E4D36DE003D1CEA /* ControlPadInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E81E4D2B8A003D1CEA /* ControlPadInterfaceController.swift */; };
-		A9BCD60C1E4D36DE003D1CEA /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E91E4D2B8A003D1CEA /* MainInterfaceController.swift */; };
-		A9BCD60D1E4D36DE003D1CEA /* PickerModeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5EA1E4D2B8A003D1CEA /* PickerModeInterfaceController.swift */; };
-		A9BCD60E1E4D36DE003D1CEA /* ScanningInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5EB1E4D2B8A003D1CEA /* ScanningInterfaceController.swift */; };
-		A9BCD60F1E4D36DF003D1CEA /* ColorPaletteInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E41E4D2B8A003D1CEA /* ColorPaletteInterfaceController.swift */; };
-		A9BCD6101E4D36DF003D1CEA /* ColorRGBInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E51E4D2B8A003D1CEA /* ColorRGBInterfaceController.swift */; };
-		A9BCD6111E4D36DF003D1CEA /* ConnectedInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E61E4D2B8A003D1CEA /* ConnectedInterfaceController.swift */; };
-		A9BCD6121E4D36DF003D1CEA /* ControlModeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E71E4D2B8A003D1CEA /* ControlModeInterfaceController.swift */; };
-		A9BCD6131E4D36DF003D1CEA /* ControlPadInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E81E4D2B8A003D1CEA /* ControlPadInterfaceController.swift */; };
-		A9BCD6141E4D36DF003D1CEA /* MainInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E91E4D2B8A003D1CEA /* MainInterfaceController.swift */; };
-		A9BCD6151E4D36DF003D1CEA /* PickerModeInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5EA1E4D2B8A003D1CEA /* PickerModeInterfaceController.swift */; };
-		A9BCD6161E4D36DF003D1CEA /* ScanningInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5EB1E4D2B8A003D1CEA /* ScanningInterfaceController.swift */; };
 		A9BCD6171E4D3932003D1CEA /* HexColorConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5851E4D2616003D1CEA /* HexColorConversions.swift */; };
 		A9BCD6251E4D3A9F003D1CEA /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD6241E4D3A9F003D1CEA /* main.swift */; };
 		A9BCD62A1E4D3B0B003D1CEA /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD6271E4D3B0B003D1CEA /* CommandLine.swift */; };
@@ -1748,7 +1740,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = Adafruit;
 				TargetAttributes = {
 					A9286C951E3A9216008E5F81 = {
@@ -2008,7 +2000,6 @@
 				A91D65A41EFC15900097C8B6 /* PeripheralModulesDeviceTableViewCell.swift in Sources */,
 				A94A21B11E417271006A5F33 /* UartTimetampTableViewCell.swift in Sources */,
 				A91542721EDD7BC9007A34EA /* CalibrationMenuViewController.swift in Sources */,
-				A9BCD6081E4D36DE003D1CEA /* ColorRGBInterfaceController.swift in Sources */,
 				A9F4E1BD1F04467200BF8A70 /* ISColorWheel.m in Sources */,
 				A9CA084E1F35EF6900A0C621 /* UartServiceViewController.swift in Sources */,
 				A9286CDB1E3A9B22008E5F81 /* Preferences.swift in Sources */,
@@ -2021,10 +2012,8 @@
 				A907983D1E43A4DA005470A5 /* PinIOTableViewCell.swift in Sources */,
 				A915427D1EDD7CE8007A34EA /* Config.swift in Sources */,
 				A91542701EDD7BC9007A34EA /* MagnetometerProgressViewController.swift in Sources */,
-				A9BCD60E1E4D36DE003D1CEA /* ScanningInterfaceController.swift in Sources */,
 				A9286CD61E3A9B22008E5F81 /* AlertHelper.swift in Sources */,
 				A91502741EE4DAA800298005 /* PeripheralModulesTableViewCell.swift in Sources */,
-				A9BCD60C1E4D36DE003D1CEA /* MainInterfaceController.swift in Sources */,
 				A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */,
 				A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */,
 				A93845D322DFD99F00CB218E /* ImagePickerCroppingAreaViewController.swift in Sources */,
@@ -2037,10 +2026,7 @@
 				A915426F1EDD7BC9007A34EA /* MagnetometerParametersViewController.swift in Sources */,
 				A91542681EDD7BC8007A34EA /* GyroscopePageContentViewController.swift in Sources */,
 				A915427F1EDD8041007A34EA /* StyledAnimations.swift in Sources */,
-				A9BCD6071E4D36DE003D1CEA /* ColorPaletteInterfaceController.swift in Sources */,
-				A9BCD60B1E4D36DE003D1CEA /* ControlPadInterfaceController.swift in Sources */,
 				A915426E1EDD7BC9007A34EA /* MagnetometerPageMatrixViewController.swift in Sources */,
-				A9BCD60A1E4D36DE003D1CEA /* ControlModeInterfaceController.swift in Sources */,
 				A983786D1E43422100170319 /* MqttSettingPickerCell.swift in Sources */,
 				A9286CD81E3A9B22008E5F81 /* Data+ScanValue.swift in Sources */,
 				A9BB78E21EDCEC65004663DE /* Calibration+Mahony.swift in Sources */,
@@ -2087,7 +2073,6 @@
 				A9CA085D1F35F84500A0C621 /* PeripheralModeViewController.swift in Sources */,
 				A9BB78E31EDCEC65004663DE /* Calibration.swift in Sources */,
 				A91E7D5C1E4216ED00DE90C6 /* UIImage+Color.swift in Sources */,
-				A9BCD60D1E4D36DE003D1CEA /* PickerModeInterfaceController.swift in Sources */,
 				A915426D1EDD7BC9007A34EA /* MagnetometerPageContentViewController.swift in Sources */,
 				A991A7C022AFDCFB003AE632 /* IntToBytes.swift in Sources */,
 				A9CA085A1F35F4B600A0C621 /* ModeTabsViewController.swift in Sources */,
@@ -2096,7 +2081,6 @@
 				A93DE7691F36195900B2EB5D /* BlePeripheral.swift in Sources */,
 				A90C79741E40CB150076E8AD /* EmptyDetailsViewController.swift in Sources */,
 				A9A89BDC1E83C5B000724F0E /* StyledConnectButton.swift in Sources */,
-				A9BCD6091E4D36DE003D1CEA /* ConnectedInterfaceController.swift in Sources */,
 				A907982A1E4349D6005470A5 /* ControllerComponentsTableViewCell.swift in Sources */,
 				A9BB78E41EDCEC65004663DE /* SensorParameters.swift in Sources */,
 				A91542741EDD7BC9007A34EA /* SensorConfigViewController.swift in Sources */,
@@ -2189,20 +2173,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A9BCD6141E4D36DF003D1CEA /* MainInterfaceController.swift in Sources */,
 				A9BCD6171E4D3932003D1CEA /* HexColorConversions.swift in Sources */,
+				A9B7E0812334E72100ED0384 /* ColorRGBInterfaceController.swift in Sources */,
+				A9B7E0822334E72100ED0384 /* ConnectedInterfaceController.swift in Sources */,
 				A9BCD6061E4D34D9003D1CEA /* WatchSessionManager.swift in Sources */,
-				A9BCD6111E4D36DF003D1CEA /* ConnectedInterfaceController.swift in Sources */,
+				A9B7E0832334E72100ED0384 /* ControlModeInterfaceController.swift in Sources */,
 				A9BCD5E11E4D289E003D1CEA /* NotificationController.swift in Sources */,
-				A9BCD6121E4D36DF003D1CEA /* ControlModeInterfaceController.swift in Sources */,
-				A9BCD6161E4D36DF003D1CEA /* ScanningInterfaceController.swift in Sources */,
-				A9BCD6101E4D36DF003D1CEA /* ColorRGBInterfaceController.swift in Sources */,
-				A9BCD6151E4D36DF003D1CEA /* PickerModeInterfaceController.swift in Sources */,
-				A9BCD6131E4D36DF003D1CEA /* ControlPadInterfaceController.swift in Sources */,
+				A9B7E0862334E72100ED0384 /* PickerModeInterfaceController.swift in Sources */,
+				A9B7E0852334E72100ED0384 /* MainInterfaceController.swift in Sources */,
 				A9BCD5FF1E4D2BE5003D1CEA /* LogHelper.swift in Sources */,
+				A9B7E0842334E72100ED0384 /* ControlPadInterfaceController.swift in Sources */,
+				A9B7E0872334E72100ED0384 /* ScanningInterfaceController.swift in Sources */,
+				A9B7E0802334E72100ED0384 /* ColorPaletteInterfaceController.swift in Sources */,
 				A9BCD6041E4D34D9003D1CEA /* HandoffManager.swift in Sources */,
 				A9BCD5DE1E4D289E003D1CEA /* ExtensionDelegate.swift in Sources */,
-				A9BCD60F1E4D36DF003D1CEA /* ColorPaletteInterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2535,6 +2519,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 2X94RM7457;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Bluefruit/Platform/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
@@ -2553,6 +2538,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 2X94RM7457;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Bluefruit/Platform/macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
