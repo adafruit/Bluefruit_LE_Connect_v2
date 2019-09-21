@@ -117,7 +117,7 @@ class UartDataManager {
 
     func removeRxCacheFirst(n: Int, peripheralIdentifier identifier: UUID) {
         // Note: this is usually called from onUartRx delegates, so don't use rxDataSemaphore because it is already being used by the onUartRX caller
-        guard var rxData = rxDatas[identifier] else { return }
+        guard let rxData = rxDatas[identifier] else { return }
 
         //DLog("remove \(n) items")
         //DLog("pre remove: \(hexDescription(data: rxData))")
@@ -132,7 +132,7 @@ class UartDataManager {
     }
 
     func flushRxCache(peripheralIdentifier identifier: UUID) {
-        guard var rxData = rxDatas[identifier] else { return }
+        guard let rxData = rxDatas[identifier] else { return }
 
         if rxData.count > 0 {
             rxDataSemaphore.wait()

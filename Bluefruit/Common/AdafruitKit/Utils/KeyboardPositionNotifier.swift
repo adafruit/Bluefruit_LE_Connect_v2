@@ -41,7 +41,7 @@ class KeyboardPositionNotifier: NSObject {
     }
 
     private func keyboardWillBeShown(notification: Notification) {
-        var info = notification.userInfo!
+        let info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
 
         keyboardPositionChanged(keyboardFrame: keyboardFrame, keyboardShown: true)
