@@ -46,7 +46,9 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     @IBOutlet weak var uartWaitingLabel: UILabel!
     @IBOutlet weak var tranferModeLabel: UILabel!
     @IBOutlet weak var transferModeButton: UIButton!
-    
+    @IBOutlet weak var colorSpaceLabel: UILabel!
+    @IBOutlet weak var colorSpaceButton: UIButton!
+
     // Data
     private var imagePicker: ImagePicker!
     private var resolution: CGSize = Preferences.imageTransferResolution ?? CGSize(width:64, height: 64)
@@ -55,7 +57,8 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     fileprivate var progressViewController: ProgressViewController?
     private var imageRotationDegress: CGFloat = 0
     private var interleavedWithoutResponseCount = Preferences.imageTransferInterleavedWithoutResponseCount
-
+    private var isColorSpace24Bit = Preferences.imageTransferIsColorSpace24Bit
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,13 +91,18 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         updateImage(resolution: resolution, rotation: imageRotationDegress)    // Setup with the initial value
         updateTransferModeUI()
         
+        updateColorSpaceUI()
+        
         // Localization
         resolutionLabel.text = localizationManager.localizedString("imagetransfer_resolution_title")
         imageLabel.text = localizationManager.localizedString("imagetransfer_image_title")
         tranferModeLabel.text = localizationManager.localizedString("imagetransfer_transfermode_title")
         uartWaitingLabel.text = localizationManager.localizedString("imagetransfer_waitingforuart")
         imageOriginButton.setTitle(LocalizationManager.shared.localizedString("imagetransfer_imageorigin_choose"), for: .normal)
-
+        
+        colorSpaceLabel.text = localizationManager.localizedString("imagetransfer_colorspace_title")
+        
+        
         imageTransferData.start()
     }
     
@@ -138,6 +146,11 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         }
         
         transferModeButton.setTitle(text, for: .normal)
+    }
+    
+    private func updateColorSpaceUI() {
+        let text = LocalizationManager.shared.localizedString(isColorSpace24Bit ? "imagetransfer_colorspace_24bit":"imagetransfer_colorspace_16bit")
+        colorSpaceButton.setTitle(text, for: .normal)
     }
     
     // MARK: - Image
@@ -268,7 +281,7 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         
         if ImageTransferModuleViewController.kShowInterleaveControls {
             let localizationManager = LocalizationManager.shared
-            let alertController = UIAlertController(title: localizationManager.localizedString("imagetransfer_transfermode_title"), message: nil, preferredStyle: .alert)
+            let alertController = UIAlertController(title: localizationManager.localizedString("imagetransfer_transfermode_title"), message: nil, preferredStyle: .actionSheet)
             
             let withoutResponseAction = UIAlertAction(title: localizationManager.localizedString("imagetransfer_transfermode_value_withoutresponse"), style: .default) { [unowned self] _ in
                 self.interleavedWithoutResponseCount = Int.max
@@ -309,7 +322,9 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
             }
             alertController.addAction(interleavedResponseAction)
             
-            
+            alertController.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_cancel"), style: .cancel, handler: nil))
+                  
+        
             alertController.popoverPresentationController?.sourceView = sender
             alertController.popoverPresentationController?.sourceRect = sender.bounds
             self.present(alertController, animated: true, completion: nil)
@@ -319,6 +334,12 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
             Preferences.imageTransferInterleavedWithoutResponseCount = interleavedWithoutResponseCount
             updateTransferModeUI()
         }
+    }
+    
+    @IBAction func onClickColorSpace(_ sender: Any) {
+        isColorSpace24Bit = !isColorSpace24Bit
+        Preferences.imageTransferIsColorSpace24Bit = isColorSpace24Bit
+        updateColorSpaceUI()
     }
     
     @IBAction func onClickRotateLeft(_ sender: Any) {
@@ -339,7 +360,7 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         progressViewController!.setProgressText(LocalizationManager.shared.localizedString("imagetransfer_transferring"))
         self.present(progressViewController!, animated: true, completion: { [unowned self] in
             // Start image transfer process
-            self.imageTransferData.sendImage(image, packetWithResponseEveryPacketCount: self.interleavedWithoutResponseCount)
+            self.imageTransferData.sendImage(image, packetWithResponseEveryPacketCount: self.interleavedWithoutResponseCount, isColorSpace24Bit: self.isColorSpace24Bit)
         })
     }
 }

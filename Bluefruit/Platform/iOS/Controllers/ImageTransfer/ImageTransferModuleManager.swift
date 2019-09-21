@@ -75,22 +75,53 @@ class ImageTransferModuleManager: NSObject {
     }
     
     // MARK: - ImageTransfer Commands
-    func sendImage(_ image: UIImage, packetWithResponseEveryPacketCount: Int) {
+    func sendImage(_ image: UIImage, packetWithResponseEveryPacketCount: Int, isColorSpace24Bit: Bool) {
         guard let imagePixels32Bit = image.pixelData32bitRGB() else {
             self.delegate?.onImageTransferFinished(error: ImageTransferError.decodeError)
             return
         }
         
-        // Convert 32bit color data to 24bit
-        let imagePixels24Bit = imagePixels32Bit.enumerated().filter({ index, _ in
-            index % 4 != 3
-        }).map { $0.1 }
+        let imagePixels: [UInt8]
+        if isColorSpace24Bit {
+            // Convert 32bit color data to 24bit (888)
+            imagePixels = imagePixels32Bit.enumerated().filter({ index, _ in
+                index % 4 != 3
+            }).map { $0.1 }
+        }
+        else {
+            // Convert 32bit color data to 16bit (655)
+            var r: UInt8 = 0, g: UInt8 = 0
+            var pixels = [UInt8]()
+            
+            for (i, value) in imagePixels32Bit.enumerated() {
+                let j = i % 4
+                if j == 0 {
+                    r = value
+                }
+                else if j == 1 {
+                    g = value
+                }
+                else if j == 2 {
+                    let b = value
+                    
+                    let rgb16 = (UInt16(r & 0xF8) << 8) | (UInt16(g & 0xFC) << 3) | UInt16(b >> 3)
+                    let high = UInt8(rgb16 >> 8)
+                    let low = UInt8(rgb16 & 0xff)
+                    
+                    pixels.append(high)
+                    pixels.append(low)
+                }
+            }
+            
+            imagePixels = pixels
+        }
         
         // Command: '!I'
         var command: [UInt8] = [0x21, 0x49]       // ! + Command + width + height
+        command.append( UInt8(isColorSpace24Bit ? 24:16) )  // Color space 
         command.append(contentsOf: UInt16(image.size.width).toBytes)
         command.append(contentsOf: UInt16(image.size.height).toBytes)
-        command.append(contentsOf: imagePixels24Bit)
+        command.append(contentsOf: imagePixels)
         
         sendCommandWithCrc(command, packetWithResponseEveryPacketCount: packetWithResponseEveryPacketCount)
     }

@@ -600,6 +600,9 @@ Format: [ ‘!I’ ] [ uint16 width ] [ uint16 height ] [ r g b ] [ r g b ] [ r 
 "imagetransfer_senddata_error" = "There was an error while transferring the image data";
 "imagetransfer_crop_action" = "Crop image";
 "imagetransfer_crop_error" = "Error cropping image ";
+"imagetransfer_colorspace_title" = "Color Space:";
+"imagetransfer_colorspace_16bit" = "16-bit";
+"imagetransfer_colorspace_24bit" = "24-bit";
 
 "imagetransfer_cameraneeded" = "Access to the camera is needed to take pictures";
 "imagetransfer_readexternalneeded" = "Access to the media library is needed to choose picture";

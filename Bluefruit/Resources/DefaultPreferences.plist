@@ -80,5 +80,9 @@
 	<integer>0</integer>
 	<key>VisualizationSwitchYZ</key>
 	<true/>
+	<key>ImageTransferInterleavedWithoutResponseCountKey</key>
+	<integer>50</integer>
+	<key>IsColorSpace24BitKey</key>
+	<false/>
 </dict>
 </plist>

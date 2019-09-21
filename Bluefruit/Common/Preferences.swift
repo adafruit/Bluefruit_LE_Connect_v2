@@ -73,7 +73,9 @@ class Preferences {
 
     private static let imageTransferResolutionKey = "ImageTransferResolution"
     private static let imageTransferInterleavedWithoutResponseCountKey = "ImageTransferInterleavedWithoutResponseCountKey"
+    private static let imageTransferIsColorSpace24BitKey = "IsColorSpace24BitKey"
 
+    
     // MARK: - General
     static var appInSystemStatusBar: Bool {
         get {
@@ -471,6 +473,16 @@ class Preferences {
             UserDefaults.standard.set(newValue, forKey: Preferences.imageTransferInterleavedWithoutResponseCountKey)
         }
     }
+    
+    static var imageTransferIsColorSpace24Bit: Bool {
+        get {
+            return getBoolPreference(Preferences.imageTransferIsColorSpace24BitKey)
+        }
+        set {
+            setBoolPreference(Preferences.imageTransferIsColorSpace24BitKey, newValue: newValue)
+        }
+    }
+    
 
     // MARK: - Common
     static func getBoolPreference(_ key: String) -> Bool {

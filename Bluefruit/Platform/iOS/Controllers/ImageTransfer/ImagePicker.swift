@@ -44,7 +44,7 @@ class ImagePicker: NSObject {
     public func present(from sourceView: UIView) {
         
         let localizationManager = LocalizationManager.shared
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: localizationManager.localizedString("imagetransfer_imageorigin_choose"), message: nil, preferredStyle: .actionSheet)
         
         if let action = self.action(for: .camera, title: localizationManager.localizedString("imagetransfer_imagepicker_camera")) {
             alertController.addAction(action)
