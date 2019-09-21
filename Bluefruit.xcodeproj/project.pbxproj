@@ -106,6 +106,7 @@
 		A93DE7851F36196B00B2EB5D /* UartLogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE75A1F36195900B2EB5D /* UartLogManager.swift */; };
 		A93DE7861F36196B00B2EB5D /* UartPacketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE75B1F36195900B2EB5D /* UartPacketManager.swift */; };
 		A93DE78C1F36196B00B2EB5D /* UartPacketManagerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7621F36195900B2EB5D /* UartPacketManagerBase.swift */; };
+		A94056F12336EB2100872FD1 /* TraitOverrideContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A94056F02336EB2100872FD1 /* TraitOverrideContainerViewController.swift */; };
 		A945EA551E4DEF0100737BB0 /* XML.swift in Sources */ = {isa = PBXBuildFile; fileRef = A945EA281E4DEF0100737BB0 /* XML.swift */; };
 		A945EA6B1E4DF3CA00737BB0 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A945EA6A1E4DF3CA00737BB0 /* libz.tbd */; };
 		A945EA6F1E4DF53100737BB0 /* MSWeakTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = A945EA6E1E4DF53100737BB0 /* MSWeakTimer.m */; };
@@ -456,6 +457,7 @@
 		A93DE7601F36195900B2EB5D /* UartPeripheralModePacketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartPeripheralModePacketManager.swift; sourceTree = "<group>"; };
 		A93DE7611F36195900B2EB5D /* UartPeripheralService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartPeripheralService.swift; sourceTree = "<group>"; };
 		A93DE7621F36195900B2EB5D /* UartPacketManagerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartPacketManagerBase.swift; sourceTree = "<group>"; };
+		A94056F02336EB2100872FD1 /* TraitOverrideContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitOverrideContainerViewController.swift; sourceTree = "<group>"; };
 		A945EA281E4DEF0100737BB0 /* XML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XML.swift; sourceTree = "<group>"; };
 		A945EA6A1E4DF3CA00737BB0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		A945EA6D1E4DF53100737BB0 /* MSWeakTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSWeakTimer.h; sourceTree = "<group>"; };
@@ -908,6 +910,7 @@
 		A9286CB91E3A9383008E5F81 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				A94056F02336EB2100872FD1 /* TraitOverrideContainerViewController.swift */,
 				A9E1371B1ECB2F11004C64E1 /* MainSplitViewController.swift */,
 				A90C79721E40CB150076E8AD /* EmptyDetailsViewController.swift */,
 				A90C79731E40CB150076E8AD /* HelpViewController.swift */,
@@ -2098,6 +2101,7 @@
 				A98DE4131E456AFC00EEF4C8 /* NeopixelModuleViewController.swift in Sources */,
 				A915427B1EDD7C3F007A34EA /* StyledLinkedButton.swift in Sources */,
 				A9D2343C1E3AD70300DC0C99 /* PeripheralTableViewCell.swift in Sources */,
+				A94056F12336EB2100872FD1 /* TraitOverrideContainerViewController.swift in Sources */,
 				A93DE77D1F36195900B2EB5D /* UartPacketManagerBase.swift in Sources */,
 				A91542691EDD7BC8007A34EA /* GyroscopePageDataViewController.swift in Sources */,
 				A969466D1E3CD0CC00BA8DAA /* StyledButton.swift in Sources */,

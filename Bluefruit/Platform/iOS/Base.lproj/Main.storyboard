@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="KIK-Wu-H5D">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -2134,7 +2134,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="scaleAspectFit" image="scanning_background" translatesAutoresizingMaskIntoConstraints="NO" id="0vs-NH-GL1">
-                                <rect key="frame" x="0.0" y="0.0" width="333" height="333"/>
+                                <rect key="frame" x="-166.66666666666666" y="-166.66666666666666" width="666.33333333333337" height="666.33333333333337"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="0vs-NH-GL1" secondAttribute="height" multiplier="1:1" id="g06-vu-F7H"/>
                                     <constraint firstAttribute="width" constant="530" id="yEh-u0-elV"/>
@@ -2146,7 +2146,7 @@
                                 </variation>
                             </imageView>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="scaleAspectFit" image="scanning_background" translatesAutoresizingMaskIntoConstraints="NO" id="aaC-Ba-9J9">
-                                <rect key="frame" x="0.0" y="0.0" width="333" height="333"/>
+                                <rect key="frame" x="-166.66666666666666" y="-166.66666666666666" width="666.33333333333337" height="666.33333333333337"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="530" id="FAm-Ea-rer"/>
                                     <constraint firstAttribute="height" constant="800" id="Frq-Cc-SVq"/>
@@ -2201,6 +2201,35 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2DY-gE-SjX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2515" y="815"/>
+        </scene>
+        <!--Trait Override Container View Controller-->
+        <scene sceneID="R76-qA-ueg">
+            <objects>
+                <viewController id="KIK-Wu-H5D" customClass="TraitOverrideContainerViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6l9-9S-oEs">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ORU-Nj-ox5">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                                <connections>
+                                    <segue destination="H1p-Uh-vWS" kind="embed" id="wMV-pf-tet"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="ORU-Nj-ox5" firstAttribute="trailing" secondItem="6l9-9S-oEs" secondAttribute="trailing" id="R2m-CW-YDt"/>
+                            <constraint firstAttribute="bottom" secondItem="ORU-Nj-ox5" secondAttribute="bottom" id="dNa-iX-ml5"/>
+                            <constraint firstItem="ORU-Nj-ox5" firstAttribute="leading" secondItem="6l9-9S-oEs" secondAttribute="leading" id="gdW-lO-7vv"/>
+                            <constraint firstItem="ORU-Nj-ox5" firstAttribute="top" secondItem="6l9-9S-oEs" secondAttribute="top" id="rhb-y7-zx4"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="OEt-sm-G3q"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VgS-1O-rR2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2951.1999999999998" y="-456.65024630541876"/>
         </scene>
         <!--Main Split View Controller-->
         <scene sceneID="Nki-YV-4Qg">

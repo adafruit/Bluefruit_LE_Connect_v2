@@ -11,7 +11,6 @@ import UIKit
 class MainSplitViewController: UISplitViewController {
 
     // Data
-    fileprivate var splitDividerCover = UIView()
     private weak var didDisconnectFromPeripheralObserver: NSObjectProtocol?
 
     // MARK: - View Lifecycle
@@ -23,8 +22,6 @@ class MainSplitViewController: UISplitViewController {
 
         // Hack to hide the white split divider
         self.view.backgroundColor = UIColor.darkGray
-        splitDividerCover.backgroundColor = UIColor.darkGray
-        self.view.addSubview(splitDividerCover)
 
         // Disconnect detection should work even when the viewcontroller is not shown
         didDisconnectFromPeripheralObserver = NotificationCenter.default.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: didDisconnectFromPeripheral)
@@ -35,27 +32,10 @@ class MainSplitViewController: UISplitViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        // Update splitDividerCover
-        splitViewController(self, willChangeTo: self.displayMode)
-    }
-
     deinit {
         if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {NotificationCenter.default.removeObserver(didDisconnectFromPeripheralObserver)}
     }
 
-    
-    override var traitCollection: UITraitCollection {
-        // Force iphone plus to behave like an standard iphone (to avoid disconnection problems when rotating). If removed check that "ScannerViewController -> viewWillAppear -> autodisconnection when only 1 connected peripheral" won't force an disconnect incorrectly
-        if UI_USER_INTERFACE_IDIOM() == .pad {
-            return super.traitCollection
-        } else {
-            let horizontal = UITraitCollection(horizontalSizeClass: .compact)
-            return UITraitCollection(traitsFrom: [super.traitCollection, horizontal])
-        }
-    }
 
     // MARK: - Notifications
     fileprivate func didDisconnectFromPeripheral(notification: Notification) {
@@ -111,16 +91,5 @@ extension MainSplitViewController: UISplitViewControllerDelegate {
 
         let connectedPeripherals = BleManager.shared.connectedPeripherals()
         return connectedPeripherals.isEmpty
-    }
-
-    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewController.DisplayMode) {
-        // Hack to hide splitdivider cover
-        let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
-        let isCoverHidden = isFullScreen || displayMode != .allVisible
-        splitDividerCover.isHidden = isCoverHidden
-        if !isCoverHidden {
-            let masterViewWidth = svc.primaryColumnWidth
-            splitDividerCover.frame = CGRect(x: masterViewWidth, y: 0, width: 1, height: svc.view.bounds.size.height)
-        }
     }
 }

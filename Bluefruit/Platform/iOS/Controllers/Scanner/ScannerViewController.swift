@@ -128,7 +128,6 @@ class ScannerViewController: ModeTabViewController {
         DLog("Scanner: Register notifications")
 
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
-
         if isFullScreen {
             // If only connected to 1 peripheral and coming back to this
             let connectedPeripherals = BleManager.shared.connectedPeripherals()
