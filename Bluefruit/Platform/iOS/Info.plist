@@ -26,8 +26,6 @@
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Bluefruit needs access to Bluetooth to connect to peripherals</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Bluefruit would like to make data available to connected bluetooth devices while the app is in background</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Image Transfer requires access to the camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

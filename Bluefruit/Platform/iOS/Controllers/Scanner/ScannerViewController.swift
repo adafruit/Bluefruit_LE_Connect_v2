@@ -139,12 +139,18 @@ class ScannerViewController: ModeTabViewController {
             }
         }
 
-        // Start scannning
-        BleManager.shared.startScan()
-//        BleManager.sharedInstance.startScan(withServices: ScannerViewController.kServicesToScan)
 
         // Update UI
         updateScannedPeripherals()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Start scannning
+        BleManager.shared.startScan()
+        //        BleManager.sharedInstance.startScan(withServices: ScannerViewController.kServicesToScan)
+        
     }
 
     override func viewDidDisappear(_ animated: Bool) {
