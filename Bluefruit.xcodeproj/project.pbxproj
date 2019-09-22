@@ -2487,6 +2487,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bluefruit/Platform/iOS/Bluefruit.entitlements;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = Bluefruit/Platform/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
@@ -2504,6 +2505,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bluefruit/Platform/iOS/Bluefruit.entitlements;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = Bluefruit/Platform/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
@@ -2557,6 +2559,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = "Bluefruit/Platform/watchOS/watchOS Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -2574,6 +2577,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = "Bluefruit/Platform/watchOS/watchOS Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -2592,6 +2596,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				IBSC_MODULE = Bluefruit_Extension;
 				INFOPLIST_FILE = Bluefruit/Platform/watchOS/watchOS/Info.plist;
@@ -2611,6 +2616,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				IBSC_MODULE = Bluefruit_Extension;
 				INFOPLIST_FILE = Bluefruit/Platform/watchOS/watchOS/Info.plist;
