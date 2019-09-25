@@ -102,6 +102,9 @@ class ScannerViewController: ModeTabViewController {
         filtersUartLabel.text = localizationManager.localizedString("scanner_filter_uart_title")
         multiConnectTitleLabel.text = localizationManager.localizedString("multiconnect_title")
         multiConnectShowButton.setTitle(localizationManager.localizedString("multiconnect_start_action"), for: .normal)
+        
+        
+        registerPermanentNotifications(enabled: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -165,6 +168,10 @@ class ScannerViewController: ModeTabViewController {
         peripheralList.clear()
         isRowDetailOpenForPeripheral.removeAll()
     }
+    
+    deinit {
+        registerPermanentNotifications(enabled: false)
+    }
 
     // MARK: - BLE Notifications
     private weak var didUpdateBleStateObserver: NSObjectProtocol?
@@ -181,16 +188,29 @@ class ScannerViewController: ModeTabViewController {
             didDiscoverPeripheralObserver = notificationCenter.addObserver(forName: .didDiscoverPeripheral, object: nil, queue: .main, using: {[weak self] _ in self?.didDiscoverPeripheral()})
             willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.willConnectToPeripheral(notification: notification)})
             didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.didConnectToPeripheral(notification: notification)})
-            didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.didDisconnectFromPeripheral(notification: notification)})
+            //didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.didDisconnectFromPeripheral(notification: notification)})
             peripheralDidUpdateNameObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateName, object: nil, queue: .main, using: {[weak self] notification in self?.peripheralDidUpdateName(notification: notification)})
        } else {
             if let didUpdateBleStateObserver = didUpdateBleStateObserver {notificationCenter.removeObserver(didUpdateBleStateObserver)}
             if let didDiscoverPeripheralObserver = didDiscoverPeripheralObserver {notificationCenter.removeObserver(didDiscoverPeripheralObserver)}
             if let willConnectToPeripheralObserver = willConnectToPeripheralObserver {notificationCenter.removeObserver(willConnectToPeripheralObserver)}
             if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
-            if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {notificationCenter.removeObserver(didDisconnectFromPeripheralObserver)}
+            //if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {notificationCenter.removeObserver(didDisconnectFromPeripheralObserver)}
             if let peripheralDidUpdateNameObserver = peripheralDidUpdateNameObserver {notificationCenter.removeObserver(peripheralDidUpdateNameObserver)}
         }
+    }
+    
+    private func registerPermanentNotifications(enabled: Bool) {
+        // Note: didDisconect notification should be registered not only when the view is visible, because on iPad portrait mode when the split screen master view is hidden and a peripheral is disconnected, the status will not updated correctly
+        
+        let notificationCenter = NotificationCenter.default
+         if enabled {
+                didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.didDisconnectFromPeripheral(notification: notification)})
+          
+        } else {
+             if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {notificationCenter.removeObserver(didDisconnectFromPeripheralObserver)}
+       
+         }
     }
 
     private func didUpdateBleState() {
