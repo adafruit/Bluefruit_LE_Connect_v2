@@ -563,7 +563,7 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "imagetransfer_navigation_title_format" = "Image Transfer - %@";
 
 "imagetransfer_help_title" = "Image Transfer";
-"imagetransfer_help_text" = "The Image Transfer module sends the image of your choice to Bluefruit LE over UART. Each image sent begins with a single byte char “!” (0x21), single byte char 'I' (0x49), color space (uint8 16 for 16bits 655 or 24 for 24-bit 888) image width (uint16 little endian, 2 bytes), height (uint16 little endian, 2 bytes), followed by pixel data encoded as RGB 24-bit and suffixed by a single byte CRC.
+"imagetransfer_help_text" = "The Image Transfer module sends the image of your choice to Bluefruit LE over UART. Each image sent begins with a single byte char “!” (0x21), single byte char 'I' (0x49), color space (uint8 16 for 16bits 565 or 24 for 24-bit 888) image width (uint16 little endian, 2 bytes), height (uint16 little endian, 2 bytes), followed by pixel data encoded as RGB 24-bit and suffixed by a single byte CRC.
 
 Format: [ ‘!I’ ] [uint8 color_space] [ uint16 width ] [ uint16 height ] [ r g b ] [ r g b ] [ r g b ] … [ CRC ]";
 
@@ -578,7 +578,7 @@ Format: [ ‘!I’ ] [uint8 color_space] [ uint16 width ] [ uint16 height ] [ r 
 "imagetransfer_transfermode_value_interleaved" = "Interleaved";
 "imagetransfer_transfermode_value_interleaved_format" = "Interleaved [%ld : 1]";
 "imagetransfer_transfermode_interleavedcount_title" = "Interleaved";
-"imagetransfer_transfermode_interleavedcount_message" = "Number of packets without response for each packet with response";
+"imagetransfer_transfermode_interleavedcount_message" = "Number of packets without response for each packet with response (default value = 50)";
 "imagetransfer_transfermode_interleavedcount_hint" = "Enter number";
 
 "imagetransfer_selectimage_action" = "Select image";

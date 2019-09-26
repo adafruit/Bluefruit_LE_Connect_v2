@@ -89,7 +89,7 @@ class ImageTransferModuleManager: NSObject {
             }).map { $0.1 }
         }
         else {
-            // Convert 32bit color data to 16bit (655)
+            // Convert 32bit color data to 16bit (565)
             var r: UInt8 = 0, g: UInt8 = 0
             var pixels = [UInt8]()
             
@@ -105,11 +105,7 @@ class ImageTransferModuleManager: NSObject {
                     let b = value
                     
                     let rgb16 = (UInt16(r & 0xF8) << 8) | (UInt16(g & 0xFC) << 3) | UInt16(b >> 3)
-                    let high = UInt8(rgb16 >> 8)
-                    let low = UInt8(rgb16 & 0xff)
-                    
-                    pixels.append(high)
-                    pixels.append(low)
+                    pixels.append(contentsOf: rgb16.toBytes)
                 }
             }
             
