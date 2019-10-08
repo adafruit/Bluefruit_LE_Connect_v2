@@ -5,7 +5,7 @@ PODS:
   - CocoaAsyncSocket (7.6.3)
   - CocoaMQTT (1.1.3):
     - CocoaAsyncSocket (~> 7.6.3)
-  - iOSDFULibrary (4.4.2):
+  - iOSDFULibrary (4.5.1):
     - ZIPFoundation (= 0.9.9)
   - MSWeakTimer (1.1.0)
   - SwiftyXML (2.0.0)
@@ -27,14 +27,14 @@ PODS:
 DEPENDENCIES:
   - Charts (~> 3.3.0)
   - CocoaMQTT (~> 1.1.2)
-  - iOSDFULibrary (~> 4.4.2)
+  - iOSDFULibrary (~> 4.5.1)
   - MSWeakTimer (~> 1.1.0)
   - SwiftyXML (~> 2.0.0)
   - "UIColor+Hex (~> 1.0.1)"
   - VectorMath (~> 0.3.3)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Charts
     - CocoaAsyncSocket
     - CocoaMQTT
@@ -46,16 +46,16 @@ SPEC REPOS:
     - ZIPFoundation
 
 SPEC CHECKSUMS:
-  Charts: ec1f57f9340054155691e84d4544a1d239d382c5
+  Charts: e0dd4cd8f257bccf98407b58183ddca8e8d5b578
   CocoaAsyncSocket: eafaa68a7e0ec99ead0a7b35015e0bf25d2c8987
   CocoaMQTT: b506d38ad3bbe1c55a4f8ee8c9fd02c35da1a7d8
-  iOSDFULibrary: 7f25ff33edd65f7d23bf6ebe4827723509ac091b
+  iOSDFULibrary: 87c6a088cf7172e3694dfaa8305e7ded5eda2547
   MSWeakTimer: 9426150f933b80ed3acf3f6d228e4b61f0e303c8
   SwiftyXML: 332cbc28563e25303879777375dfbbd746b5ad2a
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   VectorMath: 9442bb470704903dd0343547454904ba66355302
   ZIPFoundation: 89df685c971926b0323087952320bdfee9f0b6ef
 
-PODFILE CHECKSUM: e0ba74a00227fd448204403ffdbff7ac209cd8cf
+PODFILE CHECKSUM: 7831249a06946ee1f22a58d68f726768c48f2d1e
 
-COCOAPODS: 1.6.0
+COCOAPODS: 1.8.3
