@@ -563,9 +563,25 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 "imagetransfer_navigation_title_format" = "Image Transfer - %@";
 
 "imagetransfer_help_title" = "Image Transfer";
-"imagetransfer_help_text" = "The Image Transfer module sends the image of your choice to Bluefruit LE over UART. Each image sent begins with a single byte char “!” (0x21), single byte char 'I' (0x49), color space (uint8 16 for 16bits 565 or 24 for 24-bit 888) image width (uint16 little endian, 2 bytes), height (uint16 little endian, 2 bytes), followed by pixel data encoded as RGB 24-bit and suffixed by a single byte CRC.
+"imagetransfer_help_text" = "The Image Transfer module sends the image of your choice to Bluefruit LE over UART.
 
-Format: [ ‘!I’ ] [uint8 color_space] [ uint16 width ] [ uint16 height ] [ r g b ] [ r g b ] [ r g b ] … [ CRC ]";
+Format:
+- single byte char “!” (0x21)
+- single byte char 'I' (0x49)
+- color space (uint8 16 for 16bits 565 or 24 for 24-bit 888)
+- image width (uint16 little endian, 2 bytes)
+- height (uint16 little endian, 2 bytes)
+- pixel data encoded as \"RGB 16bit 565” or \"RGB 24-bit 888\" depending on the Color Space selected
+- single byte CRC
+
+Transfer mode:
+This setting affects the speed of the data transfer. The recommended value is “Interleaved [50:1]”
+Take into account that data could be lost if the speed is too fast and your phone or the Bluefruit LE peripheral are not able to process it fast enough.
+
+The possible values for Transfer mode are:
+- Without response: Send packets without waiting for acknowledgement. This is the fastest method.
+- With response: Send each packet waiting for acknowledgment. This is the slowest and safest method.
+- Interleaved: sends a number of packets without response for each packet with response.";
 
 "imagetransfer_waitingforuart" = "Waiting for Uart...";
 "imagetransfer_resolution_title" = "Resolution:";
