@@ -51,12 +51,12 @@ class SensorParameters {
 
                 for sensorParameters in sensors {
                     let sensorName = sensorParameters["name"] as? String
-                    let x = sensorParameters["UtPerCountX"] as? Float
-                    let y = sensorParameters["UtPerCountY"] as? Float
-                    let z = sensorParameters["UtPerCountZ"] as? Float
+                    let x = sensorParameters["UtPerCountX"] as? Double
+                    let y = sensorParameters["UtPerCountY"] as? Double
+                    let z = sensorParameters["UtPerCountZ"] as? Double
 
                     if let sensorName = sensorName, let x = x, let y = y, let z = z {
-                        let parameters = MagnetometerParameters(name: sensorName, utPerCount: Vector3(x, y, z))
+                        let parameters = MagnetometerParameters(name: sensorName, utPerCount: Vector3(Float(x), Float(y), Float(z)))
                         magnetometerSensors.append(parameters)
                     }
 
@@ -69,8 +69,8 @@ class SensorParameters {
 
                 for sensorParameters in sensors {
                     let sensorName = sensorParameters["name"] as? String
-                    if let sensorName = sensorName, let value = sensorParameters["GPerCount"] as? Float {
-                        let parameters = AccelometerParameters(name: sensorName, gPerCount: value)
+                    if let sensorName = sensorName, let value = sensorParameters["GPerCount"] as? Double {
+                        let parameters = AccelometerParameters(name: sensorName, gPerCount: Float(value))
                         accelerometerSensors.append(parameters)
                     }
                 }
@@ -82,16 +82,16 @@ class SensorParameters {
 
                 for sensorParameters in sensors {
                     let sensorName = sensorParameters["name"] as? String
-                    if let sensorName = sensorName, let value = sensorParameters["DegPerSecPerCount"] as? Float {
-                        let parameters = GyroscopeParameters(name: sensorName, degPerSecPerCount: value)
+                    if let sensorName = sensorName, let value = sensorParameters["DegPerSecPerCount"] as? Double {
+                        let parameters = GyroscopeParameters(name: sensorName, degPerSecPerCount: Float(value))
                         gyroscopeSensors.append(parameters)
-
                     }
-
                 }
             }
         }
-
+        
+        if magnetometerSensors.isEmpty || accelerometerSensors.isEmpty || gyroscopeSensors.isEmpty {
+           DLog("Error: calibration sensor parameters not loaded correctly")
+        }
     }
-
 }
