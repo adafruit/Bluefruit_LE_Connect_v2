@@ -151,7 +151,7 @@ class ScannerViewController: ModeTabViewController {
         
         // Start scannning
         BleManager.shared.startScan()
-        //        BleManager.sharedInstance.startScan(withServices: ScannerViewController.kServicesToScan)
+        //        BleManager.shared.startScan(withServices: ScannerViewController.kServicesToScan)
         
     }
 
@@ -651,7 +651,7 @@ class ScannerViewController: ModeTabViewController {
         }
         
         infoAlertController = UIAlertController(title: nil, message: title, preferredStyle: .alert)
-        infoAlertController!.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+        infoAlertController!.addAction(UIAlertAction(title: LocalizationManager.shared.localizedString("dialog_cancel"), style: .cancel, handler: { _ in
             BleManager.shared.disconnect(from: peripheral)
             //BleManager.sharedInstance.refreshPeripherals()      // Force refresh because they wont reappear. Check why is this happening
         }))

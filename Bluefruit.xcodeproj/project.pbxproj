@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0433532FB270D7684E8F0A16 /* Pods_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52616FB9D63C65BD58A87279 /* Pods_macOS.framework */; };
 		7F561AC36AACA889C7D12E14 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28950E0836DF706F3BBCAA8A /* Pods_iOS.framework */; };
+		A901EC4A237C45CA00687BE6 /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A901EC49237C45CA00687BE6 /* DataDownloader.swift */; };
+		A901EC4B237C45CA00687BE6 /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A901EC49237C45CA00687BE6 /* DataDownloader.swift */; };
 		A90798291E4349D6005470A5 /* ControllerColorWheelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798241E4349D6005470A5 /* ControllerColorWheelViewController.swift */; };
 		A907982A1E4349D6005470A5 /* ControllerComponentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798251E4349D6005470A5 /* ControllerComponentsTableViewCell.swift */; };
 		A907982B1E4349D6005470A5 /* ControllerModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798261E4349D6005470A5 /* ControllerModeViewController.swift */; };
@@ -133,7 +135,6 @@
 		A983784F1E42C11400170319 /* CommandQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCA1E3A9B22008E5F81 /* CommandQueue.swift */; };
 		A98378501E42C11400170319 /* Data+ScanValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCB1E3A9B22008E5F81 /* Data+ScanValue.swift */; };
 		A98378511E42C11400170319 /* DataConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */; };
-		A98378521E42C11400170319 /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */; };
 		A98378541E42C11400170319 /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCD1E3A9B22008E5F81 /* LogHelper.swift */; };
 		A98378631E42C79F00170319 /* SeparatorLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A983785F1E42C79F00170319 /* SeparatorLineView.swift */; };
 		A98378641E42C79F00170319 /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378611E42C79F00170319 /* SeparatorView.swift */; };
@@ -208,7 +209,7 @@
 		A98DE42D1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */; };
 		A98DE42E1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */; };
 		A991A7BD22AFBA36003AE632 /* ImageTransferModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991A7BC22AFBA36003AE632 /* ImageTransferModuleManager.swift */; };
-		A991A7C022AFDCFB003AE632 /* IntToBytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991A7BE22AFDC86003AE632 /* IntToBytes.swift */; };
+		A991A7C022AFDCFB003AE632 /* Int+Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991A7BE22AFDC86003AE632 /* Int+Bytes.swift */; };
 		A991A7C422AFDFE2003AE632 /* UIImage+pixelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991A7C122AFDF1E003AE632 /* UIImage+pixelData.swift */; };
 		A9A6C2471E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */; };
 		A9A89BDC1E83C5B000724F0E /* StyledConnectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A89BDB1E83C5B000724F0E /* StyledConnectButton.swift */; };
@@ -285,7 +286,6 @@
 		A9BCD6371E4D42C6003D1CEA /* CommandQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCA1E3A9B22008E5F81 /* CommandQueue.swift */; };
 		A9BCD6381E4D42C6003D1CEA /* Data+ScanValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCB1E3A9B22008E5F81 /* Data+ScanValue.swift */; };
 		A9BCD6391E4D42C6003D1CEA /* DataConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */; };
-		A9BCD63A1E4D42C6003D1CEA /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */; };
 		A9BCD63D1E4D4357003D1CEA /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCE1E3A9B22008E5F81 /* Preferences.swift */; };
 		A9C6E7421F0EA7CE00E13CC6 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6E7411F0EA7CE00E13CC6 /* PreferencesViewController.swift */; };
 		A9CA08481F35E04200A0C621 /* PeripheralServices.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9CA08461F35E04200A0C621 /* PeripheralServices.storyboard */; };
@@ -304,7 +304,6 @@
 		A9D2343D1E3AD70300DC0C99 /* ScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234381E3AD70300DC0C99 /* ScannerViewController.swift */; };
 		A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2344C1E3AD97600DC0C99 /* StyleConfig.swift */; };
 		A9D2345A1E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D234591E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift */; };
-		A9D2345E1E3B49BA00DC0C99 /* DataDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */; };
 		A9D784851F350FD4009D98A8 /* ServiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D784841F350FD4009D98A8 /* ServiceTableViewCell.swift */; };
 		A9D784871F353D1A009D98A8 /* DeviceInformationServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D784861F353D1A009D98A8 /* DeviceInformationServiceViewController.swift */; };
 		A9D7848B1F35588D009D98A8 /* PeripheralServiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D7848A1F35588D009D98A8 /* PeripheralServiceViewController.swift */; };
@@ -375,6 +374,7 @@
 		52616FB9D63C65BD58A87279 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		54F4B0C0A169FBC46959E076 /* Pods-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-macOS/Pods-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		9FEC875F60CE881F27539E60 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A901EC49237C45CA00687BE6 /* DataDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataDownloader.swift; sourceTree = "<group>"; };
 		A90798241E4349D6005470A5 /* ControllerColorWheelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerColorWheelViewController.swift; sourceTree = "<group>"; };
 		A90798251E4349D6005470A5 /* ControllerComponentsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerComponentsTableViewCell.swift; sourceTree = "<group>"; };
 		A90798261E4349D6005470A5 /* ControllerModeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerModeViewController.swift; sourceTree = "<group>"; };
@@ -560,7 +560,7 @@
 		A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelBoards.plist; sourceTree = "<group>"; };
 		A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelDefaultPalette.plist; sourceTree = "<group>"; };
 		A991A7BC22AFBA36003AE632 /* ImageTransferModuleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTransferModuleManager.swift; sourceTree = "<group>"; };
-		A991A7BE22AFDC86003AE632 /* IntToBytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntToBytes.swift; sourceTree = "<group>"; };
+		A991A7BE22AFDC86003AE632 /* Int+Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Bytes.swift"; sourceTree = "<group>"; };
 		A991A7C122AFDF1E003AE632 /* UIImage+pixelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+pixelData.swift"; sourceTree = "<group>"; };
 		A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSelectPeripheralViewController.swift; sourceTree = "<group>"; };
 		A9A89BDB1E83C5B000724F0E /* StyledConnectButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledConnectButton.swift; sourceTree = "<group>"; };
@@ -636,7 +636,6 @@
 		A9D234381E3AD70300DC0C99 /* ScannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerViewController.swift; sourceTree = "<group>"; };
 		A9D2344C1E3AD97600DC0C99 /* StyleConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleConfig.swift; sourceTree = "<group>"; };
 		A9D234591E3ADDEF00DC0C99 /* ScanningAnimationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningAnimationViewController.swift; sourceTree = "<group>"; };
-		A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataDownloader.swift; sourceTree = "<group>"; };
 		A9D784841F350FD4009D98A8 /* ServiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTableViewCell.swift; sourceTree = "<group>"; };
 		A9D784861F353D1A009D98A8 /* DeviceInformationServiceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInformationServiceViewController.swift; sourceTree = "<group>"; };
 		A9D7848A1F35588D009D98A8 /* PeripheralServiceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralServiceViewController.swift; sourceTree = "<group>"; };
@@ -952,6 +951,7 @@
 		A9286CBE1E3A9B22008E5F81 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				A901EC49237C45CA00687BE6 /* DataDownloader.swift */,
 				A9BCD6001E4D34D9003D1CEA /* Watch */,
 				A9286CCE1E3A9B22008E5F81 /* Preferences.swift */,
 				A9BCD5821E4D2616003D1CEA /* CocoaCompatibility.swift */,
@@ -981,13 +981,12 @@
 			isa = PBXGroup;
 			children = (
 				A9286CCA1E3A9B22008E5F81 /* CommandQueue.swift */,
-				A9286CCB1E3A9B22008E5F81 /* Data+ScanValue.swift */,
-				A991A7BE22AFDC86003AE632 /* IntToBytes.swift */,
 				A9286CCC1E3A9B22008E5F81 /* DataConversions.swift */,
-				A9D2345D1E3B49BA00DC0C99 /* DataDownloader.swift */,
 				A9286CC91E3A9B22008E5F81 /* AlertHelper.swift */,
 				A9286CCD1E3A9B22008E5F81 /* LogHelper.swift */,
 				A91E7D4F1E4174F800DE90C6 /* KeyboardPositionNotifier.swift */,
+				A9286CCB1E3A9B22008E5F81 /* Data+ScanValue.swift */,
+				A991A7BE22AFDC86003AE632 /* Int+Bytes.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2067,7 +2066,6 @@
 				A969466C1E3CD0CC00BA8DAA /* IntrinsicSizeWithInsetsButton.swift in Sources */,
 				A98378721E43479400170319 /* ControllerModuleManager.swift in Sources */,
 				A9CA08571F35F49200A0C621 /* ScrollingTabBarViewController.swift in Sources */,
-				A9D2345E1E3B49BA00DC0C99 /* DataDownloader.swift in Sources */,
 				A9BCD6031E4D34D9003D1CEA /* HandoffManager.swift in Sources */,
 				A91542781EDD7BC9007A34EA /* VisualizationProgressViewController.swift in Sources */,
 				A90798311E438E60005470A5 /* GradientView.swift in Sources */,
@@ -2077,7 +2075,7 @@
 				A9BB78E31EDCEC65004663DE /* Calibration.swift in Sources */,
 				A91E7D5C1E4216ED00DE90C6 /* UIImage+Color.swift in Sources */,
 				A915426D1EDD7BC9007A34EA /* MagnetometerPageContentViewController.swift in Sources */,
-				A991A7C022AFDCFB003AE632 /* IntToBytes.swift in Sources */,
+				A991A7C022AFDCFB003AE632 /* Int+Bytes.swift in Sources */,
 				A9CA085A1F35F4B600A0C621 /* ModeTabsViewController.swift in Sources */,
 				A93DE7731F36195900B2EB5D /* DeviceInformationPeripheralService.swift in Sources */,
 				A90C79751E40CB150076E8AD /* HelpViewController.swift in Sources */,
@@ -2099,6 +2097,7 @@
 				A9BB78FD1EDCEDDC004663DE /* MathUtils.swift in Sources */,
 				A983786F1E43422100170319 /* MqttSettingsStatusCell.swift in Sources */,
 				A98DE4131E456AFC00EEF4C8 /* NeopixelModuleViewController.swift in Sources */,
+				A901EC4A237C45CA00687BE6 /* DataDownloader.swift in Sources */,
 				A915427B1EDD7C3F007A34EA /* StyledLinkedButton.swift in Sources */,
 				A9D2343C1E3AD70300DC0C99 /* PeripheralTableViewCell.swift in Sources */,
 				A94056F12336EB2100872FD1 /* TraitOverrideContainerViewController.swift in Sources */,
@@ -2160,9 +2159,9 @@
 				A9BCD5731E4D25B3003D1CEA /* DfuUpdateProcess.swift in Sources */,
 				A91D65B01EFD85AE0097C8B6 /* PeripheralListViewController.swift in Sources */,
 				A9BCD5951E4D2616003D1CEA /* MqttManager.swift in Sources */,
-				A98378521E42C11400170319 /* DataDownloader.swift in Sources */,
 				A93DE76A1F36195900B2EB5D /* BlePeripheral.swift in Sources */,
 				A91D65AA1EFD69190097C8B6 /* MainWindowController.swift in Sources */,
+				A901EC4B237C45CA00687BE6 /* DataDownloader.swift in Sources */,
 				A9BCD5751E4D25B3003D1CEA /* FirmwareUpdater.swift in Sources */,
 				A98378451E42C10C00170319 /* InfoModuleManager.swift in Sources */,
 				A9BCD5971E4D2616003D1CEA /* MqttSettings.swift in Sources */,
@@ -2268,7 +2267,6 @@
 				A93DE7831F36196B00B2EB5D /* BleUUIDNames.swift in Sources */,
 				A93DE78C1F36196B00B2EB5D /* UartPacketManagerBase.swift in Sources */,
 				A98D3AE21F38CDB7005081EA /* QuickZip.swift in Sources */,
-				A9BCD63A1E4D42C6003D1CEA /* DataDownloader.swift in Sources */,
 				A9BCD6391E4D42C6003D1CEA /* DataConversions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2492,6 +2490,7 @@
 				INFOPLIST_FILE = Bluefruit/Platform/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D MQTT_ENABLED";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Bluefruit/Platform/iOS/Bluefruit-Bridging-Header.h";
@@ -2510,6 +2509,7 @@
 				INFOPLIST_FILE = Bluefruit/Platform/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D MQTT_ENABLED";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Bluefruit/Platform/iOS/Bluefruit-Bridging-Header.h";

@@ -58,8 +58,8 @@ class UartPacketManagerBase {
         
         let uartPacket = UartPacket(peripheralId: peripheralIdentifier, mode: .rx, data: data)
         
-        // Mqtt publish to RX
-        #if os(iOS)
+        // Mqtt publish to RX. TODO: Remove the dependency with MqttSettings and pass parameters
+        #if MQTT_ENABLED
             if isMqttEnabled {
                 let mqttSettings = MqttSettings.shared
                 if mqttSettings.isPublishEnabled {

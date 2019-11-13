@@ -10,7 +10,7 @@ import Foundation
 
 class UartLogManager {
 
-    fileprivate static var kIsEnabled = false
+    private static var kIsEnabled = false
 
     enum LogType {
         case info

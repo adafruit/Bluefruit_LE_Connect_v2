@@ -60,8 +60,6 @@ class PlotterModeViewController: PeripheralModeViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
-        // Dispose of any resources that can be recreated.
-        
         // Remove old data
         removeOldDataOnMemoryWarning()
     }
@@ -108,7 +106,7 @@ class PlotterModeViewController: PeripheralModeViewController {
             lineDashForPeripheral[blePeripheral.identifier] = lineDashes.first!
             blePeripheral.uartEnable(uartRxHandler: uartDataManager.rxDataReceived) { [weak self] error in
                 guard let context = self else { return }
-
+                
                 DispatchQueue.main.async {
                     guard error == nil else {
                         DLog("Error initializing uart")

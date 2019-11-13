@@ -26,7 +26,7 @@ class PeripheralModulesViewController: UIViewController {
     weak var blePeripheral: BlePeripheral?
 
     // Data
-    enum Modules: Int {
+    private enum Modules: Int {
         case info = 0
         case uart
         case plotter
@@ -268,7 +268,7 @@ class PeripheralModulesViewController: UIViewController {
         }
     }
 
-    fileprivate func menuItems() -> [Modules] {
+    private func menuItems() -> [Modules] {
         if connectionMode == .multiplePeripherals {
             return [.uart, .plotter]
         } else if hasUart && hasDfu {

@@ -13,9 +13,11 @@ import CoreBluetooth
     import MSWeakTimer
 #endif
 
+// TODO: Modernize completion blocks to use Swift.Result 
+
 class BlePeripheral: NSObject {
     // Config
-    fileprivate static var kProfileCharacteristicUpdates = true
+    private static var kProfileCharacteristicUpdates = true
 
     // Notifications
     enum NotificationUserInfoKey: String {
@@ -91,7 +93,7 @@ class BlePeripheral: NSObject {
     var advertisement: Advertisement
 
     typealias CapturedReadCompletionHandler = ((_ value: Any?, _ error: Error?) -> Void)
-    fileprivate class CaptureReadHandler {
+    private class CaptureReadHandler {
 
         var identifier: String
         var result: CapturedReadCompletionHandler
@@ -118,7 +120,7 @@ class BlePeripheral: NSObject {
         }
     }
 
-    fileprivate func timeOutRemoveCaptureHandler(identifier: String) {   // Default behaviour for a capture handler timeout
+    private func timeOutRemoveCaptureHandler(identifier: String) {   // Default behaviour for a capture handler timeout
         guard captureReadHandlers.count > 0, let index = captureReadHandlers.firstIndex(where: {$0.identifier == identifier}) else { return }
         // DLog("captureReadHandlers index: \(index) / \(captureReadHandlers.count)")
         
@@ -128,12 +130,12 @@ class BlePeripheral: NSObject {
     }
     
     // Internal data
-    fileprivate var notifyHandlers = [String: ((Error?) -> Void)]()                 // Nofify handlers for each service-characteristic
-    fileprivate var captureReadHandlers = [CaptureReadHandler]()
-    fileprivate var commandQueue = CommandQueue<BleCommand>()
+    private var notifyHandlers = [String: ((Error?) -> Void)]()                 // Nofify handlers for each service-characteristic
+    private var captureReadHandlers = [CaptureReadHandler]()
+    private var commandQueue = CommandQueue<BleCommand>()
 
     // Profiling
-    //fileprivate var profileStartTime: CFTimeInterval = 0
+    //private var profileStartTime: CFTimeInterval = 0
 
     // MARK: - Init
     init(peripheral: CBPeripheral, advertisementData: [String: Any]?, rssi: Int?) {
@@ -235,9 +237,9 @@ class BlePeripheral: NSObject {
             })
         }
     }
-
+    
     func characteristic(uuid: CBUUID, serviceUuid: CBUUID, completion: ((CBCharacteristic?, Error?) -> Void)?) {
-        if let discoveredService = discoveredService(uuid: uuid) {                                              // Service was already discovered
+        if let discoveredService = discoveredService(uuid: serviceUuid) {                                              // Service was already discovered
             characteristic(uuid: uuid, service: discoveredService, completion: completion)
         } else {                                                                                                // Discover service
             service(uuid: serviceUuid) { (service, error) in
@@ -296,7 +298,7 @@ class BlePeripheral: NSObject {
     }
 
     // MARK: - Command Queue
-    fileprivate class BleCommand: Equatable {
+    private class BleCommand: Equatable {
         enum CommandType {
             case discoverService
             case discoverCharacteristic
@@ -352,15 +354,15 @@ class BlePeripheral: NSObject {
         }
     }
 
-    fileprivate func handlerIdentifier(from characteristic: CBCharacteristic) -> String {
+    private func handlerIdentifier(from characteristic: CBCharacteristic) -> String {
         return "\(characteristic.service.uuid.uuidString)-\(characteristic.uuid.uuidString)"
     }
 
-    fileprivate func handlerIdentifier(from descriptor: CBDescriptor) -> String {
+    private func handlerIdentifier(from descriptor: CBDescriptor) -> String {
         return "\(descriptor.characteristic.service.uuid.uuidString)-\(descriptor.characteristic.uuid.uuidString)-\(descriptor.uuid.uuidString)"
     }
 
-    fileprivate func finishedExecutingCommand(error: Error?) {
+    private func finishedExecutingCommand(error: Error?) {
         //DLog("finishedExecutingCommand")
 
         // Result Callback

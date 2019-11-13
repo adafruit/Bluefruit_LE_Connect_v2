@@ -10,7 +10,6 @@ import Foundation
 import CoreBluetooth
 
 extension BlePeripheral {
-
     // Config
     private static let kDebugLog = false
 
@@ -18,18 +17,18 @@ extension BlePeripheral {
     static let kUartServiceUUID =           CBUUID(string: "6e400001-b5a3-f393-e0a9-e50e24dcca9e")
     static let kUartTxCharacteristicUUID =  CBUUID(string: "6e400002-b5a3-f393-e0a9-e50e24dcca9e")
     static let kUartRxCharacteristicUUID =  CBUUID(string: "6e400003-b5a3-f393-e0a9-e50e24dcca9e")
-    //fileprivate static let kUartTxMaxBytes = 20
+    //private static let kUartTxMaxBytes = 20
     static let kUartReplyDefaultTimeout = 2.0       // seconds
 
     // MARK: - Custom properties
-    fileprivate struct CustomPropertiesKeys {
+    private struct CustomPropertiesKeys {
         static var uartRxCharacteristic: CBCharacteristic?
         static var uartTxCharacteristic: CBCharacteristic?
         static var uartTxCharacteristicWriteType: CBCharacteristicWriteType?
         static var sendSequentiallyCancelled: Bool = false
     }
 
-    fileprivate var uartRxCharacteristic: CBCharacteristic? {
+    private var uartRxCharacteristic: CBCharacteristic? {
         get {
             return objc_getAssociatedObject(self, &CustomPropertiesKeys.uartRxCharacteristic) as! CBCharacteristic?
         }
@@ -38,7 +37,7 @@ extension BlePeripheral {
         }
     }
 
-    fileprivate var uartTxCharacteristic: CBCharacteristic? {
+    private var uartTxCharacteristic: CBCharacteristic? {
         get {
             return objc_getAssociatedObject(self, &CustomPropertiesKeys.uartTxCharacteristic) as! CBCharacteristic?
         }
@@ -47,7 +46,7 @@ extension BlePeripheral {
         }
     }
 
-    fileprivate var uartTxCharacteristicWriteType: CBCharacteristicWriteType? {
+    private var uartTxCharacteristicWriteType: CBCharacteristicWriteType? {
         get {
             return objc_getAssociatedObject(self, &CustomPropertiesKeys.uartTxCharacteristicWriteType) as! CBCharacteristicWriteType?
         }
@@ -56,7 +55,7 @@ extension BlePeripheral {
         }
     }
 
-    fileprivate var isSendSequentiallyCancelled: Bool {
+    private var isSendSequentiallyCancelled: Bool {
         get {
             return objc_getAssociatedObject(self, &CustomPropertiesKeys.sendSequentiallyCancelled) as! Bool
         }
@@ -66,7 +65,7 @@ extension BlePeripheral {
     }
 
     
-    // MARK: -
+    // MARK: - Errors
     enum PeripheralUartError: Error {
         case invalidCharacteristic
         case enableNotifyFailed

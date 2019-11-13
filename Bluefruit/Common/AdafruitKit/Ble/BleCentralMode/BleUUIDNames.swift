@@ -13,7 +13,7 @@ class BleUUIDNames {
     static let shared = BleUUIDNames()
 
     // Data
-    fileprivate var gattUUIds: [String:String]?
+    private var gattUUIds: [String:String]?
 
     init() {
         // Read known UUIDs

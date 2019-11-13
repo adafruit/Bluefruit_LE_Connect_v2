@@ -53,7 +53,7 @@ class UartPacketManager: UartPacketManagerBase {
 
     func send(blePeripheral: BlePeripheral, text: String, wasReceivedFromMqtt: Bool = false) {
 
-        #if os(iOS)
+         #if MQTT_ENABLED
         if isMqttEnabled {
             // Mqtt publish to TX
             let mqttSettings = MqttSettings.shared
@@ -79,7 +79,7 @@ class UartPacketManager: UartPacketManagerBase {
                 self.delegate?.onUartPacket(uartPacket)
             }
             
-            #if os(iOS)
+            #if MQTT_ENABLED
             let shouldBeSent = !wasReceivedFromMqtt || (isMqttEnabled && MqttSettings.shared.subscribeBehaviour == .transmit)
             #else
             let shouldBeSent = true
