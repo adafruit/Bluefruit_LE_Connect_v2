@@ -214,7 +214,7 @@ class CalibrationUartSamplerViewController: CalibrationUartViewController {
         } else {
             DLog("Warning: CADisplayLink.preferredFramesPerSecond not available on iOS9")
         }
-        displayLink?.add(to: RunLoop.current, forMode: RunLoop.Mode.common)
+        displayLink?.add(to: .current, forMode: .common)
     }
 
     func stopDisplayLink() {
@@ -233,7 +233,7 @@ class CalibrationUartSamplerViewController: CalibrationUartViewController {
         let axisLenght: CGFloat = 0.5
         let axisSizeFactor: CGFloat = 40
         let colors = [UIColor.red, UIColor.green, UIColor.blue]
-        let angles = [SCNVector3(), SCNVector3(0, 0, GLKMathDegreesToRadians(90)), SCNVector3(0, -GLKMathDegreesToRadians(90), 0)]
+        let angles = [SCNVector3(), SCNVector3(0, 0, degress2radians(90)), SCNVector3(0, -degress2radians(90), 0)]
 
         for i in 0..<3 {
             let boxGeometry = SCNBox(width: axisLenght, height: axisLenght/axisSizeFactor, length: axisLenght/axisSizeFactor, chamferRadius: axisLenght/axisSizeFactor)
@@ -248,6 +248,10 @@ class CalibrationUartSamplerViewController: CalibrationUartViewController {
         }
 
         return axisNode
+    }
+    
+    private func degress2radians(_ degress: Double) -> Double {     // GLKMathDegreesToRadians is not available on Mac Catalyst
+        return degress * .pi / 180
     }
 
     @IBAction func onClickPreviousPage(_ sender: Any) {

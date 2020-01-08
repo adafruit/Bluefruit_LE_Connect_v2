@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -263,7 +263,7 @@
 		A9BCD5961E4D2616003D1CEA /* MqttSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5891E4D2616003D1CEA /* MqttSettings.swift */; };
 		A9BCD5971E4D2616003D1CEA /* MqttSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5891E4D2616003D1CEA /* MqttSettings.swift */; };
 		A9BCD5A71E4D2762003D1CEA /* watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A9BCD5A61E4D2761003D1CEA /* watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		A9BCD5B81E4D2762003D1CEA /* watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A9BCD59A1E4D2761003D1CEA /* watchOS.app */; };
+		A9BCD5B81E4D2762003D1CEA /* watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A9BCD59A1E4D2761003D1CEA /* watchOS.app */; platformFilter = ios; };
 		A9BCD5DB1E4D287A003D1CEA /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9BCD5D11E4D286A003D1CEA /* Interface.storyboard */; };
 		A9BCD5DC1E4D287D003D1CEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9BCD5D01E4D286A003D1CEA /* Assets.xcassets */; };
 		A9BCD5DD1E4D289E003D1CEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9BCD5D51E4D286A003D1CEA /* Assets.xcassets */; };
@@ -2281,6 +2281,7 @@
 		};
 		A9BCD5B71E4D2762003D1CEA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = A9BCD5991E4D2761003D1CEA /* watchOS */;
 			targetProxy = A9BCD5B61E4D2762003D1CEA /* PBXContainerItemProxy */;
 		};
@@ -2473,7 +2474,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2486,13 +2488,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bluefruit/Platform/iOS/Bluefruit.entitlements;
 				CURRENT_PROJECT_VERSION = 39;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = Bluefruit/Platform/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D MQTT_ENABLED";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Bluefruit/Platform/iOS/Bluefruit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
@@ -2505,13 +2512,18 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bluefruit/Platform/iOS/Bluefruit.entitlements;
 				CURRENT_PROJECT_VERSION = 39;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = Bluefruit/Platform/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D MQTT_ENABLED";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Bluefruit/Platform/iOS/Bluefruit-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
@@ -2527,7 +2539,10 @@
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Bluefruit/Platform/macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.osx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2546,7 +2561,10 @@
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Bluefruit/Platform/macOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.osx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2562,7 +2580,11 @@
 				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = "Bluefruit/Platform/watchOS/watchOS Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -2580,7 +2602,11 @@
 				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = "Bluefruit/Platform/watchOS/watchOS Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
