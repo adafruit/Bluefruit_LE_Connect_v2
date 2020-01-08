@@ -23,7 +23,7 @@ class TraitOverrideContainerViewController: UIViewController {
         super.viewDidLoad()
         
         // Force iphone plus/max to behave like an standard iphone (to avoid disconnection problems when rotating). If removed check that "ScannerViewController -> viewWillAppear -> autodisconnection when only 1 connected peripheral" won't force an disconnect incorrectly
-        if UI_USER_INTERFACE_IDIOM() == .phone {
+        if UIDevice.current.userInterfaceIdiom == .phone {
             let horizontalTraitCollection = UITraitCollection(horizontalSizeClass: .compact)
             setOverrideTraitCollection(horizontalTraitCollection, forChild: embeddedSplitViewController!)
         }

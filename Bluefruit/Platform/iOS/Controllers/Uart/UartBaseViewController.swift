@@ -88,7 +88,7 @@ class UartBaseViewController: PeripheralModeViewController {
         dataModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_dataMode_hex"), forSegmentAt: 1)
         
         // Init options layout
-        if UI_USER_INTERFACE_IDIOM() == .pad { //traitCollection.userInterfaceIdiom == .pad {            // iPad
+        if UIDevice.current.userInterfaceIdiom == .pad { //traitCollection.userInterfaceIdiom == .pad {            // iPad
             self.view.removeConstraint(statsLabeliPhoneLeadingConstraint)
             
             // Resize input UISwitch controls
@@ -130,7 +130,7 @@ class UartBaseViewController: PeripheralModeViewController {
         super.viewDidLayoutSubviews()
         
         // Hide top controls on iPhone
-        if UI_USER_INTERFACE_IDIOM() == .phone {// traitCollection.userInterfaceIdiom == .phone {
+        if UIDevice.current.userInterfaceIdiom == .phone {// traitCollection.userInterfaceIdiom == .phone {
             controlsView.isHidden = true
         }
     }
@@ -143,7 +143,7 @@ class UartBaseViewController: PeripheralModeViewController {
         // Update the navigation bar items
         if var rightButtonItems = navigationItem.rightBarButtonItems, rightButtonItems.count == 2 {
             
-            if UI_USER_INTERFACE_IDIOM() == .pad { // traitCollection.userInterfaceIdiom == .pad {
+            if UIDevice.current.userInterfaceIdiom == .pad { // traitCollection.userInterfaceIdiom == .pad {
                 // Remove more item
                 rightButtonItems.remove(at: 0)
                 

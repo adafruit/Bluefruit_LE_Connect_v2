@@ -12,10 +12,10 @@ import Foundation
 class CommandQueue<Element> {
     var executeHandler: ((_ command: Element) -> Void)?
 
-    fileprivate var queueLock = NSLock()
+    private var queueLock = NSLock()
 
     /*
-    fileprivate var queue = [Element]() {
+    private var queue = [Element]() {
         didSet {
             queueLock.lock()
             var shouldExecute = false
@@ -59,7 +59,7 @@ class CommandQueue<Element> {
     }
  */
 
-    fileprivate var queue = [Element]()
+    private var queue = [Element]()
 
     func first() -> Element? {
         queueLock.lock(); defer { queueLock.unlock() }

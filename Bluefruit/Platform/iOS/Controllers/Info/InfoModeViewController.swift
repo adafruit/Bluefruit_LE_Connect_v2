@@ -428,7 +428,7 @@ extension InfoModeViewController: UITableViewDataSource {
                         if isStringPrintable(characteristicString) {
                             value = characteristicString
                         } else {      // print as hex
-                            value = hexDescription(data: valueData!)
+                            value = HexUtils.hexDescription(data: valueData!)
                         }
                     }
                 case .text:
@@ -436,7 +436,7 @@ extension InfoModeViewController: UITableViewDataSource {
                         value = text
                     }
                 case .hex:
-                    value = hexDescription(data: valueData!)
+                    value = HexUtils.hexDescription(data: valueData!)
                 }
             }
         }

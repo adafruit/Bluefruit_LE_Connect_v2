@@ -30,7 +30,7 @@ class BleManager: NSObject {
     var isScanning = false
     private var isScanningWaitingToStart = false
     private var scanningServicesFilter: [CBUUID]?
-    private var peripheralsFound = [UUID: BlePeripheral]()
+    internal var peripheralsFound = [UUID: BlePeripheral]()
     private var peripheralsFoundLock = NSLock()
 
     // Connecting
@@ -194,7 +194,7 @@ class BleManager: NSObject {
         centralManager?.connect(peripheral.peripheral, options: options)
     }
 
-    @objc func connectionTimeoutFired(timer: MSWeakTimer) {
+    @objc private func connectionTimeoutFired(timer: MSWeakTimer) {
         let peripheralIdentifier = timer.userInfo() as! UUID
         DLog("connection timeout fired: \(peripheralIdentifier)")
         connectionTimeoutTimers[peripheralIdentifier] = nil
@@ -222,7 +222,7 @@ class BleManager: NSObject {
         var reconnecting = false
 
         let knownPeripherals = centralManager?.retrievePeripherals(withIdentifiers: identifiers)
-        if let peripherals = knownPeripherals?.filter({identifiers.contains($0.identifier)}) {
+        if let peripherals = knownPeripherals?.filter({identifiers.contains($0.identifier)}), !peripherals.isEmpty {
             for peripheral in peripherals {
                 discovered(peripheral: peripheral)
                 if let blePeripheral = peripheralsFound[peripheral.identifier] {
@@ -231,8 +231,8 @@ class BleManager: NSObject {
                 }
             }
         } else {
-            let connectedPeripherals =  centralManager?.retrieveConnectedPeripherals(withServices: services)
-            if let peripherals = connectedPeripherals?.filter({identifiers.contains($0.identifier)}) {
+            let connectedPeripherals = centralManager?.retrieveConnectedPeripherals(withServices: services)
+            if let peripherals = connectedPeripherals?.filter({identifiers.contains($0.identifier)}), !peripherals.isEmpty {
                 for peripheral in peripherals {
                     discovered(peripheral: peripheral)
                     if let blePeripheral = peripheralsFound[peripheral.identifier] {
@@ -247,6 +247,8 @@ class BleManager: NSObject {
     }
 
     private func discovered(peripheral: CBPeripheral, advertisementData: [String: Any]? = nil, rssi: Int? = nil) {
+        peripheralsFoundLock.lock(); defer { peripheralsFoundLock.unlock() }
+        
         if let existingPeripheral = peripheralsFound[peripheral.identifier] {
             existingPeripheral.lastSeenTime = CFAbsoluteTimeGetCurrent()
 

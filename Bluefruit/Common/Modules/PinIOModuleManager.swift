@@ -612,7 +612,7 @@ class PinIOModuleManager: NSObject {
 // MARK: - UartDataManagerDelegate
 extension PinIOModuleManager: UartDataManagerDelegate {
     func onUartRx(data: Data, peripheralIdentifier: UUID) {
-        DLog("uart rx read (hex): \(hexDescription(data: data))")
+        DLog("uart rx read (hex): \(HexUtils.hexDescription(data: data))")
 
         switch uartStatus {
         case .queryCapabilities:

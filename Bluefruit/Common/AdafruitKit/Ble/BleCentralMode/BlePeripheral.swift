@@ -58,10 +58,21 @@ class BlePeripheral: NSObject {
         var localName: String? {
             return advertisementData[CBAdvertisementDataLocalNameKey] as? String
         }
-        var manufacturerString: String? {
-            guard let manufacturerData = advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data else { return nil }
-            return hexDescription(data: manufacturerData)
+        
+        var manufacturerData: Data? {
+            return advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data
+        }
+        
+        var manufacturerHexDescription: String? {
+            guard let manufacturerData = manufacturerData else { return nil }
+            return HexUtils.hexDescription(data: manufacturerData)
 //            return String(data: manufacturerData, encoding: .utf8)
+        }
+        
+        var manufacturerIdentifier: Data? {
+            guard let manufacturerData = manufacturerData, manufacturerData.count >= 2 else { return nil }
+            let manufacturerIdentifierData = manufacturerData[0..<2]
+            return manufacturerIdentifierData
         }
 
         var services: [CBUUID]? {
@@ -411,7 +422,7 @@ class BlePeripheral: NSObject {
 
         // Discover remaining uuids
         if discoverAll || (characteristicUuids != nil && characteristicUuids!.count > 0) {
-            DLog("discover \(characteristicUuids == nil ? "all": String(characteristicUuids!.count)) characteristics for \(service.uuid.uuidString)")
+            //DLog("discover \(characteristicUuids == nil ? "all": String(characteristicUuids!.count)) characteristics for \(service.uuid.uuidString)")
             peripheral.discoverCharacteristics(characteristicUuids, for: service)
         } else {
             // Everthing was already discovered

@@ -90,7 +90,7 @@ class PeripheralTableViewCell: UITableViewCell {
 
         // Manufacturer Name
         var isManufacturerAvailable = false
-        if let manufacturerString = peripheral.advertisement.manufacturerString {
+        if let manufacturerString = peripheral.advertisement.manufacturerHexDescription {
             manufacturerValueLabel.text = manufacturerString
             isManufacturerAvailable = true
         } else {

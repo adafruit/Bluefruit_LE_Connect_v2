@@ -21,7 +21,7 @@ class UartDataExport {
         // Convert to text
         var text: String?
         if isHexFormat {
-            text = hexDescription(data: data)
+            text = HexUtils.hexDescription(data: data)
         } else {
             text = String(data:data, encoding: .utf8)
         }
@@ -42,7 +42,7 @@ class UartDataExport {
             let mode = packet.mode == .rx ? "RX" : "TX"
             var dataString: String?
             if isHexFormat {
-                dataString = hexDescription(data: packet.data)
+                dataString = HexUtils.hexDescription(data: packet.data)
             } else {
                 dataString = String(data: packet.data, encoding: .utf8)
             }
@@ -66,7 +66,7 @@ class UartDataExport {
 
             var dataString: String?
             if isHexFormat {
-                dataString = hexDescription(data: packet.data)
+                dataString = HexUtils.hexDescription(data: packet.data)
             } else {
                 dataString = String(data: packet.data, encoding: .utf8)
             }

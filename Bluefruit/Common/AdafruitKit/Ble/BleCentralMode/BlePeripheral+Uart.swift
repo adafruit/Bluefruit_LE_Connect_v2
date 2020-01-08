@@ -217,7 +217,7 @@ extension BlePeripheral {
             if let error = error {
                 DLog("write packet at offset: \(writeStartingOffset) error: \(error)")
             } else {
-                DLog("uart tx \(uartTxCharacteristicWriteType == .withResponse ? "withResponse":"withoutResponse") offset: \(writeStartingOffset): \(hexDescription(data: packet))")
+                DLog("uart tx \(uartTxCharacteristicWriteType == .withResponse ? "withResponse":"withoutResponse") offset: \(writeStartingOffset): \(HexUtils.hexDescription(data: packet))")
                 
                 writtenSize += packet.count
                 if BlePeripheral.kDebugLog {
@@ -287,7 +287,7 @@ extension BlePeripheral {
                 if let error = error {
                     DLog("write packet at offset: \(offset) error: \(error)")
                 } else {
-                    DLog("uart tx writeAndWait (hex): \(hexDescription(data: packet))")
+                    DLog("uart tx writeAndWait (hex): \(HexUtils.hexDescription(data: packet))")
 //                    DLog("uart tx writeAndWait (dec): \(decimalDescription(data: packet))")
 //                    DLog("uart tx writeAndWait (utf8): \(String(data: packet, encoding: .utf8) ?? "<invalid>")")
                     

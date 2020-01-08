@@ -13,7 +13,7 @@ func stringFromData(_ data: Data, useHexMode: Bool) -> String? {
     var result: String?
 
     if useHexMode {
-        let hexValue = hexDescription(data: data)
+        let hexValue = HexUtils.hexDescription(data: data)
         result = hexValue
     } else {
         if let value = String(data: data, encoding: .ascii) as String? {
