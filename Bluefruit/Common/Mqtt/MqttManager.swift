@@ -123,12 +123,6 @@ class MqttManager {
 }
 
 extension MqttManager: CocoaMQTTDelegate {
-
-    func mqtt(_ mqtt: CocoaMQTT, didConnect host: String, port: Int) {
-        DLog("didConnect: \(host):\(port)")
-        status = .connected
-    }
-
     func mqtt(_ mqtt: CocoaMQTT, didConnectAck ack: CocoaMQTTConnAck) {
         DLog("didConnectAck: \(ack)")
 
@@ -199,10 +193,10 @@ extension MqttManager: CocoaMQTTDelegate {
         }
     }
 
-    func mqtt(_ mqtt: CocoaMQTT, didSubscribeTopic topic: String) {
-        DLog("didSubscribeTopic")
-    }
-
+    func mqtt(_ mqtt: CocoaMQTT, didSubscribeTopic topics: [String]) {
+         DLog("didSubscribeTopic: \(topics)")
+     }
+    
     func mqtt(_ mqtt: CocoaMQTT, didUnsubscribeTopic topic: String) {
         DLog("didUnsubscribeTopic")
     }

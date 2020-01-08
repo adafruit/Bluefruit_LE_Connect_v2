@@ -12,13 +12,13 @@ import Foundation
 /**
  * MQTT Message
  */
-open class CocoaMQTTMessage: NSObject {
-    open var qos = CocoaMQTTQOS.qos1
-    var dup = false
+public class CocoaMQTTMessage: NSObject {
+    public var qos = CocoaMQTTQOS.qos1
+    public var dup = false
 
-    open var topic: String
-    open var payload: [UInt8]
-    open var retained = false
+    public var topic: String
+    public var payload: [UInt8]
+    public var retained = false
     
     // utf8 bytes array to string
     public var string: String? {
@@ -42,13 +42,27 @@ open class CocoaMQTTMessage: NSObject {
         self.retained = retained
         self.dup = dup
     }
+    
+    func convertToFrame() -> CocoaMQTTFramePublish {
+        var frame = CocoaMQTTFramePublish(msgid: 0, topic: topic, payload: payload)
+        frame.qos = qos.rawValue
+        frame.retained = retained
+        
+        return frame
+    }
 }
 
 /**
  * MQTT Will Message
  */
-open class CocoaMQTTWill: CocoaMQTTMessage {
+public class CocoaMQTTWill: CocoaMQTTMessage {
     public init(topic: String, message: String) {
         super.init(topic: topic, payload: message.bytesWithLength)
+    }
+    
+    public init(topic: String, payload: [UInt8]) {
+        let endian = UInt16(payload.count).hlBytes
+        let payloadCoded = endian + payload as [UInt8]
+        super.init(topic: topic, payload: payloadCoded)
     }
 }

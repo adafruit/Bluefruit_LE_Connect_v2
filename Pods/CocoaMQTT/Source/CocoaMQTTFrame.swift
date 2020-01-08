@@ -22,7 +22,7 @@ extension UInt16 {
         return UInt8(self & 0x00FF)
     }
 
-    fileprivate var hlBytes: [UInt8] {
+    var hlBytes: [UInt8] {
         return [highByte, lowByte]
     }
 }
@@ -83,70 +83,66 @@ enum CocoaMQTTFrameType: UInt8 {
 /**
  * MQTT Frame
  */
-open class CocoaMQTTFrame {
+protocol CocoaMQTTFrame {
     /**
      * |--------------------------------------
      * | 7 6 5 4 |     3    |  2 1  | 0      |
      * |  Type   | DUP flag |  QoS  | RETAIN |
      * |--------------------------------------
      */
-    var header: UInt8 = 0
+    var header: UInt8 {get set}
+    
+    var variableHeader: [UInt8] {get set}
+    var payload: [UInt8] {get set}
+    
+    // Pack the attribute to header/variableHeader/payload
+    mutating func pack()
+}
 
+extension CocoaMQTTFrame {
+
+    
     var type: UInt8 {
         return  UInt8(header & 0xF0)
     }
-
+    
     var dup: Bool {
         get {
             return ((header & 0x08) >> 3) == 0 ? false : true
         }
         set {
-            header |= (newValue.bit << 3)
+            header = (header & 0xF7) | (newValue.bit  << 3)
         }
     }
-
+    
     var qos: UInt8 {
-        // #define GETQOS(HDR) ((HDR & 0x06) >> 1)
         get {
             return (header & 0x06) >> 1
         }
-        // #define SETQOS(HDR, Q) (HDR | ((Q) << 1))
         set {
-            header |= (newValue << 1)
+            header = (header & 0xF9) | (newValue << 1)
         }
     }
-
+    
     var retained: Bool {
         get {
             return (header & 0x01) == 0 ? false : true
         }
         set {
-            header |= newValue.bit
+            header = (header & 0xFE) | newValue.bit
         }
     }
-
-    var variableHeader: [UInt8] = []
-    var payload: [UInt8] = []
-
-    init(header: UInt8) {
-        self.header = header
-    }
-
-    init(type: CocoaMQTTFrameType, payload: [UInt8] = []) {
-        self.header = type.rawValue
-        self.payload = payload
-    }
-
-    func data() -> [UInt8] {
+    
+    mutating func data() -> [UInt8] {
         self.pack()
         return [UInt8]([header]) + encodeLength() + variableHeader + payload
     }
-
+    
     func encodeLength() -> [UInt8] {
         var bytes: [UInt8] = []
         var digit: UInt8 = 0
         var len: UInt32 = UInt32(variableHeader.count+payload.count)
-
+        
         repeat {
             digit = UInt8(len % 128)
             len = len / 128
@@ -159,15 +155,19 @@ open class CocoaMQTTFrame {
         
         return bytes
     }
-
-    // do nothing
-    func pack() { return; }
 }
 
 /**
  * MQTT CONNECT Frame
  */
-class CocoaMQTTFrameConnect: CocoaMQTTFrame {
+struct CocoaMQTTFrameConnect: CocoaMQTTFrame {
+    
+    var header: UInt8
+    
+    var variableHeader: [UInt8] = []
+    
+    var payload: [UInt8] = []
+    
     let PROTOCOL_LEVEL = UInt8(4)
     let PROTOCOL_VERSION: String  = "MQTT/3.1.1"
     let PROTOCOL_MAGIC: String = "MQTT"
@@ -181,79 +181,75 @@ class CocoaMQTTFrameConnect: CocoaMQTTFrame {
     var flags: UInt8 = 0
 
     var flagUsername: Bool {
-        // #define FLAG_USERNAME(F, U)		(F | ((U) << 7))
         get {
             return Bool(bit: (flags >> 7) & 0x01)
         }
 
         set {
-            flags |= (newValue.bit << 7)
+            flags = (flags & 0x7F) | (newValue.bit << 7)
         }
     }
 
     var flagPassword: Bool {
-        // #define FLAG_PASSWD(F, P)		(F | ((P) << 6))
         get {
             return Bool(bit:(flags >> 6) & 0x01)
         }
 
         set {
-            flags |= (newValue.bit << 6)
+            flags = (flags & 0xBF) | (newValue.bit << 6)
         }
     }
 
     var flagWillRetain: Bool {
-        // #define FLAG_WILLRETAIN(F, R) 	(F | ((R) << 5))
         get {
             return Bool(bit: (flags >> 5) & 0x01)
         }
         
         set {
-            flags |= (newValue.bit << 5)
+            flags = (flags & 0xDF) | (newValue.bit << 5)
         }
     }
 
     var flagWillQOS: UInt8 {
-        // #define FLAG_WILLQOS(F, Q)		(F | ((Q) << 3))
         get {
             return (flags >> 3) & 0x03
         }
         
         set {
-            flags |= (newValue << 3)
+            flags = (flags & 0xE7) | (newValue << 3)
         }
     }
 
     var flagWill: Bool {
-        // #define FLAG_WILL(F, W)			(F | ((W) << 2))
         get {
             return Bool(bit:(flags >> 2) & 0x01)
         }
 
         set {
-            flags |= ((newValue.bit) << 2)
+            flags = (flags & 0xFB) | (newValue.bit << 2)
         }
     }
 
     var flagCleanSession: Bool {
-        // #define FLAG_CLEANSESS(F, C)	(F | ((C) << 1))
         get {
             return Bool(bit: (flags >> 1) & 0x01)
         }
 
         set {
-            flags |= ((newValue.bit) << 1)
+            flags = (flags & 0xFD) | (newValue.bit << 1)
+
         }
     }
 
     var client: CocoaMQTTClient
 
+    // TODO: refactor?
     init(client: CocoaMQTT) {
         self.client = client
-        super.init(type: CocoaMQTTFrameType.connect)
+        self.header = CocoaMQTTFrameType.connect.rawValue
     }
 
-    override func pack() {
+    mutating func pack() {
         // variable header
         variableHeader += PROTOCOL_MAGIC.bytesWithLength
         variableHeader.append(PROTOCOL_LEVEL)
@@ -286,23 +282,32 @@ class CocoaMQTTFrameConnect: CocoaMQTTFrame {
 /**
  * MQTT PUBLISH Frame
  */
-open class CocoaMQTTFramePublish: CocoaMQTTFrame {
+struct CocoaMQTTFramePublish: CocoaMQTTFrame {
+    
+    
+    var header: UInt8
+    
+    var variableHeader: [UInt8] = []
+    
+    var payload: [UInt8] = []
+    
     var msgid: UInt16?
     var topic: String?
     var data: [UInt8]?
 
     init(msgid: UInt16, topic: String, payload: [UInt8]) {
-        super.init(type: CocoaMQTTFrameType.publish, payload: payload)
+        header = CocoaMQTTFrameType.publish.rawValue
         self.msgid = msgid
         self.topic = topic
+        self.payload = payload
     }
 
     init(header: UInt8, data: [UInt8]) {
-        super.init(header: header)
+        self.header = header
         self.data = data
     }
 
-    func unpack() {
+    mutating func unpack() {
         // topic
         if data!.count < 2 {
             printWarning("Invalid format of received message.")
@@ -345,7 +350,7 @@ open class CocoaMQTTFramePublish: CocoaMQTTFrame {
         }
     }
 
-    override func pack() {
+    mutating func pack() {
         variableHeader += topic!.bytesWithLength
         if qos > 0 {
             variableHeader += msgid!.hlBytes
@@ -353,160 +358,129 @@ open class CocoaMQTTFramePublish: CocoaMQTTFrame {
     }
 }
 
-/**
- * MQTT PUBACK Frame
- */
-class CocoaMQTTFramePubAck: CocoaMQTTFrame {
-    var msgid: UInt16?
+extension CocoaMQTTFramePublish: CustomStringConvertible {
+    var description: String {
+        return "PUBLISH(msgid: \(msgid ?? 0), topic: \(topic ?? ""), payload: \(payload))"
+    }
+}
 
+
+/**
+ * MQTT PUBACK/PUBREC/PUBREL/PUBCOM Frame
+ */
+struct CocoaMQTTFramePubAck: CocoaMQTTFrame {
+    var header: UInt8
+    
+    var variableHeader: [UInt8] = []
+    
+    var payload: [UInt8] = []
+    
+    var msgid: UInt16
+    
     init(type: CocoaMQTTFrameType, msgid: UInt16) {
-        super.init(type: type)
+        header = type.rawValue
+        self.msgid = msgid
         if type == CocoaMQTTFrameType.pubrel {
             qos = CocoaMQTTQOS.qos1.rawValue
         }
-        self.msgid = msgid
     }
 
-    override func pack() {
-        variableHeader += msgid!.hlBytes
+    mutating func pack() {
+        variableHeader += msgid.hlBytes
     }
 }
 
 /**
  * MQTT SUBSCRIBE Frame
  */
-class CocoaMQTTFrameSubscribe: CocoaMQTTFrame {
-    var msgid: UInt16?
-    var topic: String?
-    var reqos: UInt8 = CocoaMQTTQOS.qos0.rawValue
+struct CocoaMQTTFrameSubscribe: CocoaMQTTFrame {
+    var header: UInt8
+    
+    var variableHeader: [UInt8] = []
+    
+    var payload: [UInt8] = []
+    
+    var msgid: UInt16
+    var topics: [(String, CocoaMQTTQOS)]
 
-    init(msgid: UInt16, topic: String, reqos: UInt8) {
-        super.init(type: CocoaMQTTFrameType.subscribe)
+    init(msgid: UInt16, topic: String, reqos: CocoaMQTTQOS) {
+        self.init(msgid: msgid, topics: [(topic, reqos)])
+    }
+    
+    init(msgid: UInt16, topics: [(String, CocoaMQTTQOS)]) {
+        header = CocoaMQTTFrameType.subscribe.rawValue        
         self.msgid = msgid
-        self.topic = topic
-        self.reqos = reqos
-        self.qos = CocoaMQTTQOS.qos1.rawValue
+        self.topics = topics        
+        qos = CocoaMQTTQOS.qos1.rawValue
     }
 
-    override func pack() {
-        variableHeader += msgid!.hlBytes
-        payload += topic!.bytesWithLength
-        payload.append(reqos)
+    mutating func pack() {
+        variableHeader += msgid.hlBytes
+        for (topic, qos) in topics {
+            payload += topic.bytesWithLength
+            payload.append(qos.rawValue)
+        }
     }
 }
 
 /**
  * MQTT UNSUBSCRIBE Frame
  */
-class CocoaMQTTFrameUnsubscribe: CocoaMQTTFrame {
-    var msgid: UInt16?
-    var topic: String?
+struct CocoaMQTTFrameUnsubscribe: CocoaMQTTFrame {
+    var header: UInt8
+    
+    var variableHeader: [UInt8] = []
+    
+    var payload: [UInt8] = []
+    
+    var msgid: UInt16
+    var topic: String
 
     init(msgid: UInt16, topic: String) {
-        super.init(type: CocoaMQTTFrameType.unsubscribe)
+        // TODO: Support topic tables!!
+        self.header = CocoaMQTTFrameType.unsubscribe.rawValue
         self.msgid = msgid
         self.topic = topic
         qos = CocoaMQTTQOS.qos1.rawValue
     }
 
-    override func pack() {
-        variableHeader += msgid!.hlBytes
-        payload += topic!.bytesWithLength
+    mutating func pack() {
+        variableHeader += msgid.hlBytes
+        payload += topic.bytesWithLength
     }
 }
 
-//MARK: - Buffer
-
-public protocol CocoaMQTTFrameBufferProtocol: class {
-    func buffer(_ buffer: CocoaMQTTFrameBuffer, sendPublishFrame frame: CocoaMQTTFramePublish)
+/// DISCONNECT Frame
+struct CocoaMQTTFrameDisconnect: CocoaMQTTFrame {
+    
+    var header: UInt8
+    
+    var variableHeader: [UInt8] = []
+    
+    var payload: [UInt8] = []
+    
+    init() {
+        header = CocoaMQTTFrameType.disconnect.rawValue
+    }
+    
+    func pack() {
+        // nothing to do
+    }
 }
 
-open class CocoaMQTTFrameBuffer: NSObject {
+/// PING Frame
+struct CocoaMQTTFramePing: CocoaMQTTFrame {
+    var header: UInt8
     
-    open weak var delegate: CocoaMQTTFrameBufferProtocol?
+    var variableHeader: [UInt8] = []
     
-    // flow control
-    fileprivate var silos = [CocoaMQTTFramePublish]()
-    fileprivate var buffer = [CocoaMQTTFramePublish]()
-    fileprivate var bufferSize = 1000
-    var silosMaxNumber: UInt = 10
-    var timeout: Double = 60
-    //TODO: bufferCapacity
-    //fileprivate var bufferCapacity = 50.MB // unit: byte
+    var payload: [UInt8] = []
     
-    //
-    var isBufferEmpty: Bool { get { return buffer.count == 0 }}
-    var isBufferFull : Bool { get { return buffer.count > bufferSize }}
-    var isSilosFull  : Bool { get { return silos.count >= Int(silosMaxNumber) }}
-    
-    
-    // return false means the frame is rejected because of the buffer is full
-    open func add(_ frame: CocoaMQTTFramePublish) -> Bool {
-        guard !isBufferFull else {
-            printError("Buffer is full, message(\(String(describing: frame.msgid))) was abandoned.")
-            return false
-        }
-        
-        buffer.append(frame)
-        tryTransport()
-        return true
+    init() {
+        header = CocoaMQTTFrameType.pingreq.rawValue
     }
     
-    // try transport a frame from buffer to silo
-    func tryTransport() {
-        if isBufferEmpty || isSilosFull { return }
-
-        // take out the earliest frame
-        if buffer.isEmpty { return }
-        let frame = buffer.remove(at: 0)
-        
-        send(frame)
-
-        if frame.qos != 0 {
-            silos.append(frame)
-            // XXX: When timeout arrived should resend it, not drop!
-            Timer.after(timeout) { [weak self, weak frame] in
-                guard let msgid = frame?.msgid else {return}
-                if self?.removeFrameFromSilos(withMsgid: msgid) == true {
-                    printDebug("timeout of frame:\(msgid)")
-                }
-            }
-        }
-
-        // keep trying after a transport
-        self.tryTransport()
-    }
-    
-    func send(_ frame: CocoaMQTTFramePublish) {
-        delegate?.buffer(self, sendPublishFrame: frame)
-    }
-    
-    open func sendSuccess(withMsgid msgid: UInt16) {
-        DispatchQueue.main.async { [weak self] in
-            _ = self?.removeFrameFromSilos(withMsgid: msgid)
-            printDebug("sendMessageSuccess:\(msgid)")
-        }
-    }
-    
-    func removeFrameFromSilos(withMsgid msgid: UInt16) -> Bool {
-        var success = false
-        for (index, item) in silos.enumerated() {
-            if item.msgid == msgid {
-                success = true
-                silos.remove(at: index)
-                tryTransport()
-                break
-            }
-        }
-        return success
-    }
-
-    /// Clean silos content to prevent message blocked, when next connection established
-    ///
-    /// !!Warning: it's a tempnary method for hotfix #221
-    func cleanSilos() {
-        DispatchQueue.main.async { [weak self] in
-            _ = self?.silos.removeAll()
-        }
+    func pack() {
+        // nothing to do
     }
 }
