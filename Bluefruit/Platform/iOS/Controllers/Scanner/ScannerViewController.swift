@@ -692,18 +692,27 @@ extension ScannerViewController: UITableViewDataSource {
         let localizationManager = LocalizationManager.shared
         peripheralCell.titleLabel.text = peripheral.name ?? localizationManager.localizedString("scanner_unnamed")
         peripheralCell.rssiImageView.image = RssiUI.signalImage(for: peripheral.rssi)
-
+        
         var subtitle: String? = nil
-        if peripheral.advertisement.isConnectable == false {
+        let isConnectable: Bool
+        #if targetEnvironment(macCatalyst)
+        // Advertising values on macCatalyst behave different than on iOS. CBAdvertisementDataIsConnectable reports true and false intermitently so it is disabled for macCatalyst
+        // https://forums.developer.apple.com/thread/124789
+        isConnectable = true
+        #else
+        isConnectable = peripheral.advertisement.isConnectable ?? true
+        #endif
+        
+        if !isConnectable {
             subtitle = localizationManager.localizedString("scanner_notconnectable")
         }
         else if peripheral.isUartAdvertised() {
             subtitle = localizationManager.localizedString("scanner_uartavailable")
         }
         peripheralCell.subtitleLabel.text = subtitle
-
+        
         let isFullScreen = UIScreen.main.traitCollection.horizontalSizeClass == .compact
-
+        
         let showConnect: Bool
         let showDisconnect: Bool
         if isMultiConnectEnabled {
