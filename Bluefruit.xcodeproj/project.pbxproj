@@ -93,6 +93,7 @@
 		A96AB43C1F32BFDC0085115C /* Uart.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A96AB43A1F32BFDC0085115C /* Uart.storyboard */; };
 		A96AB4461F32CB480085115C /* GattServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96AB4451F32CB480085115C /* GattServerViewController.swift */; };
 		A96AB4491F32CF780085115C /* Dfu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A96AB4471F32CF780085115C /* Dfu.storyboard */; };
+		A96D5F2523C73A72009FB3C7 /* AppDelegate+MenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96D5F2423C73A72009FB3C7 /* AppDelegate+MenuBuilder.swift */; };
 		A98378091E422C4B00170319 /* NSObject+ENHThrottledReloading.m in Sources */ = {isa = PBXBuildFile; fileRef = A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */; };
 		A983781A1E42A96400170319 /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378161E42A96400170319 /* ProgressViewController.swift */; };
 		A983781B1E42A96400170319 /* DfuFilesPickerDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378171E42A96400170319 /* DfuFilesPickerDialogViewController.swift */; };
@@ -341,6 +342,7 @@
 		A96AB43B1F32BFDC0085115C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Uart.storyboard; sourceTree = "<group>"; };
 		A96AB4451F32CB480085115C /* GattServerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GattServerViewController.swift; sourceTree = "<group>"; };
 		A96AB4481F32CF780085115C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Dfu.storyboard; sourceTree = "<group>"; };
+		A96D5F2423C73A72009FB3C7 /* AppDelegate+MenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+MenuBuilder.swift"; sourceTree = "<group>"; };
 		A98378051E422C4B00170319 /* NSObject+ENHThrottledReloading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ENHThrottledReloading.h"; sourceTree = "<group>"; };
 		A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ENHThrottledReloading.m"; sourceTree = "<group>"; };
 		A983780B1E422CBC00170319 /* Bluefruit-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bluefruit-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -743,6 +745,7 @@
 			children = (
 				A915427C1EDD7CE8007A34EA /* Config.swift */,
 				A9286CAD1E3A931E008E5F81 /* AppDelegate.swift */,
+				A96D5F2423C73A72009FB3C7 /* AppDelegate+MenuBuilder.swift */,
 				A983780B1E422CBC00170319 /* Bluefruit-Bridging-Header.h */,
 				A9286CAE1E3A931E008E5F81 /* Assets.xcassets */,
 				A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */,
@@ -1779,6 +1782,7 @@
 				A9CA08551F35F49200A0C621 /* ScrollingTabBarCollectionViewCell.swift in Sources */,
 				A90798401E44ECB3005470A5 /* PlotterModeViewController.swift in Sources */,
 				A94A21AD1E417271006A5F33 /* UartModeViewController.swift in Sources */,
+				A96D5F2523C73A72009FB3C7 /* AppDelegate+MenuBuilder.swift in Sources */,
 				A9BCD5721E4D25B3003D1CEA /* DfuUpdateProcess.swift in Sources */,
 				A9CA085B1F35F4B600A0C621 /* ModeTabViewController.swift in Sources */,
 				A991A7BD22AFBA36003AE632 /* ImageTransferModuleManager.swift in Sources */,

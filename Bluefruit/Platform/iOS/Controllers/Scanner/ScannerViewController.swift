@@ -67,6 +67,11 @@ class ScannerViewController: ModeTabViewController {
         // Init
         peripheralList = PeripheralList()                  // Initialize here to wait for Preferences.registerDefaults to be executed
         
+        // Remove info button on macCatalyst (about is available from the main menu)
+        #if targetEnvironment(macCatalyst)
+        self.navigationItem.rightBarButtonItem = nil
+        #endif
+        
         // Setup filters
         filtersNameTextField.leftViewMode = .always
         let searchImageView = UIImageView(image: UIImage(named: "ic_search_18pt"))
