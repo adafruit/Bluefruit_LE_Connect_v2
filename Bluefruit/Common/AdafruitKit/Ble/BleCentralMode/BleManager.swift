@@ -77,6 +77,7 @@ class BleManager: NSObject {
         let knownPeripherals = centralManager?.retrievePeripherals(withIdentifiers: knownIdentifiers)
 
         peripheralsFound.removeAll()
+        peripheralsFoundLock.unlock()
 
         if let knownPeripherals = knownPeripherals {
             for peripheral in knownPeripherals {
@@ -84,8 +85,6 @@ class BleManager: NSObject {
                 discovered(peripheral: peripheral)
             }
         }
-
-        peripheralsFoundLock.unlock()
 
         // Restore central manager delegate if was changed
         centralManager?.delegate = self

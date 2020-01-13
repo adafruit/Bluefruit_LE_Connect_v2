@@ -81,7 +81,7 @@ class DfuFilesPickerDialogViewController: UIViewController {
     @IBAction func onClickPickFile(_ sender: UIButton) {
         isPickingHexFile = sender.tag == 0
 
-        let importMenu = UIDocumentMenuViewController(documentTypes: ["public.data", "public.content"], in: .import)
+        let importMenu = UIDocumentPickerViewController(documentTypes: ["public.item"], in: .import)
         importMenu.delegate = self
         importMenu.popoverPresentationController?.sourceView = sender
         present(importMenu, animated: true, completion: nil)
@@ -97,15 +97,6 @@ class DfuFilesPickerDialogViewController: UIViewController {
         dismiss(animated: true) { [unowned self] () -> Void in
             self.delegate?.onFilesPickerCancel()
         }
-    }
-}
-
-// MARK: - UIDocumentMenuDelegate
-extension DfuFilesPickerDialogViewController: UIDocumentMenuDelegate {
-
-    func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
-        documentPicker.delegate = self
-        present(documentPicker, animated: true, completion: nil)
     }
 }
 
