@@ -585,6 +585,7 @@ The possible values for Transfer mode are:
 
 "imagetransfer_waitingforuart" = "Waiting for Uart...";
 "imagetransfer_resolution_title" = "Resolution:";
+"imagetransfer_resolution_einkprefix" = "E-Ink";
 "imagetransfer_resolution_value_default" = "Default";
 "imagetransfer_image_title" = "Image:";
 "imagetransfer_image_value_default" = "Default";
@@ -601,13 +602,10 @@ The possible values for Transfer mode are:
 "imagetransfer_imagepicker_camera" = "Take photo";
 "imagetransfer_imagepicker_cameraroll" = "Camera roll";
 "imagetransfer_imagepicker_photolibrary" = "Photo library";
-"imagetransfer_imageorigin_camera" = "Camera";
-"imagetransfer_imageorigin_cameraroll" = "Camera roll";
-"imagetransfer_imageorigin_photolibrary" = "Photo library";
-"imagetransfer_imageorigin_other" = "Other";
-"imagetransfer_imageorigin_default" = "Default";
 "imagetransfer_imageorigin_choose" = "Choose Image";
 "imagetransfer_resolution_choose" = "Choose Resolution";
+"imagetransfer_resolution_mode_standard" = "Standard";
+"imagetransfer_resolution_mode_eink" = "E-Ink";
 "imagetransfer_send_action" = "Send Image";
 "imagetransfer_cameranotavailable" = "Camera is not available";
 "imagetransfer_decodeimage_error" = "Image cannot be decoded";

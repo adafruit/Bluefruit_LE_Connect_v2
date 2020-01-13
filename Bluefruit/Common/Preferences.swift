@@ -74,6 +74,7 @@ class Preferences {
     private static let imageTransferResolutionKey = "ImageTransferResolution"
     private static let imageTransferInterleavedWithoutResponseCountKey = "ImageTransferInterleavedWithoutResponseCountKey"
     private static let imageTransferIsColorSpace24BitKey = "IsColorSpace24BitKey"
+    private static let imageTransferIsEInkModeEnabledKey = "IsEInkModeEnabled"
 
     
     // MARK: - General
@@ -482,7 +483,16 @@ class Preferences {
             setBoolPreference(Preferences.imageTransferIsColorSpace24BitKey, newValue: newValue)
         }
     }
-    
+
+    static var imageTransferIsEInkModeEnabled: Bool {
+        get {
+            return getBoolPreference(Preferences.imageTransferIsEInkModeEnabledKey)
+        }
+        set {
+            setBoolPreference(Preferences.imageTransferIsEInkModeEnabledKey, newValue: newValue)
+        }
+    }
+
 
     // MARK: - Common
     static func getBoolPreference(_ key: String) -> Bool {

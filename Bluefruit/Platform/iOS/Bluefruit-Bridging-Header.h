@@ -13,4 +13,11 @@
 #import "NSObject+ENHThrottledReloading.h"
 #import "ISColorWheel.h"
 
+#if TARGET_OS_MACCATALYST
+    // ImageMagick libs are not compiled for macOS
+#else
+#import "ImageMagick.h"
+#import "MagickWand.h"
+#endif
+
 #endif /* Bluefruit_Bridging_Header_h */

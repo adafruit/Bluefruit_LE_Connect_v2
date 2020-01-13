@@ -1,0 +1,6 @@
+framework module Pods_Bluefruit {
+  umbrella header "Pods-Bluefruit-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,6 +1,0 @@
-framework module VectorMath {
-  umbrella header "VectorMath-macOS-umbrella.h"
-
-  export *
-  module * { export * }
-}
