@@ -113,12 +113,9 @@
 		A96D5FD823CC7E79009FB3C7 /* type-dejavu.xml in Resources */ = {isa = PBXBuildFile; fileRef = A96D5FC323CC7E78009FB3C7 /* type-dejavu.xml */; };
 		A96D5FD923CC7E79009FB3C7 /* locale.xml in Resources */ = {isa = PBXBuildFile; fileRef = A96D5FC423CC7E78009FB3C7 /* locale.xml */; };
 		A96D5FDA23CC7E79009FB3C7 /* english.xml in Resources */ = {isa = PBXBuildFile; fileRef = A96D5FC523CC7E78009FB3C7 /* english.xml */; };
-		A96D5FDB23CC7E79009FB3C7 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FC623CC7E78009FB3C7 /* libpng.a */; };
-		A96D5FDC23CC7E79009FB3C7 /* libtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FC723CC7E78009FB3C7 /* libtiff.a */; };
-		A96D5FDD23CC7E79009FB3C7 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FC823CC7E78009FB3C7 /* libjpeg.a */; };
-		A96D5FDE23CC7E79009FB3C7 /* libMagickCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FC923CC7E79009FB3C7 /* libMagickCore.a */; };
-		A96D5FDF23CC7E79009FB3C7 /* libMagickWand.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FCA23CC7E79009FB3C7 /* libMagickWand.a */; };
-		A96D5FE323CC8375009FB3C7 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FE223CC8375009FB3C7 /* libz.tbd */; };
+		A96D5FDB23CC7E79009FB3C7 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FC623CC7E78009FB3C7 /* libpng.a */; platformFilter = ios; };
+		A96D5FDE23CC7E79009FB3C7 /* libMagickCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FC923CC7E79009FB3C7 /* libMagickCore.a */; platformFilter = ios; };
+		A96D5FDF23CC7E79009FB3C7 /* libMagickWand.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FCA23CC7E79009FB3C7 /* libMagickWand.a */; platformFilter = ios; };
 		A96D5FE623CC8474009FB3C7 /* eink3color.png in Resources */ = {isa = PBXBuildFile; fileRef = A96D5FE523CC8474009FB3C7 /* eink3color.png */; };
 		A98378091E422C4B00170319 /* NSObject+ENHThrottledReloading.m in Sources */ = {isa = PBXBuildFile; fileRef = A98378061E422C4B00170319 /* NSObject+ENHThrottledReloading.m */; };
 		A983781A1E42A96400170319 /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98378161E42A96400170319 /* ProgressViewController.swift */; };
@@ -143,6 +140,9 @@
 		A991A7BD22AFBA36003AE632 /* ImageTransferModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991A7BC22AFBA36003AE632 /* ImageTransferModuleManager.swift */; };
 		A991A7C022AFDCFB003AE632 /* Int+Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991A7BE22AFDC86003AE632 /* Int+Bytes.swift */; };
 		A991A7C422AFDFE2003AE632 /* UIImage+pixelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991A7C122AFDF1E003AE632 /* UIImage+pixelData.swift */; };
+		A9A1240123CD00B4000C05C0 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FE223CC8375009FB3C7 /* libz.tbd */; platformFilter = ios; };
+		A9A1240223CD0221000C05C0 /* libtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FC723CC7E78009FB3C7 /* libtiff.a */; platformFilter = ios; };
+		A9A1240323CD0223000C05C0 /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FC823CC7E78009FB3C7 /* libjpeg.a */; platformFilter = ios; };
 		A9A6C2471E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */; };
 		A9A89BDC1E83C5B000724F0E /* StyledConnectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9A89BDB1E83C5B000724F0E /* StyledConnectButton.swift */; };
 		A9B7E0802334E72100ED0384 /* ColorPaletteInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5E41E4D2B8A003D1CEA /* ColorPaletteInterfaceController.swift */; };
@@ -385,7 +385,6 @@
 		A96D5F3A23CC7E78009FB3C7 /* signature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = signature.h; sourceTree = "<group>"; };
 		A96D5F3B23CC7E78009FB3C7 /* distribute-cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "distribute-cache.h"; sourceTree = "<group>"; };
 		A96D5F3C23CC7E78009FB3C7 /* morphology.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = morphology.h; sourceTree = "<group>"; };
-		A96D5F3D23CC7E78009FB3C7 /* semaphore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = semaphore.h; sourceTree = "<group>"; };
 		A96D5F3E23CC7E78009FB3C7 /* quantize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = quantize.h; sourceTree = "<group>"; };
 		A96D5F3F23CC7E78009FB3C7 /* resample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = resample.h; sourceTree = "<group>"; };
 		A96D5F4023CC7E78009FB3C7 /* composite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = composite.h; sourceTree = "<group>"; };
@@ -616,6 +615,7 @@
 		A991A7BC22AFBA36003AE632 /* ImageTransferModuleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTransferModuleManager.swift; sourceTree = "<group>"; };
 		A991A7BE22AFDC86003AE632 /* Int+Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Bytes.swift"; sourceTree = "<group>"; };
 		A991A7C122AFDF1E003AE632 /* UIImage+pixelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+pixelData.swift"; sourceTree = "<group>"; };
+		A9A1240423CD027C000C05C0 /* semaphore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = semaphore.h; sourceTree = "<group>"; };
 		A9A6C2461E4B8A0500CEBFEC /* UartSelectPeripheralViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSelectPeripheralViewController.swift; sourceTree = "<group>"; };
 		A9A89BDB1E83C5B000724F0E /* StyledConnectButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledConnectButton.swift; sourceTree = "<group>"; };
 		A9BAD20D1E3FA1370021DFA9 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -706,13 +706,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A96D5FE323CC8375009FB3C7 /* libz.tbd in Frameworks */,
+				81EC9BF2053F63FF4DD121AC /* Pods_Bluefruit.framework in Frameworks */,
 				A96D5FDE23CC7E79009FB3C7 /* libMagickCore.a in Frameworks */,
 				A96D5FDF23CC7E79009FB3C7 /* libMagickWand.a in Frameworks */,
-				81EC9BF2053F63FF4DD121AC /* Pods_Bluefruit.framework in Frameworks */,
-				A96D5FDD23CC7E79009FB3C7 /* libjpeg.a in Frameworks */,
 				A96D5FDB23CC7E79009FB3C7 /* libpng.a in Frameworks */,
-				A96D5FDC23CC7E79009FB3C7 /* libtiff.a in Frameworks */,
+				A9A1240223CD0221000C05C0 /* libtiff.a in Frameworks */,
+				A9A1240323CD0223000C05C0 /* libjpeg.a in Frameworks */,
+				A9A1240123CD00B4000C05C0 /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1206,12 +1206,12 @@
 		A96D5F3723CC7E78009FB3C7 /* magick */ = {
 			isa = PBXGroup;
 			children = (
+				A9A1240423CD027C000C05C0 /* semaphore.h */,
 				A96D5F3823CC7E78009FB3C7 /* type.h */,
 				A96D5F3923CC7E78009FB3C7 /* gem.h */,
 				A96D5F3A23CC7E78009FB3C7 /* signature.h */,
 				A96D5F3B23CC7E78009FB3C7 /* distribute-cache.h */,
 				A96D5F3C23CC7E78009FB3C7 /* morphology.h */,
-				A96D5F3D23CC7E78009FB3C7 /* semaphore.h */,
 				A96D5F3E23CC7E78009FB3C7 /* quantize.h */,
 				A96D5F3F23CC7E78009FB3C7 /* resample.h */,
 				A96D5F4023CC7E78009FB3C7 /* composite.h */,
@@ -2534,6 +2534,25 @@
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaMQTT\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MSWeakTimer\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyXML\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/UIColor+Hex\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/VectorMath\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/iOSDFULibrary\"",
+					"\"$(SRCROOT)/Bluefruit/External Tools/iOSMagick-6.8.8-9-libs/include\"",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"MAGICKCORE_QUANTUM_DEPTH=16",
+					"MAGICKCORE_HDRI_ENABLE=0",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts/Charts.framework/Headers\"",
@@ -2545,7 +2564,7 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/VectorMath/VectorMath.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/iOSDFULibrary/iOSDFULibrary.framework/Headers\"",
-					"\"$(SRCROOT)/Bluefruit/External Tools/iOSMagick-6.8.8-9-libs/include\"/**",
+					"\"$(SRCROOT)/Bluefruit/External Tools/iOSMagick-6.8.8-9-libs/include\"",
 				);
 				INFOPLIST_FILE = Bluefruit/Platform/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
@@ -2558,11 +2577,34 @@
 					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
-					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
-					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 				);
 				MARKETING_VERSION = 3.6.0;
 				OTHER_CFLAGS = "-Dmacintosh=1";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"Charts\"",
+					"-framework",
+					"\"CocoaAsyncSocket\"",
+					"-framework",
+					"\"CocoaMQTT\"",
+					"-framework",
+					"\"MSWeakTimer\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SwiftyXML\"",
+					"-framework",
+					"\"UIColor_Hex\"",
+					"-framework",
+					"\"VectorMath\"",
+					"-framework",
+					"\"ZIPFoundation\"",
+					"-framework",
+					"\"iOSDFULibrary\"",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D MQTT_ENABLED";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2582,6 +2624,25 @@
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaMQTT\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MSWeakTimer\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyXML\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/UIColor+Hex\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/VectorMath\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/iOSDFULibrary\"",
+					"\"$(SRCROOT)/Bluefruit/External Tools/iOSMagick-6.8.8-9-libs/include\"",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"MAGICKCORE_QUANTUM_DEPTH=16",
+					"MAGICKCORE_HDRI_ENABLE=0",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts/Charts.framework/Headers\"",
@@ -2593,7 +2654,7 @@
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/VectorMath/VectorMath.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation/ZIPFoundation.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/iOSDFULibrary/iOSDFULibrary.framework/Headers\"",
-					"\"$(SRCROOT)/Bluefruit/External Tools/iOSMagick-6.8.8-9-libs/include\"/**",
+					"\"$(SRCROOT)/Bluefruit/External Tools/iOSMagick-6.8.8-9-libs/include\"",
 				);
 				INFOPLIST_FILE = Bluefruit/Platform/iOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
@@ -2606,11 +2667,34 @@
 					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
-					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
-					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 				);
 				MARKETING_VERSION = 3.6.0;
 				OTHER_CFLAGS = "-Dmacintosh=1";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"Charts\"",
+					"-framework",
+					"\"CocoaAsyncSocket\"",
+					"-framework",
+					"\"CocoaMQTT\"",
+					"-framework",
+					"\"MSWeakTimer\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SwiftyXML\"",
+					"-framework",
+					"\"UIColor_Hex\"",
+					"-framework",
+					"\"VectorMath\"",
+					"-framework",
+					"\"ZIPFoundation\"",
+					"-framework",
+					"\"iOSDFULibrary\"",
+				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D MQTT_ENABLED";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
