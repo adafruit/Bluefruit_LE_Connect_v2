@@ -102,7 +102,8 @@ class DfuFilesPickerDialogViewController: UIViewController {
 
 // MARK: - UIDocumentPickerDelegate
 extension DfuFilesPickerDialogViewController: UIDocumentPickerDelegate {
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let url = urls.first else { return }
         DLog("picked: \(url.absoluteString)")
 
         if isPickingHexFile {
@@ -112,5 +113,9 @@ extension DfuFilesPickerDialogViewController: UIDocumentPickerDelegate {
         }
 
         updateFileNames()
+    }
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        DLog("documentPickerWasCancelled")
     }
 }
