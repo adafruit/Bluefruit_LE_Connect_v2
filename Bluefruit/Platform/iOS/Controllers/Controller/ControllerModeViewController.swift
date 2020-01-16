@@ -92,15 +92,24 @@ class ControllerModeViewController: PeripheralModeViewController {
 
     fileprivate let kDetailItemOffset = 100
     fileprivate func updateContentItemsFromSensorsEnabled() {
+        // Add to contentItems the current rows (ControllerType.rawValue for each sensor and kDetailItemOffset+ControllerType.rawValue for a detail cell)
+        
+        let availableControllers: [ControllerModuleManager.ControllerType]
+        #if targetEnvironment(macCatalyst)
+        // Only location is available on macCatalyst
+        availableControllers = [.location]
+        #else
+        availableControllers = ControllerModuleManager.ControllerType.allCases
+        #endif
+        
         var items = [Int]()
-        var i = 0
-        for j in 0..<ControllerModuleManager.numSensors {
-            let isSensorEnabled = controllerData.isSensorEnabled(index: j)
-            items.append(i)
+        availableControllers.forEach { controllerType in
+            
+            let isSensorEnabled = controllerData.isSensorEnabled(controllerType: controllerType)
+            items.append(controllerType.rawValue)
             if isSensorEnabled {
-                items.append(i+kDetailItemOffset)
+                items.append(controllerType.rawValue+kDetailItemOffset)
             }
-            i += 1
         }
 
         contentItems = items
@@ -207,7 +216,7 @@ extension ControllerModeViewController : UITableViewDataSource {
         case sensorData = 0
         case module = 1
     }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -246,17 +255,18 @@ extension ControllerModeViewController : UITableViewDataSource {
             let isDetailCell = item>=kDetailItemOffset
 
             if isDetailCell {
-                let sensorIndex = item - kDetailItemOffset
+                let controllerType = ControllerModuleManager.ControllerType(rawValue: item - kDetailItemOffset)!
                 let reuseIdentifier = "ComponentsCell"
                 let componentsCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ControllerComponentsTableViewCell
-
-                let componentNameId: [String]
-                if sensorIndex == ControllerModuleManager.ControllerType.location.rawValue {
-                    componentNameId = ["controller_component_lat", "controller_component_long", "controller_component_alt"]
-                } else {
-                    componentNameId = ["controller_component_x", "controller_component_y", "controller_component_z", "controller_component_w"]
-                }
-                if let sensorData = controllerData.getSensorData(index: sensorIndex) {
+                
+                if let sensorData = controllerData.getSensorData(controllerType: controllerType) {
+                    let componentNameId: [String]
+                    if controllerType == ControllerModuleManager.ControllerType.location {
+                        componentNameId = ["controller_component_lat", "controller_component_long", "controller_component_alt"]
+                    } else {
+                        componentNameId = ["controller_component_x", "controller_component_y", "controller_component_z", "controller_component_w"]
+                    }
+                    
                     var i=0
                     for subview in componentsCell.componentsStackView.subviews {
                         let hasComponent = i<sensorData.count
@@ -279,15 +289,16 @@ extension ControllerModeViewController : UITableViewDataSource {
 
                 cell = componentsCell
             } else {
+                let controllerType = ControllerModuleManager.ControllerType(rawValue: item)!
                 let reuseIdentifier = "SensorCell"
                 let sensorCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ControllerSensorTableViewCell
                 sensorCell.titleLabel!.text = localizationManager.localizedString( ControllerModeViewController.kSensorTitleKeys[item])
 
-                sensorCell.enableSwitch.isOn = controllerData.isSensorEnabled(index: item)
+                sensorCell.enableSwitch.isOn = controllerData.isSensorEnabled(controllerType: controllerType)
                 sensorCell.onSensorEnabled = { [unowned self] (enabled) in
 
-                    if self.controllerData.isSensorEnabled(index: item) != enabled {       // if changed
-                        let errorMessage = self.controllerData.setSensorEnabled(enabled, index:item)
+                    if self.controllerData.isSensorEnabled(controllerType: controllerType) != enabled {       // if changed
+                        let errorMessage = self.controllerData.setSensorEnabled(enabled, controllerType:controllerType)
 
                         if let errorMessage = errorMessage {
                             let alertController = UIAlertController(title: localizationManager.localizedString("dialog_error"), message: errorMessage, preferredStyle: .alert)

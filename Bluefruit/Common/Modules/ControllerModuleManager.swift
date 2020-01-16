@@ -22,18 +22,30 @@ protocol ControllerModuleManagerDelegate: class {
 }
 
 class ControllerModuleManager: NSObject {
-
-    enum ControllerType: Int {
-        case attitude = 0
+    
+    enum ControllerType: Int, CaseIterable {
+        case altitude = 0
         case accelerometer
         case gyroscope
         case magnetometer
         case location
+        
+        var prefix: String {
+            switch self {
+            case .altitude:
+                return "!Q"
+            case .accelerometer:
+                return "!A"
+            case .gyroscope:
+                return "!G"
+            case .magnetometer:
+                return "!M"
+            case .location:
+                return "!L"
+            }
+        }
     }
-    static let numSensors = 5
-
-    static private let prefixes = ["!Q", "!A", "!G", "!M", "!L"]     // same order that ControllerType
-
+    
     // Params
     weak var delegate: ControllerModuleManagerDelegate?
     var isUartRxCacheEnabled = false {
@@ -47,7 +59,7 @@ class ControllerModuleManager: NSObject {
     }
 
     // Data
-    fileprivate var isSensorEnabled = [Bool](repeating: false, count: ControllerModuleManager.numSensors)
+    fileprivate var isSensorEnabled = [Bool](repeating: false, count: ControllerType.allCases.count)
 
     #if os(OSX)
     #else
@@ -79,9 +91,10 @@ class ControllerModuleManager: NSObject {
 
     deinit {
         locationManager.delegate = nil
-        // Disable everthing
-        for i in 0..<ControllerModuleManager.numSensors {
-            setSensorEnabled(false, index: i)
+        
+        // Disable everything
+        ControllerType.allCases.forEach { controllerType in
+            setSensorEnabled(false, controllerType: controllerType)
         }
     }
 
@@ -139,12 +152,12 @@ class ControllerModuleManager: NSObject {
     @objc private func updateSensors() {
         timerHandler?()
 
-        for i in 0..<ControllerModuleManager.numSensors {
-            if isSensorEnabled(index: i) {
-                if let sensorData = getSensorData(index: i) {
+        ControllerType.allCases.forEach { controllerType in
+            if isSensorEnabled(controllerType: controllerType) {
+                if let sensorData = getSensorData(controllerType: controllerType) {
 
                     var data = Data()
-                    let prefixData = ControllerModuleManager.prefixes[i].data(using: .utf8)!
+                    let prefixData = controllerType.prefix.data(using: .utf8)!
                     data.append(prefixData)
 
                     for value in sensorData {
@@ -158,17 +171,17 @@ class ControllerModuleManager: NSObject {
         }
     }
 
-    func isSensorEnabled(index: Int) -> Bool {
-        return isSensorEnabled[index]
+    func isSensorEnabled(controllerType: ControllerType) -> Bool {
+        return isSensorEnabled[controllerType.rawValue]
     }
 
-    func getSensorData(index: Int) -> [Double]? {
-        guard isSensorEnabled(index: index) else {
+    func getSensorData(controllerType: ControllerType) -> [Double]? {
+        guard isSensorEnabled(controllerType: controllerType) else {
             return nil
         }
 
-        switch ControllerType(rawValue: index)! {
-        case .attitude:
+        switch controllerType {
+        case .altitude:
             if let attitude = coreMotionManager.deviceMotion?.attitude {
                 return [attitude.quaternion.x, attitude.quaternion.y, attitude.quaternion.z, attitude.quaternion.w]
             }
@@ -193,12 +206,12 @@ class ControllerModuleManager: NSObject {
         return nil
     }
 
-    @discardableResult func setSensorEnabled(_ enabled: Bool, index: Int) -> String? {
-        isSensorEnabled[index] = enabled
+    @discardableResult func setSensorEnabled(_ enabled: Bool, controllerType: ControllerType) -> String? {
+        isSensorEnabled[controllerType.rawValue] = enabled
 
         var errorString: String?
-        switch ControllerType(rawValue: index)! {
-        case .attitude:
+        switch controllerType {
+        case .altitude:
             if enabled {
                 coreMotionManager.startDeviceMotionUpdates()
             } else {
