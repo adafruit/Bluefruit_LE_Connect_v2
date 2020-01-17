@@ -89,7 +89,12 @@ class MqttManager {
             mqttClient.keepAlive = UInt16(MqttManager.defaultKeepAliveInterval)
             mqttClient.cleanSession = cleanSession
             mqttClient.delegate = self
-            mqttClient.connect()
+            let success = mqttClient.connect()
+            if !success {
+                delegate?.onMqttError(message: "Mqtt connect error")
+                status = .error
+            }
+            
         } else {
             delegate?.onMqttError(message: "Mqtt initialization error")
             status = .error
