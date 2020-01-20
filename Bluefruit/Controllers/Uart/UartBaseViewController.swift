@@ -347,21 +347,56 @@ class UartBaseViewController: PeripheralModeViewController {
             let exportAction = UIAlertAction(title: exportFormat.rawValue, style: .default) { [unowned self] _ in
                 
                 var exportObject: AnyObject?
-                
+                var proposedExtension: String
+
                 switch exportFormat {
                 case .txt:
                     exportObject = UartDataExport.packetsAsText(packets, isHexFormat: isHexFormat) as AnyObject
+                    proposedExtension = "txt"
                 case .csv:
                     exportObject = UartDataExport.packetsAsCsv(packets, isHexFormat: isHexFormat) as AnyObject
+                    proposedExtension = "csv"
                 case .json:
                     exportObject = UartDataExport.packetsAsJson(packets, isHexFormat: isHexFormat) as AnyObject
+                    proposedExtension = "json"
                 case .xml:
                     exportObject = UartDataExport.packetsAsXml(packets, isHexFormat: isHexFormat) as AnyObject
+                    proposedExtension = "xml"
                 case .bin:
                     exportObject = UartDataExport.packetsAsBinary(packets) as AnyObject
+                    proposedExtension = "bin"
                 }
                 
-                self.export(object: exportObject)
+                if let exportObject = exportObject {
+                    #if targetEnvironment(macCatalyst)
+                    
+                    // Conver to Data
+                    let exportData: Data?
+                    if let exportText = exportObject as? String {
+                        exportData = exportText.data(using: .utf8)
+                    }
+                    else {
+                        exportData = exportObject as? Data
+                    }
+                    
+                    // Export
+                    if let data = exportData {
+                        self.saveToFile(data: data, proposedFilename: "export.\(proposedExtension)")
+                    }
+                    else {
+                        DLog("exportString with unknown format")
+                       self.showDialogWarningNoTextToExport()
+                    }
+                    
+                    #else
+                    self.export(object: exportObject)
+                    #endif
+                    
+                }
+                else {
+                    DLog("exportString with empty text")
+                    self.showDialogWarningNoTextToExport()
+                }
             }
             alertController.addAction(exportAction)
         }
@@ -374,20 +409,33 @@ class UartBaseViewController: PeripheralModeViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    private func export(object: AnyObject?) {
-        if let object = object {
-            // TODO: replace randomly generated iOS filenames: https://thomasguenzel.com/blog/2015/04/16/uiactivityviewcontroller-nsdata-with-filename/
+    #if targetEnvironment(macCatalyst)
+    private func saveToFile(data: Data, proposedFilename: String) {
+        let fileManager = FileManager.default
+        do {
+            let temporaryExportFileUrl = fileManager.temporaryDirectory.appendingPathComponent(proposedFilename)
+            try data.write(to: temporaryExportFileUrl, options: .atomicWrite)
             
-            let activityViewController = UIActivityViewController(activityItems: [object], applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = exportButton
-            activityViewController.popoverPresentationController?.sourceRect = exportButton.bounds
-            
-            navigationController?.present(activityViewController, animated: true, completion: nil)
-        } else {
-            DLog("exportString with empty text")
-            showDialogWarningNoTextToExport()
+            let controller = UIDocumentPickerViewController(url: temporaryExportFileUrl, in: UIDocumentPickerMode.exportToService)
+            //controller.delegate = self
+            present(controller, animated: true) {
+            }
+        } catch {
+            DLog("export: error creating file")
         }
+        
     }
+    #else
+    private func export(object: AnyObject) {
+        // TODO: replace randomly generated iOS filenames: https://thomasguenzel.com/blog/2015/04/16/uiactivityviewcontroller-nsdata-with-filename/
+        
+        let activityViewController = UIActivityViewController(activityItems: [object], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = exportButton
+        activityViewController.popoverPresentationController?.sourceRect = exportButton.bounds
+        
+        navigationController?.present(activityViewController, animated: true, completion: nil)
+    }
+    #endif
     
     private func showDialogWarningNoTextToExport() {
         let localizationManager = LocalizationManager.shared
@@ -638,3 +686,11 @@ extension UartBaseViewController: MqttManagerDelegate {
     }
 }
 
+/*
+// MARK: - UIDocumentPickerDelegate
+extension UartBaseViewController: UIDocumentPickerDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        DLog("document picked")
+        try? fileManager.removeItem(at: exportedURL)
+    }
+}*/
