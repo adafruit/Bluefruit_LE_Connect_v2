@@ -1355,13 +1355,13 @@
 		A9B06ACB23D0D0D10060A64C /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				A9B06AD223D0D0E40060A64C /* Calibration.storyboard */,
-				A9B06ACE23D0D0E30060A64C /* Dfu.storyboard */,
 				A9B06AD023D0D0E40060A64C /* LaunchScreen.storyboard */,
 				A9B06AD423D0D0E40060A64C /* Main.storyboard */,
-				A9B06AD823D0D0E40060A64C /* NeoPixel.storyboard */,
-				A9B06ACC23D0D0E30060A64C /* PeripheralServices.storyboard */,
 				A9B06AD623D0D0E40060A64C /* Uart.storyboard */,
+				A9B06AD823D0D0E40060A64C /* NeoPixel.storyboard */,
+				A9B06AD223D0D0E40060A64C /* Calibration.storyboard */,
+				A9B06ACE23D0D0E30060A64C /* Dfu.storyboard */,
+				A9B06ACC23D0D0E30060A64C /* PeripheralServices.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";

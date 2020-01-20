@@ -602,6 +602,7 @@ The possible values for Transfer mode are:
 "imagetransfer_imagepicker_camera" = "Take photo";
 "imagetransfer_imagepicker_cameraroll" = "Camera roll";
 "imagetransfer_imagepicker_photolibrary" = "Photo library";
+"imagetransfer_imagepicker_filepicker" = "Open file...";
 "imagetransfer_imageorigin_choose" = "Choose Image";
 "imagetransfer_resolution_choose" = "Choose Resolution";
 "imagetransfer_resolution_mode_standard" = "Standard";

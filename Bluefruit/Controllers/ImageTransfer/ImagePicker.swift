@@ -55,6 +55,14 @@ class ImagePicker: NSObject {
         if let action = self.action(for: .photoLibrary, title: localizationManager.localizedString("imagetransfer_imagepicker_photolibrary")) {
             alertController.addAction(action)
         }
+        #if targetEnvironment(macCatalyst)
+        let action = UIAlertAction(title: localizationManager.localizedString("imagetransfer_imagepicker_filepicker"), style: .default) { [unowned self] _ in
+            let controller = UIDocumentPickerViewController(documentTypes: [kUTTypeImage as String], in: .import)
+            controller.delegate = self
+            self.presentationController?.present(controller, animated: true)
+        }
+        alertController.addAction(action)
+        #endif
         
         alertController.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_cancel"), style: .cancel, handler: nil))
         
@@ -140,5 +148,24 @@ extension ImagePicker: ImagePickerCroppingAreaViewControllerDelegate {
         if let image = image {
             completion?(image, pickerController.sourceType)
         }
+    }
+}
+
+// MARK: - UIDocumentPickerDelegate
+extension ImagePicker: UIDocumentPickerDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let url = urls.first else { return }
+        DLog("picked: \(url.absoluteString)")
+        
+        guard let data = try? Data(contentsOf: url) else { return }
+        if let image = UIImage(data: data), let croppingAreaViewController = self.croppingAreaViewController {
+            croppingAreaViewController.delegate = self
+            croppingAreaViewController.setImage(image)
+            self.presentationController?.present(croppingAreaViewController, animated: false, completion: nil)
+        }
+    }
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        DLog("documentPickerWasCancelled")
     }
 }

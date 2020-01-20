@@ -412,14 +412,13 @@ class UartBaseViewController: PeripheralModeViewController {
     #if targetEnvironment(macCatalyst)
     private func saveToFile(data: Data, proposedFilename: String) {
         let fileManager = FileManager.default
+        let temporaryExportFileUrl = fileManager.temporaryDirectory.appendingPathComponent(proposedFilename)
         do {
-            let temporaryExportFileUrl = fileManager.temporaryDirectory.appendingPathComponent(proposedFilename)
             try data.write(to: temporaryExportFileUrl, options: .atomicWrite)
             
             let controller = UIDocumentPickerViewController(url: temporaryExportFileUrl, in: UIDocumentPickerMode.exportToService)
             //controller.delegate = self
-            present(controller, animated: true) {
-            }
+            present(controller, animated: true)
         } catch {
             DLog("export: error creating file")
         }
