@@ -143,18 +143,18 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
         NSLayoutConstraint.setMultiplier(multiplier: resolution.width / resolution.height, constraint: &cameraImageViewAspectRationConstraint)
         //DLog("aspectRatio: \(resolution.width)/\(resolution.height)")
         
+        // Calculate aspectFit
+        let transformedImage = ImageUtils.scaleAndRotateImage(image: image, resolution: resolution, rotationDegrees: imageRotationDegress, backgroundColor: .black)
+        
         // Calculate E-Ink conversion if needed
         #if targetEnvironment(macCatalyst)
-        let modeImage = image
+        let modeImage = transformedImage
         #else
-        let modeImage = isEInkModeEnabled ? ImageUtils.applyEInkModeToImage(image) : image
+        let modeImage = isEInkModeEnabled && transformedImage != nil ? ImageUtils.applyEInkModeToImage(transformedImage!) : transformedImage
         #endif
-        
-        // Calculate aspectFit
-        let transformedImage = ImageUtils.scaleAndRotateImage(image: modeImage, resolution: resolution, rotationDegrees: imageRotationDegress, backgroundColor: .black)
-        
+
         // Update image
-        cameraImageView.image = transformedImage
+        cameraImageView.image = modeImage
         updateResolutionUI()
     }
     

@@ -691,7 +691,15 @@ Licensed under the Apache License, Version 2.0
 ImageCropView
 Copyright (c) 2015 Naver Corp.
 Author Ohkyun Kim
-https://github.com/naver/android-imagecropview";
+https://github.com/naver/android-imagecropview
+
+ImageMagick6
+Copyright © 1999-2017 ImageMagick Studio LLC
+https://github.com/ImageMagick/ImageMagick6
+
+Android-ImageMagick
+Copyright (c) 2018 paulasiimwe
+https://github.com/paulasiimwe/Android-ImageMagick";
 "about_ios_text" = "A detailed guide to using this app can be found here:
 https://learn.adafruit.com/bluefruit-le-connect-for-ios
 
@@ -750,4 +758,8 @@ https://github.com/Inferis/UIColor-Hex
 
 VectorMath
 Copyright (c) 2014 Nick Lockwood. All rights reserved.
-https://github.com/nicklockwood/VectorMath";
+https://github.com/nicklockwood/VectorMath
+
+ImageMagick6
+Copyright © 1999-2017 ImageMagick Studio LLC
+https://github.com/ImageMagick/ImageMagick6";
