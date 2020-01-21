@@ -568,10 +568,10 @@ Note: Any activated sensor data streams will continue while using the Control Pa
 Format:
 - single byte char “!” (0x21)
 - single byte char 'I' (0x49)
-- color space (uint8 16 for 16bits 565 or 24 for 24-bit 888)
+- bit depth (uint8 16 for 16bits 565 or 24 for 24-bit 888)
 - image width (uint16 little endian, 2 bytes)
 - height (uint16 little endian, 2 bytes)
-- pixel data encoded as \"RGB 16bit 565” or \"RGB 24-bit 888\" depending on the Color Space selected
+- pixel data encoded as \"RGB 16bit 565” or \"RGB 24-bit 888\" depending on the Bit Depth selected
 - single byte CRC
 
 Transfer mode:
@@ -615,7 +615,7 @@ The possible values for Transfer mode are:
 "imagetransfer_senddata_error" = "There was an error while transferring the image data";
 "imagetransfer_crop_action" = "Crop image";
 "imagetransfer_crop_error" = "Error cropping image ";
-"imagetransfer_colorspace_title" = "Color Space:";
+"imagetransfer_colorspace_title" = "Bit Depth:";
 "imagetransfer_colorspace_16bit" = "16-bit";
 "imagetransfer_colorspace_24bit" = "24-bit";
 

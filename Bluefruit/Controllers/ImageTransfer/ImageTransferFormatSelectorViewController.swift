@@ -52,8 +52,10 @@ class ImageTransferFormatSelectorViewController: UIViewController {
     var isEInkAvailable = true {
         didSet {
             isEInkModeEnabled = false
-            modeSegmentedControl.selectedSegmentIndex = 0
-            modeContainerView.isHidden = !isEInkAvailable
+            if isViewLoaded {
+                modeSegmentedControl.selectedSegmentIndex = 0
+                modeContainerView.isHidden = !isEInkAvailable
+            }
         }
     }
     
@@ -63,6 +65,7 @@ class ImageTransferFormatSelectorViewController: UIViewController {
         
         // UI
         modeSegmentedControl.selectedSegmentIndex = isEInkModeEnabled ? 1:0
+        modeContainerView.isHidden = !isEInkAvailable
         
         // Localization
         let localizationManager = LocalizationManager.shared

@@ -14,3 +14,12 @@ target 'Bluefruit' do
   #  pod 'iOS-color-wheel', :inhibit_warnings => true
 end
 
+# Remove "Too many symbols" warning when submitting app
+# https://stackoverflow.com/questions/25755240/too-many-symbol-files-after-successfully-submitting-my-apps
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf'
+        end
+    end
+end
