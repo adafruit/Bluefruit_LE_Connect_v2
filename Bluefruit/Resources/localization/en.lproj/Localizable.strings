@@ -574,6 +574,9 @@ Format:
 - pixel data encoded as \"RGB 16bit 565” or \"RGB 24-bit 888\" depending on the Bit Depth selected
 - single byte CRC
 
+Resolution:
+Choosing a resolution determines the pixel dimensions in [width] x [height]. Switching to E-ink mode provides access to common e-ink screen dimensions and converts the resulting image's color to black, white, & red using a dithering algorithm specially designed for e-ink displays.
+
 Transfer mode:
 This setting affects the speed of the data transfer. The recommended value is “Interleaved [50:1]”
 Take into account that data could be lost if the speed is too fast and your phone or the Bluefruit LE peripheral are not able to process it fast enough.
@@ -581,7 +584,35 @@ Take into account that data could be lost if the speed is too fast and your phon
 The possible values for Transfer mode are:
 - Without response: Send packets without waiting for acknowledgement. This is the fastest method.
 - With response: Send each packet waiting for acknowledgment. This is the slowest and safest method.
-- Interleaved: sends a number of packets without response for each packet with response.";
+- Interleaved: sends a number of packets without response for each packet with response.
+
+
+";
+"imagetransfer_help_text_macos_noeink" = "The Image Transfer module sends the image of your choice to Bluefruit LE over UART.
+
+Format:
+- single byte char “!” (0x21)
+- single byte char 'I' (0x49)
+- bit depth (uint8 16 for 16bits 565 or 24 for 24-bit 888)
+- image width (uint16 little endian, 2 bytes)
+- height (uint16 little endian, 2 bytes)
+- pixel data encoded as \"RGB 16bit 565” or \"RGB 24-bit 888\" depending on the Bit Depth selected
+- single byte CRC
+
+Resolution:
+Choosing a resolution determines the pixel dimensions in [width] x [height].
+
+Transfer mode:
+This setting affects the speed of the data transfer. The recommended value is “Interleaved [50:1]”
+Take into account that data could be lost if the speed is too fast and your device or the Bluefruit LE peripheral are not able to process it fast enough.
+
+The possible values for Transfer mode are:
+- Without response: Send packets without waiting for acknowledgement. This is the fastest method.
+- With response: Send each packet waiting for acknowledgment. This is the slowest and safest method.
+- Interleaved: sends a number of packets without response for each packet with response.
+
+
+";
 
 "imagetransfer_waitingforuart" = "Waiting for Uart...";
 "imagetransfer_resolution_title" = "Resolution:";

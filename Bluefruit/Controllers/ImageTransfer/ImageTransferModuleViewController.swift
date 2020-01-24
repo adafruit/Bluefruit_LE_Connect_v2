@@ -169,7 +169,14 @@ class ImageTransferModuleViewController: PeripheralModeViewController {
     @IBAction func onClickHelp(_  sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.shared
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
-        helpViewController.setHelp(localizationManager.localizedString("imagetransfer_help_text"), title: localizationManager.localizedString("imagetransfer_help_title"))
+        
+        #if targetEnvironment(macCatalyst)
+        let helpLocalizedStringId = "imagetransfer_help_text_macos_noeink"
+        #else
+        let helpLocalizedStringId = "imagetransfer_help_text"
+        #endif
+        
+        helpViewController.setHelp(localizationManager.localizedString(helpLocalizedStringId), title: localizationManager.localizedString("imagetransfer_help_title"))
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
         helpNavigationController.modalPresentationStyle = .popover
         helpNavigationController.popoverPresentationController?.barButtonItem = sender
