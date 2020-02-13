@@ -107,7 +107,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
                     self.updateStatusUI(isWaitingResponse: false)
                     
                     // Setup
-                    self.changeComponents(self.components, is400HkzEnabled: Preferences.neopixelIsUsing400Hz)
+                    self.changeComponents(self.components, is400KhzEnabled: Preferences.neopixelIsUsing400Khz)
                     let board: NeopixelModuleManager.Board
                     if Preferences.neopixelIsUsingStandardBoards {
                         let boardIndex = Preferences.neopixelStandardBoardIndex
@@ -187,9 +187,9 @@ class NeopixelModeViewController: PeripheralModeViewController {
             controller?.delegate = self
             
             componentSelectorViewController.selectedComponent = components
-            componentSelectorViewController.is400HkzEnabled = Preferences.neopixelIsUsing400Hz
-            componentSelectorViewController.onSetComponents = { [unowned self] (components: NeopixelModuleManager.Components, is400HkzEnabled: Bool) in
-                self.changeComponents(components, is400HkzEnabled: is400HkzEnabled)
+            componentSelectorViewController.is400KhzEnabled = Preferences.neopixelIsUsing400Khz
+            componentSelectorViewController.onSetComponents = { [unowned self] (components: NeopixelModuleManager.Components, is400KhzEnabled: Bool) in
+                self.changeComponents(components, is400KhzEnabled: is400KhzEnabled)
                 self.onClickConnect(self)
             }
         } else if let colorPickerViewController = segue.destination as? NeopixelColorPickerViewController {
@@ -204,10 +204,10 @@ class NeopixelModeViewController: PeripheralModeViewController {
     }
     
     // MARK: - Utils
-    private func changeComponents(_ components: NeopixelModuleManager.Components, is400HkzEnabled: Bool) {
+    private func changeComponents(_ components: NeopixelModuleManager.Components, is400KhzEnabled: Bool) {
         self.components = components
         Preferences.neopixelComponents = components.value
-        Preferences.neopixelIsUsing400Hz = is400HkzEnabled
+        Preferences.neopixelIsUsing400Khz = is400KhzEnabled
         colorPickerWComponentColorView.isHidden = components.numComponents != 4
     }
     
@@ -387,7 +387,7 @@ class NeopixelModeViewController: PeripheralModeViewController {
             guard let self = self else { return }
             
             if isDetected {
-                self.neopixel.setupNeopixel(board: board, components: self.components, is400HzEnabled: Preferences.neopixelIsUsing400Hz) { [weak self] success in
+                self.neopixel.setupNeopixel(board: board, components: self.components, is400HzEnabled: Preferences.neopixelIsUsing400Khz) { [weak self] success in
                     guard let self = self else { return }
                     
                     DispatchQueue.main.async {

@@ -45,9 +45,7 @@ class Preferences {
     private static let neopixelStandardBoardIndexKey = "NeopixelStandardBoardIndexKey"
     private static let neopixelLineBoardLengthKey = "NeopixelLineBoardLengthKey"
     private static let neopixelComponentsKey = "NeopixelComponentsKey"
-    private static let neopixelIsUsing400HzKey = "NeopixelIsUsing400HzKey"
-    
-    
+    private static let neopixelIsUsing400KhzKey = "NeopixelIsUsing400KhzKey"
     
     // Calibration
     private static let magnetometerTypeKey = "MagnetometerType"
@@ -307,12 +305,12 @@ class Preferences {
         }
     }
     
-    static var neopixelIsUsing400Hz: Bool {
+    static var neopixelIsUsing400Khz: Bool {
         get {
-            return getBoolPreference(Preferences.neopixelIsUsing400HzKey)
+            return getBoolPreference(Preferences.neopixelIsUsing400KhzKey)
         }
         set {
-            setBoolPreference(Preferences.neopixelIsUsing400HzKey, newValue: newValue)
+            setBoolPreference(Preferences.neopixelIsUsing400KhzKey, newValue: newValue)
         }
     }
     

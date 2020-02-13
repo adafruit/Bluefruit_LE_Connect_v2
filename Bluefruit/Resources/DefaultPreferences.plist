@@ -52,7 +52,7 @@
 	<integer>8</integer>
 	<key>NeopixelComponentsKey</key>
 	<string>82</string>
-	<key>NeopixelIsUsing400HzKey</key>
+	<key>NeopixelIsUsing400KhzKey</key>
 	<false/>
 	<key>MagnetometerGapTarget</key>
 	<integer>15</integer>

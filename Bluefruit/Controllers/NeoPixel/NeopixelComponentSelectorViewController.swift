@@ -15,8 +15,8 @@ class NeopixelComponentSelectorViewController: UIViewController {
 
     // Params
     var selectedComponent: NeopixelModuleManager.Components?
-    var is400HkzEnabled = false
-    var onSetComponents: ((_ components: NeopixelModuleManager.Components, _ is400HkzEnabled: Bool) -> Void)?
+    var is400KhzEnabled = false
+    var onSetComponents: ((_ components: NeopixelModuleManager.Components, _ is400KhzEnabled: Bool) -> Void)?
 
     // Data
     private var components = NeopixelModuleManager.Components.allCases
@@ -86,11 +86,11 @@ extension NeopixelComponentSelectorViewController: UITableViewDelegate {
 
         if indexPath.section == 0 {
             uartCell.titleLabel?.text = LocalizationManager.shared.localizedString("neopixelcomponentselector_speed_400khz")
-            uartCell.switchControl.isOn = is400HkzEnabled
+            uartCell.switchControl.isOn = is400KhzEnabled
             uartCell.onSwitchEnabled = { [unowned self] isEnabled in
-                self.is400HkzEnabled = isEnabled
+                self.is400KhzEnabled = isEnabled
                 if let selectedComponent = self.selectedComponent {
-                    self.onSetComponents?(selectedComponent, self.is400HkzEnabled)
+                    self.onSetComponents?(selectedComponent, self.is400KhzEnabled)
                 }
             }
         } else {
@@ -109,7 +109,7 @@ extension NeopixelComponentSelectorViewController: UITableViewDelegate {
 
             selectedComponent = component
             baseTableView.reloadData()
-            onSetComponents?(component, is400HkzEnabled)
+            onSetComponents?(component, is400KhzEnabled)
             
             dismiss(animated: true, completion: nil)
         }

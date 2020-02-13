@@ -171,7 +171,7 @@ class NeopixelModuleManager: NSObject {
     var isSketchDetected: Bool?
     public private(set) var board: Board?
     private var components = Components.grb
-    private var is400HzEnabled = false
+    private var is400KhzEnabled = false
 
     init(blePeripheral: BlePeripheral) {
         self.blePeripheral = blePeripheral
@@ -264,7 +264,7 @@ class NeopixelModuleManager: NSObject {
             if success {
                 context.board = device
                 context.components = components
-                context.is400HzEnabled = is400HzEnabled
+                context.is400KhzEnabled = is400HzEnabled
             }
             completion(success)
         }
