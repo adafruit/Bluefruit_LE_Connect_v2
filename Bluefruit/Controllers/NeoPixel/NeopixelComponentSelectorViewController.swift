@@ -19,7 +19,7 @@ class NeopixelComponentSelectorViewController: UIViewController {
     var onSetComponents: ((_ components: NeopixelModuleManager.Components, _ is400HkzEnabled: Bool) -> Void)?
 
     // Data
-    fileprivate var components = NeopixelModuleManager.Components.all
+    private var components = NeopixelModuleManager.Components.allCases
 
     // MARK: - View lifecycle
     override func viewDidLoad() {
@@ -29,12 +29,6 @@ class NeopixelComponentSelectorViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        //preferredContentSize = CGSize(width: preferredContentSize.width, height: baseTableView.contentSize.height)
     }
 }
 

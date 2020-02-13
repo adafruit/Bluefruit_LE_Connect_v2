@@ -11,11 +11,10 @@ import CoreImage
 
 class NeopixelModuleManager: NSObject {
     // Constants
-//    static let kDefaultComponentValue: UInt16 = 82       // default value: NEO_GRB + NEO_KHZ800
-    fileprivate static let kSketchVersion = "Neopixel v2."
+    private static let kSketchVersion = "Neopixel v2."
 
     //
-    enum Components {
+    enum Components: CaseIterable {
         case rgb
         case rbg
         case grb
@@ -138,9 +137,9 @@ class NeopixelModuleManager: NSObject {
             case .bgrw: return "BGRW"
             }
         }
-
-        static var all: [Components] {
-            return [ .rgb, .rbg, .grb, .gbr, .bgr, .wrgb, .wrbg, .wgrb, .wgbr, .wbrg, .wbgr, .rwgb, .rwbg, .rgwb, .rgbw, .rbwg, .rbgw, .gwrb, .gwbr, .grwb, .grbw, .gbwr, .gbrw, .bwrg, .bwgr, .brwg, .brgw, .bgwr, .bgrw]
+        
+        static func fromValue(_ value: UInt8) -> Components? {
+            return Components.allCases.first(where: {$0.value == value})
         }
     }
 
@@ -165,14 +164,14 @@ class NeopixelModuleManager: NSObject {
     }
 
     // Bluetooth Uart
-    fileprivate var uartManager: UartPacketManager!
-    fileprivate var blePeripheral: BlePeripheral
+    private var uartManager: UartPacketManager!
+    private var blePeripheral: BlePeripheral
 
     // Neopixel
     var isSketchDetected: Bool?
-    public fileprivate(set) var board: Board?
-    fileprivate var components = Components.grb
-    fileprivate var is400HzEnabled = false
+    public private(set) var board: Board?
+    private var components = Components.grb
+    private var is400HzEnabled = false
 
     init(blePeripheral: BlePeripheral) {
         self.blePeripheral = blePeripheral
