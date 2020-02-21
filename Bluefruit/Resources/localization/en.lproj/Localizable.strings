@@ -443,9 +443,9 @@ https://learn.adafruit.com/bluefruit-le-connect-for-ios/pin-i-slash-o
 "controller_module_colorpicker" = "Color Picker";
 
 "controller_help_title" = "Controller";
-"controller_help_text" = "The Controller module streams sensor data from your iOS device to Bluefruit LE over UART at a frequency of 10Hz.  Activation of a switch will begin sending relevant data.  Each packet sent begins with single byte char “!” (0x21) followed by a single byte char initial, and sensor data encoded as float values of 4 byte length
+"controller_help_text_ios" = "The Controller module streams sensor data from your iOS device to Bluefruit LE over UART at a frequency of 10Hz. Activation of a switch will begin sending relevant data. Each packet sent begins with single byte char “!” (0x21) followed by a single byte char initial, and sensor data encoded as float values of 4 byte length
 
-• Quaternion sends iOS Device Motion data to describe device attitude.  This data is derived from Accelerometer, Gyro, and Magnetometer readings.
+• Quaternion sends iOS Device Motion data to describe device attitude. This data is derived from Accelerometer, Gyro, and Magnetometer readings.
 Format: [ ‘!’ ] [ ‘Q’ ] [ float x ] [ float y ] [ float z ] [ float w ]
 
 • Accelerometer sends raw accelerometer data
@@ -459,13 +459,17 @@ Format: [ ‘!’ ] [ ‘M’ ] [ float x ] [ float y ] [ float z ]
 
 • Location sends GPS data and requires user permission before initial use.
 Format: [ ‘!’ ] [ ‘L’ ] [ float latitude ] [ float longitude ] [ float altitude ]";
+"controller_help_text_mac" = "The Controller module streams sensor data from your computer to Bluefruit LE over UART at a frequency of 10Hz. Activation of a switch will begin sending relevant data. Each packet sent begins with single byte char “!” (0x21) followed by a single byte char initial, and sensor data encoded as float values of 4 byte length
+
+• Location sends GPS data and requires user permission before initial use.
+Format: [ ‘!’ ] [ ‘L’ ] [ float latitude ] [ float longitude ] [ float altitude ]";
 
 // Control Pad
 
 "controlpad_title" = "Control Pad";
 
 "controlpad_help_title" = "Control Pad";
-"controlpad_help_text" = "The Control Pad function provides a familiar momentary button interface for common control scenarios.  Data is sent on the press and release of each button.  Each packet consists of 4 bytes, each representing a char value.  The first two chars identify the packet as a button message, the third specifies a button, and the fourth signifies either a press or release.  Example:
+"controlpad_help_text" = "The Control Pad function provides a familiar momentary button interface for common control scenarios. Data is sent on the press and release of each button. Each packet consists of 4 bytes, each representing a char value. The first two chars identify the packet as a button message, the third specifies a button, and the fourth signifies either a press or release. Example:
 
 Button 4 pressed:  [ ‘!’ ] [ ‘B’ ] [ ‘4’ ] [ ‘1’ ]
 Button 4 released: [ ‘!’ ] [ ‘B’ ] [ ‘4’ ] [ ‘0’ ]
@@ -670,7 +674,7 @@ The possible values for Transfer mode are:
 "about_title" = "About";
 "about_app_name" = "Bluefruit LE Connect";
 "about_android_text" = "A detailed guide to using this app can be found here:
-https://learn.adafruit.com/bluefruit-le-connect-for-ios
+https://learn.adafruit.com/bluefruit-le-connect
 
 Configure your Bluefruit LE hardware using instructions found here:
 http://www.adafruit.com/bluefruitle
@@ -687,12 +691,16 @@ Tap a row's connect button to connect the corresponding device in one of the ava
 
 • UART - basic terminal, send & receive data 
 
+• Plotter - plot incoming numeric data in a chart
+
 • Pin I/O - uses Bluefruit's UART to control Arduino running BLEFirmata sketch:
 https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakout/software-bluefruit-firmata
 
 • Controller - streams sensor data from your iOS device to Bluefruit LE over UART
 
-• Plotter - can be used to plot incoming numeric data in a chart
+• Neopixels - control NeoPixels individually with an interactive color picker
+
+• Image Transfer - send an image to Bluefruit LE over UART
 
 • Updates - update device firmware
 
@@ -750,12 +758,16 @@ Tap a row's connect button to connect the corresponding device in one of the ava
 
 • UART - basic terminal, send & receive data 
 
+• Plotter - plot incoming numeric data in a chart
+
 • Pin I/O - uses Bluefruit's UART to control Arduino running BLEFirmata sketch:
 https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakout/software-bluefruit-firmata
 
 • Controller - streams sensor data from your iOS device to Bluefruit LE over UART
 
-• Plotter - can be used to plot incoming numeric data in a chart
+• Neopixels - control NeoPixels individually with an interactive color picker
+
+• Image Transfer - send an image to Bluefruit LE over UART
 
 • Updates - update device firmware
 

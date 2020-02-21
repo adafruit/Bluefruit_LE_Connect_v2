@@ -151,8 +151,14 @@ class ControllerModeViewController: PeripheralModeViewController {
     // MARK: - Actions
     @IBAction func onClickHelp(_  sender: UIBarButtonItem) {
         let localizationManager = LocalizationManager.shared
+        #if targetEnvironment(macCatalyst)
+        let helpText = localizationManager.localizedString("controller_help_text_mac")
+        #else
+        let helpText = localizationManager.localizedString("controller_help_text_ios")
+        #endif
+        
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
-        helpViewController.setHelp(localizationManager.localizedString("controller_help_text"), title: localizationManager.localizedString("controller_help_title"))
+        helpViewController.setHelp(helpText, title: localizationManager.localizedString("controller_help_title"))
         let helpNavigationController = UINavigationController(rootViewController: helpViewController)
         helpNavigationController.modalPresentationStyle = .popover
         helpNavigationController.popoverPresentationController?.barButtonItem = sender

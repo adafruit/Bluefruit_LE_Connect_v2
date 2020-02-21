@@ -2082,7 +2082,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bluefruit/Bluefruit.entitlements;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				ENABLE_BITCODE = NO;
@@ -2130,7 +2130,7 @@
 					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 				);
-				MARKETING_VERSION = 3.6.1;
+				MARKETING_VERSION = 3.6.2;
 				OTHER_CFLAGS = "-Dmacintosh=1";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2172,7 +2172,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bluefruit/Bluefruit.entitlements;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				ENABLE_BITCODE = NO;
@@ -2220,7 +2220,7 @@
 					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 				);
-				MARKETING_VERSION = 3.6.1;
+				MARKETING_VERSION = 3.6.2;
 				OTHER_CFLAGS = "-Dmacintosh=1";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2260,7 +2260,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = "Bluefruit/Watch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2268,7 +2268,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.6.1;
+				MARKETING_VERSION = 3.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -2283,7 +2283,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = "Bluefruit/Watch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2291,7 +2291,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 3.6.1;
+				MARKETING_VERSION = 3.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
@@ -2307,11 +2307,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				IBSC_MODULE = Bluefruit_Extension;
 				INFOPLIST_FILE = Bluefruit/Watch/Info.plist;
-				MARKETING_VERSION = 3.6.1;
+				MARKETING_VERSION = 3.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -2328,11 +2328,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				IBSC_MODULE = Bluefruit_Extension;
 				INFOPLIST_FILE = Bluefruit/Watch/Info.plist;
-				MARKETING_VERSION = 3.6.1;
+				MARKETING_VERSION = 3.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
