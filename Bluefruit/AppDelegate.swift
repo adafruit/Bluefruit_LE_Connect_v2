@@ -37,9 +37,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // macCatalyst set window size for screenshots
         #if targetEnvironment(macCatalyst)
+        /*
         if Config.isDebugEnabled {
             setWindowSizeForMacCatalystAppStoreScreenshots()
-        }
+        }*/
         #endif
         return true
     }
