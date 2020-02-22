@@ -19,17 +19,17 @@ protocol PinIOModuleManagerDelegate: class {
 
 class PinIOModuleManager: NSObject {
     // Config
-    private let CAPABILITY_QUERY_TIMEOUT = 5.0      // in seconds
+    private static let CAPABILITY_QUERY_TIMEOUT = 5.0      // in seconds
 
     // Constants
-    private let SYSEX_START: UInt8 = 0xF0
-    private let SYSEX_END: UInt8 = 0xF7
+    private static let SYSEX_START: UInt8 = 0xF0
+    private static let SYSEX_END: UInt8 = 0xF7
 
-    private let DEFAULT_PINS_COUNT = 20
-    private let FIRST_DIGITAL_PIN = 3
-    private let LAST_DIGITAL_PIN = 8
-    private let FIRST_ANALOG_PIN = 14
-    private let LAST_ANALOG_PIN = 19
+    private static let DEFAULT_PINS_COUNT = 20
+    private static let FIRST_DIGITAL_PIN = 3
+    private static let LAST_DIGITAL_PIN = 8
+    private static let FIRST_ANALOG_PIN = 14
+    private static let LAST_ANALOG_PIN = 19
 
     // Types
     enum UartStatus {
@@ -144,11 +144,11 @@ class PinIOModuleManager: NSObject {
         self.queryCapabilitiesDataBuffer.removeAll()
 
         // Query Capabilities
-        let bytes: [UInt8] = [SYSEX_START, 0x6B, SYSEX_END]
+        let bytes: [UInt8] = [PinIOModuleManager.SYSEX_START, 0x6B, PinIOModuleManager.SYSEX_END]
         let data = Data(bytes)
         uartManager.send(blePeripheral: blePeripheral, data: data)
 
-        queryCapabilitiesTimer = MSWeakTimer.scheduledTimer(withTimeInterval: CAPABILITY_QUERY_TIMEOUT, target: self, selector: #selector(cancelQueryCapabilities), userInfo: nil, repeats: false, dispatchQueue: .main)
+        queryCapabilitiesTimer = MSWeakTimer.scheduledTimer(withTimeInterval: PinIOModuleManager.CAPABILITY_QUERY_TIMEOUT, target: self, selector: #selector(cancelQueryCapabilities), userInfo: nil, repeats: false, dispatchQueue: .main)
     }
 
     fileprivate func receivedQueryCapabilities(data: Data) {
@@ -158,7 +158,7 @@ class PinIOModuleManager: NSObject {
 
         for byte in dataBytes {
             queryCapabilitiesDataBuffer.append(byte)
-            if byte == SYSEX_END {
+            if byte == PinIOModuleManager.SYSEX_END {
                 DLog("Finished receiving Capabilities")
                 queryAnalogMapping()
                 break
@@ -182,7 +182,7 @@ class PinIOModuleManager: NSObject {
         self.queryAnalogMappingDataBuffer.removeAll()
 
         // Query Analog Mapping
-        let bytes: [UInt8] = [self.SYSEX_START, 0x69, self.SYSEX_END]
+        let bytes: [UInt8] = [PinIOModuleManager.SYSEX_START, 0x69, PinIOModuleManager.SYSEX_END]
         let data = Data(bytes)
         uartManager.send(blePeripheral: blePeripheral, data: data)
     }
@@ -196,7 +196,7 @@ class PinIOModuleManager: NSObject {
 
         for byte in dataBytes {
             queryAnalogMappingDataBuffer.append(byte)
-            if byte == SYSEX_END {
+            if byte == PinIOModuleManager.SYSEX_END {
                 DLog("Finished receiving Analog Mapping")
                 endPinQuery(abort: false)
                 break
@@ -236,8 +236,12 @@ class PinIOModuleManager: NSObject {
     }
 
     private func parseCapabilities(_ cababilitiesData: [UInt8]) -> Bool {
-        let endIndex = cababilitiesData.firstIndex(of: SYSEX_END)
-        guard cababilitiesData.count > 2 && cababilitiesData[0] == SYSEX_START && cababilitiesData[1] == 0x6C && endIndex != nil else {
+        let data = [UInt8](cababilitiesData.drop(while: {$0 != PinIOModuleManager.SYSEX_START}))      // Remove characters before SYSEX_START
+        if Config.isDebugEnabled, data.count != cababilitiesData.count {      // Testing if characters are received before SYSEX_START (maybe dropping characters before header is not needed)
+            DLog("Removed \(cababilitiesData.count - data.count) bytes before header")
+        }
+        let endIndex = data.firstIndex(of: PinIOModuleManager.SYSEX_END)
+        guard data.count > 2 && data[0] == PinIOModuleManager.SYSEX_START && data[1] == 0x6C && endIndex != nil else {
             DLog("invalid capabilities received")
             return false
         }
@@ -246,7 +250,7 @@ class PinIOModuleManager: NSObject {
         var pinsBytes = [[UInt8]]()
         var currentPin = [UInt8]()
         for i in 2..<endIndex! {         // Skip 2 header bytes and end byte
-            let dataByte = cababilitiesData[i]
+            let dataByte = data[i]
             if dataByte != 0x7f {
                 currentPin.append(dataByte)
             } else {  // Finished current pin
@@ -306,15 +310,20 @@ class PinIOModuleManager: NSObject {
     }
 
     private func parseAnalogMappingData(_ analogData: [UInt8]) -> Bool {
-        let endIndex = analogData.firstIndex(of: SYSEX_END)
-        guard analogData.count > 2 && analogData[0] == SYSEX_START && analogData[1] == 0x6A && endIndex != nil else {
+        let data = [UInt8](analogData.drop(while: {$0 != PinIOModuleManager.SYSEX_START}))      // Remove characters before SYSEX_START
+        if Config.isDebugEnabled, data.count != analogData.count {      // Testing if characters are received before SYSEX_START (maybe dropping characters before header is not needed)
+            DLog("Removed \(analogData.count - data.count) bytes before header")
+        }
+        let endIndex = data.firstIndex(of: PinIOModuleManager.SYSEX_END)
+        
+        guard data.count > 2 && data[0] == PinIOModuleManager.SYSEX_START && data[1] == 0x6A && endIndex != nil else {
             DLog("invalid analog mapping received")
             return false
         }
 
         var pinNumber = 0
         for i in 2..<endIndex! {         // Skip 2 header bytes and end byte
-            let dataByte = analogData[i]
+            let dataByte = data[i]
             if dataByte != 0x7f {
                 if let indexOfPinNumber = indexOfPinWithDigitalId(pinNumber) {
                     pins[indexOfPinNumber].analogPinId = Int(dataByte)
@@ -345,15 +354,15 @@ class PinIOModuleManager: NSObject {
     private func initializeDefaultPins() {
         pins.removeAll()
 
-        for i in 0..<DEFAULT_PINS_COUNT {
+        for i in 0..<PinIOModuleManager.DEFAULT_PINS_COUNT {
             var pin: PinData!
             if i == 3 || i == 5 || i == 6 {     // PWM pins
                 pin = PinData(digitalPinId: i, isDigital: true, isAnalog: false, isPWM: false)
-            } else if i >= FIRST_DIGITAL_PIN && i <= LAST_DIGITAL_PIN {    // Digital pin
+            } else if i >= PinIOModuleManager.FIRST_DIGITAL_PIN && i <= PinIOModuleManager.LAST_DIGITAL_PIN {    // Digital pin
                 pin = PinData(digitalPinId: i, isDigital: true, isAnalog: false, isPWM: false)
-            } else if i >= FIRST_ANALOG_PIN && i <= LAST_ANALOG_PIN {     // Analog pin
+            } else if i >= PinIOModuleManager.FIRST_ANALOG_PIN && i <= PinIOModuleManager.LAST_ANALOG_PIN {     // Analog pin
                 pin = PinData(digitalPinId: i, isDigital: true, isAnalog: true, isPWM: false)
-                pin.analogPinId = i-FIRST_ANALOG_PIN
+                pin.analogPinId = i-PinIOModuleManager.FIRST_ANALOG_PIN
             }
 
             if let pin = pin {
@@ -460,7 +469,7 @@ class PinIOModuleManager: NSObject {
             let data1 = UInt8(value & 0x7f)                 // only 7 bottom bits
             let data2 = UInt8(value >> 7)                   // top bit in second byte
             
-            bytes = [SYSEX_START, 0x6f, data0, data1, data2, SYSEX_END]
+            bytes = [PinIOModuleManager.SYSEX_START, 0x6f, data0, data1, data2, PinIOModuleManager.SYSEX_END]
         }
         else {
             let data0 = 0xe0 + UInt8(pin.digitalPinId)
@@ -488,8 +497,8 @@ class PinIOModuleManager: NSObject {
         }
 
         // Check if we received a pin state response
-        let endIndex = receivedPinStateDataBuffer.firstIndex(of: SYSEX_END)
-        if receivedPinStateDataBuffer.count >= 5 && receivedPinStateDataBuffer[0] == SYSEX_START && receivedPinStateDataBuffer[1] == 0x6e && endIndex != nil {
+        let endIndex = receivedPinStateDataBuffer.firstIndex(of: PinIOModuleManager.SYSEX_END)
+        if receivedPinStateDataBuffer.count >= 5 && receivedPinStateDataBuffer[0] == PinIOModuleManager.SYSEX_START && receivedPinStateDataBuffer[1] == 0x6e && endIndex != nil {
             /* pin state response
             * -------------------------------
             * 0  START_SYSEX (0xF0) (MIDI System Exclusive)
@@ -612,7 +621,7 @@ class PinIOModuleManager: NSObject {
 // MARK: - UartDataManagerDelegate
 extension PinIOModuleManager: UartDataManagerDelegate {
     func onUartRx(data: Data, peripheralIdentifier: UUID) {
-        DLog("uart rx read (hex): \(HexUtils.hexDescription(data: data))")
+        //DLog("uart rx read (hex): \(HexUtils.hexDescription(data: data))")
 
         switch uartStatus {
         case .queryCapabilities:

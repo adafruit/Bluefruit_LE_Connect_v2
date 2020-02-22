@@ -45,6 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    #if targetEnvironment(macCatalyst)
     private func setWindowSizeForMacCatalystAppStoreScreenshots() {
         let windowSize = CGSize(width: 1517, height: 893)
         UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.forEach { windowScene in
@@ -53,7 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //DLog("scale: \(windowScene.screen.scale) nativeScale: \(windowScene.screen.nativeScale)")
         }
     }
-    
+    #endif
+
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

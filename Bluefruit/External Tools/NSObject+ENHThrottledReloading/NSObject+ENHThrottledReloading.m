@@ -128,6 +128,12 @@ static NSString *kENHMinimumNanosecondsBetweenThrottledReloadsAssociatedObjectKe
     return timebaseInfo;
 }
 
+-(void)enh_resetLastReloadTime
+{
+    uint64_t now = mach_absolute_time ();
+    [self setEnh_lastReloadMachTime:now];
+}
+
 -(void)setEnh_lastReloadMachTime:(uint64_t)enh_lastReloadMachTime
 {
     objc_setAssociatedObject(self, (__bridge const void *)kENHLastReloadMachTimeAssociatedObjectKey, @(enh_lastReloadMachTime), OBJC_ASSOCIATION_RETAIN_NONATOMIC);

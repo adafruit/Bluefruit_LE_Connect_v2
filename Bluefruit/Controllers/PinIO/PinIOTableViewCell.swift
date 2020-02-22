@@ -26,9 +26,10 @@ class PinIOTableViewCell: UITableViewCell {
     @IBOutlet weak var valueSlider: UISlider!
 
     // Data
+    private var index: Int?
     weak var delegate: PinIoTableViewCellDelegate?
     private var modesInSegmentedControl: [PinIOModuleManager.PinData.Mode] = []
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -39,19 +40,30 @@ class PinIOTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        index = nil
+        delegate = nil
+        modesInSegmentedControl.removeAll()
+    }
 
     // MARK: - Setup
-    func setPin(_ pin: PinIOModuleManager.PinData) {
+    func setPin(_ pin: PinIOModuleManager.PinData, index: Int) {
+        self.index = index
         setupModeSegmentedControl(pin: pin)
         digitalSegmentedControl.selectedSegmentIndex = pin.digitalValue.rawValue
         valueSlider.value = Float(pin.analogValue)
 
         let localizationManager = LocalizationManager.shared
         let fullName = pin.isAnalog ? String(format: localizationManager.localizedString("pinio_pinname_analog_format"), pin.digitalPinId, pin.analogPinId) : String(format: localizationManager.localizedString("pinio_pinname_digital_format"), pin.digitalPinId)
+        //DLog("set pin \(index): \(fullName)")
+
         nameLabel.text = fullName
         modeLabel.text = modeDescription(pin.mode)
 
-        var valueText: String?
+        var valueText: String
         switch pin.mode {
         case .input:
             valueText = digitalValueDescription(pin.digitalValue)
@@ -66,7 +78,7 @@ class PinIOTableViewCell: UITableViewCell {
             valueText = ""
         }
         valueLabel.text = valueText
-        
+
         valueSlider.isHidden = pin.mode != .pwm
         digitalSegmentedControl.isHidden = pin.mode != .output
     }
@@ -98,7 +110,7 @@ class PinIOTableViewCell: UITableViewCell {
         
         return localizationManager.localizedString(resultStringId)
     }
-    
+     
     private func setupModeSegmentedControl(pin: PinIOModuleManager.PinData) {
         modesInSegmentedControl.removeAll()
         if pin.isDigital == true {
@@ -124,22 +136,35 @@ class PinIOTableViewCell: UITableViewCell {
 
     // MARK: - Actions
     @IBAction func onClickSelectButton(_ sender: UIButton) {
-        delegate?.onPinToggleCell(pinIndex: tag)
+        guard let index = self.index else { return }
+        delegate?.onPinToggleCell(pinIndex: index)
     }
 
     @IBAction func onModeChanged(_ sender: UISegmentedControl) {
-        delegate?.onPinModeChanged(modesInSegmentedControl[sender.selectedSegmentIndex], pinIndex: tag)
+        guard let index = self.index else { return }
+        
+        let selectedSegmentIndex = sender.selectedSegmentIndex
+        if selectedSegmentIndex >= 0 {     // could be -1 on macCatalyst
+            delegate?.onPinModeChanged(modesInSegmentedControl[selectedSegmentIndex], pinIndex: index)
+        }
+        else {
+            DLog("index -1 for pin: \(index)")
+        }
     }
 
     @IBAction func onDigitalChanged(_ sender: UISegmentedControl) {
+        guard let index = self.index else { return }
+
         if let selectedDigital = PinIOModuleManager.PinData.DigitalValue(rawValue: sender.selectedSegmentIndex) {
-            delegate?.onPinDigitalValueChanged(selectedDigital, pinIndex: tag)
+            delegate?.onPinDigitalValueChanged(selectedDigital, pinIndex: index)
         } else {
             DLog("Error onDigitalChanged with invalid value")
         }
     }
 
     @IBAction func onValueSliderChanged(_ sender: UISlider) {
-        delegate?.onPinAnalogValueChanged(sender.value, pinIndex: tag)
+        guard let index = self.index else { return }
+
+        delegate?.onPinAnalogValueChanged(sender.value, pinIndex: index)
     }
 }

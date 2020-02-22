@@ -18,27 +18,32 @@ class PinIOModeViewController: PeripheralModeViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Title
         let localizationManager = LocalizationManager.shared
         let name = blePeripheral?.name ?? LocalizationManager.shared.localizedString("scanner_unnamed")
         self.title = traitCollection.horizontalSizeClass == .regular ? String(format: localizationManager.localizedString("pinio_navigation_title_format"), arguments: [name]) : localizationManager.localizedString("pinio_tab_title")
-
+        
         // Init
         assert(blePeripheral != nil)
         pinIO = PinIOModuleManager(blePeripheral: blePeripheral!, delegate: self)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
+        #if targetEnvironment(macCatalyst)
+        // Increase throttle time on macCatalyst to avoid problems
+        NSObject.setEnh_minimumNanosecondsBetweenThrottledReloads(UInt64(Double(NSEC_PER_SEC) * 0.7))
+        #endif
+        
         DLog("PinIO viewWillAppear")
         if isMovingToParent {       // To keep working while the help is displayed
-
+            
             pinIO.start { error in
                 DispatchQueue.main.async {
                     guard error == nil else {
@@ -54,7 +59,7 @@ class PinIOModeViewController: PeripheralModeViewController {
                         })
                         return
                     }
-
+                    
                     // Uart Ready
                     if self.pinIO.pins.count == 0 && !self.pinIO.isQueryingCapabilities() {
                         self.startQueryCapabilitiesProcess()
@@ -63,19 +68,24 @@ class PinIOModeViewController: PeripheralModeViewController {
             }
         }
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
+        
         if isMovingFromParent {       // To keep working while the help is displayed
-
+            
             // if a dialog is being shown, dismiss it. For example: when querying capabilities but a didmodifyservices callback is received and pinio is removed from the tabbar
             if let presentedViewController = presentedViewController {
                 presentedViewController.dismiss(animated: true, completion: nil)
             }
-
+            
             DLog("PinIO viewWillDisappear")
             pinIO.stop()
+            
+            #if targetEnvironment(macCatalyst)
+            // Back to default value
+            NSObject.setEnh_minimumNanosecondsBetweenThrottledReloads(UInt64(Double(NSEC_PER_SEC) * 0.3))
+            #endif
         }
     }
 
@@ -153,7 +163,6 @@ extension PinIOModeViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         return cell
     }
-
 }
 
 // MARK: UITableViewDelegate
@@ -162,9 +171,7 @@ extension PinIOModeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let pin = pinIO.pins[indexPath.row]
         let pinCell = cell as! PinIOTableViewCell
-        pinCell.setPin(pin)
-
-        pinCell.tag = indexPath.row
+        pinCell.setPin(pin, index: indexPath.row)
         pinCell.delegate = self
     }
 
@@ -186,27 +193,71 @@ extension PinIOModeViewController: UITableViewDelegate {
 extension PinIOModeViewController: PinIoTableViewCellDelegate {
     func onPinToggleCell(pinIndex: Int) {
         // Change open row
+        let previousRowOpen = tableRowOpen
         tableRowOpen = pinIndex == tableRowOpen ? nil: pinIndex
-
+        
+        #if targetEnvironment(macCatalyst)
+        // No animation on macCatalyst
+        self.enh_resetLastReloadTime()      // Delay any onPinIODidReceivePinState reload
+        
+        // Update only the rows changed
+        var indexPathsToReload: [IndexPath] = []
+        if let previousRowOpen = previousRowOpen {
+            indexPathsToReload.append(IndexPath(row: previousRowOpen, section: 0))
+        }
+        if let tableRowOpen = tableRowOpen {
+            indexPathsToReload.append(IndexPath(row: tableRowOpen, section: 0))
+        }
+        
+        if !indexPathsToReload.isEmpty {
+            UIView.performWithoutAnimation {        // Force no animation because can still be animated on macCatalyst
+                baseTableView.reloadRows(at: indexPathsToReload, with: .none)
+            }
+        }
+        
+        #else
         // Animate changes
-        baseTableView.beginUpdates()
-        baseTableView.endUpdates()
+        baseTableView.performBatchUpdates({
+        }, completion: { finished in
+        })
+        #endif
     }
+    
     func onPinModeChanged(_ mode: PinIOModuleManager.PinData.Mode, pinIndex: Int) {
+        #if targetEnvironment(macCatalyst)
+        self.enh_resetLastReloadTime()      // Delay any onPinIODidReceivePinState reload
+        #endif
+
         let pin = pinIO.pins[pinIndex]
         pinIO.setControlMode(pin: pin, mode: mode)
-
-        baseTableView.reloadRows(at: [IndexPath(row: pinIndex, section: 0)], with: .none)
+        
+        UIView.performWithoutAnimation {        // Force no animation because can still be animated on macCatalyst
+            baseTableView.reloadRows(at: [IndexPath(row: pinIndex, section: 0)], with: .none)
+        }
     }
+    
     func onPinDigitalValueChanged(_ value: PinIOModuleManager.PinData.DigitalValue, pinIndex: Int) {
+        #if targetEnvironment(macCatalyst)
+        self.enh_resetLastReloadTime()      // Delay any onPinIODidReceivePinState reload
+        #endif
+
         let pin = pinIO.pins[pinIndex]
         pinIO.setDigitalValue(pin: pin, value: value)
-
-        baseTableView.reloadRows(at: [IndexPath(row: pinIndex, section: 0)], with: .none)
+        
+        UIView.performWithoutAnimation {        // Force no animation because can still be animated on macCatalyst
+            baseTableView.reloadRows(at: [IndexPath(row: pinIndex, section: 0)], with: .none)
+        }
     }
+    
     func onPinAnalogValueChanged(_ value: Float, pinIndex: Int) {
+        #if targetEnvironment(macCatalyst)
+        self.enh_resetLastReloadTime()      // Delay any onPinIODidReceivePinState reloads
+        #endif
+
         let pin = pinIO.pins[pinIndex]
-        if pinIO.setPMWValue(pin: pin, value: Int(value)) {
+        guard pinIO.setPMWValue(pin: pin, value: Int(value)) else { return }
+
+        UIView.performWithoutAnimation {    // Force no animation because can still be animated on macCatalyst
             baseTableView.reloadRows(at: [IndexPath(row: pinIndex, section: 0)], with: .none)
         }
     }
@@ -216,7 +267,8 @@ extension PinIOModeViewController: PinIoTableViewCellDelegate {
 extension PinIOModeViewController: PinIOModuleManagerDelegate {
     func onPinIODidEndPinQuery(isDefaultConfigurationAssumed: Bool) {
         DispatchQueue.main.async {
-            self.baseTableView.reloadData()
+            self.enh_throttledReloadData()
+            //self.baseTableView.reloadData()
 
             self.presentedViewController?.dismiss(animated: true, completion: { [weak self] in
                 if isDefaultConfigurationAssumed {
@@ -225,10 +277,14 @@ extension PinIOModeViewController: PinIOModuleManagerDelegate {
             })
         }
     }
-
+    
     func onPinIODidReceivePinState() {
         DispatchQueue.main.async {
-            self.baseTableView.reloadData()
+            self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
         }
+    }
+    
+    @objc func reloadData() {
+        baseTableView.reloadData()
     }
 }
