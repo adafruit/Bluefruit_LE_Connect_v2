@@ -546,7 +546,7 @@ class PinIOModuleManager: NSObject {
             var isDigitalReportingMessage = (receivedPinStateDataBuffer[0] >= 0x90) && (receivedPinStateDataBuffer[0] <= 0x9F)
             var isAnalogReportingMessage = (receivedPinStateDataBuffer[0] >= 0xE0) && (receivedPinStateDataBuffer[0] <= 0xEF)
 
-            DLog("receivedPinStateDataBuffer size: \(receivedPinStateDataBuffer.count)")
+            //DLog("receivedPinStateDataBuffer size: \(receivedPinStateDataBuffer.count)")
 
             while receivedPinStateDataBuffer.count >= 3 && (isDigitalReportingMessage || isAnalogReportingMessage)        // Check that current message length is at least 3 bytes
             {

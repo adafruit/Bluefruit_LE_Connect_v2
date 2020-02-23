@@ -38,7 +38,7 @@ class PinIOModeViewController: PeripheralModeViewController {
         
         #if targetEnvironment(macCatalyst)
         // Increase throttle time on macCatalyst to avoid problems
-        NSObject.setEnh_minimumNanosecondsBetweenThrottledReloads(UInt64(Double(NSEC_PER_SEC) * 0.7))
+        self.enh_setMinimumNanosecondsBetweenThrottledReloads(UInt64(Double(NSEC_PER_SEC) * 0.7))
         #endif
         
         DLog("PinIO viewWillAppear")
@@ -84,7 +84,7 @@ class PinIOModeViewController: PeripheralModeViewController {
             
             #if targetEnvironment(macCatalyst)
             // Back to default value
-            NSObject.setEnh_minimumNanosecondsBetweenThrottledReloads(UInt64(Double(NSEC_PER_SEC) * 0.3))
+            self.enh_setMinimumNanosecondsBetweenThrottledReloads(UInt64(Double(NSEC_PER_SEC) * 0.3))
             #endif
         }
     }
@@ -266,10 +266,9 @@ extension PinIOModeViewController: PinIoTableViewCellDelegate {
 // MARK: - PinIOModuleManagerDelegate
 extension PinIOModeViewController: PinIOModuleManagerDelegate {
     func onPinIODidEndPinQuery(isDefaultConfigurationAssumed: Bool) {
+        self.enh_throttledReloadData()
+        
         DispatchQueue.main.async {
-            self.enh_throttledReloadData()
-            //self.baseTableView.reloadData()
-
             self.presentedViewController?.dismiss(animated: true, completion: { [weak self] in
                 if isDefaultConfigurationAssumed {
                     self?.defaultCapabilitiesAssumedDialog()
@@ -279,12 +278,12 @@ extension PinIOModeViewController: PinIOModuleManagerDelegate {
     }
     
     func onPinIODidReceivePinState() {
-        DispatchQueue.main.async {
-            self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
-        }
+        self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
     }
     
     @objc func reloadData() {
-        baseTableView.reloadData()
+        DispatchQueue.main.async {
+            self.baseTableView.reloadData()
+        }
     }
 }

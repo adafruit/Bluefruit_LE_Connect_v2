@@ -48,7 +48,7 @@
 
 // OpenRoad Added
 -(void)enh_resetLastReloadTime;
--(void)setEnh_minimumNanosecondsBetweenThrottledReloads:(uint64_t)enh_minimumNanosecondsBetweenThrottledReloads;
+-(void)enh_setMinimumNanosecondsBetweenThrottledReloads:(uint64_t)enh_minimumNanosecondsBetweenThrottledReloads;
 
 /**
  *  Minimum number of nanoseconds between reloading data. Defaults to 0.3 seconds.

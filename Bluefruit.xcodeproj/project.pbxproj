@@ -10,7 +10,6 @@
 		81EC9BF2053F63FF4DD121AC /* Pods_Bluefruit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26A937DE0A0ACE75597E27BB /* Pods_Bluefruit.framework */; };
 		A90798311E438E60005470A5 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798301E438E60005470A5 /* GradientView.swift */; };
 		A90798361E439DB9005470A5 /* PinIOModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798351E439DB9005470A5 /* PinIOModuleManager.swift */; };
-		A90798431E44F692005470A5 /* PlotterModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798421E44F692005470A5 /* PlotterModuleManager.swift */; };
 		A90C79781E40CBFA0076E8AD /* InfoModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */; };
 		A915427B1EDD7C3F007A34EA /* StyledLinkedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */; };
 		A915427D1EDD7CE8007A34EA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A915427C1EDD7CE8007A34EA /* Config.swift */; };
@@ -273,7 +272,6 @@
 		9FEC875F60CE881F27539E60 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		A90798301E438E60005470A5 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		A90798351E439DB9005470A5 /* PinIOModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinIOModuleManager.swift; sourceTree = "<group>"; };
-		A90798421E44F692005470A5 /* PlotterModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlotterModuleManager.swift; sourceTree = "<group>"; };
 		A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModuleManager.swift; sourceTree = "<group>"; };
 		A915427A1EDD7C3F007A34EA /* StyledLinkedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledLinkedButton.swift; sourceTree = "<group>"; };
 		A915427C1EDD7CE8007A34EA /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -687,7 +685,6 @@
 				A9BCD56E1E4D25B3003D1CEA /* Dfu */,
 				A9BCD5671E4D2549003D1CEA /* Scanner */,
 				A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */,
-				A90798421E44F692005470A5 /* PlotterModuleManager.swift */,
 				A98378711E43479400170319 /* ControllerModuleManager.swift */,
 				A90798351E439DB9005470A5 /* PinIOModuleManager.swift */,
 				A98DE4001E454FA100EEF4C8 /* NeopixelModuleManager.swift */,
@@ -1741,7 +1738,6 @@
 				A9B06A6623D0D0750060A64C /* DfuFilesPickerDialogViewController.swift in Sources */,
 				A9B06A7D23D0D0750060A64C /* NeopixelBoardSelectorViewController.swift in Sources */,
 				A9B06A5823D0D0750060A64C /* HexColorConversions.swift in Sources */,
-				A90798431E44F692005470A5 /* PlotterModuleManager.swift in Sources */,
 				A969466F1E3CD0F600BA8DAA /* StyledSubview.swift in Sources */,
 				A9B06A7E23D0D0750060A64C /* NeopixelModuleViewController.swift in Sources */,
 				A9B06A6B23D0D0750060A64C /* VisualizationProgressViewController.swift in Sources */,

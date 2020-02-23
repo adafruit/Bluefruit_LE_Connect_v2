@@ -8,7 +8,7 @@ target 'Bluefruit' do
   pod 'MSWeakTimer', '~> 1.1.0'
   pod 'SwiftyXML', '~> 2.0.0'
   pod 'iOSDFULibrary', '~> 4.6.1'
-  pod 'Charts', '~> 3.4.0'
+  pod 'Charts', '~> 3.4.0'      #Note: careful when updating because the source code has been modified to improve performance
   pod 'VectorMath', '~> 0.4.1'
   pod 'UIColor+Hex', '~> 1.0.1'
   #  pod 'iOS-color-wheel', :inhibit_warnings => true

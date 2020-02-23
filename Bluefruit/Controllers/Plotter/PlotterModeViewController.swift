@@ -10,7 +10,9 @@ import UIKit
 import Charts
 
 class PlotterModeViewController: PeripheralModeViewController {
-
+    // Config
+    private static let kMaxEntriesPerDataSet = 5000     // Max number of entries per dataset. Older entries will be deteleted
+    
     // UI
     @IBOutlet weak var chartView: LineChartView!
     @IBOutlet weak var autoscrollButton: UISwitch!
@@ -19,14 +21,16 @@ class PlotterModeViewController: PeripheralModeViewController {
     @IBOutlet weak var widthLabel: UILabel!
     
     // Data
-    fileprivate var uartDataManager: UartDataManager!
-    fileprivate var originTimestamp: CFAbsoluteTime!
-    fileprivate var isAutoScrollEnabled = true
-    fileprivate var visibleInterval: TimeInterval = 20      // in seconds
-    fileprivate var lineDashForPeripheral = [UUID: [CGFloat]?]()
-    fileprivate var dataSetsForPeripheral = [UUID: [LineChartDataSet]]()
-    fileprivate var lastDataSetModified: LineChartDataSet?
-    
+    private var uartDataManager: UartDataManager!
+    private var originTimestamp: CFAbsoluteTime!
+    private var isAutoScrollEnabled = true
+    private var visibleInterval: TimeInterval = 20      // in seconds
+    private var lineDashForPeripheral = [UUID: [CGFloat]?]()
+    private var dataSetsForPeripheral = [UUID: [LineChartDataSet]]()
+    private var lastDataSetModified: LineChartDataSet?
+    private var valueBufferForPeripheral = [UUID: [[ChartDataEntry]]]()       // For each dataSetForPeripheral there is a valueBuffer that stores the values recevied since the last update. They are all added in one pass to the dataSetForPeripheral before drawing
+    //private var chartDataLock = NSLock()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -49,12 +53,30 @@ class PlotterModeViewController: PeripheralModeViewController {
         autoscrollLabel.text = localizationManager.localizedString("plotter_autoscroll")
         widthLabel.text = localizationManager.localizedString("plotter_width")
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+//        #if targetEnvironment(macCatalyst)
+        // Increase throttle time on macCatalyst to avoid problems
+        self.enh_setMinimumNanosecondsBetweenThrottledReloads(UInt64(Double(NSEC_PER_SEC) * 0.5))
+//        #endif
 
         // Enable Uart
         setupUart()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if isMovingFromParent {       // To keep working while the help is displayed
+            //       #if targetEnvironment(macCatalyst)
+            // Back to default value
+            self.enh_setMinimumNanosecondsBetweenThrottledReloads(UInt64(Double(NSEC_PER_SEC) * 0.3))
+            //       #endif
+
+            blePeripheral?.uartDisable()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,11 +87,11 @@ class PlotterModeViewController: PeripheralModeViewController {
     }
 
     // MARK: - UART
-    fileprivate func isInMultiUartMode() -> Bool {
+    private func isInMultiUartMode() -> Bool {
         return blePeripheral == nil
     }
 
-    fileprivate func setupUart() {
+    private func setupUart() {
         // Reset line dashes assigned to peripherals
         let lineDashes = UartStyle.defaultLineDashes()
         lineDashForPeripheral.removeAll()
@@ -130,7 +152,7 @@ class PlotterModeViewController: PeripheralModeViewController {
     }
 
     // MARK: - Line Chart
-    fileprivate func setupChart() {
+    private func setupChart() {
         chartView.delegate = self
         chartView.backgroundColor = .white      // Fix for Charts 3.0.3 (overrides the default background color)
 
@@ -143,33 +165,39 @@ class PlotterModeViewController: PeripheralModeViewController {
         chartView.noDataText = LocalizationManager.shared.localizedString("plotter_nodata")
     }
 
+    private var hasDatasetsCountChanged = false
     
-    // Note: this method should be called on the main thread
-    fileprivate func addEntry(peripheralIdentifier identifier: UUID, index: Int, value: Double, timestamp: CFAbsoluteTime) {
+    private func addEntry(peripheralIdentifier identifier: UUID, index: Int, value: Double, timestamp: CFAbsoluteTime) {
         let entry = ChartDataEntry(x: timestamp, y: value)
         
-        if let dataSets = dataSetsForPeripheral[identifier], index < dataSets.count {
-            // Add entry to existing dataset
-            let dataSet = dataSets[index]
-            let _ = dataSet.append(entry)
-            
-            //Debug memory warning
+        /*
+        if  Config.isDebugEnabled, entry.y < -1 || entry.y > 1 { // Investigating partial values
+            DLog("out of bounds")
+        }*/
+        
+        if let valueBuffers = valueBufferForPeripheral[identifier], index < valueBuffers.count {
+            // Add entry to existing valueBuffer
+            valueBufferForPeripheral[identifier]![index].append(entry)
             /*
+            //Debug memory warning
             if dataSet.count > 1000  {
-                UIControl().sendAction(Selector(("_performMemoryWarning")), to: UIApplication.shared, for: nil)
-            }*/
+             UIControl().sendAction(Selector(("_performMemoryWarning")), to: UIApplication.shared, for: nil)
+             }*/
         }
         else {
             self.appendDataset(peripheralIdentifier: identifier, entry: entry, index: index)
-            let allDataSets = self.dataSetsForPeripheral.flatMap { $0.1 }
-            self.chartView.data = LineChartData(dataSets: allDataSets)      // Note: this internally calls setNeddsUpdate, so it should be called on the main thread
+            hasDatasetsCountChanged = true
+            /*
+             let allDataSets = self.dataSetsForPeripheral.flatMap { $0.1 }
+             self.chartView.data = LineChartData(dataSets: allDataSets)      // Note: this internally calls setNeddsUpdate, so it should be called on the main thread
+             */
         }
         
         guard let dataSets = dataSetsForPeripheral[identifier], index < dataSets.count else { return}
         lastDataSetModified = dataSets[index]
     }
     
-    fileprivate func removeOldDataOnMemoryWarning() {
+    private func removeOldDataOnMemoryWarning() {
         DLog("removeOldDataOnMemoryWarning")
         for (_, dataSets) in dataSetsForPeripheral {
             for dataSet in dataSets {
@@ -178,7 +206,7 @@ class PlotterModeViewController: PeripheralModeViewController {
         }
     }
     
-    fileprivate func notifyDataSetChanged() {
+    private func notifyDataSetChanged() {
         chartView.data?.notifyDataChanged()
         chartView.notifyDataSetChanged()
         chartView.setVisibleXRangeMaximum(visibleInterval)
@@ -193,10 +221,10 @@ class PlotterModeViewController: PeripheralModeViewController {
         }
     }
 
-    fileprivate func appendDataset(peripheralIdentifier identifier: UUID, entry: ChartDataEntry, index: Int) {
+    private func appendDataset(peripheralIdentifier identifier: UUID, entry: ChartDataEntry, index: Int) {
         let dataSet = LineChartDataSet(entries: [entry], label: "Values[\(identifier.uuidString) : \(index)]")
         let _ = dataSet.append(entry)
-
+ 
         dataSet.drawCirclesEnabled = false
         dataSet.drawValuesEnabled = false
         dataSet.lineWidth = 2
@@ -208,8 +236,10 @@ class PlotterModeViewController: PeripheralModeViewController {
 
         if dataSetsForPeripheral[identifier] != nil {
             dataSetsForPeripheral[identifier]!.append(dataSet)
+            valueBufferForPeripheral[identifier]!.append([])
         } else {
             dataSetsForPeripheral[identifier] = [dataSet]
+            valueBufferForPeripheral[identifier] = [[]]
         }
     }
 
@@ -240,36 +270,43 @@ class PlotterModeViewController: PeripheralModeViewController {
 // MARK: - UartDataManagerDelegate
 extension PlotterModeViewController: UartDataManagerDelegate {
     private static let kLineSeparator = Data([10])
-
+    
     func onUartRx(data: Data, peripheralIdentifier identifier: UUID) {
         // DLog("uart rx read (hex): \(hexDescription(data: data))")
         // DLog("uart rx read (utf8): \(String(data: data, encoding: .utf8) ?? "<invalid>")")
-
+        
+//        chartDataLock.lock(); defer {chartDataLock.unlock()}
         guard let lastSeparatorRange = data.range(of: PlotterModeViewController.kLineSeparator, options: [.anchored, .backwards], in: nil) else { return }
-
-        let subData = data.subdata(in: 0..<lastSeparatorRange.upperBound)
+        
+        var isEntryAdded = false
+        let secondToLastSeparatorRange = data.range(of: PlotterModeViewController.kLineSeparator, options: [.anchored, .backwards], in: 0..<lastSeparatorRange.lowerBound)
+        let from = secondToLastSeparatorRange?.upperBound ?? 0
+        let subData = data.subdata(in: from..<lastSeparatorRange.lowerBound)
         
         if let dataString = String(data: subData, encoding: .utf8) {
             let currentTimestamp = CFAbsoluteTimeGetCurrent() - originTimestamp
             let linesStrings = dataString.replacingOccurrences(of: "\r", with: "").components(separatedBy: "\n")
-
-            DispatchQueue.main.async {
-                for lineString in linesStrings {
-                    //   DLog("\tline: \(lineString)")
-                    let valuesStrings = lineString.components(separatedBy: CharacterSet(charactersIn: ",; \t"))
-                    var i = 0
-                    // DLog("values: \(valuesStrings)")
-                    for valueString in valuesStrings {
-                        if let value = Double(valueString) {
-                            //DLog("value \(i): \(value)")
-                            self.addEntry(peripheralIdentifier: identifier, index: i, value: value, timestamp: currentTimestamp)
-                            i = i+1
-                        }
+            
+            
+            if let lineString = linesStrings.last {     // Only take into account the lastest one, because the timestamp for all of them will be considered the same one
+            //for lineString in linesStrings {
+                //   DLog("\tline: \(lineString)")
+                let valuesStrings = lineString.components(separatedBy: CharacterSet(charactersIn: ",; \t"))
+                var i = 0
+                // DLog("values: \(valuesStrings)")
+                for valueString in valuesStrings {
+                    if let value = Double(valueString) {
+                        //DLog("value \(i): \(value)")
+                        self.addEntry(peripheralIdentifier: identifier, index: i, value: value, timestamp: currentTimestamp)
+                        i = i+1
+                        isEntryAdded = true
                     }
-  
-                    self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
                 }
             }
+        }
+        
+        if isEntryAdded {
+            self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
         }
         
         //let numBytesProcessed = subData.count
@@ -279,8 +316,45 @@ extension PlotterModeViewController: UartDataManagerDelegate {
     }
     
     @objc func reloadData() {
-        self.notifyDataSetChanged()
         
+        //DLog("reloadData")
+        DispatchQueue.main.async {
+//            self.chartDataLock.lock(); defer {self.chartDataLock.unlock() }
+
+            if self.hasDatasetsCountChanged {
+                let allDataSets = self.dataSetsForPeripheral.flatMap { $0.1 }
+                self.chartView.data = LineChartData(dataSets: allDataSets)      // Note: this internally calls setNeddsUpdate, so it should be called on the main thread
+                self.hasDatasetsCountChanged = false
+            }
+            else {
+                
+                var newValueBuffers = [UUID: [[ChartDataEntry]]]()
+                for valueBuffers in self.valueBufferForPeripheral {
+                    DLog("unprocessed entries \(valueBuffers.key): \(valueBuffers.value.flatMap({$0}).count)")
+
+                    let dataSets = self.dataSetsForPeripheral[valueBuffers.key]!
+                    
+                    for i in 0..<valueBuffers.value.count {
+                        let valueBuffer  = valueBuffers.value[i]
+                        let dataSet = dataSets[i]
+                        
+                        if dataSet.count + valueBuffer.count > PlotterModeViewController.kMaxEntriesPerDataSet {
+                            let elementsToRemove = -(PlotterModeViewController.kMaxEntriesPerDataSet - (dataSet.count + valueBuffer.count))
+                            dataSet.removeFirst(elementsToRemove)
+                        }
+                        
+                        for entry in valueBuffer {
+                            dataSet.append(entry)
+                        }
+                    }
+                    
+                    newValueBuffers[valueBuffers.key] = Array(repeating: [], count: valueBuffers.value.count)
+                }
+                
+                self.valueBufferForPeripheral = newValueBuffers
+                self.notifyDataSetChanged()
+            }
+        }
     }
 }
 
