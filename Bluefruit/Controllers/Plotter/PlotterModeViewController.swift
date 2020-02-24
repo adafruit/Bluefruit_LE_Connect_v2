@@ -74,8 +74,6 @@ class PlotterModeViewController: PeripheralModeViewController {
             // Back to default value
             self.enh_setMinimumNanosecondsBetweenThrottledReloads(UInt64(Double(NSEC_PER_SEC) * 0.3))
             //       #endif
-
-            blePeripheral?.uartDisable()
         }
     }
 
@@ -330,7 +328,7 @@ extension PlotterModeViewController: UartDataManagerDelegate {
                 
                 var newValueBuffers = [UUID: [[ChartDataEntry]]]()
                 for valueBuffers in self.valueBufferForPeripheral {
-                    DLog("unprocessed entries \(valueBuffers.key): \(valueBuffers.value.flatMap({$0}).count)")
+                    //DLog("unprocessed entries \(valueBuffers.key): \(valueBuffers.value.flatMap({$0}).count)")
 
                     let dataSets = self.dataSetsForPeripheral[valueBuffers.key]!
                     

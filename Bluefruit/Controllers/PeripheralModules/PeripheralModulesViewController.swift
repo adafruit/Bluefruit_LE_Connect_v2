@@ -88,7 +88,10 @@ class PeripheralModulesViewController: UIViewController {
         registerNotifications(enabled: true)
         
         // Schedule Rssi timer
-        rssiRefreshTimer = MSWeakTimer.scheduledTimer(withTimeInterval: PeripheralModulesViewController.kRssiRefreshInterval, target: self, selector: #selector(rssiRefreshFired), userInfo: nil, repeats: true, dispatchQueue: .global(qos: .background))
+        if blePeripheral?.state == .connected {     // Ignore rssi timer if not connected
+            rssiRefreshTimer?.invalidate()
+            rssiRefreshTimer = MSWeakTimer.scheduledTimer(withTimeInterval: PeripheralModulesViewController.kRssiRefreshInterval, target: self, selector: #selector(rssiRefreshFired), userInfo: nil, repeats: true, dispatchQueue: .global(qos: .background))
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {

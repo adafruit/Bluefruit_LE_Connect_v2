@@ -122,17 +122,17 @@ extension BlePeripheral {
     }
 
     func uartDisable() {
-        // Clear all Uart specific data
-        defer {
-            uartRxCharacteristic = nil
-            uartTxCharacteristic = nil
-            uartTxCharacteristicWriteType = nil
-        }
-
         // Disable notify
         guard let characteristic = uartRxCharacteristic, characteristic.isNotifying else { return }
+        
+        disableNotify(for: characteristic) { [weak self] error in
+            guard let self = self else { return }
 
-        disableNotify(for: characteristic)
+            // Clear all Uart specific data
+            self.uartRxCharacteristic = nil
+            self.uartTxCharacteristic = nil
+            self.uartTxCharacteristicWriteType = nil
+        }
     }
 
     // MARK: - Send
