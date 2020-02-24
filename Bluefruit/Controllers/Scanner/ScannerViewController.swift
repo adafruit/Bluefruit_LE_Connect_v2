@@ -46,19 +46,19 @@ class ScannerViewController: ModeTabViewController {
 
     
     // Data
-    fileprivate let refreshControl = UIRefreshControl()
-    fileprivate var peripheralList: PeripheralList!
-    fileprivate var isRowDetailOpenForPeripheral = [UUID: Bool]()          // Is the detailed info row open [PeripheralIdentifier: Bool]
+    private let refreshControl = UIRefreshControl()
+    private var peripheralList: PeripheralList!
+    private var isRowDetailOpenForPeripheral = [UUID: Bool]()          // Is the detailed info row open [PeripheralIdentifier: Bool]
 
-    fileprivate var selectedPeripheral: BlePeripheral?
+    private var selectedPeripheral: BlePeripheral?
 
-    fileprivate var isMultiConnectEnabled = false
-    fileprivate let firmwareUpdater = FirmwareUpdater()
-    fileprivate var infoAlertController: UIAlertController?
+    private var isMultiConnectEnabled = false
+    private let firmwareUpdater = FirmwareUpdater()
+    private var infoAlertController: UIAlertController?
 
-    fileprivate var isBaseTableScrolling = false
-    fileprivate var isScannerTableWaitingForReload = false
-    fileprivate var isBaseTableAnimating = false
+    private var isBaseTableScrolling = false
+    private var isScannerTableWaitingForReload = false
+    private var isBaseTableAnimating = false
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -308,7 +308,8 @@ class ScannerViewController: ModeTabViewController {
         infoAlertController = nil
 
         // Reload table
-        reloadBaseTable()
+        //reloadBaseTable()
+        self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
     }
 
     private func peripheralDidUpdateName(notification: Notification) {
@@ -317,7 +318,8 @@ class ScannerViewController: ModeTabViewController {
 
         DispatchQueue.main.async {
             // Reload table
-            self.reloadBaseTable()
+            //self.reloadBaseTable()
+            self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
         }
     }
 
@@ -326,7 +328,7 @@ class ScannerViewController: ModeTabViewController {
         detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralModulesNavigationController")
     }
     
-    fileprivate func showPeripheralDetails() {
+    private func showPeripheralDetails() {
         // Watch
         if !isMultiConnectEnabled {
             WatchSessionManager.shared.updateApplicationContext(mode: .connected)
@@ -339,7 +341,7 @@ class ScannerViewController: ModeTabViewController {
         }
     }
 
-    fileprivate func showPeripheralUpdate() {
+    private func showPeripheralUpdate() {
         // Watch
         if !isMultiConnectEnabled {
             WatchSessionManager.shared.updateApplicationContext(mode: .connected)
@@ -357,7 +359,7 @@ class ScannerViewController: ModeTabViewController {
         }
     }
 
-    fileprivate func showMultipleConnectionsMode() {
+    private func showMultipleConnectionsMode() {
         detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "PeripheralModulesNavigationController")
         if let peripheralModulesNavigationController = detailRootController as? UINavigationController, let peripheralModulesViewController = peripheralModulesNavigationController.topViewController as? PeripheralModulesViewController {
             peripheralModulesViewController.blePeripheral = nil
@@ -428,7 +430,7 @@ class ScannerViewController: ModeTabViewController {
         firmwareUpdater.checkUpdatesForPeripheral(peripheral, delegate: self, shouldDiscoverServices: false, shouldRecommendBetaReleases: false, versionToIgnore: Preferences.softwareUpdateIgnoredVersion)
     }
 
-    fileprivate func showUpdateAvailableForRelease(_ latestRelease: FirmwareInfo) {
+    private func showUpdateAvailableForRelease(_ latestRelease: FirmwareInfo) {
 
         let localizationManager = LocalizationManager.shared
         let alert = UIAlertController(title: localizationManager.localizedString("autoupdate_title"),
@@ -472,7 +474,8 @@ class ScannerViewController: ModeTabViewController {
 
     private func updateFilters() {
         updateFiltersTitle()
-        reloadBaseTable()
+//        reloadBaseTable()
+        self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
     }
 
     private func setRssiSlider(value: Int?) {
@@ -503,10 +506,11 @@ class ScannerViewController: ModeTabViewController {
         refreshControl.endRefreshing()
     }
 
-    fileprivate func refreshPeripherals() {
+    private func refreshPeripherals() {
         isRowDetailOpenForPeripheral.removeAll()
         BleManager.shared.refreshPeripherals()
-        reloadBaseTable()
+        //reloadBaseTable()
+        self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
     }
 
     @IBAction func onClickExpandFilters(_ sender: Any) {
@@ -568,7 +572,7 @@ class ScannerViewController: ModeTabViewController {
         showMultipleConnectionsMode()
     }
 
-    fileprivate func enabledMulticonnect(enable: Bool) {
+    private func enabledMulticonnect(enable: Bool) {
         isMultiConnectEnabled = enable
         openMultiConnectPanel(isOpen: isMultiConnectEnabled, animated: true)
 
@@ -586,20 +590,22 @@ class ScannerViewController: ModeTabViewController {
     }
 
     // MARK: - Connections
-    fileprivate func connect(peripheral: BlePeripheral) {
+    private func connect(peripheral: BlePeripheral) {
         // Dismiss keyboard
         filtersNameTextField.resignFirstResponder()
 
         // Connect to selected peripheral
         selectedPeripheral = peripheral
         BleManager.shared.connect(to: peripheral)
-        reloadBaseTable()
+        //reloadBaseTable()
+        self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
     }
 
-    fileprivate func disconnect(peripheral: BlePeripheral) {
+    private func disconnect(peripheral: BlePeripheral) {
         selectedPeripheral = nil
         BleManager.shared.disconnect(from: peripheral)
-        reloadBaseTable()
+        //reloadBaseTable()
+        self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
     }
 
     // MARK: - UI
@@ -609,11 +615,12 @@ class ScannerViewController: ModeTabViewController {
         if isBaseTableScrolling || isBaseTableAnimating {
             isScannerTableWaitingForReload = true
         } else {
-            reloadBaseTable()
+            //reloadBaseTable()
+            self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
         }
     }
 
-    fileprivate func reloadBaseTable() {
+    @objc private func reloadData() {
         isBaseTableScrolling = false
         isBaseTableAnimating = false
         isScannerTableWaitingForReload = false
@@ -650,7 +657,7 @@ class ScannerViewController: ModeTabViewController {
         multiConnectShowButton.isEnabled = numConnectedPeripherals >= 2
     }
 
-    fileprivate func presentInfoDialog(title: String, peripheral: BlePeripheral) {
+    private func presentInfoDialog(title: String, peripheral: BlePeripheral) {
         if infoAlertController != nil {
             infoAlertController?.dismiss(animated: true, completion: nil)
         }
@@ -663,7 +670,7 @@ class ScannerViewController: ModeTabViewController {
         present(infoAlertController!, animated: true, completion:nil)
     }
 
-    fileprivate func dismissInfoDialog(completion: (() -> Void)? = nil) {
+    private func dismissInfoDialog(completion: (() -> Void)? = nil) {
         guard infoAlertController != nil else {
             completion?()
             return
@@ -790,7 +797,8 @@ extension ScannerViewController {
         isBaseTableScrolling = false
 
         if isScannerTableWaitingForReload {
-            reloadBaseTable()
+            self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
+//            reloadBaseTable()
         }
     }
 }
