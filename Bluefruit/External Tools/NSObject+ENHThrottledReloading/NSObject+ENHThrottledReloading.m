@@ -89,9 +89,9 @@ static NSString *kENHMinimumNanosecondsBetweenThrottledReloadsAssociatedObjectKe
 
 #pragma mark - Accessors
 
--(void)enh_setMinimumNanosecondsBetweenThrottledReloads:(uint64_t)enh_minimumNanosecondsBetweenThrottledReloads
+-(void)enh_setMinimumNanosecondsBetweenThrottledReloads:(uint64_t)nanosenconds
 {
-    objc_setAssociatedObject(self, (__bridge const void *)kENHMinimumNanosecondsBetweenThrottledReloadsAssociatedObjectKey, @(enh_minimumNanosecondsBetweenThrottledReloads), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, (__bridge const void *)kENHMinimumNanosecondsBetweenThrottledReloadsAssociatedObjectKey, @(nanosenconds), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 -(uint64_t)enh_minimumNanosecondsBetweenThrottledReloads

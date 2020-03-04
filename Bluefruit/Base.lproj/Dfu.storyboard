@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Progress View Controller-->
         <scene sceneID="XHG-F4-i04">
             <objects>
-                <viewController storyboardIdentifier="ProgressViewController" modalPresentationStyle="overCurrentContext" id="kl6-aX-7zS" customClass="ProgressViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProgressViewController" modalPresentationStyle="overCurrentContext" id="kl6-aX-7zS" customClass="ProgressViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DKu-Ib-GKq"/>
                         <viewControllerLayoutGuide type="bottom" id="0FG-pz-BED"/>
@@ -22,29 +20,29 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z9O-lj-KbF">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmD-hH-kD9">
-                                <rect key="frame" x="36" y="287" width="303" height="93"/>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="kmD-hH-kD9">
+                                <rect key="frame" x="47.5" y="287" width="280" height="93"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Updating..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bKd-73-48D">
-                                        <rect key="frame" x="8" y="8" width="231" height="18"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Updating..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bKd-73-48D">
+                                        <rect key="frame" x="8" y="8" width="208" height="18"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qPl-uQ-q3T">
-                                        <rect key="frame" x="8" y="46" width="287" height="2"/>
+                                    <progressView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="qPl-uQ-q3T">
+                                        <rect key="frame" x="8" y="46" width="264" height="2"/>
                                     </progressView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="0%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i64-80-f7q">
-                                        <rect key="frame" x="274.5" y="68" width="20.5" height="17"/>
+                                        <rect key="frame" x="251" y="68" width="21" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F0U-EU-etI">
-                                        <rect key="frame" x="247" y="2" width="48" height="30"/>
+                                        <rect key="frame" x="224" y="2" width="48" height="30"/>
                                         <state key="normal" title="Cancel">
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -61,6 +59,7 @@
                                     <constraint firstItem="F0U-EU-etI" firstAttribute="baseline" secondItem="bKd-73-48D" secondAttribute="baseline" id="Ihj-mP-YNc"/>
                                     <constraint firstItem="i64-80-f7q" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kmD-hH-kD9" secondAttribute="leading" constant="20" symbolic="YES" id="Ije-lk-Yec"/>
                                     <constraint firstItem="qPl-uQ-q3T" firstAttribute="trailing" secondItem="kmD-hH-kD9" secondAttribute="trailingMargin" id="LYg-pq-kzs"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="280" id="SJY-W7-mWG"/>
                                     <constraint firstItem="qPl-uQ-q3T" firstAttribute="top" secondItem="bKd-73-48D" secondAttribute="bottom" constant="20" id="Sg3-h2-ZtW"/>
                                     <constraint firstItem="bKd-73-48D" firstAttribute="leading" secondItem="kmD-hH-kD9" secondAttribute="leadingMargin" id="h6I-B3-LET"/>
                                     <constraint firstItem="F0U-EU-etI" firstAttribute="trailing" secondItem="kmD-hH-kD9" secondAttribute="trailingMargin" id="l39-pk-u2U"/>
@@ -72,12 +71,13 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="kmD-hH-kD9" secondAttribute="trailing" constant="20" id="5K3-lk-lkz"/>
-                            <constraint firstItem="kmD-hH-kD9" firstAttribute="leading" secondItem="Met-nX-FHc" secondAttribute="leadingMargin" constant="20" id="6Tx-lW-hjQ"/>
+                            <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="kmD-hH-kD9" secondAttribute="trailing" id="5K3-lk-lkz"/>
+                            <constraint firstItem="kmD-hH-kD9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Met-nX-FHc" secondAttribute="leadingMargin" id="6Tx-lW-hjQ"/>
                             <constraint firstItem="Z9O-lj-KbF" firstAttribute="top" secondItem="DKu-Ib-GKq" secondAttribute="bottom" id="DXj-au-Rku"/>
                             <constraint firstItem="kmD-hH-kD9" firstAttribute="centerY" secondItem="Met-nX-FHc" secondAttribute="centerY" id="F41-mW-8Zo"/>
                             <constraint firstAttribute="trailing" secondItem="Z9O-lj-KbF" secondAttribute="trailing" id="Mml-ia-LBC"/>
                             <constraint firstItem="Z9O-lj-KbF" firstAttribute="leading" secondItem="Met-nX-FHc" secondAttribute="leading" id="PXv-tS-gQb"/>
+                            <constraint firstItem="kmD-hH-kD9" firstAttribute="centerX" secondItem="Met-nX-FHc" secondAttribute="centerX" id="rs7-28-mhV"/>
                             <constraint firstItem="0FG-pz-BED" firstAttribute="top" secondItem="Z9O-lj-KbF" secondAttribute="bottom" id="vvS-rL-Jkc"/>
                         </constraints>
                     </view>
@@ -97,7 +97,7 @@
         <!--Dfu Files Picker Dialog View Controller-->
         <scene sceneID="MVa-5a-7Xt">
             <objects>
-                <viewController storyboardIdentifier="DfuFilesPickerDialogViewController" modalPresentationStyle="overCurrentContext" id="r8l-Qa-GeS" customClass="DfuFilesPickerDialogViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DfuFilesPickerDialogViewController" modalPresentationStyle="overCurrentContext" id="r8l-Qa-GeS" customClass="DfuFilesPickerDialogViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="44P-g6-kIZ"/>
                         <viewControllerLayoutGuide type="bottom" id="Tx9-j5-zds"/>
@@ -107,7 +107,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Znu-qZ-xjw">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59628232758620692" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NRm-6q-3uD">
@@ -119,7 +119,7 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6nq-He-ouN" userLabel="Hex File Picker View" customClass="StyledSubview" customModule="iOS" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6nq-He-ouN" userLabel="Hex File Picker View" customClass="StyledSubview" customModule="Bluefruit_Connect" customModuleProvider="target">
                                         <rect key="frame" x="8" y="36" width="327" height="53"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hex File:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rMR-jU-qWF">
@@ -128,7 +128,7 @@
                                                 <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAq-dF-uyR" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAq-dF-uyR" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="244" y="11.5" width="73" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="vX6-pL-MJt"/>
@@ -168,7 +168,7 @@
                                             <constraint firstAttribute="height" constant="1" id="FDD-ia-eFL"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="55g-AW-GQ8" userLabel="Init File Picker View" customClass="StyledSubview" customModule="iOS" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="55g-AW-GQ8" userLabel="Init File Picker View" customClass="StyledSubview" customModule="Bluefruit_Connect" customModuleProvider="target">
                                         <rect key="frame" x="8" y="108" width="327" height="53"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Init File:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f9n-LN-nph">
@@ -183,7 +183,7 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BCp-Y3-Gn4" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BCp-Y3-Gn4" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="244" y="11.5" width="73" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="WvO-b6-uul"/>
@@ -213,7 +213,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t70-VU-V7V" userLabel="Buttons View">
                                         <rect key="frame" x="0.0" y="173" width="343" height="52"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d5a-Hq-fLf" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d5a-Hq-fLf" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="181.5" y="0.0" width="153.5" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="Crg-IJ-S44"/>
@@ -230,7 +230,7 @@
                                                     <action selector="onClickCancel:" destination="r8l-Qa-GeS" eventType="touchUpInside" id="8Pl-n6-I89"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RjN-Qd-b3X" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RjN-Qd-b3X" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="8" y="0.0" width="153.5" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="pUJ-Kj-s4z"/>
@@ -312,7 +312,7 @@
         <!--Dfu-->
         <scene sceneID="Yvj-wv-Nd0">
             <objects>
-                <viewController storyboardIdentifier="DfuModeViewController" id="Mjq-f8-FLn" customClass="DfuModeViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DfuModeViewController" id="Mjq-f8-FLn" customClass="DfuModeViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kiY-3A-Dn5"/>
                         <viewControllerLayoutGuide type="bottom" id="NUd-3c-fjX"/>
@@ -322,17 +322,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="50" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="ybV-FE-sFr">
-                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="574"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FilesPickerCell" id="iHe-rZ-pVm" customClass="DfuFilesPickerTableViewCell" customModule="iOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FilesPickerCell" id="iHe-rZ-pVm" customClass="DfuFilesPickerTableViewCell" customModule="Bluefruit_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iHe-rZ-pVm" id="7Y0-sV-mhR">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6RV-AM-iVj" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6RV-AM-iVj" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                     <rect key="frame" x="15" y="4" width="345" height="42"/>
                                                     <inset key="contentEdgeInsets" minX="0.0" minY="12" maxX="0.0" maxY="12"/>
                                                     <state key="normal" title="Use Custom Firmware">

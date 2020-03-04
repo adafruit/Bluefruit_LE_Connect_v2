@@ -41,7 +41,7 @@ class ProgressViewController: UIViewController {
         super.viewDidAppear(animated)
         
         // Fade-in background
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.backgroundView.alpha = 1
         })
     }
