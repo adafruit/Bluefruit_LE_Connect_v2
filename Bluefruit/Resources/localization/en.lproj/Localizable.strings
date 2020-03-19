@@ -50,7 +50,7 @@ Please reset bluetooth and try again.";
 "scanner_filter_name_casesection" = "Case sensitivity";
 "scanner_filter_currentfilter_format" = "Filter: %@";
 "scanner_filter_nofilter" = "No filter selected";
-"scanner_filter_rssivalue_format" = "%ld dBM";
+"scanner_filter_rssivalue_format" = "%ld dBm";
 
 "scanner_filter_name_settings_contains" = "Name contains";
 "scanner_filter_name_settings_exact" = "Name equals";
@@ -181,10 +181,6 @@ Please reset bluetooth and try again.";
 "uart_timestamp_direction_tx" = "TX";
 "uart_text_dataomitted" = "(Previous data omitted to improve performance…)";
 
-"uart_mqtt_action" = "MQTT";
-"uart_mqtt_undefinedserver" = "Mqtt server not defined";
-"uart_mqtt_editsettings" = "Edit Mqtt Settings";
-
 "uart_export_format_title" = "Export data";
 "uart_export_format_subtitle" = "Choose the preferred format:";
 "uart_export_nodata" = "No data to export";
@@ -209,11 +205,19 @@ Please reset bluetooth and try again.";
 "uart_settings_clear_title" = "Clear";
 "uart_settings_export_title" = "Export...";
 
+"uart_mqtt_action" = "MQTT";
+"uart_mqtt_undefinedserver" = "Mqtt server not defined";
+"uart_mqtt_editsettings" = "Edit Mqtt Settings";
+
+
 "uart_mqtt_status_connected" = "Connected";
 "uart_mqtt_status_connecting" = "Connecting...";
 "uart_mqtt_status_disconnecting" = "Disconnecting...";
 "uart_mqtt_status_error" = "Error";
 "uart_mqtt_status_disconnected" = "Disconnected";
+
+"uart_mqtt_connectionerror_title" = "MQTT Connection Error";
+
 
 "uart_mqtt_subscription_localonly" = "Local Only";
 "uart_mqtt_subscription_transmit" = "Transmit";
@@ -696,7 +700,7 @@ Tap a row's connect button to connect the corresponding device in one of the ava
 • Pin I/O - uses Bluefruit's UART to control Arduino running BLEFirmata sketch:
 https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakout/software-bluefruit-firmata
 
-• Controller - streams sensor data from your iOS device to Bluefruit LE over UART
+• Controller - streams sensor data from your device to Bluefruit LE over UART
 
 • Neopixels - control NeoPixels individually with an interactive color picker
 
@@ -741,7 +745,7 @@ Android-ImageMagick
 Copyright (c) 2018 paulasiimwe
 https://github.com/paulasiimwe/Android-ImageMagick";
 "about_ios_text" = "A detailed guide to using this app can be found here:
-https://learn.adafruit.com/bluefruit-le-connect-for-ios
+https://learn.adafruit.com/bluefruit-le-connect
 
 Configure your Bluefruit LE hardware using instructions found here:
 http://www.adafruit.com/bluefruitle
@@ -763,7 +767,7 @@ Tap a row's connect button to connect the corresponding device in one of the ava
 • Pin I/O - uses Bluefruit's UART to control Arduino running BLEFirmata sketch:
 https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakout/software-bluefruit-firmata
 
-• Controller - streams sensor data from your iOS device to Bluefruit LE over UART
+• Controller - streams sensor data from your device to Bluefruit LE over UART
 
 • Neopixels - control NeoPixels individually with an interactive color picker
 
