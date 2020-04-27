@@ -154,7 +154,7 @@ class ControllerModeViewController: PeripheralModeViewController {
         #if targetEnvironment(macCatalyst)
         let helpText = localizationManager.localizedString("controller_help_text_mac")
         #else
-        let helpText = localizationManager.localizedString("controller_help_text_ios")
+        let helpText = localizationManager.localizedString("controller_help_text_ios_android")
         #endif
         
         let helpViewController = storyboard!.instantiateViewController(withIdentifier: "HelpViewController") as! HelpViewController
