@@ -16,7 +16,7 @@ func stringFromData(_ data: Data, useHexMode: Bool) -> String? {
         let hexValue = HexUtils.hexDescription(data: data)
         result = hexValue
     } else {
-        if let value = String(data: data, encoding: .ascii) as String? {
+        if let value = String(data: data, encoding: .utf8) as String? {
             var representableValue: String
 
             if Preferences.uartShowInvisibleChars {
