@@ -357,7 +357,7 @@ class PinIOModuleManager: NSObject {
         for i in 0..<PinIOModuleManager.DEFAULT_PINS_COUNT {
             var pin: PinData!
             if i == 3 || i == 5 || i == 6 {     // PWM pins
-                pin = PinData(digitalPinId: i, isDigital: true, isAnalog: false, isPWM: false)
+                pin = PinData(digitalPinId: i, isDigital: true, isAnalog: false, isPWM: true)
             } else if i >= PinIOModuleManager.FIRST_DIGITAL_PIN && i <= PinIOModuleManager.LAST_DIGITAL_PIN {    // Digital pin
                 pin = PinData(digitalPinId: i, isDigital: true, isAnalog: false, isPWM: false)
             } else if i >= PinIOModuleManager.FIRST_ANALOG_PIN && i <= PinIOModuleManager.LAST_ANALOG_PIN {     // Analog pin
