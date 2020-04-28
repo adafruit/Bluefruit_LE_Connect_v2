@@ -11,10 +11,10 @@ import UIKit
 class UartMqttSettingsViewController: UIViewController {
 
     // Constants
-    fileprivate static let kDefaultHeaderCellHeight: CGFloat = 50
+    private static let kDefaultHeaderCellHeight: CGFloat = 50
 
     // Types
-    fileprivate enum SettingsSections: Int {
+    private enum SettingsSections: Int {
         case status = 0
         case server = 1
         case publish = 2
@@ -22,15 +22,15 @@ class UartMqttSettingsViewController: UIViewController {
         case advanced = 4
     }
 
-    fileprivate enum PickerViewType {
+    private enum PickerViewType {
         case qos
         case action
     }
 
     // UI
     @IBOutlet weak var baseTableView: UITableView!
-    fileprivate var openCellIndexPath: IndexPath?
-    fileprivate var pickerViewType = PickerViewType.qos
+    private var openCellIndexPath: IndexPath?
+    private var pickerViewType = PickerViewType.qos
 
     // Data
     private var previousSubscriptionTopic: String?
@@ -55,7 +55,7 @@ class UartMqttSettingsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    fileprivate func headerTitleForSection(_ section: Int) -> String? {
+    private func headerTitleForSection(_ section: Int) -> String? {
         var key: String?
         switch SettingsSections(rawValue: section)! {
         case .status: key = "uart_mqtt_settings_group_status"
@@ -68,7 +68,7 @@ class UartMqttSettingsViewController: UIViewController {
         return (key==nil ? nil : LocalizationManager.shared.localizedString(key!).uppercased())
     }
 
-    fileprivate func subscriptionTopicChanged(_ newTopic: String?, qos: MqttManager.MqttQos) {
+    private func subscriptionTopicChanged(_ newTopic: String?, qos: MqttManager.MqttQos) {
         DLog("subscription changed from: \(previousSubscriptionTopic != nil ? previousSubscriptionTopic!:"") to: \(newTopic != nil ? newTopic!:"")")
 
         let mqttManager = MqttManager.shared
@@ -83,12 +83,12 @@ class UartMqttSettingsViewController: UIViewController {
     
     
     // MARK: - Cell Utils
-    fileprivate func tagFromIndexPath(_ indexPath: IndexPath, scale: Int) -> Int {
+    private func tagFromIndexPath(_ indexPath: IndexPath, scale: Int) -> Int {
         // To help identify each textfield a tag is added with this format: ab (a is the section, b is the row)
         return indexPath.section * scale + indexPath.row
     }
     
-    fileprivate func indexPathFromTag(_ tag: Int, scale: Int) -> IndexPath {
+    private func indexPathFromTag(_ tag: Int, scale: Int) -> IndexPath {
         // To help identify each textfield a tag is added with this format: 12 (1 is the section, 2 is the row)
         return IndexPath(row: tag % scale, section: tag / scale)
     }
@@ -282,7 +282,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         displayInlineDatePickerForRowAtIndexPath(selectedIndexPath)
     }
 
-    fileprivate func displayInlineDatePickerForRowAtIndexPath(_ indexPath: IndexPath) {
+    private func displayInlineDatePickerForRowAtIndexPath(_ indexPath: IndexPath) {
         // display the date picker inline with the table content
         baseTableView.beginUpdates()
 
@@ -316,7 +316,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         //updateOpenCell()
     }
 
-    fileprivate func toggleDatePickerForSelectedIndexPath(_ indexPath: IndexPath) {
+    private func toggleDatePickerForSelectedIndexPath(_ indexPath: IndexPath) {
 
         baseTableView.beginUpdates()
         let indexPaths = [IndexPath(row:indexPath.row + 1, section:indexPath.section)]
@@ -333,7 +333,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         baseTableView.endUpdates()
     }
 
-    fileprivate func hasPickerForIndexPath(_ indexPath: IndexPath) -> Bool {
+    private func hasPickerForIndexPath(_ indexPath: IndexPath) -> Bool {
         var hasPicker = false
 
         if baseTableView.cellForRow(at: IndexPath(row: indexPath.row+1, section: indexPath.section)) is MqttSettingPickerCell {
@@ -343,7 +343,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         return hasPicker
     }
 
-    fileprivate func titleForMqttManagerStatus(_ status: MqttManager.ConnectionStatus) -> String {
+    private func titleForMqttManagerStatus(_ status: MqttManager.ConnectionStatus) -> String {
         let statusText: String
         switch status {
         case .connected: statusText = "uart_mqtt_status_connected"
@@ -357,7 +357,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         return localizationManager.localizedString(statusText)
     }
 
-    fileprivate func titleForSubscribeBehaviour(_ behaviour: MqttSettings.SubscribeBehaviour) -> String {
+    private func titleForSubscribeBehaviour(_ behaviour: MqttSettings.SubscribeBehaviour) -> String {
         let textId: String
         switch behaviour {
         case .localOnly: textId = "uart_mqtt_subscription_localonly"
@@ -368,7 +368,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         return localizationManager.localizedString(textId)
     }
     
-    fileprivate func titleForQos(_ qos: MqttManager.MqttQos) -> String {
+    private func titleForQos(_ qos: MqttManager.MqttQos) -> String {
         let textId: String
         switch qos {
         case .atLeastOnce: textId = "uart_mqtt_qos_atleastonce"

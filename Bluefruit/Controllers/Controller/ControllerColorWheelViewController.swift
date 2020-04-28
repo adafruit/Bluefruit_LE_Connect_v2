@@ -29,7 +29,7 @@ class ControllerColorWheelViewController: UIViewController {
     // Data
     weak var delegate: ControllerColorWheelViewControllerDelegate?
 
-    fileprivate var selectedColorComponents: [UInt8]?
+    private var selectedColorComponents: [UInt8]?
     private var wheelView: ISColorWheel = ISColorWheel()
 
     override func viewDidLoad() {

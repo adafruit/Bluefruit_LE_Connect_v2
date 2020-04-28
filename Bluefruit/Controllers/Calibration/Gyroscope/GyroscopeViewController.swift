@@ -17,24 +17,24 @@ class GyroscopeViewController: CalibrationUartSamplerViewController {
     static let kNumReadingsToCheckForStable = 50
 
     // Debug
-    fileprivate static let kSimulateReads = Config.isDebugEnabled && false //false
-    fileprivate static let kSimulateReadsFileName = "gyro_test_1"
-    fileprivate static let kSimulateReadsInBulk = kSimulateReads && true
-    fileprivate var lines: [String]!
-    fileprivate var currentLine = 0
+    private static let kSimulateReads = Config.isDebugEnabled && false //false
+    private static let kSimulateReadsFileName = "gyro_test_1"
+    private static let kSimulateReadsInBulk = kSimulateReads && true
+    private var lines: [String]!
+    private var currentLine = 0
 
     // PageViewController
-    fileprivate static let kPageControllerIds = ["GyroscopeProgressViewController", "GyroscopePageDataViewController"]
+    private static let kPageControllerIds = ["GyroscopeProgressViewController", "GyroscopePageDataViewController"]
 
     // 3D Scene
     var axisNode: SCNNode!
     var currentOrientation = Vector4.zero
 
     // Data
-    fileprivate var calibration = Calibration()
-    fileprivate var gyroReadings = [Vector3]()
-    fileprivate var gyroReadingNextId = 0
-    fileprivate var gyroCorrectReadings = 0
+    private var calibration = Calibration()
+    private var gyroReadings = [Vector3]()
+    private var gyroReadingNextId = 0
+    private var gyroCorrectReadings = 0
 
     // MARK: - ViewController
     override func awakeFromNib() {
@@ -135,7 +135,7 @@ class GyroscopeViewController: CalibrationUartSamplerViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    fileprivate func reset() {
+    private func reset() {
         clearRxCache()
         calibration.reset()
         gyroReadingNextId = 0
@@ -177,7 +177,7 @@ class GyroscopeViewController: CalibrationUartSamplerViewController {
         }
     }
 
-    fileprivate func addReading(gyroX: Int16, gyroY: Int16, gyroZ: Int16) {
+    private func addReading(gyroX: Int16, gyroY: Int16, gyroZ: Int16) {
 
         // Add reading
         let x = Scalar(gyroX)
@@ -238,13 +238,13 @@ class GyroscopeViewController: CalibrationUartSamplerViewController {
         }
     }
 
-    fileprivate func mod(_ a: Int, _ n: Int) -> Int {
+    private func mod(_ a: Int, _ n: Int) -> Int {
         precondition(n > 0, "modulus must be positive")
         let r = a % n
         return r >= 0 ? r : r + n
     }
 
-    fileprivate func accumulatedGyroVector() -> Vector3 {
+    private func accumulatedGyroVector() -> Vector3 {
 
         var accum = Vector3.zero
 

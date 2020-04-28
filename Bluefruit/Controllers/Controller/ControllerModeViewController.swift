@@ -11,16 +11,16 @@ import UIKit
 class ControllerModeViewController: PeripheralModeViewController {
 
     // Constants
-    fileprivate static let kPollInterval = 0.25
+    private static let kPollInterval = 0.25
 
     // UI
     @IBOutlet weak var baseTableView: UITableView!
     @IBOutlet weak var uartWaitingLabel: UILabel!
 
     // Data
-    fileprivate var controllerData: ControllerModuleManager!
-    fileprivate var contentItems = [Int]()
-    fileprivate weak var controllerPadViewController: ControllerPadViewController?
+    private var controllerData: ControllerModuleManager!
+    private var contentItems = [Int]()
+    private weak var controllerPadViewController: ControllerPadViewController?
 
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -84,14 +84,14 @@ class ControllerModeViewController: PeripheralModeViewController {
     }
 
     // MARK: - UI
-    fileprivate func updateUartUI(isReady: Bool) {
+    private func updateUartUI(isReady: Bool) {
         // Setup UI
         uartWaitingLabel.isHidden = isReady
         baseTableView.isHidden = !isReady
     }
 
-    fileprivate let kDetailItemOffset = 100
-    fileprivate func updateContentItemsFromSensorsEnabled() {
+    private let kDetailItemOffset = 100
+    private func updateContentItemsFromSensorsEnabled() {
         // Add to contentItems the current rows (ControllerType.rawValue for each sensor and kDetailItemOffset+ControllerType.rawValue for a detail cell)
         
         let availableControllers: [ControllerModuleManager.ControllerType]
@@ -167,7 +167,7 @@ class ControllerModeViewController: PeripheralModeViewController {
     }
 
     // MARK: - Send Data
-    fileprivate func sendColor(_ color: UIColor) {
+    private func sendColor(_ color: UIColor) {
         let brightness: CGFloat = 1
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0
         color.getRed(&red, green: &green, blue: &blue, alpha: nil)
@@ -180,7 +180,7 @@ class ControllerModeViewController: PeripheralModeViewController {
         sendColorComponents(selectedColorComponents)
     }
 
-    fileprivate func sendColorComponents(_ selectedColorComponents: [UInt8]) {
+    private func sendColorComponents(_ selectedColorComponents: [UInt8]) {
         var data = Data()
         let prefixData = ControllerColorWheelViewController.prefix.data(using: String.Encoding.utf8)!
         data.append(prefixData)
@@ -215,8 +215,8 @@ extension ControllerModeViewController: ControllerPadViewControllerDelegate {
 
 // MARK: - UITableViewDataSource
 extension ControllerModeViewController : UITableViewDataSource {
-    fileprivate static let kSensorTitleKeys: [String] = ["controller_sensor_quaternion", "controller_sensor_accelerometer", "controller_sensor_gyro", "controller_sensor_magnetometer", "controller_sensor_location"]
-    fileprivate static let kModuleTitleKeys: [String] = ["controller_module_pad", "controller_module_colorpicker"]
+    private static let kSensorTitleKeys: [String] = ["controller_sensor_quaternion", "controller_sensor_accelerometer", "controller_sensor_gyro", "controller_sensor_magnetometer", "controller_sensor_location"]
+    private static let kModuleTitleKeys: [String] = ["controller_module_pad", "controller_module_colorpicker"]
     
     enum ControllerSection: Int {
         case sensorData = 0

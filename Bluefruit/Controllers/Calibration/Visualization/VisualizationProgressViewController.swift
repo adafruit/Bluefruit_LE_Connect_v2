@@ -49,7 +49,7 @@ class VisualizationProgressViewController: PageContentViewController {
         }
     }
 
-    fileprivate func flipViews() {
+    private func flipViews() {
         let isFrontVisible = !dataView.isHidden
 
         if let frontView = isFrontVisible ? dataView : parametersView, let backView = isFrontVisible ? parametersView : dataView {

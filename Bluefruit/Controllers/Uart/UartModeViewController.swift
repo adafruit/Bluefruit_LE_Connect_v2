@@ -14,8 +14,8 @@ class UartModeViewController: UartBaseViewController {
     @IBOutlet weak var sendPeripheralButton: UIButton!
     
     // Data
-    fileprivate var colorForPeripheral = [UUID: UIColor]()
-    fileprivate var multiUartSendToPeripheralId: UUID?       // nil = all peripherals
+    private var colorForPeripheral = [UUID: UIColor]()
+    private var multiUartSendToPeripheralId: UUID?       // nil = all peripherals
 
     // MARK: - View Lifecycle
     override func viewDidLoad() {

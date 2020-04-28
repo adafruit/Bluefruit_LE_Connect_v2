@@ -13,11 +13,11 @@ import UIColor_Hex
 
 class UartBaseViewController: PeripheralModeViewController {
     // Config
-    fileprivate static var dataRxFont = UIFont(name: "CourierNewPSMT", size: 14)!
-    fileprivate static var dataTxFont = UIFont(name: "CourierNewPS-BoldMT", size: 14)!
+    private static var dataRxFont = UIFont(name: "CourierNewPSMT", size: 14)!
+    private static var dataTxFont = UIFont(name: "CourierNewPS-BoldMT", size: 14)!
     
     // Export
-    fileprivate static let kExportFormats: [ExportFormat] = [.txt, .csv, .json/*, .xml*/, .bin]
+    private static let kExportFormats: [ExportFormat] = [.txt, .csv, .json/*, .xml*/, .bin]
     
     // UI
     @IBOutlet weak var baseTableView: UITableView!
@@ -30,8 +30,8 @@ class UartBaseViewController: PeripheralModeViewController {
     @IBOutlet weak var sendInputButton: UIButton!
     @IBOutlet weak var keyboardSpacerHeightConstraint: NSLayoutConstraint!
     
-    fileprivate var mqttBarButtonItem: UIBarButtonItem!
-    fileprivate var mqttBarButtonItemImageView: UIImageView?
+    private var mqttBarButtonItem: UIBarButtonItem!
+    private var mqttBarButtonItemImageView: UIImageView?
     @IBOutlet weak var moreOptionsNavigationItem: UIBarButtonItem!
     @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet weak var controlsView: UIView!
@@ -58,9 +58,9 @@ class UartBaseViewController: PeripheralModeViewController {
     }
     
     internal var uartData: UartPacketManagerBase!
-    fileprivate let timestampDateFormatter = DateFormatter()
-    fileprivate var tableCachedDataBuffer: [UartPacket]?
-    fileprivate var textCachedBuffer = NSMutableAttributedString()
+    private let timestampDateFormatter = DateFormatter()
+    private var tableCachedDataBuffer: [UartPacket]?
+    private var textCachedBuffer = NSMutableAttributedString()
     
     private let keyboardPositionNotifier = KeyboardPositionNotifier()
     
@@ -269,14 +269,14 @@ class UartBaseViewController: PeripheralModeViewController {
         updateBytesUI()
     }
     
-    fileprivate func reloadControlsUI() {
+    private func reloadControlsUI() {
         showEolSwitch.isOn = Preferences.uartIsAutomaticEolEnabled
         addEolSwitch.isOn = Preferences.uartIsEchoEnabled
         displayModeSegmentedControl.selectedSegmentIndex = Preferences.uartIsDisplayModeTimestamp ? 0:1
         dataModeSegmentedControl.selectedSegmentIndex = Preferences.uartIsInHexMode ? 1:0
     }
     
-    fileprivate func updateBytesUI() {
+    private func updateBytesUI() {
         let localizationManager = LocalizationManager.shared
         let sentBytesMessage = String(format: localizationManager.localizedString("uart_sentbytes_format"), arguments: [uartData.sentBytes])
         let receivedBytesMessage = String(format: localizationManager.localizedString("uart_receivedbytes_format"), arguments: [uartData.receivedBytes])
@@ -478,7 +478,7 @@ class UartBaseViewController: PeripheralModeViewController {
         return .black
     }
     
-    fileprivate func fontForPacket(packet: UartPacket) -> UIFont {
+    private func fontForPacket(packet: UartPacket) -> UIFont {
         let font = packet.mode == .tx ? UartModeViewController.dataTxFont : UartModeViewController.dataRxFont
         return font
     }
@@ -576,7 +576,7 @@ extension UartBaseViewController: UartPacketManagerDelegate {
         }
     }
     
-    fileprivate func onUartPacketText(_ packet: UartPacket) {
+    private func onUartPacketText(_ packet: UartPacket) {
         guard Preferences.uartIsEchoEnabled || packet.mode == .rx else { return }
         
         let color = colorForPacket(packet: packet)

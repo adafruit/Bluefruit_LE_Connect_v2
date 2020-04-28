@@ -34,9 +34,9 @@ class DfuFilesPickerDialogViewController: UIViewController {
     // Data
     weak var delegate: DfuFilesPickerDialogViewControllerDelegate?
 
-    fileprivate var isPickingHexFile = false
-    fileprivate var hexFileUrl: URL?
-    fileprivate var iniFileUrl: URL?
+    private var isPickingHexFile = false
+    private var hexFileUrl: URL?
+    private var iniFileUrl: URL?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +71,7 @@ class DfuFilesPickerDialogViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    fileprivate func updateFileNames() {
+    private func updateFileNames() {
         let nofileString = LocalizationManager.shared.localizedString("dfu_pickfiles_file_empty")
         hexFileUrlLabel.text = hexFileUrl != nil ? hexFileUrl!.lastPathComponent: nofileString
         iniFileUrlLabel.text = iniFileUrl != nil ? iniFileUrl!.lastPathComponent: nofileString

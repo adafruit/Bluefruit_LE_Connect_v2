@@ -10,7 +10,7 @@ import UIKit
 
 class StyledConnectButton: IntrinsicSizeWithInsetsButton {
 
-    fileprivate let borderView = UIView()
+    private let borderView = UIView()
 
     override func awakeFromNib() {
         super.awakeFromNib()

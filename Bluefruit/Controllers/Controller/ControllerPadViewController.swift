@@ -65,7 +65,7 @@ class ControllerPadViewController: UIViewController {
     }
 
     // MARK: - UI
-    fileprivate func setupButton(_ button: UIButton) {
+    private func setupButton(_ button: UIButton) {
         button.layer.cornerRadius = 8
         button.layer.masksToBounds = true
         button.layer.borderWidth = 1

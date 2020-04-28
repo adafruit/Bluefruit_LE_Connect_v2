@@ -33,18 +33,18 @@ class InfoModeViewController: PeripheralModeViewController {
         case hex = 2
     }
     private let refreshControl = UIRefreshControl()
-    fileprivate var services: [CBService]?
-    fileprivate var itemDisplayMode = [String: DisplayMode]()
+    private var services: [CBService]?
+    private var itemDisplayMode = [String: DisplayMode]()
 
     private var shouldDiscoverCharacteristics = Preferences.infoIsRefreshOnLoadEnabled
 
     private var isDiscoveringServices = false
-    fileprivate var elementsToDiscover = 0
-    fileprivate var elementsDiscovered = 0
-    fileprivate var valuesToRead = 0
-    fileprivate var valuesRead = 0
+    private var elementsToDiscover = 0
+    private var elementsDiscovered = 0
+    private var valuesToRead = 0
+    private var valuesRead = 0
 
-    fileprivate var isFirstRun = true
+    private var isFirstRun = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -333,7 +333,7 @@ extension InfoModeViewController: UITableViewDataSource {
         return identifier
     }
 
-    fileprivate func itemForIndexPath(_ indexPath: IndexPath) -> (Int, CBAttribute?, Bool) {
+    private func itemForIndexPath(_ indexPath: IndexPath) -> (Int, CBAttribute?, Bool) {
         let service = services![indexPath.section]
 
         // The same table view section is used for characteristics and descriptors. So first calculate if the current indexPath.row is for a characteristic or descriptor
@@ -449,7 +449,7 @@ extension InfoModeViewController: UITableViewDataSource {
         return cell
     }
 
-    fileprivate func isStringPrintable(_ text: String) -> Bool {
+    private func isStringPrintable(_ text: String) -> Bool {
         let printableCharacterSet = NSCharacterSet.alphanumerics
         let isPrintable  = text.rangeOfCharacter(from: printableCharacterSet) != nil
         return isPrintable

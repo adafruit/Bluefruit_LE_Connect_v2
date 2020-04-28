@@ -35,11 +35,11 @@ class NeopixelColorPickerViewController: UIViewController {
     var initialWComponent: Float?
 
     // Data
-    fileprivate var selectedColorComponents: [UInt8]?
+    private var selectedColorComponents: [UInt8]?
     private var wheelView: ISColorWheel = ISColorWheel()
 
-    fileprivate var selectedColor = UIColor.white
-    fileprivate var selectedWComponent: Float = 0
+    private var selectedColor = UIColor.white
+    private var selectedWComponent: Float = 0
     weak var delegate: NeopixelColorPickerViewControllerDelegate?
 
     override func viewDidLoad() {

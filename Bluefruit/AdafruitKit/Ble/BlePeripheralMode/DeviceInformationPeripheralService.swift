@@ -23,12 +23,12 @@ class DeviceInformationPeripheralService: PeripheralService {
     private static let kFirmwareRevisionCharacteristicUUID = CBUUID(string: "2A26")
     private static let kSoftwareRevisionCharacteristicUUID = CBUUID(string: "2A28")
     
-    fileprivate let manufacturerNameCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kManufacturerNameCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
-    fileprivate let modelNumberCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kModelNumberCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
-    fileprivate let serialNumberCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kSerialNumberCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
-    fileprivate let hardwareNumberCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kHardwareNumberCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
-    fileprivate let firmwareRevisionCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kFirmwareRevisionCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
-    fileprivate let softwareRevisionCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kSoftwareRevisionCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
+    private let manufacturerNameCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kManufacturerNameCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
+    private let modelNumberCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kModelNumberCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
+    private let serialNumberCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kSerialNumberCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
+    private let hardwareNumberCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kHardwareNumberCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
+    private let firmwareRevisionCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kFirmwareRevisionCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
+    private let softwareRevisionCharacteristic = CBMutableCharacteristic(type: DeviceInformationPeripheralService.kSoftwareRevisionCharacteristicUUID, properties: [.read], value: nil, permissions: [.readable])
     
     var manufacturer: String? {
         get {

@@ -18,8 +18,8 @@ class UartSettingsViewController: UIViewController {
     var onClickExport: (() -> Void)?
 
     // Data
-    fileprivate var openCellIndexPath: IndexPath?
-    fileprivate var titlesForEolCharacters: [String] {
+    private var openCellIndexPath: IndexPath?
+    private var titlesForEolCharacters: [String] {
         return ["\\n", "\\r", "\\n\\r", "\\r\\n"]
     }
 
@@ -42,12 +42,12 @@ class UartSettingsViewController: UIViewController {
     }
     
     // MARK: - Cell Utils
-    fileprivate func tagFromIndexPath(_ indexPath: IndexPath, scale: Int) -> Int {
+    private func tagFromIndexPath(_ indexPath: IndexPath, scale: Int) -> Int {
         // To help identify each textfield a tag is added with this format: ab (a is the section, b is the row)
         return indexPath.section * scale + indexPath.row
     }
     
-    fileprivate func indexPathFromTag(_ tag: Int, scale: Int) -> IndexPath {
+    private func indexPathFromTag(_ tag: Int, scale: Int) -> IndexPath {
         // To help identify each textfield a tag is added with this format: 12 (1 is the section, 2 is the row)
         return IndexPath(row: tag % scale, section: tag / scale)
     }
@@ -57,7 +57,7 @@ class UartSettingsViewController: UIViewController {
 // MARK: - UITableViewDataSource
 extension UartSettingsViewController: UITableViewDataSource {
 
-    fileprivate enum SettingsSection: Int {
+    private enum SettingsSection: Int {
         case displayMode = 0
         case dataMode = 1
         case echo = 2
@@ -65,7 +65,7 @@ extension UartSettingsViewController: UITableViewDataSource {
         case eolCharacters = 4
     }
 
-    fileprivate enum ActionsSetion: Int {
+    private enum ActionsSetion: Int {
         case clear = 0
         case export = 1
     }
@@ -224,7 +224,7 @@ extension UartSettingsViewController: UITableViewDataSource {
         displayInlineDatePickerForRowAtIndexPath(selectedIndexPath)
     }
     
-    fileprivate func displayInlineDatePickerForRowAtIndexPath(_ indexPath: IndexPath) {
+    private func displayInlineDatePickerForRowAtIndexPath(_ indexPath: IndexPath) {
         // display the date picker inline with the table content
         baseTableView.beginUpdates()
         
@@ -258,7 +258,7 @@ extension UartSettingsViewController: UITableViewDataSource {
         //updateOpenCell()
     }
     
-    fileprivate func toggleDatePickerForSelectedIndexPath(_ indexPath: IndexPath) {
+    private func toggleDatePickerForSelectedIndexPath(_ indexPath: IndexPath) {
         
         baseTableView.beginUpdates()
         let indexPaths = [IndexPath(row:indexPath.row + 1, section:indexPath.section)]
@@ -275,7 +275,7 @@ extension UartSettingsViewController: UITableViewDataSource {
         baseTableView.endUpdates()
     }
     
-    fileprivate func hasPickerForIndexPath(_ indexPath: IndexPath) -> Bool {
+    private func hasPickerForIndexPath(_ indexPath: IndexPath) -> Bool {
         var hasPicker = false
         
         if baseTableView.cellForRow(at: IndexPath(row: indexPath.row+1, section: indexPath.section)) is MqttSettingPickerCell {

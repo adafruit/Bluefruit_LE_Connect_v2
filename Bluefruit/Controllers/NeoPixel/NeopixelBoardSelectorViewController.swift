@@ -11,7 +11,7 @@ import UIKit
 class NeopixelBoardSelectorViewController: UIViewController {
 
     // Data
-    fileprivate var boards: [[String: AnyObject]]?
+    private var boards: [[String: AnyObject]]?
 
     var onClickStandardBoard: ((Int) -> Void)?
     var onClickCustomLineStrip : (() -> Void)?

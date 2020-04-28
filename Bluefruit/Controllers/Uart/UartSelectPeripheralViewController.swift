@@ -17,7 +17,7 @@ class UartSelectPeripheralViewController: UIViewController {
     weak var delegate: UartSelectPeripheralViewControllerDelegate?
     var colorForPeripheral: [UUID: Color]?
 
-    fileprivate var connectedPeripherals = [BlePeripheral]()
+    private var connectedPeripherals = [BlePeripheral]()
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -74,9 +74,9 @@ class PinIOModuleManager: NSObject {
     }
 
     // Data
-    fileprivate var uartStatus = UartStatus.inputOutput
+    private var uartStatus = UartStatus.inputOutput
     private var queryCapabilitiesTimer: MSWeakTimer?
-    fileprivate var uartManager: UartDataManager!
+    private var uartManager: UartDataManager!
     private var blePeripheral: BlePeripheral
 
     var pins = [PinData]()
@@ -151,7 +151,7 @@ class PinIOModuleManager: NSObject {
         queryCapabilitiesTimer = MSWeakTimer.scheduledTimer(withTimeInterval: PinIOModuleManager.CAPABILITY_QUERY_TIMEOUT, target: self, selector: #selector(cancelQueryCapabilities), userInfo: nil, repeats: false, dispatchQueue: .main)
     }
 
-    fileprivate func receivedQueryCapabilities(data: Data) {
+    private func receivedQueryCapabilities(data: Data) {
         // Read received packet
         var dataBytes = [UInt8](repeating: 0, count: data.count)
         data.copyBytes(to: &dataBytes, count: data.count)
@@ -166,7 +166,7 @@ class PinIOModuleManager: NSObject {
         }
     }
 
-    fileprivate func cancelQueryCapabilitiesTimer() {
+    private func cancelQueryCapabilitiesTimer() {
         queryCapabilitiesTimer?.invalidate()
         queryCapabilitiesTimer = nil
     }
@@ -187,7 +187,7 @@ class PinIOModuleManager: NSObject {
         uartManager.send(blePeripheral: blePeripheral, data: data)
     }
 
-    fileprivate func receivedAnalogMapping(data: Data) {
+    private func receivedAnalogMapping(data: Data) {
         cancelQueryCapabilitiesTimer()
 
         // Read received packet
@@ -487,7 +487,7 @@ class PinIOModuleManager: NSObject {
 
     private var receivedPinStateDataBuffer = [UInt8]()
 
-    fileprivate func receivedPinState(data: Data) {
+    private func receivedPinState(data: Data) {
 
         // Append received bytes to buffer
         var receivedDataBytes = [UInt8](repeating: 0, count: data.count)

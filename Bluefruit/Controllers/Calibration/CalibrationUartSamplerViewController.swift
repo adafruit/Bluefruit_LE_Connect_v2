@@ -13,17 +13,17 @@ import VectorMath
 class CalibrationUartSamplerViewController: CalibrationUartViewController {
     // Config
     static let kUseUpdateTimer = true
-    fileprivate static let kPreferredFramesPerSecond: Int = 20 //0       // Default hardware value
+    private static let kPreferredFramesPerSecond: Int = 20 //0       // Default hardware value
 
     // Main UI
     @IBOutlet weak var sceneView: SCNView!
     @IBOutlet weak var detailsView: UIView!
-    fileprivate let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+    private let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
     @IBOutlet weak var pageLeftButton: UIButton!
     @IBOutlet weak var pageRightButton: UIButton!
 
     // 3D Scene
-    fileprivate var displayLink: CADisplayLink?
+    private var displayLink: CADisplayLink?
 
     // PageViewController
     var pageViewControllerIds = [String]()
@@ -43,7 +43,7 @@ class CalibrationUartSamplerViewController: CalibrationUartViewController {
     var updateEventSource: DispatchSourceUserDataOr?
 
     // Data
-    fileprivate var uartManager: UartDataManager! // = UartDataManager(delegate: self)
+    private var uartManager: UartDataManager! // = UartDataManager(delegate: self)
 
     var isCalibrating = false {
         didSet {

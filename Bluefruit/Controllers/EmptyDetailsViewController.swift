@@ -14,10 +14,10 @@ class EmptyDetailsViewController: PeripheralModeViewController {
     @IBOutlet weak var emptyLabel: UILabel!
 
     // Data
-    fileprivate var isConnnecting = false
-    fileprivate var isAnimating = false
+    private var isConnnecting = false
+    private var isAnimating = false
 
-    fileprivate var scanningAnimationVieWController: ScanningAnimationViewController?
+    private var scanningAnimationVieWController: ScanningAnimationViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()

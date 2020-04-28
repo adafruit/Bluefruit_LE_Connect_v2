@@ -14,16 +14,16 @@ class DfuModeViewController: PeripheralModeViewController {
     @IBOutlet weak var firmwareTableView: UITableView!
 
     // Data
-    fileprivate let firmwareUpdater = FirmwareUpdater()
-    fileprivate let dfuUpdateProcess = DfuUpdateProcess()
-    fileprivate var progressViewController: ProgressViewController!
+    private let firmwareUpdater = FirmwareUpdater()
+    private let dfuUpdateProcess = DfuUpdateProcess()
+    private var progressViewController: ProgressViewController!
 
-    fileprivate var boardRelease: BoardInfo?
-    fileprivate var deviceDfuInfo: DeviceDfuInfo?
-    fileprivate var allReleases: [String: BoardInfo]?
+    private var boardRelease: BoardInfo?
+    private var deviceDfuInfo: DeviceDfuInfo?
+    private var allReleases: [String: BoardInfo]?
 
-    fileprivate var isCheckingUpdates = false
-    fileprivate var isFirsRun = true
+    private var isCheckingUpdates = false
+    private var isFirsRun = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,7 +102,7 @@ class DfuModeViewController: PeripheralModeViewController {
     }
 
     // MARK: - DFU update
-    fileprivate func confirmDfuUpdateWithFirmware(_ firmwareInfo: FirmwareInfo) {
+    private func confirmDfuUpdateWithFirmware(_ firmwareInfo: FirmwareInfo) {
         guard let dis = deviceDfuInfo, let firmwareBootloaderVersion = firmwareInfo.minBootloaderVersion else {
             DLog("Error: Not ready to update")
             return
@@ -199,7 +199,7 @@ extension DfuModeViewController: FirmwareUpdaterDelegate {
         onUpdateProcessError(errorMessage: LocalizationManager.shared.localizedString("dfu_dfunotavailable"), infoMessage: nil)
     }
 
-    fileprivate func onUpdateDialogError(_ errorMessage: String) {
+    private func onUpdateDialogError(_ errorMessage: String) {
         guard presentedViewController == nil else { return }
 
         let localizationManager = LocalizationManager.shared
@@ -428,7 +428,7 @@ extension DfuModeViewController: DfuUpdateProcessDelegate {
         self.present(alertController, animated: true, completion: nil)
     }
 
-    fileprivate func restoreCentralManager() {
+    private func restoreCentralManager() {
         DLog("Restoring Central Manager from DFU")
         BleManager.shared.restoreCentralManager()
 

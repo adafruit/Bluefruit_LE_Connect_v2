@@ -29,7 +29,7 @@ class DfuUpdateProcess: NSObject {
     // Parameters
     weak var delegate: DfuUpdateProcessDelegate?
 
-    fileprivate var dfuController: DFUServiceController?
+    private var dfuController: DFUServiceController?
 
     func startUpdateForPeripheral(peripheral: CBPeripheral, hexUrl: URL, iniUrl: URL?) {
 

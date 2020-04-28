@@ -11,8 +11,8 @@ import UIKit
 class GattServerViewController: ModeTabViewController {
 
     // Data
-    fileprivate let gattServer = GattServer()
-    fileprivate var peripheralServices = [PeripheralService]()
+    private let gattServer = GattServer()
+    private var peripheralServices = [PeripheralService]()
 
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -64,7 +64,7 @@ class GattServerViewController: ModeTabViewController {
     }
     
     // MARK: - Detail View Controllers
-    fileprivate func showDisDetail(with peripheralService: DeviceInformationPeripheralService) {
+    private func showDisDetail(with peripheralService: DeviceInformationPeripheralService) {
         detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "DeviceInformationServiceNavigationController")
         if let detailRootController = detailRootController as? UINavigationController, let deviceInfomationServiceViewController = detailRootController.topViewController as? DeviceInformationServiceViewController {
             deviceInfomationServiceViewController.disPeripheralService = peripheralService
@@ -72,7 +72,7 @@ class GattServerViewController: ModeTabViewController {
         }
     }
     
-    fileprivate func showUartDetail(with peripheralService: UartPeripheralService) {
+    private func showUartDetail(with peripheralService: UartPeripheralService) {
         detailRootController = self.storyboard?.instantiateViewController(withIdentifier: "UartServiceNavigationController")
         if let detailRootController = detailRootController as? UINavigationController, let uartServiceViewController = detailRootController.topViewController as? UartServiceViewController {
             uartServiceViewController.uartPeripheralService = peripheralService

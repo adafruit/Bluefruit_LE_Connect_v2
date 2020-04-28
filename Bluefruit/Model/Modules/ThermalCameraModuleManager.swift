@@ -23,14 +23,14 @@ class ThermalCameraModuleManager: NSObject {
     weak var delegate: ThermalCameraModuleManagerDelegate?
     
     // Data
-    fileprivate var blePeripheral: BlePeripheral
-    fileprivate let uartManager: UartDataManager
+    private var blePeripheral: BlePeripheral
+    private let uartManager: UartDataManager
     
-    fileprivate var textCachedBuffer: String = ""
-    fileprivate var textCachedBufferLock = NSLock()
+    private var textCachedBuffer: String = ""
+    private var textCachedBufferLock = NSLock()
     
-    fileprivate var minTemperature = Double.greatestFiniteMagnitude
-    fileprivate var maxTemperature = -Double.greatestFiniteMagnitude
+    private var minTemperature = Double.greatestFiniteMagnitude
+    private var maxTemperature = -Double.greatestFiniteMagnitude
     
 
     // MARK: -
@@ -80,7 +80,7 @@ class ThermalCameraModuleManager: NSObject {
     }
     
     // MARK: - Uart Data Cache
-    fileprivate func uartTextBuffer() -> String {
+    private func uartTextBuffer() -> String {
         return textCachedBuffer
     }
 
@@ -91,7 +91,7 @@ class ThermalCameraModuleManager: NSObject {
     }*/
     
     // MARK: - Process
-    fileprivate func processBuffer(adding dataString: String) {
+    private func processBuffer(adding dataString: String) {
         textCachedBufferLock.lock(); defer { textCachedBufferLock.unlock() }
         
         textCachedBuffer.append(dataString)

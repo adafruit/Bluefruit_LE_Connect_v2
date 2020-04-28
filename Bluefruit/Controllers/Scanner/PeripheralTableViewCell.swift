@@ -34,7 +34,7 @@ class PeripheralTableViewCell: UITableViewCell {
     var onDisconnect: (() -> Void)?
 
     // Data
-    fileprivate var cachedExtendedViewPeripheralId: UUID?
+    private var cachedExtendedViewPeripheralId: UUID?
 
     // MARK: - View Lifecycle
     override func awakeFromNib() {

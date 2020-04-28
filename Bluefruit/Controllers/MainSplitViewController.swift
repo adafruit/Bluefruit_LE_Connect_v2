@@ -38,7 +38,7 @@ class MainSplitViewController: UISplitViewController {
 
 
     // MARK: - Notifications
-    fileprivate func didDisconnectFromPeripheral(notification: Notification) {
+    private func didDisconnectFromPeripheral(notification: Notification) {
         //DLog("main: disconnection")
 
         // Show disconnected alert (if no previous alert is shown)

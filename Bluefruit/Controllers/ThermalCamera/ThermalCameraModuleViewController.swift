@@ -25,7 +25,7 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
     @IBOutlet weak var magnificationSegmentedControl: UISegmentedControl!
     
     // Data
-    fileprivate var thermalCameraData: ThermalCameraModuleManager!
+    private var thermalCameraData: ThermalCameraModuleManager!
 
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -94,7 +94,7 @@ class ThermalCameraModuleViewController: PeripheralModeViewController {
     }
 
     // MARK: - UI
-    fileprivate func updateThermalUI(isReady: Bool) {
+    private func updateThermalUI(isReady: Bool) {
         uartWaitingLabel.isHidden = isReady
     }
     

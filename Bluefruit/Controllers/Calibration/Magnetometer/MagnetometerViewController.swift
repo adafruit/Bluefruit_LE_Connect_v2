@@ -13,21 +13,21 @@ import VectorMath
 class MagnetometerViewController: CalibrationUartSamplerViewController {
 
     // Debug
-    fileprivate static let kSimulateReads =  Config.isDebugEnabled && false // true
-    fileprivate static let kSimulateReadsFileName = "mag_test_1"
-    fileprivate static let kSimulateReadsInBulk = kSimulateReads && false
+    private static let kSimulateReads =  Config.isDebugEnabled && false // true
+    private static let kSimulateReadsFileName = "mag_test_1"
+    private static let kSimulateReadsInBulk = kSimulateReads && false
 
-    fileprivate var lines: [String]!
-    fileprivate var currentLine = 0
+    private var lines: [String]!
+    private var currentLine = 0
 
     // PageViewController
-    fileprivate static let kPageControllerIds = ["MagnetometerProgress2ViewController", //"MagnetometerPageOverviewViewController", 
+    private static let kPageControllerIds = ["MagnetometerProgress2ViewController", //"MagnetometerPageOverviewViewController", 
         "MagnetometerPageMatrixViewController"]
 
     // Data
-    fileprivate var calibration = Calibration()
-    fileprivate var spherePointsNode: SCNNode!
-    fileprivate var lastPointNode: SCNNode!
+    private var calibration = Calibration()
+    private var spherePointsNode: SCNNode!
+    private var lastPointNode: SCNNode!
 
     // MARK: - ViewController
     override func awakeFromNib() {

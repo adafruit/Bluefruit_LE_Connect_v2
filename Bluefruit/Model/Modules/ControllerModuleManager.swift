@@ -59,21 +59,21 @@ class ControllerModuleManager: NSObject {
     }
 
     // Data
-    fileprivate var isSensorEnabled = [Bool](repeating: false, count: ControllerType.allCases.count)
+    private var isSensorEnabled = [Bool](repeating: false, count: ControllerType.allCases.count)
 
     #if os(OSX)
     #else
     private let coreMotionManager = CMMotionManager()
     #endif
     private let locationManager = CLLocationManager()
-    fileprivate var lastKnownLocation: CLLocation?
+    private var lastKnownLocation: CLLocation?
 
-    fileprivate var blePeripheral: BlePeripheral
+    private var blePeripheral: BlePeripheral
     private var pollTimer: MSWeakTimer?
     private var timerHandler: (() -> Void)?
 
-    fileprivate let uartManager: UartDataManager
-    fileprivate var textCachedBuffer: String = ""
+    private let uartManager: UartDataManager
+    private var textCachedBuffer: String = ""
 
     private var pollInterval: TimeInterval = 1        // in seconds
 

@@ -56,7 +56,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     }
 
     // MARK: - Actions
-    fileprivate func updatedHostedAppForegroundStatus(isActive: Bool) {
+    private func updatedHostedAppForegroundStatus(isActive: Bool) {
         DLog("isActive: \(isActive)")
 
         if isActive && currentMode == WatchSessionManager.Mode.inactive {
@@ -69,7 +69,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         }
     }
 
-    fileprivate func updateMode(_ mode: WatchSessionManager.Mode) {
+    private func updateMode(_ mode: WatchSessionManager.Mode) {
         if currentMode != mode {
             WKInterfaceController.reloadRootControllers(withNames: [mode.rawValue], contexts: nil)
             currentMode = mode

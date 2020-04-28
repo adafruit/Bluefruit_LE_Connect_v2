@@ -11,7 +11,7 @@ import MSWeakTimer
 
 class PeripheralModulesViewController: UIViewController {
     // Config
-    fileprivate static let kRssiRefreshInterval: TimeInterval = 0.3
+    private static let kRssiRefreshInterval: TimeInterval = 0.3
     
     // UI
     @IBOutlet weak var baseTableView: UITableView!
@@ -40,11 +40,11 @@ class PeripheralModulesViewController: UIViewController {
     }
 
     private var emptyViewController: EmptyDetailsViewController?
-    fileprivate var hasUart = false
-    fileprivate var hasDfu = false
-    fileprivate var rssiRefreshTimer: MSWeakTimer?
+    private var hasUart = false
+    private var hasDfu = false
+    private var rssiRefreshTimer: MSWeakTimer?
     
-    fileprivate var batteryLevel: Int?
+    private var batteryLevel: Int?
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -145,7 +145,7 @@ class PeripheralModulesViewController: UIViewController {
         }
     }
 
-    fileprivate func willConnectToPeripheral(notification: Notification) {
+    private func willConnectToPeripheral(notification: Notification) {
         guard let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, identifier == blePeripheral?.identifier else { return }
         
         if isInMultiUartMode() {
@@ -155,7 +155,7 @@ class PeripheralModulesViewController: UIViewController {
         }
     }
 
-    fileprivate func willDisconnectFromPeripheral(notification: Notification) {
+    private func willDisconnectFromPeripheral(notification: Notification) {
         guard let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, identifier == blePeripheral?.identifier else { return }
 
         DLog("detail: peripheral willDisconnect")
@@ -173,7 +173,7 @@ class PeripheralModulesViewController: UIViewController {
         }
     }
     
-    fileprivate func peripheralDidUpdateRssi(notification: Notification) {
+    private func peripheralDidUpdateRssi(notification: Notification) {
         guard let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, identifier == blePeripheral?.identifier else { return }
 
         // Update section
@@ -193,7 +193,7 @@ class PeripheralModulesViewController: UIViewController {
     }
 
     // MARK: - MultiUart Mode
-    fileprivate func isInMultiUartMode() -> Bool {
+    private func isInMultiUartMode() -> Bool {
         return blePeripheral == nil && BleManager.shared.connectedPeripherals().count > 0
     }
     
@@ -241,7 +241,7 @@ class PeripheralModulesViewController: UIViewController {
         }
     }
 
-    fileprivate func setupBatteryUI(blePeripheral: BlePeripheral) {
+    private func setupBatteryUI(blePeripheral: BlePeripheral) {
         guard blePeripheral.hasBattery() else { return }
 
         blePeripheral.startReadingBatteryLevel(handler: { [weak self] batteryLevel in
@@ -256,14 +256,14 @@ class PeripheralModulesViewController: UIViewController {
         })
     }
     
-    fileprivate func stopBatterUI(blePeripheral: BlePeripheral) {
+    private func stopBatterUI(blePeripheral: BlePeripheral) {
         guard blePeripheral.hasBattery() else { return }
 
         blePeripheral.stopReadingBatteryLevel()
     }
 
 
-    fileprivate func showDfu() {
+    private func showDfu() {
         if let dfuViewController = self.storyboard!.instantiateViewController(withIdentifier: "DfuModeViewController") as? DfuModeViewController {
             dfuViewController.blePeripheral = blePeripheral
 

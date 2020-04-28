@@ -10,12 +10,12 @@ import Foundation
 
 class LocalizationManager {
     // Config
-    static fileprivate let kDebugShowDummyCharacters = false
+    static private let kDebugShowDummyCharacters = false
 
     //
     static let shared = LocalizationManager()
 
-    fileprivate var localizationBundle: Bundle?
+    private var localizationBundle: Bundle?
 
     var languageCode: String {
         didSet {
@@ -28,7 +28,7 @@ class LocalizationManager {
         updateBundle()      // needed because didSet is not invoked from initializer
     }
 
-    fileprivate func updateBundle() {
+    private func updateBundle() {
         localizationBundle = nil
 
         if let path = Bundle.main.path(forResource: languageCode, ofType: "lproj") {

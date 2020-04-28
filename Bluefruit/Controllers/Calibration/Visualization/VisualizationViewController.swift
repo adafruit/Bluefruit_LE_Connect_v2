@@ -12,25 +12,25 @@ import VectorMath
 
 class VisualizationViewController: CalibrationUartSamplerViewController {
     // Config
-    fileprivate static let kIsQuatSpeedDebugEnabled = true
+    private static let kIsQuatSpeedDebugEnabled = true
 
     // UI
     @IBOutlet weak var dataReveivedSpeedLabel: UILabel!
 
     // PageViewController
-    fileprivate static let kPageControllerIds = ["VisualizationProgressViewController"]
+    private static let kPageControllerIds = ["VisualizationProgressViewController"]
 
     // 3D Scene
-    fileprivate var currentOrientation = Quaternion.identity
-    fileprivate var geometry: SCNNode?
-    fileprivate var model: SCNNode?
+    private var currentOrientation = Quaternion.identity
+    private var geometry: SCNNode?
+    private var model: SCNNode?
 
-    fileprivate var originOffset = Quaternion.identity
+    private var originOffset = Quaternion.identity
 
     // Debug
-    fileprivate var numQuatsReceived = 0
-    fileprivate var quatReceivedStartingTime: TimeInterval = 0
-    fileprivate var lastQuatPerSecondValue: Double?
+    private var numQuatsReceived = 0
+    private var quatReceivedStartingTime: TimeInterval = 0
+    private var lastQuatPerSecondValue: Double?
 
     // MARK: - ViewController
     override func awakeFromNib() {
@@ -70,7 +70,7 @@ class VisualizationViewController: CalibrationUartSamplerViewController {
         return pageContentViewController
     }
 
-    fileprivate func reset() {
+    private func reset() {
         clearRxCache()
     }
 
@@ -148,7 +148,7 @@ class VisualizationViewController: CalibrationUartSamplerViewController {
     }
 
     //var angle: Float = 0
-    fileprivate func updateScene() {
+    private func updateScene() {
         guard isCalibrating else {
             return
         }
@@ -156,7 +156,7 @@ class VisualizationViewController: CalibrationUartSamplerViewController {
         geometry?.orientation = SCNQuaternion(currentOrientation * originOffset)
     }
 
-    fileprivate func updateAxisInverted() {
+    private func updateAxisInverted() {
         model?.scale = SCNVector3(Preferences.visualizationXAxisFlipped ? -1:1, Preferences.visualizationYAxisFlipped ? -1:1, Preferences.visualizationZAxisFlipped ? -1:1)
 
         DLog("scale: \(geometry!.scale.x), \(geometry!.scale.y), \(geometry!.scale.z)")

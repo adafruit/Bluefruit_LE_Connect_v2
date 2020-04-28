@@ -19,8 +19,8 @@ class Calibration {
     static let kWobbleTarget: Scalar = 4
     static let kFitErrorTarget: Scalar = 5
 
-    fileprivate static let kOversampleRatio = 4
-    fileprivate static let kSensorFs = 100
+    private static let kOversampleRatio = 4
+    private static let kSensorFs = 100
 
     // Data
     struct AccelSensor {

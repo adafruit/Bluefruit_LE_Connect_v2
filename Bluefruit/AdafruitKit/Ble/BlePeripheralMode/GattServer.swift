@@ -23,11 +23,11 @@ class GattServer: NSObject {
         }
     }
     
-    fileprivate var isStartAdvertisingAsSoonIsPoweredOnEnabled = false
-    fileprivate var peripheralManager: CBPeripheralManager!
-    fileprivate var isAdvertisingService = false
+    private var isStartAdvertisingAsSoonIsPoweredOnEnabled = false
+    private var peripheralManager: CBPeripheralManager!
+    private var isAdvertisingService = false
     
-    fileprivate var peripheralServices = [PeripheralService]()
+    private var peripheralServices = [PeripheralService]()
 
     /*
     public var state: CBManagerState {
@@ -115,7 +115,7 @@ class GattServer: NSObject {
     }
     
     // MARK: - Request Processing
-    fileprivate func processReadRequest(_ request: CBATTRequest, value: Data?) {
+    private func processReadRequest(_ request: CBATTRequest, value: Data?) {
         
         guard let value = value else {
             request.value = nil
@@ -142,7 +142,7 @@ class GattServer: NSObject {
         DLog("read response: \(String(data: value, encoding: .utf8) ?? "<not utf8>")")
     }
     
-    fileprivate func processWriteRequest(_ request: CBATTRequest, peripheralService: PeripheralService) {
+    private func processWriteRequest(_ request: CBATTRequest, peripheralService: PeripheralService) {
         guard let newValue = request.value, let characteristic = peripheralService.characteristic(uuid: request.characteristic.uuid) else { return }
 
         var value = characteristic.value

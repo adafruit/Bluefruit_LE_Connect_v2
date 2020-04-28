@@ -16,7 +16,7 @@ protocol ImageTransferModuleManagerDelegate: class {
 
 class ImageTransferModuleManager: NSObject {
     // Constants
-    fileprivate static let kSketchVersion = "ImageTransfer v1."
+    private static let kSketchVersion = "ImageTransfer v1."
 
      // Data structs
     enum ImageTransferError: LocalizedError {
@@ -34,8 +34,8 @@ class ImageTransferModuleManager: NSObject {
     }
 
     // Data
-    fileprivate var blePeripheral: BlePeripheral
-    fileprivate var uartManager: UartPacketManager!
+    private var blePeripheral: BlePeripheral
+    private var uartManager: UartPacketManager!
 
     // Params
     weak var delegate: ImageTransferModuleManagerDelegate?

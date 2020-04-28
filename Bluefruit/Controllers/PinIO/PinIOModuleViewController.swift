@@ -10,11 +10,11 @@ import UIKit
 
 class PinIOModeViewController: PeripheralModeViewController {
 
-    fileprivate var pinIO: PinIOModuleManager!
+    private var pinIO: PinIOModuleManager!
 
     // UI
     @IBOutlet weak var baseTableView: UITableView!
-    fileprivate var tableRowOpen: Int?
+    private var tableRowOpen: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()

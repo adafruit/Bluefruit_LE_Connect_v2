@@ -44,8 +44,8 @@ protocol FirmwareUpdaterDelegate: class {       // TODO: remove delegate and add
 
 class FirmwareUpdater {
     // Config
-    fileprivate static let kManufacturer = "Adafruit Industries"
-    fileprivate static let kReleasesXml = "updatemanager_releasesxml"
+    private static let kManufacturer = "Adafruit Industries"
+    private static let kReleasesXml = "updatemanager_releasesxml"
 
     // Constants
     static let kNordicDeviceFirmwareUpdateService = "00001530-1212-EFDE-1523-785FEABCD123"
