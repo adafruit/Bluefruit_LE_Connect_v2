@@ -13,6 +13,7 @@ import UIColor_Hex
 
 class UartBaseViewController: PeripheralModeViewController {
     // Config
+    private static var isConversionFromSmartQuotesToAsciiEnabled = true
     private static var dataRxFont = UIFont(name: "CourierNewPSMT", size: 14)!
     private static var dataTxFont = UIFont(name: "CourierNewPS-BoldMT", size: 14)!
     
@@ -310,6 +311,14 @@ class UartBaseViewController: PeripheralModeViewController {
         //guard let blePeripheral = blePeripheral else { return }
         
         var newText = inputTextField.text ?? ""
+        
+        // Convert smart-quotes to ASCII quotes
+        if UartBaseViewController.isConversionFromSmartQuotesToAsciiEnabled {
+            newText = newText.replacingOccurrences(of: "\u{2018}", with: "'")
+            newText = newText.replacingOccurrences(of: "\u{2019}", with: "'")
+            newText = newText.replacingOccurrences(of: "\u{201C}", with: "\"")
+            newText = newText.replacingOccurrences(of: "\u{201D}", with: "\"")
+        }
         
         // Eol
         if Preferences.uartIsAutomaticEolEnabled {
