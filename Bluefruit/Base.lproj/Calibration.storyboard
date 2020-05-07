@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Magnetometer-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MagnetometerViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MagnetometerViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -30,7 +30,7 @@
                                 <rect key="frame" x="0.0" y="417" width="375" height="230"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tCf-Tn-1rW">
-                                        <rect key="frame" x="-20" y="60" width="84" height="70"/>
+                                        <rect key="frame" x="-20" y="72" width="60" height="46"/>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                         <inset key="contentEdgeInsets" minX="18" minY="11" maxX="18" maxY="11"/>
                                         <state key="normal" image="ic_chevron_left">
@@ -41,7 +41,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aSY-k8-QiJ">
-                                        <rect key="frame" x="311" y="60" width="84" height="70"/>
+                                        <rect key="frame" x="335" y="72" width="60" height="46"/>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                         <inset key="contentEdgeInsets" minX="18" minY="11" maxX="18" maxY="11"/>
                                         <state key="normal" image="ic_chevron_right">
@@ -92,7 +92,7 @@
         <!--Gyroscope-->
         <scene sceneID="wau-H0-ftQ">
             <objects>
-                <viewController id="dFn-t5-44y" customClass="GyroscopeViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="dFn-t5-44y" customClass="GyroscopeViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9vB-Dh-LsP"/>
                         <viewControllerLayoutGuide type="bottom" id="xF2-eL-YIW"/>
@@ -112,7 +112,7 @@
                                 <rect key="frame" x="0.0" y="437" width="375" height="210"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Enj-cX-ri4">
-                                        <rect key="frame" x="-20" y="50" width="84" height="70"/>
+                                        <rect key="frame" x="-20" y="62" width="60" height="46"/>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                         <inset key="contentEdgeInsets" minX="18" minY="11" maxX="18" maxY="11"/>
                                         <state key="normal" image="ic_chevron_left">
@@ -123,7 +123,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jd8-ZZ-SCz">
-                                        <rect key="frame" x="311" y="50" width="84" height="70"/>
+                                        <rect key="frame" x="335" y="62" width="60" height="46"/>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                         <inset key="contentEdgeInsets" minX="18" minY="11" maxX="18" maxY="11"/>
                                         <state key="normal" image="ic_chevron_right">
@@ -174,7 +174,7 @@
         <!--3D Visualization-->
         <scene sceneID="Zcm-DX-WgI">
             <objects>
-                <viewController storyboardIdentifier="VisualizationViewController" id="t9N-Kw-iyd" customClass="VisualizationViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VisualizationViewController" id="t9N-Kw-iyd" customClass="VisualizationViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="giU-3m-R6O"/>
                         <viewControllerLayoutGuide type="bottom" id="Oqs-b7-e61"/>
@@ -235,7 +235,7 @@
         <!--Magnetometer Progress View Controller-->
         <scene sceneID="z7z-4d-nSl">
             <objects>
-                <viewController storyboardIdentifier="MagnetometerProgress2ViewController" id="Z4d-nG-eP6" customClass="MagnetometerProgressViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MagnetometerProgress2ViewController" id="Z4d-nG-eP6" customClass="MagnetometerProgressViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ev6-M3-TTv"/>
                         <viewControllerLayoutGuide type="bottom" id="M2e-NF-2IC"/>
@@ -427,7 +427,7 @@
                                             </view>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7EZ-Kh-fFH" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7EZ-Kh-fFH" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                         <rect key="frame" x="126.5" y="140" width="90" height="38"/>
                                         <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                         <state key="normal" title="Restart"/>
@@ -499,7 +499,7 @@
         <!--Gyroscope Progress View Controller-->
         <scene sceneID="qX2-72-7cA">
             <objects>
-                <viewController storyboardIdentifier="GyroscopeProgressViewController" id="zYJ-Jq-1Kw" customClass="GyroscopeProgressViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GyroscopeProgressViewController" id="zYJ-Jq-1Kw" customClass="GyroscopeProgressViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sA3-cZ-f1j"/>
                         <viewControllerLayoutGuide type="bottom" id="RxT-w9-YxZ"/>
@@ -532,7 +532,7 @@
                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="sb9-RC-qbx">
                                         <rect key="frame" x="16" y="39" width="311" height="2"/>
                                     </progressView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jNn-EJ-yTm" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jNn-EJ-yTm" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                         <rect key="frame" x="126.5" y="120" width="90" height="38"/>
                                         <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                         <state key="normal" title="Restart"/>
@@ -605,7 +605,7 @@
         <!--Visualization Progress View Controller-->
         <scene sceneID="b5K-qG-FZ5">
             <objects>
-                <viewController storyboardIdentifier="VisualizationProgressViewController" id="baz-Ys-oTf" customClass="VisualizationProgressViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VisualizationProgressViewController" id="baz-Ys-oTf" customClass="VisualizationProgressViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="F1D-gL-kMs"/>
                         <viewControllerLayoutGuide type="bottom" id="8cT-e5-K6G"/>
@@ -805,7 +805,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="J28-JS-lLs">
                                         <rect key="frame" x="44.5" y="154" width="254" height="38"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v5X-RI-XoA" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v5X-RI-XoA" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="109" height="38"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                                 <state key="normal" title="Set Origin"/>
@@ -813,7 +813,7 @@
                                                     <action selector="onClickSetOrigin:" destination="baz-Ys-oTf" eventType="touchUpInside" id="6uE-0Y-rKG"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B2S-3P-34o" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B2S-3P-34o" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="129" y="0.0" width="125" height="38"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                                 <state key="normal" title="Reset Origin"/>
@@ -885,7 +885,7 @@
         <!--Calibration-->
         <scene sceneID="U4U-0a-o03">
             <objects>
-                <viewController storyboardIdentifier="CalibrationMenuViewController" id="t6Z-sV-kAm" customClass="CalibrationMenuViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CalibrationMenuViewController" id="t6Z-sV-kAm" customClass="CalibrationMenuViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="O03-Ro-9Le"/>
                         <viewControllerLayoutGuide type="bottom" id="tMs-vb-QZz"/>
@@ -907,7 +907,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ZWq-1e-jun">
                                         <rect key="frame" x="47.5" y="10" width="280" height="166"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qVM-dI-hOq" customClass="StyledLinkedButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qVM-dI-hOq" customClass="StyledLinkedButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="280" height="42"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
@@ -920,7 +920,7 @@
                                                     <segue destination="BYZ-38-t0r" kind="show" id="g5H-YC-veD"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Qa-Zr-SVV" customClass="StyledLinkedButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Qa-Zr-SVV" customClass="StyledLinkedButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="62" width="280" height="42"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
@@ -932,7 +932,7 @@
                                                     <segue destination="dFn-t5-44y" kind="show" id="e7F-F1-L7Q"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Nd-F6-KsR" customClass="StyledLinkedButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Nd-F6-KsR" customClass="StyledLinkedButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="124" width="280" height="42"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
@@ -1023,7 +1023,7 @@
         <!--Sensor Selection-->
         <scene sceneID="wQO-jr-kn4">
             <objects>
-                <viewController id="fhH-J9-Ykc" customClass="SensorConfigViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="fhH-J9-Ykc" customClass="SensorConfigViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8IN-Qh-99i"/>
                         <viewControllerLayoutGuide type="bottom" id="gsV-uq-w1b"/>
@@ -1068,7 +1068,7 @@
         <!--Magnetometer Page Matrix View Controller-->
         <scene sceneID="Wkc-ey-zBH">
             <objects>
-                <viewController storyboardIdentifier="MagnetometerPageMatrixViewController" id="ZW0-9R-Cs2" customClass="MagnetometerPageMatrixViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MagnetometerPageMatrixViewController" id="ZW0-9R-Cs2" customClass="MagnetometerPageMatrixViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cHb-xq-8c3"/>
                         <viewControllerLayoutGuide type="bottom" id="qLd-ed-3Jo"/>
@@ -1248,7 +1248,7 @@
         <!--Gyroscope Page Data View Controller-->
         <scene sceneID="lMa-ts-YBi">
             <objects>
-                <viewController storyboardIdentifier="GyroscopePageDataViewController" id="wdz-43-SnN" customClass="GyroscopePageDataViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GyroscopePageDataViewController" id="wdz-43-SnN" customClass="GyroscopePageDataViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fYB-Oe-NKt"/>
                         <viewControllerLayoutGuide type="bottom" id="uu1-fF-GDb"/>
@@ -1322,7 +1322,7 @@
         <!--Magnetometer Parameters View Controller-->
         <scene sceneID="i45-Dc-xW9">
             <objects>
-                <viewController storyboardIdentifier="MagnetometerParametersViewController" id="5h2-pf-LqU" customClass="MagnetometerParametersViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MagnetometerParametersViewController" id="5h2-pf-LqU" customClass="MagnetometerParametersViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="e2R-LO-WM3"/>
                         <viewControllerLayoutGuide type="bottom" id="1zJ-sR-8Hj"/>
@@ -1337,7 +1337,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="pMq-N0-A7e">
                                         <rect key="frame" x="44" y="144" width="255" height="38"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fKg-bB-bxk" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fKg-bB-bxk" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="158" height="38"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                                 <state key="normal" title="Reset to Defaults"/>
@@ -1345,7 +1345,7 @@
                                                     <action selector="onClickSetDefaults:" destination="5h2-pf-LqU" eventType="touchUpInside" id="m49-la-KAj"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aIs-bq-xVf" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aIs-bq-xVf" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="178" y="0.0" width="77" height="38"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                                 <state key="normal" title="Done"/>
@@ -1510,7 +1510,7 @@
         <!--Gyroscope Parameters View Controller-->
         <scene sceneID="GNx-4K-vgo">
             <objects>
-                <viewController storyboardIdentifier="GyroscopeParametersViewController" id="F9u-iY-4sA" customClass="GyroscopeParametersViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GyroscopeParametersViewController" id="F9u-iY-4sA" customClass="GyroscopeParametersViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Xhk-xU-30h"/>
                         <viewControllerLayoutGuide type="bottom" id="zxg-Zg-Z0E"/>
@@ -1525,7 +1525,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="y4d-Dr-Wtf">
                                         <rect key="frame" x="44" y="124" width="255" height="38"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NlO-f4-VNW" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NlO-f4-VNW" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="158" height="38"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                                 <state key="normal" title="Reset to Defaults"/>
@@ -1533,7 +1533,7 @@
                                                     <action selector="onClickSetDefaults:" destination="F9u-iY-4sA" eventType="touchUpInside" id="qpd-Vq-nw5"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aNs-S8-6uY" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aNs-S8-6uY" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                                 <rect key="frame" x="178" y="0.0" width="77" height="38"/>
                                                 <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                                 <state key="normal" title="Done"/>
@@ -1640,7 +1640,7 @@
         <!--Visualization Parameters View Controller-->
         <scene sceneID="9m6-AP-S1Z">
             <objects>
-                <viewController storyboardIdentifier="VisualizationParametersViewController" id="FPP-9f-EL6" customClass="VisualizationParametersViewController" customModule="iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VisualizationParametersViewController" id="FPP-9f-EL6" customClass="VisualizationParametersViewController" customModule="Bluefruit_Connect" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XkE-Rg-zRt"/>
                         <viewControllerLayoutGuide type="bottom" id="nWb-Z5-Vtw"/>
@@ -1820,7 +1820,7 @@
                                             <constraint firstItem="Ewr-vY-rfc" firstAttribute="centerX" secondItem="LdW-pM-E7T" secondAttribute="centerX" id="AoL-sa-zac"/>
                                         </constraints>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SH1-n3-eO8" customClass="StyledButton" customModule="iOS" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SH1-n3-eO8" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
                                         <rect key="frame" x="133" y="164" width="77" height="38"/>
                                         <inset key="contentEdgeInsets" minX="20" minY="10" maxX="20" maxY="10"/>
                                         <state key="normal" title="Done"/>

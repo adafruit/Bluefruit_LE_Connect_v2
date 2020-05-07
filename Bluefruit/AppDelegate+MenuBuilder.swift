@@ -18,6 +18,7 @@ extension AppDelegate {
     // Remove unused menus
     builder.remove(menu: .file)
     builder.remove(menu: .format)
+    builder.remove(menu: .help)
   }
 }
 #endif
