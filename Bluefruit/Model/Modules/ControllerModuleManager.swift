@@ -16,7 +16,7 @@ import MSWeakTimer
     import CoreMotion
 #endif
 
-protocol ControllerModuleManagerDelegate: class {
+protocol ControllerModuleManagerDelegate: AnyObject {
     func onControllerUartIsReady(error: Error?)
     func onUarRX()
 }
@@ -162,7 +162,7 @@ class ControllerModuleManager: NSObject {
 
                     for value in sensorData {
                         var floatValue = Float(value)
-                        data.append(UnsafeBufferPointer(start: &floatValue, count: 1))
+                        withUnsafePointer(to: &floatValue) { data.append(UnsafeBufferPointer(start: $0, count: 1)) }
                     }
 
                     sendCrcData(data)

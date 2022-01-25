@@ -9,7 +9,7 @@
 import UIKit
 import VectorMath
 
-protocol VisualizationProgressViewControllerDelegate: class {
+protocol VisualizationProgressViewControllerDelegate: AnyObject {
     func onVisualizationParametersChanged()
     func onVisualizationOriginReset()
     func onVisualizationOriginSet()

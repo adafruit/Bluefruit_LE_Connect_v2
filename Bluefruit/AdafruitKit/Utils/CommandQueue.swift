@@ -70,7 +70,7 @@ class CommandQueue<Element> {
     func executeNext() {
         queueLock.lock()
         guard !queue.isEmpty else { queueLock.unlock(); return }
-       
+
         //DLog("queue remove finished: \(queue.first)")
         // Delete finished command and trigger next execution if needed
         queue.removeFirst()

@@ -196,21 +196,23 @@ extension GattServer: CBPeripheralManagerDelegate {
     public func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
         DLog("didSubscribeTo: \(characteristic.uuid.uuidString)")
         
-        let serviceUuid = characteristic.service.uuid
-        for peripheralService in peripheralServices {
-            if serviceUuid == peripheralService.service.uuid {
-                peripheralService.subscribe(characteristicUuid: characteristic.uuid, central: central)
+        if let serviceUuid = characteristic.service?.uuid {
+            for peripheralService in peripheralServices {
+                if serviceUuid == peripheralService.service.uuid {
+                    peripheralService.subscribe(characteristicUuid: characteristic.uuid, central: central)
+                }
             }
         }
     }
     
     public func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFrom characteristic: CBCharacteristic) {
         DLog("didUnsubscribeFrom: \(characteristic.uuid.uuidString)")
-   
-        let serviceUuid = characteristic.service.uuid
-        for peripheralService in peripheralServices {
-            if serviceUuid == peripheralService.service.uuid {
-                peripheralService.unsubscribe(characteristicUuid: characteristic.uuid, central: central)
+        
+        if let serviceUuid = characteristic.service?.uuid {
+            for peripheralService in peripheralServices {
+                if serviceUuid == peripheralService.service.uuid {
+                    peripheralService.unsubscribe(characteristicUuid: characteristic.uuid, central: central)
+                }
             }
         }
     }
@@ -220,12 +222,13 @@ extension GattServer: CBPeripheralManagerDelegate {
         DLog("didReceiveRead for characteristic: \(request.characteristic.uuid.uuidString)")
         
         var isCharacteristicValid = false
-        let serviceUuid = request.characteristic.service.uuid
-        if let peripheralService = peripheralServices.first(where: {$0.service.uuid == serviceUuid}) {
-            let characteristicUuid = request.characteristic.uuid
-            if let characteristic = peripheralService.characteristic(uuid: characteristicUuid) {
-                processReadRequest(request, value: characteristic.value)
-                isCharacteristicValid = true
+        if let serviceUuid = request.characteristic.service?.uuid {
+            if let peripheralService = peripheralServices.first(where: {$0.service.uuid == serviceUuid}) {
+                let characteristicUuid = request.characteristic.uuid
+                if let characteristic = peripheralService.characteristic(uuid: characteristicUuid) {
+                    processReadRequest(request, value: characteristic.value)
+                    isCharacteristicValid = true
+                }
             }
         }
         
@@ -249,13 +252,14 @@ extension GattServer: CBPeripheralManagerDelegate {
     
         // Check for pre-conditions (all requests MUST be valid)
         for request in requests {
-            let serviceUuid = request.characteristic.service.uuid
             
             var isCharacteristicValid = false
-            if let peripheralService = peripheralServices.first(where: {$0.service.uuid == serviceUuid}) {
-                let characteristicUuid = request.characteristic.uuid
-                if peripheralService.characteristic(uuid: characteristicUuid) != nil {
-                    isCharacteristicValid = true
+            if let serviceUuid = request.characteristic.service?.uuid {
+                if let peripheralService = peripheralServices.first(where: {$0.service.uuid == serviceUuid}) {
+                    let characteristicUuid = request.characteristic.uuid
+                    if peripheralService.characteristic(uuid: characteristicUuid) != nil {
+                        isCharacteristicValid = true
+                    }
                 }
             }
             /*
@@ -279,9 +283,10 @@ extension GattServer: CBPeripheralManagerDelegate {
         // Write
         for request in requests {
             DLog("didReceiveWrite for characteristic: \(request.characteristic.uuid.uuidString)")
-            let serviceUuid = request.characteristic.service.uuid
-            if let peripheralService = peripheralServices.first(where: {$0.service.uuid == serviceUuid}) {
-                processWriteRequest(request, peripheralService: peripheralService)
+            if let serviceUuid = request.characteristic.service?.uuid {
+                if let peripheralService = peripheralServices.first(where: {$0.service.uuid == serviceUuid}) {
+                    processWriteRequest(request, peripheralService: peripheralService)
+                }
             }
                 /*
             for peripheralService in peripheralServices {

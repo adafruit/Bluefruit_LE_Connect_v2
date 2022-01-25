@@ -41,7 +41,7 @@ internal class LegacyDFUExecutor : DFUExecutor, LegacyDFUPeripheralDelegate {
     internal var error      : (error: DFUError, message: String)?
     
     /// Retry counter for peripheral invalid state issue.
-    private let MaxRetryCount = 1
+    private let maxRetryCount = 1
     private var invalidStateRetryCount: Int
     
     // MARK: - Initialization
@@ -52,7 +52,7 @@ internal class LegacyDFUExecutor : DFUExecutor, LegacyDFUPeripheralDelegate {
         self.peripheral = LegacyDFUPeripheral(initiator, logger)
         self.firmware   = initiator.file!
         
-        self.invalidStateRetryCount = MaxRetryCount
+        self.invalidStateRetryCount = maxRetryCount
     }
     
     func start() {
@@ -66,7 +66,7 @@ internal class LegacyDFUExecutor : DFUExecutor, LegacyDFUPeripheralDelegate {
     func peripheralDidBecomeReady() {
         if firmware.initPacket == nil && peripheral.isInitPacketRequired() {
             error(.extendedInitPacketRequired, didOccurWithMessage:
-                "The init packet is required by the target device")
+                  "The init packet is required by the target device")
             return
         }
         delegate {
@@ -81,7 +81,9 @@ internal class LegacyDFUExecutor : DFUExecutor, LegacyDFUPeripheralDelegate {
             delegate {
                 $0.dfuStateDidChange(to: .enablingDfuMode)
             }
-            peripheral.jumpToBootloader()
+            peripheral.jumpToBootloader(
+                forceNewAddress: initiator.forceScanningForNewAddressInLegacyDfu
+            )
         } else {
             // The device is ready to proceed with DFU.
             peripheral.sendStartDfu(withFirmwareType: firmware.currentPartType,
@@ -99,7 +101,7 @@ internal class LegacyDFUExecutor : DFUExecutor, LegacyDFUPeripheralDelegate {
         } else {
             // Operation can not be continued.
             error(.remoteLegacyDFUNotSupported, didOccurWithMessage:
-                "Updating Softdevice or Bootloader is not supported")
+                  "Updating Softdevice or Bootloader is not supported")
         }
     }
 
@@ -138,7 +140,7 @@ internal class LegacyDFUExecutor : DFUExecutor, LegacyDFUPeripheralDelegate {
             peripheral.start()
         } else {
             error(.remoteLegacyDFUInvalidState, didOccurWithMessage:
-                "Peripheral is in an invalid state, please try to reset and start over again.")
+                  "Peripheral is in an invalid state, please try to reset and start over again.")
         }
     }
     
@@ -155,8 +157,9 @@ internal class LegacyDFUExecutor : DFUExecutor, LegacyDFUPeripheralDelegate {
         // received by the DFU target before sending a new Packet Receipt Notification.
         // After receiving status Success it will send the firmware.
         peripheral.sendFirmware(firmware,
-                                withPacketReceiptNotificationNumber: initiator.packetReceiptNotificationParameter,
-                                andReportProgressTo: initiator.progressDelegate,
-                                on: initiator.progressDelegateQueue)
+            withPacketReceiptNotificationNumber: initiator.packetReceiptNotificationParameter,
+            andReportProgressTo: initiator.progressDelegate,
+            on: initiator.progressDelegateQueue
+        )
     }
 }

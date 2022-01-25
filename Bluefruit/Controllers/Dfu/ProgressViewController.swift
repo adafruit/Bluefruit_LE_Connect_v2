@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ProgressViewControllerDelegate: class {
+protocol ProgressViewControllerDelegate: AnyObject {
     func onUpdateDialogCancel()
 }
 

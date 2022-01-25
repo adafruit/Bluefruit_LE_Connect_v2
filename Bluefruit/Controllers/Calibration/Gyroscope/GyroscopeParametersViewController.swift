@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol GyroscopeParametersViewControllerDelegate: class {
+protocol GyroscopeParametersViewControllerDelegate: AnyObject {
     func onParametersDone()
 }
 

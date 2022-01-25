@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol MagnetometerPageContentViewControllerDelegate: class {
+protocol MagnetometerPageContentViewControllerDelegate: AnyObject {
     func onMagnetometerRestart()
     func onMagnetometerParametersChanged()
 }

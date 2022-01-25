@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol UartSelectPeripheralViewControllerDelegate: class {
+protocol UartSelectPeripheralViewControllerDelegate: AnyObject {
     func onUartSendToChanged(uuid: UUID?, name: String)
 }
 

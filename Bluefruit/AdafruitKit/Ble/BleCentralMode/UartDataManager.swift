@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol UartDataManagerDelegate: class {
+protocol UartDataManagerDelegate: AnyObject {
     func onUartRx(data: Data, peripheralIdentifier: UUID)           // data contents depends on the isRxCacheEnabled flag
 }
 

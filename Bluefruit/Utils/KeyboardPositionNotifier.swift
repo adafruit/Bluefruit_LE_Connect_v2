@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol KeyboardPositionNotifierDelegate: class {
+protocol KeyboardPositionNotifierDelegate: AnyObject {
     func onKeyboardPositionChanged(keyboardFrame: CGRect, keyboardShown: Bool)
 }
 

@@ -9,7 +9,7 @@
 import UIKit
 //import iOS_color_wheel
 
-protocol NeopixelColorPickerViewControllerDelegate: class {
+protocol NeopixelColorPickerViewControllerDelegate: AnyObject {
     func onColorPickerChooseColor(colorPickerViewController: NeopixelColorPickerViewController, color: UIColor, wComponent: Float)
 }
 

@@ -61,12 +61,16 @@ internal typealias VersionCallback = (_ major: UInt8, _ minor: UInt8) -> Void
      - parameter report:  Method called on error of if version is not supported.
      */
     func readVersion(onSuccess success: VersionCallback?, onError report: ErrorCallback?) {
+        // Get the peripheral object.
+        let optService: CBService? = characteristic.service
+        guard let peripheral = optService?.peripheral else {
+            report?(.invalidInternalState, "Assert characteristic.service?.peripheral != nil failed")
+            return
+        }
+        
         // Save callbacks.
         self.success = success
         self.report = report
-        
-        // Get the peripheral object.
-        let peripheral = characteristic.service.peripheral
         
         // Set the peripheral delegate to self.
         peripheral.delegate = self
@@ -86,27 +90,28 @@ internal typealias VersionCallback = (_ major: UInt8, _ minor: UInt8) -> Void
             return
         }
 
-        if error != nil {
+        if let error = error {
             logger.e("Reading DFU Version characteristic failed")
-            logger.e(error!)
+            logger.e(error)
             report?(.readingVersionFailed, "Reading DFU Version characteristic failed")
-        } else {
-            let data = characteristic.value
-            logger.i("Read Response received from \(characteristic.uuid.uuidString), value\(data != nil && data!.count > 0 ? " (0x): " + data!.hexString : ": 0 bytes")")
-            
-            // Validate data length
-            if data == nil || data!.count != 2 {
-                logger.w("Invalid value: 2 bytes expected")
-                report?(.readingVersionFailed, "Unsupported DFU Version: \(data != nil && data!.count > 0 ? "0x" + data!.hexString : "no value")")
-                return
-            }
-            
-            // Read major and minor
-            let minor: UInt8 = data![0]
-            let major: UInt8 = data![1]
-            
-            logger.a("Version number read: \(major).\(minor)")
-            success?(major, minor)
+            return
         }
+        
+        let data = characteristic.value
+        logger.i("Read Response received from \(characteristic.uuid.uuidString), value\(data != nil && data!.count > 0 ? " (0x): " + data!.hexString : ": 0 bytes")")
+        
+        // Validate data length
+        if data?.count != 2 {
+            logger.w("Invalid value: 2 bytes expected")
+            report?(.readingVersionFailed, "Unsupported DFU Version: \(data != nil && data!.count > 0 ? "0x" + data!.hexString : "no value")")
+            return
+        }
+        
+        // Read major and minor
+        let minor: UInt8 = data![0]
+        let major: UInt8 = data![1]
+        
+        logger.a("Version number read: \(major).\(minor)")
+        success?(major, minor)
     }
 }

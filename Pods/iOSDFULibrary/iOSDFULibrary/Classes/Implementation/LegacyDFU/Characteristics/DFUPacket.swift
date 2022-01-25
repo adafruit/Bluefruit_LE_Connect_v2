@@ -63,16 +63,21 @@ internal class DFUPacket: DFUCharacteristic {
      Sends the firmware sizes in format [softdevice size, bootloader size, application size],
      where each size is a UInt32 number.
     
-     - parameter size: Sizes of firmware in the current part.
+     - parameter size:   Sizes of firmware in the current part.
+     - parameter report: Method called in case of an error.
      */
-    func sendFirmwareSize(_ size: DFUFirmwareSize) {
+    func sendFirmwareSize(_ size: DFUFirmwareSize, onError report: ErrorCallback?) {
         // Get the peripheral object
-        let peripheral = characteristic.service.peripheral
+        let optService: CBService? = characteristic.service
+        guard let peripheral = optService?.peripheral else {
+            report?(.invalidInternalState, "Assert characteristic.service?.peripheral != nil failed")
+            return
+        }
         
-        var data = Data(capacity: 12)
-        data += size.softdevice.littleEndian
-        data += size.bootloader.littleEndian
-        data += size.application.littleEndian
+        let data = Data()
+            + size.softdevice.littleEndian
+            + size.bootloader.littleEndian
+            + size.application.littleEndian
 
         let packetUUID = characteristic.uuid.uuidString
         
@@ -84,16 +89,20 @@ internal class DFUPacket: DFUCharacteristic {
     /**
      Sends the application firmware size in format [application size] (UInt32).
      
-     - parameter size: Sizes of firmware in the current part.
-                       Only the application size may be grater than 0.
+     - parameter size:   Sizes of firmware in the current part.
+                         Only the application size may be grater than 0.
+     - parameter report: Method called in case of an error.
      */
-    func sendFirmwareSize_v1(_ size: DFUFirmwareSize) {
+    func sendFirmwareSize_v1(_ size: DFUFirmwareSize, onError report: ErrorCallback?) {
         // Get the peripheral object.
-        let peripheral = characteristic.service.peripheral
+        let optService: CBService? = characteristic.service
+        guard let peripheral = optService?.peripheral else {
+            report?(.invalidInternalState, "Assert characteristic.service?.peripheral != nil failed")
+            return
+        }
         
-        var data = Data(capacity: 4)
-        data += size.application.littleEndian
-
+        let data = Data() + size.application.littleEndian
+        
         let packetUUID = characteristic.uuid.uuidString
 
         logger.v("Writing image size (\(size.application)b) to characteristic \(packetUUID)...")
@@ -104,11 +113,16 @@ internal class DFUPacket: DFUCharacteristic {
     /**
      Sends the whole content of the data object.
      
-     - parameter data: The data to be sent.
+     - parameter data:   The data to be sent.
+     - parameter report: Method called in case of an error.
      */
-    func sendInitPacket(_ data: Data) {
+    func sendInitPacket(_ data: Data, onError report: ErrorCallback?) {
         // Get the peripheral object.
-        let peripheral = characteristic.service.peripheral
+        let optService: CBService? = characteristic.service
+        guard let peripheral = optService?.peripheral else {
+            report?(.invalidInternalState, "Assert characteristic.service?.peripheral != nil failed")
+            return
+        }
         
         // Data may be sent in up-to-20-bytes packets.
         var offset: UInt32 = 0
@@ -140,11 +154,17 @@ internal class DFUPacket: DFUCharacteristic {
      - parameter firmware: The firmware to be sent.
      - parameter progress: An optional progress delegate.
      - parameter queue:    The queue to dispatch progress events on.
+     - parameter report:   Method called in case of an error.     
      */
     func sendNext(_ prnValue: UInt16, packetsOf firmware: DFUFirmware,
-                  andReportProgressTo progress: DFUProgressDelegate?, on queue: DispatchQueue) {
+                  andReportProgressTo progress: DFUProgressDelegate?, on queue: DispatchQueue,
+                  onError report: ErrorCallback?) {
         // Get the peripheral object.
-        let peripheral = characteristic.service.peripheral
+        let optService: CBService? = characteristic.service
+        guard let peripheral = optService?.peripheral else {
+            report?(.invalidInternalState, "Assert characteristic.service?.peripheral != nil failed")
+            return
+        }
         
         // Some super complicated computations...
         let bytesTotal   = UInt32(firmware.data.count)
@@ -167,14 +187,15 @@ internal class DFUPacket: DFUCharacteristic {
             lastTime = startTime
             
             // Notify progress delegate that upload has started (0%).
-            queue.async(execute: {
+            queue.async {
                 progress?.dfuProgressDidChange(
                     for:   firmware.currentPart,
                     outOf: firmware.parts,
                     to:    0,
                     currentSpeedBytesPerSecond: 0.0,
-                    avgSpeedBytesPerSecond:     0.0)
-            })
+                    avgSpeedBytesPerSecond:     0.0
+                )
+            }
         }
         
         while packetsToSendNow > 0 {
@@ -212,14 +233,15 @@ internal class DFUPacket: DFUCharacteristic {
                 lastTime = now
                 bytesSentSinceProgessNotification = bytesSent
                 
-                queue.async(execute: {
+                queue.async {
                     progress?.dfuProgressDidChange(
                         for:   firmware.currentPart,
                         outOf: firmware.parts,
                         to:    Int(currentProgress),
                         currentSpeedBytesPerSecond: currentSpeed,
-                        avgSpeedBytesPerSecond:     avgSpeed)
-                })
+                        avgSpeedBytesPerSecond:     avgSpeed
+                    )
+                }
                 progressReported = currentProgress
             }
         }

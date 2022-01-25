@@ -14,7 +14,7 @@ import CoreBluetooth
     import iOSDFULibrary
 #endif
 
-protocol DfuUpdateProcessDelegate: class {
+protocol DfuUpdateProcessDelegate: AnyObject {
     func onUpdateProcessSuccess()
     func onUpdateProcessError(errorMessage: String, infoMessage: String?)
     func onUpdateProgressText(_ message: String)

@@ -58,7 +58,14 @@ internal class SecureDFUPacket: DFUCharacteristic {
         self.logger = logger
         
         if #available(iOS 9.0, macOS 10.12, *) {
-            packetSize = UInt32(characteristic.service.peripheral.maximumWriteValueLength(for: .withoutResponse))
+            let optService: CBService? = characteristic.service
+            guard let peripheral = optService?.peripheral else {
+                packetSize = 20 // Default MTU is 23.
+                return
+            }
+            
+            // Make the packet size the first word-aligned value that's less than the maximum.
+            packetSize = UInt32(peripheral.maximumWriteValueLength(for: .withoutResponse)) & 0xFFFFFFFC
             if packetSize > 20 {
                 // MTU is 3 bytes larger than payload
                 // (1 octet for Op-Code and 2 octets for Att Handle).
@@ -74,11 +81,16 @@ internal class SecureDFUPacket: DFUCharacteristic {
     /**
      Sends the whole content of the data object.
      
-     - parameter data: The data to be sent.
+     - parameter data:   The data to be sent.
+     - parameter report: Method called in case of an error.
      */
-    func sendInitPacket(_ data: Data) {
+    func sendInitPacket(_ data: Data, onError report: ErrorCallback?) {
         // Get the peripheral object.
-        let peripheral = characteristic.service.peripheral
+        let optService: CBService? = characteristic.service
+        guard let peripheral = optService?.peripheral else {
+            report?(.invalidInternalState, "Assert characteristic.service?.peripheral != nil failed")
+            return
+        }
         
         // Data may be sent in up-to-20-bytes packets.
         var offset: UInt32 = 0
@@ -109,11 +121,18 @@ internal class SecureDFUPacket: DFUCharacteristic {
        - progress: An optional progress delegate.
        - queue:    The queue to dispatch progress events on.
        - complete: The completon callback.
+       - report:   Method called in case of an error.       
      */
     func sendNext(_ prnValue: UInt16, packetsFrom range: Range<Int>, of firmware: DFUFirmware,
                   andReportProgressTo progress: DFUProgressDelegate?, on queue: DispatchQueue,
-                  andCompletionTo complete: @escaping Callback) {
-        let peripheral          = characteristic.service.peripheral
+                  andCompletionTo complete: @escaping Callback,
+                  onError report: ErrorCallback?) {
+        let optService: CBService? = characteristic.service
+        guard let peripheral = optService?.peripheral else {
+            report?(.invalidInternalState, "Assert characteristic.service?.peripheral != nil failed")
+            return
+        }
+        
         let objectData          = firmware.data.subdata(in: range)
         let objectSizeInBytes   = UInt32(objectData.count)
         let objectSizeInPackets = (objectSizeInBytes + packetSize - 1) / packetSize
@@ -142,14 +161,15 @@ internal class SecureDFUPacket: DFUCharacteristic {
             totalBytesSentSinceProgessNotification = totalBytesSentWhenDfuStarted
             
             // Notify progress delegate that upload has started (0%).
-            queue.async(execute: {
+            queue.async {
                 progress?.dfuProgressDidChange(
                     for:   firmware.currentPart,
                     outOf: firmware.parts,
                     to:    0,
                     currentSpeedBytesPerSecond: 0.0,
-                    avgSpeedBytesPerSecond:     0.0)
-            })
+                    avgSpeedBytesPerSecond:     0.0
+                )
+            }
         }
         
         let originalPacketsToSendNow = packetsToSendNow
@@ -188,14 +208,15 @@ internal class SecureDFUPacket: DFUCharacteristic {
                 totalBytesSentSinceProgessNotification = totalBytesSent
                 
                 // Notify progress delegate of overall progress.
-                queue.async(execute: {
+                queue.async {
                     progress?.dfuProgressDidChange(
                         for:   firmware.currentPart,
                         outOf: firmware.parts,
                         to:    Int(currentProgress),
                         currentSpeedBytesPerSecond: currentSpeed,
-                        avgSpeedBytesPerSecond:     avgSpeed)
-                })
+                        avgSpeedBytesPerSecond:     avgSpeed
+                    )
+                }
                 progressReported = currentProgress
             }
             

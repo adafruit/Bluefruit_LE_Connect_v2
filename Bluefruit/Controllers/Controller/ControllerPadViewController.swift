@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ControllerPadViewControllerDelegate: class {
+protocol ControllerPadViewControllerDelegate: AnyObject {
     func onSendControllerPadButtonStatus(tag: Int, isPressed: Bool)
 }
 

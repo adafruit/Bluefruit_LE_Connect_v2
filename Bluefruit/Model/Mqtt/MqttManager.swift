@@ -9,7 +9,7 @@
 import Foundation
 import CocoaMQTT
 
-protocol MqttManagerDelegate: class {
+protocol MqttManagerDelegate: AnyObject {
     func onMqttConnected()
     func onMqttDisconnected()
     func onMqttMessageReceived(message: String, topic: String)

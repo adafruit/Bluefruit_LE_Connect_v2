@@ -698,6 +698,10 @@ extension ScannerViewController: UITableViewDataSource {
         let peripheralCell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! PeripheralTableViewCell
 
         // Note: not using willDisplayCell to avoid problems with self-sizing cells
+        let peripherals = peripheralList.filteredPeripherals(forceUpdate: false)
+        guard indexPath.row < peripherals.count else {
+            return peripheralCell
+        }
         let peripheral = peripheralList.filteredPeripherals(forceUpdate: false)[indexPath.row]
 
         // Fill data

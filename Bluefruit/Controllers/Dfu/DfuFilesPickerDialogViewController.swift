@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol DfuFilesPickerDialogViewControllerDelegate: class {
+protocol DfuFilesPickerDialogViewControllerDelegate: AnyObject {
     func onFilesPickerCancel()
     func onFilesPickerStartUpdate(hexUrl: URL?, iniUrl: URL?)
 }

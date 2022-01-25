@@ -10,7 +10,7 @@ import Foundation
 import CoreBluetooth
 
 
-protocol PeripheralServiceDelegate: class {
+protocol PeripheralServiceDelegate: AnyObject {
     func updateValue(_ value: Data, for characteristic: CBMutableCharacteristic, onSubscribedCentrals: [CBCentral]?)
 }
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ImagePickerCroppingAreaViewControllerDelegate: class {
+protocol ImagePickerCroppingAreaViewControllerDelegate: AnyObject {
     func imagePickerCroppingFinished(image: UIImage?)
 }
 

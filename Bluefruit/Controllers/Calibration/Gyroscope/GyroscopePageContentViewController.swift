@@ -9,7 +9,7 @@
 import UIKit
 import VectorMath
 
-protocol GyroscopePageContentViewControllerDelegate: class {
+protocol GyroscopePageContentViewControllerDelegate: AnyObject {
     func onGyroscopeRestart()
     func onGyroscopeParametersChanged()
 }

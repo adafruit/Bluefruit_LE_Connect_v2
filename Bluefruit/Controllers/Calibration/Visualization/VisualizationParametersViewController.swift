@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol VisualizationParametersViewControllerDelegate: class {
+protocol VisualizationParametersViewControllerDelegate: AnyObject {
     func onVisualizationParametersChanged()
     func onParametersDone()
 }

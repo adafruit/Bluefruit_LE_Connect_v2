@@ -12,7 +12,7 @@
 import Foundation
 import MSWeakTimer
 
-protocol PinIOModuleManagerDelegate: class {
+protocol PinIOModuleManagerDelegate: AnyObject {
     func onPinIODidEndPinQuery(isDefaultConfigurationAssumed: Bool)
     func onPinIODidReceivePinState()
 }

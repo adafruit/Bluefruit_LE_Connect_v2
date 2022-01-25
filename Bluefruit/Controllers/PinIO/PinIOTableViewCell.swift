@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol PinIoTableViewCellDelegate: class {
+protocol PinIoTableViewCellDelegate: AnyObject {
     func onPinToggleCell(pinIndex: Int)
     func onPinModeChanged(_ mode: PinIOModuleManager.PinData.Mode, pinIndex: Int)
     func onPinDigitalValueChanged(_ value: PinIOModuleManager.PinData.DigitalValue, pinIndex: Int)

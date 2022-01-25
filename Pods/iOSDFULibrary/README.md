@@ -9,18 +9,18 @@
 
 - Create/Update your **Podfile** with the following contents
 
-    ```
-    target 'YourAppTargetName' do
-        use_frameworks!
-        pod 'iOSDFULibrary'
-    end
-    ```
+```ruby
+target 'YourAppTargetName' do
+    use_frameworks!
+    pod 'iOSDFULibrary'
+end
+```
 
 - Install dependencies
 
-    ```
-    pod install
-    ```
+```ruby
+pod install
+```
 
 - Open the newly created `.xcworkspace`
 
@@ -31,15 +31,15 @@
 
 - Create a new **Cartfile** in your project's root with the following contents
 
-    ```
-    github "NordicSemiconductor/IOS-Pods-DFU-Library" ~> x.y //Replace x.y with your required version
-    ```
+```ogld
+github "NordicSemiconductor/IOS-DFU-Library" ~> x.y //Replace x.y with your required version
+```
 
 - Build with carthage
 
-    ```
-    carthage update --platform iOS //also OSX platform is available for macOS builds
-    ```
+```sh
+carthage update --platform iOS //also OSX platform is available for macOS builds
+```
 
 - Carthage will build the **iOSDFULibrary.framework** and **ZipFramework.framework** files in **Carthage/Build/**, 
 you may now copy all those files to your project and use the library, additionally, carthade also builds **\*.dsym** files 
@@ -48,15 +48,15 @@ if you need to resymbolicate crash logs. you may want to keep those files bundle
 **For Swift Package Manager:**
 
 ```swift
-// swift-tools-version:5.1
+// swift-tools-version:5.5
 import PackageDescription
 
 let package = Package(
   name: "<Your Product Name>",
   dependencies: [
     .package(
-      url: "https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library/", 
-      .upToNextMajor(from: "4.6.1")
+      url: "https://github.com/NordicSemiconductor/IOS-DFU-Library", 
+      .upToNextMajor(from: "<Desired Version, e.g. 4.11.1>")
     )
   ],
   targets: [.target(name: "<Your Target Name>", dependencies: ["NordicDFU"])]
@@ -147,9 +147,9 @@ The library is compatible with nRF51 and nRF52 devices with S-Series Soft Device
 * **SDK 12.0.0** - New Secure DFU has been released. This library is fully backwards compatible so supports both the new and legacy DFU.
 * **SDK 13.0.0** - Buttonless DFU (still experimental) uses different UUIDs. No bond sharing supported. Bootloader will use address +1.
 * **SDK 14.0.0** - Buttonless DFU no longer experimental. New buttonless characteristic added for bonded devices (requires bond, cache cleaning relies on Service Changed indication).
-* **SDK 15.0.0** - Support for higher MTUs will be added.
+* **SDK 15.0.0** - Support for higher MTUs added.
 
-This library is fully backwards compatible and supports both the new and legacy DFU. The experimental buttonless DFU service from SDK 12 is supported since version 1.1.0. Due to the fact, that this experimental service from SDK 12 is not safe, you have to call [dfuInitiator.enableUnsafeExperimentalButtonlessServiceInSecureDfu = true](https://github.com/NordicSemiconductor/IOS-Pods-DFU-Library/blob/master/iOSDFULibrary/Classes/Implementation/DFUServiceInitiator.swift#L196) to enable it, this is off by default. Read the method documentation for details. It is recommended to use the Buttonless service from SDK 13 (for non-bonded devices, or 14 for bonded). Both are supported since DFU Library 1.3.0.
+This library is fully backwards compatible and supports both the new and legacy DFU. The experimental buttonless DFU service from SDK 12 is supported since version 1.1.0. Due to the fact, that this experimental service from SDK 12 is not safe, you have to set [enableUnsafeExperimentalButtonlessServiceInSecureDfu](https://github.com/NordicSemiconductor/IOS-DFU-Library/blob/master/iOSDFULibrary/Classes/Implementation/DFUServiceInitiator.swift#L296) to true to enable it, this is off by default. Read the method documentation for details. It is recommended to use the Buttonless service from SDK 13 (for non-bonded devices, or 14 for bonded). Both are supported since DFU Library 1.3.0.
 
 Check platform folders for mode details about compatibility for each library.
 
@@ -162,12 +162,17 @@ An unofficial library for both iOS and Android that is based on this library is 
 A library for both iOS and Android that is based on this library is available for Flutter: 
 [flutter-nordic-dfu](https://github.com/fengqiangboy/flutter-nordic-dfu) 
 
+### Xamarin
+
+Simple binding library for iOS is available on nuget:
+[Laerdal.Xamarin.Dfu.iOS](https://www.nuget.org/packages/Laerdal.Xamarin.Dfu.iOS/)
+
 ---
 
 ### Resources
 
-- [DFU Introduction](https://www.nordicsemi.com/DocLib/Content/SDK_Doc/nRF5_SDK/v15-2-0/lib_bootloader_modules "Documentation")
-- [How to create init packet](https://www.nordicsemi.com/DocLib/Content/SDK_Doc/nRF5_SDK/v15-2-0/lib_bootloader_dfu_validation?320#lib_bootloader_dfu_init "Init packet")
+- [DFU Introduction](https://infocenter.nordicsemi.com/topic/sdk_nrf5_v17.0.2/lib_bootloader_modules.html?cp=8_1_3_5 "Documentation")
+- [How to create init packet](https://infocenter.nordicsemi.com/topic/sdk_nrf5_v17.0.2/lib_bootloader_dfu_validation.html#lib_dfu_image "Init packet")
 - [nRF51 Development Kit (DK)](https://www.nordicsemi.com/Software-and-Tools/Development-Kits/nRF51-DK "nRF51 DK") (compatible with Arduino Uno Revision 3)
 - [nRF52 Development Kit (DK)](https://www.nordicsemi.com/Software-and-Tools/Development-Kits/nRF52-DK "nRF52 DK") (compatible with Arduino Uno Revision 3)
 - [nRF52840 Development Kit (DK)](https://www.nordicsemi.com/Software-and-Tools/Development-Kits/nRF52840-DK "nRF52840 DK") (compatible with Arduino Uno Revision 3)

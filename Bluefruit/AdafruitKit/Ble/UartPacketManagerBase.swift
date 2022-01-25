@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol UartPacketManagerDelegate: class {
+protocol UartPacketManagerDelegate: AnyObject {
     func onUartPacket(_ packet: UartPacket)
 }
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ThermalCameraModuleManagerDelegate: class {
+protocol ThermalCameraModuleManagerDelegate: AnyObject {
     func onThermalUartIsReady(error: Error?)
     func onImageUpdated(_ image: UIImage)
 }

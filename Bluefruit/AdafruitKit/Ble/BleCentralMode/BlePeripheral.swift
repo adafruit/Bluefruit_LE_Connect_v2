@@ -8,19 +8,18 @@
 
 import Foundation
 import CoreBluetooth
-#if COMMANDLINE
-#else
-    import MSWeakTimer
-#endif
 
 // TODO: Modernize completion blocks to use Swift.Result 
 
-class BlePeripheral: NSObject {
+open class BlePeripheral: NSObject {
     // Config
     private static var kProfileCharacteristicUpdates = true
 
+    // Constants
+    static var kUndefinedRssiValue = 127
+
     // Notifications
-    enum NotificationUserInfoKey: String {
+    public enum NotificationUserInfoKey: String {
         case uuid = "uuid"
         case name = "name"
         case invalidatedServices = "invalidatedServices"
@@ -32,22 +31,48 @@ class BlePeripheral: NSObject {
 
     // Data
     var peripheral: CBPeripheral
-    var rssi: Int?      // rssi only is updated when a non undefined value is received from CoreBluetooth. Note: this is slighty different to the CoreBluetooth implementation, because it will not be updated with undefined values
-    var lastSeenTime: CFAbsoluteTime
 
-    var identifier: UUID {
+    public static var rssiRunningAverageFactor: Double = 1        /// Global Parameter that affects all rssi measurements. 1 means don't use a running average. The closer to 0 the more resistant the value it is to change
+    private var runningRssi: Int?
+    public var rssi: Int? {
+        /// rssi only is updated when a non undefined value is received from CoreBluetooth. Note: this is slighty different to the CoreBluetooth implementation, because it will not be updated with undefined values.  If runningRssiFactorFactor == 1, the newer value replaces the old value and not average is calculated
+        get {
+            return runningRssi
+        }
+        set {
+            guard newValue != BlePeripheral.kUndefinedRssiValue else { return }     // Don't accept undefined values
+
+            // based on https://en.wikipedia.org/wiki/Exponential_smoothing
+            if newValue == nil || runningRssi == nil || runningRssi == BlePeripheral.kUndefinedRssiValue {
+                runningRssi = newValue
+            } else {
+                runningRssi = Int(BlePeripheral.rssiRunningAverageFactor * Double(newValue!) + (1-BlePeripheral.rssiRunningAverageFactor) * Double(runningRssi!))
+            }
+        }
+    }
+    public var lastSeenTime: CFAbsoluteTime
+
+    open var identifier: UUID {
         return peripheral.identifier
     }
 
-    var name: String? {
+    open var name: String? {
         return peripheral.name
     }
-
-    var state: CBPeripheralState {
-        return peripheral.state
+    
+    public var debugName: String {
+        return peripheral.name ?? peripheral.identifier.uuidString
     }
 
-    struct Advertisement {
+    open var state: CBPeripheralState {
+        return peripheral.state
+    }
+    
+    func maximumWriteValueLength(for: CBCharacteristicWriteType) -> Int {
+        return peripheral.maximumWriteValueLength(for: .withoutResponse)
+    }
+
+    public struct Advertisement {
         var advertisementData: [String: Any]
 
         init(advertisementData: [String: Any]?) {
@@ -55,71 +80,73 @@ class BlePeripheral: NSObject {
         }
 
         // Advertisement data formatted
-        var localName: String? {
+        public var localName: String? {
             return advertisementData[CBAdvertisementDataLocalNameKey] as? String
         }
-        
-        var manufacturerData: Data? {
+
+        public var manufacturerData: Data? {
             return advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data
         }
-        
-        var manufacturerHexDescription: String? {
+
+        public var manufacturerHexDescription: String? {
             guard let manufacturerData = manufacturerData else { return nil }
             return HexUtils.hexDescription(data: manufacturerData)
 //            return String(data: manufacturerData, encoding: .utf8)
         }
-        
-        var manufacturerIdentifier: Data? {
+
+        public var manufacturerIdentifier: Data? {
             guard let manufacturerData = manufacturerData, manufacturerData.count >= 2 else { return nil }
             let manufacturerIdentifierData = manufacturerData[0..<2]
             return manufacturerIdentifierData
         }
 
-        var services: [CBUUID]? {
+        public var services: [CBUUID]? {
             return advertisementData[CBAdvertisementDataServiceUUIDsKey] as? [CBUUID]
         }
 
-        var servicesOverflow: [CBUUID]? {
+        public var servicesOverflow: [CBUUID]? {
             return advertisementData[CBAdvertisementDataOverflowServiceUUIDsKey] as? [CBUUID]
         }
 
-        var servicesSolicited: [CBUUID]? {
+        public var servicesSolicited: [CBUUID]? {
             return advertisementData[CBAdvertisementDataSolicitedServiceUUIDsKey] as? [CBUUID]
         }
-        
-        var serviceData: [CBUUID: Data]? {
+
+        public var serviceData: [CBUUID: Data]? {
             return advertisementData[CBAdvertisementDataServiceDataKey] as? [CBUUID: Data]
         }
 
-        var txPower: Int? {
+        public var txPower: Int? {
             let number = advertisementData[CBAdvertisementDataTxPowerLevelKey] as? NSNumber
             return number?.intValue
         }
 
-        var isConnectable: Bool? {
+        public var isConnectable: Bool? {
             let connectableNumber = advertisementData[CBAdvertisementDataIsConnectable] as? NSNumber
             return connectableNumber?.boolValue
         }
     }
-    var advertisement: Advertisement
+    public var advertisement: Advertisement
 
     typealias CapturedReadCompletionHandler = ((_ value: Any?, _ error: Error?) -> Void)
     private class CaptureReadHandler {
 
         var identifier: String
         var result: CapturedReadCompletionHandler
-        var timeoutTimer: MSWeakTimer?
-        var timeoutAction: ((String)->())?
+        var timeoutTimer: Foundation.Timer?
+        var timeoutAction: ((String) -> Void)?
         var isNotifyOmitted: Bool
 
-        init(identifier: String, result: @escaping CapturedReadCompletionHandler, timeout: Double?, timeoutAction:((String)->())?, isNotifyOmitted: Bool = false) {
+        init(identifier: String, result: @escaping CapturedReadCompletionHandler, timeout: Double?, timeoutAction: ((String) -> Void)?, isNotifyOmitted: Bool = false) {
             self.identifier = identifier
             self.result = result
             self.isNotifyOmitted = isNotifyOmitted
 
             if let timeout = timeout {
                 self.timeoutAction = timeoutAction
-                timeoutTimer = MSWeakTimer.scheduledTimer(withTimeInterval: timeout, target: self, selector: #selector(timerFired), userInfo: nil, repeats: false, dispatchQueue: .global(qos: .background))
+                DispatchQueue.global(qos: .background).async {
+                    self.timeoutTimer = Timer.scheduledTimer(timeInterval: timeout, target: self, selector: #selector(self.timerFired), userInfo: nil, repeats: false)
+                }                
             }
         }
 
@@ -134,12 +161,12 @@ class BlePeripheral: NSObject {
     private func timeOutRemoveCaptureHandler(identifier: String) {   // Default behaviour for a capture handler timeout
         guard captureReadHandlers.count > 0, let index = captureReadHandlers.firstIndex(where: {$0.identifier == identifier}) else { return }
         // DLog("captureReadHandlers index: \(index) / \(captureReadHandlers.count)")
-        
+
         // Remove capture handler
         captureReadHandlers.remove(at: index)
         finishedExecutingCommand(error: PeripheralError.timeout)
     }
-    
+
     // Internal data
     private var notifyHandlers = [String: ((Error?) -> Void)]()                 // Nofify handlers for each service-characteristic
     private var captureReadHandlers = [CaptureReadHandler]()
@@ -149,13 +176,13 @@ class BlePeripheral: NSObject {
     //private var profileStartTime: CFTimeInterval = 0
 
     // MARK: - Init
-    init(peripheral: CBPeripheral, advertisementData: [String: Any]?, rssi: Int?) {
+    public init(peripheral: CBPeripheral, advertisementData: [String: Any]?, rssi: Int?) {
         self.peripheral = peripheral
         self.advertisement = Advertisement(advertisementData: advertisementData)
-        self.rssi = rssi
         self.lastSeenTime = CFAbsoluteTimeGetCurrent()
 
         super.init()
+        self.rssi = rssi
         self.peripheral.delegate = self
         // DLog("create peripheral: \(peripheral.name ?? peripheral.identifier.uuidString)")
         commandQueue.executeHandler = executeCommand
@@ -207,6 +234,12 @@ class BlePeripheral: NSObject {
         commandQueue.append(command)
     }
 
+    // MARK: - Connection
+    func disconnect(centralManager: CBCentralManager) {
+         let command = BleCommand(type: .disconnect, parameters: [centralManager], completion: nil)
+        commandQueue.append(command)
+    }
+
     // MARK: - Service
     func discoveredService(uuid: CBUUID) -> CBService? {
         let service = peripheral.services?.first(where: {$0.uuid == uuid})
@@ -248,7 +281,7 @@ class BlePeripheral: NSObject {
             })
         }
     }
-    
+
     func characteristic(uuid: CBUUID, serviceUuid: CBUUID, completion: ((CBCharacteristic?, Error?) -> Void)?) {
         if let discoveredService = discoveredService(uuid: serviceUuid) {                                              // Service was already discovered
             characteristic(uuid: uuid, service: discoveredService, completion: completion)
@@ -267,7 +300,7 @@ class BlePeripheral: NSObject {
         let command = BleCommand(type: .setNotify, parameters: [characteristic, true, handler as Any], completion: completion)
         commandQueue.append(command)
     }
-    
+
     func disableNotify(for characteristic: CBCharacteristic, completion: ((Error?) -> Void)? = nil) {
         let command = BleCommand(type: .setNotify, parameters: [characteristic, false], completion: completion)
         commandQueue.append(command)
@@ -302,14 +335,14 @@ class BlePeripheral: NSObject {
         let command = BleCommand(type: .readDescriptor, parameters: [descriptor, readCompletion as Any], completion: nil)
         commandQueue.append(command)
     }
-    
+
     // MARK: - Rssi
     func readRssi() {
         peripheral.readRSSI()
     }
 
     // MARK: - Command Queue
-    private class BleCommand: Equatable {
+    internal class BleCommand: Equatable {
         enum CommandType {
             case discoverService
             case discoverCharacteristic
@@ -319,6 +352,7 @@ class BlePeripheral: NSObject {
             case writeCharacteristic
             case writeCharacteristicAndWaitNofity
             case readDescriptor
+            case disconnect
         }
 
         enum CommandError: Error {
@@ -362,18 +396,22 @@ class BlePeripheral: NSObject {
             write(with: command)
         case .readDescriptor:
             readDescriptor(with: command)
+        case .disconnect:
+            disconnect(with: command)
         }
     }
 
     private func handlerIdentifier(from characteristic: CBCharacteristic) -> String {
-        return "\(characteristic.service.uuid.uuidString)-\(characteristic.uuid.uuidString)"
+        guard let service = characteristic.service else { DLog("Error: handleIdentifier with nil characteritic service"); return "" }
+        return "\(service.uuid.uuidString)-\(characteristic.uuid.uuidString)"
     }
 
     private func handlerIdentifier(from descriptor: CBDescriptor) -> String {
-        return "\(descriptor.characteristic.service.uuid.uuidString)-\(descriptor.characteristic.uuid.uuidString)-\(descriptor.uuid.uuidString)"
+        guard let characteristic = descriptor.characteristic, let service = characteristic.service else { DLog("Error: handleIdentifier with nil descriptor service"); return "" }
+        return "\(service.uuid.uuidString)-\(characteristic.uuid.uuidString)-\(descriptor.uuid.uuidString)"
     }
 
-    private func finishedExecutingCommand(error: Error?) {
+    internal func finishedExecutingCommand(error: Error?) {
         //DLog("finishedExecutingCommand")
 
         // Result Callback
@@ -401,7 +439,7 @@ class BlePeripheral: NSObject {
         if discoverAll || (serviceUuids != nil && serviceUuids!.count > 0) {
             peripheral.discoverServices(serviceUuids)
         } else {
-            // Everthing was already discovered
+            // Everything was already discovered
             finishedExecutingCommand(error: nil)
         }
     }
@@ -464,20 +502,31 @@ class BlePeripheral: NSObject {
         let writeType = command.parameters![1] as! CBCharacteristicWriteType
         let data = command.parameters![2] as! Data
 
-        peripheral.writeValue(data, for: characteristic, type: writeType)
         
         if writeType == .withoutResponse {
+            let mtu = maximumWriteValueLength(for: .withoutResponse)
+            var offset = 0
+            while offset < data.count {
+                let chunkData = data.subdata(in: offset ..< min(offset + mtu, data.count))
+                //DLog("blewrite offset: \(offset) / \(data.count), size: \(chunkData.count)")
+                peripheral.writeValue(chunkData, for: characteristic, type: .withoutResponse)
+                offset += chunkData.count
+            }
+            
             if !command.isCancelled, command.type == .writeCharacteristicAndWaitNofity {
                 let readCharacteristic = command.parameters![3] as! CBCharacteristic
                 let readCompletion = command.parameters![4] as! CapturedReadCompletionHandler
                 let timeout = command.parameters![5] as? Double
-                
+
                 let identifier = handlerIdentifier(from: readCharacteristic)
                 let captureReadHandler = CaptureReadHandler(identifier: identifier, result: readCompletion, timeout: timeout, timeoutAction: timeOutRemoveCaptureHandler)
                 captureReadHandlers.append(captureReadHandler)
             }
-            
+
             finishedExecutingCommand(error: nil)
+        }
+        else {
+            peripheral.writeValue(data, for: characteristic, type: writeType)
         }
     }
 
@@ -491,35 +540,41 @@ class BlePeripheral: NSObject {
 
         peripheral.readValue(for: descriptor)
     }
+
+    internal func disconnect(with command: BleCommand) {
+        let centralManager = command.parameters!.first as! CBCentralManager
+        centralManager.cancelPeripheralConnection(self.peripheral)
+        finishedExecutingCommand(error: nil)
+    }
 }
 
 // MARK: - CBPeripheralDelegate
 extension BlePeripheral: CBPeripheralDelegate {
-    func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
+    public func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
         DLog("peripheralDidUpdateName: \(name ?? "{ No Name }")")
         NotificationCenter.default.post(name: .peripheralDidUpdateName, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier, NotificationUserInfoKey.name.rawValue: name as Any])
     }
 
-    func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+    public func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
         DLog("didModifyServices")
         NotificationCenter.default.post(name: .peripheralDidModifyServices, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier, NotificationUserInfoKey.invalidatedServices.rawValue: invalidatedServices])
     }
 
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        DLog("didDiscoverServices for: \(peripheral.name ?? peripheral.identifier.uuidString)")
+    public func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        //DLog("didDiscoverServices for: \(peripheral.name ?? peripheral.identifier.uuidString)")
         finishedExecutingCommand(error: error)
     }
 
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        DLog("didDiscoverCharacteristicsFor: \(service.uuid.uuidString)")
+    public func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        ///DLog("didDiscoverCharacteristicsFor: \(service.uuid.uuidString)")
         finishedExecutingCommand(error: error)
     }
 
-    func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
         finishedExecutingCommand(error: error)
     }
 
-    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
 
         let identifier = handlerIdentifier(from: characteristic)
 
@@ -571,8 +626,8 @@ extension BlePeripheral: CBPeripheralDelegate {
             finishedExecutingCommand(error: error)
         }
     }
-    
-    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+
+    public func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         if let command = commandQueue.first(), !command.isCancelled, command.type == .writeCharacteristicAndWaitNofity {
             let characteristic = command.parameters![3] as! CBCharacteristic
             let readCompletion = command.parameters![4] as! CapturedReadCompletionHandler
@@ -587,11 +642,11 @@ extension BlePeripheral: CBPeripheralDelegate {
         }
     }
 
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didDiscoverDescriptorsFor characteristic: CBCharacteristic, error: Error?) {
         finishedExecutingCommand(error: error)
     }
 
-    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
+    public func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor descriptor: CBDescriptor, error: Error?) {
         let identifier = handlerIdentifier(from: descriptor)
 
         if captureReadHandlers.count > 0, let index = captureReadHandlers.firstIndex(where: {$0.identifier == identifier}) {
@@ -605,15 +660,15 @@ extension BlePeripheral: CBPeripheralDelegate {
             finishedExecutingCommand(error: error)
         }
     }
-    
-    func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
+
+    public func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
         guard error == nil else { DLog("didReadRSSI error: \(error!.localizedDescription)"); return }
-        
+
         let rssi = RSSI.intValue
-        if rssi != 127 {  // only update rssi value if is defined ( 127 means undefined )
+        if rssi != BlePeripheral.kUndefinedRssiValue {  // only update rssi value if is defined ( 127 means undefined )
             self.rssi = rssi
         }
-        
+
         NotificationCenter.default.post(name: .peripheralDidUpdateRssi, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier])
     }
 }
@@ -621,7 +676,7 @@ extension BlePeripheral: CBPeripheralDelegate {
 // MARK: - Custom Notifications
 extension Notification.Name {
     private static let kPrefix = Bundle.main.bundleIdentifier!
-    static let peripheralDidUpdateName = Notification.Name(kPrefix+".peripheralDidUpdateName")
-    static let peripheralDidModifyServices = Notification.Name(kPrefix+".peripheralDidModifyServices")
-    static let peripheralDidUpdateRssi = Notification.Name(kPrefix+".peripheralDidUpdateRssi")
+    public static let peripheralDidUpdateName = Notification.Name(kPrefix+".peripheralDidUpdateName")
+    public static let peripheralDidModifyServices = Notification.Name(kPrefix+".peripheralDidModifyServices")
+    public static let peripheralDidUpdateRssi = Notification.Name(kPrefix+".peripheralDidUpdateRssi")
 }

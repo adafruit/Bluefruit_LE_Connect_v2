@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol MagnetometerParametersViewControllerDelegate: class {
+protocol MagnetometerParametersViewControllerDelegate: AnyObject {
     func onParametersDone()
 }
 

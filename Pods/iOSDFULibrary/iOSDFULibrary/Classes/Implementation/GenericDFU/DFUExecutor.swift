@@ -32,7 +32,7 @@ import CoreBluetooth
 
 typealias DelegateCallback = (DFUServiceDelegate) -> Void
 
-internal protocol BaseExecutorAPI : class, DFUController {
+internal protocol BaseExecutorAPI: AnyObject, DFUController {
     
     /**
      Starts the DFU operation.
@@ -116,6 +116,15 @@ extension BaseDFUExecutor {
     }
     
     func error(_ error: DFUError, didOccurWithMessage message: String) {
+        if error == .bluetoothDisabled {
+            delegate {
+                $0.dfuError(.bluetoothDisabled, didOccurWithMessage: message)                
+            }
+            // Release the cyclic reference.
+            peripheral.destroy()
+            return
+        }
+        
         // Save the error. It will be reported when the device disconnects.
         if self.error == nil {
             self.error = (error, message)

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ImageTransferModuleManagerDelegate: class {
+protocol ImageTransferModuleManagerDelegate: AnyObject {
     func onImageTransferUartIsReady(error: Error?)
     func onImageTransferProgress(progress: Float)
     func onImageTransferFinished(error: Error?)
