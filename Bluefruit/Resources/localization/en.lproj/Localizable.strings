@@ -38,6 +38,9 @@ Please reset bluetooth and try again.";
 "scanner_connect" = "Connect";
 "scanner_disconnect" = "Disconnect";
 
+"scanner_start_action" = "Start Scan";
+"scanner_stop_action" = "Stop Scan";
+
 "scanner_filter_name_title" = "Name:";
 "scanner_filter_name_hint" = "Filter by name";
 "scanner_filter_rssi_title" = "RSSI >=";
