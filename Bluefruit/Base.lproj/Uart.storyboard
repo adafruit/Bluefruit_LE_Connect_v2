@@ -350,11 +350,11 @@
                     <rect key="frame" x="0.0" y="0.0" width="343" height="40"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="w2S-yW-MA8">
-                            <rect key="frame" x="16" y="5" width="311" height="30"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="w2S-yW-MA8">
+                            <rect key="frame" x="16" y="5" width="238.5" height="30"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uM1-a7-yIX">
-                                    <rect key="frame" x="0.0" y="0.0" width="149.5" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="71.5" height="30"/>
                                     <state key="normal" title="Button"/>
                                     <buttonConfiguration key="configuration" style="gray" title="CTRL-C">
                                         <fontDescription key="titleFontDescription" style="UICTFontTextStyleFootnote"/>
@@ -366,7 +366,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BPU-ny-MoD">
-                                    <rect key="frame" x="161.5" y="0.0" width="149.5" height="30"/>
+                                    <rect key="frame" x="83.5" y="0.0" width="71.5" height="30"/>
                                     <state key="normal" title="Button"/>
                                     <buttonConfiguration key="configuration" style="gray" title="CTRL-D">
                                         <fontDescription key="titleFontDescription" style="UICTFontTextStyleFootnote"/>
@@ -375,6 +375,18 @@
                                     </buttonConfiguration>
                                     <connections>
                                         <action selector="onSendCtrlD:" destination="nMN-bC-Caa" eventType="touchUpInside" id="Reo-i5-1Qn"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GNj-fB-fRv">
+                                    <rect key="frame" x="167" y="0.0" width="71.5" height="30"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="gray" title="CTRL-Z">
+                                        <fontDescription key="titleFontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="baseBackgroundColor" systemColor="systemBackgroundColor"/>
+                                    </buttonConfiguration>
+                                    <connections>
+                                        <action selector="onSendCtrlZ:" destination="nMN-bC-Caa" eventType="touchUpInside" id="Xp9-RS-aan"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -386,7 +398,7 @@
                     <color key="backgroundColor" systemColor="systemGray4Color"/>
                     <constraints>
                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="w2S-yW-MA8" secondAttribute="bottom" constant="2" id="GiY-Kw-mML"/>
-                        <constraint firstAttribute="trailingMargin" secondItem="w2S-yW-MA8" secondAttribute="trailing" id="K1e-JL-FlO"/>
+                        <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="w2S-yW-MA8" secondAttribute="trailing" id="K1e-JL-FlO"/>
                         <constraint firstItem="w2S-yW-MA8" firstAttribute="centerY" secondItem="ZHT-fQ-YEK" secondAttribute="centerY" id="pzV-fo-DLh"/>
                         <constraint firstItem="w2S-yW-MA8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ZHT-fQ-YEK" secondAttribute="top" constant="2" id="r1T-y2-QoI"/>
                         <constraint firstItem="w2S-yW-MA8" firstAttribute="leading" secondItem="ZHT-fQ-YEK" secondAttribute="leadingMargin" id="t7c-fL-vd7"/>
@@ -540,7 +552,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="reb-7C-Gh5">
-                                                    <rect key="frame" x="16" y="11.5" width="44" height="21.5"/>
+                                                    <rect key="frame" x="16" y="11.5" width="44" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>

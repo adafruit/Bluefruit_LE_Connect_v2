@@ -180,6 +180,11 @@ class UartModeViewController: UartBaseViewController {
         send(data: data)
     }
     
+    @IBAction func onSendCtrlZ(_ sender: Any) {
+        let data = Data([0x1a])
+        send(data: data)
+    }
+    
     // MARK: - Style
     override func colorForPacket(packet: UartPacket) -> UIColor {
         var color: UIColor?
