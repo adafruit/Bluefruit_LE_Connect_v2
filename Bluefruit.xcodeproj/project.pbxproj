@@ -68,6 +68,7 @@
 		A98DE4271E45EB3900EEF4C8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4201E45EB3900EEF4C8 /* Localizable.strings */; };
 		A98DE42B1E45EB3900EEF4C8 /* NeopixelBoards.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */; };
 		A98DE42D1E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */; };
+		A98E02222948006A001A9325 /* BlePeripheral+CircuitPython.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98E02212948006A001A9325 /* BlePeripheral+CircuitPython.swift */; };
 		A991A7C022AFDCFB003AE632 /* Int+Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A991A7BE22AFDC86003AE632 /* Int+Bytes.swift */; };
 		A9A1240123CD00B4000C05C0 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FE223CC8375009FB3C7 /* libz.tbd */; platformFilter = ios; };
 		A9A1240223CD0221000C05C0 /* libtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A96D5FC723CC7E78009FB3C7 /* libtiff.a */; platformFilter = ios; };
@@ -468,6 +469,7 @@
 		A98DE4211E45EB3900EEF4C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A98DE4241E45EB3900EEF4C8 /* NeopixelBoards.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelBoards.plist; sourceTree = "<group>"; };
 		A98DE4251E45EB3900EEF4C8 /* NeopixelDefaultPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NeopixelDefaultPalette.plist; sourceTree = "<group>"; };
+		A98E02212948006A001A9325 /* BlePeripheral+CircuitPython.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlePeripheral+CircuitPython.swift"; sourceTree = "<group>"; };
 		A991A7BE22AFDC86003AE632 /* Int+Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Bytes.swift"; sourceTree = "<group>"; };
 		A9A1240423CD027C000C05C0 /* semaphore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = semaphore.h; sourceTree = "<group>"; };
 		A9A89BDB1E83C5B000724F0E /* StyledConnectButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyledConnectButton.swift; sourceTree = "<group>"; };
@@ -802,6 +804,7 @@
 				A93DE7541F36195900B2EB5D /* BleManager.swift */,
 				A93DE7551F36195900B2EB5D /* BlePeripheral+Battery.swift */,
 				A93DE7561F36195900B2EB5D /* BlePeripheral+Uart.swift */,
+				A98E02212948006A001A9325 /* BlePeripheral+CircuitPython.swift */,
 				A93DE7571F36195900B2EB5D /* BlePeripheral.swift */,
 				A93DE7581F36195900B2EB5D /* BleUUIDNames.swift */,
 				A93DE7591F36195900B2EB5D /* UartDataManager.swift */,
@@ -1826,6 +1829,7 @@
 				A9B06A5323D0D0750060A64C /* MathUtils.swift in Sources */,
 				A9B06A9723D0D0750060A64C /* InfoCharacteristicTableViewCell.swift in Sources */,
 				A93DE7631F36195900B2EB5D /* BleManager.swift in Sources */,
+				A98E02222948006A001A9325 /* BlePeripheral+CircuitPython.swift in Sources */,
 				A9B06A8023D0D0750060A64C /* PeripheralServiceViewController.swift in Sources */,
 				A9B06A6423D0D0750060A64C /* DfuFilesPickerTableViewCell.swift in Sources */,
 				A98D3A5E1F36879F005081EA /* UartStyle.swift in Sources */,

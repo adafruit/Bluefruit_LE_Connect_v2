@@ -7,12 +7,18 @@
 //
 
 import UIKit
+import CoreBluetooth
 
 class UartModeViewController: UartBaseViewController {
 
     // UI
     @IBOutlet weak var sendPeripheralButton: UIButton!
     
+    // Params
+    var uartServiceUuid: CBUUID = BlePeripheral.kUartServiceUUID
+    var txCharacteristicUuid: CBUUID = BlePeripheral.kUartTxCharacteristicUUID
+    var rxCharacteristicUuid: CBUUID = BlePeripheral.kUartRxCharacteristicUUID
+
     // Data
     private var colorForPeripheral = [UUID: UIColor]()
     private var multiUartSendToPeripheralId: UUID?       // nil = all peripherals
@@ -59,7 +65,11 @@ class UartModeViewController: UartBaseViewController {
             let blePeripherals = BleManager.shared.connectedPeripherals()
             for (i, blePeripheral) in blePeripherals.enumerated() {
                 colorForPeripheral[blePeripheral.identifier] = colors[i % colors.count]
-                blePeripheral.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
+                blePeripheral.uartEnable(uartServiceUuid: uartServiceUuid,
+                                         txCharacteristicUuid: txCharacteristicUuid,
+                                         rxCharacteristicUuid: rxCharacteristicUuid,
+                                         uartRxHandler: uartData.rxPacketReceived
+                ) { [weak self] error in
                     guard let context = self else { return }
                     
                     let peripheralName = blePeripheral.name ?? blePeripheral.identifier.uuidString
@@ -87,7 +97,11 @@ class UartModeViewController: UartBaseViewController {
             }
         } else if let blePeripheral = blePeripheral {         //  Single peripheral mode
             colorForPeripheral[blePeripheral.identifier] = colors.first
-            blePeripheral.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
+            blePeripheral.uartEnable(uartServiceUuid: uartServiceUuid,
+                                     txCharacteristicUuid: txCharacteristicUuid,
+                                     rxCharacteristicUuid: rxCharacteristicUuid,
+                                     uartRxHandler: uartData.rxPacketReceived
+            ) { [weak self] error in
                 guard let context = self else { return }
                 
                 DispatchQueue.main.async {
