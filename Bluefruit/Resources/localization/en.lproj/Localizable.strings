@@ -316,8 +316,8 @@ Each unique set of data samples must be terminated by a LINE FEED character (0x0
 
 • Only numeric data should be sent over the BLE UART connection(s).";
 
-// Circuit Python
-"uart_circuitpython_title" = "Circuit Python";
+// CircuitPython
+"uart_circuitpython_title" = "CircuitPython";
 
 // Dfu
 "dfu_tab_title" = "Updates";
