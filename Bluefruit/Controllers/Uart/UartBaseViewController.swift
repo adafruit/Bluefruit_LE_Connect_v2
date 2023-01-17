@@ -291,7 +291,7 @@ class UartBaseViewController: PeripheralModeViewController {
         sendInputButton.isEnabled = isReady
     }
     
-    internal func send(message: String) {
+    internal func send(data: Data) {
         assert(false, "Should be implemented by subclasses")
     }
     
@@ -325,7 +325,8 @@ class UartBaseViewController: PeripheralModeViewController {
             newText += Preferences.uartEolCharacters
         }
         
-        send(message: newText)
+        guard let data = newText.data(using: .utf8) else { DLog("Warning: can't convert message to data"); return }
+        send(data: data)
         
         inputTextField.text = ""
         inputTextField.resignFirstResponder()

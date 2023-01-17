@@ -44,11 +44,11 @@ class UartServiceViewController: UartBaseViewController {
         updateUartReadyUI(isReady: true)
     }
     
-    override func send(message: String) {
+    override func send(data: Data) {
         guard let uartData = self.uartData as? UartPeripheralModePacketManager else { DLog("Error send with invalid uartData class"); return }
         guard let uartPeripheralService = uartPeripheralService else  { return }
         
-        uartData.send(uartPeripheralService: uartPeripheralService, text: message)
+        uartData.send(uartPeripheralService: uartPeripheralService, data: data)
     }
     
     // MARK: - Stylei

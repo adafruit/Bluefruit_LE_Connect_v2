@@ -44,6 +44,7 @@ class ScannerViewController: ModeTabViewController {
 
     @IBOutlet weak var filteredPeripheralsCountLabel: UILabel!
 
+    @IBOutlet weak var scanNavigationButton: UIBarButtonItem!
     
     // Data
     private let refreshControl = UIRefreshControl()
@@ -59,6 +60,8 @@ class ScannerViewController: ModeTabViewController {
     private var isBaseTableScrolling = false
     private var isScannerTableWaitingForReload = false
     private var isBaseTableAnimating = false
+    
+    private var isScanning = true
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -155,16 +158,14 @@ class ScannerViewController: ModeTabViewController {
         super.viewDidAppear(animated)
         
         // Start scannning
-        BleManager.shared.startScan()
-        //        BleManager.shared.startScan(withServices: ScannerViewController.kServicesToScan)
-        
+        startScanning()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
         // Stop scanning
-        BleManager.shared.stopScan()
+        stopScanning()
 
         // Ble Notifications
         registerNotifications(enabled: false)
@@ -588,6 +589,36 @@ class ScannerViewController: ModeTabViewController {
             }
         }
     }
+    
+    private func startScanning() {
+        isScanning = true
+        BleManager.shared.startScan()
+  
+        // Discover already connected peripherals that advertise the "File Transfer Service". This is useful for CircuitPython because bonded peripherals are not found when scanning.
+        let _ = BleManager.shared.discoverConnectedPeripherals(services: [BlePeripheral.kFileTransferServiceUUID])
+        
+        updateScanningStatus()
+    }
+    
+    private func stopScanning() {
+        isScanning = false
+        BleManager.shared.stopScan()
+        updateScanningStatus()
+    }
+    
+    private func updateScanningStatus() {
+        scanNavigationButton.title = LocalizationManager.shared.localizedString(isScanning ? "scanner_stop_action" : "scanner_start_action")
+    }
+    
+    @IBAction func onStartStopScan(_ sender: Any) {
+        if isScanning {
+            stopScanning()
+        }
+        else {
+            startScanning()
+        }
+    }
+    
 
     // MARK: - Connections
     private func connect(peripheral: BlePeripheral) {
@@ -619,14 +650,34 @@ class ScannerViewController: ModeTabViewController {
             self.enh_throttledReloadData()      // it will call self.reloadData without overloading the main thread with calls
         }
     }
+    
+    /*
+    private func arePeripheralListsVisuallyEqual(_ peripherals1: [BlePeripheral], _ peripherals2: [BlePeripheral]) -> Bool {
+    }*/
 
     @objc private func reloadData() {
         isBaseTableScrolling = false
         isBaseTableAnimating = false
         isScannerTableWaitingForReload = false
+        
         let filteredPeripherals = peripheralList.filteredPeripherals(forceUpdate: true)     // Refresh the peripherals
         baseTableView.reloadData()
+        
+        /*
+        let cachedFilteredPeripherals = peripheralList.filteredPeripherals(forceUpdate: false)
+        let filteredPeripherals = peripheralList.filteredPeripherals(forceUpdate: true)     // Refresh the peripherals
 
+        let visibleRows = baseTableView.indexPathsForVisibleRows ?? []
+        let visiblePeripheralsOld = cachedFilteredPeripherals[min(visibleRows.startIndex, cachedFilteredPeripherals.count)..<min(visibleRows.endIndex, cachedFilteredPeripherals.count)]
+        let visiblePeripheralsNew = filteredPeripherals[min(visibleRows.startIndex, filteredPeripherals.count)..<min(visibleRows.endIndex, filteredPeripherals.count)]
+        
+        // Check if there is any difference in the shown range, or skip the update
+        if !arePeripheralListsVisuallyEqual(cachedFilteredPeripherals, filteredPeripherals) {
+         baseTableView.reloadData()
+         }
+         */
+        
+        
         // Filtered out label
         let numPeripheralsFilteredOut = peripheralList.numPeripheralsFiltered()
         

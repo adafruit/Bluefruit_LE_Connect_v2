@@ -72,10 +72,13 @@ extension BlePeripheral {
     }
 
     // MARK: - Initialization
-    func uartEnable(uartRxHandler: ((Data?, UUID, Error?) -> Void)?, completion: ((Error?) -> Void)?) {
+    func uartEnable(uartServiceUuid: CBUUID = BlePeripheral.kUartServiceUUID,
+                    txCharacteristicUuid: CBUUID = BlePeripheral.kUartTxCharacteristicUUID,
+                    rxCharacteristicUuid: CBUUID = BlePeripheral.kUartRxCharacteristicUUID,
+                    uartRxHandler: ((Data?, UUID, Error?) -> Void)?, completion: ((Error?) -> Void)?) {
 
         // Get uart communications characteristic
-        characteristic(uuid: BlePeripheral.kUartTxCharacteristicUUID, serviceUuid: BlePeripheral.kUartServiceUUID) { [unowned self] (characteristic, error) in
+        characteristic(uuid: txCharacteristicUuid, serviceUuid: uartServiceUuid) { [unowned self] (characteristic, error) in
             guard let characteristic = characteristic, error == nil else {
                 completion?(error != nil ? error : PeripheralUartError.invalidCharacteristic)
                 return
@@ -85,7 +88,7 @@ extension BlePeripheral {
             self.uartTxCharacteristicWriteType = characteristic.properties.contains(.writeWithoutResponse) ? .withoutResponse:.withResponse
             //self.uartTxCharacteristicWriteType = .withResponse        // Debug: force withResponse
 
-            self.characteristic(uuid: BlePeripheral.kUartRxCharacteristicUUID, serviceUuid: BlePeripheral.kUartServiceUUID) { [unowned self] (characteristic, error) in
+            self.characteristic(uuid: rxCharacteristicUuid, serviceUuid: uartServiceUuid) { [unowned self] (characteristic, error) in
                 guard let characteristic = characteristic, error == nil else {
                     completion?(error != nil ? error : PeripheralUartError.invalidCharacteristic)
                     return

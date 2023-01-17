@@ -7,16 +7,23 @@
 //
 
 import UIKit
+import CoreBluetooth
 
 class UartModeViewController: UartBaseViewController {
 
     // UI
     @IBOutlet weak var sendPeripheralButton: UIButton!
+    @IBOutlet var inputAccesoryView: UIView!
     
+    // Params
+    var uartServiceUuid: CBUUID = BlePeripheral.kUartServiceUUID
+    var txCharacteristicUuid: CBUUID = BlePeripheral.kUartTxCharacteristicUUID
+    var rxCharacteristicUuid: CBUUID = BlePeripheral.kUartRxCharacteristicUUID
+
     // Data
     private var colorForPeripheral = [UUID: UIColor]()
     private var multiUartSendToPeripheralId: UUID?       // nil = all peripherals
-
+    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +35,9 @@ class UartModeViewController: UartBaseViewController {
         
         // Setup controls
         sendPeripheralButton.isHidden = !isInMultiUartMode()
-      
+        
+        inputTextField.inputAccessoryView = inputAccesoryView
+                
         // Localization
         sendPeripheralButton.setTitle(localizationManager.localizedString("uart_send_toall_action"), for: .normal)     // Default value
         
@@ -59,7 +68,11 @@ class UartModeViewController: UartBaseViewController {
             let blePeripherals = BleManager.shared.connectedPeripherals()
             for (i, blePeripheral) in blePeripherals.enumerated() {
                 colorForPeripheral[blePeripheral.identifier] = colors[i % colors.count]
-                blePeripheral.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
+                blePeripheral.uartEnable(uartServiceUuid: uartServiceUuid,
+                                         txCharacteristicUuid: txCharacteristicUuid,
+                                         rxCharacteristicUuid: rxCharacteristicUuid,
+                                         uartRxHandler: uartData.rxPacketReceived
+                ) { [weak self] error in
                     guard let context = self else { return }
                     
                     let peripheralName = blePeripheral.name ?? blePeripheral.identifier.uuidString
@@ -87,7 +100,11 @@ class UartModeViewController: UartBaseViewController {
             }
         } else if let blePeripheral = blePeripheral {         //  Single peripheral mode
             colorForPeripheral[blePeripheral.identifier] = colors.first
-            blePeripheral.uartEnable(uartRxHandler: uartData.rxPacketReceived) { [weak self] error in
+            blePeripheral.uartEnable(uartServiceUuid: uartServiceUuid,
+                                     txCharacteristicUuid: txCharacteristicUuid,
+                                     rxCharacteristicUuid: rxCharacteristicUuid,
+                                     uartRxHandler: uartData.rxPacketReceived
+            ) { [weak self] error in
                 guard let context = self else { return }
                 
                 DispatchQueue.main.async {
@@ -113,23 +130,23 @@ class UartModeViewController: UartBaseViewController {
         }
     }
 
-    override func send(message: String) {
+    override func send(data: Data) {
         guard let uartData = self.uartData as? UartPacketManager else { DLog("Error send with invalid uartData class"); return }
         
         if let blePeripheral = blePeripheral {      // Single peripheral mode
-            uartData.send(blePeripheral: blePeripheral, text: message)
+            uartData.send(blePeripheral: blePeripheral, data: data)
         } else {      // Multiple peripheral mode
             let peripherals = BleManager.shared.connectedPeripherals()
             
             if let multiUartSendToPeripheralId = multiUartSendToPeripheralId {
                 // Send to single peripheral
                 if let peripheral = peripherals.first(where: {$0.identifier == multiUartSendToPeripheralId}) {
-                    uartData.send(blePeripheral: peripheral, text: message)
+                    uartData.send(blePeripheral: peripheral, data: data)
                 }
             } else {
                 // Send to all peripherals
                 for peripheral in peripherals {
-                    uartData.send(blePeripheral: peripheral, text: message)
+                    uartData.send(blePeripheral: peripheral, data: data)
                 }
             }
         }
@@ -152,6 +169,22 @@ class UartModeViewController: UartBaseViewController {
         present(viewController, animated: true, completion: nil)
     }
     
+    @IBAction func onSendCtrlC(_ sender: Any) {
+        let data = Data([0x03])
+        send(data: data)
+
+    }
+    
+    @IBAction func onSendCtrlD(_ sender: Any) {
+        let data = Data([0x04])
+        send(data: data)
+    }
+    
+    @IBAction func onSendCtrlZ(_ sender: Any) {
+        let data = Data([0x1a])
+        send(data: data)
+    }
+    
     // MARK: - Style
     override func colorForPacket(packet: UartPacket) -> UIColor {
         var color: UIColor?
@@ -165,9 +198,10 @@ class UartModeViewController: UartBaseViewController {
     override func onMqttMessageReceived(message: String, topic: String) {
         guard let blePeripheral = blePeripheral else { return }
         guard let uartData = self.uartData as? UartPacketManager else { DLog("Error send with invalid uartData class"); return }
+        guard let data = message.data(using: .utf8) else { DLog("Warning: cant convert message to data"); return }
         
         DispatchQueue.main.async {
-            uartData.send(blePeripheral: blePeripheral, text: message, wasReceivedFromMqtt: true)
+            uartData.send(blePeripheral: blePeripheral, data: data, wasReceivedFromMqtt: true)
         }
     }
 }

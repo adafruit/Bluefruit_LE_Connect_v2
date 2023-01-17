@@ -36,11 +36,13 @@ class PeripheralModulesViewController: UIViewController {
         case calibration
         case thermalcamera
         case imagetransfer
+        case circuitPython
         case dfu
     }
 
     private var emptyViewController: EmptyDetailsViewController?
     private var hasUart = false
+    private var hasCircuitPython = false
     private var hasDfu = false
     private var rssiRefreshTimer: MSWeakTimer?
     
@@ -64,6 +66,7 @@ class PeripheralModulesViewController: UIViewController {
         // Init for iPhone
         if let blePeripheral = blePeripheral {
             hasUart = blePeripheral.hasUart()
+            hasCircuitPython = blePeripheral.hasCircuitPython()
             hasDfu = blePeripheral.peripheral.services?.first(where: {$0.uuid == FirmwareUpdater.kDfuServiceUUID}) != nil
             setupBatteryUI(blePeripheral: blePeripheral)
             baseTableView.reloadData()
@@ -274,15 +277,25 @@ class PeripheralModulesViewController: UIViewController {
     private func menuItems() -> [Modules] {
         if connectionMode == .multiplePeripherals {
             return [.uart, .plotter]
-        } else if hasUart && hasDfu {
-            return [.info, .uart, .plotter, .pinIO, .controller, .neopixel, .calibration, .thermalcamera, .imagetransfer, .dfu]
-        } else if hasUart {
-            return [.info, .uart, .plotter, .pinIO, .controller, .calibration, .thermalcamera, .imagetransfer]
-        } else if hasDfu {
-            return [.info, .dfu]
-        } else {
-            return [.info]
         }
+        else {
+            var result: [Modules] = [.info]
+            
+            if hasUart {
+                result.append(contentsOf: [.uart, .plotter, .pinIO, .controller, .neopixel, .calibration, .thermalcamera, .imagetransfer])
+            }
+
+            if hasCircuitPython {
+                result.append(.circuitPython)
+            }
+            
+            if hasDfu {
+                result.append(.dfu)
+            }
+            
+            return result
+        }
+
     }
     
 }
@@ -395,6 +408,9 @@ extension PeripheralModulesViewController: UITableViewDelegate {
             case .imagetransfer:
                 iconName = "tab_imagetransfer_icon"
                 titleId = "imagetransfer_tab_title"
+            case .circuitPython:
+                iconName = "tab_circuitpython_icon"
+                titleId = "uart_circuitpython_title"
             case .dfu:
                 iconName = "tab_dfu_icon"
                 titleId = "dfu_tab_title"
@@ -470,6 +486,15 @@ extension PeripheralModulesViewController: UITableViewDelegate {
                 if let imageTransferViewController = self.storyboard?.instantiateViewController(withIdentifier: "ImageTransferModuleViewController") as? ImageTransferModuleViewController {
                     imageTransferViewController.blePeripheral = blePeripheral
                     show(imageTransferViewController, sender: self)
+                }
+                
+            case .circuitPython:
+                if let uartViewController = self.storyboard?.instantiateViewController(withIdentifier: "UartModeViewController") as? UartModeViewController {
+                    uartViewController.blePeripheral = blePeripheral
+                    uartViewController.uartServiceUuid = BlePeripheral.kCircuitPythonServiceUUID
+                    uartViewController.txCharacteristicUuid = BlePeripheral.kCircuitPythonTxCharacteristicUUID
+                    uartViewController.rxCharacteristicUuid = BlePeripheral.kCircuitPythonRxCharacteristicUUID
+                    show(uartViewController, sender: self)
                 }
 
             case .dfu:
