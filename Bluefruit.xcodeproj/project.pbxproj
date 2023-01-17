@@ -23,6 +23,7 @@
 		A9286CDA1E3A9B22008E5F81 /* LogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9286CCD1E3A9B22008E5F81 /* LogHelper.swift */; };
 		A92BC5FC23C602F9009CAD0E /* HexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92BC5FB23C602F9009CAD0E /* HexUtils.swift */; };
 		A9335EDC1F526EE2009EB5B5 /* ThermalCameraModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9335EDB1F526EE2009EB5B5 /* ThermalCameraModuleManager.swift */; };
+		A93628722976E82B006D7DC2 /* BlePeripheral+FileTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93628712976E82B006D7DC2 /* BlePeripheral+FileTransfer.swift */; };
 		A93DE7631F36195900B2EB5D /* BleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7541F36195900B2EB5D /* BleManager.swift */; };
 		A93DE7651F36195900B2EB5D /* BlePeripheral+Battery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7551F36195900B2EB5D /* BlePeripheral+Battery.swift */; };
 		A93DE7671F36195900B2EB5D /* BlePeripheral+Uart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93DE7561F36195900B2EB5D /* BlePeripheral+Uart.swift */; };
@@ -289,6 +290,7 @@
 		A9286CCD1E3A9B22008E5F81 /* LogHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogHelper.swift; sourceTree = "<group>"; };
 		A92BC5FB23C602F9009CAD0E /* HexUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexUtils.swift; sourceTree = "<group>"; };
 		A9335EDB1F526EE2009EB5B5 /* ThermalCameraModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThermalCameraModuleManager.swift; sourceTree = "<group>"; };
+		A93628712976E82B006D7DC2 /* BlePeripheral+FileTransfer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlePeripheral+FileTransfer.swift"; sourceTree = "<group>"; };
 		A93DE7541F36195900B2EB5D /* BleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleManager.swift; sourceTree = "<group>"; };
 		A93DE7551F36195900B2EB5D /* BlePeripheral+Battery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlePeripheral+Battery.swift"; sourceTree = "<group>"; };
 		A93DE7561F36195900B2EB5D /* BlePeripheral+Uart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BlePeripheral+Uart.swift"; sourceTree = "<group>"; };
@@ -805,6 +807,7 @@
 				A93DE7551F36195900B2EB5D /* BlePeripheral+Battery.swift */,
 				A93DE7561F36195900B2EB5D /* BlePeripheral+Uart.swift */,
 				A98E02212948006A001A9325 /* BlePeripheral+CircuitPython.swift */,
+				A93628712976E82B006D7DC2 /* BlePeripheral+FileTransfer.swift */,
 				A93DE7571F36195900B2EB5D /* BlePeripheral.swift */,
 				A93DE7581F36195900B2EB5D /* BleUUIDNames.swift */,
 				A93DE7591F36195900B2EB5D /* UartDataManager.swift */,
@@ -1860,6 +1863,7 @@
 				A9B06A8D23D0D0750060A64C /* ModeTabsViewController.swift in Sources */,
 				A98378091E422C4B00170319 /* NSObject+ENHThrottledReloading.m in Sources */,
 				A98DE4011E454FA100EEF4C8 /* NeopixelModuleManager.swift in Sources */,
+				A93628722976E82B006D7DC2 /* BlePeripheral+FileTransfer.swift in Sources */,
 				A9B06A7F23D0D0750060A64C /* HelpExportViewController.swift in Sources */,
 				A9B06A6723D0D0750060A64C /* ProgressViewController.swift in Sources */,
 				A9BCD56A1E4D2549003D1CEA /* PeripheralList.swift in Sources */,

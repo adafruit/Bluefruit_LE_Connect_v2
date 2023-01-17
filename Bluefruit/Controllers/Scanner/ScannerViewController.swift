@@ -593,6 +593,10 @@ class ScannerViewController: ModeTabViewController {
     private func startScanning() {
         isScanning = true
         BleManager.shared.startScan()
+  
+        // Discover already connected peripherals that advertise the "File Transfer Service". This is useful for CircuitPython because bonded peripherals are not found when scanning.
+        let _ = BleManager.shared.discoverConnectedPeripherals(services: [BlePeripheral.kFileTransferServiceUUID])
+        
         updateScanningStatus()
     }
     

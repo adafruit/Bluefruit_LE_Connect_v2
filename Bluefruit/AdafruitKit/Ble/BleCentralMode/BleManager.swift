@@ -249,6 +249,21 @@ public class BleManager: NSObject {
         }
     }
     
+    func discoverConnectedPeripherals(services: [CBUUID]) {
+        guard let centralManager = centralManager else { return}
+
+        let peripheralsWithServices = centralManager.retrieveConnectedPeripherals(withServices: services)
+        if !peripheralsWithServices.isEmpty {
+            let alreadyConnectingOrConnectedPeripheralsIds = BleManager.shared.connectedOrConnectingPeripherals().map{$0.identifier}
+            for peripheral in peripheralsWithServices {
+                if !alreadyConnectingOrConnectedPeripheralsIds.contains(peripheral.identifier) {
+                    DLog("Discovered peripheral with known service: \(peripheral.identifier)")
+                    discovered(peripheral: peripheral, advertisementData: nil )
+                }
+            }
+        }
+    }
+    
     func reconnecToPeripherals(peripheralUUIDs identifiers: [UUID], withServices services: [CBUUID], timeout: Double? = nil) -> Bool {
         guard let centralManager = centralManager else { return false }
         var reconnecting = false
