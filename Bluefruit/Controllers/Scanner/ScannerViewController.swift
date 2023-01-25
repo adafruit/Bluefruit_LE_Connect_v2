@@ -304,9 +304,26 @@ class ScannerViewController: ModeTabViewController {
         // Watch
         WatchSessionManager.shared.updateApplicationContext(mode: .scan)
 
-        // Dismiss any info open dialogs
-        infoAlertController?.dismiss(animated: true, completion: nil)
-        infoAlertController = nil
+        // Dismiss any info open dialogs and show error message
+        let showErrorAlert = { [weak self] in
+            guard let self = self else { return }
+            if let message = BleManager.shared.error(from: notification)?.localizedDescription {
+                let localizationManager = LocalizationManager.shared
+                self.infoAlertController = UIAlertController(title: localizationManager.localizedString("bluetooth_connecting_error"), message: message, preferredStyle: .alert)
+                self.infoAlertController!.addAction(UIAlertAction(title: localizationManager.localizedString("dialog_ok"), style: .cancel, handler: nil))
+                self.present(self.infoAlertController!, animated: true, completion:nil)
+            }
+        }
+        
+        if let infoAlertController = infoAlertController {
+            infoAlertController.dismiss(animated: true) {
+                showErrorAlert()
+            }
+            self.infoAlertController = nil
+        }
+        else {
+            showErrorAlert()
+        }
 
         // Reload table
         //reloadBaseTable()
