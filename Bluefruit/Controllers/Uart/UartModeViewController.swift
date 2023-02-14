@@ -19,6 +19,7 @@ class UartModeViewController: UartBaseViewController {
     var uartServiceUuid: CBUUID = BlePeripheral.kUartServiceUUID
     var txCharacteristicUuid: CBUUID = BlePeripheral.kUartTxCharacteristicUUID
     var rxCharacteristicUuid: CBUUID = BlePeripheral.kUartRxCharacteristicUUID
+    var isResetPacketsOnReconnectionEnabled = true
 
     // Data
     private var colorForPeripheral = [UUID: UIColor]()
@@ -42,7 +43,24 @@ class UartModeViewController: UartBaseViewController {
         sendPeripheralButton.setTitle(localizationManager.localizedString("uart_send_toall_action"), for: .normal)     // Default value
         
         // Init Uart
-        uartData = UartPacketManager(delegate: self, isPacketCacheEnabled: true, isMqttEnabled: true)
+        let uartPacketManager = UartPacketManager(delegate: self, isPacketCacheEnabled: true, isMqttEnabled: true)
+        uartPacketManager.isResetPacketsOnReconnectionEnabled = isResetPacketsOnReconnectionEnabled
+        uartData = uartPacketManager
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+                
+        // Notifications
+        registerNotifications(enabled: true)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        // Notifications
+        registerNotifications(enabled: false)
     }
     
     override func didReceiveMemoryWarning() {
@@ -149,6 +167,25 @@ class UartModeViewController: UartBaseViewController {
                     uartData.send(blePeripheral: peripheral, data: data)
                 }
             }
+        }
+    }
+    
+    // MARK: - BLE Notifications
+    private weak var didConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var willReconnectToPeripheralObserver: NSObjectProtocol?
+    
+    private func registerNotifications(enabled: Bool) {
+        let notificationCenter = NotificationCenter.default
+        if enabled {
+            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main) { [weak self] _ in
+                self?.setupUart()
+            }
+            willReconnectToPeripheralObserver = notificationCenter.addObserver(forName: .willReconnectToPeripheral, object: nil, queue: .main) { [weak self] _ in
+                DLog("Show reconnect dialog")
+            }
+        } else {
+            if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
+            if let willReconnectToPeripheralObserver = willReconnectToPeripheralObserver {notificationCenter.removeObserver(willReconnectToPeripheralObserver)}
         }
     }
     

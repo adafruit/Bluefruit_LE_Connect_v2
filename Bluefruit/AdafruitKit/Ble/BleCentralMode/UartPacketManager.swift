@@ -10,6 +10,10 @@ import Foundation
 
 class UartPacketManager: UartPacketManagerBase {
 
+    // Params
+    var isResetPacketsOnReconnectionEnabled = true
+    
+    // MARK: - Lifecycle
     override init(delegate: UartPacketManagerDelegate?, isPacketCacheEnabled: Bool, isMqttEnabled: Bool) {
         super.init(delegate: delegate, isPacketCacheEnabled: isPacketCacheEnabled, isMqttEnabled: isMqttEnabled)
 
@@ -25,7 +29,13 @@ class UartPacketManager: UartPacketManagerBase {
     private func registerNotifications(enabled: Bool) {
         let notificationCenter = NotificationCenter.default
         if enabled {
-            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main) {[weak self] _ in self?.clearPacketsCache()}
+            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main) {
+                [weak self] _ in
+                guard let self = self else { return }
+                if self.isResetPacketsOnReconnectionEnabled {
+                    self.clearPacketsCache()
+                }
+            }
         } else {
             if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
         }

@@ -494,6 +494,7 @@ extension PeripheralModulesViewController: UITableViewDelegate {
                     uartViewController.uartServiceUuid = BlePeripheral.kCircuitPythonServiceUUID
                     uartViewController.txCharacteristicUuid = BlePeripheral.kCircuitPythonTxCharacteristicUUID
                     uartViewController.rxCharacteristicUuid = BlePeripheral.kCircuitPythonRxCharacteristicUUID
+                    uartViewController.isResetPacketsOnReconnectionEnabled = false
                     show(uartViewController, sender: self)
                 }
 

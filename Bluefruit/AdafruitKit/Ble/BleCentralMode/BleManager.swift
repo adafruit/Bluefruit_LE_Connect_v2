@@ -39,6 +39,7 @@ public class BleManager: NSObject {
 
     // Connecting
     private var connectionTimeoutTimers = [UUID: Foundation.Timer]()
+    private var isAutoreconnectOnDisconnectionEnabled = true
 
     // Notifications
     public enum NotificationUserInfoKey: String {
@@ -396,6 +397,9 @@ extension BleManager: CBCentralManagerDelegate {
             timer.invalidate()
             connectionTimeoutTimers[peripheral.identifier] = nil
         }
+                
+        // Restore reconnection flag
+        isAutoreconnectOnDisconnectionEnabled = true
         
         // Send notification
         DispatchQueue.main.async {
@@ -419,19 +423,35 @@ extension BleManager: CBCentralManagerDelegate {
     }
     
     public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        DLog("didDisconnectPeripheral: \(peripheral.name ?? peripheral.identifier.uuidString)")
         
-        // Clean
-        peripheralsFound[peripheral.identifier]?.reset()
+        let peripheralIdentifier = peripheral.identifier
+        DLog("didDisconnectPeripheral: \(peripheral.name ?? peripheralIdentifier.uuidString)")
         
-        // Notify
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .didDisconnectFromPeripheral, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier])
+        // Try to reconnect automatically
+        if isAutoreconnectOnDisconnectionEnabled,
+           let blePeripheral = peripheralsFound[peripheralIdentifier] {
+            isAutoreconnectOnDisconnectionEnabled = false
             
-            // Remove from peripheral list (after sending notification so the receiving objects can query about the peripheral before being removed)
-            self.peripheralsFoundLock.lock()
-            self.peripheralsFound.removeValue(forKey: peripheral.identifier)
-            self.peripheralsFoundLock.unlock()
+            DispatchQueue.main.async {
+                DLog("Trying to reconnect to peripheral: \(peripheral.name ?? peripheralIdentifier.uuidString)")
+                NotificationCenter.default.post(name: .willReconnectToPeripheral, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier])
+                
+                self.connect(to: blePeripheral)
+            }
+        }
+        else {
+            // Clean
+            peripheralsFound[peripheralIdentifier]?.reset()
+            
+            // Notify
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .didDisconnectFromPeripheral, object: nil, userInfo: [NotificationUserInfoKey.uuid.rawValue: peripheral.identifier])
+                
+                // Remove from peripheral list (after sending notification so the receiving objects can query about the peripheral before being removed)
+                self.peripheralsFoundLock.lock()
+                self.peripheralsFound.removeValue(forKey: peripheral.identifier)
+                self.peripheralsFoundLock.unlock()
+            }
         }
     }
 }
@@ -448,4 +468,5 @@ extension Notification.Name {
     public static let didConnectToPeripheral = Notification.Name(kPrefix+".didConnectToPeripheral")
     public static let willDisconnectFromPeripheral = Notification.Name(kPrefix+".willDisconnectFromPeripheral")
     public static let didDisconnectFromPeripheral = Notification.Name(kPrefix+".didDisconnectFromPeripheral")
+    public static let willReconnectToPeripheral = Notification.Name(kPrefix+".willReconnectToPeripheral")
 }
