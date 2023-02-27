@@ -32,7 +32,7 @@ class Preferences {
     private static let infoRefreshOnLoadKey = "InfoRefreshOnLoad"
     
     // Uart
-    private static let uartIsDisplayModeTimestampKey = "UartIsDisplayModeTimestamp"
+    private static let uartDisplayModeKey = "UartDisplayMode"
     private static let uartIsInHexModeKey = "UartIsInHexMode"
     private static let uartIsEchoEnabledKey = "UartIsEchoEnabled"
     private static let uartIsAutomaticEolEnabledKey = "UartIsAutomaticEolEnabled"
@@ -202,12 +202,21 @@ class Preferences {
         }
     }
     
-    static var uartIsDisplayModeTimestamp: Bool {
+    
+    enum UartDisplayMode: Int {
+        case timeStamp = 0
+        case text = 1
+        case terminal = 2
+    }
+    
+    static var uartDisplayMode: UartDisplayMode {
         get {
-            return getBoolPreference(Preferences.uartIsDisplayModeTimestampKey)
+            let displayModeRaw = UserDefaults.standard.integer(forKey: Preferences.uartDisplayModeKey)
+            return UartDisplayMode(rawValue: displayModeRaw) ?? .timeStamp
         }
         set {
-            setBoolPreference(Preferences.uartIsDisplayModeTimestampKey, newValue: newValue)
+            UserDefaults.standard.set(newValue.rawValue, forKey: Preferences.uartDisplayModeKey)
+            NotificationCenter.default.post(name: .didUpdatePreferences, object: nil)
         }
     }
     

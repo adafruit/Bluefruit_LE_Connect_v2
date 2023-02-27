@@ -170,6 +170,22 @@ class UartModeViewController: UartBaseViewController {
         }
     }
     
+    
+    @objc override func reloadData() {
+        super.reloadData()
+        
+        if Preferences.uartDisplayMode == .timeStamp {
+            // Check if a OSC command has been received
+            let text = textCachedBuffer.string
+            let regex = #"\x1b]0\;(?<title>.+?(?=\x1b\\))"#
+            let matchingStrings = text.matchingStrings(regex: regex)
+            if let result = matchingStrings.first, result.count > 1 {
+                let title = result[1]
+                DLog("OSC title found: \(title)")
+            }
+        }
+    }
+    
     // MARK: - BLE Notifications
     private weak var didConnectToPeripheralObserver: NSObjectProtocol?
     private weak var willReconnectToPeripheralObserver: NSObjectProtocol?
@@ -180,8 +196,8 @@ class UartModeViewController: UartBaseViewController {
             didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main) { [weak self] _ in
                 self?.setupUart()
             }
-            willReconnectToPeripheralObserver = notificationCenter.addObserver(forName: .willReconnectToPeripheral, object: nil, queue: .main) { [weak self] _ in
-                DLog("Show reconnect dialog")
+            willReconnectToPeripheralObserver = notificationCenter.addObserver(forName: .willReconnectToPeripheral, object: nil, queue: .main) { /*[weak self]*/ _ in
+                DLog("Reconnecting...")     // TODO: Maybe show a dialog to alert the user while the reconnection is is progress
             }
         } else {
             if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}

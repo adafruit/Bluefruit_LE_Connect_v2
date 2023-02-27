@@ -21,12 +21,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="L3f-WT-rxL">
-                                <rect key="frame" x="20" y="64" width="760" height="413"/>
+                                <rect key="frame" x="20" y="44" width="760" height="425"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qn4-jq-Ibb">
                                         <rect key="frame" x="0.0" y="0.0" width="760" height="50"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Display Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s8o-9Z-gCo">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" text="Display Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s8o-9Z-gCo">
                                                 <rect key="frame" x="0.0" y="16" width="97" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="90" id="FMA-H9-J9m"/>
@@ -40,21 +40,19 @@
                                                     </mask>
                                                 </variation>
                                             </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="rLh-Ko-VDk">
-                                                <rect key="frame" x="105" y="5" width="164" height="41"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" priority="999" constant="164" id="dSi-iH-Lnt"/>
-                                                </constraints>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="rLh-Ko-VDk">
+                                                <rect key="frame" x="105" y="5" width="296" height="41"/>
                                                 <segments>
                                                     <segment title="Timestamp"/>
                                                     <segment title="Hexadecimal"/>
+                                                    <segment title="Terminal"/>
                                                 </segments>
                                                 <connections>
                                                     <action selector="onDisplayModeChanged:" destination="nMN-bC-Caa" eventType="valueChanged" id="gQ3-nF-0ki"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Data Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vx-2Y-rKI">
-                                                <rect key="frame" x="289" y="16" width="79" height="18"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="752" text="Data Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vx-2Y-rKI">
+                                                <rect key="frame" x="421" y="16" width="79" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="90" id="YAP-cX-lUb"/>
                                                 </constraints>
@@ -68,10 +66,7 @@
                                                 </variation>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ska-Q4-Rud">
-                                                <rect key="frame" x="376" y="9.5" width="164" height="32"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" priority="999" constant="164" id="f7j-rJ-Ooa"/>
-                                                </constraints>
+                                                <rect key="frame" x="508" y="9.5" width="145" height="32"/>
                                                 <segments>
                                                     <segment title="Timestamp"/>
                                                     <segment title="Hexadecimal"/>
@@ -80,7 +75,7 @@
                                                     <action selector="onDataModeChanged:" destination="nMN-bC-Caa" eventType="valueChanged" id="1vy-1s-YxL"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hcy-52-jZX">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hcy-52-jZX">
                                                 <rect key="frame" x="661" y="11.5" width="45" height="27"/>
                                                 <inset key="contentEdgeInsets" minX="13" minY="0.0" maxX="13" maxY="0.0"/>
                                                 <state key="normal" image="action_icon"/>
@@ -88,7 +83,7 @@
                                                     <action selector="onClickExport:" destination="nMN-bC-Caa" eventType="touchUpInside" id="sGT-Zp-v1i"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XhR-ff-hxR">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XhR-ff-hxR">
                                                 <rect key="frame" x="716" y="12.5" width="44" height="25"/>
                                                 <inset key="contentEdgeInsets" minX="13" minY="0.0" maxX="13" maxY="0.0"/>
                                                 <state key="normal" image="clear_icon"/>
@@ -116,17 +111,17 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nxv-cn-1D2">
-                                        <rect key="frame" x="0.0" y="54" width="760" height="359"/>
+                                        <rect key="frame" x="0.0" y="54" width="760" height="371"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hc7-Pd-8gv">
-                                                <rect key="frame" x="0.0" y="10" width="760" height="329"/>
+                                                <rect key="frame" x="0.0" y="10" width="760" height="341"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                 <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="36" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fxQ-7Y-fmI">
-                                                <rect key="frame" x="0.0" y="10" width="760" height="329"/>
+                                                <rect key="frame" x="0.0" y="10" width="760" height="341"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <view key="tableFooterView" contentMode="scaleToFill" id="4Pb-fA-mIw" userLabel="Footer">
                                                     <rect key="frame" x="0.0" y="114" width="760" height="1"/>
@@ -247,10 +242,10 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="TE2-Zf-20E">
-                                <rect key="frame" x="20" y="481" width="760" height="26"/>
+                                <rect key="frame" x="20" y="473" width="760" height="34"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1mG-jJ-5xo">
-                                        <rect key="frame" x="0.0" y="0.0" width="630" height="26"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="630" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="send" enablesReturnKeyAutomatically="YES"/>
                                         <connections>
@@ -258,7 +253,7 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hwu-uD-5tU" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
-                                        <rect key="frame" x="638" y="0.0" width="56" height="26"/>
+                                        <rect key="frame" x="638" y="0.0" width="56" height="34"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                         <state key="normal" title="Send"/>
                                         <connections>
@@ -266,7 +261,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h43-sj-iGz" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
-                                        <rect key="frame" x="702" y="0.0" width="58" height="26"/>
+                                        <rect key="frame" x="702" y="0.0" width="58" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="140" id="81y-Cr-XNq"/>
                                         </constraints>
@@ -286,7 +281,7 @@
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="TE2-Zf-20E" secondAttribute="trailing" id="EDz-Jf-bSq"/>
                             <constraint firstItem="TE2-Zf-20E" firstAttribute="leading" secondItem="7B9-m8-vCq" secondAttribute="leadingMargin" id="JUp-Kg-A2s"/>
-                            <constraint firstItem="L3f-WT-rxL" firstAttribute="top" secondItem="Tei-AJ-0RM" secondAttribute="bottom" constant="20" id="LFz-Wh-wxl"/>
+                            <constraint firstItem="L3f-WT-rxL" firstAttribute="top" secondItem="Tei-AJ-0RM" secondAttribute="bottom" id="LFz-Wh-wxl"/>
                             <constraint firstItem="d2F-LV-YnT" firstAttribute="top" secondItem="kS2-82-V2W" secondAttribute="bottom" id="Rbb-cn-qwq"/>
                             <constraint firstItem="fem-ua-T9A" firstAttribute="trailing" secondItem="7B9-m8-vCq" secondAttribute="trailingMargin" id="TQi-F1-bAd"/>
                             <constraint firstAttribute="trailing" secondItem="kS2-82-V2W" secondAttribute="trailing" id="WwH-7u-v2P"/>
@@ -576,7 +571,7 @@
                                             <outlet property="typeButton" destination="eQV-Ln-vFF" id="iYG-Zs-w3r"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PickerCell" rowHeight="100" id="CLK-eH-v1V" customClass="MqttSettingPickerCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PickerCell" rowHeight="100" id="CLK-eH-v1V" customClass="UartSettingPickerCell" customModule="Bluefruit_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="231.5" width="375" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="CLK-eH-v1V" id="SZy-zX-n4W">
@@ -866,7 +861,7 @@
                                             <outlet property="typeButton" destination="C0C-5r-3Mi" id="24M-as-4S8"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PickerCell" rowHeight="100" id="het-rC-bPD" customClass="MqttSettingPickerCell" customModule="Bluefruit_Connect" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PickerCell" rowHeight="100" id="het-rC-bPD" customClass="UartSettingPickerCell" customModule="Bluefruit_Connect" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="275.5" width="375" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" tableViewCell="het-rC-bPD" id="XRJ-Me-buS">
@@ -944,12 +939,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="i8u-3c-Fjl">
-                                <rect key="frame" x="20" y="64" width="760" height="413"/>
+                                <rect key="frame" x="20" y="44" width="760" height="425"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Qn-KM-hUB">
                                         <rect key="frame" x="0.0" y="0.0" width="760" height="50"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Display Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Vl-YY-0YK">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="1000" text="Display Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Vl-YY-0YK">
                                                 <rect key="frame" x="0.0" y="16" width="97" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="90" id="rBg-XV-7fR"/>
@@ -964,20 +959,18 @@
                                                 </variation>
                                             </label>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="uij-0J-mXf">
-                                                <rect key="frame" x="105" y="5" width="164" height="41"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" priority="999" constant="164" id="nql-dt-UdI"/>
-                                                </constraints>
+                                                <rect key="frame" x="105" y="5" width="244" height="41"/>
                                                 <segments>
                                                     <segment title="Timestamp"/>
                                                     <segment title="Hexadecimal"/>
+                                                    <segment title="Terminal"/>
                                                 </segments>
                                                 <connections>
                                                     <action selector="onDisplayModeChanged:" destination="2KX-i8-vOB" eventType="valueChanged" id="rOu-DB-rKl"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Data Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fN-vB-Pe2">
-                                                <rect key="frame" x="289" y="16" width="79" height="18"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="1000" text="Data Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fN-vB-Pe2">
+                                                <rect key="frame" x="369" y="16" width="79" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="90" id="vzA-o9-clV"/>
                                                 </constraints>
@@ -990,11 +983,8 @@
                                                     </mask>
                                                 </variation>
                                             </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="mok-Hn-JYb">
-                                                <rect key="frame" x="376" y="9.5" width="164" height="32"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" priority="999" constant="164" id="lw2-Oa-s5F"/>
-                                                </constraints>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="mok-Hn-JYb">
+                                                <rect key="frame" x="456" y="9.5" width="197" height="32"/>
                                                 <segments>
                                                     <segment title="Timestamp"/>
                                                     <segment title="Hexadecimal"/>
@@ -1003,7 +993,7 @@
                                                     <action selector="onDataModeChanged:" destination="2KX-i8-vOB" eventType="valueChanged" id="8ic-YU-Mza"/>
                                                 </connections>
                                             </segmentedControl>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1XB-yV-3WS">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1XB-yV-3WS">
                                                 <rect key="frame" x="661" y="11.5" width="45" height="27"/>
                                                 <inset key="contentEdgeInsets" minX="13" minY="0.0" maxX="13" maxY="0.0"/>
                                                 <state key="normal" image="action_icon"/>
@@ -1011,7 +1001,7 @@
                                                     <action selector="onClickExport:" destination="2KX-i8-vOB" eventType="touchUpInside" id="mt2-8x-cz8"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k7H-Bl-ifq">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k7H-Bl-ifq">
                                                 <rect key="frame" x="716" y="12.5" width="44" height="25"/>
                                                 <inset key="contentEdgeInsets" minX="13" minY="0.0" maxX="13" maxY="0.0"/>
                                                 <state key="normal" image="clear_icon"/>
@@ -1039,17 +1029,17 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sWF-lQ-Wys">
-                                        <rect key="frame" x="0.0" y="54" width="760" height="359"/>
+                                        <rect key="frame" x="0.0" y="54" width="760" height="371"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fRu-rJ-C2x">
-                                                <rect key="frame" x="0.0" y="10" width="760" height="329"/>
+                                                <rect key="frame" x="0.0" y="10" width="760" height="341"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                 <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="36" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8in-Rj-3iG">
-                                                <rect key="frame" x="0.0" y="10" width="760" height="329"/>
+                                                <rect key="frame" x="0.0" y="10" width="760" height="341"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <view key="tableFooterView" contentMode="scaleToFill" id="wZt-X0-WTE" userLabel="Footer">
                                                     <rect key="frame" x="0.0" y="114" width="760" height="1"/>
@@ -1170,10 +1160,10 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="wUQ-8a-efW">
-                                <rect key="frame" x="20" y="481" width="760" height="26"/>
+                                <rect key="frame" x="20" y="473" width="760" height="34"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Gbp-6I-SDZ">
-                                        <rect key="frame" x="0.0" y="0.0" width="696" height="26"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="696" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="send" enablesReturnKeyAutomatically="YES"/>
                                         <connections>
@@ -1181,7 +1171,7 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiA-c3-707" customClass="StyledButton" customModule="Bluefruit_Connect" customModuleProvider="target">
-                                        <rect key="frame" x="704" y="0.0" width="56" height="26"/>
+                                        <rect key="frame" x="704" y="0.0" width="56" height="34"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                         <state key="normal" title="Send"/>
                                         <connections>
@@ -1211,7 +1201,7 @@
                             <constraint firstItem="i8u-3c-Fjl" firstAttribute="trailing" secondItem="PLa-Sq-2xV" secondAttribute="trailingMargin" id="tAJ-S6-ZOp"/>
                             <constraint firstItem="R2P-sL-Zbe" firstAttribute="centerY" secondItem="wt7-nx-Xm1" secondAttribute="centerY" id="vZ1-D1-me8"/>
                             <constraint firstItem="i8u-3c-Fjl" firstAttribute="leading" secondItem="PLa-Sq-2xV" secondAttribute="leadingMargin" id="xow-Y9-Zn5"/>
-                            <constraint firstItem="i8u-3c-Fjl" firstAttribute="top" secondItem="hbn-Y0-u8r" secondAttribute="bottom" constant="20" id="ylK-B3-ww1"/>
+                            <constraint firstItem="i8u-3c-Fjl" firstAttribute="top" secondItem="hbn-Y0-u8r" secondAttribute="bottom" id="ylK-B3-ww1"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -1257,7 +1247,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PHb-bX-1YH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2637" y="690"/>
+            <point key="canvasLocation" x="2636.8000000000002" y="689.95502248875573"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zGq-Y4-zlz">
@@ -1287,7 +1277,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="zq7-DG-qZS"/>
+        <segue reference="Puo-Tz-G5N"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.088944101233392275" green="0.57494231631791248" blue="0.99607843137254903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
     <resources>

@@ -1,0 +1,25 @@
+name: Build App
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-stable:
+    name: Build Bluefruit in stable Xcode
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        xcode: ['14.2']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Select  ${{ matrix.xcode }}
+        run: |
+          sudo xcode-select -s /Applications/Xcode_$XCODE_VERSION.app
+          xcode-select -p
+        env:
+          XCODE_VERSION: ${{ matrix.xcode }}
+      - name: Build
+        run: xcodebuild -scheme Bluefruit -project Bluefruit.xworkspace -destination "generic/platform=iOS" -configuration Release build CODE_SIGNING_ALLOWED=NO

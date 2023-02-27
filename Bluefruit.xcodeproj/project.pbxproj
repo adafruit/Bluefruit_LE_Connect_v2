@@ -168,7 +168,7 @@
 		A9B06AAF23D0D0750060A64C /* MqttSettingsValueAndSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B06A4A23D0D0750060A64C /* MqttSettingsValueAndSelector.swift */; };
 		A9B06AB023D0D0750060A64C /* MqttSettingsHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B06A4B23D0D0750060A64C /* MqttSettingsHeaderCell.swift */; };
 		A9B06AB123D0D0750060A64C /* MqttSettingsStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B06A4C23D0D0750060A64C /* MqttSettingsStatusCell.swift */; };
-		A9B06AB223D0D0750060A64C /* MqttSettingPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B06A4D23D0D0750060A64C /* MqttSettingPickerCell.swift */; };
+		A9B06AB223D0D0750060A64C /* UartSettingPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B06A4D23D0D0750060A64C /* UartSettingPickerCell.swift */; };
 		A9B06AB323D0D0750060A64C /* UartSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B06A4E23D0D0750060A64C /* UartSettingsViewController.swift */; };
 		A9B06ADA23D0D0E40060A64C /* PeripheralServices.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9B06ACC23D0D0E30060A64C /* PeripheralServices.storyboard */; };
 		A9B06ADB23D0D0E40060A64C /* Dfu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9B06ACE23D0D0E30060A64C /* Dfu.storyboard */; };
@@ -219,6 +219,7 @@
 		A9D2342D1E3AD64500DC0C99 /* DefaultPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */; };
 		A9D2342E1E3AD64500DC0C99 /* GattUUIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */; };
 		A9D2344D1E3AD97600DC0C99 /* StyleConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D2344C1E3AD97600DC0C99 /* StyleConfig.swift */; };
+		A9EF0412299BF84F00734A82 /* String+matchingStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9EF0411299BF84F00734A82 /* String+matchingStrings.swift */; };
 		A9F4E1BD1F04467200BF8A70 /* ISColorWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = A9F4E1BB1F04467200BF8A70 /* ISColorWheel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
@@ -569,7 +570,7 @@
 		A9B06A4A23D0D0750060A64C /* MqttSettingsValueAndSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettingsValueAndSelector.swift; sourceTree = "<group>"; };
 		A9B06A4B23D0D0750060A64C /* MqttSettingsHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettingsHeaderCell.swift; sourceTree = "<group>"; };
 		A9B06A4C23D0D0750060A64C /* MqttSettingsStatusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettingsStatusCell.swift; sourceTree = "<group>"; };
-		A9B06A4D23D0D0750060A64C /* MqttSettingPickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MqttSettingPickerCell.swift; sourceTree = "<group>"; };
+		A9B06A4D23D0D0750060A64C /* UartSettingPickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSettingPickerCell.swift; sourceTree = "<group>"; };
 		A9B06A4E23D0D0750060A64C /* UartSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UartSettingsViewController.swift; sourceTree = "<group>"; };
 		A9B06A4F23D0D0750060A64C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A9B06ACD23D0D0E30060A64C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Bluefruit/Base.lproj/PeripheralServices.storyboard; sourceTree = SOURCE_ROOT; };
@@ -619,6 +620,7 @@
 		A9D234241E3AD64500DC0C99 /* DefaultPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultPreferences.plist; sourceTree = "<group>"; };
 		A9D234251E3AD64500DC0C99 /* GattUUIDs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GattUUIDs.plist; sourceTree = "<group>"; };
 		A9D2344C1E3AD97600DC0C99 /* StyleConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleConfig.swift; sourceTree = "<group>"; };
+		A9EF0411299BF84F00734A82 /* String+matchingStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+matchingStrings.swift"; sourceTree = "<group>"; };
 		A9F4E1BA1F04467200BF8A70 /* ISColorWheel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISColorWheel.h; sourceTree = "<group>"; };
 		A9F4E1BB1F04467200BF8A70 /* ISColorWheel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISColorWheel.m; sourceTree = "<group>"; };
 		DE511F22E8F88E565DA29F57 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1111,6 +1113,7 @@
 				A9B069D923D0D0750060A64C /* Watch */,
 				A9B069DC23D0D0750060A64C /* Color+DarkerLighter.swift */,
 				A9B069DD23D0D0750060A64C /* KeyboardPositionNotifier.swift */,
+				A9EF0411299BF84F00734A82 /* String+matchingStrings.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1350,7 +1353,7 @@
 				A9B06A4A23D0D0750060A64C /* MqttSettingsValueAndSelector.swift */,
 				A9B06A4B23D0D0750060A64C /* MqttSettingsHeaderCell.swift */,
 				A9B06A4C23D0D0750060A64C /* MqttSettingsStatusCell.swift */,
-				A9B06A4D23D0D0750060A64C /* MqttSettingPickerCell.swift */,
+				A9B06A4D23D0D0750060A64C /* UartSettingPickerCell.swift */,
 			);
 			path = Mqtt;
 			sourceTree = "<group>";
@@ -1549,7 +1552,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1420;
 				ORGANIZATIONNAME = Adafruit;
 				TargetAttributes = {
 					A9286C951E3A9216008E5F81 = {
@@ -1742,13 +1745,14 @@
 				A9B06A9923D0D0750060A64C /* PinIOTableViewCell.swift in Sources */,
 				A9B069B023D0CEA90060A64C /* MqttSettings.swift in Sources */,
 				A9F4E1BD1F04467200BF8A70 /* ISColorWheel.m in Sources */,
+				A9EF0412299BF84F00734A82 /* String+matchingStrings.swift in Sources */,
 				A9B06A9123D0D0750060A64C /* ControllerPadViewController.swift in Sources */,
 				A9B06AB123D0D0750060A64C /* MqttSettingsStatusCell.swift in Sources */,
 				A9B06AAB23D0D0750060A64C /* UartBaseViewController.swift in Sources */,
 				A9B06A6E23D0D0750060A64C /* SensorConfigViewController.swift in Sources */,
 				A93DE7751F36195900B2EB5D /* GattServer.swift in Sources */,
 				A9BB78E51EDCEC65004663DE /* VectorMath+Calibration.swift in Sources */,
-				A9B06AB223D0D0750060A64C /* MqttSettingPickerCell.swift in Sources */,
+				A9B06AB223D0D0750060A64C /* UartSettingPickerCell.swift in Sources */,
 				A9B06A9523D0D0750060A64C /* ControllerModeViewController.swift in Sources */,
 				A9B06A9B23D0D0750060A64C /* ThermalCameraModuleViewController.swift in Sources */,
 				A9B06A5923D0D0750060A64C /* HandoffManager.swift in Sources */,

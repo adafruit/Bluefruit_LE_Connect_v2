@@ -193,6 +193,7 @@ Please reset bluetooth and try again.";
 "uart_settings_displayMode_title" = "Display Mode";
 "uart_settings_displayMode_timestamp" = "Timestamp";
 "uart_settings_displayMode_text" = "Text";
+"uart_settings_displayMode_terminal" = "Terminal";
 "uart_settings_dataMode_title" = "Data Mode";
 "uart_settings_dataMode_hex" = "Hex";
 "uart_settings_dataMode_ascii" = "Ascii";
