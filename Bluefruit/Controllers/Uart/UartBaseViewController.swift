@@ -299,9 +299,11 @@ class UartBaseViewController: PeripheralModeViewController {
         assert(false, "Should be implemented by subclasses")
     }
     
-    internal func onUartPacketTextPostProcess() {
+    internal func onUartPacketTextPreProcess(packet: UartPacket) -> UartPacket {
         // Can be overriden by subclasses
+        return packet
     }
+    
     
     // MARK: - UI Actions
     @objc func onClickMqtt() {
@@ -589,20 +591,20 @@ extension UartBaseViewController: UartPacketManagerDelegate {
             }
         }
     }
-    
 
     func onUartPacketText(_ packet: UartPacket) {
         guard Preferences.uartIsEchoEnabled || packet.mode == .rx else { return }
+
+        // Call preprocess funcion. It can be overriden by subclassed for custom behaviours
+        let newPacket = onUartPacketTextPreProcess(packet: packet)
+
         
-        let color = colorForPacket(packet: packet)
-        let font = fontForPacket(packet: packet)
+        let color = colorForPacket(packet: newPacket)
+        let font = fontForPacket(packet: newPacket)
         
-        if let attributedString = attributedStringFromData(packet.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: font) {
+        if let attributedString = attributedStringFromData(newPacket.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: font) {
             textCachedBuffer.append(attributedString)
         }
-        
-        // Call postprocess funcion. It can be overriden by subclassed for custom behaviours
-        onUartPacketTextPostProcess()
     }
     
     func mqttUpdateStatusUI() {

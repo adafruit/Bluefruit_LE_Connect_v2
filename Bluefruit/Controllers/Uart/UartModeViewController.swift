@@ -180,35 +180,27 @@ class UartModeViewController: UartBaseViewController {
     }
     
     private static let oscTitleRegex = #"\x1b]0\;(?<title>.+?(?=\x1b\\))"#
-    override func onUartPacketTextPostProcess() {
+    
+    override func onUartPacketTextPreProcess(packet: UartPacket) -> UartPacket {
         // Terminal OSC commands
-        guard Preferences.uartDisplayMode == .terminal else { return }
+        guard Preferences.uartDisplayMode == .terminal,
+              packet.mode == .rx,
+              let text = String(data: packet.data, encoding: .utf8)
+        else { return packet }
+       
         
-        let text: String
-        let textCachedString = textCachedBuffer.string
-        let lastNewLineIndexInt: Int
-        
-        if let lastNewLineIndex = textCachedString.rangeOfCharacter(from: .newlines, options: [.backwards], range: nil)?.upperBound {
-            text = String(textCachedString.suffix(from: lastNewLineIndex))
-            lastNewLineIndexInt = textCachedString.distance(from: textCachedString.startIndex, to: lastNewLineIndex)
-        }
-        else {
-            text = textCachedString
-            lastNewLineIndexInt = 0
-        }
         let matchingStrings = text.matchingStrings(regex: Self.oscTitleRegex)
+        guard let result = matchingStrings.last, result.count > 1 else { return packet }
         
-        if let result = matchingStrings.last, result.count > 1 {
-            terminalTitle = result[1].0         // result[1] contains the <title> in the regex expression
-            DLog("OSC title found: \(String(describing: terminalTitle))")
-            updateTerminalTitle()
-            
-            // Remove range of matching string
-            var expressionRange = result[0].1        // result[0] contains the full match for the regex expression
-            expressionRange.location += lastNewLineIndexInt
-            expressionRange.length += 3
-            textCachedBuffer.replaceCharacters(in: expressionRange, with: "")
-        }
+        terminalTitle = result[1].0         // result[1] contains the <title> in the regex expression
+        DLog("OSC title found: \(String(describing: terminalTitle))")
+        updateTerminalTitle()
+        
+        // Remove range of matching string
+        let expressionRange = result[0].1        // result[0] contains the full match for the regex expression
+        let remainingText = (text as NSString).replacingCharacters(in: NSMakeRange(expressionRange.location, expressionRange.length+2), with: "")
+        let remainingData = remainingText.data(using: .utf8) ?? Data()
+        return UartPacket(peripheralId: packet.peripheralId, mode: packet.mode, data: remainingData)
     }
     
     private func updateTerminalTitle() {
