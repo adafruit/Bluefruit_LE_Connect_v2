@@ -124,7 +124,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
         let localizationManager = LocalizationManager.shared
 
         if indexPath == openCellIndexPath {
-            let pickerCell = tableView.dequeueReusableCell(withIdentifier: "PickerCell", for: indexPath) as! MqttSettingPickerCell
+            let pickerCell = tableView.dequeueReusableCell(withIdentifier: "PickerCell", for: indexPath) as! UartSettingPickerCell
             pickerCell.pickerView.tag = indexPath.section * 100 + indexPath.row-1
             pickerCell.pickerView.dataSource = self
             pickerCell.pickerView.delegate = self
@@ -336,7 +336,7 @@ extension UartMqttSettingsViewController: UITableViewDataSource {
     private func hasPickerForIndexPath(_ indexPath: IndexPath) -> Bool {
         var hasPicker = false
 
-        if baseTableView.cellForRow(at: IndexPath(row: indexPath.row+1, section: indexPath.section)) is MqttSettingPickerCell {
+        if baseTableView.cellForRow(at: IndexPath(row: indexPath.row+1, section: indexPath.section)) is UartSettingPickerCell {
             hasPicker = true
         }
 

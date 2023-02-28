@@ -14,15 +14,19 @@ class UartModeViewController: UartBaseViewController {
     // UI
     @IBOutlet weak var sendPeripheralButton: UIButton!
     @IBOutlet var inputAccesoryView: UIView!
+    @IBOutlet weak var terminalTitleView: UIView!
+    @IBOutlet weak var terminalTitleLabel: UILabel!
     
     // Params
     var uartServiceUuid: CBUUID = BlePeripheral.kUartServiceUUID
     var txCharacteristicUuid: CBUUID = BlePeripheral.kUartTxCharacteristicUUID
     var rxCharacteristicUuid: CBUUID = BlePeripheral.kUartRxCharacteristicUUID
+    var isResetPacketsOnReconnectionEnabled = true
 
     // Data
     private var colorForPeripheral = [UUID: UIColor]()
     private var multiUartSendToPeripheralId: UUID?       // nil = all peripherals
+    private var terminalTitle: String?
     
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -42,7 +46,24 @@ class UartModeViewController: UartBaseViewController {
         sendPeripheralButton.setTitle(localizationManager.localizedString("uart_send_toall_action"), for: .normal)     // Default value
         
         // Init Uart
-        uartData = UartPacketManager(delegate: self, isPacketCacheEnabled: true, isMqttEnabled: true)
+        let uartPacketManager = UartPacketManager(delegate: self, isPacketCacheEnabled: true, isMqttEnabled: true)
+        uartPacketManager.isResetPacketsOnReconnectionEnabled = isResetPacketsOnReconnectionEnabled
+        uartData = uartPacketManager
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+                
+        // Notifications
+        registerNotifications(enabled: true)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        // Notifications
+        registerNotifications(enabled: false)
     }
     
     override func didReceiveMemoryWarning() {
@@ -152,6 +173,61 @@ class UartModeViewController: UartBaseViewController {
         }
     }
     
+    
+    @objc override func reloadData() {
+        super.reloadData()
+        updateTerminalTitle()
+    }
+    
+    private static let oscTitleRegex = #"\x1b]0\;(?<title>.+?(?=\x1b\\))"#
+    
+    override func onUartPacketTextPreProcess(packet: UartPacket) -> UartPacket {
+        // Terminal OSC commands
+        guard Preferences.uartDisplayMode == .terminal,
+              packet.mode == .rx,
+              let text = String(data: packet.data, encoding: .utf8)
+        else { return packet }
+       
+        
+        let matchingStrings = text.matchingStrings(regex: Self.oscTitleRegex)
+        guard let result = matchingStrings.last, result.count > 1 else { return packet }
+        
+        terminalTitle = result[1].0         // result[1] contains the <title> in the regex expression
+        DLog("OSC title found: \(String(describing: terminalTitle))")
+        updateTerminalTitle()
+        
+        // Remove range of matching string
+        let expressionRange = result[0].1        // result[0] contains the full match for the regex expression
+        let remainingText = (text as NSString).replacingCharacters(in: NSMakeRange(expressionRange.location, expressionRange.length+2), with: "")
+        let remainingData = remainingText.data(using: .utf8) ?? Data()
+        return UartPacket(peripheralId: packet.peripheralId, mode: packet.mode, data: remainingData)
+    }
+    
+    private func updateTerminalTitle() {
+        terminalTitleView.isHidden = Preferences.uartDisplayMode != .terminal || (terminalTitle?.isEmpty ?? true)
+        terminalTitleLabel.text = terminalTitle
+    }
+    
+    // MARK: - BLE Notifications
+    private weak var didConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var willReconnectToPeripheralObserver: NSObjectProtocol?
+    
+    private func registerNotifications(enabled: Bool) {
+        let notificationCenter = NotificationCenter.default
+        if enabled {
+            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main) { [weak self] _ in
+                self?.setupUart()
+            }
+            willReconnectToPeripheralObserver = notificationCenter.addObserver(forName: .willReconnectToPeripheral, object: nil, queue: .main) { [weak self] _ in
+                DLog("Reconnecting...")
+                self?.updateUartReadyUI(isReady: false)
+            }
+        } else {
+            if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
+            if let willReconnectToPeripheralObserver = willReconnectToPeripheralObserver {notificationCenter.removeObserver(willReconnectToPeripheralObserver)}
+        }
+    }
+    
     // MARK: - UI Actions
     @IBAction func onClickPeripheralToSend(_ sender: UIButton) {
         let viewController = storyboard!.instantiateViewController(withIdentifier: "UartSelectPeripheralViewController") as! UartSelectPeripheralViewController
@@ -187,6 +263,8 @@ class UartModeViewController: UartBaseViewController {
     
     // MARK: - Style
     override func colorForPacket(packet: UartPacket) -> UIColor {
+        guard Preferences.uartDisplayMode != .terminal else  { return UIColor.black }
+        
         var color: UIColor?
         if let peripheralId = packet.peripheralId {
             color = colorForPeripheral[peripheralId]

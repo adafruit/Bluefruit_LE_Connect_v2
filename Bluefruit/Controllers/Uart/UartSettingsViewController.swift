@@ -19,6 +19,9 @@ class UartSettingsViewController: UIViewController {
 
     // Data
     private var openCellIndexPath: IndexPath?
+    private var titlesIdForDisplayMode: [String] {
+        return ["uart_settings_displayMode_timestamp", "uart_settings_displayMode_text", "uart_settings_displayMode_terminal"]
+    }
     private var titlesForEolCharacters: [String] {
         return ["\\n", "\\r", "\\n\\r", "\\r\\n"]
     }
@@ -109,12 +112,20 @@ extension UartSettingsViewController: UITableViewDataSource {
         var reuseIdentifier: String!
         
         guard indexPath != openCellIndexPath else {
-            let pickerCell = tableView.dequeueReusableCell(withIdentifier: "PickerCell", for: indexPath) as! MqttSettingPickerCell
+            let pickerCell = tableView.dequeueReusableCell(withIdentifier: "PickerCell", for: indexPath) as! UartSettingPickerCell
             pickerCell.pickerView.tag = indexPath.section * 100 + indexPath.row-1
             pickerCell.pickerView.dataSource = self
             pickerCell.pickerView.delegate = self
-            pickerCell.pickerView.selectRow(Preferences.uartEolCharactersId, inComponent: 0, animated: false)
-            pickerCell.backgroundColor = .groupTableViewBackground //UIColor(hex: 0xe2e1e0)
+            
+            let pickerSelectedRow: Int
+            switch SettingsSection(rawValue: row-1)! {
+            case .displayMode: pickerSelectedRow = Preferences.uartDisplayMode.rawValue
+            case .eolCharacters: pickerSelectedRow = Preferences.uartEolCharactersId
+            default: pickerSelectedRow = 0
+            }
+            
+            pickerCell.pickerView.selectRow(pickerSelectedRow, inComponent: 0, animated: false)
+            pickerCell.backgroundColor = .systemGroupedBackground //UIColor(hex: 0xe2e1e0)
             
             return pickerCell
         }
@@ -122,7 +133,7 @@ extension UartSettingsViewController: UITableViewDataSource {
         if indexPath.section == 0 {
             switch SettingsSection(rawValue: row)! {
             case .displayMode:
-                reuseIdentifier = "UartSettingSegmentedCell"
+                reuseIdentifier = "SelectorCell" //"UartSettingSegmentedCell"
             case .dataMode:
                 reuseIdentifier = "UartSettingSegmentedCell"
             case .echo:
@@ -143,7 +154,7 @@ extension UartSettingsViewController: UITableViewDataSource {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for:indexPath)
 
-        cell.backgroundColor = .groupTableViewBackground // UIColor(hex: 0xe2e1e0)
+        cell.backgroundColor = .systemGroupedBackground // UIColor(hex: 0xe2e1e0)
         return cell
     }
 
@@ -159,16 +170,29 @@ extension UartSettingsViewController: UITableViewDataSource {
             switch SettingsSection(rawValue: row)! {
             case .displayMode:
                 titleKey = "uart_settings_displayMode_title"
-                uartCell.segmentedControl.setTitle(localizationManager.localizedString("uart_settings_displayMode_timestamp"), forSegmentAt: 0)
-                uartCell.segmentedControl.setTitle(localizationManager.localizedString("uart_settings_displayMode_text"), forSegmentAt: 1)
-                uartCell.segmentedControl.selectedSegmentIndex = Preferences.uartIsDisplayModeTimestamp ? 0:1
+                /*
+                uartCell.segmentedControl.removeAllSegments()
+                uartCell.segmentedControl.insertSegment(withTitle: localizationManager.localizedString("uart_settings_displayMode_timestamp"), at: 0, animated: false)
+                uartCell.segmentedControl.insertSegment(withTitle: localizationManager.localizedString("uart_settings_displayMode_text"), at: 1, animated: false)
+                uartCell.segmentedControl.insertSegment(withTitle: localizationManager.localizedString("uart_settings_displayMode_terminal"), at: 2, animated: false)
+                uartCell.segmentedControl.selectedSegmentIndex = Preferences.uartDisplayMode.rawValue
                 uartCell.onSegmentedControlIndexChanged = { selectedIndex in
-                    Preferences.uartIsDisplayModeTimestamp = selectedIndex == 0
+                    Preferences.uartDisplayMode = Preferences.UartDisplayMode(rawValue: selectedIndex) ?? .timeStamp
+                }*/
+                let typeButton = uartCell.typeButton!
+                typeButton.tag = tagFromIndexPath(indexPath, scale:100)
+                if Preferences.uartDisplayMode.rawValue < 0 || Preferences.uartDisplayMode.rawValue >= titlesIdForDisplayMode.count {
+                    Preferences.uartDisplayMode = .timeStamp     // Reset to default
+                    DLog("Warning: wrong uartDisplayMode found in Preferences")
                 }
+                typeButton.setTitle(localizationManager.localizedString(titlesIdForDisplayMode[Preferences.uartDisplayMode.rawValue]), for: .normal)
+                typeButton.addTarget(self, action: #selector(onClickTypeButton(_:)), for: .touchUpInside)
+                
             case .dataMode:
                 titleKey = "uart_settings_dataMode_title"
-                uartCell.segmentedControl.setTitle(localizationManager.localizedString("uart_settings_dataMode_ascii"), forSegmentAt: 0)
-                uartCell.segmentedControl.setTitle(localizationManager.localizedString("uart_settings_dataMode_hex"), forSegmentAt: 1)
+                uartCell.segmentedControl.removeAllSegments()
+                uartCell.segmentedControl.insertSegment(withTitle: localizationManager.localizedString("uart_settings_dataMode_ascii"), at: 0, animated: false)
+                uartCell.segmentedControl.insertSegment(withTitle: localizationManager.localizedString("uart_settings_dataMode_hex"), at: 1, animated: false)
                 uartCell.segmentedControl.selectedSegmentIndex = Preferences.uartIsInHexMode ? 1:0
                 uartCell.onSegmentedControlIndexChanged = { selectedIndex in
                     Preferences.uartIsInHexMode = selectedIndex == 1
@@ -194,7 +218,7 @@ extension UartSettingsViewController: UITableViewDataSource {
                     DLog("Warning: wrong uartEolCharactersId found in Preferences")
                 }
                 typeButton.setTitle(titlesForEolCharacters[Preferences.uartEolCharactersId], for: .normal)
-                typeButton.addTarget(self, action: #selector(UartMqttSettingsViewController.onClickTypeButton(_:)), for: .touchUpInside)
+                typeButton.addTarget(self, action: #selector(onClickTypeButton(_:)), for: .touchUpInside)
             }
             
             uartCell.titleLabel.text = titleKey == nil ? nil : localizationManager.localizedString(titleKey!)+":"
@@ -228,25 +252,31 @@ extension UartSettingsViewController: UITableViewDataSource {
         // display the date picker inline with the table content
         baseTableView.beginUpdates()
         
-        var before = false   // indicates if the date picker is below "indexPath", help us determine which row to reveal
-        var sameCellClicked = false
+        var isReplacingOpenedPicker = false
+        var isBefore = false   // indicates if the date picker is below "indexPath", help us determine which row to reveal
+        var isSameCellClicked = false
         if let openCellIndexPath = openCellIndexPath {
-            before = openCellIndexPath.section <= indexPath.section && openCellIndexPath.row < indexPath.row
+            isBefore = openCellIndexPath.section <= indexPath.section || openCellIndexPath.row < indexPath.row
             
-            sameCellClicked = openCellIndexPath.section == indexPath.section && openCellIndexPath.row - 1 == indexPath.row
+            isSameCellClicked = openCellIndexPath.section == indexPath.section && openCellIndexPath.row - 1 == indexPath.row
+            
+            isReplacingOpenedPicker = !isSameCellClicked
             
             // remove any date picker cell if it exists
             baseTableView.deleteRows(at: [openCellIndexPath], with: .fade)
             self.openCellIndexPath = nil
         }
         
-        if !sameCellClicked {
+        if !isSameCellClicked {
             // hide the old date picker and display the new one
-            let rowToReveal = before ? indexPath.row - 1 : indexPath.row
-            let indexPathToReveal = IndexPath(row:rowToReveal, section:indexPath.section)
+            var rowToReveal = isBefore ? indexPath.row - 1 : indexPath.row
+            if isReplacingOpenedPicker {
+                rowToReveal = rowToReveal + 1
+            }
+            let indexPathToReveal = IndexPath(row: rowToReveal, section: indexPath.section)
             
             toggleDatePickerForSelectedIndexPath(indexPathToReveal)
-            self.openCellIndexPath = IndexPath(row:indexPathToReveal.row + 1, section:indexPathToReveal.section)
+            self.openCellIndexPath = IndexPath(row: indexPathToReveal.row + 1, section: indexPathToReveal.section)
         }
         
         // always deselect the row containing the start or end date
@@ -261,15 +291,15 @@ extension UartSettingsViewController: UITableViewDataSource {
     private func toggleDatePickerForSelectedIndexPath(_ indexPath: IndexPath) {
         
         baseTableView.beginUpdates()
-        let indexPaths = [IndexPath(row:indexPath.row + 1, section:indexPath.section)]
+        let indexPaths = [IndexPath(row: indexPath.row + 1, section: indexPath.section)]
         
         // check if 'indexPath' has an attached date picker below it
         if hasPickerForIndexPath(indexPath) {
             // found a picker below it, so remove it
-            baseTableView.deleteRows(at: indexPaths, with:.fade)
+            baseTableView.deleteRows(at: indexPaths, with: .fade)
         } else {
             // didn't find a picker below it, so we should insert it
-            baseTableView.insertRows(at: indexPaths, with:.fade)
+            baseTableView.insertRows(at: indexPaths, with: .fade)
         }
         
         baseTableView.endUpdates()
@@ -278,14 +308,12 @@ extension UartSettingsViewController: UITableViewDataSource {
     private func hasPickerForIndexPath(_ indexPath: IndexPath) -> Bool {
         var hasPicker = false
         
-        if baseTableView.cellForRow(at: IndexPath(row: indexPath.row+1, section: indexPath.section)) is MqttSettingPickerCell {
+        if baseTableView.cellForRow(at: IndexPath(row: indexPath.row+1, section: indexPath.section)) is UartSettingPickerCell {
             hasPicker = true
         }
         
         return hasPicker
     }
-
-    
 }
 
 // MARK: - UITableViewDelegate
@@ -316,11 +344,26 @@ extension UartSettingsViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return titlesForEolCharacters.count
+        
+        let result: Int
+        switch SettingsSection(rawValue: openCellIndexPath!.row-1)! {
+        case .displayMode: result = titlesIdForDisplayMode.count
+        case .eolCharacters: result = titlesForEolCharacters.count
+        default: result = 0
+        }
+        
+        return result
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return titlesForEolCharacters[row]
+        let result: String?
+        switch SettingsSection(rawValue: openCellIndexPath!.row-1)! {
+        case .displayMode: result = LocalizationManager.shared.localizedString(titlesIdForDisplayMode[row])
+        case .eolCharacters: result = titlesForEolCharacters[row]
+        default: result = nil
+        }
+        
+        return result
     }
 }
 
@@ -330,10 +373,20 @@ extension UartSettingsViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let selectedIndexPath = indexPathFromTag(pickerView.tag, scale:100)
         
-        if row >= 0 && row < titlesForEolCharacters.count {
-            Preferences.uartEolCharactersId = row
+        
+        switch SettingsSection(rawValue: openCellIndexPath!.row-1)! {
+        case .displayMode:
+            if row >= 0 && row < titlesIdForDisplayMode.count {
+                Preferences.uartDisplayMode = Preferences.UartDisplayMode(rawValue: row) ?? .timeStamp
+            }
+        case .eolCharacters:
+            if row >= 0 && row < titlesForEolCharacters.count {
+                Preferences.uartEolCharactersId = row
+            }
+        default: break
         }
         
+               
         // Refresh cell
         baseTableView.reloadRows(at: [selectedIndexPath], with: .none)
     }

@@ -127,6 +127,7 @@ class PeripheralModulesViewController: UIViewController {
     
     // MARK: - BLE Notifications
     private weak var willConnectToPeripheralObserver: NSObjectProtocol?
+    private weak var didConnectToPeripheralObserver: NSObjectProtocol?
     private weak var willDisconnectFromPeripheralObserver: NSObjectProtocol?
     private weak var peripheralDidUpdateRssiObserver: NSObjectProtocol?
     private weak var didDisconnectFromPeripheralObserver: NSObjectProtocol?
@@ -136,12 +137,14 @@ class PeripheralModulesViewController: UIViewController {
 
         if enabled {
             willConnectToPeripheralObserver = notificationCenter.addObserver(forName: .willConnectToPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.willConnectToPeripheral(notification: notification)})
+            didConnectToPeripheralObserver = notificationCenter.addObserver(forName: .didConnectToPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.didConnectToPeripheral(notification: notification)})
             willDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .willDisconnectFromPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.willDisconnectFromPeripheral(notification: notification)})
             peripheralDidUpdateRssiObserver = notificationCenter.addObserver(forName: .peripheralDidUpdateRssi, object: nil, queue: .main, using: {[weak self] notification in self?.peripheralDidUpdateRssi(notification: notification)})
             didDisconnectFromPeripheralObserver = notificationCenter.addObserver(forName: .didDisconnectFromPeripheral, object: nil, queue: .main, using: {[weak self] notification in self?.didDisconnectFromPeripheral(notification: notification)})
             
         } else {
             if let willConnectToPeripheralObserver = willConnectToPeripheralObserver {notificationCenter.removeObserver(willConnectToPeripheralObserver)}
+            if let didConnectToPeripheralObserver = didConnectToPeripheralObserver {notificationCenter.removeObserver(didConnectToPeripheralObserver)}
             if let willDisconnectFromPeripheralObserver = willDisconnectFromPeripheralObserver {notificationCenter.removeObserver(willDisconnectFromPeripheralObserver)}
             if let peripheralDidUpdateRssiObserver = peripheralDidUpdateRssiObserver {notificationCenter.removeObserver(peripheralDidUpdateRssiObserver)}
             if let didDisconnectFromPeripheralObserver = didDisconnectFromPeripheralObserver {notificationCenter.removeObserver(didDisconnectFromPeripheralObserver)}
@@ -155,6 +158,15 @@ class PeripheralModulesViewController: UIViewController {
         } else {
             showEmpty(true)
             setConnecting(true)
+        }
+    }
+    
+    private func didConnectToPeripheral(notification: Notification) {
+        guard let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, identifier == blePeripheral?.identifier else { return }
+        
+        if isInMultiUartMode() {
+        } else {
+            showEmpty(false)
         }
     }
 
@@ -202,7 +214,9 @@ class PeripheralModulesViewController: UIViewController {
     
     // MARK: - UI
     @objc private func rssiRefreshFired() {
-        blePeripheral?.readRssi()
+        if blePeripheral?.state == .connected {     // Ignore rssi timer if not connected
+            blePeripheral?.readRssi()
+        }
     }
     
     private func goBackToPeripheralList() {
@@ -494,6 +508,7 @@ extension PeripheralModulesViewController: UITableViewDelegate {
                     uartViewController.uartServiceUuid = BlePeripheral.kCircuitPythonServiceUUID
                     uartViewController.txCharacteristicUuid = BlePeripheral.kCircuitPythonTxCharacteristicUUID
                     uartViewController.rxCharacteristicUuid = BlePeripheral.kCircuitPythonRxCharacteristicUUID
+                    uartViewController.isResetPacketsOnReconnectionEnabled = false
                     show(uartViewController, sender: self)
                 }
 

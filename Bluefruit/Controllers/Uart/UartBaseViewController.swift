@@ -61,8 +61,8 @@ class UartBaseViewController: PeripheralModeViewController {
     internal var uartData: UartPacketManagerBase!
     private let timestampDateFormatter = DateFormatter()
     private var tableCachedDataBuffer: [UartPacket]?
-    private var textCachedBuffer = NSMutableAttributedString()
-    
+    internal var textCachedBuffer = NSMutableAttributedString()
+
     private let keyboardPositionNotifier = KeyboardPositionNotifier()
     
     override func viewDidLoad() {
@@ -85,6 +85,8 @@ class UartBaseViewController: PeripheralModeViewController {
         let localizationManager = LocalizationManager.shared
         displayModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_displayMode_timestamp"), forSegmentAt: 0)
         displayModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_displayMode_text"), forSegmentAt: 1)
+        displayModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_displayMode_terminal"), forSegmentAt: 2)
+
         dataModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_dataMode_ascii"), forSegmentAt: 0)
         dataModeSegmentedControl.setTitle(localizationManager.localizedString("uart_settings_dataMode_hex"), forSegmentAt: 1)
         
@@ -247,9 +249,11 @@ class UartBaseViewController: PeripheralModeViewController {
     }
     
     // MARK: - UI Updates
+    private var displayMode: UartModeViewController.DisplayMode {
+        Preferences.uartDisplayMode == .timeStamp ? .table : .text
+    }
+    
     private func reloadDataUI() {
-        let displayMode: UartModeViewController.DisplayMode = Preferences.uartIsDisplayModeTimestamp ? .table : .text
-        
         baseTableView.isHidden = displayMode == .text
         baseTextView.isHidden = displayMode == .table
         
@@ -260,7 +264,7 @@ class UartBaseViewController: PeripheralModeViewController {
             for dataPacket in dataPackets {
                 onUartPacketText(dataPacket)
             }
-            baseTextView.attributedText = textCachedBuffer
+            //baseTextView.attributedText = textCachedBuffer
             reloadData()
             
         case .table:
@@ -273,7 +277,7 @@ class UartBaseViewController: PeripheralModeViewController {
     private func reloadControlsUI() {
         showEolSwitch.isOn = Preferences.uartIsAutomaticEolEnabled
         addEolSwitch.isOn = Preferences.uartIsEchoEnabled
-        displayModeSegmentedControl.selectedSegmentIndex = Preferences.uartIsDisplayModeTimestamp ? 0:1
+        displayModeSegmentedControl.selectedSegmentIndex = Preferences.uartDisplayMode.rawValue
         dataModeSegmentedControl.selectedSegmentIndex = Preferences.uartIsInHexMode ? 1:0
     }
     
@@ -287,13 +291,19 @@ class UartBaseViewController: PeripheralModeViewController {
     
     internal func updateUartReadyUI(isReady: Bool) {
         inputTextField.isEnabled = isReady
-        inputTextField.backgroundColor = isReady ? UIColor.white : UIColor.black.withAlphaComponent(0.1)
+        inputTextField.backgroundColor = isReady ? UIColor.white : UIColor.white.withAlphaComponent(0.3)
         sendInputButton.isEnabled = isReady
     }
     
     internal func send(data: Data) {
         assert(false, "Should be implemented by subclasses")
     }
+    
+    internal func onUartPacketTextPreProcess(packet: UartPacket) -> UartPacket {
+        // Can be overriden by subclasses
+        return packet
+    }
+    
     
     // MARK: - UI Actions
     @objc func onClickMqtt() {
@@ -463,8 +473,7 @@ class UartBaseViewController: PeripheralModeViewController {
     }
     
     @IBAction func onDisplayModeChanged(_ sender: UISegmentedControl) {
-        Preferences.uartIsDisplayModeTimestamp = sender.selectedSegmentIndex == 0
-        
+        Preferences.uartDisplayMode = Preferences.UartDisplayMode(rawValue: sender.selectedSegmentIndex) ?? .timeStamp
     }
     
     @IBAction func onDataModeChanged(_ sender: UISegmentedControl) {
@@ -549,8 +558,6 @@ extension UartBaseViewController: UartPacketManagerDelegate {
         // Check that the view has been initialized before updating UI
         guard isViewLoaded && view.window != nil && baseTableView != nil else { return }
         
-        let displayMode: UartModeViewController.DisplayMode = Preferences.uartIsDisplayModeTimestamp ? .table : .text
-        
         switch displayMode {
         case .text:
             onUartPacketText(packet)
@@ -564,7 +571,6 @@ extension UartBaseViewController: UartPacketManagerDelegate {
     }
     
     @objc func reloadData() {
-        let displayMode: UartModeViewController.DisplayMode = Preferences.uartIsDisplayModeTimestamp ? .table : .text
         switch displayMode {
         case .text:
             baseTextView.attributedText = textCachedBuffer
@@ -585,14 +591,18 @@ extension UartBaseViewController: UartPacketManagerDelegate {
             }
         }
     }
-    
-    private func onUartPacketText(_ packet: UartPacket) {
+
+    func onUartPacketText(_ packet: UartPacket) {
         guard Preferences.uartIsEchoEnabled || packet.mode == .rx else { return }
+
+        // Call preprocess funcion. It can be overriden by subclassed for custom behaviours
+        let newPacket = onUartPacketTextPreProcess(packet: packet)
+
         
-        let color = colorForPacket(packet: packet)
-        let font = fontForPacket(packet: packet)
+        let color = colorForPacket(packet: newPacket)
+        let font = fontForPacket(packet: newPacket)
         
-        if let attributedString = attributedStringFromData(packet.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: font) {
+        if let attributedString = attributedStringFromData(newPacket.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: font) {
             textCachedBuffer.append(attributedString)
         }
     }

@@ -1,5 +1,5 @@
 //
-//  MqttSettingPickerCell.swift
+//  UartSettingPickerCell.swift
 //  Bluefruit Connect
 //
 //  Created by Antonio García on 11/02/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MqttSettingPickerCell: UITableViewCell {
+class UartSettingPickerCell: UITableViewCell {
 
     @IBOutlet weak var pickerView: UIPickerView!
 

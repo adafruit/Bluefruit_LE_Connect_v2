@@ -30,8 +30,8 @@
 	<string>#ff0000</string>
 	<key>UartSentDataColor</key>
 	<string>#0000bb</string>
-	<key>UartIsDisplayModeTimestamp</key>
-	<false/>
+	<key>UartDisplayMode</key>
+	<integer>0</integer>
 	<key>UartIsInHexMode</key>
 	<false/>
 	<key>UartIsEchoEnabled</key>
