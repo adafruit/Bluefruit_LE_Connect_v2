@@ -261,7 +261,8 @@ public class BleManager: NSObject {
             for peripheral in peripheralsWithServices {
                 if !alreadyConnectingOrConnectedPeripheralsIds.contains(peripheral.identifier) {
                     DLog("Discovered peripheral with known service: \(peripheral.identifier)")
-                    discovered(peripheral: peripheral, advertisementData: nil )
+                    let advertisementData = [CBAdvertisementDataServiceUUIDsKey: services]
+                    discovered(peripheral: peripheral, advertisementData: advertisementData )
                 }
             }
         }
