@@ -22,4 +22,4 @@ jobs:
         env:
           XCODE_VERSION: ${{ matrix.xcode }}
       - name: Build
-        run: xcodebuild -scheme Bluefruit -project Bluefruit.xworkspace -destination "generic/platform=iOS" -configuration Release build CODE_SIGNING_ALLOWED=NO
+        run: xcodebuild -scheme Bluefruit -workspace Bluefruit.xcworkspace -destination "generic/platform=iOS" -configuration Release build CODE_SIGNING_ALLOWED=NO
