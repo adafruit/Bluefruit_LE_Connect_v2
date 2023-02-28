@@ -62,7 +62,7 @@ class UartBaseViewController: PeripheralModeViewController {
     private let timestampDateFormatter = DateFormatter()
     private var tableCachedDataBuffer: [UartPacket]?
     internal var textCachedBuffer = NSMutableAttributedString()
-    
+
     private let keyboardPositionNotifier = KeyboardPositionNotifier()
     
     override func viewDidLoad() {
@@ -264,7 +264,7 @@ class UartBaseViewController: PeripheralModeViewController {
             for dataPacket in dataPackets {
                 onUartPacketText(dataPacket)
             }
-            baseTextView.attributedText = textCachedBuffer
+            //baseTextView.attributedText = textCachedBuffer
             reloadData()
             
         case .table:
@@ -291,12 +291,16 @@ class UartBaseViewController: PeripheralModeViewController {
     
     internal func updateUartReadyUI(isReady: Bool) {
         inputTextField.isEnabled = isReady
-        inputTextField.backgroundColor = isReady ? UIColor.white : UIColor.black.withAlphaComponent(0.1)
+        inputTextField.backgroundColor = isReady ? UIColor.white : UIColor.white.withAlphaComponent(0.3)
         sendInputButton.isEnabled = isReady
     }
     
     internal func send(data: Data) {
         assert(false, "Should be implemented by subclasses")
+    }
+    
+    internal func onUartPacketTextPostProcess() {
+        // Can be overriden by subclasses
     }
     
     // MARK: - UI Actions
@@ -586,6 +590,7 @@ extension UartBaseViewController: UartPacketManagerDelegate {
         }
     }
     
+
     func onUartPacketText(_ packet: UartPacket) {
         guard Preferences.uartIsEchoEnabled || packet.mode == .rx else { return }
         
@@ -595,6 +600,9 @@ extension UartBaseViewController: UartPacketManagerDelegate {
         if let attributedString = attributedStringFromData(packet.data, useHexMode: Preferences.uartIsInHexMode, color: color, font: font) {
             textCachedBuffer.append(attributedString)
         }
+        
+        // Call postprocess funcion. It can be overriden by subclassed for custom behaviours
+        onUartPacketTextPostProcess()
     }
     
     func mqttUpdateStatusUI() {
