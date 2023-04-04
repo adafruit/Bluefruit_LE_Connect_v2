@@ -44,11 +44,11 @@ open class Description: ComponentBase
     open var position: CGPoint? = nil
     
     /// The text alignment of the description text. Default RIGHT.
-    @objc open var textAlign: NSTextAlignment = NSTextAlignment.right
+    @objc open var textAlign: TextAlignment = TextAlignment.right
     
     /// Font object used for drawing the description text.
     @objc open var font: NSUIFont
     
     /// Text color used for drawing the description text
-    @objc open var textColor = NSUIColor.black
+    @objc open var textColor = NSUIColor.labelOrBlack
 }

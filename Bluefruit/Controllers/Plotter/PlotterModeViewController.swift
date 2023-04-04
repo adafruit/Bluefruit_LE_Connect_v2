@@ -154,7 +154,7 @@ class PlotterModeViewController: PeripheralModeViewController {
         chartView.delegate = self
         chartView.backgroundColor = .white      // Fix for Charts 3.0.3 (overrides the default background color)
 
-        chartView.chartDescription?.enabled = false
+        chartView.chartDescription.enabled = false
         chartView.xAxis.granularityEnabled = true
         chartView.xAxis.granularity = 5
         chartView.leftAxis.drawZeroLineEnabled = true
