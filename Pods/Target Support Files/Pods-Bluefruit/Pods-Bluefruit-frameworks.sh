@@ -177,9 +177,9 @@ code_sign_if_enabled() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Charts/Charts.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CocoaMQTT/CocoaMQTT.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MSWeakTimer/MSWeakTimer.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/MqttCocoaAsyncSocket/MqttCocoaAsyncSocket.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyXML/SwiftyXML.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/VectorMath/VectorMath.framework"
@@ -188,9 +188,9 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Charts/Charts.framework"
-  install_framework "${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CocoaMQTT/CocoaMQTT.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MSWeakTimer/MSWeakTimer.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/MqttCocoaAsyncSocket/MqttCocoaAsyncSocket.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyXML/SwiftyXML.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/VectorMath/VectorMath.framework"

@@ -3,7 +3,7 @@
 //  CocoaMQTT
 //
 //  Created by HJianBo on 2019/5/2.
-//  Copyright © 2019 emqtt.io. All rights reserved.
+//  Copyright © 2019 emqx.io. All rights reserved.
 //
 
 import Foundation
@@ -32,17 +32,17 @@ public enum CocoaMQTTLoggerLevel: Int {
 }
 
 
-class CocoaMQTTLogger: NSObject {
+open class CocoaMQTTLogger: NSObject {
     
     // Singleton
-    static let logger = CocoaMQTTLogger()
-    private override init() {}
-    
+    public static var logger = CocoaMQTTLogger()
+    public override init() { super.init() }
+
     // min level
     var minLevel: CocoaMQTTLoggerLevel = .warning
     
     // logs
-    func log(level: CocoaMQTTLoggerLevel, message: String) {
+    open func log(level: CocoaMQTTLoggerLevel, message: String) {
         guard level.rawValue >= minLevel.rawValue else { return }
         print("CocoaMQTT(\(level)): \(message)")
     }

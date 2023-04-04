@@ -226,22 +226,6 @@
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string>Public Domain License
-
-The CocoaAsyncSocket project is in the public domain.
-
-The original TCP version (AsyncSocket) was created by Dustin Voss in January 2003.
-Updated and maintained by Deusty LLC and the Apple development community.
-</string>
-			<key>License</key>
-			<string>public domain</string>
-			<key>Title</key>
-			<string>CocoaAsyncSocket</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>FooterText</key>
 			<string>This project is dual licensed under the Eclipse Public License 1.0 and the
 Eclipse Distribution License 1.0 as described in the epl-v10 and edl-v10 files.
 </string>
@@ -265,6 +249,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			<string>MIT</string>
 			<key>Title</key>
 			<string>MSWeakTimer</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>Public Domain License
+
+The MqttCocoaAsyncSocket project is in the public domain.
+
+The original TCP version (AsyncSocket) was created by Dustin Voss in January 2003.
+Updated and maintained by Deusty LLC and the Apple development community.
+</string>
+			<key>License</key>
+			<string>public domain</string>
+			<key>Title</key>
+			<string>MqttCocoaAsyncSocket</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

@@ -4,7 +4,7 @@ use_frameworks!
 target 'Bluefruit' do
   platform :ios, '13.0'
   
-  pod 'CocoaMQTT', '~> 1.2.5'
+  pod 'CocoaMQTT', '~> 2.1.1'
   pod 'MSWeakTimer', '~> 1.1.0'
   pod 'SwiftyXML', '~> 2.0.0'
   pod 'iOSDFULibrary', '~> 4.11.1'
