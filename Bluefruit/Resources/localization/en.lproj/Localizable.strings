@@ -9,10 +9,10 @@
 "bluetooth_poweredoff" = "Bluetooth is currently powered off";
 
 "bluetooth_locationpermission_disabled_text" = "Location Services should be enabled to scan bluetooth peripherals.\nPlease, go to settings and enable it to start scanning peripherals";
-"bluetooth_locationpermission_title" = "This app needs location access";
-"bluetooth_locationpermission_text" = "Please grant location access so this app can scan for Bluetooth peripherals";
-"bluetooth_locationpermission_notavailable_title" = "Bluetooth Scanning not available";
-"bluetooth_locationpermission_notavailable_text" = "Since location access has not been granted, the app will not be able to scan for Bluetooth peripherals";
+"locationpermission_notavailable_title" = "This app needs location access";
+"locationpermission_notavailable_text" = "Since location access has not been granted, the app will not generate location data";
+"bluetooth_permissions_notavailable_title" = "Bluetooth Scanning not available";
+"bluetooth_permissions_notavailable_text" = "Since bluetooth permissions have not been granted, the app will not be able to scan for Bluetooth peripherals";
 "bluetooth_scanner_errorregisteringapp" = "App cannot be registered for bluetooth scanning.
 Please reset bluetooth and try again.";
 "bluetooth_connecting_error" = "Error connecting to peripheral";
@@ -315,7 +315,8 @@ Horizontal Tab (0x09), '\\t' in code
 
 Each unique set of data samples must be terminated by a LINE FEED character (0x0A), which is usually represented as '\\n' in code.
 
-• Only numeric data should be sent over the BLE UART connection(s).";
+• Only numeric data should be sent over the BLE UART connection(s).
+• The horizontal axis represents time in seconds.";
 
 // CircuitPython
 "uart_circuitpython_title" = "CircuitPython";
