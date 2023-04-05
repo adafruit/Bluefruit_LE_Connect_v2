@@ -190,9 +190,13 @@ class PeripheralModulesViewController: UIViewController {
     
     private func peripheralDidUpdateRssi(notification: Notification) {
         guard let identifier = notification.userInfo?[BleManager.NotificationUserInfoKey.uuid.rawValue] as? UUID, identifier == blePeripheral?.identifier else { return }
-
+        
+#if targetEnvironment(macCatalyst)
+        // Dont reloadSections on macCatalyst because there is a bug and the row appears duplicated for a moment, flickering. Last time checked: Xcode 14.3
+#else
         // Update section
         baseTableView.reloadSections([TableSection.device.rawValue], with: .none)
+#endif
     }
     
     private func didDisconnectFromPeripheral(notification: Notification) {
