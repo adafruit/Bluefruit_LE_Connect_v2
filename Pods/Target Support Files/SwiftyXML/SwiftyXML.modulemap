@@ -1,6 +1,0 @@
-framework module SwiftyXML {
-  umbrella header "SwiftyXML-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -1,7 +1,7 @@
 name: Build App
 on:
-  push:
-    branches: [ "**" ]
+  #push:
+  #  branches: [ "**" ]
   pull_request:
     branches: [ "main" ]
 
@@ -15,11 +15,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        
+      - name: Restore cached CocoaPod folder
+        uses: actions/cache@v2
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-        
+        
+      - name: CocoaPod Install
+        run: pod install        
+        
       - name: Select  ${{ matrix.xcode }}
         run: |
           sudo xcode-select -s /Applications/Xcode_$XCODE_VERSION.app
           xcode-select -p
         env:
           XCODE_VERSION: ${{ matrix.xcode }}
+      
       - name: Build
         run: xcodebuild -scheme Bluefruit -workspace Bluefruit.xcworkspace -destination "generic/platform=iOS" -configuration Release build CODE_SIGNING_ALLOWED=NO
