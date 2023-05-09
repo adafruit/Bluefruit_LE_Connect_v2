@@ -102,7 +102,7 @@ class MqttManager {
     }
 
     func subscribe(topic: String, qos: MqttQos) {
-        let qos = CocoaMQTTQOS(rawValue :UInt8(qos.rawValue))!
+        let qos = CocoaMQTTQoS(rawValue :UInt8(qos.rawValue))!
         mqttClient?.subscribe(topic, qos: qos)
     }
 
@@ -111,7 +111,7 @@ class MqttManager {
     }
 
     func publish(message: String, topic: String, qos: MqttQos) {
-        let qos = CocoaMQTTQOS(rawValue :UInt8(qos.rawValue))!
+        let qos = CocoaMQTTQoS(rawValue :UInt8(qos.rawValue))!
         mqttClient?.publish(topic, withString: message, qos: qos)
     }
 
@@ -128,6 +128,8 @@ class MqttManager {
 }
 
 extension MqttManager: CocoaMQTTDelegate {
+
+    
     func mqtt(_ mqtt: CocoaMQTT, didConnectAck ack: CocoaMQTTConnAck) {
         DLog("didConnectAck: \(ack)")
 
@@ -198,14 +200,15 @@ extension MqttManager: CocoaMQTTDelegate {
         }
     }
 
-    func mqtt(_ mqtt: CocoaMQTT, didSubscribeTopic topics: [String]) {
-         DLog("didSubscribeTopic: \(topics)")
-     }
     
-    func mqtt(_ mqtt: CocoaMQTT, didUnsubscribeTopic topic: String) {
-        DLog("didUnsubscribeTopic")
+    func mqtt(_ mqtt: CocoaMQTT, didSubscribeTopics success: NSDictionary, failed: [String]) {
+        DLog("didSubscribeTopics: \(success.allKeys.count) topics. failed: \(failed.count) topics")
     }
-
+    
+    func mqtt(_ mqtt: CocoaMQTT, didUnsubscribeTopics topics: [String]) {
+        DLog("didUnsubscribeTopics: \(topics.joined(separator: ", "))")
+    }
+    
     func mqttDidPing(_ mqtt: CocoaMQTT) {
         //DLog("mqttDidPing")
 

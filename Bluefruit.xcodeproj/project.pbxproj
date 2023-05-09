@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		81EC9BF2053F63FF4DD121AC /* Pods_Bluefruit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26A937DE0A0ACE75597E27BB /* Pods_Bluefruit.framework */; };
+		4E00ACEA489D489EEAC88C84 /* Pods_Bluefruit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0A4AE80CCEAA9EE4288CDF2 /* Pods_Bluefruit.framework */; };
 		A90798311E438E60005470A5 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798301E438E60005470A5 /* GradientView.swift */; };
 		A90798361E439DB9005470A5 /* PinIOModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90798351E439DB9005470A5 /* PinIOModuleManager.swift */; };
 		A90C79781E40CBFA0076E8AD /* InfoModuleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */; };
@@ -266,13 +266,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0C7D0A9EDF539C82085DFDD5 /* Pods-Bluefruit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bluefruit.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bluefruit/Pods-Bluefruit.release.xcconfig"; sourceTree = "<group>"; };
-		26A937DE0A0ACE75597E27BB /* Pods_Bluefruit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bluefruit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2F9569E2A21BA0A3C063393A /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		36D8EF32E7D9A9146BF6D3BC /* Pods-Bluefruit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bluefruit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bluefruit/Pods-Bluefruit.debug.xcconfig"; sourceTree = "<group>"; };
-		52616FB9D63C65BD58A87279 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		54F4B0C0A169FBC46959E076 /* Pods-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-macOS/Pods-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		9FEC875F60CE881F27539E60 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		15326BB14123AB9DEBB23A50 /* Pods-Bluefruit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bluefruit.release.xcconfig"; path = "Target Support Files/Pods-Bluefruit/Pods-Bluefruit.release.xcconfig"; sourceTree = "<group>"; };
 		A90798301E438E60005470A5 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		A90798351E439DB9005470A5 /* PinIOModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinIOModuleManager.swift; sourceTree = "<group>"; };
 		A90C79771E40CBFA0076E8AD /* InfoModuleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoModuleManager.swift; sourceTree = "<group>"; };
@@ -623,7 +617,8 @@
 		A9EF0411299BF84F00734A82 /* String+matchingStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+matchingStrings.swift"; sourceTree = "<group>"; };
 		A9F4E1BA1F04467200BF8A70 /* ISColorWheel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISColorWheel.h; sourceTree = "<group>"; };
 		A9F4E1BB1F04467200BF8A70 /* ISColorWheel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISColorWheel.m; sourceTree = "<group>"; };
-		DE511F22E8F88E565DA29F57 /* Pods-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS/Pods-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		CEE70D856CD2D077CC7F6A79 /* Pods-Bluefruit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bluefruit.debug.xcconfig"; path = "Target Support Files/Pods-Bluefruit/Pods-Bluefruit.debug.xcconfig"; sourceTree = "<group>"; };
+		F0A4AE80CCEAA9EE4288CDF2 /* Pods_Bluefruit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bluefruit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -631,13 +626,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81EC9BF2053F63FF4DD121AC /* Pods_Bluefruit.framework in Frameworks */,
 				A96D5FDE23CC7E79009FB3C7 /* libMagickCore.a in Frameworks */,
 				A96D5FDF23CC7E79009FB3C7 /* libMagickWand.a in Frameworks */,
 				A96D5FDB23CC7E79009FB3C7 /* libpng.a in Frameworks */,
 				A9A1240223CD0221000C05C0 /* libtiff.a in Frameworks */,
 				A9A1240323CD0223000C05C0 /* libjpeg.a in Frameworks */,
 				A9A1240123CD00B4000C05C0 /* libz.tbd in Frameworks */,
+				4E00ACEA489D489EEAC88C84 /* Pods_Bluefruit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -658,19 +653,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		30C6AAEBEE95D7027D10F8DC /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				9FEC875F60CE881F27539E60 /* Pods-iOS.debug.xcconfig */,
-				2F9569E2A21BA0A3C063393A /* Pods-iOS.release.xcconfig */,
-				DE511F22E8F88E565DA29F57 /* Pods-macOS.debug.xcconfig */,
-				54F4B0C0A169FBC46959E076 /* Pods-macOS.release.xcconfig */,
-				36D8EF32E7D9A9146BF6D3BC /* Pods-Bluefruit.debug.xcconfig */,
-				0C7D0A9EDF539C82085DFDD5 /* Pods-Bluefruit.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		898E6F8F0FE679F1B515A766 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -678,10 +660,18 @@
 				A96D5FE023CC8344009FB3C7 /* libxml2.tbd */,
 				A945EA6A1E4DF3CA00737BB0 /* libz.tbd */,
 				A9276D341E4DE293005CD286 /* MSWeakTimer.framework */,
-				52616FB9D63C65BD58A87279 /* Pods_macOS.framework */,
-				26A937DE0A0ACE75597E27BB /* Pods_Bluefruit.framework */,
+				F0A4AE80CCEAA9EE4288CDF2 /* Pods_Bluefruit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		97936ED2289CC9F3B5E64338 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CEE70D856CD2D077CC7F6A79 /* Pods-Bluefruit.debug.xcconfig */,
+				15326BB14123AB9DEBB23A50 /* Pods-Bluefruit.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		A90C79761E40CBFA0076E8AD /* Modules */ = {
@@ -704,8 +694,8 @@
 			children = (
 				A9286C981E3A9216008E5F81 /* Bluefruit */,
 				A9286C971E3A9216008E5F81 /* Products */,
-				30C6AAEBEE95D7027D10F8DC /* Pods */,
 				898E6F8F0FE679F1B515A766 /* Frameworks */,
+				97936ED2289CC9F3B5E64338 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1493,12 +1483,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A9286CA81E3A9216008E5F81 /* Build configuration list for PBXNativeTarget "Bluefruit" */;
 			buildPhases = (
-				F1359294F68DAA8B076BA899 /* [CP] Check Pods Manifest.lock */,
+				321D58EBDBC59F2F6D70FC13 /* [CP] Check Pods Manifest.lock */,
 				A9286C921E3A9216008E5F81 /* Sources */,
 				A9286C931E3A9216008E5F81 /* Frameworks */,
 				A9286C941E3A9216008E5F81 /* Resources */,
-				AEED5FC814508D3028F6DBA6 /* [CP] Embed Pods Frameworks */,
 				A9BCD5C01E4D2762003D1CEA /* Embed Watch Content */,
+				53F65FAA48CA610BDBB19145 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1667,7 +1657,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		AEED5FC814508D3028F6DBA6 /* [CP] Embed Pods Frameworks */ = {
+		321D58EBDBC59F2F6D70FC13 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Bluefruit-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		53F65FAA48CA610BDBB19145 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1675,9 +1687,10 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Bluefruit/Pods-Bluefruit-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
-				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaMQTT/CocoaMQTT.framework",
 				"${BUILT_PRODUCTS_DIR}/MSWeakTimer/MSWeakTimer.framework",
+				"${BUILT_PRODUCTS_DIR}/MqttCocoaAsyncSocket/MqttCocoaAsyncSocket.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftAlgorithms/Algorithms.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyXML/SwiftyXML.framework",
 				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
 				"${BUILT_PRODUCTS_DIR}/VectorMath/VectorMath.framework",
@@ -1687,9 +1700,10 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaMQTT.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MSWeakTimer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MqttCocoaAsyncSocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Algorithms.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyXML.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VectorMath.framework",
@@ -1699,24 +1713,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Bluefruit/Pods-Bluefruit-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F1359294F68DAA8B076BA899 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Bluefruit-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2105,27 +2101,13 @@
 		};
 		A9286CA91E3A9216008E5F81 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 36D8EF32E7D9A9146BF6D3BC /* Pods-Bluefruit.debug.xcconfig */;
+			baseConfigurationReference = CEE70D856CD2D077CC7F6A79 /* Pods-Bluefruit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bluefruit/Bluefruit.entitlements;
-				CURRENT_PROJECT_VERSION = 55;
+				CURRENT_PROJECT_VERSION = 57;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 2X94RM7457;
-				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaMQTT\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/MSWeakTimer\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyXML\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/UIColor+Hex\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/VectorMath\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/iOSDFULibrary\"",
-					"\"$(SRCROOT)/Bluefruit/External Tools/iOSMagick-6.8.8-9-libs/include\"",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -2135,9 +2117,9 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts/Charts.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaMQTT/CocoaMQTT.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/MSWeakTimer/MSWeakTimer.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MqttCocoaAsyncSocket/MqttCocoaAsyncSocket.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyXML/SwiftyXML.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/UIColor+Hex/UIColor_Hex.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/VectorMath/VectorMath.framework/Headers\"",
@@ -2147,43 +2129,12 @@
 				);
 				INFOPLIST_FILE = Bluefruit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
-					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 				);
 				MARKETING_VERSION = 3.7.0;
 				OTHER_CFLAGS = "-Dmacintosh=1";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-framework",
-					"\"CFNetwork\"",
-					"-framework",
-					"\"Charts\"",
-					"-framework",
-					"\"CocoaAsyncSocket\"",
-					"-framework",
-					"\"CocoaMQTT\"",
-					"-framework",
-					"\"MSWeakTimer\"",
-					"-framework",
-					"\"Security\"",
-					"-framework",
-					"\"SwiftyXML\"",
-					"-framework",
-					"\"UIColor_Hex\"",
-					"-framework",
-					"\"VectorMath\"",
-					"-framework",
-					"\"ZIPFoundation\"",
-					"-framework",
-					"\"iOSDFULibrary\"",
-				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D MQTT_ENABLED";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "Bluefruit Connect";
@@ -2195,27 +2146,13 @@
 		};
 		A9286CAA1E3A9216008E5F81 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0C7D0A9EDF539C82085DFDD5 /* Pods-Bluefruit.release.xcconfig */;
+			baseConfigurationReference = 15326BB14123AB9DEBB23A50 /* Pods-Bluefruit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bluefruit/Bluefruit.entitlements;
-				CURRENT_PROJECT_VERSION = 55;
+				CURRENT_PROJECT_VERSION = 57;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 2X94RM7457;
-				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaMQTT\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/MSWeakTimer\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyXML\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/UIColor+Hex\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/VectorMath\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/ZIPFoundation\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/iOSDFULibrary\"",
-					"\"$(SRCROOT)/Bluefruit/External Tools/iOSMagick-6.8.8-9-libs/include\"",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -2225,9 +2162,9 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts/Charts.framework/Headers\"",
-					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/CocoaMQTT/CocoaMQTT.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/MSWeakTimer/MSWeakTimer.framework/Headers\"",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MqttCocoaAsyncSocket/MqttCocoaAsyncSocket.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/SwiftyXML/SwiftyXML.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/UIColor+Hex/UIColor_Hex.framework/Headers\"",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/VectorMath/VectorMath.framework/Headers\"",
@@ -2237,43 +2174,12 @@
 				);
 				INFOPLIST_FILE = Bluefruit/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
-					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 					"$(PROJECT_DIR)/Bluefruit/External\\ Tools/iOSMagick-6.8.8-9-libs",
 				);
 				MARKETING_VERSION = 3.7.0;
 				OTHER_CFLAGS = "-Dmacintosh=1";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-framework",
-					"\"CFNetwork\"",
-					"-framework",
-					"\"Charts\"",
-					"-framework",
-					"\"CocoaAsyncSocket\"",
-					"-framework",
-					"\"CocoaMQTT\"",
-					"-framework",
-					"\"MSWeakTimer\"",
-					"-framework",
-					"\"Security\"",
-					"-framework",
-					"\"SwiftyXML\"",
-					"-framework",
-					"\"UIColor_Hex\"",
-					"-framework",
-					"\"VectorMath\"",
-					"-framework",
-					"\"ZIPFoundation\"",
-					"-framework",
-					"\"iOSDFULibrary\"",
-				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D MQTT_ENABLED";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adafruit.bluefruitconnect;
 				PRODUCT_NAME = "Bluefruit Connect";
@@ -2287,7 +2193,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CURRENT_PROJECT_VERSION = 55;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = "Bluefruit/Watch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2310,7 +2216,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CURRENT_PROJECT_VERSION = 55;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				INFOPLIST_FILE = "Bluefruit/Watch Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2334,7 +2240,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 55;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				IBSC_MODULE = Bluefruit_Extension;
 				INFOPLIST_FILE = Bluefruit/Watch/Info.plist;
@@ -2355,7 +2261,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 55;
+				CURRENT_PROJECT_VERSION = 57;
 				DEVELOPMENT_TEAM = 2X94RM7457;
 				IBSC_MODULE = Bluefruit_Extension;
 				INFOPLIST_FILE = Bluefruit/Watch/Info.plist;
