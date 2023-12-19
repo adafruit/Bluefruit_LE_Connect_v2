@@ -20,7 +20,6 @@ public class BleManager: NSObject {
 
     // Ble
     var centralManager: CBCentralManager?
-    private var centralManagerPoweredOnSemaphore = DispatchSemaphore(value: 1)
 
     // Scanning
     public var isScanning: Bool {
@@ -50,7 +49,6 @@ public class BleManager: NSObject {
     override init() {
         super.init()
 
-        centralManagerPoweredOnSemaphore.wait()
         centralManager = CBCentralManager(delegate: self, queue: DispatchQueue.global(qos: .background), options: [:])
 //        centralManager = CBCentralManager(delegate: self, queue: DispatchQueue.main, options: [:])
     }
@@ -99,9 +97,6 @@ public class BleManager: NSObject {
 
     // MARK: - Scan
     public func startScan(withServices services: [CBUUID]? = nil) {
-        centralManagerPoweredOnSemaphore.wait()
-        centralManagerPoweredOnSemaphore.signal()
-
         isScanningWaitingToStart = true
         guard let centralManager = centralManager, centralManager.state != .poweredOff && centralManager.state != .unauthorized && centralManager.state != .unsupported else {
             DLog("startScan failed because central manager is not ready")
@@ -193,10 +188,12 @@ public class BleManager: NSObject {
     // MARK: - Connection Management
     public func connect(to peripheral: BlePeripheral, timeout: TimeInterval? = nil, shouldNotifyOnConnection: Bool = false, shouldNotifyOnDisconnection: Bool = false, shouldNotifyOnNotification: Bool = false) {
 
-        centralManagerPoweredOnSemaphore.wait()
-        centralManagerPoweredOnSemaphore.signal()
-
-        // Stop scanning when connecting to a peripheral 
+        guard centralManager?.state == .poweredOn else {
+            DLog("connect failed because central manager is not ready")
+            return
+        }
+        
+        // Stop scanning when connecting to a peripheral
         if BleManager.kStopScanningWhenConnectingToPeripheral {
             stopScan()
         }
@@ -351,12 +348,7 @@ public class BleManager: NSObject {
 // MARK: - CBCentralManagerDelegate
 extension BleManager: CBCentralManagerDelegate {
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
-
         DLog("centralManagerDidUpdateState: \(central.state.rawValue)")
-        // Unlock state lock if we have a known state
-        if central.state == .poweredOn || central.state == .poweredOff || central.state == .unsupported || central.state == .unauthorized {
-            centralManagerPoweredOnSemaphore.signal()
-        }
 
         // Scanning
         if central.state == .poweredOn {
