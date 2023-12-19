@@ -206,7 +206,7 @@
 		A9BCD5761E4D25B3003D1CEA /* ReleasesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD5711E4D25B3003D1CEA /* ReleasesParser.swift */; };
 		A9BCD57E1E4D25E4003D1CEA /* UartDataExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD57A1E4D25E4003D1CEA /* UartDataExport.swift */; };
 		A9BCD5801E4D25E4003D1CEA /* UartSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9BCD57B1E4D25E4003D1CEA /* UartSettings.swift */; };
-		A9BCD5A71E4D2762003D1CEA /* watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A9BCD5A61E4D2761003D1CEA /* watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A9BCD5A71E4D2762003D1CEA /* watchOS Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A9BCD5A61E4D2761003D1CEA /* watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A9BCD5B81E4D2762003D1CEA /* watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A9BCD59A1E4D2761003D1CEA /* watchOS.app */; platformFilter = ios; };
 		A9BCD5DB1E4D287A003D1CEA /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9BCD5D11E4D286A003D1CEA /* Interface.storyboard */; };
 		A9BCD5DC1E4D287D003D1CEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A9BCD5D01E4D286A003D1CEA /* Assets.xcassets */; };
@@ -241,15 +241,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		A9BCD5BC1E4D2762003D1CEA /* Embed App Extensions */ = {
+		A9BCD5BC1E4D2762003D1CEA /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A9BCD5A71E4D2762003D1CEA /* watchOS Extension.appex in Embed App Extensions */,
+				A9BCD5A71E4D2762003D1CEA /* watchOS Extension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A9BCD5C01E4D2762003D1CEA /* Embed Watch Content */ = {
@@ -1505,7 +1505,7 @@
 			buildConfigurationList = A9BCD5BD1E4D2762003D1CEA /* Build configuration list for PBXNativeTarget "watchOS" */;
 			buildPhases = (
 				A9BCD5981E4D2761003D1CEA /* Resources */,
-				A9BCD5BC1E4D2762003D1CEA /* Embed App Extensions */,
+				A9BCD5BC1E4D2762003D1CEA /* Embed Foundation Extensions */,
 				ED31A7F150AD1148E2A223C2 /* Frameworks */,
 			);
 			buildRules = (
@@ -1541,8 +1541,9 @@
 		A9286C8E1E3A9216008E5F81 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 1510;
 				ORGANIZATIONNAME = Adafruit;
 				TargetAttributes = {
 					A9286C951E3A9216008E5F81 = {
@@ -2022,6 +2023,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -2081,6 +2083,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -2108,6 +2111,7 @@
 				CURRENT_PROJECT_VERSION = 58;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 2X94RM7457;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -2153,6 +2157,7 @@
 				CURRENT_PROJECT_VERSION = 58;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = 2X94RM7457;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
