@@ -17,6 +17,11 @@ class UartModeViewController: UartBaseViewController {
     @IBOutlet weak var terminalTitleView: UIView!
     @IBOutlet weak var terminalTitleLabel: UILabel!
     
+    @IBOutlet weak var ctrlCButton: UIButton!
+    @IBOutlet weak var ctrlDButton: UIButton!
+    @IBOutlet weak var ctrlZButton: UIButton!
+
+    
     // Params
     var uartServiceUuid: CBUUID = BlePeripheral.kUartServiceUUID
     var txCharacteristicUuid: CBUUID = BlePeripheral.kUartTxCharacteristicUUID
@@ -45,6 +50,10 @@ class UartModeViewController: UartBaseViewController {
         // Localization
         sendPeripheralButton.setTitle(localizationManager.localizedString("uart_send_toall_action"), for: .normal)     // Default value
         
+        ctrlCButton.setTitle(localizationManager.localizedString("uart_input_ctrlc"), for: .normal)
+        ctrlDButton.setTitle(localizationManager.localizedString("uart_input_ctrld"), for: .normal)
+        ctrlZButton.setTitle(localizationManager.localizedString("uart_input_ctrlz"), for: .normal)
+
         // Init Uart
         let uartPacketManager = UartPacketManager(delegate: self, isPacketCacheEnabled: true, isMqttEnabled: true)
         uartPacketManager.isResetPacketsOnReconnectionEnabled = isResetPacketsOnReconnectionEnabled

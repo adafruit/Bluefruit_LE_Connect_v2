@@ -173,10 +173,13 @@ Please reset bluetooth and try again.";
 "uart_tab_title" = "UART";
 "uart_navigation_title_format" = "UART - %@";
 
-
 "uart_send_action" = "Send";
 "uart_send_toall_action" = "To All";
 "uart_send_toall_long" = "All Connected Peripherals";
+
+"uart_input_ctrlc" = "CTRL-C";
+"uart_input_ctrld" = "CTRL-D";
+"uart_input_ctrlz" = "CTRL-Z";
 
 "uart_sentbytes_format" = "Sent: %ld bytes";
 "uart_receivedbytes_format" = "Received: %ld bytes";
@@ -229,8 +232,6 @@ Please reset bluetooth and try again.";
 "uart_mqtt_qos_atleastonce" = "At Least Once";
 "uart_mqtt_qos_atmostonce" = "At Most Once";
 "uart_mqtt_qos_exactlyonce" = "Exactly Once";
-
-
 
 "uart_help_title" = "UART";
 "uart_help_text" = "Instructions:

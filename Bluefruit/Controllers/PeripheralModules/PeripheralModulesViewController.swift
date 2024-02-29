@@ -353,6 +353,14 @@ extension PeripheralModulesViewController: UITableViewDataSource {
         return LocalizationManager.shared.localizedString(localizationKey)
     }
     
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int){
+            
+        // Make section titles white
+        if let header = view as? UITableViewHeaderFooterView {
+            header.textLabel?.textColor = UIColor.white
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         var reuseIdentifier: String

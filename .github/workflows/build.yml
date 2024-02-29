@@ -1,18 +1,16 @@
 name: Build App
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    types: [ opened, edited, synchronize ]
     branches: [ "main" ]
 
 jobs:
   build-stable:
     name: Build Bluefruit in stable Xcode
-    runs-on: macos-latest
+    runs-on: macos-13
     strategy:
       matrix:
-        xcode: ['14.2']
+        xcode: ['15.0.1']
     steps:
       - name: Checkout
         uses: actions/checkout@v3
